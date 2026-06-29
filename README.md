@@ -59,6 +59,12 @@ Source-Wire includes a tiny local CLI for validating explicit files against expl
 
 - [Validation CLI](docs/validation-cli.md)
 
+## CI Checks
+
+Source-Wire runs package checks and public-safety scanning on push and pull request.
+
+- [CI Checks](docs/ci-checks.md)
+
 ## Fixtures
 
 All fixtures are fictional and synthetic.

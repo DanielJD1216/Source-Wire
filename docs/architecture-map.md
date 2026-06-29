@@ -159,6 +159,8 @@ Readiness checks prove package confidence, not runtime behavior.
 
 Important commands:
 
+Before running these commands locally, use the [Quickstart](quickstart.md) for Node.js 22, npm, and repository-root setup.
+
 | Command | Purpose |
 | --- | --- |
 | `npm run readiness:report` | Prints a fast read-only summary of package posture. |

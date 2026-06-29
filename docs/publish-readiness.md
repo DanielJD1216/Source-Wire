@@ -15,6 +15,7 @@ npm run publish:readiness
 This command runs:
 
 - `npm run ci:check`
+- `npm run release:gate`
 - `npm run package:dry-run`
 - `npm run safety:scan`
 
@@ -68,6 +69,26 @@ npm publish
 ```
 
 until a later PRD explicitly opens npm publishing and records owner approval.
+
+## Release Gate
+
+Run:
+
+```bash
+npm run release:gate
+```
+
+The release gate verifies that current package metadata still matches the release decision:
+
+- license is `UNLICENSED`,
+- version is `0.0.0`,
+- npm publishing remains blocked through restricted publish config,
+- package scripts do not include publish, release, or deployment commands.
+
+Release decision docs:
+
+- [Release Decision](release-decision.md)
+- [License And Version Policy](license-version-policy.md)
 
 ## What Is Still Blocked
 

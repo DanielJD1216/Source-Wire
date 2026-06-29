@@ -10,6 +10,8 @@ const requiredPaths = [
   "docs/schema-exports.md",
   "docs/validation-cli.md",
   "docs/ci-checks.md",
+  "docs/release-decision.md",
+  "docs/license-version-policy.md",
   "schemas/project-context-pack.schema.json",
   "schemas/second-brain-v1.schema.json",
   "schemas/chat-export-message.schema.json",

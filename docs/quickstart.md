@@ -85,7 +85,7 @@ It does not publish npm.
 npm run consumer:smoke
 ```
 
-This creates a temporary external TypeScript project, installs a locally packed Source-Wire tarball, typechecks imports from `@source-wire/contracts`, runs a tiny compiled import check, and deletes the temporary project.
+This creates a temporary external TypeScript project, installs a locally packed Source-Wire tarball, typechecks imports from `@source-wire/contracts`, runs a tiny compiled import check, runs the installed `source-wire` CLI against a synthetic fixture shipped inside the installed package, and deletes the temporary project.
 
 It does not publish npm or run backend behavior.
 

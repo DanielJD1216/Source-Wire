@@ -109,10 +109,29 @@ console.log(JSON.stringify({
     throw new Error(`unexpected consumer runtime result: ${runtimeResult.stdout}`);
   }
 
+  const installedCliPath = join(
+    consumerRoot,
+    "node_modules",
+    ".bin",
+    process.platform === "win32" ? "source-wire.cmd" : "source-wire"
+  );
+  const installedFixturePath = join(
+    consumerRoot,
+    "node_modules",
+    "@source-wire",
+    "contracts",
+    "examples",
+    "fixtures",
+    "project-context-pack",
+    "project-context.json"
+  );
+  await runChecked(installedCliPath, ["validate", "project-context-pack", installedFixturePath], consumerRoot);
+
   console.log(`ok consumer smoke ${pack.name}@${pack.version}`);
   console.log("ok consumer install local tarball");
   console.log("ok consumer typecheck package root imports");
   console.log("ok consumer runtime package root import");
+  console.log("ok consumer installed cli package fixture validation");
 } finally {
   await rm(tempRoot, { recursive: true, force: true });
 }

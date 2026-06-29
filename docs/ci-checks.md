@@ -88,6 +88,8 @@ CI does not:
 
 The consumer smoke check installs a locally packed tarball into a temporary project.
 
+It verifies package-root imports and the installed `source-wire` CLI against a synthetic fixture shipped inside the installed package.
+
 It does not publish npm, create a release, deploy services, or call backend runtime.
 
 The docs link check validates local Markdown links in README, docs, and examples.

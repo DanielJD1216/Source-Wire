@@ -43,7 +43,7 @@ Run only the consumer smoke check:
 npm run consumer:smoke
 ```
 
-The consumer smoke check builds and packs Source-Wire locally, creates a temporary external TypeScript project, installs the local tarball, typechecks package-root imports from `@source-wire/contracts`, runs a tiny compiled import check, and removes the temporary project.
+The consumer smoke check builds and packs Source-Wire locally, creates a temporary external TypeScript project, installs the local tarball, typechecks package-root imports from `@source-wire/contracts`, runs a tiny compiled import check, runs the installed `source-wire` CLI against a synthetic fixture shipped inside the installed package, and removes the temporary project.
 
 It does not publish npm.
 

@@ -139,6 +139,10 @@ The runtime boundary smoke runs `examples/runtime-boundary/synthetic-boundary-sm
 
 It checks the synthetic owner-hosted API plus MCP boundary cases without starting a server.
 
+The smoke output includes `ok runtime boundary check ...` markers before `ok synthetic runtime boundary smoke`.
+
+If the smoke fails, the error names the failed check, expected value, received value, and next action.
+
 It does not publish npm.
 
 It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
@@ -154,6 +158,8 @@ npm run runtime-boundary:installed-smoke
 The installed runtime boundary smoke builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, and runs `examples/runtime-boundary/synthetic-boundary-smoke.mjs` from `node_modules/@source-wire/contracts`.
 
 It proves the packaged runtime-boundary example can execute after package installation.
+
+The installed smoke surfaces the same diagnostic markers from the packaged example.
 
 It does not publish npm.
 

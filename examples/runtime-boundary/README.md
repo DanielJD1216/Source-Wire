@@ -19,6 +19,12 @@ npm run runtime-boundary:smoke
 Expected output:
 
 ```text
+ok runtime boundary check authorized_read
+ok runtime boundary check unauthorized_read_denial
+ok runtime boundary check wrong_namespace_denial
+ok runtime boundary check source_maintenance_no_auto_promotion
+ok runtime boundary check owner_controlled_approval
+ok runtime boundary check agent_approval_denial
 ok synthetic runtime boundary smoke
 ```
 
@@ -47,6 +53,31 @@ The smoke proof checks:
 - trusted-memory approval is owner or application controlled,
 - MCP boundary calls the API boundary instead of bypassing policy,
 - audit-friendly metadata is returned.
+
+## Failure Diagnostics
+
+Each line that starts with `ok runtime boundary check` names one boundary that passed.
+
+If the smoke fails, the error includes:
+
+- check name,
+- assertion,
+- expected value,
+- received value,
+- next action.
+
+Common failure areas:
+
+| Check | What broke first |
+| --- | --- |
+| `authorized_read` | Read scope, namespace access, citation shape, or MCP-to-API boundary. |
+| `unauthorized_read_denial` | Missing-credential denial or leak prevention. |
+| `wrong_namespace_denial` | Namespace isolation, denied evidence count, or leak prevention. |
+| `source_maintenance_no_auto_promotion` | Source maintenance, pending candidates, or trusted-memory auto-promotion boundary. |
+| `owner_controlled_approval` | Owner approval boundary or trusted-memory delta. |
+| `agent_approval_denial` | Agent self-promotion denial. |
+
+These diagnostics do not add runtime behavior. They only make the synthetic smoke easier to debug.
 
 ## What It Does Not Do
 

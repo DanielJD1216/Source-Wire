@@ -19,69 +19,84 @@ const runtimeState = {
   ]
 };
 
-const authorizedRead = mcpUseSecondBrain({
-  credential: "read-credential",
-  namespace: ownerNamespace,
-  action: "answer"
-});
-
-assertEqual(authorizedRead.ok, true, "authorized read should pass");
-assertEqual(authorizedRead.response.answer.includes("intake"), true, "authorized read should return cited answer");
-assertEqual(authorizedRead.response.citations.length, 1, "authorized read should include one citation");
-assertEqual(authorizedRead.audit.boundary, "mcp_to_api", "MCP must call API boundary");
-
-const unauthorizedRead = mcpUseSecondBrain({
-  credential: "missing-credential",
-  namespace: ownerNamespace,
-  action: "answer"
-});
-
-assertEqual(unauthorizedRead.ok, false, "unauthorized read should fail");
-assertEqual(unauthorizedRead.status, 401, "unauthorized read should fail closed");
-assertEqual(unauthorizedRead.audit.leakedContent, false, "unauthorized read must not leak content");
-
-const wrongNamespace = mcpUseSecondBrain({
-  credential: "client-credential",
-  namespace: ownerNamespace,
-  action: "answer"
-});
-
-assertEqual(wrongNamespace.ok, false, "wrong namespace should fail");
-assertEqual(wrongNamespace.status, 403, "wrong namespace should be forbidden");
-assertEqual(wrongNamespace.audit.deniedEvidenceCount, 1, "wrong namespace should count denied evidence");
-assertEqual(wrongNamespace.audit.leakedContent, false, "wrong namespace must not leak content");
+let activeCheck = null;
 
 const beforeMaintenanceTrustedCount = runtimeState.trustedMemoryCount;
-const maintenance = mcpMaintainSource({
-  credential: "maintain-credential",
-  namespace: ownerNamespace,
-  action: "maintain_source"
+
+runCheck("authorized_read", "Inspect read credential scope, namespace, citations, and MCP-to-API boundary.", () => {
+  const authorizedRead = mcpUseSecondBrain({
+    credential: "read-credential",
+    namespace: ownerNamespace,
+    action: "answer"
+  });
+
+  assertEqual(authorizedRead.ok, true, "authorized read should pass");
+  assertEqual(authorizedRead.response.answer.includes("intake"), true, "authorized read should return cited answer");
+  assertEqual(authorizedRead.response.citations.length, 1, "authorized read should include one citation");
+  assertEqual(authorizedRead.audit.boundary, "mcp_to_api", "MCP must call API boundary");
 });
 
-assertEqual(maintenance.ok, true, "maintenance should pass for import scope");
-assertEqual(maintenance.response.noAutoPromotion, true, "maintenance must preserve noAutoPromotion");
-assertEqual(maintenance.response.pendingCandidateCount, 1, "maintenance should create pending candidate");
-assertEqual(runtimeState.trustedMemoryCount, beforeMaintenanceTrustedCount, "maintenance must not create trusted memory");
-assertEqual(runtimeState.pendingCandidateCount, 1, "pending candidate count should increase");
+runCheck("unauthorized_read_denial", "Inspect missing credential denial and leakedContent audit fields.", () => {
+  const unauthorizedRead = mcpUseSecondBrain({
+    credential: "missing-credential",
+    namespace: ownerNamespace,
+    action: "answer"
+  });
 
-const approval = apiApproveTrustedMemory({
-  credential: "maintain-credential",
-  namespace: ownerNamespace,
-  actorType: "owner"
+  assertEqual(unauthorizedRead.ok, false, "unauthorized read should fail");
+  assertEqual(unauthorizedRead.status, 401, "unauthorized read should fail closed");
+  assertEqual(unauthorizedRead.audit.leakedContent, false, "unauthorized read must not leak content");
 });
 
-assertEqual(approval.ok, true, "owner approval should pass");
-assertEqual(approval.response.approvalControlledBy, "owner_or_application", "approval must be owner or application controlled");
-assertEqual(runtimeState.trustedMemoryCount, beforeMaintenanceTrustedCount + 1, "approval should create trusted memory");
+runCheck("wrong_namespace_denial", "Inspect namespace isolation, denied evidence counts, and leak prevention.", () => {
+  const wrongNamespace = mcpUseSecondBrain({
+    credential: "client-credential",
+    namespace: ownerNamespace,
+    action: "answer"
+  });
 
-const deniedApproval = apiApproveTrustedMemory({
-  credential: "read-credential",
-  namespace: ownerNamespace,
-  actorType: "agent"
+  assertEqual(wrongNamespace.ok, false, "wrong namespace should fail");
+  assertEqual(wrongNamespace.status, 403, "wrong namespace should be forbidden");
+  assertEqual(wrongNamespace.audit.deniedEvidenceCount, 1, "wrong namespace should count denied evidence");
+  assertEqual(wrongNamespace.audit.leakedContent, false, "wrong namespace must not leak content");
 });
 
-assertEqual(deniedApproval.ok, false, "agent approval should fail");
-assertEqual(deniedApproval.status, 403, "agent approval should be forbidden by default");
+runCheck("source_maintenance_no_auto_promotion", "Inspect import_sources scope, noAutoPromotion, and trusted memory delta.", () => {
+  const maintenance = mcpMaintainSource({
+    credential: "maintain-credential",
+    namespace: ownerNamespace,
+    action: "maintain_source"
+  });
+
+  assertEqual(maintenance.ok, true, "maintenance should pass for import scope");
+  assertEqual(maintenance.response.noAutoPromotion, true, "maintenance must preserve noAutoPromotion");
+  assertEqual(maintenance.response.pendingCandidateCount, 1, "maintenance should create pending candidate");
+  assertEqual(runtimeState.trustedMemoryCount, beforeMaintenanceTrustedCount, "maintenance must not create trusted memory");
+  assertEqual(runtimeState.pendingCandidateCount, 1, "pending candidate count should increase");
+});
+
+runCheck("owner_controlled_approval", "Inspect owner approval boundary and trusted memory delta.", () => {
+  const approval = apiApproveTrustedMemory({
+    credential: "maintain-credential",
+    namespace: ownerNamespace,
+    actorType: "owner"
+  });
+
+  assertEqual(approval.ok, true, "owner approval should pass");
+  assertEqual(approval.response.approvalControlledBy, "owner_or_application", "approval must be owner or application controlled");
+  assertEqual(runtimeState.trustedMemoryCount, beforeMaintenanceTrustedCount + 1, "approval should create trusted memory");
+});
+
+runCheck("agent_approval_denial", "Inspect approval boundary so agents cannot self-promote trusted memory.", () => {
+  const deniedApproval = apiApproveTrustedMemory({
+    credential: "read-credential",
+    namespace: ownerNamespace,
+    actorType: "agent"
+  });
+
+  assertEqual(deniedApproval.ok, false, "agent approval should fail");
+  assertEqual(deniedApproval.status, 403, "agent approval should be forbidden by default");
+});
 
 console.log("ok synthetic runtime boundary smoke");
 
@@ -226,8 +241,28 @@ function apiApproveTrustedMemory(request) {
   };
 }
 
+function runCheck(name, nextAction, fn) {
+  activeCheck = { name, nextAction };
+  try {
+    fn();
+    console.log(`ok runtime boundary check ${name}`);
+  } finally {
+    activeCheck = null;
+  }
+}
+
 function assertEqual(actual, expected, message) {
   if (actual !== expected) {
-    throw new Error(`${message}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+    const checkName = activeCheck?.name ?? "unknown";
+    const nextAction = activeCheck?.nextAction ?? "Inspect the synthetic runtime-boundary smoke case.";
+    throw new Error(
+      [
+        `runtime boundary smoke check failed: ${checkName}`,
+        `assertion: ${message}`,
+        `expected: ${JSON.stringify(expected)}`,
+        `received: ${JSON.stringify(actual)}`,
+        `next action: ${nextAction}`
+      ].join("\n")
+    );
   }
 }

@@ -88,7 +88,13 @@ CI does not:
 
 The consumer smoke check installs a locally packed tarball into a temporary project.
 
-It verifies package-root imports and the installed `source-wire` CLI against a synthetic fixture shipped inside the installed package.
+It verifies package-root imports and the installed `source-wire` CLI against every schema-backed synthetic fixture shipped inside the installed package:
+
+- `project-context-pack`
+- `second-brain-v1`
+- `chat-export-message`
+
+Markdown vault fixtures are not part of the installed fixture validation matrix until a Markdown vault schema exists.
 
 It does not publish npm, create a release, deploy services, or call backend runtime.
 

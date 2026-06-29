@@ -85,7 +85,7 @@ It does not publish npm.
 npm run consumer:smoke
 ```
 
-This creates a temporary external TypeScript project, installs a locally packed Source-Wire tarball, typechecks imports from `@source-wire/contracts`, runs a tiny compiled import check, runs the installed `source-wire` CLI against a synthetic fixture shipped inside the installed package, and deletes the temporary project.
+This creates a temporary external TypeScript project, installs a locally packed Source-Wire tarball, typechecks imports from `@source-wire/contracts`, runs a tiny compiled import check, runs the installed `source-wire` CLI against every schema-backed synthetic fixture shipped inside the installed package, and deletes the temporary project.
 
 It does not publish npm or run backend behavior.
 
@@ -107,6 +107,10 @@ It does not check external URLs or anchor existence.
 | `examples/fixtures/second-brain/use-2nd-brain-example.json` | Synthetic second-brain response shape. | `second-brain-v1` |
 | `examples/fixtures/chat-export/agent-session.jsonl` | Synthetic chat export message lines. | `chat-export-message` |
 | `examples/fixtures/markdown-vault/` | Synthetic Markdown vault evidence examples. | Not schema-validated by the current CLI. |
+
+`npm run consumer:smoke` validates the three schema-backed fixtures from the installed package path under `node_modules/@source-wire/contracts`.
+
+Markdown vault fixtures are intentionally not part of the installed fixture validation matrix until Source-Wire has a Markdown vault schema.
 
 More detail:
 

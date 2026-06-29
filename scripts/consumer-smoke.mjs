@@ -115,23 +115,32 @@ console.log(JSON.stringify({
     ".bin",
     process.platform === "win32" ? "source-wire.cmd" : "source-wire"
   );
-  const installedFixturePath = join(
-    consumerRoot,
-    "node_modules",
-    "@source-wire",
-    "contracts",
-    "examples",
-    "fixtures",
-    "project-context-pack",
-    "project-context.json"
-  );
-  await runChecked(installedCliPath, ["validate", "project-context-pack", installedFixturePath], consumerRoot);
+  const installedPackageRoot = join(consumerRoot, "node_modules", "@source-wire", "contracts");
+  const installedFixtureMatrix = [
+    {
+      schemaName: "project-context-pack",
+      path: join(installedPackageRoot, "examples", "fixtures", "project-context-pack", "project-context.json")
+    },
+    {
+      schemaName: "second-brain-v1",
+      path: join(installedPackageRoot, "examples", "fixtures", "second-brain", "use-2nd-brain-example.json")
+    },
+    {
+      schemaName: "chat-export-message",
+      path: join(installedPackageRoot, "examples", "fixtures", "chat-export", "agent-session.jsonl")
+    }
+  ];
+
+  for (const fixture of installedFixtureMatrix) {
+    await runChecked(installedCliPath, ["validate", fixture.schemaName, fixture.path], consumerRoot);
+  }
 
   console.log(`ok consumer smoke ${pack.name}@${pack.version}`);
   console.log("ok consumer install local tarball");
   console.log("ok consumer typecheck package root imports");
   console.log("ok consumer runtime package root import");
   console.log("ok consumer installed cli package fixture validation");
+  console.log("ok consumer installed fixture matrix validation");
 } finally {
   await rm(tempRoot, { recursive: true, force: true });
 }

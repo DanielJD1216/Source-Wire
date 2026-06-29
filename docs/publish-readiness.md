@@ -24,6 +24,7 @@ This command runs:
 
 - `npm run ci:check`
 - `npm run release:gate`
+- `npm run package:required-paths`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
 - `npm run package:content-smoke`
@@ -48,6 +49,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Area | Markers to look for |
 | --- | --- |
 | Release boundary | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` |
+| Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` |
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
@@ -59,6 +61,18 @@ They prove the current package skeleton, installed package behavior, docs, safet
 The Docs and readiness row proves the readiness summary, required readiness docs, local Markdown links, and command-doc setup pointers are current.
 
 Use [CI Checks](ci-checks.md) for the same marker map from the GitHub Actions perspective.
+
+## Package Required Paths
+
+Run only the package required path manifest check:
+
+```bash
+npm run package:required-paths
+```
+
+The manifest check verifies the shared required package path list is sorted and duplicate-free.
+
+It does not build, pack, install, publish, or run runtime behavior.
 
 ## Readiness Report
 

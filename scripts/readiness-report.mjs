@@ -21,6 +21,7 @@ const requiredScripts = [
   "docs:links",
   "docs:command-setup",
   "safety:scan",
+  "package:required-paths",
   "release:gate",
   "package:dry-run",
   "publish:readiness"

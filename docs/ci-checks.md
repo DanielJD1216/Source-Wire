@@ -59,6 +59,7 @@ The readiness gate runs:
 - `npm run runtime-boundary:smoke`
 - `npm run safety:scan`
 - `npm run release:gate`
+- `npm run package:required-paths`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
 - `npm run package:content-smoke`
@@ -81,6 +82,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Marker group | Expected markers | What it proves |
 | --- | --- | --- |
 | Release gate | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` | Release, license, version, and publishing boundaries are still blocked. |
+| Package required paths | `ok package required paths` | The shared required package path manifest is sorted and duplicate-free. |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` | The local package can be packed and the shared required package path manifest is present. |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` | The shared required package path manifest, README/docs/examples links, and runtime readiness summary assertions work from the packed package after install. |
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` | Synthetic owner-hosted API plus MCP boundary cases still fail closed and preserve no-auto-promotion. |

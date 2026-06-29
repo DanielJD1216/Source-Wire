@@ -26,7 +26,15 @@ import type {
 } from "@source-wire/contracts";
 ```
 
-During local development, build first:
+During local development, use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
+Install dependencies first:
+
+```bash
+npm install
+```
+
+Then build:
 
 ```bash
 npm run build

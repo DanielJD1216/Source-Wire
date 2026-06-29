@@ -27,6 +27,10 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - Live connectors.
 - Tokens, local paths, domains, emails, account IDs, client names, or private project history.
 
+## Documentation
+
+- [Docs Index](docs/index.md)
+
 ## Contracts
 
 - [Source Graph Adapter Contract](docs/contracts/source-graph-adapter-contract.md)

@@ -62,6 +62,19 @@ The Docs and readiness row proves the readiness summary, required readiness docs
 
 Use [CI Checks](ci-checks.md) for the same marker map from the GitHub Actions perspective.
 
+## Marker Helper
+
+Save the local readiness output, then run the marker helper:
+
+```bash
+npm run publish:readiness > /tmp/source-wire-readiness.log 2>&1
+npm run ci:markers -- /tmp/source-wire-readiness.log
+```
+
+The marker helper reads a log file or stdin, checks the stable marker groups above, and exits non-zero when required marker evidence is missing.
+
+It does not run readiness, call GitHub, publish, deploy, start runtime services, connect to databases, or use real data.
+
 ## Package Required Paths
 
 Run only the package required path manifest check:

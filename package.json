@@ -63,6 +63,7 @@
     "docs:command-setup": "node scripts/check-command-doc-setup.mjs",
     "safety:scan": "node scripts/public-safety-scan.mjs",
     "package:required-paths": "node scripts/check-package-required-paths.mjs",
+    "ci:markers": "node scripts/check-ci-markers.mjs",
     "ci:check": "npm run typecheck && npm run build && npm test && npm run validate:fixtures && npm run verify:schema-exports && npm run cli:smoke && npm run runtime-boundary:smoke && npm run safety:scan",
     "release:gate": "node scripts/release-gate.mjs",
     "package:dry-run": "npm run build && node scripts/package-dry-run.mjs",

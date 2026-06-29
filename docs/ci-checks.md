@@ -93,6 +93,25 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 
 If one marker group is missing, inspect the command that owns that group before treating CI as release-ready.
 
+## Marker Helper
+
+Save the GitHub Actions log, then run the marker helper:
+
+```bash
+gh run view <run-id> --log > /tmp/source-wire-ci.log
+npm run ci:markers -- /tmp/source-wire-ci.log
+```
+
+The marker helper also accepts stdin:
+
+```bash
+gh run view <run-id> --log | npm run ci:markers -- -
+```
+
+The helper checks the stable marker groups above and exits non-zero when required marker evidence is missing.
+
+It does not call GitHub by itself, publish, deploy, start runtime services, connect to databases, or use real data.
+
 ## Public-Safety Scan
 
 The public-safety scan is self-contained inside Source-Wire:

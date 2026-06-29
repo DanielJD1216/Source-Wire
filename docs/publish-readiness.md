@@ -19,6 +19,7 @@ This command runs:
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
 - `npm run package:content-smoke`
+- `npm run examples:installed-smoke`
 - `npm run docs:links`
 - `npm run safety:scan`
 
@@ -75,6 +76,26 @@ It checks installed `README.md`, `docs`, and `examples` local links from `node_m
 This is different from `npm run docs:links`, which checks links in the repository checkout.
 
 Installed TypeScript example typechecking is outside this check because the current examples intentionally use repo-local TypeScript path mapping.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Installed TypeScript Examples Smoke
+
+Run only the installed TypeScript examples smoke:
+
+```bash
+npm run examples:installed-smoke
+```
+
+The installed examples smoke builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, copies the public TypeScript example files into that project, and typechecks them against the installed package declarations.
+
+This is different from `npm run examples:typecheck`, which checks examples in the repository checkout through repo-local TypeScript path mapping.
+
+The installed smoke proves package-root imports from `@source-wire/contracts` work for consumer TypeScript examples.
+
+It does not execute compiled example JavaScript.
 
 It does not publish npm.
 

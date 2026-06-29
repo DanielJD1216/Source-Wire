@@ -18,6 +18,8 @@ import type { SourceWireSourceGraph } from "@source-wire/contracts";
 
 Because this package is not published to npm yet, local repo examples map `@source-wire/contracts` to `../../src/index.ts` through `examples/typescript/tsconfig.json`.
 
+The installed examples smoke copies these same `.ts` files into a temporary external project and typechecks them against a locally packed package install.
+
 ## Examples
 
 - [runtime-boundary.ts](runtime-boundary.ts), confirms the package is contracts only.
@@ -34,6 +36,16 @@ npm run examples:typecheck
 This command checks examples against the public TypeScript surface.
 
 It does not build or run backend behavior.
+
+## Installed Package Typecheck
+
+```bash
+npm run examples:installed-smoke
+```
+
+This command checks copied examples against the installed package declarations from `node_modules/@source-wire/contracts`.
+
+It does not use repo-local TypeScript path mapping.
 
 Related docs:
 

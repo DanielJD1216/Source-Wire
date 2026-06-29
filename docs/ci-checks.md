@@ -51,6 +51,7 @@ The readiness gate runs:
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
 - `npm run package:content-smoke`
+- `npm run examples:installed-smoke`
 - `npm run docs:links`
 - `npm run safety:scan`
 
@@ -104,6 +105,12 @@ The package content smoke check installs a locally packed tarball into a tempora
 It verifies installed `README.md`, `docs`, and `examples` local links from `node_modules/@source-wire/contracts`.
 
 It does not typecheck installed TypeScript examples because those examples currently use repo-local path mapping.
+
+The installed TypeScript examples smoke check installs a locally packed tarball into a temporary project, copies the public TypeScript examples into that project, and typechecks them against the installed package declarations.
+
+It verifies consumer package-root imports without repo-local TypeScript path mapping.
+
+It does not execute compiled example JavaScript.
 
 The docs link check validates local Markdown links in README, docs, and examples.
 

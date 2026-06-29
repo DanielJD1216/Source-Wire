@@ -101,6 +101,18 @@ This proves installed `README.md`, `docs`, and `examples` links work from the pa
 
 It does not publish npm, run backend behavior, or typecheck installed TypeScript examples.
 
+## Run The Installed TypeScript Examples Smoke Check
+
+```bash
+npm run examples:installed-smoke
+```
+
+This creates a temporary external project, installs a locally packed Source-Wire tarball, copies the public TypeScript example files into that project, and typechecks them against the installed `@source-wire/contracts` package.
+
+This proves the examples work through package-root imports without repo-local TypeScript path mapping.
+
+It does not publish npm, run backend behavior, or execute compiled example JavaScript.
+
 ## Check Local Docs Links
 
 ```bash

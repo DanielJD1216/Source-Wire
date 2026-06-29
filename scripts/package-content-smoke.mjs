@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawn } from "node:child_process";
@@ -33,14 +33,25 @@ try {
   await runChecked("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund"], consumerRoot);
 
   const installedPackageRoot = join(consumerRoot, "node_modules", "@source-wire", "contracts");
+  await assertInstalledPath(installedPackageRoot, "docs/runtime-boundary-readiness.md");
+
   const docsLinkCheckerPath = join(root, "scripts", "check-doc-links.mjs");
   const docsLinksResult = await runChecked(process.execPath, [docsLinkCheckerPath], installedPackageRoot);
 
   console.log(`ok package content smoke ${pack.name}@${pack.version}`);
+  console.log("ok installed runtime readiness summary");
   console.log(docsLinksResult.stdout.trim());
   console.log("ok installed package docs links");
 } finally {
   await rm(tempRoot, { recursive: true, force: true });
+}
+
+async function assertInstalledPath(installedPackageRoot, relativePath) {
+  try {
+    await stat(join(installedPackageRoot, relativePath));
+  } catch {
+    throw new Error(`missing installed package path: ${relativePath}`);
+  }
 }
 
 function runChecked(command, args, cwd) {

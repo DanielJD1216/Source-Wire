@@ -96,9 +96,11 @@ Run only the package content smoke check:
 npm run package:content-smoke
 ```
 
-The package content smoke check builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, and runs the Markdown link checker from the installed package root.
+The package content smoke check builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, checks that the installed package includes `docs/runtime-boundary-readiness.md`, and runs the Markdown link checker from the installed package root.
 
 It checks installed `README.md`, `docs`, and `examples` local links from `node_modules/@source-wire/contracts`.
+
+Expected markers include `ok installed runtime readiness summary` and `ok installed package docs links`.
 
 This is different from `npm run docs:links`, which checks links in the repository checkout.
 

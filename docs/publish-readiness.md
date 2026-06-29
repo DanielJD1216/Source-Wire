@@ -267,16 +267,25 @@ The package should include:
 - `package.json`
 - built `dist` files
 - docs index
+- adopter walkthrough
+- architecture map
 - quickstart
 - API reference
 - public contract docs
+- public extraction checklist
+- runtime boundary docs
 - runtime boundary readiness summary
+- runtime implementation gate
+- runtime decision docs
+- runtime and license decision prototypes
 - schema docs
 - validation CLI docs
 - CI docs
 - publish-readiness docs
 - release and license planning docs
 - synthetic examples
+- runtime-boundary example files
+- owner-hosted API plus MCP boundary fixtures
 - TypeScript examples
 - Markdown vault fixtures
 - JSON schemas

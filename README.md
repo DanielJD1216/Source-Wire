@@ -109,7 +109,7 @@ The owner-hosted API plus MCP boundary fixture contains synthetic proof cases on
 
 ## Runtime Boundary Example
 
-The [synthetic runtime boundary example](examples/runtime-boundary/) is a local-only smoke proof for the future owner-hosted API plus MCP boundary.
+The [synthetic runtime boundary example](examples/runtime-boundary/) is a local and installed-package smoke proof for the future owner-hosted API plus MCP boundary.
 
 Run it with:
 
@@ -121,6 +121,12 @@ Run the installed package proof with:
 
 ```bash
 npm run runtime-boundary:installed-smoke
+```
+
+Run the diagnostic regression proof with:
+
+```bash
+npm run runtime-boundary:diagnostics-smoke
 ```
 
 It does not start a server, connect to a database, add package exports, or imply Source-Wire hosts memory.

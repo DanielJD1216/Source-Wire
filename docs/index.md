@@ -67,7 +67,7 @@ Current state:
 
 Public examples and fixtures must stay synthetic. Do not add real user data, private implementation history, screenshots, local paths, tokens, domains, emails, account IDs, client names, or production exports.
 
-The synthetic runtime boundary example is local-only. It does not start a server or add runtime package behavior.
+The synthetic runtime boundary example has local and installed-package smoke proof. It does not start a server, connect to a database, add runtime package behavior, or imply Source-Wire hosts memory.
 
 ## Intentional Gaps
 

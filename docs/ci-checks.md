@@ -12,6 +12,15 @@ Workflow file:
 .github/workflows/package-checks.yml
 ```
 
+The workflow uses:
+
+- `actions/checkout@v5`
+- `actions/setup-node@v5`
+
+Those actions use Node 24 for their own action internals.
+
+Source-Wire package checks still run on Node 22 through `actions/setup-node`.
+
 The workflow runs:
 
 ```bash

@@ -92,6 +92,7 @@ More detail:
 
 - [Fixtures README](../examples/fixtures/README.md)
 - [Validation CLI](validation-cli.md)
+- [API Reference](api-reference.md)
 
 ## Current Boundaries
 

@@ -23,6 +23,7 @@ It is not a runtime backend and it is not published to npm yet.
 ## Package Use
 
 - [Quickstart](quickstart.md)
+- [API Reference](api-reference.md)
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 - [CI Checks](ci-checks.md)

@@ -31,6 +31,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 
 - [Docs Index](docs/index.md)
 - [Quickstart](docs/quickstart.md)
+- [API Reference](docs/api-reference.md)
 
 ## Contracts
 
@@ -54,6 +55,8 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 This repo is currently a contract package skeleton.
 
 It can define public shapes and validate public fixtures. It does not run a memory backend, database, MCP server, Mission Control UI, memory-engine integration, or live connector.
+
+- [API Reference](docs/api-reference.md)
 
 ## Schema Exports
 

@@ -49,6 +49,8 @@ Schema exports support:
 - documentation examples,
 - package-level compatibility tests.
 
+Related TypeScript package exports are documented in the [API Reference](api-reference.md).
+
 ## What This Does Not Include
 
 Schema exports do not include:

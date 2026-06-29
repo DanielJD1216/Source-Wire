@@ -12,6 +12,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - MCP tool behavior contract.
 - Synthetic fixtures for notes, chat exports, project context, and `/2nd-brain` examples.
 - A public extraction checklist for future safety reviews.
+- A lightweight TypeScript package boundary.
 
 ## What Is Intentionally Not Included Yet
 
@@ -32,6 +33,13 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - [Source Connection Contract](docs/contracts/source-connection-contract.md)
 - [`second-brain.v1` Contract](docs/contracts/second-brain-v1-contract.md)
 - [MCP Tool Behavior Contract](docs/contracts/mcp-tool-behavior-contract.md)
+- [Runtime Boundary](docs/runtime-boundary.md)
+
+## Package Boundary
+
+This repo is currently a contract package skeleton.
+
+It can define public shapes and validate public fixtures. It does not run a memory backend, database, MCP server, Mission Control UI, memory-engine integration, or live connector.
 
 ## Fixtures
 

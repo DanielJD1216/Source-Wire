@@ -1,0 +1,24 @@
+{
+  "name": "@source-wire/contracts",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Public Source-Wire contract package skeleton for agent-first memory systems.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "files": [
+    "dist",
+    "docs",
+    "examples",
+    "schemas",
+    "README.md"
+  ],
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run typecheck",
+    "validate:fixtures": "npm run typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

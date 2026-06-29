@@ -20,6 +20,7 @@ const runtimeState = {
 };
 
 let activeCheck = null;
+const forcedFailureCheck = process.env.SOURCE_WIRE_RUNTIME_BOUNDARY_SMOKE_FORCE_FAILURE;
 
 const beforeMaintenanceTrustedCount = runtimeState.trustedMemoryCount;
 
@@ -245,6 +246,9 @@ function runCheck(name, nextAction, fn) {
   activeCheck = { name, nextAction };
   try {
     fn();
+    if (forcedFailureCheck === name) {
+      assertEqual("__forced_diagnostic_failure__", "__expected_diagnostic_failure__", "forced diagnostic regression failure");
+    }
     console.log(`ok runtime boundary check ${name}`);
   } finally {
     activeCheck = null;

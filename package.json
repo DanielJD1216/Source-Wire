@@ -57,6 +57,7 @@
     "examples:installed-smoke": "node scripts/examples-installed-smoke.mjs",
     "runtime-boundary:smoke": "node examples/runtime-boundary/synthetic-boundary-smoke.mjs",
     "runtime-boundary:installed-smoke": "node scripts/runtime-boundary-installed-smoke.mjs",
+    "runtime-boundary:diagnostics-smoke": "node scripts/runtime-boundary-diagnostics-smoke.mjs",
     "readiness:report": "node scripts/readiness-report.mjs",
     "docs:links": "node scripts/check-doc-links.mjs",
     "safety:scan": "node scripts/public-safety-scan.mjs",
@@ -64,7 +65,7 @@
     "release:gate": "node scripts/release-gate.mjs",
     "package:dry-run": "npm run build && node scripts/package-dry-run.mjs",
     "package:content-smoke": "node scripts/package-content-smoke.mjs",
-    "publish:readiness": "npm run ci:check && npm run release:gate && npm run package:dry-run && npm run consumer:smoke && npm run package:content-smoke && npm run examples:installed-smoke && npm run runtime-boundary:installed-smoke && npm run readiness:report && npm run docs:links && npm run safety:scan"
+    "publish:readiness": "npm run ci:check && npm run release:gate && npm run package:dry-run && npm run consumer:smoke && npm run package:content-smoke && npm run examples:installed-smoke && npm run runtime-boundary:installed-smoke && npm run runtime-boundary:diagnostics-smoke && npm run readiness:report && npm run docs:links && npm run safety:scan"
   },
   "devDependencies": {
     "@types/node": "^26.0.1",

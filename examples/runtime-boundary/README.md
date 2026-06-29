@@ -40,6 +40,12 @@ Installed package smoke:
 npm run runtime-boundary:installed-smoke
 ```
 
+Diagnostic regression smoke:
+
+```bash
+npm run runtime-boundary:diagnostics-smoke
+```
+
 ## What It Proves
 
 The smoke proof checks:
@@ -78,6 +84,10 @@ Common failure areas:
 | `agent_approval_denial` | Agent self-promotion denial. |
 
 These diagnostics do not add runtime behavior. They only make the synthetic smoke easier to debug.
+
+The diagnostic regression smoke intentionally forces one synthetic check to fail through `SOURCE_WIRE_RUNTIME_BOUNDARY_SMOKE_FORCE_FAILURE`.
+
+It passes only when the failure output includes the check name, assertion, expected value, received value, and next action.
 
 ## What It Does Not Do
 

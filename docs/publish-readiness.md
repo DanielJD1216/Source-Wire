@@ -21,6 +21,7 @@ This command runs:
 - `npm run package:content-smoke`
 - `npm run examples:installed-smoke`
 - `npm run runtime-boundary:installed-smoke`
+- `npm run runtime-boundary:diagnostics-smoke`
 - `npm run readiness:report`
 - `npm run docs:links`
 - `npm run safety:scan`
@@ -160,6 +161,22 @@ The installed runtime boundary smoke builds and packs Source-Wire locally, creat
 It proves the packaged runtime-boundary example can execute after package installation.
 
 The installed smoke surfaces the same diagnostic markers from the packaged example.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Runtime Boundary Diagnostics Smoke
+
+Run only the diagnostic regression smoke:
+
+```bash
+npm run runtime-boundary:diagnostics-smoke
+```
+
+The diagnostics smoke intentionally forces one synthetic runtime-boundary check to fail through `SOURCE_WIRE_RUNTIME_BOUNDARY_SMOKE_FORCE_FAILURE`.
+
+It passes only when the failure output includes the failed check name, assertion, expected value, received value, and next action.
 
 It does not publish npm.
 

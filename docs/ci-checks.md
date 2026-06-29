@@ -54,6 +54,7 @@ The readiness gate runs:
 - `npm run package:content-smoke`
 - `npm run examples:installed-smoke`
 - `npm run runtime-boundary:installed-smoke`
+- `npm run runtime-boundary:diagnostics-smoke`
 - `npm run readiness:report`
 - `npm run docs:links`
 - `npm run safety:scan`
@@ -126,6 +127,10 @@ The installed runtime boundary smoke check installs a locally packed tarball int
 It does not publish npm, start a server, call a database, call an MCP server runtime, add package exports, or use real data.
 
 The installed smoke surfaces the same diagnostic markers from the packaged example.
+
+The diagnostic regression smoke intentionally forces one synthetic check failure and verifies the failure output includes the check name, assertion, expected value, received value, and next action.
+
+It does not publish npm, start a server, call a database, call an MCP server runtime, add package exports, or use real data.
 
 The readiness report prints a fast read-only summary of package posture, package surfaces, readiness commands, installed package smokes, and intentionally blocked scope.
 

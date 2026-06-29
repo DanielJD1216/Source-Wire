@@ -159,7 +159,7 @@ Source-Wire has three installed-package checks:
 | Command | What it proves |
 | --- | --- |
 | `npm run consumer:smoke` | A temporary external project can install the packed tarball, import the package root, run the installed `source-wire` CLI, and validate schema-backed installed fixtures. |
-| `npm run package:content-smoke` | Installed `README.md`, `docs`, and `examples` local Markdown links work from `node_modules/@source-wire/contracts`. |
+| `npm run package:content-smoke` | Installed `README.md`, `docs`, and `examples` local Markdown links work from `node_modules/@source-wire/contracts`, and the installed runtime readiness summary exists with its protected content assertions. |
 | `npm run examples:installed-smoke` | Public TypeScript examples typecheck against installed package declarations without repo-local path mapping. |
 
 These checks are package-confidence checks. They are not runtime integration tests.

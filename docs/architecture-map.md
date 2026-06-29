@@ -164,7 +164,7 @@ Important commands:
 | `npm run readiness:report` | Prints a fast read-only summary of package posture. |
 | `npm run cli:smoke` | Validates public schema-backed fixtures and one invalid payload. |
 | `npm run consumer:smoke` | Installs a packed tarball and checks package-root imports plus installed CLI validation. |
-| `npm run package:content-smoke` | Checks installed README, docs, and examples local links. |
+| `npm run package:content-smoke` | Checks installed README/docs/examples local links, installed runtime readiness summary presence, and installed readiness summary content assertions. |
 | `npm run examples:installed-smoke` | Typechecks copied TypeScript examples against installed package declarations. |
 | `npm run publish:readiness` | Runs the full local readiness gate without publishing. |
 

@@ -106,9 +106,11 @@ Markdown vault fixtures are not part of the installed fixture validation matrix 
 
 It does not publish npm, create a release, deploy services, or call backend runtime.
 
-The package content smoke check installs a locally packed tarball into a temporary project, verifies the installed runtime-boundary readiness summary exists, and runs the Markdown link checker from the installed package root.
+The package content smoke check installs a locally packed tarball into a temporary project, verifies the installed runtime-boundary readiness summary exists, asserts key installed readiness summary boundary claims, and runs the Markdown link checker from the installed package root.
 
 It verifies installed `README.md`, `docs`, and `examples` local links from `node_modules/@source-wire/contracts`.
+
+It also protects the installed readiness summary claims that no runtime implementation is included, Source-Wire-hosted memory remains blocked, Source-Wire does not host memory, and trusted memory requires owner or application approval.
 
 It does not typecheck installed TypeScript examples because those examples currently use repo-local path mapping.
 

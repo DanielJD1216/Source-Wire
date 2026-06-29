@@ -38,6 +38,8 @@ npm run publish:readiness
 
 ## Check Coverage
 
+For the runtime-boundary proof lane summarized across these checks, see [Runtime Boundary Readiness](runtime-boundary-readiness.md).
+
 The readiness gate runs:
 
 - `npm run typecheck`

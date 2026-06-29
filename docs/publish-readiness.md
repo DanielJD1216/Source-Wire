@@ -130,6 +130,8 @@ It does not run a backend, database, MCP server, connector sync engine, memory e
 
 ## Runtime Boundary Smoke
 
+For the full runtime-boundary proof lane, see [Runtime Boundary Readiness](runtime-boundary-readiness.md).
+
 Run only the synthetic runtime boundary smoke:
 
 ```bash

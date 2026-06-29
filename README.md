@@ -36,6 +36,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - [API Reference](docs/api-reference.md)
 - [TypeScript Examples](examples/typescript/README.md)
 - [Runtime Implementation Gate](docs/runtime-implementation-gate.md)
+- [Runtime Boundary Readiness](docs/runtime-boundary-readiness.md)
 - [Synthetic Runtime Boundary Example](examples/runtime-boundary/)
 
 ## Contracts

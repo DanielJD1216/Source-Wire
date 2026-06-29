@@ -118,6 +118,7 @@ It must not silently decide that evidence is trusted memory.
 
 - [Public Runtime Decision](public-runtime-decision.md)
 - [First Runtime PRD Package](first-runtime-prd.md)
+- [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Architecture Map](architecture-map.md)

@@ -40,10 +40,28 @@ Installed package smoke:
 npm run runtime-boundary:installed-smoke
 ```
 
+Expected installed smoke markers:
+
+```text
+ok runtime boundary installed smoke @source-wire/contracts@0.0.0
+ok installed runtime boundary example
+```
+
 Diagnostic regression smoke:
 
 ```bash
 npm run runtime-boundary:diagnostics-smoke
+```
+
+Expected diagnostic markers:
+
+```text
+ok runtime boundary diagnostics smoke authorized_read
+ok diagnostic failure includes check name
+ok diagnostic failure includes assertion
+ok diagnostic failure includes expected value
+ok diagnostic failure includes received value
+ok diagnostic failure includes next action
 ```
 
 ## What It Proves

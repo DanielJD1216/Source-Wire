@@ -166,6 +166,8 @@ Important commands:
 | `npm run consumer:smoke` | Installs a packed tarball and checks package-root imports plus installed CLI validation. |
 | `npm run package:content-smoke` | Checks installed README/docs/examples local links, installed runtime readiness summary presence, and installed readiness summary content assertions. |
 | `npm run examples:installed-smoke` | Typechecks copied TypeScript examples against installed package declarations. |
+| `npm run runtime-boundary:installed-smoke` | Runs the packaged synthetic runtime-boundary example from an installed tarball. |
+| `npm run runtime-boundary:diagnostics-smoke` | Verifies runtime-boundary failure output keeps the failed check name, assertion, expected value, received value, and next action visible. |
 | `npm run publish:readiness` | Runs the full local readiness gate without publishing. |
 
 Related docs:
@@ -187,7 +189,7 @@ Future runtime work may add:
 - candidate review,
 - Mission Control UI.
 
-The local [synthetic runtime boundary example](../examples/runtime-boundary/README.md) shows the proposed owner-hosted API plus MCP boundary with synthetic data only.
+The [synthetic runtime boundary example](../examples/runtime-boundary/README.md) shows the proposed owner-hosted API plus MCP boundary with synthetic data only, local smoke proof, and installed-package smoke proof.
 
 It does not start a server, connect to a database, add package exports, or approve runtime implementation.
 

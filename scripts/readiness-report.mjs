@@ -112,7 +112,7 @@ printList(requiredScripts.map((scriptName) => `npm run ${scriptName}`));
 printSection("Installed Package Smokes");
 printList([
   "consumer:smoke validates package-root imports and installed CLI fixture validation",
-  "package:content-smoke validates installed README/docs/examples links",
+  "package:content-smoke validates installed README/docs/examples links and installed runtime readiness summary",
   "examples:installed-smoke validates copied TypeScript examples against installed package declarations",
   "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install",
   "runtime-boundary:diagnostics-smoke validates the synthetic smoke diagnostic failure format"

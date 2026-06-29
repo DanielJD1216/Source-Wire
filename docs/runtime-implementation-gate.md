@@ -30,6 +30,8 @@ This gate does not approve that runtime lane.
 
 A later runtime implementation PRD must approve it before runtime files are added.
 
+The proposed first runtime PRD package is recorded in [First Runtime PRD Package](first-runtime-prd.md).
+
 ## What A First Runtime PRD May Propose
 
 A first runtime implementation PRD may propose public-safe versions of:
@@ -115,6 +117,7 @@ It must not silently decide that evidence is trusted memory.
 ## Related Docs
 
 - [Public Runtime Decision](public-runtime-decision.md)
+- [First Runtime PRD Package](first-runtime-prd.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Architecture Map](architecture-map.md)

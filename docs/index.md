@@ -18,6 +18,7 @@ It is not a runtime backend and it is not published to npm yet.
 
 ## Contracts
 
+- [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Source Graph Adapter Contract](contracts/source-graph-adapter-contract.md)
 - [Source Connection Contract](contracts/source-connection-contract.md)
 - [`second-brain.v1` Contract](contracts/second-brain-v1-contract.md)

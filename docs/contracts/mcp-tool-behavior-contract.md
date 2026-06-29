@@ -6,6 +6,8 @@ This contract describes the public behavior boundary for MCP tools in an agent m
 
 The exact implementation can vary, but the tool behavior should preserve source evidence, citations, namespace boundaries, and owner review.
 
+For the future runtime boundary around an owner-hosted API plus MCP server, see the [Owner-Hosted API Plus MCP Boundary Contract](owner-hosted-api-mcp-boundary-contract.md).
+
 ## Recommended Tool Groups
 
 ### Memory Search

@@ -12,6 +12,8 @@ The first future runtime lane should be a narrow **owner-hosted API plus MCP bou
 
 That future PRD must prove owner control, namespace boundaries, synthetic examples, and no automatic trusted-memory promotion before any runtime code is added to Source-Wire.
 
+The boundary is defined in the [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md).
+
 ## Why This Decision
 
 Source-Wire now has a useful public package surface:
@@ -149,6 +151,7 @@ This decision does not add:
 ## Related Docs
 
 - [Architecture Map](architecture-map.md)
+- [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Runtime-Adjacent Recommendation](decision-prototypes/runtime-adjacent-recommendation.md)
 - [Release Decision](release-decision.md)

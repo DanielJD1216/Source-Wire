@@ -40,6 +40,8 @@ For a practical first pass through the current package, read the [Public Adopter
 
 For the current runtime posture, read the [Public Runtime Decision](public-runtime-decision.md).
 
+For the future owner-hosted API plus MCP boundary, read the [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md).
+
 ## Why This Boundary Exists
 
 Source-Wire is meant to become reusable infrastructure for agent memory systems.

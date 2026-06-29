@@ -7,6 +7,7 @@ It is not a runtime backend and it is not published to npm yet.
 ## Start Here
 
 - [Public Adopter Walkthrough](adopter-walkthrough.md)
+- [Architecture Map](architecture-map.md)
 - [Quickstart](quickstart.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Publish Readiness](publish-readiness.md)

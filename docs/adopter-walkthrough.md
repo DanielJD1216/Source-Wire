@@ -6,6 +6,8 @@ Source-Wire is a public contract package skeleton. It defines contract shapes, s
 
 It does not run a memory backend, API server, MCP server, database, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
 
+For the whole system shape, read the [Architecture Map](architecture-map.md).
+
 ## 1. Clone And Install
 
 ```bash
@@ -183,6 +185,7 @@ Current release posture:
 ## Related Docs
 
 - [Quickstart](quickstart.md)
+- [Architecture Map](architecture-map.md)
 - [Publish Readiness](publish-readiness.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Schema Exports](schema-exports.md)

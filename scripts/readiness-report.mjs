@@ -15,6 +15,7 @@ const requiredScripts = [
   "consumer:smoke",
   "package:content-smoke",
   "examples:installed-smoke",
+  "runtime-boundary:smoke",
   "docs:links",
   "safety:scan",
   "release:gate",

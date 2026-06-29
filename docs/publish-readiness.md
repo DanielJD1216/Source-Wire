@@ -24,6 +24,10 @@ This command runs:
 - `npm run docs:links`
 - `npm run safety:scan`
 
+The `ci:check` sub-gate includes:
+
+- `npm run runtime-boundary:smoke`
+
 ## Readiness Report
 
 Run only the package readiness report:
@@ -117,6 +121,22 @@ This is different from `npm run examples:typecheck`, which checks examples in th
 The installed smoke proves package-root imports from `@source-wire/contracts` work for consumer TypeScript examples.
 
 It does not execute compiled example JavaScript.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Runtime Boundary Smoke
+
+Run only the synthetic runtime boundary smoke:
+
+```bash
+npm run runtime-boundary:smoke
+```
+
+The runtime boundary smoke runs `examples/runtime-boundary/synthetic-boundary-smoke.mjs`.
+
+It checks the synthetic owner-hosted API plus MCP boundary cases without starting a server.
 
 It does not publish npm.
 

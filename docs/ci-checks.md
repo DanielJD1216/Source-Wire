@@ -46,6 +46,7 @@ The readiness gate runs:
 - `npm run validate:fixtures`
 - `npm run verify:schema-exports`
 - `npm run cli:smoke`
+- `npm run runtime-boundary:smoke`
 - `npm run safety:scan`
 - `npm run release:gate`
 - `npm run package:dry-run`
@@ -112,6 +113,10 @@ The installed TypeScript examples smoke check installs a locally packed tarball 
 It verifies consumer package-root imports without repo-local TypeScript path mapping.
 
 It does not execute compiled example JavaScript.
+
+The runtime boundary smoke check runs the local synthetic owner-hosted API plus MCP boundary example.
+
+It does not start a server, call a database, call an MCP server runtime, add package exports, or use real data.
 
 The readiness report prints a fast read-only summary of package posture, package surfaces, readiness commands, installed package smokes, and intentionally blocked scope.
 

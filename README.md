@@ -110,6 +110,12 @@ The owner-hosted API plus MCP boundary fixture contains synthetic proof cases on
 
 The [synthetic runtime boundary example](examples/runtime-boundary/) is a local-only smoke proof for the future owner-hosted API plus MCP boundary.
 
+Run it with:
+
+```bash
+npm run runtime-boundary:smoke
+```
+
 It does not start a server, connect to a database, add package exports, or imply Source-Wire hosts memory.
 
 ## Safety Rule

@@ -13,13 +13,19 @@ It is not schema-validated by the current CLI.
 ## Run The Smoke Proof
 
 ```bash
-node examples/runtime-boundary/synthetic-boundary-smoke.mjs
+npm run runtime-boundary:smoke
 ```
 
 Expected output:
 
 ```text
 ok synthetic runtime boundary smoke
+```
+
+Underlying local command:
+
+```bash
+node examples/runtime-boundary/synthetic-boundary-smoke.mjs
 ```
 
 ## What It Proves

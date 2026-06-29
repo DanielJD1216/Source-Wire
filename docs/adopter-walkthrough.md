@@ -167,7 +167,7 @@ These checks are package-confidence checks. They are not runtime integration tes
 Optional local-only runtime boundary smoke:
 
 ```bash
-node examples/runtime-boundary/synthetic-boundary-smoke.mjs
+npm run runtime-boundary:smoke
 ```
 
 This smoke uses synthetic data only. It does not start a server, connect to a database, add package exports, or imply Source-Wire hosts memory.

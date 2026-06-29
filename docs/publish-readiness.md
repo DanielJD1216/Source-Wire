@@ -31,6 +31,8 @@ npm run package:dry-run
 
 The dry-run check builds the package, runs `npm pack --dry-run --json`, and verifies expected package contents.
 
+It checks required package paths for core build outputs, public docs, JSON schemas, synthetic fixtures, and TypeScript examples.
+
 It does not publish.
 
 ## Consumer Smoke
@@ -70,11 +72,18 @@ The package should include:
 - `README.md`
 - `package.json`
 - built `dist` files
+- docs index
+- quickstart
+- API reference
 - public contract docs
 - schema docs
 - validation CLI docs
 - CI docs
+- publish-readiness docs
+- release and license planning docs
 - synthetic examples
+- TypeScript examples
+- Markdown vault fixtures
 - JSON schemas
 
 The package should not include:

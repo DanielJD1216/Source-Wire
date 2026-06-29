@@ -40,6 +40,9 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - [Runtime-Adjacent Options Decision Matrix](docs/decision-prototypes/runtime-adjacent-options.md)
 - [Runtime-Adjacent Evidence And Scoring](docs/decision-prototypes/runtime-adjacent-evidence.md)
 - [Runtime-Adjacent Recommendation](docs/decision-prototypes/runtime-adjacent-recommendation.md)
+- [License Options Decision Matrix](docs/decision-prototypes/license-options.md)
+- [License Evidence And Scoring](docs/decision-prototypes/license-evidence.md)
+- [License Recommendation](docs/decision-prototypes/license-recommendation.md)
 
 ## Package Boundary
 

@@ -156,13 +156,15 @@ What this proves:
 
 ## 6. Understand Installed Package Smokes
 
-Source-Wire has three installed-package checks:
+Source-Wire has five installed-package or runtime-boundary smoke checks:
 
 | Command | What it proves |
 | --- | --- |
 | `npm run consumer:smoke` | A temporary external project can install the packed tarball, import the package root, run the installed `source-wire` CLI, and validate schema-backed installed fixtures. |
 | `npm run package:content-smoke` | Installed `README.md`, `docs`, and `examples` local Markdown links work from `node_modules/@source-wire/contracts`, and the installed runtime readiness summary exists with its protected content assertions. |
 | `npm run examples:installed-smoke` | Public TypeScript examples typecheck against installed package declarations without repo-local path mapping. |
+| `npm run runtime-boundary:installed-smoke` | The packaged synthetic runtime-boundary example runs from an installed tarball. |
+| `npm run runtime-boundary:diagnostics-smoke` | The synthetic runtime-boundary failure message keeps the failed check name, assertion, expected value, received value, and next action visible. |
 
 These checks are package-confidence checks. They are not runtime integration tests.
 
@@ -173,6 +175,45 @@ npm run runtime-boundary:smoke
 ```
 
 This smoke uses synthetic data only. It does not start a server, connect to a database, add package exports, or imply Source-Wire hosts memory.
+
+Installed runtime-boundary smoke:
+
+```bash
+npm run runtime-boundary:installed-smoke
+```
+
+Expected markers:
+
+```text
+ok runtime boundary installed smoke @source-wire/contracts@0.0.0
+ok runtime boundary check authorized_read
+ok runtime boundary check unauthorized_read_denial
+ok runtime boundary check wrong_namespace_denial
+ok runtime boundary check source_maintenance_no_auto_promotion
+ok runtime boundary check owner_controlled_approval
+ok runtime boundary check agent_approval_denial
+ok synthetic runtime boundary smoke
+ok installed runtime boundary example
+```
+
+Diagnostic runtime-boundary smoke:
+
+```bash
+npm run runtime-boundary:diagnostics-smoke
+```
+
+Expected markers:
+
+```text
+ok runtime boundary diagnostics smoke authorized_read
+ok diagnostic failure includes check name
+ok diagnostic failure includes assertion
+ok diagnostic failure includes expected value
+ok diagnostic failure includes received value
+ok diagnostic failure includes next action
+```
+
+The runtime-boundary smokes use synthetic data only. They do not start a backend, API server, MCP server, database, connector, memory engine, deployment, or Source-Wire-hosted memory.
 
 ## 7. Know What Is Intentionally Missing
 

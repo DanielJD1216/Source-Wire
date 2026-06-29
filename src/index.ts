@@ -29,3 +29,12 @@ export type * from "./contracts/second-brain.js";
 export type * from "./contracts/source-connection.js";
 export type * from "./contracts/source-graph.js";
 export * from "./schemas.js";
+export type {
+  SourceWireValidationResult,
+  SourceWireValidationSchemaName
+} from "./validation.js";
+export {
+  SOURCE_WIRE_VALIDATION_SCHEMA_NAMES,
+  isSourceWireValidationSchemaName,
+  validateSourceWireFile
+} from "./validation.js";

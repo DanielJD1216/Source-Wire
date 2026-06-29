@@ -5,6 +5,9 @@
   "description": "Public Source-Wire contract package skeleton for agent-first memory systems.",
   "type": "module",
   "license": "UNLICENSED",
+  "bin": {
+    "source-wire": "./dist/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

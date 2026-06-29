@@ -44,6 +44,14 @@ Expected future file changes:
 
 Expected future verification commands:
 
+When a future owner-approved implementation PRD opens this work, use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
+Install dependencies first:
+
+```bash
+npm install
+```
+
 ```bash
 test -f LICENSE
 npm run release:gate

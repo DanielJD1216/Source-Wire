@@ -35,6 +35,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - [Quickstart](docs/quickstart.md)
 - [API Reference](docs/api-reference.md)
 - [TypeScript Examples](examples/typescript/README.md)
+- [Runtime Implementation Gate](docs/runtime-implementation-gate.md)
 
 ## Contracts
 
@@ -43,6 +44,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - [`second-brain.v1` Contract](docs/contracts/second-brain-v1-contract.md)
 - [MCP Tool Behavior Contract](docs/contracts/mcp-tool-behavior-contract.md)
 - [Runtime Boundary](docs/runtime-boundary.md)
+- [Runtime Implementation Gate](docs/runtime-implementation-gate.md)
 
 ## Decision Prototypes
 

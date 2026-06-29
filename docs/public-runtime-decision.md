@@ -14,6 +14,8 @@ That future PRD must prove owner control, namespace boundaries, synthetic exampl
 
 The boundary is defined in the [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md).
 
+Before adding runtime files, future work must pass the [Runtime Implementation Gate](runtime-implementation-gate.md).
+
 ## Why This Decision
 
 Source-Wire now has a useful public package surface:
@@ -151,6 +153,7 @@ This decision does not add:
 ## Related Docs
 
 - [Architecture Map](architecture-map.md)
+- [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Runtime-Adjacent Recommendation](decision-prototypes/runtime-adjacent-recommendation.md)

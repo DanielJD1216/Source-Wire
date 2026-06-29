@@ -40,6 +40,8 @@ For a practical first pass through the current package, read the [Public Adopter
 
 For the current runtime posture, read the [Public Runtime Decision](public-runtime-decision.md).
 
+Before adding runtime files, read the [Runtime Implementation Gate](runtime-implementation-gate.md).
+
 For the future owner-hosted API plus MCP boundary, read the [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md).
 
 ## Why This Boundary Exists
@@ -81,6 +83,8 @@ The next safe expansion should be one of these explicit PRD paths:
 3. A license or publish approval gate, if the owner decides Source-Wire is ready to move beyond `UNLICENSED` and `0.0.0`.
 
 The current runtime decision is recorded in [Public Runtime Decision](public-runtime-decision.md).
+
+The current runtime implementation gate is recorded in [Runtime Implementation Gate](runtime-implementation-gate.md).
 
 Any runtime PRD must keep this trust boundary:
 

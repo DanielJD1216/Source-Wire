@@ -7,8 +7,17 @@ It is not a full memory backend yet.
 ## Included In The Current Public Package
 
 - Public contract documentation.
+- TypeScript contract types.
+- JSON schemas.
+- JSON schema package exports.
 - Synthetic fixtures.
+- Validation CLI.
+- TypeScript examples.
+- Package readiness checks.
+- Installed-package smoke checks.
 - Public extraction checklist.
+- Public adopter walkthrough.
+- Public architecture map.
 - Package metadata.
 - A TypeScript package boundary.
 
@@ -23,6 +32,11 @@ It is not a full memory backend yet.
 - Live connectors.
 - Private implementation modules.
 - Real user data.
+- Trusted Memory Record promotion.
+
+For the whole package shape, read the [Architecture Map](architecture-map.md).
+
+For a practical first pass through the current package, read the [Public Adopter Walkthrough](adopter-walkthrough.md).
 
 ## Why This Boundary Exists
 
@@ -41,7 +55,7 @@ Those decisions should be opened by later PRDs, not hidden inside the first pack
 
 ## Current Package Promise
 
-The package can define public shapes and validate public fixtures.
+The package can define public shapes, expose contract types and schemas, validate public fixtures, typecheck public examples, and prove package readiness from a local tarball.
 
 The package should not:
 
@@ -54,4 +68,17 @@ The package should not:
 
 ## Next Safe Expansion
 
-The next safe expansion is public TypeScript contract types and JSON schemas for the existing synthetic fixtures.
+The next safe expansion is not more runtime behavior by default.
+
+The next safe expansion should be one of these explicit PRD paths:
+
+1. Documentation or examples that make the existing contract package easier to adopt.
+2. A runtime decision package that chooses the first public runtime boundary before adding server, database, MCP, or connector code.
+3. A license or publish approval gate, if the owner decides Source-Wire is ready to move beyond `UNLICENSED` and `0.0.0`.
+
+Any runtime PRD must keep this trust boundary:
+
+```text
+Source evidence is not trusted memory.
+Trusted memory requires an owner or application approval path.
+```

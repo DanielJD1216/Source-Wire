@@ -3,8 +3,29 @@
   "version": "0.0.0",
   "private": false,
   "description": "Public Source-Wire contract package skeleton for agent-first memory systems.",
+  "keywords": [
+    "agent-memory",
+    "ai-agents",
+    "contracts",
+    "json-schema",
+    "mcp",
+    "second-brain",
+    "source-graph",
+    "validation"
+  ],
+  "homepage": "https://github.com/DanielJD1216/Source-Wire#readme",
+  "bugs": {
+    "url": "https://github.com/DanielJD1216/Source-Wire/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielJD1216/Source-Wire.git"
+  },
   "type": "module",
   "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "restricted"
+  },
   "bin": {
     "source-wire": "./dist/cli.js"
   },

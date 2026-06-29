@@ -91,6 +91,8 @@ ok diagnostic failure includes received value
 ok diagnostic failure includes next action
 ```
 
+For the full local readiness marker map, read [Publish Readiness](publish-readiness.md). For the GitHub Actions Package Checks marker map, read [CI Checks](ci-checks.md).
+
 ## What Is Still Blocked
 
 This readiness lane does not add or approve:

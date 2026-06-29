@@ -64,6 +64,8 @@ ok diagnostic failure includes received value
 ok diagnostic failure includes next action
 ```
 
+For the full local readiness marker map, read [Publish Readiness](../../docs/publish-readiness.md). For the GitHub Actions Package Checks marker map, read [CI Checks](../../docs/ci-checks.md).
+
 ## What It Proves
 
 The smoke proof checks:

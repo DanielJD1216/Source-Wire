@@ -176,6 +176,8 @@ Related docs:
 - [Publish Readiness](publish-readiness.md)
 - [CI Checks](ci-checks.md)
 
+Use [Publish Readiness](publish-readiness.md) for the local readiness marker map and [CI Checks](ci-checks.md) for the GitHub Actions Package Checks marker map.
+
 ## Future Runtime Boundary
 
 Future runtime work may add:

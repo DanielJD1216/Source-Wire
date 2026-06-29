@@ -79,6 +79,16 @@ This runs typecheck, build, tests, fixture validation, schema export verificatio
 
 It does not publish npm.
 
+## Print The Readiness Report
+
+```bash
+npm run readiness:report
+```
+
+This prints a fast read-only summary of package posture, exported surfaces, validation schemas, readiness commands, installed package smokes, and intentionally blocked runtime or release scope.
+
+It does not run the full readiness gate, publish npm, or run backend behavior.
+
 ## Run The Consumer Smoke Check
 
 ```bash

@@ -20,8 +20,29 @@ This command runs:
 - `npm run consumer:smoke`
 - `npm run package:content-smoke`
 - `npm run examples:installed-smoke`
+- `npm run readiness:report`
 - `npm run docs:links`
 - `npm run safety:scan`
+
+## Readiness Report
+
+Run only the package readiness report:
+
+```bash
+npm run readiness:report
+```
+
+The readiness report is a fast read-only summary of current package posture.
+
+It prints package metadata, publish boundary, runtime boundary, package exports, validation schemas, readiness commands, installed package smokes, and intentionally blocked scope.
+
+It fails if required posture fields are missing or inconsistent.
+
+It does not run the full readiness gate. Use `npm run publish:readiness` for verification before committing or releasing.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
 
 ## Package Dry Run
 

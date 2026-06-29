@@ -52,6 +52,7 @@ The readiness gate runs:
 - `npm run consumer:smoke`
 - `npm run package:content-smoke`
 - `npm run examples:installed-smoke`
+- `npm run readiness:report`
 - `npm run docs:links`
 - `npm run safety:scan`
 
@@ -111,6 +112,10 @@ The installed TypeScript examples smoke check installs a locally packed tarball 
 It verifies consumer package-root imports without repo-local TypeScript path mapping.
 
 It does not execute compiled example JavaScript.
+
+The readiness report prints a fast read-only summary of package posture, package surfaces, readiness commands, installed package smokes, and intentionally blocked scope.
+
+It does not replace the full readiness gate.
 
 The docs link check validates local Markdown links in README, docs, and examples.
 

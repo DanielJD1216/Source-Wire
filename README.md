@@ -87,7 +87,7 @@ Source-Wire runs package checks and public-safety scanning on push and pull requ
 
 ## Publish Readiness
 
-Source-Wire can run package dry-run checks, but it is not published to npm yet.
+Source-Wire can run a full local publish readiness gate with package dry-run, installed package smokes, runtime-boundary smokes, docs links, and public-safety checks, but it is not published to npm yet.
 
 - [Publish Readiness](docs/publish-readiness.md)
 - [Release Decision](docs/release-decision.md)

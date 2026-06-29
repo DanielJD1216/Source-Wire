@@ -75,7 +75,7 @@ ok examples/fixtures/chat-export/agent-session.jsonl
 npm run publish:readiness
 ```
 
-This runs typecheck, build, tests, fixture validation, schema export verification, CLI smoke, public-safety scanning, release gate, and package dry-run.
+This runs typecheck, build, tests, fixture validation, schema export verification, CLI smoke, release gate, package dry-run, installed package smokes, runtime-boundary smokes, readiness report, docs links, and public-safety scanning.
 
 It does not publish npm.
 

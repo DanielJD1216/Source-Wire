@@ -46,7 +46,7 @@ What this proves:
 - The package posture is readable in one place.
 - The current version and license boundary are explicit.
 - The package is still contracts-only.
-- The report can summarize package exports, schemas, commands, installed smokes, and blocked scope without running the full readiness gate.
+- The report can summarize package exports, schemas, commands, installed smokes, required readiness docs, and blocked scope without running the full readiness gate.
 
 ## 3. Validate The Synthetic Fixtures
 

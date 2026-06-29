@@ -68,7 +68,7 @@ npm run readiness:report
 
 The readiness report is a fast read-only summary of current package posture.
 
-It prints package metadata, publish boundary, runtime boundary, package exports, validation schemas, readiness commands, installed package smokes, and intentionally blocked scope.
+It prints package metadata, publish boundary, runtime boundary, package exports, validation schemas, readiness commands, installed package smokes, required readiness docs, and intentionally blocked scope.
 
 It fails if required posture fields are missing or inconsistent.
 

@@ -164,7 +164,7 @@ The diagnostic regression smoke intentionally forces one synthetic check failure
 
 It does not publish npm, start a server, call a database, call an MCP server runtime, add package exports, or use real data.
 
-The readiness report prints a fast read-only summary of package posture, package surfaces, readiness commands, installed package smokes, and intentionally blocked scope.
+The readiness report prints a fast read-only summary of package posture, package surfaces, readiness commands, installed package smokes, required readiness docs, and intentionally blocked scope.
 
 It does not replace the full readiness gate.
 

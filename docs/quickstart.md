@@ -89,7 +89,7 @@ It does not publish npm.
 npm run readiness:report
 ```
 
-This prints a fast read-only summary of package posture, exported surfaces, validation schemas, readiness commands, installed package smokes, and intentionally blocked runtime or release scope.
+This prints a fast read-only summary of package posture, exported surfaces, validation schemas, readiness commands, installed package smokes, required readiness docs, and intentionally blocked runtime or release scope.
 
 It does not run the full readiness gate, publish npm, or run backend behavior.
 

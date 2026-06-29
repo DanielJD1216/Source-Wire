@@ -115,6 +115,14 @@ The owner-hosted API plus MCP boundary fixture contains synthetic proof cases on
 
 The [synthetic runtime boundary example](examples/runtime-boundary/) is a local and installed-package smoke proof for the future owner-hosted API plus MCP boundary.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](docs/quickstart.md).
+
+Install dependencies first:
+
+```bash
+npm install
+```
+
 Run it with:
 
 ```bash

@@ -28,6 +28,12 @@ Underlying local command:
 node examples/runtime-boundary/synthetic-boundary-smoke.mjs
 ```
 
+Installed package smoke:
+
+```bash
+npm run runtime-boundary:installed-smoke
+```
+
 ## What It Proves
 
 The smoke proof checks:

@@ -16,6 +16,7 @@ const requiredScripts = [
   "package:content-smoke",
   "examples:installed-smoke",
   "runtime-boundary:smoke",
+  "runtime-boundary:installed-smoke",
   "docs:links",
   "safety:scan",
   "release:gate",
@@ -110,7 +111,8 @@ printSection("Installed Package Smokes");
 printList([
   "consumer:smoke validates package-root imports and installed CLI fixture validation",
   "package:content-smoke validates installed README/docs/examples links",
-  "examples:installed-smoke validates copied TypeScript examples against installed package declarations"
+  "examples:installed-smoke validates copied TypeScript examples against installed package declarations",
+  "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install"
 ]);
 
 printSection("Blocked Scope");

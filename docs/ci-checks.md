@@ -53,6 +53,7 @@ The readiness gate runs:
 - `npm run consumer:smoke`
 - `npm run package:content-smoke`
 - `npm run examples:installed-smoke`
+- `npm run runtime-boundary:installed-smoke`
 - `npm run readiness:report`
 - `npm run docs:links`
 - `npm run safety:scan`
@@ -117,6 +118,10 @@ It does not execute compiled example JavaScript.
 The runtime boundary smoke check runs the local synthetic owner-hosted API plus MCP boundary example.
 
 It does not start a server, call a database, call an MCP server runtime, add package exports, or use real data.
+
+The installed runtime boundary smoke check installs a locally packed tarball into a temporary project and runs the packaged synthetic runtime-boundary example from `node_modules/@source-wire/contracts`.
+
+It does not publish npm, start a server, call a database, call an MCP server runtime, add package exports, or use real data.
 
 The readiness report prints a fast read-only summary of package posture, package surfaces, readiness commands, installed package smokes, and intentionally blocked scope.
 

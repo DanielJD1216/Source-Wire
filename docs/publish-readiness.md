@@ -20,6 +20,7 @@ This command runs:
 - `npm run consumer:smoke`
 - `npm run package:content-smoke`
 - `npm run examples:installed-smoke`
+- `npm run runtime-boundary:installed-smoke`
 - `npm run readiness:report`
 - `npm run docs:links`
 - `npm run safety:scan`
@@ -137,6 +138,22 @@ npm run runtime-boundary:smoke
 The runtime boundary smoke runs `examples/runtime-boundary/synthetic-boundary-smoke.mjs`.
 
 It checks the synthetic owner-hosted API plus MCP boundary cases without starting a server.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Installed Runtime Boundary Smoke
+
+Run only the installed synthetic runtime boundary smoke:
+
+```bash
+npm run runtime-boundary:installed-smoke
+```
+
+The installed runtime boundary smoke builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, and runs `examples/runtime-boundary/synthetic-boundary-smoke.mjs` from `node_modules/@source-wire/contracts`.
+
+It proves the packaged runtime-boundary example can execute after package installation.
 
 It does not publish npm.
 

@@ -116,6 +116,12 @@ Run it with:
 npm run runtime-boundary:smoke
 ```
 
+Run the installed package proof with:
+
+```bash
+npm run runtime-boundary:installed-smoke
+```
+
 It does not start a server, connect to a database, add package exports, or imply Source-Wire hosts memory.
 
 ## Safety Rule

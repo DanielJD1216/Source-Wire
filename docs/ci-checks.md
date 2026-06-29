@@ -81,12 +81,12 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Marker group | Expected markers | What it proves |
 | --- | --- | --- |
 | Release gate | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` | Release, license, version, and publishing boundaries are still blocked. |
-| Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count 82` | The local package can be packed and expected public files are present. |
+| Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` | The local package can be packed and expected public files are present. |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` | Installed README, docs, examples links, and runtime readiness summary assertions work from the packed package. |
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` | Synthetic owner-hosted API plus MCP boundary cases still fail closed and preserve no-auto-promotion. |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.0.0`, `ok installed runtime boundary example` | The packaged synthetic runtime-boundary example runs after local tarball installation. |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` | Boundary smoke failures remain useful to diagnose when a synthetic check breaks. |
-| Docs and readiness | `ok readiness report`, `ok docs links 38 markdown files`, `ok command docs setup` | Readiness summary, local Markdown links, and command-doc setup pointers are current. |
+| Docs and readiness | `ok readiness report`, `ok docs links`, `ok command docs setup` | Readiness summary, local Markdown links, and command-doc setup pointers are current. |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` | Public-safety scan found no obvious private-data or secret findings. |
 
 If one marker group is missing, inspect the command that owns that group before treating CI as release-ready.

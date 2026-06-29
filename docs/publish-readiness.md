@@ -18,6 +18,7 @@ This command runs:
 - `npm run release:gate`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
+- `npm run package:content-smoke`
 - `npm run docs:links`
 - `npm run safety:scan`
 
@@ -54,6 +55,26 @@ Installed fixture matrix:
 | `examples/fixtures/chat-export/agent-session.jsonl` | `chat-export-message` |
 
 Markdown vault fixtures are package contents, but they are not part of this validation matrix until a Markdown vault schema exists.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Package Content Smoke
+
+Run only the package content smoke check:
+
+```bash
+npm run package:content-smoke
+```
+
+The package content smoke check builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, and runs the Markdown link checker from the installed package root.
+
+It checks installed `README.md`, `docs`, and `examples` local links from `node_modules/@source-wire/contracts`.
+
+This is different from `npm run docs:links`, which checks links in the repository checkout.
+
+Installed TypeScript example typechecking is outside this check because the current examples intentionally use repo-local TypeScript path mapping.
 
 It does not publish npm.
 

@@ -59,7 +59,8 @@
     "ci:check": "npm run typecheck && npm run build && npm test && npm run validate:fixtures && npm run verify:schema-exports && npm run cli:smoke && npm run safety:scan",
     "release:gate": "node scripts/release-gate.mjs",
     "package:dry-run": "npm run build && node scripts/package-dry-run.mjs",
-    "publish:readiness": "npm run ci:check && npm run release:gate && npm run package:dry-run && npm run consumer:smoke && npm run docs:links && npm run safety:scan"
+    "package:content-smoke": "node scripts/package-content-smoke.mjs",
+    "publish:readiness": "npm run ci:check && npm run release:gate && npm run package:dry-run && npm run consumer:smoke && npm run package:content-smoke && npm run docs:links && npm run safety:scan"
   },
   "devDependencies": {
     "@types/node": "^26.0.1",

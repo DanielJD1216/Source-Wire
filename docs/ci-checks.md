@@ -50,6 +50,7 @@ The readiness gate runs:
 - `npm run release:gate`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
+- `npm run package:content-smoke`
 - `npm run docs:links`
 - `npm run safety:scan`
 
@@ -97,6 +98,12 @@ It verifies package-root imports and the installed `source-wire` CLI against eve
 Markdown vault fixtures are not part of the installed fixture validation matrix until a Markdown vault schema exists.
 
 It does not publish npm, create a release, deploy services, or call backend runtime.
+
+The package content smoke check installs a locally packed tarball into a temporary project and runs the Markdown link checker from the installed package root.
+
+It verifies installed `README.md`, `docs`, and `examples` local links from `node_modules/@source-wire/contracts`.
+
+It does not typecheck installed TypeScript examples because those examples currently use repo-local path mapping.
 
 The docs link check validates local Markdown links in README, docs, and examples.
 

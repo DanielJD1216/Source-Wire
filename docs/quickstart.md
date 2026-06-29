@@ -89,6 +89,18 @@ This creates a temporary external TypeScript project, installs a locally packed 
 
 It does not publish npm or run backend behavior.
 
+## Run The Package Content Smoke Check
+
+```bash
+npm run package:content-smoke
+```
+
+This creates a temporary external project, installs a locally packed Source-Wire tarball, and checks local Markdown links from the installed package root under `node_modules/@source-wire/contracts`.
+
+This proves installed `README.md`, `docs`, and `examples` links work from the packaged artifact.
+
+It does not publish npm, run backend behavior, or typecheck installed TypeScript examples.
+
 ## Check Local Docs Links
 
 ```bash

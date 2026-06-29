@@ -82,7 +82,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | --- | --- | --- |
 | Release gate | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` | Release, license, version, and publishing boundaries are still blocked. |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` | The local package can be packed and expected public files are present. |
-| Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` | Installed README, docs, examples links, and runtime readiness summary assertions work from the packed package. |
+| Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` | Installed required paths, README/docs/examples links, and runtime readiness summary assertions work from the packed package. |
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` | Synthetic owner-hosted API plus MCP boundary cases still fail closed and preserve no-auto-promotion. |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.0.0`, `ok installed runtime boundary example` | The packaged synthetic runtime-boundary example runs after local tarball installation. |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` | Boundary smoke failures remain useful to diagnose when a synthetic check breaks. |
@@ -134,7 +134,7 @@ Markdown vault fixtures are not part of the installed fixture validation matrix 
 
 It does not publish npm, create a release, deploy services, or call backend runtime.
 
-The package content smoke check installs a locally packed tarball into a temporary project, verifies the installed runtime-boundary readiness summary exists, asserts key installed readiness summary boundary claims, and runs the Markdown link checker from the installed package root.
+The package content smoke check installs a locally packed tarball into a temporary project, verifies key installed public docs and examples exist, asserts key installed runtime-boundary readiness summary boundary claims, and runs the Markdown link checker from the installed package root.
 
 It verifies installed `README.md`, `docs`, and `examples` local links from `node_modules/@source-wire/contracts`.
 

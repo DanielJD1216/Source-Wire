@@ -77,6 +77,8 @@ npm run publish:readiness
 
 This runs typecheck, build, tests, fixture validation, schema export verification, CLI smoke, release gate, package dry-run, installed package smokes, runtime-boundary smokes, readiness report, docs links, and public-safety scanning.
 
+Use [Publish Readiness](publish-readiness.md) for the local success marker map. Use [CI Checks](ci-checks.md) for the matching GitHub Actions Package Checks marker map.
+
 It does not publish npm.
 
 ## Print The Readiness Report

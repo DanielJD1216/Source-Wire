@@ -123,6 +123,30 @@ This proves the examples work through package-root imports without repo-local Ty
 
 It does not publish npm, run backend behavior, or execute compiled example JavaScript.
 
+## Run The Installed Runtime Boundary Smoke Check
+
+```bash
+npm run runtime-boundary:installed-smoke
+```
+
+This creates a temporary external project, installs a locally packed Source-Wire tarball, and runs the packaged synthetic runtime-boundary example from `node_modules/@source-wire/contracts`.
+
+This proves the runtime-boundary example still works after package installation.
+
+It does not publish npm, start a backend, start an API server, start an MCP server, connect to a database, run connectors, or imply Source-Wire hosts memory.
+
+## Run The Runtime Boundary Diagnostics Smoke Check
+
+```bash
+npm run runtime-boundary:diagnostics-smoke
+```
+
+This intentionally forces one synthetic runtime-boundary check to fail and verifies that the failure output still includes the failed check name, assertion, expected value, received value, and next action.
+
+This proves the smoke is useful when a future boundary claim breaks.
+
+It does not publish npm, start a backend, start an API server, start an MCP server, connect to a database, run connectors, or use real data.
+
 ## Check Local Docs Links
 
 ```bash

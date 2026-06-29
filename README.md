@@ -47,6 +47,12 @@ This repo is currently a contract package skeleton.
 
 It can define public shapes and validate public fixtures. It does not run a memory backend, database, MCP server, Mission Control UI, memory-engine integration, or live connector.
 
+## Schema Exports
+
+Source-Wire exposes its current JSON schemas through stable package subpaths and a typed schema registry.
+
+- [Schema Exports](docs/schema-exports.md)
+
 ## Fixtures
 
 All fixtures are fictional and synthetic.

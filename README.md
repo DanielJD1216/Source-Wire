@@ -65,6 +65,12 @@ Source-Wire runs package checks and public-safety scanning on push and pull requ
 
 - [CI Checks](docs/ci-checks.md)
 
+## Publish Readiness
+
+Source-Wire can run package dry-run checks, but it is not published to npm yet.
+
+- [Publish Readiness](docs/publish-readiness.md)
+
 ## Fixtures
 
 All fixtures are fictional and synthetic.

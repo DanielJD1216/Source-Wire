@@ -56,6 +56,8 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok command docs setup` |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` |
 
+The Docs and readiness row proves the readiness summary, required readiness docs, local Markdown links, and command-doc setup pointers are current.
+
 Use [CI Checks](ci-checks.md) for the same marker map from the GitHub Actions perspective.
 
 ## Readiness Report

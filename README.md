@@ -53,6 +53,12 @@ Source-Wire exposes its current JSON schemas through stable package subpaths and
 
 - [Schema Exports](docs/schema-exports.md)
 
+## Validation CLI
+
+Source-Wire includes a tiny local CLI for validating explicit files against explicit schema names.
+
+- [Validation CLI](docs/validation-cli.md)
+
 ## Fixtures
 
 All fixtures are fictional and synthetic.

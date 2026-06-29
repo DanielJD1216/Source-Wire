@@ -94,6 +94,8 @@ Expected markers include:
 ok release gate
 ok package dry-run @source-wire/contracts@0.0.0
 ok consumer installed fixture matrix validation
+ok installed runtime readiness summary
+ok installed runtime readiness summary content
 ok installed package docs links
 ok installed examples package-root imports
 ok readiness report

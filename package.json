@@ -5,6 +5,15 @@
   "description": "Public Source-Wire contract package skeleton for agent-first memory systems.",
   "type": "module",
   "license": "UNLICENSED",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schemas/project-context-pack": "./schemas/project-context-pack.schema.json",
+    "./schemas/second-brain-v1": "./schemas/second-brain-v1.schema.json",
+    "./schemas/chat-export-message": "./schemas/chat-export-message.schema.json"
+  },
   "files": [
     "dist",
     "docs",

@@ -35,6 +35,14 @@ The synthetic proof lane checks:
 
 ## Commands
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
+Install dependencies first:
+
+```bash
+npm install
+```
+
 Run the local synthetic smoke:
 
 ```bash

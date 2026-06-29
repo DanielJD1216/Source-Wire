@@ -6,7 +6,15 @@ Publishing requires a later explicit release decision.
 
 ## Local Readiness Command
 
-Run:
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
+Install dependencies first:
+
+```bash
+npm install
+```
+
+Then run:
 
 ```bash
 npm run publish:readiness

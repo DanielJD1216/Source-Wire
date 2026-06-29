@@ -220,6 +220,7 @@ The package should include:
 - quickstart
 - API reference
 - public contract docs
+- runtime boundary readiness summary
 - schema docs
 - validation CLI docs
 - CI docs

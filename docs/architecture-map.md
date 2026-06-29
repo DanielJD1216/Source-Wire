@@ -166,7 +166,7 @@ Before running these commands locally, use the [Quickstart](quickstart.md) for N
 | `npm run readiness:report` | Prints a fast read-only summary of package posture. |
 | `npm run cli:smoke` | Validates public schema-backed fixtures and one invalid payload. |
 | `npm run consumer:smoke` | Installs a packed tarball and checks package-root imports plus installed CLI validation. |
-| `npm run package:content-smoke` | Checks installed README/docs/examples local links, installed runtime readiness summary presence, and installed readiness summary content assertions. |
+| `npm run package:content-smoke` | Checks installed required paths, README/docs/examples local links, installed runtime readiness summary presence, and installed readiness summary content assertions. |
 | `npm run examples:installed-smoke` | Typechecks copied TypeScript examples against installed package declarations. |
 | `npm run runtime-boundary:installed-smoke` | Runs the packaged synthetic runtime-boundary example from an installed tarball. |
 | `npm run runtime-boundary:diagnostics-smoke` | Verifies runtime-boundary failure output keeps the failed check name, assertion, expected value, received value, and next action visible. |

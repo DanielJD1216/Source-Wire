@@ -16,20 +16,20 @@ The workflow runs:
 
 ```bash
 npm ci
-npm run ci:check
+npm run publish:readiness
 ```
 
 ## Local Mirror
 
-Run the same package check set locally:
+Run the same readiness gate locally:
 
 ```bash
-npm run ci:check
+npm run publish:readiness
 ```
 
 ## Check Coverage
 
-The local CI mirror runs:
+The readiness gate runs:
 
 - `npm run typecheck`
 - `npm run build`
@@ -38,11 +38,13 @@ The local CI mirror runs:
 - `npm run verify:schema-exports`
 - `npm run cli:smoke`
 - `npm run safety:scan`
-
-The broader publish-readiness path also runs:
-
+- `npm run release:gate`
+- `npm run package:dry-run`
 - `npm run consumer:smoke`
 - `npm run docs:links`
+- `npm run safety:scan`
+
+`npm run ci:check` remains as a sub-gate inside `npm run publish:readiness`.
 
 ## Public-Safety Scan
 

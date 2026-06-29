@@ -30,7 +30,8 @@
     "test": "npm run typecheck && npm run validate:fixtures && npm run verify:schema-exports && npm run cli:smoke",
     "validate:fixtures": "npm run build && node dist/validate-fixtures.js",
     "verify:schema-exports": "npm run build && node scripts/verify-schema-exports.mjs",
-    "cli:smoke": "npm run build && node scripts/cli-smoke.mjs"
+    "cli:smoke": "npm run build && node scripts/cli-smoke.mjs",
+    "safety:scan": "node scripts/public-safety-scan.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.0.1",

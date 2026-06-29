@@ -14,6 +14,14 @@ source-wire validate <schema> <file...>
 
 During local development, run the built CLI directly:
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
+Install dependencies first:
+
+```bash
+npm install
+```
+
 ```bash
 npm run build
 node dist/cli.js validate <schema> <file...>

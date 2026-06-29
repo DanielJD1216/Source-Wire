@@ -38,6 +38,8 @@ For the whole package shape, read the [Architecture Map](architecture-map.md).
 
 For a practical first pass through the current package, read the [Public Adopter Walkthrough](adopter-walkthrough.md).
 
+For the current runtime posture, read the [Public Runtime Decision](public-runtime-decision.md).
+
 ## Why This Boundary Exists
 
 Source-Wire is meant to become reusable infrastructure for agent memory systems.
@@ -75,6 +77,8 @@ The next safe expansion should be one of these explicit PRD paths:
 1. Documentation or examples that make the existing contract package easier to adopt.
 2. A runtime decision package that chooses the first public runtime boundary before adding server, database, MCP, or connector code.
 3. A license or publish approval gate, if the owner decides Source-Wire is ready to move beyond `UNLICENSED` and `0.0.0`.
+
+The current runtime decision is recorded in [Public Runtime Decision](public-runtime-decision.md).
 
 Any runtime PRD must keep this trust boundary:
 

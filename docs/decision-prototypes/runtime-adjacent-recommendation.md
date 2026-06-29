@@ -10,6 +10,8 @@ The next Source-Wire runtime-adjacent unit should be:
 
 This should be a decision and documentation unit, not a runtime implementation unit.
 
+The current public runtime decision is recorded in [Public Runtime Decision](../public-runtime-decision.md).
+
 ## Why This Is Next
 
 The original runtime-adjacent recommendation selected JSON Schema package exports as the safest next package-surface step.

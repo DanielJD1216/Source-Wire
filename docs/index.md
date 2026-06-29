@@ -10,6 +10,7 @@ It is not a runtime backend and it is not published to npm yet.
 - [Architecture Map](architecture-map.md)
 - [Quickstart](quickstart.md)
 - [Runtime Boundary](runtime-boundary.md)
+- [Public Runtime Decision](public-runtime-decision.md)
 - [Publish Readiness](publish-readiness.md)
 - [Release Decision](release-decision.md)
 - [License And Version Policy](license-version-policy.md)

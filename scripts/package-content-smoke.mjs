@@ -2,36 +2,10 @@ import { mkdtemp, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawn } from "node:child_process";
+import { requiredPackagePaths } from "./package-required-paths.mjs";
 
 const root = process.cwd();
 const tempRoot = await mkdtemp(join(tmpdir(), "source-wire-package-content-"));
-const requiredInstalledPaths = [
-  "README.md",
-  "docs/adopter-walkthrough.md",
-  "docs/architecture-map.md",
-  "docs/api-reference.md",
-  "docs/contracts/mcp-tool-behavior-contract.md",
-  "docs/contracts/owner-hosted-api-mcp-boundary-contract.md",
-  "docs/contracts/second-brain-v1-contract.md",
-  "docs/contracts/source-connection-contract.md",
-  "docs/contracts/source-graph-adapter-contract.md",
-  "docs/decision-prototypes/license-evidence.md",
-  "docs/decision-prototypes/license-options.md",
-  "docs/decision-prototypes/license-recommendation.md",
-  "docs/decision-prototypes/runtime-adjacent-evidence.md",
-  "docs/decision-prototypes/runtime-adjacent-options.md",
-  "docs/decision-prototypes/runtime-adjacent-recommendation.md",
-  "docs/first-runtime-prd.md",
-  "docs/proof/public-extraction-checklist.md",
-  "docs/public-runtime-decision.md",
-  "docs/runtime-boundary-readiness.md",
-  "docs/runtime-implementation-gate.md",
-  "examples/fixtures/owner-hosted-api-mcp-boundary/README.md",
-  "examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json",
-  "examples/runtime-boundary/README.md",
-  "examples/runtime-boundary/synthetic-boundary-smoke.mjs",
-  "examples/typescript/README.md"
-];
 
 try {
   await runChecked("npm", ["run", "build"], root);
@@ -60,7 +34,7 @@ try {
   await runChecked("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund"], consumerRoot);
 
   const installedPackageRoot = join(consumerRoot, "node_modules", "@source-wire", "contracts");
-  for (const requiredPath of requiredInstalledPaths) {
+  for (const requiredPath of requiredPackagePaths) {
     await assertInstalledPath(installedPackageRoot, requiredPath);
   }
 
@@ -75,7 +49,7 @@ try {
   const docsLinksResult = await runChecked(process.execPath, [docsLinkCheckerPath], installedPackageRoot);
 
   console.log(`ok package content smoke ${pack.name}@${pack.version}`);
-  console.log(`ok installed required paths ${requiredInstalledPaths.length}`);
+  console.log(`ok installed required paths ${requiredPackagePaths.length}`);
   console.log("ok installed runtime readiness summary");
   console.log("ok installed runtime readiness summary content");
   console.log(docsLinksResult.stdout.trim());

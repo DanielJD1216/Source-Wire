@@ -88,9 +88,9 @@ Run only the package dry-run check:
 npm run package:dry-run
 ```
 
-The dry-run check builds the package, runs `npm pack --dry-run --json`, and verifies expected package contents.
+The dry-run check builds the package, runs `npm pack --dry-run --json`, and verifies the shared required package path manifest.
 
-It checks required package paths for core build outputs, public docs, JSON schemas, synthetic fixtures, and TypeScript examples.
+It checks the same required package path manifest that `npm run package:content-smoke` verifies after local tarball install.
 
 It does not publish.
 
@@ -126,7 +126,7 @@ Run only the package content smoke check:
 npm run package:content-smoke
 ```
 
-The package content smoke check builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, checks that key public docs and examples exist in the installed package, asserts that the installed runtime-boundary readiness summary still contains the key runtime-boundary claims, and runs the Markdown link checker from the installed package root.
+The package content smoke check builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, checks the shared required package path manifest in the installed package, asserts that the installed runtime-boundary readiness summary still contains the key runtime-boundary claims, and runs the Markdown link checker from the installed package root.
 
 It checks installed `README.md`, `docs`, and `examples` local links from `node_modules/@source-wire/contracts`.
 

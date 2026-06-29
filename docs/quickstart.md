@@ -77,7 +77,7 @@ ok examples/fixtures/chat-export/agent-session.jsonl
 npm run publish:readiness
 ```
 
-This runs typecheck, build, tests, fixture validation, schema export verification, CLI smoke, release gate, package dry-run, installed package smokes, runtime-boundary smokes, readiness report, docs links, and public-safety scanning.
+This runs typecheck, build, tests, fixture validation, schema export verification, CLI smoke, release gate, package dry-run, installed package smokes, runtime-boundary smokes, readiness report, docs links, command-doc setup checks, and public-safety scanning.
 
 Use [Publish Readiness](publish-readiness.md) for the local success marker map. Use [CI Checks](ci-checks.md) for the matching GitHub Actions Package Checks marker map.
 

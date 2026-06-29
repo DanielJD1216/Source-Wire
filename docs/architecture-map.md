@@ -170,6 +170,7 @@ Before running these commands locally, use the [Quickstart](quickstart.md) for N
 | `npm run examples:installed-smoke` | Typechecks copied TypeScript examples against installed package declarations. |
 | `npm run runtime-boundary:installed-smoke` | Runs the packaged synthetic runtime-boundary example from an installed tarball. |
 | `npm run runtime-boundary:diagnostics-smoke` | Verifies runtime-boundary failure output keeps the failed check name, assertion, expected value, received value, and next action visible. |
+| `npm run docs:command-setup` | Verifies command-bearing docs include setup context or a Quickstart pointer. |
 | `npm run publish:readiness` | Runs the full local readiness gate without publishing. |
 
 Related docs:

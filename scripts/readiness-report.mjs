@@ -19,6 +19,7 @@ const requiredScripts = [
   "runtime-boundary:installed-smoke",
   "runtime-boundary:diagnostics-smoke",
   "docs:links",
+  "docs:command-setup",
   "safety:scan",
   "release:gate",
   "package:dry-run",

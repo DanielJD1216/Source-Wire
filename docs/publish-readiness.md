@@ -32,6 +32,7 @@ This command runs:
 - `npm run runtime-boundary:diagnostics-smoke`
 - `npm run readiness:report`
 - `npm run docs:links`
+- `npm run docs:command-setup`
 - `npm run safety:scan`
 
 The `ci:check` sub-gate includes:
@@ -52,7 +53,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.0.0`, `ok installed runtime boundary example` |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
-| Docs and readiness | `ok readiness report`, `ok docs links 38 markdown files` |
+| Docs and readiness | `ok readiness report`, `ok docs links 38 markdown files`, `ok command docs setup` |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` |
 
 Use [CI Checks](ci-checks.md) for the same marker map from the GitHub Actions perspective.
@@ -235,6 +236,26 @@ It ignores external URLs, mailto links, and pure page anchors.
 It strips optional anchor fragments before checking local file or directory targets.
 
 It does not validate external URL availability or anchor existence.
+
+## Command Docs Setup Check
+
+Run only the command-doc setup check:
+
+```bash
+npm run docs:command-setup
+```
+
+The command-doc setup check scans README, docs, and examples Markdown files.
+
+It verifies command-bearing files include setup context or a Quickstart pointer before readers copy local commands.
+
+Expected marker:
+
+```text
+ok command docs setup
+```
+
+It does not validate shell behavior or external services.
 
 ## Expected Package Contents
 

@@ -20,6 +20,16 @@ Because this package is not published to npm yet, local repo examples map `@sour
 
 The installed examples smoke copies these same `.ts` files into a temporary external project and typechecks them against a locally packed package install.
 
+## Local Setup
+
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../docs/quickstart.md).
+
+Install dependencies first:
+
+```bash
+npm install
+```
+
 ## Examples
 
 - [runtime-boundary.ts](runtime-boundary.ts), confirms the package is contracts only.

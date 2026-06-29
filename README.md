@@ -35,6 +35,10 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - [MCP Tool Behavior Contract](docs/contracts/mcp-tool-behavior-contract.md)
 - [Runtime Boundary](docs/runtime-boundary.md)
 
+## Decision Prototypes
+
+- [Runtime-Adjacent Options Decision Matrix](docs/decision-prototypes/runtime-adjacent-options.md)
+
 ## Package Boundary
 
 This repo is currently a contract package skeleton.

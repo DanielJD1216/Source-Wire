@@ -121,7 +121,13 @@ printList([
 
 printSection("Required Readiness Docs");
 printList([
-  "docs/runtime-boundary-readiness.md summarizes the runtime-boundary proof lane and blocked runtime scope"
+  "README.md is the package entrypoint and public boundary summary",
+  "docs/quickstart.md defines local setup and first-run commands",
+  "docs/runtime-boundary-readiness.md summarizes the runtime-boundary proof lane and blocked runtime scope",
+  "docs/publish-readiness.md summarizes the local readiness gate and marker map",
+  "docs/ci-checks.md summarizes GitHub Actions Package Checks and marker map",
+  "examples/fixtures/README.md summarizes synthetic fixture boundaries",
+  "examples/typescript/README.md summarizes public TypeScript example checks"
 ]);
 
 printSection("Blocked Scope");

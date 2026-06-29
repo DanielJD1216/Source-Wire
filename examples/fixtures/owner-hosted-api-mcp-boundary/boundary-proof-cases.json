@@ -1,0 +1,239 @@
+{
+  "fixtureType": "source-wire-owner-hosted-api-mcp-boundary-proof-cases",
+  "fixtureSafety": "synthetic",
+  "schemaValidated": false,
+  "boundary": {
+    "hosting": "owner_hosted",
+    "sourceWireHostsUserMemory": false,
+    "runtimeIncludedInPackage": false,
+    "noAutoPromotion": true
+  },
+  "syntheticOwner": {
+    "ownerId": "owner_demo_001",
+    "displayName": "Demo Memory Owner"
+  },
+  "syntheticNamespaces": [
+    {
+      "namespaceId": "ns_demo_project_alpha",
+      "label": "Project Alpha"
+    },
+    {
+      "namespaceId": "ns_demo_client_beta",
+      "label": "Client Beta"
+    }
+  ],
+  "proofCases": [
+    {
+      "caseId": "authorized_read_trusted_memory",
+      "actor": {
+        "kind": "mcp_tool",
+        "syntheticTokenRef": "token_demo_read_project_alpha",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["read_trusted_memory"]
+      },
+      "request": {
+        "tool": "search_memory",
+        "namespaceId": "ns_demo_project_alpha",
+        "query": "What is the current onboarding decision?"
+      },
+      "expectedResult": {
+        "status": "allowed",
+        "trustedMemoryReturned": true,
+        "sourceEvidenceReturned": false,
+        "omittedCount": 0,
+        "citationCount": 1,
+        "noAutoPromotion": true
+      },
+      "audit": {
+        "eventType": "trusted_memory_read",
+        "result": "allowed",
+        "syntheticTraceId": "trace_demo_001"
+      }
+    },
+    {
+      "caseId": "unauthorized_read_denied",
+      "actor": {
+        "kind": "mcp_tool",
+        "syntheticTokenRef": "token_demo_no_memory_read",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": []
+      },
+      "request": {
+        "tool": "search_memory",
+        "namespaceId": "ns_demo_project_alpha",
+        "query": "Show approved memory."
+      },
+      "expectedResult": {
+        "status": "denied",
+        "trustedMemoryReturned": false,
+        "sourceEvidenceReturned": false,
+        "omittedCount": 1,
+        "denialReason": "missing_read_trusted_memory_capability",
+        "noAutoPromotion": true
+      },
+      "audit": {
+        "eventType": "trusted_memory_read",
+        "result": "denied",
+        "syntheticTraceId": "trace_demo_002"
+      }
+    },
+    {
+      "caseId": "wrong_namespace_denied",
+      "actor": {
+        "kind": "mcp_tool",
+        "syntheticTokenRef": "token_demo_project_alpha_only",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["read_source_evidence"]
+      },
+      "request": {
+        "tool": "search_sources",
+        "namespaceId": "ns_demo_client_beta",
+        "query": "Find client beta source evidence."
+      },
+      "expectedResult": {
+        "status": "denied",
+        "trustedMemoryReturned": false,
+        "sourceEvidenceReturned": false,
+        "omittedCount": 1,
+        "denialReason": "namespace_not_allowed",
+        "noAutoPromotion": true
+      },
+      "audit": {
+        "eventType": "source_evidence_read",
+        "result": "denied",
+        "syntheticTraceId": "trace_demo_003"
+      }
+    },
+    {
+      "caseId": "source_evidence_search_with_citations",
+      "actor": {
+        "kind": "mcp_tool",
+        "syntheticTokenRef": "token_demo_source_read",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["read_source_evidence"]
+      },
+      "request": {
+        "tool": "search_sources",
+        "namespaceId": "ns_demo_project_alpha",
+        "query": "Find the onboarding source note."
+      },
+      "expectedResult": {
+        "status": "allowed",
+        "trustedMemoryReturned": false,
+        "sourceEvidenceReturned": true,
+        "citationCount": 2,
+        "citations": [
+          {
+            "sourceId": "src_demo_alpha_notes",
+            "segmentId": "seg_demo_alpha_001",
+            "address": "synthetic://project-alpha/onboarding-notes#section-1"
+          },
+          {
+            "sourceId": "src_demo_alpha_notes",
+            "segmentId": "seg_demo_alpha_002",
+            "address": "synthetic://project-alpha/onboarding-notes#section-2"
+          }
+        ],
+        "noAutoPromotion": true
+      },
+      "audit": {
+        "eventType": "source_evidence_read",
+        "result": "allowed",
+        "syntheticTraceId": "trace_demo_004"
+      }
+    },
+    {
+      "caseId": "source_maintenance_no_auto_promotion",
+      "actor": {
+        "kind": "mcp_tool",
+        "syntheticTokenRef": "token_demo_source_import",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["import_or_maintain_sources", "prepare_candidates"]
+      },
+      "request": {
+        "tool": "maintain_source_connection",
+        "namespaceId": "ns_demo_project_alpha",
+        "sourceConnectionId": "conn_demo_alpha_notes",
+        "payloadMode": "snapshot"
+      },
+      "expectedResult": {
+        "status": "partial_success",
+        "importedCount": 1,
+        "changedCount": 2,
+        "staleCount": 0,
+        "skippedCount": 1,
+        "errorCount": 0,
+        "pendingCandidateCount": 2,
+        "trustedMemoryCreatedCount": 0,
+        "noAutoPromotion": true
+      },
+      "audit": {
+        "eventType": "source_maintenance",
+        "result": "partial_success",
+        "syntheticTraceId": "trace_demo_005"
+      }
+    },
+    {
+      "caseId": "pending_candidate_without_trusted_memory",
+      "actor": {
+        "kind": "owner_hosted_api",
+        "syntheticTokenRef": "token_demo_prepare_candidates",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["prepare_candidates"]
+      },
+      "request": {
+        "apiRoute": "POST /synthetic/v1/candidates/prepare",
+        "namespaceId": "ns_demo_project_alpha",
+        "sourceSegmentId": "seg_demo_alpha_002"
+      },
+      "expectedResult": {
+        "status": "allowed",
+        "pendingCandidateCreated": true,
+        "trustedMemoryCreatedCount": 0,
+        "requiresOwnerReview": true,
+        "noAutoPromotion": true
+      },
+      "audit": {
+        "eventType": "candidate_prepared",
+        "result": "allowed",
+        "syntheticTraceId": "trace_demo_006"
+      }
+    },
+    {
+      "caseId": "trusted_memory_approval_owner_controlled",
+      "actor": {
+        "kind": "owner_controlled_application",
+        "syntheticTokenRef": "token_demo_owner_approval",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["approve_trusted_memory"]
+      },
+      "request": {
+        "apiRoute": "POST /synthetic/v1/candidates/cand_demo_alpha_001/approve",
+        "namespaceId": "ns_demo_project_alpha",
+        "reviewReason": "Synthetic owner approved candidate after checking citations."
+      },
+      "expectedResult": {
+        "status": "allowed",
+        "pendingCandidateClosed": true,
+        "trustedMemoryCreatedCount": 1,
+        "approvalPath": "owner_or_application_controlled",
+        "noAutoPromotion": false
+      },
+      "audit": {
+        "eventType": "trusted_memory_approved",
+        "result": "allowed",
+        "syntheticTraceId": "trace_demo_007"
+      }
+    }
+  ],
+  "nonGoals": [
+    "api_server_runtime",
+    "mcp_server_runtime",
+    "database_migrations",
+    "memory_engine_integration",
+    "live_connectors",
+    "mission_control_ui",
+    "real_user_data",
+    "trusted_memory_auto_promotion"
+  ]
+}

@@ -12,6 +12,7 @@ They are designed to test public Source-Wire contracts without using real privat
 | `second-brain/use-2nd-brain-example.json` | Fake second-brain response payload. | `second-brain-v1` |
 | `chat-export/agent-session.jsonl` | Fake chat export message lines for the Source Connection Contract. | `chat-export-message` |
 | `markdown-vault/` | Fake Markdown notes for the Source Graph Adapter Contract. | Not schema-validated by the current CLI. |
+| `owner-hosted-api-mcp-boundary/` | Fake proof cases for future owner-hosted API plus MCP runtime boundaries. | Not schema-validated by the current CLI. |
 
 ## Validate Schema-Backed Fixtures
 
@@ -45,6 +46,16 @@ The Markdown vault fixture is a synthetic evidence example for source graph and 
 
 It is not currently validated by the CLI because the current CLI validates JSON and JSONL contract payloads only.
 
+## Owner-Hosted API Plus MCP Boundary Fixture
+
+The owner-hosted API plus MCP boundary fixture is a synthetic proof-case example for future runtime PRDs.
+
+It is not currently validated by the CLI because Unit 51 does not add a schema for this fixture.
+
+Start here:
+
+- [Owner-hosted API plus MCP boundary fixture](owner-hosted-api-mcp-boundary/README.md)
+
 ## Rules
 
 - Do not replace these fixtures with real private notes, chats, emails, screenshots, database rows, or local files.
@@ -56,3 +67,4 @@ It is not currently validated by the CLI because the current CLI validates JSON 
 
 - [Quickstart](../../docs/quickstart.md)
 - [Validation CLI](../../docs/validation-cli.md)
+- [Owner-Hosted API Plus MCP Boundary Contract](../../docs/contracts/owner-hosted-api-mcp-boundary-contract.md)

@@ -137,6 +137,10 @@ Before Source-Wire adds API or MCP runtime code, a future runtime PRD should inc
 
 These proofs should run without secrets.
 
+Synthetic fixture examples live in:
+
+- [Owner-hosted API plus MCP boundary fixture](../../examples/fixtures/owner-hosted-api-mcp-boundary/README.md)
+
 ## Public Example Requirements
 
 Public runtime examples must use:

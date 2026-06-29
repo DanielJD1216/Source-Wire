@@ -22,3 +22,9 @@ export const SOURCE_WIRE_RUNTIME_BOUNDARY: SourceWireRuntimeBoundary = {
   memoryEngineIncluded: false,
   missionControlIncluded: false
 };
+
+export type * from "./contracts/fixtures.js";
+export type * from "./contracts/mcp-tools.js";
+export type * from "./contracts/second-brain.js";
+export type * from "./contracts/source-connection.js";
+export type * from "./contracts/source-graph.js";

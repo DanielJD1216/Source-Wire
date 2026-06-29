@@ -75,6 +75,8 @@ Source-Wire can run package dry-run checks, but it is not published to npm yet.
 - [Publish Readiness](docs/publish-readiness.md)
 - [Release Decision](docs/release-decision.md)
 - [License And Version Policy](docs/license-version-policy.md)
+- [Owner License Approval Packet](docs/owner-license-approval-packet.md)
+- [Future License Change Plan](docs/future-license-change-plan.md)
 
 ## Fixtures
 

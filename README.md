@@ -36,6 +36,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - [API Reference](docs/api-reference.md)
 - [TypeScript Examples](examples/typescript/README.md)
 - [Runtime Implementation Gate](docs/runtime-implementation-gate.md)
+- [Synthetic Runtime Boundary Example](examples/runtime-boundary/)
 
 ## Contracts
 
@@ -104,6 +105,12 @@ All fixtures are fictional and synthetic.
 - [Owner-hosted API plus MCP boundary fixture](examples/fixtures/owner-hosted-api-mcp-boundary/)
 
 The owner-hosted API plus MCP boundary fixture contains synthetic proof cases only. It is not schema-backed or validated by the current CLI.
+
+## Runtime Boundary Example
+
+The [synthetic runtime boundary example](examples/runtime-boundary/) is a local-only smoke proof for the future owner-hosted API plus MCP boundary.
+
+It does not start a server, connect to a database, add package exports, or imply Source-Wire hosts memory.
 
 ## Safety Rule
 

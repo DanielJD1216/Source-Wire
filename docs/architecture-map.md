@@ -187,6 +187,10 @@ Future runtime work may add:
 - candidate review,
 - Mission Control UI.
 
+The local [synthetic runtime boundary example](../examples/runtime-boundary/README.md) shows the proposed owner-hosted API plus MCP boundary with synthetic data only.
+
+It does not start a server, connect to a database, add package exports, or approve runtime implementation.
+
 Those are future implementation layers. They should be opened by explicit PRDs and must preserve the trust boundary:
 
 ```text
@@ -197,6 +201,7 @@ Trusted memory requires an owner or application approval path.
 Related docs:
 
 - [Runtime Boundary](runtime-boundary.md)
+- [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Release Decision](release-decision.md)
 
 ## Safe Mental Model

@@ -164,6 +164,14 @@ Source-Wire has three installed-package checks:
 
 These checks are package-confidence checks. They are not runtime integration tests.
 
+Optional local-only runtime boundary smoke:
+
+```bash
+node examples/runtime-boundary/synthetic-boundary-smoke.mjs
+```
+
+This smoke uses synthetic data only. It does not start a server, connect to a database, add package exports, or imply Source-Wire hosts memory.
+
 ## 7. Know What Is Intentionally Missing
 
 Source-Wire does not currently include:
@@ -195,6 +203,7 @@ Current release posture:
 - [Architecture Map](architecture-map.md)
 - [Publish Readiness](publish-readiness.md)
 - [Runtime Boundary](runtime-boundary.md)
+- [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 - [Public Extraction Checklist](proof/public-extraction-checklist.md)

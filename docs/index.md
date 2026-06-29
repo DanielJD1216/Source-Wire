@@ -12,6 +12,7 @@ It is not a runtime backend and it is not published to npm yet.
 - [Runtime Boundary](runtime-boundary.md)
 - [Public Runtime Decision](public-runtime-decision.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
+- [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Publish Readiness](publish-readiness.md)
 - [Release Decision](release-decision.md)
 - [License And Version Policy](license-version-policy.md)
@@ -30,6 +31,7 @@ It is not a runtime backend and it is not published to npm yet.
 - [Quickstart](quickstart.md)
 - [API Reference](api-reference.md)
 - [TypeScript Examples](../examples/typescript/README.md)
+- [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 - [CI Checks](ci-checks.md)
@@ -62,6 +64,8 @@ Current state:
 - [Public Extraction Checklist](proof/public-extraction-checklist.md)
 
 Public examples and fixtures must stay synthetic. Do not add real user data, private implementation history, screenshots, local paths, tokens, domains, emails, account IDs, client names, or production exports.
+
+The synthetic runtime boundary example is local-only. It does not start a server or add runtime package behavior.
 
 ## Intentional Gaps
 

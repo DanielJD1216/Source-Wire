@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawn } from "node:child_process";
@@ -34,12 +34,19 @@ try {
 
   const installedPackageRoot = join(consumerRoot, "node_modules", "@source-wire", "contracts");
   await assertInstalledPath(installedPackageRoot, "docs/runtime-boundary-readiness.md");
+  await assertInstalledFileIncludes(installedPackageRoot, "docs/runtime-boundary-readiness.md", [
+    "Status: readiness summary only. No runtime implementation is included.",
+    "Source-Wire-hosted memory.",
+    "Source-Wire does not host memory.",
+    "Trusted memory must require owner or application approval."
+  ]);
 
   const docsLinkCheckerPath = join(root, "scripts", "check-doc-links.mjs");
   const docsLinksResult = await runChecked(process.execPath, [docsLinkCheckerPath], installedPackageRoot);
 
   console.log(`ok package content smoke ${pack.name}@${pack.version}`);
   console.log("ok installed runtime readiness summary");
+  console.log("ok installed runtime readiness summary content");
   console.log(docsLinksResult.stdout.trim());
   console.log("ok installed package docs links");
 } finally {
@@ -51,6 +58,20 @@ async function assertInstalledPath(installedPackageRoot, relativePath) {
     await stat(join(installedPackageRoot, relativePath));
   } catch {
     throw new Error(`missing installed package path: ${relativePath}`);
+  }
+}
+
+async function assertInstalledFileIncludes(installedPackageRoot, relativePath, requiredPhrases) {
+  const content = await readFile(join(installedPackageRoot, relativePath), "utf8");
+  const missingPhrases = requiredPhrases.filter((phrase) => !content.includes(phrase));
+
+  if (missingPhrases.length > 0) {
+    throw new Error(
+      [
+        `installed package path is missing required content: ${relativePath}`,
+        ...missingPhrases.map((phrase) => `missing phrase: ${phrase}`)
+      ].join("\n")
+    );
   }
 }
 

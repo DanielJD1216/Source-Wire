@@ -74,6 +74,7 @@ for (const schemaFile of [
 for (const requiredPath of [
   "README.md",
   "docs/quickstart.md",
+  "docs/runtime-boundary-readiness.md",
   "docs/publish-readiness.md",
   "docs/ci-checks.md",
   "examples/fixtures/README.md",
@@ -115,6 +116,11 @@ printList([
   "examples:installed-smoke validates copied TypeScript examples against installed package declarations",
   "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install",
   "runtime-boundary:diagnostics-smoke validates the synthetic smoke diagnostic failure format"
+]);
+
+printSection("Required Readiness Docs");
+printList([
+  "docs/runtime-boundary-readiness.md summarizes the runtime-boundary proof lane and blocked runtime scope"
 ]);
 
 printSection("Blocked Scope");

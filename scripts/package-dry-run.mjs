@@ -10,6 +10,7 @@ const requiredPaths = [
   "docs/quickstart.md",
   "docs/api-reference.md",
   "docs/runtime-boundary.md",
+  "docs/runtime-boundary-readiness.md",
   "docs/schema-exports.md",
   "docs/validation-cli.md",
   "docs/ci-checks.md",

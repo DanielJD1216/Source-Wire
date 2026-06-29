@@ -10,6 +10,8 @@ For the whole system shape, read the [Architecture Map](architecture-map.md).
 
 ## 1. Clone And Install
 
+Use Node.js 22 with npm before installing. This matches the [Quickstart](quickstart.md) and GitHub Actions Package Checks.
+
 ```bash
 git clone https://github.com/DanielJD1216/Source-Wire.git
 cd Source-Wire

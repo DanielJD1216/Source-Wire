@@ -17,6 +17,7 @@ This command runs:
 - `npm run ci:check`
 - `npm run release:gate`
 - `npm run package:dry-run`
+- `npm run consumer:smoke`
 - `npm run safety:scan`
 
 ## Package Dry Run
@@ -30,6 +31,20 @@ npm run package:dry-run
 The dry-run check builds the package, runs `npm pack --dry-run --json`, and verifies expected package contents.
 
 It does not publish.
+
+## Consumer Smoke
+
+Run only the consumer smoke check:
+
+```bash
+npm run consumer:smoke
+```
+
+The consumer smoke check builds and packs Source-Wire locally, creates a temporary external TypeScript project, installs the local tarball, typechecks package-root imports from `@source-wire/contracts`, runs a tiny compiled import check, and removes the temporary project.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
 
 ## Expected Package Contents
 

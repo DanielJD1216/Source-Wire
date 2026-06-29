@@ -39,6 +39,10 @@ The local CI mirror runs:
 - `npm run cli:smoke`
 - `npm run safety:scan`
 
+The broader publish-readiness path also runs:
+
+- `npm run consumer:smoke`
+
 ## Public-Safety Scan
 
 The public-safety scan is self-contained inside Source-Wire:
@@ -69,6 +73,10 @@ CI does not:
 - check out private repos,
 - use real user data,
 - create or promote trusted Memory Records.
+
+The consumer smoke check installs a locally packed tarball into a temporary project.
+
+It does not publish npm, create a release, deploy services, or call backend runtime.
 
 ## Current Boundary
 

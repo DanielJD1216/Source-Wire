@@ -79,6 +79,16 @@ This runs typecheck, build, tests, fixture validation, schema export verificatio
 
 It does not publish npm.
 
+## Run The Consumer Smoke Check
+
+```bash
+npm run consumer:smoke
+```
+
+This creates a temporary external TypeScript project, installs a locally packed Source-Wire tarball, typechecks imports from `@source-wire/contracts`, runs a tiny compiled import check, and deletes the temporary project.
+
+It does not publish npm or run backend behavior.
+
 ## What The Fixtures Are For
 
 | Fixture | Purpose | CLI schema |

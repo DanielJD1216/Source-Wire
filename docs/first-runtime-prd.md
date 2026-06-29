@@ -107,6 +107,8 @@ The first runtime implementation must cover:
 
 The existing [owner-hosted API plus MCP boundary fixture](../examples/fixtures/owner-hosted-api-mcp-boundary/) is the starting proof vocabulary.
 
+The local [synthetic runtime boundary example](../examples/runtime-boundary/) demonstrates this vocabulary without starting a server.
+
 ## Go Criteria
 
 A later runtime implementation unit may start only if:

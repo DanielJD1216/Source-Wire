@@ -30,6 +30,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 ## Documentation
 
 - [Docs Index](docs/index.md)
+- [Quickstart](docs/quickstart.md)
 
 ## Contracts
 

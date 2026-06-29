@@ -6,6 +6,7 @@ It is not a runtime backend and it is not published to npm yet.
 
 ## Start Here
 
+- [Quickstart](quickstart.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Publish Readiness](publish-readiness.md)
 - [Release Decision](release-decision.md)
@@ -21,6 +22,7 @@ It is not a runtime backend and it is not published to npm yet.
 
 ## Package Use
 
+- [Quickstart](quickstart.md)
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 - [CI Checks](ci-checks.md)

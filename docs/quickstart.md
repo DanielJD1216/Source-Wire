@@ -1,0 +1,124 @@
+# Source-Wire Quickstart
+
+Source-Wire is a public contract package skeleton for agent-first memory systems.
+
+This quickstart verifies the package locally with synthetic fixtures.
+
+It does not run a backend, sync sources, connect to MCP, call a database, create memories, or publish npm.
+
+## Prerequisites
+
+- Node.js with npm.
+- Git.
+
+The package is not published to npm yet, so use the local repository checkout.
+
+## Install
+
+```bash
+npm install
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Run The CLI Smoke Check
+
+```bash
+npm run cli:smoke
+```
+
+This builds the package, validates the three public schema-backed fixtures, and verifies that one invalid synthetic payload fails.
+
+## Validate A Project Context Pack
+
+```bash
+node dist/cli.js validate project-context-pack examples/fixtures/project-context-pack/project-context.json
+```
+
+Expected output:
+
+```text
+ok examples/fixtures/project-context-pack/project-context.json
+```
+
+## Validate A Second-Brain Response
+
+```bash
+node dist/cli.js validate second-brain-v1 examples/fixtures/second-brain/use-2nd-brain-example.json
+```
+
+Expected output:
+
+```text
+ok examples/fixtures/second-brain/use-2nd-brain-example.json
+```
+
+## Validate A Chat Export Message File
+
+```bash
+node dist/cli.js validate chat-export-message examples/fixtures/chat-export/agent-session.jsonl
+```
+
+Expected output:
+
+```text
+ok examples/fixtures/chat-export/agent-session.jsonl
+```
+
+## Run The Full Local Readiness Check
+
+```bash
+npm run publish:readiness
+```
+
+This runs typecheck, build, tests, fixture validation, schema export verification, CLI smoke, public-safety scanning, release gate, and package dry-run.
+
+It does not publish npm.
+
+## What The Fixtures Are For
+
+| Fixture | Purpose | CLI schema |
+| --- | --- | --- |
+| `examples/fixtures/project-context-pack/project-context.json` | Synthetic project context import shape. | `project-context-pack` |
+| `examples/fixtures/second-brain/use-2nd-brain-example.json` | Synthetic second-brain response shape. | `second-brain-v1` |
+| `examples/fixtures/chat-export/agent-session.jsonl` | Synthetic chat export message lines. | `chat-export-message` |
+| `examples/fixtures/markdown-vault/` | Synthetic Markdown vault evidence examples. | Not schema-validated by the current CLI. |
+
+More detail:
+
+- [Fixtures README](../examples/fixtures/README.md)
+- [Validation CLI](validation-cli.md)
+
+## Current Boundaries
+
+Source-Wire does not currently include:
+
+- API server runtime,
+- MCP server runtime,
+- database migrations,
+- PostgreSQL or pgvector setup,
+- memory-engine integration,
+- live connectors,
+- Mission Control UI,
+- npm publishing,
+- real user data,
+- trusted Memory Record promotion.
+
+Current release posture:
+
+- package license is `UNLICENSED`,
+- package version is `0.0.0`,
+- no `LICENSE` file exists,
+- npm publishing is blocked,
+- GitHub release publishing is blocked,
+- runtime backend work is blocked.
+
+## Safety Rule
+
+Use synthetic examples only.
+
+Do not add real user data, private implementation history, screenshots, local paths, tokens, domains, emails, account IDs, client names, or production exports to public fixtures or docs.

@@ -23,6 +23,7 @@ const requiredScripts = [
   "safety:scan",
   "package:required-paths",
   "ci:markers",
+  "ci:markers:smoke",
   "release:gate",
   "package:dry-run",
   "publish:readiness"

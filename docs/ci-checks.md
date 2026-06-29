@@ -70,6 +70,7 @@ The readiness gate runs:
 - `npm run docs:links`
 - `npm run docs:command-setup`
 - `npm run safety:scan`
+- `npm run ci:markers:smoke`
 
 `npm run ci:check` remains as a sub-gate inside `npm run publish:readiness`.
 
@@ -90,6 +91,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` | Boundary smoke failures remain useful to diagnose when a synthetic check breaks. |
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok command docs setup` | Readiness summary, required readiness docs, local Markdown links, and command-doc setup pointers are current. |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` | Public-safety scan found no obvious private-data or secret findings. |
+| CI marker self-smoke | `ok ci markers smoke` | The marker helper accepts a complete synthetic log and rejects an incomplete synthetic log. |
 
 If one marker group is missing, inspect the command that owns that group before treating CI as release-ready.
 
@@ -111,6 +113,14 @@ gh run view <run-id> --log | npm run ci:markers -- -
 The helper checks the stable marker groups above and exits non-zero when required marker evidence is missing.
 
 It does not call GitHub by itself, publish, deploy, start runtime services, connect to databases, or use real data.
+
+Run only the marker helper self-smoke:
+
+```bash
+npm run ci:markers:smoke
+```
+
+The self-smoke is part of package readiness and verifies that `ci:markers` passes a synthetic complete log and fails a synthetic incomplete log.
 
 ## Public-Safety Scan
 

@@ -35,6 +35,7 @@ This command runs:
 - `npm run docs:links`
 - `npm run docs:command-setup`
 - `npm run safety:scan`
+- `npm run ci:markers:smoke`
 
 The `ci:check` sub-gate includes:
 
@@ -57,6 +58,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok command docs setup` |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` |
+| CI marker self-smoke | `ok ci markers smoke` |
 
 The Docs and readiness row proves the readiness summary, required readiness docs, local Markdown links, and command-doc setup pointers are current.
 
@@ -74,6 +76,14 @@ npm run ci:markers -- /tmp/source-wire-readiness.log
 The marker helper reads a log file or stdin, checks the stable marker groups above, and exits non-zero when required marker evidence is missing.
 
 It does not run readiness, call GitHub, publish, deploy, start runtime services, connect to databases, or use real data.
+
+Run only the marker helper self-smoke:
+
+```bash
+npm run ci:markers:smoke
+```
+
+The self-smoke checks that a synthetic complete log passes `ci:markers` and a synthetic incomplete log fails.
 
 ## Package Required Paths
 

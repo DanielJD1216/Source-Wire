@@ -32,6 +32,10 @@ During local development, build first:
 npm run build
 ```
 
+Small import examples live in [TypeScript Examples](../examples/typescript/README.md).
+
+Those examples use the package import shape while local typechecking maps `@source-wire/contracts` to `src/index.ts`.
+
 ## Runtime Boundary Exports
 
 | Export | Kind | Purpose |
@@ -197,6 +201,7 @@ Related doc:
 Related docs:
 
 - [Fixtures README](../examples/fixtures/README.md)
+- [TypeScript Examples](../examples/typescript/README.md)
 - [Quickstart](quickstart.md)
 
 ## What Is Not Exported

@@ -24,6 +24,7 @@ It is not a runtime backend and it is not published to npm yet.
 
 - [Quickstart](quickstart.md)
 - [API Reference](api-reference.md)
+- [TypeScript Examples](../examples/typescript/README.md)
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 - [CI Checks](ci-checks.md)

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "noEmit": true,
+    "rootDir": "../..",
+    "paths": {
+      "@source-wire/contracts": ["../../src/index.ts"]
+    }
+  },
+  "include": ["./**/*.ts"]
+}

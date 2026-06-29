@@ -16,6 +16,16 @@ They are designed to test public Source-Wire contracts without using real privat
 
 ## Validate Schema-Backed Fixtures
 
+Use Node.js 22 with npm from the repository root.
+
+For the complete local setup path, read the [Quickstart](../../docs/quickstart.md).
+
+Install dependencies first:
+
+```bash
+npm install
+```
+
 Build first:
 
 ```bash

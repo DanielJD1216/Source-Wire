@@ -1,0 +1,79 @@
+{
+  "$id": "second-brain-v1.schema.json",
+  "title": "Source-Wire second-brain.v1 Fixture",
+  "type": "object",
+  "required": ["fixtureType", "fixtureSafety", "request", "response"],
+  "additionalProperties": false,
+  "properties": {
+    "fixtureType": {
+      "const": "source-wire-public-second-brain-example"
+    },
+    "fixtureSafety": {
+      "const": "synthetic"
+    },
+    "request": {
+      "type": "object",
+      "required": ["command", "prompt", "radius"],
+      "additionalProperties": false,
+      "properties": {
+        "command": { "const": "/2nd-brain" },
+        "prompt": { "type": "string", "minLength": 1 },
+        "radius": { "enum": ["project", "source", "global"] }
+      }
+    },
+    "response": {
+      "type": "object",
+      "required": [
+        "contractVersion",
+        "intent",
+        "radius",
+        "answer",
+        "citations",
+        "gaps",
+        "nextAction",
+        "maintenanceRan",
+        "noAutoPromotion"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "contractVersion": { "const": "second-brain.v1" },
+        "intent": {
+          "enum": ["answer_question", "draw_diagram", "update_sources", "search_sources", "summarize_context"]
+        },
+        "radius": { "enum": ["project", "source", "global"] },
+        "answer": { "type": "string", "minLength": 1 },
+        "citations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/citation" }
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["reason"],
+            "additionalProperties": false,
+            "properties": {
+              "reason": { "type": "string", "minLength": 1 },
+              "nextAction": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "nextAction": { "type": "string", "minLength": 1 },
+        "maintenanceRan": { "type": "boolean" },
+        "noAutoPromotion": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "citation": {
+      "type": "object",
+      "required": ["type", "sourceTitle", "locator"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "source_segment" },
+        "sourceTitle": { "type": "string", "minLength": 1 },
+        "locator": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

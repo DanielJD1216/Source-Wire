@@ -1,0 +1,58 @@
+{
+  "$id": "project-context-pack.schema.json",
+  "title": "Source-Wire Public Project Context Pack",
+  "type": "object",
+  "required": ["fixtureType", "fixtureSafety", "project", "goals", "constraints", "decisions", "risks"],
+  "additionalProperties": false,
+  "properties": {
+    "fixtureType": {
+      "const": "source-wire-public-project-context-pack"
+    },
+    "fixtureSafety": {
+      "const": "synthetic"
+    },
+    "project": {
+      "type": "object",
+      "required": ["key", "name", "status", "summary"],
+      "additionalProperties": false,
+      "properties": {
+        "key": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 }
+      }
+    },
+    "goals": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "constraints": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "decisions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/note" },
+      "minItems": 1
+    },
+    "risks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/note" },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "note": {
+      "type": "object",
+      "required": ["id", "title", "content"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "content": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

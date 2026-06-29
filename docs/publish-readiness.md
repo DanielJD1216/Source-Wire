@@ -18,6 +18,7 @@ This command runs:
 - `npm run release:gate`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
+- `npm run docs:links`
 - `npm run safety:scan`
 
 ## Package Dry Run
@@ -45,6 +46,22 @@ The consumer smoke check builds and packs Source-Wire locally, creates a tempora
 It does not publish npm.
 
 It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Docs Link Check
+
+Run only the docs link check:
+
+```bash
+npm run docs:links
+```
+
+The docs link check validates local Markdown links in README, docs, and examples.
+
+It ignores external URLs, mailto links, and pure page anchors.
+
+It strips optional anchor fragments before checking local file or directory targets.
+
+It does not validate external URL availability or anchor existence.
 
 ## Expected Package Contents
 

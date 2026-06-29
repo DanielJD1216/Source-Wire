@@ -89,6 +89,16 @@ This creates a temporary external TypeScript project, installs a locally packed 
 
 It does not publish npm or run backend behavior.
 
+## Check Local Docs Links
+
+```bash
+npm run docs:links
+```
+
+This validates local Markdown links in README, docs, and examples.
+
+It does not check external URLs or anchor existence.
+
 ## What The Fixtures Are For
 
 | Fixture | Purpose | CLI schema |

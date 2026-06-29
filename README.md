@@ -99,6 +99,9 @@ All fixtures are fictional and synthetic.
 - [Chat export fixture](examples/fixtures/chat-export/agent-session.jsonl)
 - [Project context pack fixture](examples/fixtures/project-context-pack/project-context.json)
 - [`/2nd-brain` example fixture](examples/fixtures/second-brain/use-2nd-brain-example.json)
+- [Owner-hosted API plus MCP boundary fixture](examples/fixtures/owner-hosted-api-mcp-boundary/)
+
+The owner-hosted API plus MCP boundary fixture contains synthetic proof cases only. It is not schema-backed or validated by the current CLI.
 
 ## Safety Rule
 

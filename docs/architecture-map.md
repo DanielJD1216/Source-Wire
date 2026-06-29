@@ -138,7 +138,14 @@ Current schema-backed fixture lanes:
 | `/2nd-brain` | `second-brain-v1` | `examples/fixtures/second-brain/use-2nd-brain-example.json` |
 | Chat Export | `chat-export-message` | `examples/fixtures/chat-export/agent-session.jsonl` |
 
-Markdown vault fixtures are included as source-evidence examples, but they are not schema-validated yet.
+Example-only fixture lanes:
+
+| Lane | Fixture | Current validation status |
+| --- | --- | --- |
+| Markdown Vault | `examples/fixtures/markdown-vault/` | Not schema-validated yet. |
+| Owner-Hosted API Plus MCP Boundary | `examples/fixtures/owner-hosted-api-mcp-boundary/` | Not schema-validated yet. |
+
+Markdown vault and owner-hosted API plus MCP boundary fixtures are included as source-evidence and runtime-boundary examples, but they are not schema-validated yet.
 
 Related docs:
 

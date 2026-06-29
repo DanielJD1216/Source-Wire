@@ -75,6 +75,13 @@ node dist/cli.js validate second-brain-v1 examples/fixtures/second-brain/use-2nd
 node dist/cli.js validate chat-export-message examples/fixtures/chat-export/agent-session.jsonl
 ```
 
+The CLI validates only the three schema-backed fixtures above.
+
+Example-only fixtures are public-safe references, not schema-backed validation targets:
+
+- [Markdown vault fixture](../examples/fixtures/markdown-vault/)
+- [Owner-hosted API plus MCP boundary fixture](../examples/fixtures/owner-hosted-api-mcp-boundary/README.md)
+
 ## 4. Run The Full Readiness Gate
 
 ```bash

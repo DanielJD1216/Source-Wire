@@ -141,10 +141,11 @@ It does not check external URLs or anchor existence.
 | `examples/fixtures/second-brain/use-2nd-brain-example.json` | Synthetic second-brain response shape. | `second-brain-v1` |
 | `examples/fixtures/chat-export/agent-session.jsonl` | Synthetic chat export message lines. | `chat-export-message` |
 | `examples/fixtures/markdown-vault/` | Synthetic Markdown vault evidence examples. | Not schema-validated by the current CLI. |
+| `examples/fixtures/owner-hosted-api-mcp-boundary/` | Synthetic owner-hosted API plus MCP boundary proof cases. | Not schema-validated by the current CLI. |
 
 `npm run consumer:smoke` validates the three schema-backed fixtures from the installed package path under `node_modules/@source-wire/contracts`.
 
-Markdown vault fixtures are intentionally not part of the installed fixture validation matrix until Source-Wire has a Markdown vault schema.
+Markdown vault and owner-hosted API plus MCP boundary fixtures are intentionally not part of the installed fixture validation matrix until Source-Wire has matching schemas.
 
 More detail:
 

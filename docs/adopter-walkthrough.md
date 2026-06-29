@@ -102,6 +102,8 @@ ok readiness report
 Findings: 0 high=0 medium=0 low=0
 ```
 
+This is only the short sample. For the full local marker map, read [Publish Readiness](publish-readiness.md). For the same markers from the GitHub Actions perspective, read [CI Checks](ci-checks.md).
+
 What this proves:
 
 - TypeScript typechecking passes.

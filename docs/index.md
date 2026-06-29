@@ -15,6 +15,7 @@ It is not a runtime backend and it is not published to npm yet.
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Publish Readiness](publish-readiness.md)
+- [CI Checks](ci-checks.md)
 - [Release Decision](release-decision.md)
 - [License And Version Policy](license-version-policy.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
@@ -34,9 +35,12 @@ It is not a runtime backend and it is not published to npm yet.
 - [TypeScript Examples](../examples/typescript/README.md)
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
+- [Publish Readiness](publish-readiness.md)
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 - [CI Checks](ci-checks.md)
+
+Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:readiness` marker map and [CI Checks](ci-checks.md) for the GitHub Actions Package Checks marker map.
 
 ## Decision Prototypes
 

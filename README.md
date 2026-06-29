@@ -85,6 +85,8 @@ Source-Wire runs package checks and public-safety scanning on push and pull requ
 
 - [CI Checks](docs/ci-checks.md)
 
+The CI docs include a stable log marker map for reading GitHub Actions Package Checks output.
+
 ## Publish Readiness
 
 Source-Wire can run a full local publish readiness gate with package dry-run, installed package smokes, runtime-boundary smokes, docs links, and public-safety checks, but it is not published to npm yet.
@@ -94,6 +96,8 @@ Source-Wire can run a full local publish readiness gate with package dry-run, in
 - [License And Version Policy](docs/license-version-policy.md)
 - [Owner License Approval Packet](docs/owner-license-approval-packet.md)
 - [Future License Change Plan](docs/future-license-change-plan.md)
+
+The publish-readiness docs include a local success marker map for `npm run publish:readiness`.
 
 ## Fixtures
 

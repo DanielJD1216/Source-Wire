@@ -30,6 +30,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 ## Documentation
 
 - [Docs Index](docs/index.md)
+- [Public Adopter Walkthrough](docs/adopter-walkthrough.md)
 - [Quickstart](docs/quickstart.md)
 - [API Reference](docs/api-reference.md)
 - [TypeScript Examples](examples/typescript/README.md)

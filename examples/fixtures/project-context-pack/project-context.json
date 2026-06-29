@@ -1,0 +1,34 @@
+{
+  "fixtureType": "source-wire-public-project-context-pack",
+  "fixtureSafety": "synthetic",
+  "project": {
+    "key": "atlas-demo-workspace",
+    "name": "Atlas Demo Workspace",
+    "status": "active",
+    "summary": "A fictional project used to test public Source-Wire memory architecture examples."
+  },
+  "goals": [
+    "Import source notes without trusting them automatically.",
+    "Return answers with citations.",
+    "Prepare memory candidates for human review."
+  ],
+  "constraints": [
+    "Use synthetic fixture data only.",
+    "Do not include real local paths, real domains, screenshots, tokens, or private source titles.",
+    "Keep source evidence separate from trusted memory until reviewed."
+  ],
+  "decisions": [
+    {
+      "id": "decision-001",
+      "title": "Source evidence before trusted memory",
+      "content": "Imported notes and chat messages should be preserved as source evidence before any trusted memory is created."
+    }
+  ],
+  "risks": [
+    {
+      "id": "risk-001",
+      "title": "Overconfident memory extraction",
+      "content": "A demo agent could treat every imported statement as trusted. The fixture should prove the review boundary."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "fixtureType": "source-wire-public-second-brain-example",
+  "fixtureSafety": "synthetic",
+  "request": {
+    "command": "/2nd-brain",
+    "prompt": "What is the current decision for the Atlas Demo Workspace?",
+    "radius": "project"
+  },
+  "response": {
+    "contractVersion": "second-brain.v1",
+    "intent": "answer_question",
+    "radius": "project",
+    "answer": "The current decision is to import notes as source evidence before creating trusted memory.",
+    "citations": [
+      {
+        "type": "source_segment",
+        "sourceTitle": "Atlas Demo Workspace",
+        "locator": "Current Decision"
+      },
+      {
+        "type": "source_segment",
+        "sourceTitle": "Operating Rules",
+        "locator": "Rules"
+      }
+    ],
+    "gaps": [],
+    "nextAction": "Review any proposed memory candidate before promotion.",
+    "maintenanceRan": false,
+    "noAutoPromotion": true
+  }
+}

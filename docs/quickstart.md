@@ -8,8 +8,10 @@ It does not run a backend, sync sources, connect to MCP, call a database, create
 
 ## Prerequisites
 
-- Node.js with npm.
+- Node.js 22 with npm.
 - Git.
+
+Node.js 22 matches GitHub Actions Package Checks.
 
 The package is not published to npm yet, so use the local repository checkout.
 

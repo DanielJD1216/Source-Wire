@@ -53,7 +53,9 @@
     "verify:schema-exports": "npm run build && node scripts/verify-schema-exports.mjs",
     "cli:smoke": "npm run build && node scripts/cli-smoke.mjs",
     "safety:scan": "node scripts/public-safety-scan.mjs",
-    "ci:check": "npm run typecheck && npm run build && npm test && npm run validate:fixtures && npm run verify:schema-exports && npm run cli:smoke && npm run safety:scan"
+    "ci:check": "npm run typecheck && npm run build && npm test && npm run validate:fixtures && npm run verify:schema-exports && npm run cli:smoke && npm run safety:scan",
+    "package:dry-run": "npm run build && node scripts/package-dry-run.mjs",
+    "publish:readiness": "npm run ci:check && npm run package:dry-run && npm run safety:scan"
   },
   "devDependencies": {
     "@types/node": "^26.0.1",

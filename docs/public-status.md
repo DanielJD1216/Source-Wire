@@ -87,6 +87,23 @@ ok publishing blocked
 
 For a full marker map, read [Publish Readiness](publish-readiness.md).
 
+## World-Share Readiness
+
+To verify the current sharing boundary directly, run:
+
+```bash
+npm run world:readiness
+```
+
+Expected markers:
+
+```text
+ok world share technical review ready
+blocked world share broad reuse
+```
+
+This means Source-Wire can be shared for technical review, but it still cannot be described as open source, reusable, production-ready, published, released, or hosted.
+
 ## How To Give Feedback
 
 Start with:
@@ -122,6 +139,7 @@ Separate owner approvals are still required before any of these happen:
 Read:
 
 - [Release Decision](release-decision.md)
+- [World-Share Readiness](world-share-readiness.md)
 - [License Approval Rehearsal](license-approval-rehearsal.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)

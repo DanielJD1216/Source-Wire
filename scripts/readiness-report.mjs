@@ -28,6 +28,7 @@ const requiredScripts = [
   "ci:markers",
   "ci:markers:smoke",
   "license:rehearsal",
+  "world:readiness",
   "release:gate",
   "package:dry-run",
   "publish:readiness"
@@ -97,6 +98,7 @@ for (const requiredPath of [
   "docs/license-decision-gate.md",
   "docs/runtime-boundary-readiness.md",
   "docs/publish-readiness.md",
+  "docs/world-share-readiness.md",
   "docs/share-for-review.md",
   "docs/technical-reviewer-guide.md",
   "docs/reviewer-feedback-guide.md",
@@ -158,6 +160,7 @@ printList([
   "docs/license-decision-gate.md records the owner license decision paths while keeping the current license unchanged",
   "docs/runtime-boundary-readiness.md summarizes the runtime-boundary proof lane and blocked runtime scope",
   "docs/publish-readiness.md summarizes the local readiness gate and marker map",
+  "docs/world-share-readiness.md separates technical-review sharing from broad public reuse approval",
   "docs/share-for-review.md gives safe technical-review invite copy, first commands, feedback routing, and review-only boundaries",
   "docs/technical-reviewer-guide.md gives reviewers the clone, verify, inspect, feedback, and license-boundary path",
   "docs/reviewer-feedback-guide.md defines structured public issue feedback without asking for private data",

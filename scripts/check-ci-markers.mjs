@@ -15,6 +15,13 @@ const markerGroups = [
     markers: ["ok package required paths"]
   },
   {
+    name: "world-share boundary",
+    markers: [
+      "ok world share technical review ready",
+      "blocked world share broad reuse"
+    ]
+  },
+  {
     name: "package dry run",
     markers: [
       "ok package dry-run @source-wire/contracts@0.0.0",

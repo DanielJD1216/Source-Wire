@@ -110,6 +110,7 @@ The CI docs include a stable log marker map for reading GitHub Actions Package C
 Source-Wire can run a full local publish readiness gate with package dry-run, installed package smokes, runtime-boundary smokes, docs links, command-doc setup checks, and public-safety checks, but it is not published to npm yet.
 
 - [Publish Readiness](docs/publish-readiness.md)
+- [World-Share Readiness](docs/world-share-readiness.md)
 - [License Approval Rehearsal](docs/license-approval-rehearsal.md)
 - [License Decision Gate](docs/license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](docs/apache-2-license-implementation-readiness.md)

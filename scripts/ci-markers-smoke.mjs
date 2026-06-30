@@ -10,6 +10,8 @@ const completeLog = [
   "ok license UNLICENSED",
   "ok version 0.0.0",
   "ok publishing blocked",
+  "ok world share technical review ready",
+  "blocked world share broad reuse",
   "ok package required paths 55",
   "ok package dry-run @source-wire/contracts@0.0.0",
   "ok package file count 82",
@@ -54,7 +56,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 12 groups 34 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 13 groups 36 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

@@ -22,7 +22,8 @@ Best first pass:
 2. Read docs/share-for-review.md.
 3. Run npm install.
 4. Run npm run readiness:report.
-5. Run npm run publish:readiness if you want the full local verification path.
+5. Run npm run world:readiness to see the current sharing boundary.
+6. Run npm run publish:readiness if you want the full local verification path.
 
 Useful feedback: contract clarity, schema consistency, fixture realism, package install behavior, readiness gate coverage, and whether any doc blurs the license, runtime, data, or trusted-memory boundaries.
 ```
@@ -94,6 +95,19 @@ npm run publish:readiness
 ```
 
 Despite the command name, this does not publish npm.
+
+To check whether Source-Wire is ready for technical review or broad public reuse:
+
+```bash
+npm run world:readiness
+```
+
+Expected markers:
+
+```text
+ok world share technical review ready
+blocked world share broad reuse
+```
 
 ## What To Review
 

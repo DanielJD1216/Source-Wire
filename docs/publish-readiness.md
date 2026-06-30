@@ -25,6 +25,7 @@ This command runs:
 - `npm run ci:check`
 - `npm run release:gate`
 - `npm run license:rehearsal`
+- `npm run world:readiness`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
@@ -55,6 +56,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | --- | --- |
 | Release boundary | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` |
 | License rehearsal | `ok license rehearsal current boundary`, `ok license rehearsal future checklist` |
+| World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` |
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` |
@@ -163,6 +165,18 @@ npm run license:rehearsal
 The rehearsal verifies the current `UNLICENSED` boundary, confirms no `LICENSE` file exists, checks publish and release scripts remain blocked, and prints the future owner-approved Apache-2.0 transition checklist.
 
 It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
+
+## World-Share Readiness
+
+Run only the world-share readiness boundary report:
+
+```bash
+npm run world:readiness
+```
+
+The report separates technical-review readiness from broad public reuse. It exits successfully only when the current review-only boundary is intact: `UNLICENSED`, version `0.0.0`, no `LICENSE` file, npm publishing blocked, release blocked, hosted runtime blocked, and code contributions blocked.
+
+It does not approve open-source launch, publish npm, create a GitHub release, deploy services, add a `LICENSE` file, accept contributions, or grant reuse rights.
 
 ## Package Dry Run
 

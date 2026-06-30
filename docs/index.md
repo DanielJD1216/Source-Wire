@@ -25,6 +25,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Publish Readiness](publish-readiness.md)
+- [World-Share Readiness](world-share-readiness.md)
 - [CI Checks](ci-checks.md)
 - [Repository Metadata](repository-metadata.md)
 - [Release Decision](release-decision.md)
@@ -57,11 +58,12 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Publish Readiness](publish-readiness.md)
+- [World-Share Readiness](world-share-readiness.md)
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 - [CI Checks](ci-checks.md)
 
-Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:readiness` marker map and [CI Checks](ci-checks.md) for the GitHub Actions Package Checks marker map.
+Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:readiness` marker map, [World-Share Readiness](world-share-readiness.md) for the technical-review versus broad-reuse boundary, and [CI Checks](ci-checks.md) for the GitHub Actions Package Checks marker map.
 
 ## Decision Prototypes
 
@@ -76,6 +78,7 @@ Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:rea
 
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [License Approval Rehearsal](license-approval-rehearsal.md)
+- [World-Share Readiness](world-share-readiness.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [Future License Change Plan](future-license-change-plan.md)

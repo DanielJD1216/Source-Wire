@@ -59,8 +59,10 @@ The command verifies:
 - release approval request docs exist,
 - release decision docs exist,
 - launch decision docs exist,
-- package scripts do not include direct `npm publish`,
+- package scripts do not include package-manager publish commands,
 - package scripts do not include direct `gh release`,
+- package scripts do not include release tag creation commands,
+- package scripts do not include package version change commands,
 - package scripts do not include deployment commands.
 
 ## Next Action

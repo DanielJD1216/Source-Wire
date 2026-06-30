@@ -57,6 +57,7 @@ const requiredScripts = [
   "release:review",
   "release:approval-request",
   "release:candidate-readiness",
+  "release-command-guard:smoke",
   "release:gate",
   "package:dry-run",
   "publish:readiness"

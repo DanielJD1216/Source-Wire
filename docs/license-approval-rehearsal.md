@@ -51,8 +51,10 @@ The command reads local repository files and checks that:
 - package version is still `0.0.0`,
 - `publishConfig.access` is still `restricted`,
 - `LICENSE` file exists,
-- package scripts do not contain `npm publish`,
+- package scripts do not contain package-manager publish commands,
 - package scripts do not contain `gh release`,
+- package scripts do not contain release tag creation commands,
+- package scripts do not contain package version change commands,
 - package scripts do not contain common service deployment commands.
 
 It also confirms the Apache-2.0 implementation checklist is complete.

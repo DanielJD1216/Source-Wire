@@ -57,8 +57,10 @@ It still enforces:
 
 - version remains `0.0.0`,
 - `publishConfig.access` remains restricted,
-- scripts do not run `npm publish`,
+- scripts do not run package-manager publish commands,
 - scripts do not create GitHub releases,
+- scripts do not create release tags,
+- scripts do not change package version,
 - scripts do not deploy services.
 
 ## Verification Commands

@@ -12,6 +12,10 @@ const markerGroups = [
     ]
   },
   {
+    name: "release command guard smoke",
+    markers: ["ok blocked release commands smoke"]
+  },
+  {
     name: "release approval request",
     markers: [
       "ok release approval request ready",

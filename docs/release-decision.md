@@ -62,6 +62,8 @@ A later PRD must explicitly approve any of these changes before they happen:
 - deploying a service,
 - adding runtime backend behavior.
 
+For the next license decision, read [License Decision Gate](license-decision-gate.md).
+
 ## Why This Gate Exists
 
 Package readiness only answers: "Can the package shape be checked?"

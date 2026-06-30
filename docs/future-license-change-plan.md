@@ -10,6 +10,8 @@ This plan lists the exact changes that would happen only after the owner approve
 
 It does not change the license now.
 
+For the current one-page owner decision gate, read [License Decision Gate](license-decision-gate.md).
+
 ## Current Boundary
 
 Current Source-Wire state:

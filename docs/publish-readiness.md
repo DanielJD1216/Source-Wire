@@ -392,6 +392,7 @@ The release gate verifies that current package metadata still matches the releas
 Release decision docs:
 
 - [Release Decision](release-decision.md)
+- [License Decision Gate](license-decision-gate.md)
 - [License And Version Policy](license-version-policy.md)
 
 ## What Is Still Blocked

@@ -20,6 +20,7 @@ export const requiredPackagePaths = [
   "docs/first-runtime-prd.md",
   "docs/future-license-change-plan.md",
   "docs/index.md",
+  "docs/license-decision-gate.md",
   "docs/license-version-policy.md",
   "docs/minimal-runtime-implementation-scope.md",
   "docs/minimal-runtime-issue-slices.md",

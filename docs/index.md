@@ -21,6 +21,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Publish Readiness](publish-readiness.md)
 - [CI Checks](ci-checks.md)
 - [Release Decision](release-decision.md)
+- [License Decision Gate](license-decision-gate.md)
 - [License And Version Policy](license-version-policy.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 
@@ -60,6 +61,7 @@ Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:rea
 ## License And Release Planning
 
 - [Owner License Approval Packet](owner-license-approval-packet.md)
+- [License Decision Gate](license-decision-gate.md)
 - [Future License Change Plan](future-license-change-plan.md)
 
 Current state:

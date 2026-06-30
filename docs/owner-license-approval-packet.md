@@ -10,6 +10,8 @@ This packet helps the owner decide the future Source-Wire license path.
 
 It does not approve or perform a license change.
 
+For the current one-page owner decision gate, read [License Decision Gate](license-decision-gate.md).
+
 ## Current State
 
 | Field | Current value |

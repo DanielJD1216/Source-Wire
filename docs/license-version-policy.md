@@ -37,6 +37,8 @@ A later PRD must decide:
 - private data safety review,
 - owner approval.
 
+Use [License Decision Gate](license-decision-gate.md) for the exact owner approval language.
+
 ## Before The Version Can Change
 
 A later PRD must decide:

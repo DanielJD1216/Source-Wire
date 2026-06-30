@@ -2,7 +2,9 @@
 
 Source-Wire exports contract types, schema metadata, validation helpers, and runtime-boundary constants.
 
-It does not export a runtime backend, database client, connector sync engine, MCP server, memory engine, or Mission Control UI.
+It also exports minimal synthetic in-memory runtime boundary helpers for proof cases.
+
+It does not export a hosted runtime backend, database client, connector sync engine, MCP server, memory engine, or Mission Control UI.
 
 ## Package Entry Point
 
@@ -11,14 +13,17 @@ Import from the package root:
 ```ts
 import {
   SOURCE_WIRE_PACKAGE_VERSION,
+  SOURCE_WIRE_MINIMAL_RUNTIME_BOUNDARY,
   SOURCE_WIRE_RUNTIME_BOUNDARY,
   SOURCE_WIRE_SCHEMA_EXPORTS,
   SOURCE_WIRE_VALIDATION_SCHEMA_NAMES,
   isSourceWireValidationSchemaName,
+  runMinimalRuntimeProofCases,
   validateSourceWireFile
 } from "@source-wire/contracts";
 
 import type {
+  SourceWireMinimalRuntimeProofResult,
   SourceWireRuntimeBoundary,
   SourceWireSourceGraph,
   SourceWireSecondBrainResponse,
@@ -51,6 +56,10 @@ Those examples use the package import shape while local typechecking maps `@sour
 | `SOURCE_WIRE_PACKAGE_VERSION` | value | Current package version string. Currently `0.0.0`. |
 | `SourceWireRuntimeBoundary` | type | Compile-time shape for the runtime boundary object. |
 | `SOURCE_WIRE_RUNTIME_BOUNDARY` | value | Declares this package is a contract skeleton, not runtime software. |
+| `SOURCE_WIRE_MINIMAL_RUNTIME_BOUNDARY` | value | Declares the minimal synthetic in-memory runtime proof boundary. |
+| `runMinimalRuntimeProofCase` | function | Runs one synthetic owner-hosted API plus MCP proof case through the in-memory policy boundary. |
+| `runMinimalRuntimeProofCases` | function | Runs multiple synthetic proof cases through the in-memory policy boundary. |
+| `SourceWireMinimalRuntimeProofResult` | type | Result shape returned by minimal runtime proof helpers. |
 
 Example:
 
@@ -58,7 +67,7 @@ Example:
 import { SOURCE_WIRE_RUNTIME_BOUNDARY } from "@source-wire/contracts";
 
 if (SOURCE_WIRE_RUNTIME_BOUNDARY.runtimeIncluded === false) {
-  console.log("Source-Wire is contracts only.");
+  console.log("Source-Wire has no hosted runtime backend.");
 }
 ```
 
@@ -73,6 +82,34 @@ Current runtime boundary values:
   missionControlIncluded: false
 }
 ```
+
+Minimal synthetic runtime boundary values:
+
+```ts
+{
+  hosting: "owner_hosted",
+  implementationMode: "synthetic_in_memory",
+  sourceWireHostsUserMemory: false,
+  apiServerIncluded: false,
+  mcpServerIncluded: false,
+  databaseIncluded: false,
+  noAutoPromotionByDefault: true
+}
+```
+
+Example:
+
+```ts
+import {
+  SOURCE_WIRE_MINIMAL_RUNTIME_BOUNDARY,
+  runMinimalRuntimeProofCases
+} from "@source-wire/contracts";
+
+console.log(SOURCE_WIRE_MINIMAL_RUNTIME_BOUNDARY.implementationMode);
+console.log(runMinimalRuntimeProofCases([]));
+```
+
+For a fuller consumer-style example, read [minimal-runtime.ts](../examples/typescript/minimal-runtime.ts).
 
 ## Schema Registry Exports
 

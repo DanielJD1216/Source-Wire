@@ -2,7 +2,7 @@
 
 This walkthrough gives a new adopter one practical path through the current Source-Wire package.
 
-Source-Wire is a public contract package skeleton. It defines contract shapes, schemas, fixtures, examples, validation tools, and package-readiness checks for agent-first memory systems.
+Source-Wire is a public contract package skeleton with a minimal synthetic in-memory runtime boundary. It defines contract shapes, schemas, fixtures, examples, validation tools, and package-readiness checks for agent-first memory systems.
 
 It does not run a memory backend, API server, MCP server, database, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
 
@@ -37,7 +37,7 @@ Source-Wire Package Readiness Report
 Package: @source-wire/contracts
 Version: 0.0.0
 License: UNLICENSED
-Runtime boundary: contracts only, no backend runtime included
+Runtime boundary: synthetic in-memory boundary only, no backend runtime included
 ok readiness report
 ```
 
@@ -45,7 +45,7 @@ What this proves:
 
 - The package posture is readable in one place.
 - The current version and license boundary are explicit.
-- The package is still contracts-only.
+- The package is still a contract skeleton with only synthetic in-memory runtime proof code.
 - The report can summarize package exports, schemas, commands, installed smokes, required readiness docs, and blocked scope without running the full readiness gate.
 
 ## 3. Validate The Synthetic Fixtures
@@ -102,6 +102,7 @@ ok installed runtime readiness summary
 ok installed runtime readiness summary content
 ok installed package docs links
 ok installed examples package-root imports
+ok minimal runtime boundary smoke
 ok readiness report
 Findings: 0 high=0 medium=0 low=0
 ```
@@ -150,7 +151,7 @@ Expected markers:
 
 ```text
 ok examples installed smoke @source-wire/contracts@0.0.0
-ok installed TypeScript examples 4 files
+ok installed TypeScript examples 5 files
 ok installed examples package-root imports
 ```
 
@@ -162,13 +163,14 @@ What this proves:
 
 ## 6. Understand Installed Package Smokes
 
-Source-Wire has five installed-package or runtime-boundary smoke checks:
+Source-Wire has six installed-package or runtime-boundary smoke checks:
 
 | Command | What it proves |
 | --- | --- |
 | `npm run consumer:smoke` | A temporary external project can install the packed tarball, import the package root, run the installed `source-wire` CLI, and validate schema-backed installed fixtures. |
 | `npm run package:content-smoke` | Installed required paths exist, installed `README.md`, `docs`, and `examples` local Markdown links work from `node_modules/@source-wire/contracts`, and the installed runtime readiness summary exists with its protected content assertions. |
 | `npm run examples:installed-smoke` | Public TypeScript examples typecheck against installed package declarations without repo-local path mapping. |
+| `npm run minimal-runtime:smoke` | Exported synthetic in-memory runtime boundary code matches owner-hosted API plus MCP proof cases. |
 | `npm run runtime-boundary:installed-smoke` | The packaged synthetic runtime-boundary example runs from an installed tarball. |
 | `npm run runtime-boundary:diagnostics-smoke` | The synthetic runtime-boundary failure message keeps the failed check name, assertion, expected value, received value, and next action visible. |
 
@@ -177,10 +179,22 @@ These checks are package-confidence checks. They are not runtime integration tes
 Optional local-only runtime boundary smoke:
 
 ```bash
+npm run minimal-runtime:smoke
+```
+
+Expected marker:
+
+```text
+ok minimal runtime boundary smoke
+```
+
+Original synthetic runtime-boundary example smoke:
+
+```bash
 npm run runtime-boundary:smoke
 ```
 
-This smoke uses synthetic data only. It does not start a server, connect to a database, add package exports, or imply Source-Wire hosts memory.
+These smokes use synthetic data only. They do not start a server, connect to a database, or imply Source-Wire hosts memory.
 
 Installed runtime-boundary smoke:
 

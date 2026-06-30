@@ -33,7 +33,7 @@ npm install
 ## Examples
 
 - [minimal-runtime.ts](minimal-runtime.ts), imports the minimal synthetic runtime boundary from the package root and runs synthetic proof cases.
-- [runtime-boundary.ts](runtime-boundary.ts), confirms the package is contracts only.
+- [runtime-boundary.ts](runtime-boundary.ts), confirms the package has no hosted runtime backend.
 - [schema-registry.ts](schema-registry.ts), reads the exported JSON schema registry metadata.
 - [validation-helper.ts](validation-helper.ts), shows explicit file validation helper usage.
 - [contract-types.ts](contract-types.ts), creates synthetic Source Graph, Source Connection, MCP behavior, and `/2nd-brain` contract payloads.

@@ -20,8 +20,8 @@ export const syntheticProjectContextPack: SourceWireProjectContextPack = {
   decisions: [
     {
       id: "decision-001",
-      title: "Keep Source-Wire contracts only",
-      content: "The public package describes shapes before shipping runtime behavior."
+      title: "Keep Source-Wire contract skeleton clear",
+      content: "The public package describes shapes before shipping hosted runtime behavior."
     }
   ],
   risks: [
@@ -61,7 +61,7 @@ export const syntheticSourceGraph: SourceWireSourceGraph = {
       sourceItemId: "item-demo-context",
       title: "Decision",
       locator: "decisions[0]",
-      content: "The public package describes shapes before shipping runtime behavior.",
+      content: "The public package describes shapes before shipping hosted runtime behavior.",
       citation: {
         type: "source_segment",
         sourceTitle: "Demo Context",

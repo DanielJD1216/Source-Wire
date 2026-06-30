@@ -175,7 +175,7 @@ It checks installed `README.md`, `docs`, and `examples` local links from `node_m
 
 The installed readiness summary content assertions protect:
 
-- no runtime implementation is included,
+- only a minimal synthetic in-memory runtime boundary is included,
 - Source-Wire-hosted memory remains blocked,
 - Source-Wire does not host memory,
 - trusted memory requires owner or application approval.
@@ -184,7 +184,7 @@ Expected markers include `ok installed required paths`, `ok installed runtime re
 
 This is different from `npm run docs:links`, which checks links in the repository checkout.
 
-Installed TypeScript example typechecking is outside this check because the current examples intentionally use repo-local TypeScript path mapping.
+Installed TypeScript example typechecking is handled by `npm run examples:installed-smoke`.
 
 It does not publish npm.
 

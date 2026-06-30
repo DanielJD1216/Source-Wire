@@ -24,6 +24,7 @@ This command runs:
 
 - `npm run ci:check`
 - `npm run release:gate`
+- `npm run license:rehearsal`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
@@ -52,6 +53,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Area | Markers to look for |
 | --- | --- |
 | Release boundary | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` |
+| License rehearsal | `ok license rehearsal current boundary`, `ok license rehearsal future checklist` |
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` |
@@ -121,6 +123,18 @@ It does not run the full readiness gate. Use `npm run publish:readiness` for ver
 It does not publish npm.
 
 It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## License Approval Rehearsal
+
+Run only the read-only license approval rehearsal:
+
+```bash
+npm run license:rehearsal
+```
+
+The rehearsal verifies the current `UNLICENSED` boundary, confirms no `LICENSE` file exists, checks publish and release scripts remain blocked, and prints the future owner-approved Apache-2.0 transition checklist.
+
+It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
 
 ## Package Dry Run
 

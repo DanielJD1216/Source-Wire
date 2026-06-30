@@ -121,6 +121,7 @@ Separate owner approvals are still required before any of these happen:
 Read:
 
 - [Release Decision](release-decision.md)
+- [License Approval Rehearsal](license-approval-rehearsal.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 

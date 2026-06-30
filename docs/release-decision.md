@@ -66,6 +66,8 @@ A later PRD must explicitly approve any of these changes before they happen:
 
 For the next license decision, read [License Decision Gate](license-decision-gate.md).
 
+Before any future license implementation, run the read-only [License Approval Rehearsal](license-approval-rehearsal.md) to confirm the current release boundary remains blocked.
+
 ## Why This Gate Exists
 
 Package readiness only answers: "Can the package shape be checked?"

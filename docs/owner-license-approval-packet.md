@@ -14,6 +14,8 @@ For the current one-page owner decision gate, read [License Decision Gate](licen
 
 For the exact future Apache-2.0 checklist, read [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md).
 
+For the read-only pre-approval command check, read [License Approval Rehearsal](license-approval-rehearsal.md).
+
 ## Current State
 
 | Field | Current value |

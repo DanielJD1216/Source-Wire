@@ -27,6 +27,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [CI Checks](ci-checks.md)
 - [Repository Metadata](repository-metadata.md)
 - [Release Decision](release-decision.md)
+- [License Approval Rehearsal](license-approval-rehearsal.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [License And Version Policy](license-version-policy.md)
@@ -72,6 +73,7 @@ Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:rea
 ## License And Release Planning
 
 - [Owner License Approval Packet](owner-license-approval-packet.md)
+- [License Approval Rehearsal](license-approval-rehearsal.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [Future License Change Plan](future-license-change-plan.md)

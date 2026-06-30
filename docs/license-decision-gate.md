@@ -42,6 +42,8 @@ That unit should still keep npm publishing, GitHub release publishing, deploymen
 
 For the exact future implementation checklist, read [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md).
 
+Before executing any future license implementation, run the read-only [License Approval Rehearsal](license-approval-rehearsal.md) to verify the current blocked boundary and preview the transition checklist.
+
 ## Exact Owner Approval Language
 
 Use one of these exact statements.
@@ -97,7 +99,13 @@ Install dependencies first:
 npm install
 ```
 
-Expected checks for an Apache-2.0 implementation unit:
+Expected pre-implementation check:
+
+```bash
+npm run license:rehearsal
+```
+
+Expected post-implementation checks for an Apache-2.0 implementation unit:
 
 ```bash
 test -f LICENSE

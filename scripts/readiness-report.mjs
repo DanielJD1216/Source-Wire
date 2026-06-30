@@ -25,6 +25,7 @@ const requiredScripts = [
   "package:required-paths",
   "ci:markers",
   "ci:markers:smoke",
+  "license:rehearsal",
   "release:gate",
   "package:dry-run",
   "publish:readiness"
@@ -86,6 +87,7 @@ for (const requiredPath of [
   "README.md",
   "docs/apache-2-license-implementation-readiness.md",
   "docs/first-time-visitor-share-readiness-audit.md",
+  "docs/license-approval-rehearsal.md",
   "docs/public-status.md",
   "docs/repository-metadata.md",
   "docs/quickstart.md",
@@ -144,6 +146,7 @@ printList([
   "README.md is the package entrypoint and public boundary summary",
   "docs/apache-2-license-implementation-readiness.md records the future Apache-2.0 implementation checklist without changing the current license",
   "docs/first-time-visitor-share-readiness-audit.md records technical-review readiness and broad-reuse blockers",
+  "docs/license-approval-rehearsal.md records the read-only approval rehearsal and current boundary checks before license implementation",
   "docs/public-status.md states the public review, license, release, publishing, runtime, and reuse boundaries",
   "docs/repository-metadata.md explains GitHub metadata, support, security, contribution, and CI visibility boundaries",
   "docs/quickstart.md defines local setup and first-run commands",

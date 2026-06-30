@@ -107,6 +107,7 @@ The CI docs include a stable log marker map for reading GitHub Actions Package C
 Source-Wire can run a full local publish readiness gate with package dry-run, installed package smokes, runtime-boundary smokes, docs links, command-doc setup checks, and public-safety checks, but it is not published to npm yet.
 
 - [Publish Readiness](docs/publish-readiness.md)
+- [License Approval Rehearsal](docs/license-approval-rehearsal.md)
 - [License Decision Gate](docs/license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](docs/apache-2-license-implementation-readiness.md)
 - [Release Decision](docs/release-decision.md)
@@ -115,6 +116,14 @@ Source-Wire can run a full local publish readiness gate with package dry-run, in
 - [Future License Change Plan](docs/future-license-change-plan.md)
 
 The publish-readiness docs include a local success marker map for `npm run publish:readiness`.
+
+Run the read-only license approval rehearsal before any future license implementation:
+
+```bash
+npm run license:rehearsal
+```
+
+It verifies the current `UNLICENSED` boundary and prints the future owner-approved Apache-2.0 transition checklist. It does not add a `LICENSE` file, publish, release, deploy, or grant reuse rights.
 
 ## Fixtures
 

@@ -22,6 +22,7 @@ export const requiredPackagePaths = [
   "docs/first-time-visitor-share-readiness-audit.md",
   "docs/future-license-change-plan.md",
   "docs/index.md",
+  "docs/license-approval-rehearsal.md",
   "docs/license-decision-gate.md",
   "docs/license-version-policy.md",
   "docs/minimal-runtime-implementation-scope.md",

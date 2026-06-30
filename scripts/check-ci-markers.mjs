@@ -20,6 +20,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "release implementation plan",
+    markers: [
+      "ok release implementation plan ready",
+      "ok release version target documented",
+      "blocked release execution approval missing"
+    ]
+  },
+  {
     name: "release review",
     markers: [
       "ok release review packet ready",

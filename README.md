@@ -112,6 +112,7 @@ Source-Wire can run a full local publish readiness gate with package dry-run, in
 - [Publish Readiness](docs/publish-readiness.md)
 - [World-Share Readiness](docs/world-share-readiness.md)
 - [Owner Launch Checklist](docs/owner-launch-checklist.md)
+- [Release Implementation Runbook](docs/release-implementation-runbook.md)
 - [Release Review Packet](docs/release-review-packet.md)
 - [Release Approval Request Packet](docs/release-approval-request-packet.md)
 - [Release Candidate Readiness](docs/release-candidate-readiness.md)

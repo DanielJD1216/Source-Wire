@@ -184,6 +184,8 @@ When a command fails, capture:
 
 Then open an issue with the failure details.
 
+Use [Reviewer Feedback Guide](reviewer-feedback-guide.md) to choose the right issue template and avoid unsafe data.
+
 ## What Approval Would Unlock Later
 
 Separate owner approvals are still needed for:

@@ -1,0 +1,63 @@
+name: Docs or contract feedback
+description: Suggest a clearer contract, schema, fixture, example, or doc.
+title: "[docs-contract] "
+labels:
+  - docs
+  - contracts
+  - reviewer-feedback
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for specific feedback on public docs, contracts, schemas, fixtures, or examples.
+
+        Do not submit real user data, client data, private screenshots, private implementation history, local paths, tokens, emails, domains, account IDs, or production exports.
+  - type: input
+    id: file
+    attributes:
+      label: File or surface
+      description: Name the doc, schema, fixture, command, or contract surface.
+      placeholder: docs/contracts/source-graph-adapter-contract.md
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is unclear or wrong?
+      description: Be specific enough that the issue can be verified.
+      placeholder: The Source Item field is unclear because...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What would be clearer?
+      description: Suggest wording, an example, a schema adjustment, or a testable acceptance criterion.
+      placeholder: Add an example showing...
+    validations:
+      required: false
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Source Graph
+        - Source Connection
+        - second-brain.v1
+        - MCP tool behavior
+        - Runtime boundary
+        - Validation CLI
+        - Fixtures
+        - Package readiness
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundary-check
+    attributes:
+      label: Safety check
+      options:
+        - label: I used only synthetic examples or public repo references.
+          required: true
+        - label: I understand this repo is currently UNLICENSED and this issue is review feedback, not permission to reuse or redistribute the project.
+          required: true

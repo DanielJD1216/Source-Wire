@@ -1,0 +1,64 @@
+name: Boundary or safety concern
+description: Report a claim that may blur license, runtime, data, privacy, or trusted-memory boundaries.
+title: "[boundary] "
+labels:
+  - boundary
+  - safety
+  - reviewer-feedback
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when Source-Wire appears to imply more than it currently provides or permits.
+
+        Examples: license confusion, npm publishing confusion, hosted-runtime confusion, real-data risk, or trusted-memory auto-promotion confusion.
+
+        Do not paste secrets, private data, local private paths, production exports, account IDs, client names, private screenshots, or real source payloads.
+  - type: dropdown
+    id: boundary
+    attributes:
+      label: Boundary type
+      options:
+        - License or reuse
+        - npm publishing
+        - GitHub release
+        - Hosted runtime
+        - MCP server runtime
+        - Database or migrations
+        - Real user data
+        - Trusted memory auto-promotion
+        - Connector or live sync
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: Link or name the file, command output, README section, or issue template.
+      placeholder: README.md, docs/runtime-boundary.md, npm run readiness:report
+    validations:
+      required: true
+  - type: textarea
+    id: concern
+    attributes:
+      label: Concern
+      description: Explain the boundary problem in testable terms.
+      placeholder: This section sounds like Source-Wire hosts memory, but the runtime gate says hosted runtime is blocked.
+    validations:
+      required: true
+  - type: textarea
+    id: safer-wording
+    attributes:
+      label: Safer wording or expected boundary
+      description: Optional, suggest how the claim should be narrowed.
+      placeholder: Say synthetic in-memory runtime boundary instead of hosted runtime.
+    validations:
+      required: false
+  - type: checkboxes
+    id: boundary-check
+    attributes:
+      label: Safety check
+      options:
+        - label: I did not include secrets, private data, local private paths, production exports, account IDs, client names, private screenshots, or real source payloads.
+          required: true

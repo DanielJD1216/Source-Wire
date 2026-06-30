@@ -32,6 +32,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 
 - [Docs Index](docs/index.md)
 - [Technical Reviewer Guide](docs/technical-reviewer-guide.md)
+- [Reviewer Feedback Guide](docs/reviewer-feedback-guide.md)
 - [Public Adopter Walkthrough](docs/adopter-walkthrough.md)
 - [Architecture Map](docs/architecture-map.md)
 - [Quickstart](docs/quickstart.md)

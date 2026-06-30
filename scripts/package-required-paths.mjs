@@ -32,6 +32,7 @@ export const requiredPackagePaths = [
   "docs/publish-readiness.md",
   "docs/quickstart.md",
   "docs/release-decision.md",
+  "docs/reviewer-feedback-guide.md",
   "docs/runtime-boundary-readiness.md",
   "docs/runtime-boundary.md",
   "docs/runtime-implementation-gate.md",

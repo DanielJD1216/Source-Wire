@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { assertNoBlockedReleaseCommands } from "./blocked-release-commands.mjs";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const packageLock = JSON.parse(await readFile("package-lock.json", "utf8"));
@@ -13,23 +14,7 @@ assertEqual(packageLock.packages?.[""]?.version, packageJson.version, "package-l
 assertEqual(packageLock.packages?.[""]?.license, packageJson.license, "package-lock root license must match package.json");
 assertEqual(packageLock.packages?.[""]?.bin?.["source-wire"], "dist/cli.js", "package-lock root bin must include source-wire CLI");
 
-for (const [scriptName, scriptValue] of Object.entries(packageJson.scripts ?? {})) {
-  if (scriptName === "publish:readiness") {
-    continue;
-  }
-
-  if (/\bnpm\s+publish\b/.test(scriptValue)) {
-    failures.push(`script ${scriptName} includes npm publish`);
-  }
-
-  if (/\bgh\s+release\b/.test(scriptValue)) {
-    failures.push(`script ${scriptName} includes gh release`);
-  }
-
-  if (/\b(?:vercel|netlify|wrangler|flyctl|railway)\s+(?:deploy|publish|up)\b/.test(scriptValue)) {
-    failures.push(`script ${scriptName} includes service deployment`);
-  }
-}
+assertNoBlockedReleaseCommands(packageJson.scripts, failures);
 
 if (failures.length > 0) {
   for (const failure of failures) {

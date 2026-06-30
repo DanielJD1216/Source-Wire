@@ -1,4 +1,5 @@
 import { readFile, stat } from "node:fs/promises";
+import { assertNoBlockedReleaseCommands } from "./blocked-release-commands.mjs";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
@@ -23,23 +24,7 @@ for (const requiredPath of [
   await assertPathExists(requiredPath);
 }
 
-for (const [scriptName, scriptValue] of Object.entries(packageJson.scripts ?? {})) {
-  if (scriptName === "publish:readiness") {
-    continue;
-  }
-
-  if (/\bnpm\s+publish\b/.test(scriptValue)) {
-    failures.push(`script ${scriptName} includes npm publish`);
-  }
-
-  if (/\bgh\s+release\b/.test(scriptValue)) {
-    failures.push(`script ${scriptName} includes gh release`);
-  }
-
-  if (/\b(?:vercel|netlify|wrangler|flyctl|railway)\s+(?:deploy|publish|up)\b/.test(scriptValue)) {
-    failures.push(`script ${scriptName} includes service deployment`);
-  }
-}
+assertNoBlockedReleaseCommands(packageJson.scripts, failures);
 
 if (failures.length > 0) {
   console.error("failed release candidate readiness boundary");

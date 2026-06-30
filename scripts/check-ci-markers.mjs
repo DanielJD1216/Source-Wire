@@ -235,7 +235,8 @@ const markerGroups = [
       "ok readiness report",
       "ok docs links",
       "ok docs anchors",
-      "ok command docs setup"
+      "ok command docs setup",
+      "ok readiness command docs match package scripts"
     ]
   },
   {

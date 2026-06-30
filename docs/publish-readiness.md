@@ -32,6 +32,7 @@ This command runs:
 - `npm run license:decision-record`
 - `npm run license:approval-request`
 - `npm run license:implementation-plan`
+- `npm run license:history-boundary`
 - `npm run legal:packet`
 - `npm run owner:launch-checklist`
 - `npm run owner:license-preflight`
@@ -41,16 +42,15 @@ This command runs:
 - `npm run launch:decision-status`
 - `npm run share:audit`
 - `npm run intake:boundary`
-- `npm run license:history-boundary`
 - `npm run repository:metadata`
 - `npm run repository:branch-governance-request`
+- `npm run repository:branch-governance-plan`
 - `npm run pull-request:boundary`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
 - `npm run package:content-smoke`
 - `npm run examples:installed-smoke`
-- `npm run minimal-runtime:smoke`
 - `npm run runtime-boundary:installed-smoke`
 - `npm run runtime-boundary:diagnostics-smoke`
 - `npm run readiness:report`
@@ -63,8 +63,16 @@ This command runs:
 
 The `ci:check` sub-gate includes:
 
+- `npm run typecheck`
+- `npm run build`
+- `npm test`
+- `npm run validate:fixtures`
+- `npm run verify:schema-exports`
+- `npm run cli:smoke`
 - `npm run minimal-runtime:smoke`
 - `npm run runtime-boundary:smoke`
+- `npm run safety:scan`
+- `npm run claims:scan`
 
 ## Local Success Marker Map
 
@@ -104,12 +112,12 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.0.0`, `ok installed runtime boundary example` |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
-| Docs and readiness | `ok readiness report`, `ok docs links`, `ok docs anchors`, `ok command docs setup` |
+| Docs and readiness | `ok readiness report`, `ok docs links`, `ok docs anchors`, `ok command docs setup`, `ok readiness command docs match package scripts` |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` |
 | Public claim boundary | `ok public claim boundary scan` |
 | CI marker self-smoke | `ok ci markers smoke` |
 
-The Docs and readiness row proves the readiness summary, required readiness docs, local Markdown links, local Markdown anchors, and command-doc setup pointers are current.
+The Docs and readiness row proves the readiness summary, required readiness docs, local Markdown links, local Markdown anchors, command-doc setup pointers, and documented readiness command lists are current.
 
 Use [CI Checks](ci-checks.md) for the same marker map from the GitHub Actions perspective.
 
@@ -838,6 +846,7 @@ Expected marker:
 
 ```text
 ok command docs setup
+ok readiness command docs match package scripts
 ```
 
 It does not validate shell behavior or external services.

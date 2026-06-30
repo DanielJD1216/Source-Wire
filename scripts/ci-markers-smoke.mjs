@@ -102,6 +102,7 @@ const completeLog = [
   "ok docs links 38 markdown files",
   "ok docs anchors 0 anchor links across 38 markdown files",
   "ok command docs setup 15 command-bearing markdown files",
+  "ok readiness command docs match package scripts",
   "Findings: 0 high=0 medium=0 low=0",
   "ok public claim boundary scan",
   "ok ci markers smoke"
@@ -119,7 +120,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 32 groups 99 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 32 groups 100 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

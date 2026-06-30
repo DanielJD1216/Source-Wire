@@ -7,6 +7,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 ## Start Here
 
 - [Public Adopter Walkthrough](adopter-walkthrough.md)
+- [Public Status](public-status.md)
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)
 - [Architecture Map](architecture-map.md)
@@ -39,6 +40,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 ## Package Use
 
 - [Quickstart](quickstart.md)
+- [Public Status](public-status.md)
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)
 - [API Reference](api-reference.md)

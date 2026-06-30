@@ -85,6 +85,7 @@ for (const schemaFile of [
 for (const requiredPath of [
   "README.md",
   "docs/apache-2-license-implementation-readiness.md",
+  "docs/public-status.md",
   "docs/quickstart.md",
   "docs/minimal-runtime-prd.md",
   "docs/license-decision-gate.md",
@@ -140,6 +141,7 @@ printSection("Required Readiness Docs");
 printList([
   "README.md is the package entrypoint and public boundary summary",
   "docs/apache-2-license-implementation-readiness.md records the future Apache-2.0 implementation checklist without changing the current license",
+  "docs/public-status.md states the public review, license, release, publishing, runtime, and reuse boundaries",
   "docs/quickstart.md defines local setup and first-run commands",
   "docs/minimal-runtime-prd.md records the minimal synthetic runtime boundary while keeping hosted runtime implementation blocked",
   "docs/license-decision-gate.md records the owner license decision paths while keeping the current license unchanged",

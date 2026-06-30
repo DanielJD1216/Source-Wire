@@ -2,6 +2,8 @@
 
 This guide is for technical reviewers who want to inspect Source-Wire before it is licensed, published, or turned into a hosted runtime.
 
+For the shortest status summary, read [Public Status](public-status.md).
+
 ## Current Review Boundary
 
 Source-Wire is currently a public contract package skeleton.

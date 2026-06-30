@@ -4,6 +4,8 @@ Source-Wire is an agent-first memory architecture skeleton.
 
 It is designed for systems where AI agents need to search, cite, update, and reason over source-backed context without turning every imported note or chat message into trusted memory automatically.
 
+Current public status: Source-Wire is public for technical review, but it is `UNLICENSED`, unreleased, unpublished, and not a hosted runtime. Read [Public Status](docs/public-status.md) before reuse or redistribution assumptions.
+
 ## What This Public Skeleton Includes
 
 - Source Graph Adapter Contract.
@@ -31,6 +33,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 ## Documentation
 
 - [Docs Index](docs/index.md)
+- [Public Status](docs/public-status.md)
 - [Technical Reviewer Guide](docs/technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](docs/reviewer-feedback-guide.md)
 - [Public Adopter Walkthrough](docs/adopter-walkthrough.md)

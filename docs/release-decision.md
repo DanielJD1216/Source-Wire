@@ -4,6 +4,8 @@ Date: 2026-06-29
 
 Status: not approved for release or publishing.
 
+For the public-facing summary of this status, read [Public Status](public-status.md).
+
 ## Decision
 
 Source-Wire is not approved for npm publishing, GitHub release publishing, service deployment, open-source licensing, or runtime backend expansion yet.

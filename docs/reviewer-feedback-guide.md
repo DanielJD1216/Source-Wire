@@ -2,6 +2,8 @@
 
 This guide explains how to give useful Source-Wire review feedback without crossing the current license, privacy, or runtime boundaries.
 
+For the repo's current public state, read [Public Status](public-status.md).
+
 ## Current Boundary
 
 Source-Wire is public for technical review, but it is still:

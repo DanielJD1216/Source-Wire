@@ -13,6 +13,7 @@ for (const requiredPath of [
   "docs/owner-launch-checklist.md",
   "docs/legal-review-question-packet.md",
   "docs/license-decision-gate.md",
+  "docs/branch-governance-approval-request.md",
   "docs/world-share-readiness.md",
   "docs/share-for-review.md",
   "docs/publish-readiness.md"
@@ -36,6 +37,7 @@ printRows([
   ["Open-source license", "implemented"],
   ["npm publishing", "blocked, publish approval missing"],
   ["GitHub release", "blocked, release approval missing"],
+  ["Branch governance", "blocked, branch governance approval missing"],
   ["Hosted runtime", "blocked, runtime approval missing"],
   ["Code contributions", "blocked, contribution terms approval missing"]
 ]);
@@ -54,8 +56,9 @@ printList([
   "1. Apache-2.0 source package reuse is approved and implemented.",
   "2. npm publishing needs a separate publish PRD.",
   "3. GitHub release publishing needs a separate release PRD.",
-  "4. Hosted runtime work needs a separate runtime PRD.",
-  "5. Code contribution acceptance needs explicit contribution terms."
+  "4. Branch protection or repository rulesets need separate branch governance approval.",
+  "5. Hosted runtime work needs a separate runtime PRD.",
+  "6. Code contribution acceptance needs explicit contribution terms."
 ]);
 
 console.log("");

@@ -43,6 +43,7 @@ This command runs:
 - `npm run intake:boundary`
 - `npm run license:history-boundary`
 - `npm run repository:metadata`
+- `npm run repository:branch-governance-request`
 - `npm run pull-request:boundary`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
@@ -91,6 +92,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |
 | Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` |
+| Branch governance approval request | `ok branch governance approval request ready`, `blocked branch protection approval missing`, `blocked repository ruleset approval missing` |
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` |
 | Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` |
 | Package required paths | `ok package required paths` |
@@ -168,6 +170,22 @@ blocked repository rulesets not enabled
 The blocked markers mean branch protection and repository rulesets are not currently configured. This command does not enable branch protection, create a ruleset, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
 Branch protection or repository rulesets should be handled in a separate owner-approved governance unit because they can affect how the owner commits, pushes, and maintains the public repo.
+
+For exact future owner decision options, run:
+
+```bash
+npm run repository:branch-governance-request
+```
+
+Expected markers:
+
+```text
+ok branch governance approval request ready
+blocked branch protection approval missing
+blocked repository ruleset approval missing
+```
+
+This local packet check does not call GitHub or change repository settings.
 
 ## Owner Live Security Surface
 

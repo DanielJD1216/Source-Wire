@@ -63,6 +63,7 @@ npm run launch:decision-status
 | Owner decision workflow | Captured | Use [Owner License Decision Workflow](owner-license-decision-workflow.md). |
 | npm publishing | Blocked | Separate publish PRD. |
 | GitHub release publishing | Blocked | Separate release PRD. |
+| Branch protection or repository rulesets | Blocked | Separate branch governance approval. |
 | Hosted runtime | Blocked | Separate runtime PRD. |
 | Code contribution acceptance | Blocked | Explicit contribution terms. |
 
@@ -71,8 +72,9 @@ npm run launch:decision-status
 1. Apache-2.0 source package reuse is approved and implemented.
 2. Decide whether npm publishing should open in a separate PRD.
 3. Decide whether GitHub release publishing should open in a separate PRD.
-4. Decide whether hosted runtime work should open in a separate PRD.
-5. Decide whether and how code contributions can be accepted.
+4. Decide whether branch protection or repository rulesets should open in a separate governance unit.
+5. Decide whether hosted runtime work should open in a separate PRD.
+6. Decide whether and how code contributions can be accepted.
 
 ## Exact Current Safe Share Copy
 
@@ -114,3 +116,4 @@ Contributions are open.
 - [License Approval Request Packet](license-approval-request-packet.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
 - [Owner License Decision Workflow](owner-license-decision-workflow.md)
+- [Branch Governance Approval Request](branch-governance-approval-request.md)

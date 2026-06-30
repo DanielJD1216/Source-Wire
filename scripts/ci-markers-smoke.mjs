@@ -8,6 +8,7 @@ const markerScript = join(scriptDir, "check-ci-markers.mjs");
 const completeLog = [
   "ok release gate",
   "ok license Apache-2.0",
+  "ok package lock Apache-2.0",
   "ok version 0.0.0",
   "ok publishing blocked",
   "ok release approval request ready",
@@ -118,7 +119,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 32 groups 98 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 32 groups 99 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

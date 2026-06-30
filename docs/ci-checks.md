@@ -115,7 +115,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 
 | Marker group | Expected markers | What it proves |
 | --- | --- | --- |
-| Release gate | `ok release gate`, `ok license Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` | Apache-2.0 licensing is implemented while version and publishing boundaries stay blocked. |
+| Release gate | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` | Apache-2.0 licensing is implemented in package metadata and lockfile metadata while version and publishing boundaries stay blocked. |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution approval missing` | Future release execution order, target version, and stop conditions are documented while release execution approval is still missing. |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` | Current release inputs, draft release notes, and the recommended future first release version are documented while implementation approval is still missing. |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` | Exact future owner release choices are available while npm publishing, GitHub release publishing, and version release remain blocked. |

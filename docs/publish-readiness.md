@@ -74,7 +74,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 
 | Area | Markers to look for |
 | --- | --- |
-| Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` |
+| Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution approval missing` |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` |
@@ -908,6 +908,7 @@ npm run release:gate
 The release gate verifies that current package metadata still matches the release decision:
 
 - license is `Apache-2.0`,
+- package-lock root license is `Apache-2.0`,
 - version is `0.0.0`,
 - npm publishing remains blocked through restricted publish config,
 - package scripts do not include publish, release, or deployment commands.

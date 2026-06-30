@@ -35,6 +35,7 @@ Approved for a future Source-Wire license implementation unit: implement Apache-
 | --- | --- |
 | `LICENSE` | Added the Apache License 2.0 text. |
 | `package.json` | Changed `"license": "UNLICENSED"` to `"license": "Apache-2.0"`. |
+| `package-lock.json` | Root package metadata matches `Apache-2.0`, version `0.0.0`, and the installed CLI bin. |
 | `scripts/release-gate.mjs` | Expects `Apache-2.0` while keeping version `0.0.0` and publishing blocked. |
 | `scripts/readiness-report.mjs` | Reports Apache-2.0 as the package license. |
 | `README.md` | States Apache-2.0 source package status and blocked launch channels. |
@@ -86,6 +87,7 @@ Expected markers:
 ```text
 ok release gate
 ok license Apache-2.0
+ok package lock Apache-2.0
 ok version 0.0.0
 ok publishing blocked
 ```

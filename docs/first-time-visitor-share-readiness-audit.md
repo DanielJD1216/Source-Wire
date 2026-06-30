@@ -66,6 +66,7 @@ Expected boundary markers:
 ```text
 ok release gate
 ok license Apache-2.0
+ok package lock Apache-2.0
 ok version 0.0.0
 ok publishing blocked
 ```

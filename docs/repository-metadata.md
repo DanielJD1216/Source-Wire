@@ -128,6 +128,7 @@ The release gate must still print:
 
 ```text
 ok license Apache-2.0
+ok package lock Apache-2.0
 ok version 0.0.0
 ok publishing blocked
 ```

@@ -109,6 +109,8 @@ The readiness report is a fast read-only summary of current package posture.
 
 It prints package metadata, publish boundary, runtime boundary, package exports, validation schemas, readiness commands, installed package smokes, required readiness docs, and intentionally blocked scope.
 
+The report includes the minimal runtime PRD package as a required readiness doc. That PRD package does not add runtime implementation.
+
 It fails if required posture fields are missing or inconsistent.
 
 It does not run the full readiness gate. Use `npm run publish:readiness` for verification before committing or releasing.

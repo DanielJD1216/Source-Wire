@@ -32,6 +32,8 @@ A later runtime implementation PRD must approve it before runtime files are adde
 
 The proposed first runtime PRD package is recorded in [First Runtime PRD Package](first-runtime-prd.md).
 
+The current minimal runtime PRD package is recorded in [Minimal Runtime PRD](minimal-runtime-prd.md).
+
 ## What A First Runtime PRD May Propose
 
 A first runtime implementation PRD may propose public-safe versions of:
@@ -118,6 +120,9 @@ It must not silently decide that evidence is trusted memory.
 
 - [Public Runtime Decision](public-runtime-decision.md)
 - [First Runtime PRD Package](first-runtime-prd.md)
+- [Minimal Runtime PRD](minimal-runtime-prd.md)
+- [Minimal Runtime Issue Slices](minimal-runtime-issue-slices.md)
+- [Minimal Runtime Implementation Scope](minimal-runtime-implementation-scope.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)

@@ -156,9 +156,14 @@ This PRD package is ready for a later owner-approved runtime implementation unit
 
 Runtime implementation remains blocked until that unit is opened.
 
+The current public PRD package for that next planning step is [Minimal Runtime PRD](minimal-runtime-prd.md).
+
 ## Related Docs
 
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Public Runtime Decision](public-runtime-decision.md)
+- [Minimal Runtime PRD](minimal-runtime-prd.md)
+- [Minimal Runtime Issue Slices](minimal-runtime-issue-slices.md)
+- [Minimal Runtime Implementation Scope](minimal-runtime-implementation-scope.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Owner-hosted API plus MCP boundary fixture](../examples/fixtures/owner-hosted-api-mcp-boundary/)

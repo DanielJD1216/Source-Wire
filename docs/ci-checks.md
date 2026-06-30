@@ -200,6 +200,8 @@ The readiness report prints a fast read-only summary of package posture, package
 
 It does not replace the full readiness gate.
 
+The minimal runtime PRD package is documentation only. It does not add API server runtime, MCP server runtime, database migrations, deployment, or Source-Wire-hosted memory.
+
 The docs link check validates local Markdown links in README, docs, and examples.
 
 It does not check external URLs or validate anchor existence.

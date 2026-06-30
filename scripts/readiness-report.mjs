@@ -57,7 +57,13 @@ for (const scriptName of requiredScripts) {
 }
 
 const exportKeys = Object.keys(packageJson.exports ?? {}).sort();
-const expectedExports = [".", "./schemas/chat-export-message", "./schemas/project-context-pack", "./schemas/second-brain-v1"];
+const expectedExports = [
+  ".",
+  "./schemas/chat-export-message",
+  "./schemas/owner-hosted-api-mcp-boundary",
+  "./schemas/project-context-pack",
+  "./schemas/second-brain-v1"
+];
 for (const expectedExport of expectedExports) {
   if (!exportKeys.includes(expectedExport)) {
     failures.push(`missing expected package export: ${expectedExport}`);
@@ -78,6 +84,7 @@ for (const schemaFile of [
 for (const requiredPath of [
   "README.md",
   "docs/quickstart.md",
+  "docs/minimal-runtime-prd.md",
   "docs/runtime-boundary-readiness.md",
   "docs/publish-readiness.md",
   "docs/ci-checks.md",
@@ -126,6 +133,7 @@ printSection("Required Readiness Docs");
 printList([
   "README.md is the package entrypoint and public boundary summary",
   "docs/quickstart.md defines local setup and first-run commands",
+  "docs/minimal-runtime-prd.md records the next runtime PRD package while keeping implementation blocked",
   "docs/runtime-boundary-readiness.md summarizes the runtime-boundary proof lane and blocked runtime scope",
   "docs/publish-readiness.md summarizes the local readiness gate and marker map",
   "docs/ci-checks.md summarizes GitHub Actions Package Checks and marker map",

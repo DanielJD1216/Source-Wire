@@ -18,6 +18,8 @@ Before adding runtime files, future work must pass the [Runtime Implementation G
 
 The proposed first runtime PRD package is recorded in [First Runtime PRD Package](first-runtime-prd.md).
 
+The current minimal runtime PRD package is recorded in [Minimal Runtime PRD](minimal-runtime-prd.md).
+
 ## Why This Decision
 
 Source-Wire now has a useful public package surface:
@@ -157,6 +159,7 @@ This decision does not add:
 - [Architecture Map](architecture-map.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [First Runtime PRD Package](first-runtime-prd.md)
+- [Minimal Runtime PRD](minimal-runtime-prd.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Runtime-Adjacent Recommendation](decision-prototypes/runtime-adjacent-recommendation.md)

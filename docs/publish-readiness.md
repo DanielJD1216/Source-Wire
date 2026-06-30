@@ -138,6 +138,37 @@ blocked github release not approved
 
 This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
+## Owner Live Branch Governance
+
+Before broad public sharing, the owner can verify the live default branch and branch governance state with:
+
+```bash
+npm run repository:live-branch
+```
+
+This read-only check verifies:
+
+- live GitHub default branch remains `main`,
+- live GitHub `main` matches local `origin/main`,
+- forking remains enabled for source-package reuse,
+- branch protection state is visible,
+- repository ruleset state is visible,
+- package version remains `0.0.0`,
+- npm publishing, GitHub release publishing, hosted runtime, and contribution acceptance remain blocked.
+
+Expected markers in the current owner-direct-maintenance state:
+
+```text
+ok live branch governance readable
+ok main branch matches origin
+blocked branch protection not enabled
+blocked repository rulesets not enabled
+```
+
+The blocked markers mean branch protection and repository rulesets are not currently configured. This command does not enable branch protection, create a ruleset, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+Branch protection or repository rulesets should be handled in a separate owner-approved governance unit because they can affect how the owner commits, pushes, and maintains the public repo.
+
 ## Owner Live Security Surface
 
 Before broad public sharing, the owner can verify the live GitHub security and intake boundary with:

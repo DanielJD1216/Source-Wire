@@ -47,6 +47,8 @@ Expected live repository settings:
 - Secret scanning: enabled
 - Secret scanning push protection: enabled
 - Security advisories: none
+- Branch protection: not enabled
+- Repository rulesets: none
 
 Expected topics:
 
@@ -81,6 +83,14 @@ npm run security:live-surface
 ```
 
 This command uses `gh` and the configured GitHub account to verify the live security surface, safe public intake docs, secret scanning, push protection, disabled discussions/projects/wiki, and empty security advisory list. It is intentionally not part of `publish:readiness` because public reviewers and forks should not need owner GitHub authentication.
+
+Owner-side live branch governance check:
+
+```bash
+npm run repository:live-branch
+```
+
+This command uses `gh` and the configured GitHub account to verify the default branch, live `main` SHA, local `origin/main` match, branch protection state, and repository ruleset state. It reports the current unprotected branch state as a blocked owner-governance item instead of silently treating it as production hardening.
 
 ## GitHub-Visible Files
 

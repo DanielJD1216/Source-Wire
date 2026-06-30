@@ -115,6 +115,28 @@ Use [CI Checks](ci-checks.md) for the same marker map from the GitHub Actions pe
 
 The local package gate is intentionally portable and does not call GitHub.
 
+For a single live owner-facing share status, run:
+
+```bash
+npm run world:live-status
+```
+
+This read-only check combines the live GitHub public surface, latest `Package Checks`, npm registry boundary, release and tag boundary, security surface, and branch governance visibility into one status view.
+
+Expected markers:
+
+```text
+ok live world share status ready
+ok source repo sharing ready
+ok live public surface green
+ok npm package unpublished
+ok release channels empty
+blocked production launch channels
+blocked branch governance enforcement not approved
+```
+
+This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
+
 Before broad public sharing, the owner can verify the live GitHub repo with:
 
 ```bash

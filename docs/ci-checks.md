@@ -98,6 +98,7 @@ The readiness gate runs:
 
 Owner-side live GitHub checks are intentionally outside CI and `publish:readiness` because they require `gh` authentication and live repository access:
 
+- `npm run world:live-status`
 - `npm run repository:live-github`
 - `npm run repository:live-branch`
 - `npm run security:live-surface`

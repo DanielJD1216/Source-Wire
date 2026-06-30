@@ -1,0 +1,229 @@
+import { execFile } from "node:child_process";
+import { readFile } from "node:fs/promises";
+
+const repo = "DanielJD1216/Source-Wire";
+const packageJson = JSON.parse(await readFile("package.json", "utf8"));
+const failures = [];
+
+assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
+assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0");
+assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
+assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
+
+const repoApi = await ghJson(["api", `repos/${repo}`]);
+const mainBranch = await ghJson(["api", `repos/${repo}/branches/main`]);
+const rulesets = await ghJson(["api", `repos/${repo}/rulesets`]);
+const releases = await ghJson(["api", `repos/${repo}/releases`]);
+const latestRun = await ghJson([
+  "api",
+  `repos/${repo}/actions/workflows/package-checks.yml/runs?per_page=1`
+]);
+const advisories = await ghJson(["api", `repos/${repo}/security-advisories`]);
+const remoteHead = (await run("git", ["rev-parse", "origin/main"])).stdout.trim();
+const localTags = parseLines((await run("git", ["tag", "--list"])).stdout);
+const remoteTags = parseRemoteTags((await run("git", ["ls-remote", "--tags", "origin"])).stdout);
+const npmView = await run("npm", ["view", packageJson.name, "name", "version", "dist-tags", "--json"], { allowFailure: true });
+const npmRegistryState = getNpmRegistryState(npmView);
+
+const expectedDescription = "Apache-2.0 agent-memory contract skeleton. Unpublished, unreleased, not hosted.";
+const expectedHomepage = "https://github.com/DanielJD1216/Source-Wire/blob/main/docs/share-for-review.md";
+const expectedTopics = [
+  "agent-memory",
+  "apache-2-0",
+  "llm-memory",
+  "mcp",
+  "second-brain",
+  "source-graph",
+  "typescript"
+];
+
+assertEqual(repoApi.name, "Source-Wire", "live GitHub repo name must remain Source-Wire");
+assertEqual(repoApi.description, expectedDescription, "live GitHub description must match repository metadata boundary");
+assertEqual(repoApi.homepage, expectedHomepage, "live GitHub homepage must point to share-for-review");
+assertEqual(repoApi.visibility, "public", "live GitHub visibility must stay public");
+assertEqual(repoApi.archived, false, "live GitHub repo must not be archived");
+assertEqual(repoApi.fork, false, "live GitHub repo must not be a fork");
+assertEqual(repoApi.default_branch, "main", "live GitHub default branch must stay main");
+assertEqual(repoApi.has_issues, true, "live GitHub issues must stay enabled for structured feedback");
+assertEqual(repoApi.has_projects, false, "live GitHub projects must stay disabled");
+assertEqual(repoApi.has_wiki, false, "live GitHub wiki must stay disabled");
+assertEqual(repoApi.license?.key, "apache-2.0", "live GitHub license must be Apache-2.0");
+assertEqual(repoApi.html_url, "https://github.com/DanielJD1216/Source-Wire", "live GitHub URL must match Source-Wire");
+
+const liveTopics = (repoApi.topics ?? []).sort();
+assertArrayEqual(liveTopics, expectedTopics, "live GitHub topics must match repository metadata boundary");
+
+assertEqual(repoApi.private, false, "GitHub API private flag must be false");
+assertEqual(repoApi.archived, false, "GitHub API archived flag must be false");
+assertEqual(repoApi.disabled, false, "GitHub API disabled flag must be false");
+assertEqual(repoApi.default_branch, "main", "GitHub API default branch must be main");
+assertEqual(repoApi.has_issues, true, "GitHub API issues must stay enabled");
+assertEqual(repoApi.has_projects, false, "GitHub API projects must stay disabled");
+assertEqual(repoApi.has_wiki, false, "GitHub API wiki must stay disabled");
+assertEqual(repoApi.has_discussions, false, "GitHub API discussions must stay disabled");
+assertEqual(repoApi.license?.spdx_id, "Apache-2.0", "GitHub API license SPDX id must be Apache-2.0");
+assertEqual(repoApi.security_and_analysis?.secret_scanning?.status, "enabled", "live GitHub secret scanning must stay enabled");
+assertEqual(repoApi.security_and_analysis?.secret_scanning_push_protection?.status, "enabled", "live GitHub secret scanning push protection must stay enabled");
+assertEqual(mainBranch.name, "main", "live GitHub branch name must be main");
+assertEqual(mainBranch.commit?.sha, remoteHead, "live GitHub main branch must match origin/main");
+
+if (!Array.isArray(rulesets)) {
+  failures.push("GitHub rulesets response must be an array");
+}
+if (!Array.isArray(releases) || releases.length !== 0) {
+  failures.push("GitHub releases must remain empty until release approval");
+}
+if (!Array.isArray(advisories) || advisories.length !== 0) {
+  failures.push("GitHub security advisories must remain empty until an owner-managed advisory is needed");
+}
+if (localTags.length > 0) {
+  failures.push(`local git tags must remain empty until release approval: ${localTags.join(", ")}`);
+}
+if (remoteTags.length > 0) {
+  failures.push(`remote git tags must remain empty until release approval: ${remoteTags.join(", ")}`);
+}
+if (npmRegistryState.state !== "unpublished") {
+  failures.push(`npm registry state must remain unpublished: ${npmRegistryState.summary || "unknown npm state"}`);
+}
+
+const [runInfo] = latestRun.workflow_runs ?? [];
+if (!runInfo) {
+  failures.push("latest Package Checks run is missing");
+} else {
+  assertEqual(runInfo.name, "Package Checks", "latest workflow name must be Package Checks");
+  assertEqual(runInfo.status, "completed", "latest Package Checks run must be completed");
+  assertEqual(runInfo.conclusion, "success", "latest Package Checks run must be successful");
+  assertEqual(runInfo.head_sha, remoteHead, "latest Package Checks run must match origin/main");
+}
+
+if (failures.length > 0) {
+  console.error("failed live world share status");
+  for (const failure of failures) {
+    console.error(`- ${failure}`);
+  }
+  process.exit(1);
+}
+
+const activeRulesets = rulesets.filter((ruleset) => ruleset.enforcement !== "disabled");
+const branchProtectionState = mainBranch.protected ? "enabled" : "not enabled";
+const rulesetState = activeRulesets.length > 0 ? `${activeRulesets.length} active` : "none";
+
+printSection("Source-Wire Live World Share Status");
+printRows([
+  ["Repository", repo],
+  ["URL", repoApi.html_url],
+  ["Share status", "ready for Apache-2.0 source-package review and reuse"],
+  ["Package", packageJson.name],
+  ["Version", packageJson.version],
+  ["License", packageJson.license],
+  ["Visibility", repoApi.visibility],
+  ["Default branch", repoApi.default_branch],
+  ["origin/main SHA", remoteHead],
+  ["Latest Package Checks", `${runInfo.conclusion} ${runInfo.html_url}`],
+  ["npm registry", npmRegistryState.state],
+  ["GitHub releases", "none"],
+  ["Local git tags", "none"],
+  ["Remote git tags", "none"],
+  ["Secret scanning", repoApi.security_and_analysis.secret_scanning.status],
+  ["Push protection", repoApi.security_and_analysis.secret_scanning_push_protection.status],
+  ["Branch protection", branchProtectionState],
+  ["Active rulesets", rulesetState],
+  ["Hosted runtime", "blocked"],
+  ["Production runtime use", "blocked"],
+  ["Code contributions", "blocked"]
+]);
+
+console.log("");
+console.log("ok live world share status ready");
+console.log("ok source repo sharing ready");
+console.log("ok live public surface green");
+console.log("ok npm package unpublished");
+console.log("ok release channels empty");
+console.log("blocked production launch channels");
+console.log("blocked branch governance enforcement not approved");
+
+function getNpmRegistryState(result) {
+  if (result.exitCode === 0) {
+    return { state: "published", code: "", summary: "npm view succeeded" };
+  }
+
+  const parsed = parseNpmError(result.stdout);
+  const code = parsed?.error?.code ?? "";
+  const summary = parsed?.error?.summary ?? result.stderr.trim();
+
+  if (code === "E404" || /Not Found/i.test(summary)) {
+    return { state: "unpublished", code, summary };
+  }
+
+  return { state: "unknown", code, summary };
+}
+
+function parseNpmError(stdout) {
+  try {
+    return JSON.parse(stdout);
+  } catch {
+    return null;
+  }
+}
+
+function parseLines(text) {
+  return text
+    .split(/\r?\n/u)
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function parseRemoteTags(text) {
+  return parseLines(text)
+    .map((line) => line.split(/\s+/u)[1] ?? "")
+    .filter(Boolean)
+    .map((ref) => ref.replace(/^refs\/tags\//u, ""))
+    .filter((ref) => !ref.endsWith("^{}"));
+}
+
+function ghJson(args) {
+  return run("gh", args).then((result) => JSON.parse(result.stdout));
+}
+
+function run(command, args, options = {}) {
+  return new Promise((resolve, reject) => {
+    execFile(command, args, { cwd: process.cwd(), maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => {
+      const result = {
+        exitCode: error?.code ?? 0,
+        stdout,
+        stderr
+      };
+
+      if (error && !options.allowFailure) {
+        reject(new Error(`${command} ${args.join(" ")} failed\n${stderr || error.message}`));
+        return;
+      }
+
+      resolve(result);
+    });
+  });
+}
+
+function assertEqual(actual, expected, reason) {
+  if (actual !== expected) {
+    failures.push(`${reason}: expected ${JSON.stringify(expected)}, received ${JSON.stringify(actual)}`);
+  }
+}
+
+function assertArrayEqual(actual, expected, reason) {
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    failures.push(`${reason}: expected ${JSON.stringify(expected)}, received ${JSON.stringify(actual)}`);
+  }
+}
+
+function printSection(title) {
+  console.log("");
+  console.log(title);
+  console.log("-".repeat(title.length));
+}
+
+function printRows(rows) {
+  for (const [label, value] of rows) {
+    console.log(`${label}: ${value}`);
+  }
+}

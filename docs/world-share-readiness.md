@@ -55,6 +55,39 @@ blocked production launch channels
 
 This command does not publish npm, create a GitHub release, deploy services, accept contributions, start runtime services, connect to a database, or approve production runtime use.
 
+## Owner Live Status
+
+Before broad public sharing, the owner can verify the live repo and live launch channels with:
+
+```bash
+npm run world:live-status
+```
+
+This read-only check verifies:
+
+- live GitHub metadata, topics, visibility, default branch, and Apache-2.0 license,
+- live `Package Checks` is green for `origin/main`,
+- live GitHub secret scanning and push protection are enabled,
+- npm package remains unpublished,
+- local tags, remote tags, and GitHub releases are empty,
+- branch protection and repository ruleset state are visible,
+- package version remains `0.0.0`,
+- hosted runtime, production runtime use, and code contribution acceptance remain blocked.
+
+Expected markers:
+
+```text
+ok live world share status ready
+ok source repo sharing ready
+ok live public surface green
+ok npm package unpublished
+ok release channels empty
+blocked production launch channels
+blocked branch governance enforcement not approved
+```
+
+This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
+
 To audit first-visitor share wording and unsafe wording guardrails, run:
 
 ```bash

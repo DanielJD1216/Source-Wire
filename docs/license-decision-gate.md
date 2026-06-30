@@ -40,6 +40,8 @@ Source-Wire Apache-2.0 License Implementation Gate
 
 That unit should still keep npm publishing, GitHub release publishing, deployment, and hosted runtime blocked unless separate PRDs approve them.
 
+For the exact future implementation checklist, read [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md).
+
 ## Exact Owner Approval Language
 
 Use one of these exact statements.
@@ -115,6 +117,7 @@ unless a later publishing PRD explicitly approves it.
 ## Related Docs
 
 - [Owner License Approval Packet](owner-license-approval-packet.md)
+- [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [Future License Change Plan](future-license-change-plan.md)
 - [License And Version Policy](license-version-policy.md)
 - [Release Decision](release-decision.md)

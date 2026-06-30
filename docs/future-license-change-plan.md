@@ -12,6 +12,8 @@ It does not change the license now.
 
 For the current one-page owner decision gate, read [License Decision Gate](license-decision-gate.md).
 
+For the exact future Apache-2.0 checklist, read [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md).
+
 ## Current Boundary
 
 Current Source-Wire state:

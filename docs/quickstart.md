@@ -183,6 +183,16 @@ This validates local Markdown links in README, docs, and examples.
 
 It does not check external URLs or anchor existence.
 
+## Check Public External Links
+
+```bash
+npm run docs:external-links
+```
+
+This verifies public-facing external URLs in README, docs, examples, `.github` templates, and package metadata.
+
+It uses live network access and is intentionally outside `npm run publish:readiness`.
+
 ## What The Fixtures Are For
 
 | Fixture | Purpose | CLI schema |

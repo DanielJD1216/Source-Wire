@@ -115,6 +115,20 @@ Use [CI Checks](ci-checks.md) for the same marker map from the GitHub Actions pe
 
 The local package gate is intentionally portable and does not call GitHub.
 
+Before broad public sharing, the owner can verify public-facing external URLs with:
+
+```bash
+npm run docs:external-links
+```
+
+Expected marker:
+
+```text
+ok external links
+```
+
+This network check verifies public URLs in README, docs, examples, `.github` templates, and package metadata. It is intentionally outside CI and `publish:readiness` so transient network failures do not break local package verification.
+
 For a single live owner-facing share status, run:
 
 ```bash

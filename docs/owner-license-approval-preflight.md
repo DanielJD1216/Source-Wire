@@ -58,10 +58,17 @@ Read [License Approval Request Packet](license-approval-request-packet.md), then
 - request legal review first,
 - compare source-available options first.
 
+For the step-by-step owner path, read [Owner License Decision Workflow](owner-license-decision-workflow.md) or run:
+
+```bash
+npm run owner:decision-workflow
+```
+
 ## Related Docs
 
 - [License Approval Request Packet](license-approval-request-packet.md)
 - [License Approval Decision Record](license-approval-decision-record.md)
+- [Owner License Decision Workflow](owner-license-decision-workflow.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [Launch Decision Status](launch-decision-status.md)

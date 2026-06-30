@@ -1,12 +1,16 @@
-# Source-Wire License Approval Request Packet
+# Source-Wire Owner License Decision Workflow
 
-Status: owner approval request only.
+Status: owner decision workflow only.
 
-This packet does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
+This workflow does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
 
 ## Purpose
 
-Use this packet when the owner is ready to choose the Source-Wire license path.
+Use this when the owner is ready to make the next Source-Wire launch decision.
+
+It collects the current blocked state, the required review docs, and the exact owner decision options into one path.
+
+## Command
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -16,19 +20,7 @@ Install dependencies first:
 npm install
 ```
 
-The current decision record is still pending. Then run:
-
-```bash
-npm run license:approval-request
-```
-
-Before asking for the final owner decision, run:
-
-```bash
-npm run owner:license-preflight
-```
-
-For the one-command decision workflow, run:
+Then run:
 
 ```bash
 npm run owner:decision-workflow
@@ -37,23 +29,31 @@ npm run owner:decision-workflow
 Expected markers:
 
 ```text
-ok license approval request ready
-blocked owner license approval missing
-blocked license decision pending
+ok owner decision workflow ready
+ok owner decision options available
+blocked owner license decision missing
 ```
 
-## Current State
+## Current Blocked State
 
 | Field | Current value |
 | --- | --- |
 | Package license | `UNLICENSED` |
 | Package version | `0.0.0` |
 | `LICENSE` file | none |
-| License decision record | pending |
 | npm publishing | blocked |
 | GitHub release publishing | blocked |
 | Hosted runtime | blocked |
 | Contributions | blocked |
+| Broad public reuse | blocked |
+
+## Decision Workflow
+
+1. Run `npm run owner:license-preflight`.
+2. Read [License Approval Request Packet](license-approval-request-packet.md).
+3. If legal review is needed first, read [Legal Review Question Packet](legal-review-question-packet.md).
+4. Choose exactly one owner decision option.
+5. Start a later implementation unit for that approved option only.
 
 ## Exact Owner Decision Options
 
@@ -83,10 +83,11 @@ Approved for a future Source-Wire legal review unit: prepare and route license, 
 Approved for a future Source-Wire license comparison unit: compare source-available and noncommercial license options before any package metadata, LICENSE file, npm publishing, GitHub release, deployment, hosted runtime, or contribution acceptance change.
 ```
 
-## What Approval Still Does Not Allow
+## What This Still Does Not Allow
 
-Even if one option is approved later, separate approval is still required for:
+Even after this workflow is ready, separate approval is still required for:
 
+- license implementation,
 - npm publishing,
 - GitHub release publishing,
 - deployment,
@@ -103,11 +104,11 @@ Even if one option is approved later, separate approval is still required for:
 
 ## Related Docs
 
-- [License Approval Decision Record](license-approval-decision-record.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
-- [Owner License Decision Workflow](owner-license-decision-workflow.md)
+- [License Approval Request Packet](license-approval-request-packet.md)
+- [License Approval Decision Record](license-approval-decision-record.md)
 - [License Decision Gate](license-decision-gate.md)
-- [Owner License Approval Packet](owner-license-approval-packet.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
-- [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
+- [Owner Launch Checklist](owner-launch-checklist.md)
 - [Launch Decision Status](launch-decision-status.md)
+- [Publish Readiness](publish-readiness.md)

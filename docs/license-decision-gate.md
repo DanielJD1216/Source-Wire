@@ -56,6 +56,12 @@ To request the actual owner choice, use [License Approval Request Packet](licens
 npm run license:approval-request
 ```
 
+For the step-by-step owner decision workflow, use [Owner License Decision Workflow](owner-license-decision-workflow.md):
+
+```bash
+npm run owner:decision-workflow
+```
+
 Before requesting legal or owner review, run:
 
 ```bash
@@ -145,6 +151,7 @@ unless a later publishing PRD explicitly approves it.
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [License Approval Decision Record](license-approval-decision-record.md)
 - [License Approval Request Packet](license-approval-request-packet.md)
+- [Owner License Decision Workflow](owner-license-decision-workflow.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [Future License Change Plan](future-license-change-plan.md)
 - [License And Version Policy](license-version-policy.md)

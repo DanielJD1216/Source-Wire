@@ -30,6 +30,7 @@ This command runs:
 - `npm run legal:packet`
 - `npm run owner:launch-checklist`
 - `npm run owner:license-preflight`
+- `npm run owner:decision-workflow`
 - `npm run world:readiness`
 - `npm run launch:decision-status`
 - `npm run package:required-paths`
@@ -67,6 +68,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked owner launch approval missing` |
 | Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `blocked owner license approval missing` |
+| Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `blocked owner license decision missing` |
 | World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` |
 | Launch decision status | `ok launch decision status ready`, `ok technical review sharing ready`, `blocked legal approval not granted`, `blocked owner launch approval missing`, `blocked license implementation missing`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
 | Package required paths | `ok package required paths` |
@@ -235,6 +237,18 @@ npm run owner:license-preflight
 ```
 
 The preflight verifies the approval package is complete, the license decision record is still pending, and owner license approval is still missing.
+
+It does not approve open-source launch, change package metadata, add a `LICENSE` file, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
+
+## Owner License Decision Workflow
+
+Run only the owner license decision workflow:
+
+```bash
+npm run owner:decision-workflow
+```
+
+The workflow verifies the decision docs are present, the exact owner options are available, and the owner license decision is still missing.
 
 It does not approve open-source launch, change package metadata, add a `LICENSE` file, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
 

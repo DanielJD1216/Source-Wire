@@ -75,6 +75,7 @@ The command verifies:
 - [License Approval Decision Record](license-approval-decision-record.md)
 - [License Approval Request Packet](license-approval-request-packet.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
+- [Owner License Decision Workflow](owner-license-decision-workflow.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [License Decision Gate](license-decision-gate.md)

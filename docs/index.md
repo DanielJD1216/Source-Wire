@@ -28,6 +28,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [World-Share Readiness](world-share-readiness.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
+- [Owner License Decision Workflow](owner-license-decision-workflow.md)
 - [Launch Decision Status](launch-decision-status.md)
 - [CI Checks](ci-checks.md)
 - [Repository Metadata](repository-metadata.md)
@@ -67,12 +68,13 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [World-Share Readiness](world-share-readiness.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
+- [Owner License Decision Workflow](owner-license-decision-workflow.md)
 - [Launch Decision Status](launch-decision-status.md)
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 - [CI Checks](ci-checks.md)
 
-Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:readiness` marker map, [World-Share Readiness](world-share-readiness.md) for the technical-review versus broad-reuse boundary, [Owner Launch Checklist](owner-launch-checklist.md) for missing launch approvals, [Owner License Approval Preflight](owner-license-approval-preflight.md) for the final approval-package check, [Launch Decision Status](launch-decision-status.md) for the one-command launch decision summary, and [CI Checks](ci-checks.md) for the GitHub Actions Package Checks marker map.
+Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:readiness` marker map, [World-Share Readiness](world-share-readiness.md) for the technical-review versus broad-reuse boundary, [Owner Launch Checklist](owner-launch-checklist.md) for missing launch approvals, [Owner License Approval Preflight](owner-license-approval-preflight.md) for the final approval-package check, [Owner License Decision Workflow](owner-license-decision-workflow.md) for the next owner action, [Launch Decision Status](launch-decision-status.md) for the one-command launch decision summary, and [CI Checks](ci-checks.md) for the GitHub Actions Package Checks marker map.
 
 ## Decision Prototypes
 
@@ -92,6 +94,7 @@ Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:rea
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
+- [Owner License Decision Workflow](owner-license-decision-workflow.md)
 - [Launch Decision Status](launch-decision-status.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [License Decision Gate](license-decision-gate.md)

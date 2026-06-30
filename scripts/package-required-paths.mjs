@@ -35,6 +35,7 @@ export const requiredPackagePaths = [
   "docs/owner-launch-checklist.md",
   "docs/owner-license-approval-packet.md",
   "docs/owner-license-approval-preflight.md",
+  "docs/owner-license-decision-workflow.md",
   "docs/proof/public-extraction-checklist.md",
   "docs/public-runtime-decision.md",
   "docs/public-status.md",

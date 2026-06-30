@@ -66,6 +66,12 @@ To verify the full approval package before asking the owner, run:
 npm run owner:license-preflight
 ```
 
+To view the next owner action workflow, run:
+
+```bash
+npm run owner:decision-workflow
+```
+
 ## Future Approval Options
 
 Only update this record in a future owner-approved unit.
@@ -92,6 +98,7 @@ pending
 - [License Decision Gate](license-decision-gate.md)
 - [License Approval Request Packet](license-approval-request-packet.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
+- [Owner License Decision Workflow](owner-license-decision-workflow.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [License Approval Rehearsal](license-approval-rehearsal.md)

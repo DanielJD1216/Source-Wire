@@ -39,6 +39,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "owner decision workflow",
+    markers: [
+      "ok owner decision workflow ready",
+      "ok owner decision options available",
+      "blocked owner license decision missing"
+    ]
+  },
+  {
     name: "legal review packet",
     markers: [
       "ok legal review packet ready",

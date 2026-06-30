@@ -61,6 +61,7 @@ The readiness gate runs:
 - `npm run safety:scan`
 - `npm run claims:scan`
 - `npm run release:gate`
+- `npm run release:review`
 - `npm run license:rehearsal`
 - `npm run license:decision-record`
 - `npm run license:approval-request`
@@ -98,6 +99,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Marker group | Expected markers | What it proves |
 | --- | --- | --- |
 | Release gate | `ok release gate`, `ok license Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` | Apache-2.0 licensing is implemented while version and publishing boundaries stay blocked. |
+| Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` | Current release inputs, draft release notes, and the recommended future first release version are documented while implementation approval is still missing. |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` | Exact future owner release choices are available while npm publishing, GitHub release publishing, and version release remain blocked. |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release implementation approval missing` | The package is locally ready for an owner release decision, but release implementation approval is still missing. |
 | Package required paths | `ok package required paths` | The shared required package path manifest is sorted and duplicate-free. |

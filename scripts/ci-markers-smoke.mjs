@@ -14,6 +14,9 @@ const completeLog = [
   "blocked npm publishing not approved",
   "blocked github release not approved",
   "blocked version release not approved",
+  "ok release review packet ready",
+  "ok release decision inputs documented",
+  "blocked release implementation approval missing",
   "ok release candidate readiness ready",
   "ok local package verification ready",
   "blocked release implementation approval missing",
@@ -95,7 +98,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 25 groups 75 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 26 groups 78 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

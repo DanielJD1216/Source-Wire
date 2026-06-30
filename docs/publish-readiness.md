@@ -24,6 +24,7 @@ This command runs:
 
 - `npm run ci:check`
 - `npm run release:gate`
+- `npm run release:review`
 - `npm run release:approval-request`
 - `npm run release:candidate-readiness`
 - `npm run license:rehearsal`
@@ -67,6 +68,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Area | Markers to look for |
 | --- | --- |
 | Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` |
+| Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release implementation approval missing` |
 | License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
@@ -129,6 +131,18 @@ npm run package:required-paths
 The manifest check verifies the shared required package path list is sorted and duplicate-free.
 
 It does not build, pack, install, publish, or run runtime behavior.
+
+## Release Review
+
+Run only the release review packet check:
+
+```bash
+npm run release:review
+```
+
+The review packet records current release inputs, the recommended future first release version, draft release notes, and known blocked release paths.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
 
 ## Release Approval Request
 

@@ -37,6 +37,7 @@ This command runs:
 - `npm run docs:links`
 - `npm run docs:command-setup`
 - `npm run safety:scan`
+- `npm run claims:scan`
 - `npm run ci:markers:smoke`
 
 The `ci:check` sub-gate includes:
@@ -63,6 +64,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok command docs setup` |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` |
+| Public claim boundary | `ok public claim boundary scan` |
 | CI marker self-smoke | `ok ci markers smoke` |
 
 The Docs and readiness row proves the readiness summary, required readiness docs, local Markdown links, and command-doc setup pointers are current.
@@ -123,6 +125,20 @@ It does not run the full readiness gate. Use `npm run publish:readiness` for ver
 It does not publish npm.
 
 It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Public Claim Boundary Scan
+
+Run only the public claim-boundary guard:
+
+```bash
+npm run claims:scan
+```
+
+The guard scans public README, docs, and examples for unsafe release, reuse, open-source, contribution, npm publishing, GitHub release, and hosted-runtime claims while the package license remains `UNLICENSED`.
+
+It skips fenced code blocks so docs can include unsafe wording examples as examples.
+
+It does not change files, approve licensing, publish npm, create a release, deploy services, start a runtime, accept contributions, or grant reuse rights.
 
 ## License Approval Rehearsal
 

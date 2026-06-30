@@ -22,6 +22,7 @@ const requiredScripts = [
   "docs:links",
   "docs:command-setup",
   "safety:scan",
+  "claims:scan",
   "package:required-paths",
   "ci:markers",
   "ci:markers:smoke",

@@ -12,6 +12,7 @@ await assertPathMissing("LICENSE", "LICENSE file must not exist before owner lic
 
 for (const requiredPath of [
   "docs/share-for-review.md",
+  "docs/license-approval-decision-record.md",
   "docs/legal-review-question-packet.md",
   "docs/owner-launch-checklist.md",
   "docs/license-decision-gate.md",
@@ -42,6 +43,7 @@ printRows([
   ["Technical review sharing", "ready"],
   ["Legal approval", "blocked, not granted"],
   ["Owner launch approval", "blocked, missing"],
+  ["License decision record", "pending"],
   ["License implementation", "blocked, missing"],
   ["npm publishing", "blocked, not approved"],
   ["GitHub release", "blocked, not approved"],

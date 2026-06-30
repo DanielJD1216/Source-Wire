@@ -10,6 +10,8 @@ const completeLog = [
   "ok license UNLICENSED",
   "ok version 0.0.0",
   "ok publishing blocked",
+  "ok license decision record ready",
+  "blocked license decision pending",
   "ok legal review packet ready",
   "blocked legal approval not granted",
   "ok owner launch checklist ready",
@@ -67,7 +69,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 16 groups 49 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 17 groups 52 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

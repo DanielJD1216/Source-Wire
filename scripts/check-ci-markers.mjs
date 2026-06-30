@@ -15,6 +15,14 @@ const markerGroups = [
     markers: ["ok package required paths"]
   },
   {
+    name: "license decision record",
+    markers: [
+      "ok license decision record ready",
+      "blocked license decision pending",
+      "blocked license implementation missing"
+    ]
+  },
+  {
     name: "legal review packet",
     markers: [
       "ok legal review packet ready",

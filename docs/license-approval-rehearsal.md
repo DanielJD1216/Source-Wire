@@ -93,10 +93,13 @@ The rehearsal does not replace owner approval.
 
 Use the exact approval language in [License Decision Gate](license-decision-gate.md) before making the license change.
 
+Use [License Approval Decision Record](license-approval-decision-record.md) to verify the current decision is still pending before any implementation unit.
+
 ## Related Docs
 
 - [License Decision Gate](license-decision-gate.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
+- [License Approval Decision Record](license-approval-decision-record.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [License And Version Policy](license-version-policy.md)
 - [Release Decision](release-decision.md)

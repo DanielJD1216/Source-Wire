@@ -62,6 +62,7 @@ The readiness gate runs:
 - `npm run claims:scan`
 - `npm run release:gate`
 - `npm run license:rehearsal`
+- `npm run license:decision-record`
 - `npm run legal:packet`
 - `npm run owner:launch-checklist`
 - `npm run world:readiness`
@@ -92,6 +93,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | --- | --- | --- |
 | Release gate | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` | Release, license, version, and publishing boundaries are still blocked. |
 | Package required paths | `ok package required paths` | The shared required package path manifest is sorted and duplicate-free. |
+| License decision record | `ok license decision record ready`, `blocked license decision pending`, `blocked license implementation missing` | The owner license decision record exists and is still pending, so no license change has been approved. |
 | Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` | Legal or owner review questions are available, but legal approval has not been granted. |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked owner launch approval missing` | The owner approval order is visible, but broad launch is not approved. |
 | World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` | Technical review sharing is ready, but broad public reuse remains blocked. |

@@ -16,6 +16,8 @@ For the exact future Apache-2.0 checklist, read [Apache-2.0 License Implementati
 
 For the read-only pre-approval command check, read [License Approval Rehearsal](license-approval-rehearsal.md).
 
+For the current machine-checked pending decision record, read [License Approval Decision Record](license-approval-decision-record.md).
+
 For legal or owner review questions before a license decision, read [Legal Review Question Packet](legal-review-question-packet.md).
 
 ## Current State
@@ -135,6 +137,7 @@ Current decision remains:
 
 - keep `UNLICENSED`,
 - keep version `0.0.0`,
+- keep the license approval decision record pending,
 - keep npm publishing blocked,
 - keep GitHub release publishing blocked,
 - keep runtime backend blocked.

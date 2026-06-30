@@ -25,6 +25,7 @@ This command runs:
 - `npm run ci:check`
 - `npm run release:gate`
 - `npm run license:rehearsal`
+- `npm run license:decision-record`
 - `npm run legal:packet`
 - `npm run owner:launch-checklist`
 - `npm run world:readiness`
@@ -59,6 +60,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | --- | --- |
 | Release boundary | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` |
 | License rehearsal | `ok license rehearsal current boundary`, `ok license rehearsal future checklist` |
+| License decision record | `ok license decision record ready`, `blocked license decision pending`, `blocked license implementation missing` |
 | Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked owner launch approval missing` |
 | World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` |
@@ -169,6 +171,18 @@ npm run license:rehearsal
 ```
 
 The rehearsal verifies the current `UNLICENSED` boundary, confirms no `LICENSE` file exists, checks publish and release scripts remain blocked, and prints the future owner-approved Apache-2.0 transition checklist.
+
+It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
+
+## License Approval Decision Record
+
+Run only the pending license approval decision record check:
+
+```bash
+npm run license:decision-record
+```
+
+The command verifies that the owner license decision record exists, still says pending, and has not been confused with license implementation.
 
 It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
 

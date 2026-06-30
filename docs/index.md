@@ -32,6 +32,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Repository Metadata](repository-metadata.md)
 - [Release Decision](release-decision.md)
 - [License Approval Rehearsal](license-approval-rehearsal.md)
+- [License Approval Decision Record](license-approval-decision-record.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
@@ -83,6 +84,7 @@ Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:rea
 
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [License Approval Rehearsal](license-approval-rehearsal.md)
+- [License Approval Decision Record](license-approval-decision-record.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)
 - [Launch Decision Status](launch-decision-status.md)
@@ -96,6 +98,7 @@ Current state:
 - package license is `UNLICENSED`,
 - package version is `0.0.0`,
 - no `LICENSE` file exists,
+- license approval decision record is pending,
 - npm publishing is blocked,
 - GitHub release publishing is blocked,
 - hosted runtime backend work is blocked.

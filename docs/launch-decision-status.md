@@ -61,6 +61,7 @@ The command verifies:
 | Technical review sharing | Ready |
 | Legal approval | Blocked |
 | Owner launch approval | Blocked |
+| License decision record | Pending |
 | License implementation | Blocked |
 | npm publishing | Blocked |
 | GitHub release | Blocked |
@@ -71,6 +72,7 @@ The command verifies:
 
 - [Share For Technical Review](share-for-review.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
+- [License Approval Decision Record](license-approval-decision-record.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [License Decision Gate](license-decision-gate.md)

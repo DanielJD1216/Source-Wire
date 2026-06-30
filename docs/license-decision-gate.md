@@ -44,6 +44,12 @@ For the exact future implementation checklist, read [Apache-2.0 License Implemen
 
 Before executing any future license implementation, run the read-only [License Approval Rehearsal](license-approval-rehearsal.md) to verify the current blocked boundary and preview the transition checklist.
 
+Before treating any license path as approved, run the pending [License Approval Decision Record](license-approval-decision-record.md):
+
+```bash
+npm run license:decision-record
+```
+
 Before requesting legal or owner review, run:
 
 ```bash
@@ -131,6 +137,7 @@ unless a later publishing PRD explicitly approves it.
 ## Related Docs
 
 - [Owner License Approval Packet](owner-license-approval-packet.md)
+- [License Approval Decision Record](license-approval-decision-record.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [Future License Change Plan](future-license-change-plan.md)
 - [License And Version Policy](license-version-policy.md)

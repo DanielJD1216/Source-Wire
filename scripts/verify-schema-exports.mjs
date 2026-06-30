@@ -5,9 +5,10 @@ import { SOURCE_WIRE_SCHEMA_EXPORTS, SOURCE_WIRE_SCHEMA_EXPORT_LIST } from "@sou
 const require = createRequire(import.meta.url);
 
 const expected = [
+  SOURCE_WIRE_SCHEMA_EXPORTS.chatExportMessage,
+  SOURCE_WIRE_SCHEMA_EXPORTS.ownerHostedApiMcpBoundary,
   SOURCE_WIRE_SCHEMA_EXPORTS.projectContextPack,
-  SOURCE_WIRE_SCHEMA_EXPORTS.secondBrainV1,
-  SOURCE_WIRE_SCHEMA_EXPORTS.chatExportMessage
+  SOURCE_WIRE_SCHEMA_EXPORTS.secondBrainV1
 ];
 
 const failures = [];

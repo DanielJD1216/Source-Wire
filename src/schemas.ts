@@ -1,4 +1,8 @@
-export type SourceWireSchemaName = "projectContextPack" | "secondBrainV1" | "chatExportMessage";
+export type SourceWireSchemaName =
+  | "projectContextPack"
+  | "secondBrainV1"
+  | "chatExportMessage"
+  | "ownerHostedApiMcpBoundary";
 
 export type SourceWireSchemaExport = {
   name: SourceWireSchemaName;
@@ -29,11 +33,19 @@ export const SOURCE_WIRE_SCHEMA_EXPORTS = {
     title: "Source-Wire Chat Export Message",
     packageSubpath: "@source-wire/contracts/schemas/chat-export-message",
     filePath: "schemas/chat-export-message.schema.json"
+  },
+  ownerHostedApiMcpBoundary: {
+    name: "ownerHostedApiMcpBoundary",
+    schemaId: "owner-hosted-api-mcp-boundary.schema.json",
+    title: "Source-Wire Owner-Hosted API Plus MCP Boundary Fixture",
+    packageSubpath: "@source-wire/contracts/schemas/owner-hosted-api-mcp-boundary",
+    filePath: "schemas/owner-hosted-api-mcp-boundary.schema.json"
   }
 } as const satisfies Record<SourceWireSchemaName, SourceWireSchemaExport>;
 
 export const SOURCE_WIRE_SCHEMA_EXPORT_LIST = [
+  SOURCE_WIRE_SCHEMA_EXPORTS.chatExportMessage,
+  SOURCE_WIRE_SCHEMA_EXPORTS.ownerHostedApiMcpBoundary,
   SOURCE_WIRE_SCHEMA_EXPORTS.projectContextPack,
-  SOURCE_WIRE_SCHEMA_EXPORTS.secondBrainV1,
-  SOURCE_WIRE_SCHEMA_EXPORTS.chatExportMessage
+  SOURCE_WIRE_SCHEMA_EXPORTS.secondBrainV1
 ] as const satisfies readonly SourceWireSchemaExport[];

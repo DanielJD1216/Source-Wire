@@ -60,7 +60,9 @@ Expected markers:
 ok valid project-context-pack
 ok valid second-brain-v1
 ok valid chat-export-message
+ok valid owner-hosted-api-mcp-boundary
 ok invalid project-context-pack
+ok invalid owner-hosted-api-mcp-boundary
 ```
 
 What this proves:
@@ -75,14 +77,14 @@ You can also validate fixtures directly:
 node dist/cli.js validate project-context-pack examples/fixtures/project-context-pack/project-context.json
 node dist/cli.js validate second-brain-v1 examples/fixtures/second-brain/use-2nd-brain-example.json
 node dist/cli.js validate chat-export-message examples/fixtures/chat-export/agent-session.jsonl
+node dist/cli.js validate owner-hosted-api-mcp-boundary examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json
 ```
 
-The CLI validates only the three schema-backed fixtures above.
+The CLI validates the four schema-backed fixtures above.
 
 Example-only fixtures are public-safe references, not schema-backed validation targets:
 
 - [Markdown vault fixture](../examples/fixtures/markdown-vault/)
-- [Owner-hosted API plus MCP boundary fixture](../examples/fixtures/owner-hosted-api-mcp-boundary/README.md)
 
 ## 4. Run The Full Readiness Gate
 

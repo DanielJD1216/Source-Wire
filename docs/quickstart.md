@@ -33,7 +33,7 @@ npm run build
 npm run cli:smoke
 ```
 
-This builds the package, validates the three public schema-backed fixtures, and verifies that one invalid synthetic payload fails.
+This builds the package, validates the four public schema-backed fixtures, and verifies that invalid synthetic payloads fail.
 
 ## Validate A Project Context Pack
 
@@ -69,6 +69,18 @@ Expected output:
 
 ```text
 ok examples/fixtures/chat-export/agent-session.jsonl
+```
+
+## Validate Owner-Hosted API Plus MCP Boundary Proof Cases
+
+```bash
+node dist/cli.js validate owner-hosted-api-mcp-boundary examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json
+```
+
+Expected output:
+
+```text
+ok examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json
 ```
 
 ## Run The Full Local Readiness Check
@@ -169,11 +181,11 @@ It does not check external URLs or anchor existence.
 | `examples/fixtures/second-brain/use-2nd-brain-example.json` | Synthetic second-brain response shape. | `second-brain-v1` |
 | `examples/fixtures/chat-export/agent-session.jsonl` | Synthetic chat export message lines. | `chat-export-message` |
 | `examples/fixtures/markdown-vault/` | Synthetic Markdown vault evidence examples. | Not schema-validated by the current CLI. |
-| `examples/fixtures/owner-hosted-api-mcp-boundary/` | Synthetic owner-hosted API plus MCP boundary proof cases. | Not schema-validated by the current CLI. |
+| `examples/fixtures/owner-hosted-api-mcp-boundary/` | Synthetic owner-hosted API plus MCP boundary proof cases. | `owner-hosted-api-mcp-boundary` |
 
-`npm run consumer:smoke` validates the three schema-backed fixtures from the installed package path under `node_modules/@source-wire/contracts`.
+`npm run consumer:smoke` validates the four schema-backed fixtures from the installed package path under `node_modules/@source-wire/contracts`.
 
-Markdown vault and owner-hosted API plus MCP boundary fixtures are intentionally not part of the installed fixture validation matrix until Source-Wire has matching schemas.
+The Markdown vault fixture is intentionally not part of the installed fixture validation matrix until Source-Wire has a matching schema.
 
 More detail:
 

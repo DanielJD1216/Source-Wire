@@ -6,13 +6,13 @@ It demonstrates proof cases for the future owner-hosted API plus MCP boundary.
 
 It is not a runtime test.
 
-It is not schema-validated by the current CLI.
+It is schema-validated by the current CLI.
 
 ## Files
 
 | File | Purpose | CLI schema |
 | --- | --- | --- |
-| `boundary-proof-cases.json` | Synthetic proof cases for future API and MCP runtime boundaries. | Not schema-validated by the current CLI. |
+| `boundary-proof-cases.json` | Synthetic proof cases for future API and MCP runtime boundaries. | `owner-hosted-api-mcp-boundary` |
 
 ## Covered Cases
 

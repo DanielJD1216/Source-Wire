@@ -160,6 +160,7 @@ It verifies package-root imports and the installed `source-wire` CLI against eve
 - `project-context-pack`
 - `second-brain-v1`
 - `chat-export-message`
+- `owner-hosted-api-mcp-boundary`
 
 Markdown vault fixtures are not part of the installed fixture validation matrix until a Markdown vault schema exists.
 

@@ -20,6 +20,15 @@ const checks = [
     label: "valid chat-export-message",
     args: ["validate", "chat-export-message", "examples/fixtures/chat-export/agent-session.jsonl"],
     expectedExit: 0
+  },
+  {
+    label: "valid owner-hosted-api-mcp-boundary",
+    args: [
+      "validate",
+      "owner-hosted-api-mcp-boundary",
+      "examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json"
+    ],
+    expectedExit: 0
   }
 ];
 
@@ -36,6 +45,23 @@ try {
   checks.push({
     label: "invalid project-context-pack",
     args: ["validate", "project-context-pack", invalidProjectContextPack],
+    expectedExit: 1
+  });
+
+  const invalidOwnerHostedBoundary = join(tempDir, "invalid-owner-hosted-api-mcp-boundary.json");
+  await writeFile(
+    invalidOwnerHostedBoundary,
+    JSON.stringify({
+      fixtureType: "source-wire-owner-hosted-api-mcp-boundary-proof-cases",
+      fixtureSafety: "synthetic",
+      schemaValidated: true
+    }),
+    "utf8"
+  );
+
+  checks.push({
+    label: "invalid owner-hosted-api-mcp-boundary",
+    args: ["validate", "owner-hosted-api-mcp-boundary", invalidOwnerHostedBoundary],
     expectedExit: 1
   });
 

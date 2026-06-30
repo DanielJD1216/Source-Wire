@@ -128,6 +128,16 @@ console.log(JSON.stringify({
     {
       schemaName: "chat-export-message",
       path: join(installedPackageRoot, "examples", "fixtures", "chat-export", "agent-session.jsonl")
+    },
+    {
+      schemaName: "owner-hosted-api-mcp-boundary",
+      path: join(
+        installedPackageRoot,
+        "examples",
+        "fixtures",
+        "owner-hosted-api-mcp-boundary",
+        "boundary-proof-cases.json"
+      )
     }
   ];
 

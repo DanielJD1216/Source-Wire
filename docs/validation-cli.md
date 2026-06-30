@@ -34,6 +34,7 @@ node dist/cli.js validate <schema> <file...>
 | `project-context-pack` | One JSON Project Context Pack file |
 | `second-brain-v1` | One JSON `/2nd-brain` response fixture file |
 | `chat-export-message` | One JSONL chat export file with one message per line |
+| `owner-hosted-api-mcp-boundary` | One JSON owner-hosted API plus MCP boundary proof-case fixture |
 
 ## Examples
 
@@ -53,6 +54,12 @@ Validate a chat export JSONL file:
 
 ```bash
 node dist/cli.js validate chat-export-message examples/fixtures/chat-export/agent-session.jsonl
+```
+
+Validate the owner-hosted API plus MCP boundary proof cases:
+
+```bash
+node dist/cli.js validate owner-hosted-api-mcp-boundary examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json
 ```
 
 Validate multiple files with the same schema:
@@ -106,4 +113,4 @@ Run:
 npm run cli:smoke
 ```
 
-The smoke command builds the package, validates the three public fixtures, and verifies that an invalid synthetic payload fails.
+The smoke command builds the package, validates the four public schema-backed fixtures, and verifies that invalid synthetic payloads fail.

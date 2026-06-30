@@ -148,6 +148,7 @@ Installed fixture matrix:
 | `examples/fixtures/project-context-pack/project-context.json` | `project-context-pack` |
 | `examples/fixtures/second-brain/use-2nd-brain-example.json` | `second-brain-v1` |
 | `examples/fixtures/chat-export/agent-session.jsonl` | `chat-export-message` |
+| `examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json` | `owner-hosted-api-mcp-boundary` |
 
 Markdown vault fixtures are package contents, but they are not part of this validation matrix until a Markdown vault schema exists.
 

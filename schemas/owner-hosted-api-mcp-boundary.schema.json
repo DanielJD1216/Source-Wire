@@ -1,0 +1,163 @@
+{
+  "$id": "owner-hosted-api-mcp-boundary.schema.json",
+  "title": "Source-Wire Owner-Hosted API Plus MCP Boundary Fixture",
+  "type": "object",
+  "required": [
+    "fixtureType",
+    "fixtureSafety",
+    "schemaValidated",
+    "boundary",
+    "syntheticOwner",
+    "syntheticNamespaces",
+    "proofCases",
+    "nonGoals"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "fixtureType": {
+      "const": "source-wire-owner-hosted-api-mcp-boundary-proof-cases"
+    },
+    "fixtureSafety": {
+      "const": "synthetic"
+    },
+    "schemaValidated": {
+      "const": true
+    },
+    "boundary": {
+      "type": "object",
+      "required": ["hosting", "sourceWireHostsUserMemory", "runtimeIncludedInPackage", "noAutoPromotion"],
+      "additionalProperties": false,
+      "properties": {
+        "hosting": { "const": "owner_hosted" },
+        "sourceWireHostsUserMemory": { "const": false },
+        "runtimeIncludedInPackage": { "const": false },
+        "noAutoPromotion": { "const": true }
+      }
+    },
+    "syntheticOwner": {
+      "type": "object",
+      "required": ["ownerId", "displayName"],
+      "additionalProperties": false,
+      "properties": {
+        "ownerId": { "type": "string", "minLength": 1 },
+        "displayName": { "type": "string", "minLength": 1 }
+      }
+    },
+    "syntheticNamespaces": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["namespaceId", "label"],
+        "additionalProperties": false,
+        "properties": {
+          "namespaceId": { "type": "string", "minLength": 1 },
+          "label": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "proofCases": {
+      "type": "array",
+      "minItems": 7,
+      "items": { "$ref": "#/$defs/proofCase" }
+    },
+    "nonGoals": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "proofCase": {
+      "type": "object",
+      "required": ["caseId", "actor", "request", "expectedResult", "audit"],
+      "additionalProperties": false,
+      "properties": {
+        "caseId": { "type": "string", "minLength": 1 },
+        "actor": {
+          "type": "object",
+          "required": ["kind", "syntheticTokenRef", "allowedNamespaceIds", "capabilities"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "enum": ["mcp_tool", "owner_hosted_api", "owner_controlled_application"] },
+            "syntheticTokenRef": { "type": "string", "minLength": 1 },
+            "allowedNamespaceIds": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "capabilities": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "request": {
+          "type": "object",
+          "required": ["namespaceId"],
+          "additionalProperties": false,
+          "properties": {
+            "namespaceId": { "type": "string", "minLength": 1 },
+            "tool": { "type": "string", "minLength": 1 },
+            "apiRoute": { "type": "string", "minLength": 1 },
+            "query": { "type": "string", "minLength": 1 },
+            "sourceConnectionId": { "type": "string", "minLength": 1 },
+            "payloadMode": { "type": "string", "minLength": 1 },
+            "sourceSegmentId": { "type": "string", "minLength": 1 },
+            "reviewReason": { "type": "string", "minLength": 1 }
+          }
+        },
+        "expectedResult": {
+          "type": "object",
+          "required": ["status", "noAutoPromotion"],
+          "additionalProperties": false,
+          "properties": {
+            "status": { "enum": ["allowed", "denied", "partial_success"] },
+            "trustedMemoryReturned": { "type": "boolean" },
+            "sourceEvidenceReturned": { "type": "boolean" },
+            "omittedCount": { "type": "integer", "minimum": 0 },
+            "citationCount": { "type": "integer", "minimum": 0 },
+            "denialReason": { "type": "string", "minLength": 1 },
+            "importedCount": { "type": "integer", "minimum": 0 },
+            "changedCount": { "type": "integer", "minimum": 0 },
+            "staleCount": { "type": "integer", "minimum": 0 },
+            "skippedCount": { "type": "integer", "minimum": 0 },
+            "errorCount": { "type": "integer", "minimum": 0 },
+            "pendingCandidateCount": { "type": "integer", "minimum": 0 },
+            "pendingCandidateCreated": { "type": "boolean" },
+            "pendingCandidateClosed": { "type": "boolean" },
+            "trustedMemoryCreatedCount": { "type": "integer", "minimum": 0 },
+            "requiresOwnerReview": { "type": "boolean" },
+            "approvalPath": { "const": "owner_or_application_controlled" },
+            "citations": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/citation" }
+            },
+            "noAutoPromotion": { "type": "boolean" }
+          }
+        },
+        "audit": {
+          "type": "object",
+          "required": ["eventType", "result", "syntheticTraceId"],
+          "additionalProperties": false,
+          "properties": {
+            "eventType": { "type": "string", "minLength": 1 },
+            "result": { "enum": ["allowed", "denied", "partial_success"] },
+            "syntheticTraceId": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "citation": {
+      "type": "object",
+      "required": ["sourceId", "segmentId", "address"],
+      "additionalProperties": false,
+      "properties": {
+        "sourceId": { "type": "string", "minLength": 1 },
+        "segmentId": { "type": "string", "minLength": 1 },
+        "address": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

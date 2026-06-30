@@ -12,7 +12,7 @@ They are designed to test public Source-Wire contracts without using real privat
 | `second-brain/use-2nd-brain-example.json` | Fake second-brain response payload. | `second-brain-v1` |
 | `chat-export/agent-session.jsonl` | Fake chat export message lines for the Source Connection Contract. | `chat-export-message` |
 | `markdown-vault/` | Fake Markdown notes for the Source Graph Adapter Contract. | Not schema-validated by the current CLI. |
-| `owner-hosted-api-mcp-boundary/` | Fake proof cases for future owner-hosted API plus MCP runtime boundaries. | Not schema-validated by the current CLI. |
+| `owner-hosted-api-mcp-boundary/` | Fake proof cases for future owner-hosted API plus MCP runtime boundaries. | `owner-hosted-api-mcp-boundary` |
 
 ## Validate Schema-Backed Fixtures
 
@@ -50,6 +50,12 @@ Validate chat export messages:
 node dist/cli.js validate chat-export-message examples/fixtures/chat-export/agent-session.jsonl
 ```
 
+Validate the owner-hosted API plus MCP boundary proof cases:
+
+```bash
+node dist/cli.js validate owner-hosted-api-mcp-boundary examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json
+```
+
 ## Markdown Vault Fixture
 
 The Markdown vault fixture is a synthetic evidence example for source graph and import concepts.
@@ -60,7 +66,7 @@ It is not currently validated by the CLI because the current CLI validates JSON 
 
 The owner-hosted API plus MCP boundary fixture is a synthetic proof-case example for future runtime PRDs.
 
-It is not currently validated by the CLI because Unit 51 does not add a schema for this fixture.
+It is validated by the CLI as a contract-level fixture. This does not start a runtime, connect to MCP, or imply Source-Wire hosts memory.
 
 Start here:
 

@@ -52,6 +52,7 @@ export const requiredPackagePaths = [
   "package.json",
   "README.md",
   "schemas/chat-export-message.schema.json",
+  "schemas/owner-hosted-api-mcp-boundary.schema.json",
   "schemas/project-context-pack.schema.json",
   "schemas/second-brain-v1.schema.json"
 ];

@@ -1,7 +1,7 @@
 {
   "fixtureType": "source-wire-owner-hosted-api-mcp-boundary-proof-cases",
   "fixtureSafety": "synthetic",
-  "schemaValidated": false,
+  "schemaValidated": true,
   "boundary": {
     "hosting": "owner_hosted",
     "sourceWireHostsUserMemory": false,

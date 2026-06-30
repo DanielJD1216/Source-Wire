@@ -11,6 +11,7 @@ These exports are for validation and tooling. They are not a runtime backend.
 | Project Context Pack | `@source-wire/contracts/schemas/project-context-pack` | `schemas/project-context-pack.schema.json` |
 | `second-brain.v1` response fixture | `@source-wire/contracts/schemas/second-brain-v1` | `schemas/second-brain-v1.schema.json` |
 | Chat export message | `@source-wire/contracts/schemas/chat-export-message` | `schemas/chat-export-message.schema.json` |
+| Owner-hosted API plus MCP boundary fixture | `@source-wire/contracts/schemas/owner-hosted-api-mcp-boundary` | `schemas/owner-hosted-api-mcp-boundary.schema.json` |
 
 ## Typed Registry
 

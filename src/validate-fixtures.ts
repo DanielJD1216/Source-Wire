@@ -3,13 +3,15 @@ import { validateSourceWireFile } from "./validation.js";
 const fixtureFiles = {
   projectContextPack: "examples/fixtures/project-context-pack/project-context.json",
   secondBrain: "examples/fixtures/second-brain/use-2nd-brain-example.json",
-  chatExport: "examples/fixtures/chat-export/agent-session.jsonl"
+  chatExport: "examples/fixtures/chat-export/agent-session.jsonl",
+  ownerHostedApiMcpBoundary: "examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json"
 };
 
 const results = [
   await validateSourceWireFile("project-context-pack", fixtureFiles.projectContextPack),
   await validateSourceWireFile("second-brain-v1", fixtureFiles.secondBrain),
-  await validateSourceWireFile("chat-export-message", fixtureFiles.chatExport)
+  await validateSourceWireFile("chat-export-message", fixtureFiles.chatExport),
+  await validateSourceWireFile("owner-hosted-api-mcp-boundary", fixtureFiles.ownerHostedApiMcpBoundary)
 ];
 
 const failed = results.filter((result) => !result.ok);

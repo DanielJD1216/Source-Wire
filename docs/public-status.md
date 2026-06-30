@@ -139,6 +139,7 @@ Separate owner approvals are still required before any of these happen:
 Read:
 
 - [Release Decision](release-decision.md)
+- [Owner Launch Checklist](owner-launch-checklist.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [License Approval Rehearsal](license-approval-rehearsal.md)

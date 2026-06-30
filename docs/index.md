@@ -26,6 +26,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Publish Readiness](publish-readiness.md)
 - [World-Share Readiness](world-share-readiness.md)
+- [Owner Launch Checklist](owner-launch-checklist.md)
 - [CI Checks](ci-checks.md)
 - [Repository Metadata](repository-metadata.md)
 - [Release Decision](release-decision.md)
@@ -60,11 +61,12 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Publish Readiness](publish-readiness.md)
 - [World-Share Readiness](world-share-readiness.md)
+- [Owner Launch Checklist](owner-launch-checklist.md)
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 - [CI Checks](ci-checks.md)
 
-Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:readiness` marker map, [World-Share Readiness](world-share-readiness.md) for the technical-review versus broad-reuse boundary, and [CI Checks](ci-checks.md) for the GitHub Actions Package Checks marker map.
+Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:readiness` marker map, [World-Share Readiness](world-share-readiness.md) for the technical-review versus broad-reuse boundary, [Owner Launch Checklist](owner-launch-checklist.md) for missing launch approvals, and [CI Checks](ci-checks.md) for the GitHub Actions Package Checks marker map.
 
 ## Decision Prototypes
 
@@ -80,6 +82,7 @@ Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:rea
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [License Approval Rehearsal](license-approval-rehearsal.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
+- [Owner Launch Checklist](owner-launch-checklist.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)

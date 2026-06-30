@@ -13,6 +13,7 @@ for (const requiredPath of [
   "docs/legal-review-question-packet.md",
   "docs/license-decision-gate.md",
   "docs/owner-license-approval-packet.md",
+  "docs/owner-launch-checklist.md",
   "docs/future-license-change-plan.md",
   "docs/world-share-readiness.md",
   "CONTRIBUTING.md",

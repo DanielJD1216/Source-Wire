@@ -26,6 +26,7 @@ This command runs:
 - `npm run release:gate`
 - `npm run license:rehearsal`
 - `npm run legal:packet`
+- `npm run owner:launch-checklist`
 - `npm run world:readiness`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
@@ -58,6 +59,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release boundary | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` |
 | License rehearsal | `ok license rehearsal current boundary`, `ok license rehearsal future checklist` |
 | Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` |
+| Owner launch checklist | `ok owner launch checklist ready`, `blocked owner launch approval missing` |
 | World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` |
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
@@ -179,6 +181,18 @@ npm run legal:packet
 The command verifies the current blocked boundary and prints the legal or owner review topics for licensing, commercial reuse, contribution terms, support, security, name and trademark, hosted runtime, and private-data boundaries.
 
 It does not provide legal advice, approve licensing, change package metadata, add a `LICENSE` file, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
+
+## Owner Launch Checklist
+
+Run only the owner launch decision checklist:
+
+```bash
+npm run owner:launch-checklist
+```
+
+The checklist reports that technical review sharing is ready and broad public launch remains blocked until explicit owner approvals are recorded for licensing, npm publishing, GitHub release publishing, hosted runtime work, and contribution terms.
+
+It does not approve open-source launch, change package metadata, add a `LICENSE` file, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
 
 ## World-Share Readiness
 

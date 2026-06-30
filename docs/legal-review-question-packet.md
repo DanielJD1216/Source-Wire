@@ -116,9 +116,12 @@ Before broad public reuse, record:
 - hosted runtime and managed-service boundary,
 - private-data handling rule.
 
+For the launch approval order that depends on these answers, read [Owner Launch Checklist](owner-launch-checklist.md).
+
 ## Related Docs
 
 - [License Decision Gate](license-decision-gate.md)
+- [Owner Launch Checklist](owner-launch-checklist.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [Future License Change Plan](future-license-change-plan.md)
 - [World-Share Readiness](world-share-readiness.md)

@@ -3,46 +3,44 @@ import { readFile, stat } from "node:fs/promises";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
-assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
+assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED until owner approval");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release approval");
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED until owner license approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
 await assertPathMissing("LICENSE", "LICENSE file must not exist before owner license approval");
 
 for (const requiredPath of [
-  "docs/public-status.md",
-  "docs/share-for-review.md",
-  "docs/license-decision-gate.md",
-  "docs/owner-license-approval-packet.md",
-  "docs/apache-2-license-implementation-readiness.md",
-  "docs/legal-review-question-packet.md",
   "docs/owner-launch-checklist.md",
-  "docs/world-share-readiness.md"
+  "docs/legal-review-question-packet.md",
+  "docs/license-decision-gate.md",
+  "docs/world-share-readiness.md",
+  "docs/share-for-review.md",
+  "docs/publish-readiness.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
 if (failures.length > 0) {
-  console.error("failed world share readiness boundary");
+  console.error("failed owner launch checklist boundary");
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-printSection("Source-Wire World-Share Readiness");
+printSection("Source-Wire Owner Launch Checklist");
 printRows([
   ["Technical review", "ready"],
-  ["Broad reuse", "blocked until license approval"],
-  ["Open-source release", "blocked until license implementation"],
-  ["npm publishing", "blocked until publish PRD approval"],
-  ["GitHub release", "blocked until release PRD approval"],
-  ["Hosted runtime", "blocked until runtime PRD approval"],
-  ["Code contributions", "blocked until contribution terms approval"]
+  ["Legal review packet", "ready"],
+  ["Broad public reuse", "blocked, owner license approval missing"],
+  ["Open-source license", "blocked, owner license implementation missing"],
+  ["npm publishing", "blocked, publish approval missing"],
+  ["GitHub release", "blocked, release approval missing"],
+  ["Hosted runtime", "blocked, runtime approval missing"],
+  ["Code contributions", "blocked, contribution terms approval missing"]
 ]);
 
-printSection("Current Package Boundary");
+printSection("Current Guarded State");
 printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
@@ -51,19 +49,20 @@ printRows([
   ["Publish boundary", "npm publishing blocked, publishConfig.access restricted"]
 ]);
 
-printSection("Next Approval Needed");
+printSection("Approval Order");
 printList([
-  "To share for technical review, use docs/share-for-review.md.",
-  "To prepare counsel or owner review, use docs/legal-review-question-packet.md.",
-  "To inspect launch approval order, use docs/owner-launch-checklist.md.",
-  "To share for broad public reuse, first approve and implement a license path from docs/license-decision-gate.md.",
-  "To publish npm, open a separate publish PRD after licensing is approved.",
-  "To add hosted runtime behavior, open a separate runtime PRD after the runtime gate is approved."
+  "1. Technical review sharing is allowed with docs/share-for-review.md.",
+  "2. Legal or owner review should use docs/legal-review-question-packet.md.",
+  "3. Broad reuse needs a license decision from docs/license-decision-gate.md.",
+  "4. npm publishing needs a separate publish PRD after licensing.",
+  "5. GitHub release publishing needs a separate release PRD.",
+  "6. Hosted runtime work needs a separate runtime PRD.",
+  "7. Code contribution acceptance needs explicit contribution terms."
 ]);
 
 console.log("");
-console.log("ok world share technical review ready");
-console.log("blocked world share broad reuse");
+console.log("ok owner launch checklist ready");
+console.log("blocked owner launch approval missing");
 
 async function assertPathExists(path) {
   try {

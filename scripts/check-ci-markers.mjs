@@ -22,6 +22,13 @@ const markerGroups = [
     ]
   },
   {
+    name: "owner launch checklist",
+    markers: [
+      "ok owner launch checklist ready",
+      "blocked owner launch approval missing"
+    ]
+  },
+  {
     name: "world-share boundary",
     markers: [
       "ok world share technical review ready",

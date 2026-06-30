@@ -68,10 +68,10 @@ The command verifies:
 
 ## Next Physical Action
 
-Run the release-candidate check:
+Run the release-decision preflight:
 
 ```bash
-npm run release:candidate-readiness
+npm run release:decision-preflight
 ```
 
 If it passes, the recommended next owner decision is:

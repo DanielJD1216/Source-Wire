@@ -33,6 +33,7 @@ const preparationDoc = await readFile("docs/release-implementation-preparation.m
 for (const requiredText of [
   "Status: release implementation preparation only.",
   approvedReleaseText,
+  "npm run release:decision-preflight",
   "npm run publish:readiness",
   "npm run release:artifact-manifest",
   "gh run watch",
@@ -73,6 +74,7 @@ printRows([
 printSection("Required Evidence Before Execution");
 printList([
   "Issue #255 contains exact owner approval text.",
+  "npm run release:decision-preflight passes.",
   "npm run publish:readiness passes from a clean checkout.",
   "npm run release:artifact-manifest records package identity, shasum, and integrity.",
   "Package Checks are green on the exact release commit.",

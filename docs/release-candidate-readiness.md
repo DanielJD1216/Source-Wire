@@ -73,6 +73,22 @@ npm run release:artifact-manifest
 
 That command prints the package filename, file count, size, shasum, and integrity without publishing.
 
+Before asking the owner to choose a release path, run the complete owner-side preflight:
+
+```bash
+npm run release:decision-preflight
+```
+
+Expected final markers:
+
+```text
+ok release decision preflight ready
+ok world share preflight current
+ok release candidate evidence current
+ok release artifact evidence current
+blocked release implementation approval missing
+```
+
 ## Next Action
 
 If this check passes, the next owner decision is whether to open a future release implementation unit.

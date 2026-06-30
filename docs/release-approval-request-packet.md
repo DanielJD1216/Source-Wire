@@ -35,6 +35,32 @@ blocked github release not approved
 blocked version release not approved
 ```
 
+Before asking the owner for a release implementation decision, run the complete read-only decision preflight:
+
+```bash
+npm run release:decision-preflight
+```
+
+This runs:
+
+- `npm run world:share-preflight`
+- `npm run release:candidate-readiness`
+- `npm run release:artifact-manifest`
+- `npm run release:approval-request`
+- `npm run launch:decision-status`
+
+Expected final markers:
+
+```text
+ok release decision preflight ready
+ok world share preflight current
+ok release candidate evidence current
+ok release artifact evidence current
+blocked release implementation approval missing
+```
+
+This command does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
+
 ## Current State
 
 | Field | Current value |

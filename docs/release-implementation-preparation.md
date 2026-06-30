@@ -45,11 +45,12 @@ blocked release implementation execution approval missing
 Before any version change, npm publish, tag, or GitHub release:
 
 1. Issue `#255` must contain the exact owner approval text.
-2. `npm run publish:readiness` must pass from a clean checkout.
-3. `npm run release:artifact-manifest` must record package identity, shasum, and integrity.
-4. GitHub Actions Package Checks must pass on the exact release commit.
-5. Release notes and version target must still be intentional.
-6. Package contents must not include private data, local paths, real user records, or private proof history.
+2. `npm run release:decision-preflight` must pass.
+3. `npm run publish:readiness` must pass from a clean checkout.
+4. `npm run release:artifact-manifest` must record package identity, shasum, and integrity.
+5. GitHub Actions Package Checks must pass on the exact release commit.
+6. Release notes and version target must still be intentional.
+7. Package contents must not include private data, local paths, real user records, or private proof history.
 
 ## Execution Checklist After Approval
 
@@ -57,6 +58,7 @@ Run this sequence only after issue `#255` contains exact approval.
 
 ```bash
 git status --short --branch
+npm run release:decision-preflight
 npm run publish:readiness
 npm run release:artifact-manifest
 gh run list --repo DanielJD1216/Source-Wire --workflow package-checks.yml --limit 5 --json databaseId,status,conclusion,url,headSha,createdAt
@@ -78,6 +80,7 @@ Stop before publishing or releasing if any of these are true:
 
 - issue `#255` does not contain the exact owner approval text,
 - release version is not explicit,
+- `npm run release:decision-preflight` fails,
 - `npm run publish:readiness` fails,
 - `npm run release:artifact-manifest` does not record shasum and integrity,
 - public CI is not green on the exact release commit,

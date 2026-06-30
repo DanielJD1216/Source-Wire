@@ -54,7 +54,7 @@ printRows([
 printSection("Approval Order");
 printList([
   "1. Apache-2.0 source package reuse is approved and implemented.",
-  "2. Run npm run release:candidate-readiness.",
+  "2. Run npm run release:decision-preflight.",
   "3. npm publishing plus a matching GitHub release needs a separate release implementation unit.",
   "4. Branch protection or repository rulesets need separate branch governance approval.",
   "5. Hosted runtime work needs a separate runtime PRD.",

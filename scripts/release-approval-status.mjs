@@ -48,7 +48,7 @@ if (exactApprovalRecorded) {
 }
 
 function hasApprovalRecordSection(body) {
-  const sectionPattern = /## Owner Approval Record[\s\S]*?(?=\n## |\s*$)/u;
+  const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
   const section = body.match(sectionPattern)?.[0] ?? "";
   return section.includes(exactApprovalText);
 }

@@ -164,10 +164,11 @@ Expected markers:
 ok world share preflight ready
 ok external reviewer links reachable
 ok live source-package boundary current
+ok owner decision issues current
 blocked production launch channels
 ```
 
-This checks public external links, live world-share status, and launch decision blockers. It does not publish npm, create a GitHub release, create tags, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
+This checks public external links, live world-share status, launch decision blockers, and owner-decision issue status. It does not publish npm, create a GitHub release, create tags, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
 
 ## What To Review
 

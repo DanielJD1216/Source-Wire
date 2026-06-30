@@ -77,6 +77,7 @@ This runs:
 - `npm run docs:external-links`
 - `npm run world:live-status`
 - `npm run launch:decision-status`
+- `npm run owner:decision-status`
 
 Expected markers:
 
@@ -84,10 +85,30 @@ Expected markers:
 ok world share preflight ready
 ok external reviewer links reachable
 ok live source-package boundary current
+ok owner decision issues current
 blocked production launch channels
 ```
 
 This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
+
+For the public owner-decision issues only, run:
+
+```bash
+npm run owner:decision-status
+```
+
+Expected current markers:
+
+```text
+ok owner decision status readable
+blocked release implementation approval missing
+blocked branch governance implementation approval missing
+blocked hosted runtime PRD approval missing
+blocked contribution terms PRD approval missing
+blocked owner decisions missing approval records
+```
+
+This read-only check verifies that issues `#255` through `#258` are readable and that exact approvals are not accidentally inferred from recommended approval text.
 
 For the live repo and live launch channels only, run:
 

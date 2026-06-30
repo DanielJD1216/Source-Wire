@@ -96,6 +96,7 @@ Expected markers:
 ok world share preflight ready
 ok external reviewer links reachable
 ok live source-package boundary current
+ok owner decision issues current
 blocked production launch channels
 ```
 

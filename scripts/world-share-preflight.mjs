@@ -3,7 +3,8 @@ import { execFile } from "node:child_process";
 const checks = [
   ["docs:external-links", "public external links"],
   ["world:live-status", "live world-share status"],
-  ["launch:decision-status", "launch decision blockers"]
+  ["launch:decision-status", "launch decision blockers"],
+  ["owner:decision-status", "owner decision issue status"]
 ];
 
 printSection("Source-Wire World Share Preflight");
@@ -19,6 +20,7 @@ printSection("World Share Preflight Result");
 console.log("ok world share preflight ready");
 console.log("ok external reviewer links reachable");
 console.log("ok live source-package boundary current");
+console.log("ok owner decision issues current");
 console.log("blocked production launch channels");
 
 function runNpmScript(scriptName) {

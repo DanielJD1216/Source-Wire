@@ -95,6 +95,7 @@
     "owner:license-preflight": "node scripts/owner-license-preflight.mjs",
     "owner:decision-intake": "node scripts/owner-license-decision-intake.mjs",
     "owner:decision-workflow": "node scripts/owner-decision-workflow.mjs",
+    "owner:decision-status": "node scripts/owner-decision-status.mjs",
     "world:readiness": "node scripts/world-share-readiness.mjs",
     "world:live-status": "node scripts/live-world-share-status.mjs",
     "world:share-preflight": "node scripts/world-share-preflight.mjs",

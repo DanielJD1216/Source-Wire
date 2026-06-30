@@ -50,6 +50,21 @@ For a single status report across all launch decisions, run:
 npm run launch:decision-status
 ```
 
+For the public owner-decision issue approval records, run:
+
+```bash
+npm run owner:decision-status
+```
+
+Expected current markers:
+
+```text
+ok owner decision status readable
+blocked owner decisions missing approval records
+```
+
+This command reads issues `#255` through `#258` and checks for separate exact owner approval records or approval comments. It intentionally does not count recommended approval text as approval.
+
 ## Current Decision State
 
 | Decision | State | What unlocks it |

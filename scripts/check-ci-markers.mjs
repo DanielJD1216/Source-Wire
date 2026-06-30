@@ -31,6 +31,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "owner license approval preflight",
+    markers: [
+      "ok owner license approval preflight ready",
+      "ok owner approval package complete",
+      "blocked owner license approval missing"
+    ]
+  },
+  {
     name: "legal review packet",
     markers: [
       "ok legal review packet ready",

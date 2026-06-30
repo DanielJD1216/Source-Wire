@@ -66,6 +66,7 @@ The readiness gate runs:
 - `npm run license:approval-request`
 - `npm run legal:packet`
 - `npm run owner:launch-checklist`
+- `npm run owner:license-preflight`
 - `npm run world:readiness`
 - `npm run launch:decision-status`
 - `npm run package:required-paths`
@@ -98,6 +99,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | License approval request | `ok license approval request ready`, `blocked owner license approval missing`, `blocked license decision pending` | The exact owner approval options are present, but owner license approval is still missing. |
 | Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` | Legal or owner review questions are available, but legal approval has not been granted. |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked owner launch approval missing` | The owner approval order is visible, but broad launch is not approved. |
+| Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `blocked owner license approval missing` | The owner approval package is complete, but owner license approval is still missing. |
 | World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` | Technical review sharing is ready, but broad public reuse remains blocked. |
 | Launch decision status | `ok launch decision status ready`, `ok technical review sharing ready`, `blocked legal approval not granted`, `blocked owner launch approval missing`, `blocked license implementation missing`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` | One command reports the launch decisions that are ready and blocked without approving any blocked launch path. |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` | The local package can be packed and the shared required package path manifest is present. |

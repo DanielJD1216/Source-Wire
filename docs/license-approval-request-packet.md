@@ -22,6 +22,12 @@ The current decision record is still pending. Then run:
 npm run license:approval-request
 ```
 
+Before asking for the final owner decision, run:
+
+```bash
+npm run owner:license-preflight
+```
+
 Expected markers:
 
 ```text
@@ -92,6 +98,7 @@ Even if one option is approved later, separate approval is still required for:
 ## Related Docs
 
 - [License Approval Decision Record](license-approval-decision-record.md)
+- [Owner License Approval Preflight](owner-license-approval-preflight.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)

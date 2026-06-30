@@ -8,6 +8,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 
 - [Public Adopter Walkthrough](adopter-walkthrough.md)
 - [Public Status](public-status.md)
+- [Repository Metadata](repository-metadata.md)
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)
 - [Architecture Map](architecture-map.md)
@@ -23,6 +24,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Publish Readiness](publish-readiness.md)
 - [CI Checks](ci-checks.md)
+- [Repository Metadata](repository-metadata.md)
 - [Release Decision](release-decision.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)

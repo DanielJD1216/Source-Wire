@@ -34,7 +34,8 @@ It currently includes:
 - validation CLI,
 - package-readiness checks,
 - minimal synthetic in-memory runtime-boundary proof,
-- issue templates for structured public feedback.
+- issue templates for structured public feedback,
+- GitHub-visible support, security, and contribution-boundary files.
 
 ## What This Repo Is Not Yet
 
@@ -92,6 +93,7 @@ Start with:
 
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)
+- [Repository Metadata](repository-metadata.md)
 
 Use the GitHub issue templates for:
 

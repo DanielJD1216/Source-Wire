@@ -1,5 +1,7 @@
 # Source-Wire
 
+[![Package Checks](https://github.com/DanielJD1216/Source-Wire/actions/workflows/package-checks.yml/badge.svg)](https://github.com/DanielJD1216/Source-Wire/actions/workflows/package-checks.yml)
+
 Source-Wire is an agent-first memory architecture skeleton.
 
 It is designed for systems where AI agents need to search, cite, update, and reason over source-backed context without turning every imported note or chat message into trusted memory automatically.
@@ -34,6 +36,7 @@ Current public status: Source-Wire is public for technical review, but it is `UN
 
 - [Docs Index](docs/index.md)
 - [Public Status](docs/public-status.md)
+- [Repository Metadata](docs/repository-metadata.md)
 - [Technical Reviewer Guide](docs/technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](docs/reviewer-feedback-guide.md)
 - [Public Adopter Walkthrough](docs/adopter-walkthrough.md)
@@ -92,6 +95,7 @@ Source-Wire includes a tiny local CLI for validating explicit files against expl
 Source-Wire runs package checks and public-safety scanning on push and pull request.
 
 - [CI Checks](docs/ci-checks.md)
+- [Repository Metadata](docs/repository-metadata.md)
 
 The CI docs include a stable log marker map for reading GitHub Actions Package Checks output.
 

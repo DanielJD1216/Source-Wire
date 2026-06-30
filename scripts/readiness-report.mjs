@@ -31,6 +31,7 @@ const requiredScripts = [
   "legal:packet",
   "owner:launch-checklist",
   "world:readiness",
+  "launch:decision-status",
   "release:gate",
   "package:dry-run",
   "publish:readiness"
@@ -95,6 +96,7 @@ for (const requiredPath of [
   "docs/license-approval-rehearsal.md",
   "docs/legal-review-question-packet.md",
   "docs/owner-launch-checklist.md",
+  "docs/launch-decision-status.md",
   "docs/public-status.md",
   "docs/repository-metadata.md",
   "docs/quickstart.md",
@@ -159,6 +161,7 @@ printList([
   "docs/license-approval-rehearsal.md records the read-only approval rehearsal and current boundary checks before license implementation",
   "docs/legal-review-question-packet.md records counsel or owner questions for license, contribution, support, security, brand, hosted runtime, and data boundaries without approving legal changes",
   "docs/owner-launch-checklist.md records the technical-review-ready and broad-launch-blocked owner approval order",
+  "docs/launch-decision-status.md records the one-command launch status view without approving any blocked launch path",
   "docs/public-status.md states the public review, license, release, publishing, runtime, and reuse boundaries",
   "docs/repository-metadata.md explains GitHub metadata, support, security, contribution, and CI visibility boundaries",
   "docs/quickstart.md defines local setup and first-run commands",

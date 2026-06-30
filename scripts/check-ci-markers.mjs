@@ -36,6 +36,20 @@ const markerGroups = [
     ]
   },
   {
+    name: "launch decision status",
+    markers: [
+      "ok launch decision status ready",
+      "ok technical review sharing ready",
+      "blocked legal approval not granted",
+      "blocked owner launch approval missing",
+      "blocked license implementation missing",
+      "blocked npm publishing not approved",
+      "blocked github release not approved",
+      "blocked hosted runtime not approved",
+      "blocked contributions not accepted"
+    ]
+  },
+  {
     name: "package dry run",
     markers: [
       "ok package dry-run @source-wire/contracts@0.0.0",

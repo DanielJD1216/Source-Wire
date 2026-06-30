@@ -28,6 +28,7 @@ This command runs:
 - `npm run legal:packet`
 - `npm run owner:launch-checklist`
 - `npm run world:readiness`
+- `npm run launch:decision-status`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
@@ -61,6 +62,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked owner launch approval missing` |
 | World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` |
+| Launch decision status | `ok launch decision status ready`, `ok technical review sharing ready`, `blocked legal approval not granted`, `blocked owner launch approval missing`, `blocked license implementation missing`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` |
@@ -203,6 +205,18 @@ npm run world:readiness
 ```
 
 The report separates technical-review readiness from broad public reuse. It exits successfully only when the current review-only boundary is intact: `UNLICENSED`, version `0.0.0`, no `LICENSE` file, npm publishing blocked, release blocked, hosted runtime blocked, and code contributions blocked.
+
+It does not approve open-source launch, publish npm, create a GitHub release, deploy services, add a `LICENSE` file, accept contributions, or grant reuse rights.
+
+## Launch Decision Status
+
+Run only the one-command launch decision status report:
+
+```bash
+npm run launch:decision-status
+```
+
+The report summarizes what is ready and blocked across technical review sharing, legal approval, owner launch approval, license implementation, npm publishing, GitHub release publishing, hosted runtime work, and contribution acceptance.
 
 It does not approve open-source launch, publish npm, create a GitHub release, deploy services, add a `LICENSE` file, accept contributions, or grant reuse rights.
 

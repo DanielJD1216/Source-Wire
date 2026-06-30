@@ -44,6 +44,12 @@ blocked owner launch approval missing
 
 The command verifies the current blocked boundary and prints the approval order. It does not approve licensing, add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
 
+For a single status report across all launch decisions, run:
+
+```bash
+npm run launch:decision-status
+```
+
 ## Current Decision State
 
 | Decision | State | What unlocks it |
@@ -103,6 +109,7 @@ Contributions are open.
 ## Related Docs
 
 - [World-Share Readiness](world-share-readiness.md)
+- [Launch Decision Status](launch-decision-status.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)

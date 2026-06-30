@@ -7,6 +7,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 ## Start Here
 
 - [Public Adopter Walkthrough](adopter-walkthrough.md)
+- [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Architecture Map](architecture-map.md)
 - [Quickstart](quickstart.md)
 - [Runtime Boundary](runtime-boundary.md)
@@ -37,6 +38,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 ## Package Use
 
 - [Quickstart](quickstart.md)
+- [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [API Reference](api-reference.md)
 - [TypeScript Examples](../examples/typescript/README.md)
 - [Minimal Runtime TypeScript Example](../examples/typescript/minimal-runtime.ts)

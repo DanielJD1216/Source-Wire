@@ -36,6 +36,7 @@ export const requiredPackagePaths = [
   "docs/runtime-boundary.md",
   "docs/runtime-implementation-gate.md",
   "docs/schema-exports.md",
+  "docs/technical-reviewer-guide.md",
   "docs/validation-cli.md",
   "examples/fixtures/chat-export/agent-session.jsonl",
   "examples/fixtures/markdown-vault/Projects/Atlas Demo Workspace.md",

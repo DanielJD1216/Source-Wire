@@ -1,0 +1,201 @@
+# Source-Wire Technical Reviewer Guide
+
+This guide is for technical reviewers who want to inspect Source-Wire before it is licensed, published, or turned into a hosted runtime.
+
+## Current Review Boundary
+
+Source-Wire is currently a public contract package skeleton.
+
+Current state:
+
+- package license is `UNLICENSED`,
+- package version is `0.0.0`,
+- no `LICENSE` file exists,
+- npm publishing is blocked,
+- GitHub release publishing is blocked,
+- hosted runtime backend work is blocked.
+
+Because the package is currently `UNLICENSED`, this guide does not grant permission to reuse, redistribute, sell, host, or publish Source-Wire. Treat it as a reviewable public repository until the owner approves and implements a license.
+
+## What You Can Review Today
+
+You can review:
+
+- public contracts,
+- JSON schemas,
+- synthetic fixtures,
+- validation CLI behavior,
+- TypeScript package exports,
+- minimal synthetic runtime-boundary policy proof,
+- installed package smoke checks,
+- public-safety boundaries,
+- readiness and release gates.
+
+You cannot review a production backend yet because one is intentionally not included.
+
+## Clone And Install
+
+Use Node.js 22 with npm.
+
+```bash
+git clone https://github.com/DanielJD1216/Source-Wire.git
+cd Source-Wire
+npm install
+```
+
+## Fast First Pass
+
+Run the readiness report first:
+
+```bash
+npm run readiness:report
+```
+
+This prints the current package posture, exports, readiness commands, required readiness docs, installed package smokes, and blocked scope.
+
+Expected high-signal markers:
+
+```text
+Package: @source-wire/contracts
+Version: 0.0.0
+License: UNLICENSED
+Publish boundary: npm publishing blocked, publishConfig.access restricted
+Runtime boundary: synthetic in-memory boundary only, no backend runtime included
+ok readiness report
+```
+
+## Full Local Verification
+
+Run the full local readiness gate:
+
+```bash
+npm run publish:readiness
+```
+
+Despite the name, this does not publish npm.
+
+It verifies typecheck, build, tests, fixture validation, schema exports, CLI smoke, package dry-run, installed package smokes, runtime-boundary smokes, docs links, command-doc setup, public-safety scan, and marker smoke.
+
+Use [Publish Readiness](publish-readiness.md) for the marker map.
+
+## Package Dry Run
+
+To inspect the package artifact without running the full gate:
+
+```bash
+npm run package:dry-run
+```
+
+Expected markers:
+
+```text
+ok package dry-run @source-wire/contracts@0.0.0
+ok package file count
+ok package filename source-wire-contracts-0.0.0.tgz
+```
+
+This builds and checks the package contents. It does not publish.
+
+## Contract Surfaces To Inspect
+
+Start with:
+
+- [Architecture Map](architecture-map.md)
+- [API Reference](api-reference.md)
+- [Source Graph Adapter Contract](contracts/source-graph-adapter-contract.md)
+- [Source Connection Contract](contracts/source-connection-contract.md)
+- [`second-brain.v1` Contract](contracts/second-brain-v1-contract.md)
+- [MCP Tool Behavior Contract](contracts/mcp-tool-behavior-contract.md)
+- [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
+
+The package exports TypeScript contract types from `@source-wire/contracts` and JSON schemas from stable subpaths.
+
+## Synthetic Runtime-Boundary Review
+
+Review these files when checking whether the boundary is honest:
+
+- [Runtime Boundary](runtime-boundary.md)
+- [Runtime Implementation Gate](runtime-implementation-gate.md)
+- [Runtime Boundary Readiness](runtime-boundary-readiness.md)
+- [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
+- [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
+
+Run:
+
+```bash
+npm run minimal-runtime:smoke
+npm run runtime-boundary:smoke
+npm run runtime-boundary:installed-smoke
+npm run runtime-boundary:diagnostics-smoke
+```
+
+These commands prove local synthetic policy behavior. They do not start an API server, MCP server, database, connector, memory engine, or hosted backend.
+
+## Useful Feedback
+
+Useful feedback is specific and testable.
+
+Good review questions:
+
+- Are the contract names clear enough for another agent-memory project?
+- Do the schemas make required fields obvious?
+- Do the fixtures show realistic source-backed evidence without using real data?
+- Are the no-auto-promotion and owner-approval boundaries clear?
+- Are the runtime-blocked claims consistent across README, docs, examples, and readiness output?
+- Are the installed-package smokes proving the right things?
+- Is any doc implying that Source-Wire hosts memory when it does not?
+- Is any command name confusing enough to cause misuse?
+
+Less useful feedback:
+
+- requests to add real user data,
+- requests to publish npm before release approval,
+- requests to add hosted runtime behavior before the runtime gate opens,
+- requests to remove owner approval from trusted-memory promotion.
+
+## Do Not Add During Review
+
+Do not add:
+
+- real user data,
+- private implementation history,
+- local machine paths,
+- domains, emails, account IDs, client names, or tokens,
+- screenshots from private systems,
+- production exports,
+- database migrations,
+- hosted runtime behavior,
+- live connectors,
+- automatic trusted-memory promotion.
+
+Public examples must remain synthetic.
+
+## If Something Fails
+
+When a command fails, capture:
+
+- command,
+- observed error,
+- operating system,
+- Node.js version,
+- npm version,
+- whether dependencies were freshly installed,
+- the first failing marker from [Publish Readiness](publish-readiness.md).
+
+Then open an issue with the failure details.
+
+## What Approval Would Unlock Later
+
+Separate owner approvals are still needed for:
+
+- Apache-2.0 license implementation,
+- npm publishing,
+- GitHub release publishing,
+- hosted runtime backend,
+- real MCP server runtime,
+- database setup,
+- live connectors,
+- Mission Control UI,
+- real data examples.
+
+Read [License Decision Gate](license-decision-gate.md) and [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md) for the license path.

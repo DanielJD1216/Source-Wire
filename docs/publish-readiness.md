@@ -26,6 +26,7 @@ This command runs:
 - `npm run release:gate`
 - `npm run release-command-guard:smoke`
 - `npm run release:implementation-plan`
+- `npm run release:implementation-rehearsal`
 - `npm run release:review`
 - `npm run release:approval-request`
 - `npm run release:candidate-readiness`
@@ -86,6 +87,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` |
 | Release command guard smoke | `ok blocked release commands smoke` |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution approval missing` |
+| Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `blocked release mutation not performed` |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release implementation approval missing` |
@@ -417,6 +419,18 @@ npm run release:implementation-plan
 The runbook check verifies the future release execution order, target version, stop conditions, and blocked release execution boundary.
 
 It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
+
+## Release Implementation Rehearsal
+
+Run only the non-mutating release implementation rehearsal:
+
+```bash
+npm run release:implementation-rehearsal
+```
+
+The rehearsal checks the future `0.1.0` release path in memory only. It verifies that real package metadata and package-lock metadata stay at `0.0.0`, the simulated future manifest uses `0.1.0`, required release docs exist, and package scripts still block direct publish, release, tag, version, and deploy commands.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, change package-lock metadata, deploy services, start a runtime, accept contributions, or approve production runtime use.
 
 ## Release Review
 

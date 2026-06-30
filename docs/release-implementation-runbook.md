@@ -42,6 +42,22 @@ ok release version target documented
 blocked release execution approval missing
 ```
 
+Run the non-mutating release implementation rehearsal:
+
+```bash
+npm run release:implementation-rehearsal
+```
+
+Expected markers:
+
+```text
+ok release implementation rehearsal ready
+ok future version rehearsal 0.1.0
+blocked release mutation not performed
+```
+
+The rehearsal simulates the future `0.1.0` release manifest in memory only. It keeps real `package.json` and `package-lock.json` at `0.0.0`.
+
 ## Future Execution Order
 
 When a separate release implementation unit is approved, execute in this order:

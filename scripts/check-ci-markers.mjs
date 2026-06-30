@@ -33,6 +33,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "release implementation rehearsal",
+    markers: [
+      "ok release implementation rehearsal ready",
+      "ok future version rehearsal 0.1.0",
+      "blocked release mutation not performed"
+    ]
+  },
+  {
     name: "release review",
     markers: [
       "ok release review packet ready",

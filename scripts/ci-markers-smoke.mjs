@@ -19,6 +19,9 @@ const completeLog = [
   "ok release implementation plan ready",
   "ok release version target documented",
   "blocked release execution approval missing",
+  "ok release implementation rehearsal ready",
+  "ok future version rehearsal 0.1.0",
+  "blocked release mutation not performed",
   "ok release review packet ready",
   "ok release decision inputs documented",
   "blocked release implementation approval missing",
@@ -121,7 +124,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 33 groups 101 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 34 groups 104 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

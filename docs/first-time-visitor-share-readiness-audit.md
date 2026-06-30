@@ -64,6 +64,20 @@ ok version 0.0.0
 ok publishing blocked
 ```
 
+To check this first-visitor share audit directly:
+
+```bash
+npm run share:audit
+```
+
+Expected markers:
+
+```text
+ok first visitor share audit ready
+ok technical review sharing ready
+blocked broad public reuse
+```
+
 ## Evidence To Check
 
 | Evidence | Where |

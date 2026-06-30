@@ -24,7 +24,8 @@ Best first pass:
 4. Run npm run readiness:report.
 5. Run npm run owner:launch-checklist to see which launch approvals are still missing.
 6. Run npm run world:readiness to see the current sharing boundary.
-7. Run npm run publish:readiness if you want the full local verification path.
+7. Run npm run share:audit to verify the first-visitor share boundary.
+8. Run npm run publish:readiness if you want the full local verification path.
 
 Useful feedback: contract clarity, schema consistency, fixture realism, package install behavior, readiness gate coverage, and whether any doc blurs the license, runtime, data, or trusted-memory boundaries.
 ```
@@ -121,6 +122,20 @@ Expected markers:
 ```text
 ok world share technical review ready
 blocked world share broad reuse
+```
+
+To audit the first-visitor share boundary:
+
+```bash
+npm run share:audit
+```
+
+Expected markers:
+
+```text
+ok first visitor share audit ready
+ok technical review sharing ready
+blocked broad public reuse
 ```
 
 ## What To Review

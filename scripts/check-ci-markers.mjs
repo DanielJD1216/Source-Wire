@@ -76,6 +76,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "first visitor share audit",
+    markers: [
+      "ok first visitor share audit ready",
+      "ok technical review sharing ready",
+      "blocked broad public reuse"
+    ]
+  },
+  {
     name: "launch decision status",
     markers: [
       "ok launch decision status ready",

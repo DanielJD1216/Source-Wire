@@ -28,6 +28,9 @@ const completeLog = [
   "blocked owner launch approval missing",
   "ok world share technical review ready",
   "blocked world share broad reuse",
+  "ok first visitor share audit ready",
+  "ok technical review sharing ready",
+  "blocked broad public reuse",
   "ok launch decision status ready",
   "ok technical review sharing ready",
   "blocked license implementation missing",
@@ -79,7 +82,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 21 groups 64 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 22 groups 67 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

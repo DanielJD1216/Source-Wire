@@ -54,6 +54,20 @@ blocked world share broad reuse
 
 This command does not publish npm, create a GitHub release, deploy services, add a `LICENSE` file, change package metadata, accept contributions, start runtime services, connect to a database, or grant reuse rights.
 
+To audit first-visitor share wording and unsafe wording guardrails, run:
+
+```bash
+npm run share:audit
+```
+
+Expected markers:
+
+```text
+ok first visitor share audit ready
+ok technical review sharing ready
+blocked broad public reuse
+```
+
 ## What You Can Do Now
 
 Use [Share For Technical Review](share-for-review.md) to send the repo to a technical reviewer.

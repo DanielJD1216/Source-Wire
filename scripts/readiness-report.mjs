@@ -22,6 +22,7 @@ const requiredScripts = [
   "reviewer:smoke",
   "docs:links",
   "docs:command-setup",
+  "share:audit",
   "safety:scan",
   "claims:scan",
   "package:required-paths",

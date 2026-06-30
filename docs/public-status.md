@@ -87,6 +87,20 @@ ok publishing blocked
 
 For a full marker map, read [Publish Readiness](publish-readiness.md).
 
+To audit the first-visitor share boundary directly, run:
+
+```bash
+npm run share:audit
+```
+
+Expected markers:
+
+```text
+ok first visitor share audit ready
+ok technical review sharing ready
+blocked broad public reuse
+```
+
 ## World-Share Readiness
 
 To verify the current sharing boundary directly, run:

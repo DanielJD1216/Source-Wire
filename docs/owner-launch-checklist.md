@@ -2,7 +2,7 @@
 
 Status: owner decision checklist only.
 
-This checklist does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
+This checklist does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
@@ -15,8 +15,8 @@ Can I share Source-Wire with the world now?
 Short answer:
 
 ```text
-For technical review, yes.
-For broad public reuse, not yet.
+As an Apache-2.0 licensed source package, yes.
+As an npm package, GitHub release, hosted runtime, or production runtime, not yet.
 ```
 
 ## Command
@@ -39,10 +39,10 @@ Expected markers:
 
 ```text
 ok owner launch checklist ready
-blocked owner launch approval missing
+blocked launch channels missing
 ```
 
-The command verifies the current blocked boundary and prints the approval order. It does not approve licensing, add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
+The command verifies the current guarded boundary and prints the approval order. It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 For a single status report across all launch decisions, run:
 
@@ -55,33 +55,29 @@ npm run launch:decision-status
 | Decision | State | What unlocks it |
 | --- | --- | --- |
 | Technical review sharing | Ready | Use [Share For Technical Review](share-for-review.md). |
+| Source package reuse | Ready under Apache-2.0 | Read [LICENSE](../LICENSE). |
 | Legal or owner review | Ready | Use [Legal Review Question Packet](legal-review-question-packet.md). |
-| Broad public reuse | Blocked | Owner approves and implements a license path. |
-| License decision record | Pending | Use [License Approval Decision Record](license-approval-decision-record.md). |
-| License approval request | Ready | Use [License Approval Request Packet](license-approval-request-packet.md). |
-| Owner license preflight | Ready | Use [Owner License Approval Preflight](owner-license-approval-preflight.md). |
-| Owner decision workflow | Ready | Use [Owner License Decision Workflow](owner-license-decision-workflow.md). |
-| Open-source launch | Blocked | Owner approves license implementation and a later release posture. |
-| npm publishing | Blocked | Separate publish PRD after licensing. |
+| License decision record | Implemented | Use [License Approval Decision Record](license-approval-decision-record.md). |
+| License approval request | Captured | Use [License Approval Request Packet](license-approval-request-packet.md). |
+| Owner license preflight | Captured | Use [Owner License Approval Preflight](owner-license-approval-preflight.md). |
+| Owner decision workflow | Captured | Use [Owner License Decision Workflow](owner-license-decision-workflow.md). |
+| npm publishing | Blocked | Separate publish PRD. |
 | GitHub release publishing | Blocked | Separate release PRD. |
 | Hosted runtime | Blocked | Separate runtime PRD. |
 | Code contribution acceptance | Blocked | Explicit contribution terms. |
 
 ## Approval Order
 
-1. Share for technical review using [Share For Technical Review](share-for-review.md).
-2. Prepare legal or owner review using [Legal Review Question Packet](legal-review-question-packet.md).
-3. Choose the license path using [License Decision Gate](license-decision-gate.md).
-4. Implement the approved license path in a separate PRD.
-5. Decide whether npm publishing should open in a separate PRD.
-6. Decide whether GitHub release publishing should open in a separate PRD.
-7. Decide whether hosted runtime work should open in a separate PRD.
-8. Decide whether and how code contributions can be accepted.
+1. Apache-2.0 source package reuse is approved and implemented.
+2. Decide whether npm publishing should open in a separate PRD.
+3. Decide whether GitHub release publishing should open in a separate PRD.
+4. Decide whether hosted runtime work should open in a separate PRD.
+5. Decide whether and how code contributions can be accepted.
 
 ## Exact Current Safe Share Copy
 
 ```text
-Source-Wire is public for technical review only. It is UNLICENSED, unpublished, unreleased, and not a hosted runtime. Please review the contracts, schemas, fixtures, docs, and readiness gates, but do not assume reuse or redistribution rights.
+Source-Wire is Apache-2.0 licensed as a source package. It is version 0.0.0, unpublished to npm, unreleased on GitHub, undeployed, and not a hosted runtime.
 ```
 
 ## What Not To Say Yet
@@ -89,19 +85,19 @@ Source-Wire is public for technical review only. It is UNLICENSED, unpublished, 
 Do not say:
 
 ```text
-Source-Wire is open source.
+Source-Wire is production-ready.
 ```
 
 Do not say:
 
 ```text
-Source-Wire is ready to use in production.
+You can install Source-Wire from npm.
 ```
 
 Do not say:
 
 ```text
-You can build your product on Source-Wire now.
+This is the hosted memory backend.
 ```
 
 Do not say:
@@ -118,8 +114,3 @@ Contributions are open.
 - [License Approval Request Packet](license-approval-request-packet.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
 - [Owner License Decision Workflow](owner-license-decision-workflow.md)
-- [Legal Review Question Packet](legal-review-question-packet.md)
-- [License Decision Gate](license-decision-gate.md)
-- [Owner License Approval Packet](owner-license-approval-packet.md)
-- [Publish Readiness](publish-readiness.md)
-- [Public Status](public-status.md)

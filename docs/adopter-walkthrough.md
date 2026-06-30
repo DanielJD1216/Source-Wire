@@ -36,7 +36,7 @@ Expected markers:
 Source-Wire Package Readiness Report
 Package: @source-wire/contracts
 Version: 0.0.0
-License: UNLICENSED
+License: Apache-2.0
 Runtime boundary: synthetic in-memory boundary only, no backend runtime included
 ok readiness report
 ```
@@ -254,9 +254,9 @@ Source-Wire does not currently include:
 
 Current release posture:
 
-- package license is `UNLICENSED`,
+- package license is `Apache-2.0`,
 - package version is `0.0.0`,
-- no `LICENSE` file exists,
+- `LICENSE` file exists,
 - npm publishing is blocked,
 - runtime backend work is blocked.
 

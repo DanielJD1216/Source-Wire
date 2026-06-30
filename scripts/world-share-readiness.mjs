@@ -5,10 +5,10 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release approval");
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED until owner license approval");
+assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner license approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
-await assertPathMissing("LICENSE", "LICENSE file must not exist before owner license approval");
+await assertPathExists("LICENSE");
 
 for (const requiredPath of [
   "docs/public-status.md",
@@ -34,8 +34,8 @@ if (failures.length > 0) {
 printSection("Source-Wire World-Share Readiness");
 printRows([
   ["Technical review", "ready"],
-  ["Broad reuse", "blocked until license approval"],
-  ["Open-source release", "blocked until license implementation"],
+  ["Source package reuse", "ready under Apache-2.0"],
+  ["Open-source license", "implemented"],
   ["npm publishing", "blocked until publish PRD approval"],
   ["GitHub release", "blocked until release PRD approval"],
   ["Hosted runtime", "blocked until runtime PRD approval"],
@@ -47,42 +47,26 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["LICENSE file", "not present"],
+  ["LICENSE file", "present"],
   ["Publish boundary", "npm publishing blocked, publishConfig.access restricted"]
 ]);
 
 printSection("Next Approval Needed");
 printList([
-  "To share for technical review, use docs/share-for-review.md.",
-  "To prepare counsel or owner review, use docs/legal-review-question-packet.md.",
-  "To inspect launch approval order, use docs/owner-launch-checklist.md.",
-  "To share for broad public reuse, first approve and implement a license path from docs/license-decision-gate.md.",
-  "To publish npm, open a separate publish PRD after licensing is approved.",
+  "To share the source repo publicly, point people to README.md and LICENSE.",
+  "To publish npm, open a separate publish PRD.",
   "To add hosted runtime behavior, open a separate runtime PRD after the runtime gate is approved."
 ]);
 
 console.log("");
-console.log("ok world share technical review ready");
-console.log("blocked world share broad reuse");
+console.log("ok world share open source ready");
+console.log("blocked production launch channels");
 
 async function assertPathExists(path) {
   try {
     await stat(path);
   } catch {
     failures.push(`missing required path: ${path}`);
-  }
-}
-
-async function assertPathMissing(path, reason) {
-  try {
-    await stat(path);
-    failures.push(reason);
-  } catch (error) {
-    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
-      return;
-    }
-
-    failures.push(`could not inspect ${path}`);
   }
 }
 

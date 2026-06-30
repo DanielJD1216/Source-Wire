@@ -11,17 +11,17 @@ const unsafeClaims = [
   {
     kind: "open_source_claim",
     pattern: /\bsource-wire\s+is\s+(?:an?\s+)?open[- ]source\b/i,
-    reason: "Source-Wire is public for review, but it is not open-source licensed while package license is UNLICENSED."
+    reason: "Source-Wire may be described as open source only after Apache-2.0 is implemented."
   },
   {
-    kind: "ready_to_use_claim",
-    pattern: /\bsource-wire\s+is\s+(?:ready\s+to\s+use|production[- ]ready|ready\s+for\s+production)\b/i,
-    reason: "Source-Wire is review-ready, but broad reuse and production use remain blocked."
+    kind: "production_ready_claim",
+    pattern: /\bsource-wire\s+is\s+(?:production[- ]ready|ready\s+for\s+production)\b/i,
+    reason: "Production use remains blocked because Source-Wire is not a hosted runtime or released package."
   },
   {
-    kind: "reuse_permission_claim",
-    pattern: /\byou\s+can\s+(?:reuse|redistribute|sell|host|publish|build\s+your\s+product\s+on)\s+(?:source-wire|this)\b/i,
-    reason: "Reuse, redistribution, hosting, and publishing are not approved while Source-Wire is UNLICENSED."
+    kind: "unsafe_publish_or_host_claim",
+    pattern: /\byou\s+can\s+(?:host|publish|build\s+your\s+product\s+on)\s+(?:source-wire|this)\b/i,
+    reason: "Publishing, hosted runtime, and production-product use remain blocked."
   },
   {
     kind: "contribution_open_claim",
@@ -48,10 +48,9 @@ const unsafeClaims = [
 const targets = await collectTargets(scanRoots);
 const findings = [];
 
-if (packageJson.license !== "UNLICENSED") {
-  console.log(`Source-Wire public claim boundary scan skipped because package license is ${packageJson.license}.`);
-  console.log("ok public claim boundary scan skipped");
-  process.exit(0);
+if (packageJson.license !== "Apache-2.0") {
+  console.error(`failed package license must be Apache-2.0 after owner approval, received ${packageJson.license}`);
+  process.exit(1);
 }
 
 for (const target of targets) {

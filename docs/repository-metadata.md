@@ -4,25 +4,25 @@ This page explains the GitHub-visible files and status surfaces in Source-Wire.
 
 ## Current Boundary
 
-Source-Wire is public for technical review.
+Source-Wire is Apache-2.0 licensed as a source package.
 
 It is still:
 
-- `UNLICENSED`,
 - version `0.0.0`,
 - unpublished to npm,
 - unreleased on GitHub,
+- undeployed,
 - not a hosted runtime,
 - not accepting code contributions.
 
 ## GitHub About Panel
 
-The actual GitHub repository About panel should use review-only wording.
+The actual GitHub repository About panel should use source-package wording.
 
 Intended description:
 
 ```text
-Review-only agent-memory contract skeleton. UNLICENSED, unpublished, not hosted.
+Apache-2.0 agent-memory contract skeleton. Unpublished, unreleased, not hosted.
 ```
 
 Intended homepage URL:
@@ -31,13 +31,14 @@ Intended homepage URL:
 https://github.com/DanielJD1216/Source-Wire/blob/main/docs/share-for-review.md
 ```
 
-The description must stay short enough for the GitHub About panel but explicit enough that visitors do not confuse public visibility with reuse permission.
+The description must stay short enough for the GitHub About panel but explicit enough that visitors do not confuse Apache-2.0 source reuse with npm publishing, GitHub releases, deployment, hosted runtime behavior, or code contribution acceptance.
 
 ## GitHub-Visible Files
 
 | File | Purpose |
 | --- | --- |
 | `README.md` | Main public entrypoint and current status summary. |
+| `LICENSE` | Apache-2.0 source package license. |
 | `SECURITY.md` | Safe security and boundary concern reporting rules. |
 | `SUPPORT.md` | Review support boundaries and verification-first support path. |
 | `CONTRIBUTING.md` | Structured feedback path and code-contribution boundary. |
@@ -66,7 +67,7 @@ Despite the command name, this does not publish npm.
 The release gate must still print:
 
 ```text
-ok license UNLICENSED
+ok license Apache-2.0
 ok version 0.0.0
 ok publishing blocked
 ```
@@ -75,12 +76,11 @@ ok publishing blocked
 
 Repository metadata does not approve:
 
-- Apache-2.0 license implementation,
-- reuse or redistribution,
 - code contribution acceptance,
 - npm publishing,
 - GitHub release publishing,
 - hosted runtime backend,
+- production runtime use,
 - real MCP server runtime,
 - database setup,
 - live connectors,

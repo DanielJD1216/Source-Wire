@@ -268,9 +268,9 @@ Source-Wire does not currently export:
 
 Current package posture:
 
-- license is `UNLICENSED`,
+- license is `Apache-2.0`,
 - version is `0.0.0`,
-- no `LICENSE` file exists,
+- `LICENSE` file exists,
 - npm publishing is blocked,
 - GitHub release publishing is blocked,
 - runtime backend work is blocked.

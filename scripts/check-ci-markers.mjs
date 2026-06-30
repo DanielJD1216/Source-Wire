@@ -5,7 +5,7 @@ const markerGroups = [
     name: "release gate",
     markers: [
       "ok release gate",
-      "ok license UNLICENSED",
+      "ok license Apache-2.0",
       "ok version 0.0.0",
       "ok publishing blocked"
     ]
@@ -18,16 +18,16 @@ const markerGroups = [
     name: "license decision record",
     markers: [
       "ok license decision record ready",
-      "blocked license decision pending",
-      "blocked license implementation missing"
+      "ok license decision captured",
+      "ok license implementation complete"
     ]
   },
   {
     name: "license approval request",
     markers: [
       "ok license approval request ready",
-      "blocked owner license approval missing",
-      "blocked license decision pending"
+      "ok owner license approval captured",
+      "ok license implementation complete"
     ]
   },
   {
@@ -35,7 +35,7 @@ const markerGroups = [
     markers: [
       "ok license implementation plan ready",
       "ok license decision paths mapped",
-      "blocked license implementation awaiting owner decision"
+      "ok license implementation complete"
     ]
   },
   {
@@ -43,7 +43,7 @@ const markerGroups = [
     markers: [
       "ok owner license approval preflight ready",
       "ok owner approval package complete",
-      "blocked owner license approval missing"
+      "ok owner license approval captured"
     ]
   },
   {
@@ -51,7 +51,7 @@ const markerGroups = [
     markers: [
       "ok owner decision workflow ready",
       "ok owner decision options available",
-      "blocked owner license decision missing"
+      "ok owner license decision captured"
     ]
   },
   {
@@ -59,46 +59,44 @@ const markerGroups = [
     markers: [
       "ok owner decision intake ready",
       "ok owner decision options available",
-      "blocked owner decision not captured"
+      "ok owner decision captured"
     ]
   },
   {
     name: "legal review packet",
     markers: [
       "ok legal review packet ready",
-      "blocked legal approval not granted"
+      "ok owner license approval recorded"
     ]
   },
   {
     name: "owner launch checklist",
     markers: [
       "ok owner launch checklist ready",
-      "blocked owner launch approval missing"
+      "blocked launch channels missing"
     ]
   },
   {
     name: "world-share boundary",
     markers: [
-      "ok world share technical review ready",
-      "blocked world share broad reuse"
+      "ok world share open source ready",
+      "blocked production launch channels"
     ]
   },
   {
     name: "first visitor share audit",
     markers: [
       "ok first visitor share audit ready",
-      "ok technical review sharing ready",
-      "blocked broad public reuse"
+      "ok apache 2 reuse ready",
+      "blocked production launch channels"
     ]
   },
   {
     name: "launch decision status",
     markers: [
       "ok launch decision status ready",
-      "ok technical review sharing ready",
-      "blocked legal approval not granted",
-      "blocked owner launch approval missing",
-      "blocked license implementation missing",
+      "ok apache 2 license implemented",
+      "ok source repo sharing ready",
       "blocked npm publishing not approved",
       "blocked github release not approved",
       "blocked hosted runtime not approved",

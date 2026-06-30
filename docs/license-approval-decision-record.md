@@ -1,33 +1,42 @@
 # Source-Wire License Approval Decision Record
 
-Status: pending owner decision.
+Status: owner decision implemented.
 
-This record does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
+Apache-2.0 license implementation is approved and complete.
+
+This record approves only the source package license change. It does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
-This is the single decision record to update before any future license implementation.
+This is the single decision record for the Source-Wire source package license implementation.
 
-Until this record is changed by explicit owner approval in a future unit, Source-Wire remains:
+Source-Wire now remains:
 
-- `UNLICENSED`,
+- Apache-2.0 licensed,
 - version `0.0.0`,
-- without a `LICENSE` file,
+- with a `LICENSE` file,
 - unpublished to npm,
 - unreleased on GitHub,
-- not accepting code contributions,
-- not approved for broad public reuse.
+- undeployed,
+- not a hosted runtime,
+- not accepting code contributions.
 
 ## Machine-Checked Decision State
 
 ```text
-license_decision_status: pending
-approved_license: none
-approval_scope: none
+license_decision_status: implemented
+approved_license: Apache-2.0
+approval_scope: source_package_license_only
 npm_publish_approval: blocked
 github_release_approval: blocked
 hosted_runtime_approval: blocked
 contribution_acceptance: blocked
+```
+
+## Owner Approval Text
+
+```text
+Approved for a future Source-Wire license implementation unit: implement Apache-2.0 licensing. Add the Apache-2.0 LICENSE file, update package metadata from UNLICENSED to Apache-2.0, update public docs and release gate expectations, and keep package version 0.0.0. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
 ```
 
 ## Required Command
@@ -50,54 +59,36 @@ Expected current markers:
 
 ```text
 ok license decision record ready
-blocked license decision pending
-blocked license implementation missing
+ok license decision captured
+ok license implementation complete
 ```
 
-To request the exact owner choice, run:
+To verify the public source sharing boundary, run:
 
 ```bash
-npm run license:approval-request
+npm run world:readiness
+npm run share:audit
 ```
-
-To verify the full approval package before asking the owner, run:
-
-```bash
-npm run owner:license-preflight
-```
-
-To view the next owner action workflow, run:
-
-```bash
-npm run owner:decision-workflow
-```
-
-To view the post-decision implementation map, run:
-
-```bash
-npm run license:implementation-plan
-```
-
-## Future Approval Options
-
-Only update this record in a future owner-approved unit.
-
-Use one of the exact approval paths from [License Decision Gate](license-decision-gate.md):
-
-- approve Apache-2.0 implementation,
-- stay `UNLICENSED`,
-- request legal review first,
-- compare source-available options.
 
 ## Current Decision
 
-No license change is approved.
+The source package license is implemented as Apache-2.0.
 
 Current decision remains:
 
 ```text
-pending
+implemented
 ```
+
+## Remaining Approvals Needed
+
+Separate future approvals are still required for:
+
+- npm publishing,
+- GitHub release publishing,
+- hosted runtime work,
+- production runtime use,
+- code contribution acceptance.
 
 ## Related Docs
 

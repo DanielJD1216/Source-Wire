@@ -1,18 +1,19 @@
 # Source-Wire Public Status
 
-Source-Wire is public for technical review.
+Source-Wire is Apache-2.0 licensed.
 
-It is not released, not licensed for reuse, not published to npm, and not a hosted runtime.
+It is not published to npm, not released on GitHub, not deployed, and not a hosted runtime.
 
 ## Current State
 
 | Area | Status |
 | --- | --- |
-| Repository visibility | Public review repository |
+| Repository visibility | Public source repository |
 | Package name | `@source-wire/contracts` |
 | Package version | `0.0.0` |
-| License | `UNLICENSED` |
-| `LICENSE` file | Not present |
+| License | `Apache-2.0` |
+| `LICENSE` file | Present |
+| Source package reuse | Allowed under Apache-2.0 |
 | npm publishing | Blocked |
 | GitHub release | Blocked |
 | Hosted runtime | Not included |
@@ -20,6 +21,7 @@ It is not released, not licensed for reuse, not published to npm, and not a host
 | Database or migrations | Not included |
 | Real user data | Not included |
 | Trusted memory auto-promotion | Not allowed |
+| Code contribution acceptance | Blocked |
 
 ## What This Repo Is Today
 
@@ -35,13 +37,13 @@ It currently includes:
 - package-readiness checks,
 - minimal synthetic in-memory runtime-boundary proof,
 - issue templates for structured public feedback,
-- GitHub-visible support, security, and contribution-boundary files.
+- GitHub-visible support, security, and contribution-boundary files,
+- Apache-2.0 licensing for source package reuse.
 
 ## What This Repo Is Not Yet
 
 Source-Wire is not yet:
 
-- an open-source licensed package,
 - an npm package you can install from the registry,
 - a GitHub release,
 - a hosted memory service,
@@ -50,20 +52,22 @@ Source-Wire is not yet:
 - a database-backed memory engine,
 - a connector framework,
 - a Mission Control UI,
-- a place for real user data.
+- a place for real user data,
+- a project accepting code contributions.
 
-## Allowed Review Actions
+## Allowed Actions
 
 You may:
 
-- clone the repo for review,
+- clone the repo,
+- inspect and reuse the source package under Apache-2.0,
 - run local verification commands,
 - inspect public docs, schemas, contracts, fixtures, and examples,
 - run local package dry-run checks,
 - run synthetic runtime-boundary smokes,
 - open structured feedback issues using the provided templates.
 
-Review does not grant permission to reuse, redistribute, sell, host, publish, or package Source-Wire.
+The Apache-2.0 license does not mean Source-Wire is published, released, deployed, hosted, production-ready, or accepting code contributions.
 
 ## Main Verification Command
 
@@ -80,7 +84,7 @@ Expected boundary markers include:
 
 ```text
 ok release gate
-ok license UNLICENSED
+ok license Apache-2.0
 ok version 0.0.0
 ok publishing blocked
 ```
@@ -97,8 +101,8 @@ Expected markers:
 
 ```text
 ok first visitor share audit ready
-ok technical review sharing ready
-blocked broad public reuse
+ok apache 2 reuse ready
+blocked production launch channels
 ```
 
 ## World-Share Readiness
@@ -112,11 +116,11 @@ npm run world:readiness
 Expected markers:
 
 ```text
-ok world share technical review ready
-blocked world share broad reuse
+ok world share open source ready
+blocked production launch channels
 ```
 
-This means Source-Wire can be shared for technical review, but it still cannot be described as open source, reusable, production-ready, published, released, or hosted.
+This means Source-Wire can be shared as an Apache-2.0 licensed source package. It still cannot be described as npm-published, GitHub-released, deployed, hosted, production-ready, or open for code contributions.
 
 ## How To Give Feedback
 
@@ -135,11 +139,10 @@ Use the GitHub issue templates for:
 
 Do not include secrets, tokens, private data, local private paths, private screenshots, production exports, account IDs, client names, real source payloads, real chat logs, or real memory records.
 
-## Approvals Required Before Broad Reuse
+## Approvals Required Before Product Launch Channels
 
 Separate owner approvals are still required before any of these happen:
 
-- Apache-2.0 license implementation,
 - npm publishing,
 - GitHub release publishing,
 - hosted runtime backend,
@@ -148,7 +151,8 @@ Separate owner approvals are still required before any of these happen:
 - live connectors,
 - Mission Control UI,
 - real data examples,
-- contribution license terms.
+- contribution license terms,
+- code contribution acceptance.
 
 Read:
 
@@ -162,8 +166,8 @@ Read:
 
 ## Bottom Line
 
-Source-Wire is ready for technical review.
+Source-Wire is ready for technical review and source package reuse under Apache-2.0.
 
-It is not ready for reuse, redistribution, publishing, deployment, or production use.
+It is not ready for npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, or code contribution acceptance.
 
 For the first-time visitor audit, read [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md).

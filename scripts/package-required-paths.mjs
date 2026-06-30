@@ -73,6 +73,7 @@ export const requiredPackagePaths = [
   "examples/typescript/schema-registry.ts",
   "examples/typescript/tsconfig.json",
   "examples/typescript/validation-helper.ts",
+  "LICENSE",
   "package.json",
   "README.md",
   "schemas/chat-export-message.schema.json",

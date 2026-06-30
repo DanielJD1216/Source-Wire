@@ -2,7 +2,7 @@
 
 Status: read-only launch decision report.
 
-This command does not approve licensing, add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
+This command reports the current launch boundary. It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 ## Purpose
 
@@ -32,10 +32,8 @@ Expected markers:
 
 ```text
 ok launch decision status ready
-ok technical review sharing ready
-blocked legal approval not granted
-blocked owner launch approval missing
-blocked license implementation missing
+ok apache 2 license implemented
+ok source repo sharing ready
 blocked npm publishing not approved
 blocked github release not approved
 blocked hosted runtime not approved
@@ -48,8 +46,8 @@ The command verifies:
 
 - package name remains `@source-wire/contracts`,
 - package version remains `0.0.0`,
-- package license remains `UNLICENSED`,
-- no `LICENSE` file exists,
+- package license remains `Apache-2.0`,
+- `LICENSE` file exists,
 - npm publishing remains blocked through restricted publish config,
 - launch decision docs exist,
 - support, security, and contribution boundary docs exist.
@@ -59,10 +57,10 @@ The command verifies:
 | Area | Status |
 | --- | --- |
 | Technical review sharing | Ready |
-| Legal approval | Blocked |
-| Owner launch approval | Blocked |
-| License decision record | Pending |
-| License implementation | Blocked |
+| Source repo sharing | Ready under Apache-2.0 |
+| Owner license approval | Captured |
+| License decision record | Implemented |
+| License implementation | Complete |
 | npm publishing | Blocked |
 | GitHub release | Blocked |
 | Hosted runtime | Blocked |

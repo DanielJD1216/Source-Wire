@@ -2,13 +2,13 @@
 
 Status: owner decision workflow only.
 
-This workflow does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
+This workflow records the captured owner license decision. It does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
-Use this when the owner is ready to make the next Source-Wire launch decision.
+Use this to understand the owner license decision path and which launch decisions remain blocked.
 
-It collects the current blocked state, the required review docs, and the exact owner decision options into one path.
+The owner license decision has been captured: Apache-2.0 source package licensing is implemented.
 
 ## Command
 
@@ -31,32 +31,32 @@ Expected markers:
 ```text
 ok owner decision workflow ready
 ok owner decision options available
-blocked owner license decision missing
+ok owner license decision captured
 ```
 
-## Current Blocked State
+## Current State
 
 | Field | Current value |
 | --- | --- |
-| Package license | `UNLICENSED` |
+| Package license | `Apache-2.0` |
 | Package version | `0.0.0` |
-| `LICENSE` file | none |
+| `LICENSE` file | present |
+| Source package reuse | allowed under Apache-2.0 |
 | npm publishing | blocked |
 | GitHub release publishing | blocked |
 | Hosted runtime | blocked |
 | Contributions | blocked |
-| Broad public reuse | blocked |
 
 ## Decision Workflow
 
 1. Run `npm run owner:license-preflight`.
 2. Read [License Approval Request Packet](license-approval-request-packet.md).
-3. If legal review is needed first, read [Legal Review Question Packet](legal-review-question-packet.md).
-4. Read [Owner License Decision Intake](owner-license-decision-intake.md).
-5. Choose exactly one owner decision option.
-6. Start a later implementation unit for that approved option only.
+3. Read [Owner License Decision Intake](owner-license-decision-intake.md).
+4. Confirm the owner chose exactly one option.
+5. Confirm [License Approval Decision Record](license-approval-decision-record.md) says `license_decision_status: implemented`.
+6. Keep npm, GitHub release, hosted runtime, production runtime, and contribution decisions in separate future units.
 
-To preview the implementation unit for each option, read [License Decision Implementation Plan](license-decision-implementation-plan.md) or run:
+To inspect the implementation map, read [License Decision Implementation Plan](license-decision-implementation-plan.md) or run:
 
 ```bash
 npm run license:implementation-plan
@@ -64,7 +64,7 @@ npm run license:implementation-plan
 
 ## Exact Owner Decision Options
 
-Choose exactly one.
+The owner chose exactly one option.
 
 ### Option 1: Approve Apache-2.0 Implementation
 
@@ -94,7 +94,6 @@ Approved for a future Source-Wire license comparison unit: compare source-availa
 
 Even after this workflow is ready, separate approval is still required for:
 
-- license implementation,
 - npm publishing,
 - GitHub release publishing,
 - deployment,
@@ -107,7 +106,8 @@ Even after this workflow is ready, separate approval is still required for:
 - Mission Control UI,
 - real user data,
 - trusted Memory Record auto-promotion,
-- accepting code contributions.
+- accepting code contributions,
+- production runtime use.
 
 ## Related Docs
 

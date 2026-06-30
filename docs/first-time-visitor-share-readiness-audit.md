@@ -6,12 +6,17 @@ This audit answers what a first-time GitHub visitor can safely conclude from the
 
 Source-Wire is ready to share for technical review.
 
-Source-Wire is not ready to share for broad reuse, redistribution, publishing, deployment, or production use.
+Ready for technical review: yes.
 
-## Why Technical Review Is Ready
+Ready for source package reuse: yes, under Apache-2.0.
 
-The public repo now has enough evidence for a technical reviewer to understand and verify the contract package skeleton:
+Still blocked: npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, and code contribution acceptance.
 
+## Why Technical Review And Source Reuse Are Ready
+
+The public repo now has enough evidence for a technical reviewer or source-package adopter to understand and verify the contract package skeleton:
+
+- Apache-2.0 `LICENSE` file,
 - public status page,
 - technical reviewer guide,
 - reviewer feedback guide,
@@ -30,11 +35,12 @@ The public repo now has enough evidence for a technical reviewer to understand a
 - validation CLI,
 - minimal synthetic runtime-boundary proof.
 
-## What A Reviewer Can Do
+## What A Visitor Can Do
 
-A reviewer can:
+A visitor can:
 
 - clone the repo,
+- reuse the source package under Apache-2.0,
 - run local verification,
 - inspect public docs and contracts,
 - validate synthetic fixtures,
@@ -59,7 +65,7 @@ Expected boundary markers:
 
 ```text
 ok release gate
-ok license UNLICENSED
+ok license Apache-2.0
 ok version 0.0.0
 ok publishing blocked
 ```
@@ -74,8 +80,8 @@ Expected markers:
 
 ```text
 ok first visitor share audit ready
-ok technical review sharing ready
-blocked broad public reuse
+ok apache 2 reuse ready
+blocked production launch channels
 ```
 
 ## Evidence To Check
@@ -88,15 +94,13 @@ blocked broad public reuse
 | Feedback path | [Reviewer Feedback Guide](reviewer-feedback-guide.md) |
 | Local readiness marker map | [Publish Readiness](publish-readiness.md) |
 | CI marker map | [CI Checks](ci-checks.md) |
-| License blocker | [License Decision Gate](license-decision-gate.md) |
-| Future Apache-2.0 checklist | [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md) |
+| License decision | [License Approval Decision Record](license-approval-decision-record.md) |
+| Apache-2.0 implementation | [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md) |
 
-## Why Broad Reuse Is Not Ready
+## Why Product Launch Is Still Blocked
 
-Broad reuse remains blocked because:
+Product launch channels remain blocked because:
 
-- package license is `UNLICENSED`,
-- no `LICENSE` file exists,
 - npm publishing is blocked,
 - GitHub release publishing is blocked,
 - package version remains `0.0.0`,
@@ -112,8 +116,6 @@ Broad reuse remains blocked because:
 
 A visitor must not assume:
 
-- public visibility means open-source permission,
-- the repo can be reused or redistributed,
 - npm publishing is approved,
 - a GitHub release exists,
 - Source-Wire hosts memory,
@@ -121,36 +123,24 @@ A visitor must not assume:
 - Source-Wire accepts code contributions,
 - synthetic runtime-boundary checks are a deployed runtime.
 
-## Next Required Owner Decision
-
-The next hard decision is license approval.
-
-Recommended decision if the goal is broad public reuse:
-
-```text
-Approve Apache-2.0 implementation for Source-Wire while keeping npm publishing, GitHub releases, deployment, and hosted runtime blocked until separate approvals.
-```
-
-Without that decision, Source-Wire should remain review-only.
-
 ## Share Guidance
 
 Safe wording:
 
 ```text
-Source-Wire is public for technical review. It is currently UNLICENSED, unreleased, unpublished, and not a hosted runtime. Please review the contracts, docs, fixtures, and readiness gates, but do not assume reuse or redistribution rights yet.
+Source-Wire is Apache-2.0 licensed as a source package. It is version 0.0.0, unpublished to npm, unreleased on GitHub, undeployed, and not a hosted runtime.
 ```
 
 Unsafe wording:
 
 ```text
-Source-Wire is open source and ready to use.
+Source-Wire is production-ready.
 ```
 
 ## Final Status
 
 Ready for technical review: yes.
 
-Ready for broad public reuse: no.
+Ready for source package reuse: yes, under Apache-2.0.
 
-Main blocker: owner-approved license implementation.
+Still blocked: npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, and code contribution acceptance.

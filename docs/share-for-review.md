@@ -1,10 +1,12 @@
 # Source-Wire Share For Technical Review
 
-Status: technical review only.
+Status: Apache-2.0 licensed source package.
 
-Source-Wire is public so technical reviewers can inspect the contracts, schemas, fixtures, examples, and readiness gates.
+Source-Wire is Apache-2.0 licensed.
 
-It is not licensed for reuse, not published, not released, and not a hosted runtime.
+Source-Wire is public so reviewers and adopters can inspect and reuse the source package boundary: contracts, schemas, fixtures, examples, and readiness gates.
+
+It is not published to npm, not released on GitHub, not deployed, and not a hosted runtime.
 
 ## Safe Invite Copy
 
@@ -15,7 +17,7 @@ I am looking for technical review on Source-Wire, an agent-first memory contract
 
 Repo: https://github.com/DanielJD1216/Source-Wire
 
-Important boundary: the repo is public for review only. It is currently UNLICENSED, version 0.0.0, unpublished, unreleased, and not a hosted runtime. Please do not assume reuse, redistribution, production use, or contribution rights yet.
+Important boundary: Source-Wire is Apache-2.0 licensed as a source package. It is version 0.0.0, unpublished to npm, unreleased on GitHub, undeployed, and not a hosted runtime. Please do not assume npm install from the registry, production readiness, hosted memory behavior, or code contribution acceptance yet.
 
 Best first pass:
 1. Read docs/public-status.md.
@@ -27,13 +29,13 @@ Best first pass:
 7. Run npm run share:audit to verify the first-visitor share boundary.
 8. Run npm run publish:readiness if you want the full local verification path.
 
-Useful feedback: contract clarity, schema consistency, fixture realism, package install behavior, readiness gate coverage, and whether any doc blurs the license, runtime, data, or trusted-memory boundaries.
+Useful feedback: contract clarity, schema consistency, fixture realism, package install behavior, readiness gate coverage, and whether any doc blurs the license, runtime, data, contribution, or trusted-memory boundaries.
 ```
 
 ## Short Safe Version
 
 ```text
-Source-Wire is public for technical review only. It is UNLICENSED, unpublished, unreleased, and not a hosted runtime. Please review the contracts, schemas, fixtures, docs, and readiness gates, but do not assume reuse or redistribution rights.
+Source-Wire is Apache-2.0 licensed as a source package. It is unpublished to npm, unreleased on GitHub, undeployed, and not a hosted runtime. Please review the contracts, schemas, fixtures, docs, and readiness gates without assuming production readiness or code contribution acceptance.
 ```
 
 ## Unsafe Wording To Avoid
@@ -41,7 +43,7 @@ Source-Wire is public for technical review only. It is UNLICENSED, unpublished, 
 Do not say:
 
 ```text
-Source-Wire is open source and ready to use.
+Source-Wire is production-ready.
 ```
 
 Do not say:
@@ -84,7 +86,7 @@ Expected first-pass markers:
 ```text
 Package: @source-wire/contracts
 Version: 0.0.0
-License: UNLICENSED
+License: Apache-2.0
 Publish boundary: npm publishing blocked, publishConfig.access restricted
 Runtime boundary: synthetic in-memory boundary only, no backend runtime included
 ok readiness report
@@ -108,10 +110,10 @@ Expected markers:
 
 ```text
 ok owner launch checklist ready
-blocked owner launch approval missing
+blocked launch channels missing
 ```
 
-To check whether Source-Wire is ready for technical review or broad public reuse:
+To check the current source sharing boundary:
 
 ```bash
 npm run world:readiness
@@ -120,8 +122,8 @@ npm run world:readiness
 Expected markers:
 
 ```text
-ok world share technical review ready
-blocked world share broad reuse
+ok world share open source ready
+blocked production launch channels
 ```
 
 To audit the first-visitor share boundary:
@@ -134,8 +136,8 @@ Expected markers:
 
 ```text
 ok first visitor share audit ready
-ok technical review sharing ready
-blocked broad public reuse
+ok apache 2 reuse ready
+blocked production launch channels
 ```
 
 ## What To Review
@@ -147,7 +149,7 @@ High-value review areas:
 - Are fixtures realistic enough while staying synthetic?
 - Are package exports usable from an installed package?
 - Do readiness gates prove the right claims?
-- Are license, release, runtime, data, and trusted-memory boundaries clear?
+- Are license, release, runtime, data, contribution, and trusted-memory boundaries clear?
 - Does any doc imply Source-Wire hosts memory when it does not?
 - Does any workflow imply trusted memory can be created without owner or application approval?
 
@@ -182,10 +184,8 @@ Use synthetic examples or public repo references only.
 
 ## Still Blocked
 
-Technical review does not approve:
+Apache-2.0 source package licensing does not approve:
 
-- Apache-2.0 license implementation,
-- reuse or redistribution,
 - npm publishing,
 - GitHub release publishing,
 - hosted runtime backend,
@@ -195,7 +195,8 @@ Technical review does not approve:
 - Mission Control UI,
 - real data examples,
 - contribution license terms,
-- code contribution acceptance.
+- code contribution acceptance,
+- production runtime use.
 
 ## Related Docs
 

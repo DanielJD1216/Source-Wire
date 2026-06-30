@@ -5,10 +5,10 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 before release approval");
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED before owner approval");
+assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
-await assertPathMissing("LICENSE", "LICENSE file must not exist before owner license approval");
+await assertPathExists("LICENSE");
 
 for (const requiredPath of [
   "docs/owner-license-decision-workflow.md",
@@ -32,7 +32,7 @@ for (const requiredText of [
   "Option 2: Stay Unlicensed",
   "Option 3: Request Legal Review First",
   "Option 4: Compare Source-Available Options",
-  "blocked owner license decision missing"
+  "ok owner license decision captured"
 ]) {
   if (!workflow.includes(requiredText)) {
     failures.push(`decision workflow missing required text: ${requiredText}`);
@@ -40,9 +40,9 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "license_decision_status: pending",
-  "approved_license: none",
-  "approval_scope: none"
+  "license_decision_status: implemented",
+  "approved_license: Apache-2.0",
+  "approval_scope: source_package_license_only"
 ]) {
   if (!decisionRecord.includes(requiredText)) {
     failures.push(`decision record missing required text: ${requiredText}`);
@@ -61,48 +61,35 @@ printSection("Source-Wire Owner Decision Workflow");
 printRows([
   ["Workflow", "ready"],
   ["Decision options", "available"],
-  ["Owner license decision", "missing"],
-  ["Decision record", "pending"],
+  ["Owner license decision", "captured"],
+  ["Decision record", "implemented"],
   ["Package license", packageJson.license],
   ["Package version", packageJson.version],
-  ["LICENSE file", "not present"],
+  ["LICENSE file", "present"],
   ["npm publishing", "blocked"],
   ["GitHub release", "blocked"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
 
-printSection("Next Physical Action");
+printSection("Remaining Approval Actions");
 printList([
-  "Run npm run owner:license-preflight.",
-  "Read docs/license-approval-request-packet.md.",
-  "Choose exactly one owner decision option.",
-  "Open a later implementation unit for the approved option only."
+  "Open a separate PRD before npm publishing.",
+  "Open a separate PRD before GitHub release publishing.",
+  "Open a separate PRD before hosted runtime work.",
+  "Open a separate PRD before contribution acceptance."
 ]);
 
 console.log("");
 console.log("ok owner decision workflow ready");
 console.log("ok owner decision options available");
-console.log("blocked owner license decision missing");
+console.log("ok owner license decision captured");
 
 async function assertPathExists(path) {
   try {
     await stat(path);
   } catch {
     failures.push(`missing required path: ${path}`);
-  }
-}
-
-async function assertPathMissing(path, reason) {
-  try {
-    await stat(path);
-    failures.push(reason);
-  } catch (error) {
-    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
-      return;
-    }
-
-    failures.push(`could not inspect ${path}`);
   }
 }
 

@@ -1,16 +1,15 @@
 # Source-Wire Reviewer Feedback Guide
 
-This guide explains how to give useful Source-Wire review feedback without crossing the current license, privacy, or runtime boundaries.
+This guide explains how to give useful Source-Wire review feedback without crossing the current publishing, privacy, contribution, or runtime boundaries.
 
 For the repo's current public state, read [Public Status](public-status.md).
 
-If you received the repo from someone else, start with [Share For Technical Review](share-for-review.md) for the review-only boundary and first command path.
+If you received the repo from someone else, start with [Share For Technical Review](share-for-review.md) for the Apache-2.0 source package boundary and first command path.
 
 ## Current Boundary
 
-Source-Wire is public for technical review, but it is still:
+Source-Wire is Apache-2.0 licensed as a source package, but it is still:
 
-- `UNLICENSED`,
 - version `0.0.0`,
 - not published to npm,
 - not released on GitHub,
@@ -19,7 +18,7 @@ Source-Wire is public for technical review, but it is still:
 - not a database or connector system,
 - not approved for real user data examples.
 
-Do not treat public visibility as permission to reuse, redistribute, sell, host, package, or publish Source-Wire.
+Do not treat Apache-2.0 source package reuse as permission to publish npm, create GitHub releases, deploy services, accept code contributions, or claim production runtime readiness.
 
 ## Choose The Right Issue Template
 

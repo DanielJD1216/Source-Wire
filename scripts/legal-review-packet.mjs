@@ -3,11 +3,11 @@ import { readFile, stat } from "node:fs/promises";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED until owner approval");
+assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while publishing is blocked");
 
-await assertPathMissing("LICENSE", "LICENSE file must not exist before legal or owner license approval");
+await assertPathExists("LICENSE");
 
 for (const requiredPath of [
   "docs/legal-review-question-packet.md",
@@ -37,7 +37,7 @@ printRows([
   ["Legal advice", "not provided"],
   ["Current license", packageJson.license],
   ["Current version", packageJson.version],
-  ["LICENSE file", "not present"],
+  ["LICENSE file", "present"],
   ["npm publishing", "blocked"],
   ["GitHub release", "blocked"],
   ["Hosted runtime", "blocked"],
@@ -59,32 +59,19 @@ printList([
 printSection("Next Action");
 printList([
   "Read docs/legal-review-question-packet.md.",
-  "Answer or route the questions before broad public reuse.",
-  "Keep Source-Wire UNLICENSED until the owner approves a license implementation PRD."
+  "Use Apache-2.0 for public source-package reuse.",
+  "Route remaining contributor, support, hosted runtime, brand, and private-data questions before those channels open."
 ]);
 
 console.log("");
 console.log("ok legal review packet ready");
-console.log("blocked legal approval not granted");
+console.log("ok owner license approval recorded");
 
 async function assertPathExists(path) {
   try {
     await stat(path);
   } catch {
     failures.push(`missing required path: ${path}`);
-  }
-}
-
-async function assertPathMissing(path, reason) {
-  try {
-    await stat(path);
-    failures.push(reason);
-  } catch (error) {
-    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
-      return;
-    }
-
-    failures.push(`could not inspect ${path}`);
   }
 }
 

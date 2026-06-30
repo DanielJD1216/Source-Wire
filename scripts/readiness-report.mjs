@@ -61,7 +61,7 @@ const blockedScope = [
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0");
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED");
+assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted");
 assertEqual(packageJson.bin?.["source-wire"], "./dist/cli.js", "source-wire bin must point to ./dist/cli.js");
 
@@ -169,27 +169,27 @@ printList([
 printSection("Required Readiness Docs");
 printList([
   "README.md is the package entrypoint and public boundary summary",
-  "docs/apache-2-license-implementation-readiness.md records the future Apache-2.0 implementation checklist without changing the current license",
-  "docs/first-time-visitor-share-readiness-audit.md records technical-review readiness and broad-reuse blockers",
-  "docs/license-approval-rehearsal.md records the read-only approval rehearsal and current boundary checks before license implementation",
-  "docs/license-approval-decision-record.md records the pending machine-checked owner license decision without approving a license change",
-  "docs/license-approval-request-packet.md records exact owner license approval options without granting approval",
-  "docs/license-decision-implementation-plan.md maps each owner decision path to the next implementation unit without implementing a license change",
-  "docs/legal-review-question-packet.md records counsel or owner questions for license, contribution, support, security, brand, hosted runtime, and data boundaries without approving legal changes",
-  "docs/owner-launch-checklist.md records the technical-review-ready and broad-launch-blocked owner approval order",
-  "docs/owner-license-approval-preflight.md records the final read-only preflight before owner license approval",
-  "docs/owner-license-decision-intake.md records the exact owner decision capture point without approving a license change",
-  "docs/owner-license-decision-workflow.md records the owner decision workflow and exact next physical action without approving a license change",
+  "docs/apache-2-license-implementation-readiness.md records the completed Apache-2.0 implementation while keeping publishing blocked",
+  "docs/first-time-visitor-share-readiness-audit.md records source-package sharing readiness and remaining launch blockers",
+  "docs/license-approval-rehearsal.md records the Apache-2.0 implementation check and current blocked publish boundary",
+  "docs/license-approval-decision-record.md records the implemented owner license decision",
+  "docs/license-approval-request-packet.md records the completed owner approval path",
+  "docs/license-decision-implementation-plan.md maps completed Apache-2.0 implementation and remaining decision paths",
+  "docs/legal-review-question-packet.md records remaining counsel or owner questions for contribution, support, security, brand, hosted runtime, and data boundaries",
+  "docs/owner-launch-checklist.md records the source-package-ready and launch-channel-blocked owner approval order",
+  "docs/owner-license-approval-preflight.md records the implemented owner license approval",
+  "docs/owner-license-decision-intake.md records the captured owner decision",
+  "docs/owner-license-decision-workflow.md records the completed owner decision workflow",
   "docs/launch-decision-status.md records the one-command launch status view without approving any blocked launch path",
-  "docs/public-status.md states the public review, license, release, publishing, runtime, and reuse boundaries",
+  "docs/public-status.md states the Apache-2.0 license, release, publishing, runtime, and contribution boundaries",
   "docs/repository-metadata.md explains GitHub metadata, support, security, contribution, and CI visibility boundaries",
   "docs/quickstart.md defines local setup and first-run commands",
   "docs/minimal-runtime-prd.md records the minimal synthetic runtime boundary while keeping hosted runtime implementation blocked",
-  "docs/license-decision-gate.md records the owner license decision paths while keeping the current license unchanged",
+  "docs/license-decision-gate.md records the implemented Apache-2.0 path and remaining blocked channels",
   "docs/runtime-boundary-readiness.md summarizes the runtime-boundary proof lane and blocked runtime scope",
   "docs/publish-readiness.md summarizes the local readiness gate and marker map",
-  "docs/world-share-readiness.md separates technical-review sharing from broad public reuse approval",
-  "docs/share-for-review.md gives safe technical-review invite copy, first commands, feedback routing, and review-only boundaries",
+  "docs/world-share-readiness.md separates Apache-2.0 source sharing from blocked production launch channels",
+  "docs/share-for-review.md gives safe public sharing copy, first commands, feedback routing, and launch-channel boundaries",
   "docs/technical-reviewer-guide.md gives reviewers the clone, verify, inspect, feedback, and license-boundary path",
   "docs/reviewer-feedback-guide.md defines structured public issue feedback without asking for private data",
   "docs/ci-checks.md summarizes GitHub Actions Package Checks and marker map",

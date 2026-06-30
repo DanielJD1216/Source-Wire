@@ -3,11 +3,11 @@ import { readFile, stat } from "node:fs/promises";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED until owner approval");
+assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
-await assertPathMissing("LICENSE", "LICENSE file must not exist before owner license approval");
+await assertPathExists("LICENSE");
 
 for (const requiredPath of [
   "docs/owner-launch-checklist.md",
@@ -32,8 +32,8 @@ printSection("Source-Wire Owner Launch Checklist");
 printRows([
   ["Technical review", "ready"],
   ["Legal review packet", "ready"],
-  ["Broad public reuse", "blocked, owner license approval missing"],
-  ["Open-source license", "blocked, owner license implementation missing"],
+  ["Source package reuse", "ready under Apache-2.0"],
+  ["Open-source license", "implemented"],
   ["npm publishing", "blocked, publish approval missing"],
   ["GitHub release", "blocked, release approval missing"],
   ["Hosted runtime", "blocked, runtime approval missing"],
@@ -45,43 +45,28 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["LICENSE file", "not present"],
+  ["LICENSE file", "present"],
   ["Publish boundary", "npm publishing blocked, publishConfig.access restricted"]
 ]);
 
 printSection("Approval Order");
 printList([
-  "1. Technical review sharing is allowed with docs/share-for-review.md.",
-  "2. Legal or owner review should use docs/legal-review-question-packet.md.",
-  "3. Broad reuse needs a license decision from docs/license-decision-gate.md.",
-  "4. npm publishing needs a separate publish PRD after licensing.",
-  "5. GitHub release publishing needs a separate release PRD.",
-  "6. Hosted runtime work needs a separate runtime PRD.",
-  "7. Code contribution acceptance needs explicit contribution terms."
+  "1. Apache-2.0 source package reuse is approved and implemented.",
+  "2. npm publishing needs a separate publish PRD.",
+  "3. GitHub release publishing needs a separate release PRD.",
+  "4. Hosted runtime work needs a separate runtime PRD.",
+  "5. Code contribution acceptance needs explicit contribution terms."
 ]);
 
 console.log("");
 console.log("ok owner launch checklist ready");
-console.log("blocked owner launch approval missing");
+console.log("blocked launch channels missing");
 
 async function assertPathExists(path) {
   try {
     await stat(path);
   } catch {
     failures.push(`missing required path: ${path}`);
-  }
-}
-
-async function assertPathMissing(path, reason) {
-  try {
-    await stat(path);
-    failures.push(reason);
-  } catch (error) {
-    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
-      return;
-    }
-
-    failures.push(`could not inspect ${path}`);
   }
 }
 

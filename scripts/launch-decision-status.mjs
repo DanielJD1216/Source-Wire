@@ -5,10 +5,10 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release approval");
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED until owner approval");
+assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
-await assertPathMissing("LICENSE", "LICENSE file must not exist before owner license approval");
+await assertPathExists("LICENSE");
 
 for (const requiredPath of [
   "docs/share-for-review.md",
@@ -39,12 +39,12 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["LICENSE file", "not present"],
-  ["Technical review sharing", "ready"],
-  ["Legal approval", "blocked, not granted"],
-  ["Owner launch approval", "blocked, missing"],
-  ["License decision record", "pending"],
-  ["License implementation", "blocked, missing"],
+  ["LICENSE file", "present"],
+  ["Source repo sharing", "ready"],
+  ["Legal advice", "not provided"],
+  ["Owner license approval", "captured"],
+  ["License decision record", "implemented"],
+  ["License implementation", "complete"],
   ["npm publishing", "blocked, not approved"],
   ["GitHub release", "blocked, not approved"],
   ["Hosted runtime", "blocked, not approved"],
@@ -53,18 +53,14 @@ printRows([
 
 printSection("Next Approval");
 printList([
-  "Use docs/share-for-review.md for technical review sharing.",
-  "Use docs/legal-review-question-packet.md for legal or owner review.",
-  "Use docs/license-decision-gate.md before any license implementation.",
+  "Use README.md and LICENSE for public source repo sharing.",
   "Open separate PRDs for npm publishing, GitHub release publishing, hosted runtime, and contribution acceptance."
 ]);
 
 console.log("");
 console.log("ok launch decision status ready");
-console.log("ok technical review sharing ready");
-console.log("blocked legal approval not granted");
-console.log("blocked owner launch approval missing");
-console.log("blocked license implementation missing");
+console.log("ok apache 2 license implemented");
+console.log("ok source repo sharing ready");
 console.log("blocked npm publishing not approved");
 console.log("blocked github release not approved");
 console.log("blocked hosted runtime not approved");
@@ -75,19 +71,6 @@ async function assertPathExists(path) {
     await stat(path);
   } catch {
     failures.push(`missing required path: ${path}`);
-  }
-}
-
-async function assertPathMissing(path, reason) {
-  try {
-    await stat(path);
-    failures.push(reason);
-  } catch (error) {
-    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
-      return;
-    }
-
-    failures.push(`could not inspect ${path}`);
   }
 }
 

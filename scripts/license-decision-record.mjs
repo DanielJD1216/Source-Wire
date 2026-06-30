@@ -6,10 +6,10 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 before release approval");
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED before owner approval");
+assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
-await assertPathMissing("LICENSE", "LICENSE file must not exist before owner license approval");
+await assertPathExists("LICENSE");
 
 for (const requiredPath of [
   "docs/license-approval-decision-record.md",
@@ -24,14 +24,14 @@ for (const requiredPath of [
 }
 
 for (const requiredText of [
-  "license_decision_status: pending",
-  "approved_license: none",
-  "approval_scope: none",
+  "license_decision_status: implemented",
+  "approved_license: Apache-2.0",
+  "approval_scope: source_package_license_only",
   "npm_publish_approval: blocked",
   "github_release_approval: blocked",
   "hosted_runtime_approval: blocked",
   "contribution_acceptance: blocked",
-  "No license change is approved."
+  "Apache-2.0 license implementation is approved and complete."
 ]) {
   if (!decisionRecord.includes(requiredText)) {
     failures.push(`decision record missing required text: ${requiredText}`);
@@ -48,47 +48,35 @@ if (failures.length > 0) {
 
 printSection("Source-Wire License Approval Decision Record");
 printRows([
-  ["Decision status", "pending"],
-  ["Approved license", "none"],
+  ["Decision status", "implemented"],
+  ["Approved license", "Apache-2.0"],
   ["Package license", packageJson.license],
   ["Package version", packageJson.version],
-  ["LICENSE file", "not present"],
+  ["LICENSE file", "present"],
   ["npm publishing", "blocked"],
   ["GitHub release", "blocked"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
 
-printSection("Next Approval Needed");
+printSection("Remaining Approvals Needed");
 printList([
-  "Use docs/license-decision-gate.md to choose the license path.",
-  "Use docs/legal-review-question-packet.md if legal review is needed first.",
-  "Do not add a LICENSE file or change package metadata until a future owner-approved license implementation unit."
+  "Open a separate PRD before npm publishing.",
+  "Open a separate PRD before GitHub release publishing.",
+  "Open a separate PRD before hosted runtime work.",
+  "Open a separate PRD before accepting code contributions."
 ]);
 
 console.log("");
 console.log("ok license decision record ready");
-console.log("blocked license decision pending");
-console.log("blocked license implementation missing");
+console.log("ok license decision captured");
+console.log("ok license implementation complete");
 
 async function assertPathExists(path) {
   try {
     await stat(path);
   } catch {
     failures.push(`missing required path: ${path}`);
-  }
-}
-
-async function assertPathMissing(path, reason) {
-  try {
-    await stat(path);
-    failures.push(reason);
-  } catch (error) {
-    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
-      return;
-    }
-
-    failures.push(`could not inspect ${path}`);
   }
 }
 

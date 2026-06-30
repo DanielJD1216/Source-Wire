@@ -64,19 +64,19 @@ They prove the current package skeleton, installed package behavior, docs, safet
 
 | Area | Markers to look for |
 | --- | --- |
-| Release boundary | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` |
-| License rehearsal | `ok license rehearsal current boundary`, `ok license rehearsal future checklist` |
-| License decision record | `ok license decision record ready`, `blocked license decision pending`, `blocked license implementation missing` |
-| License approval request | `ok license approval request ready`, `blocked owner license approval missing`, `blocked license decision pending` |
-| License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `blocked license implementation awaiting owner decision` |
-| Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` |
-| Owner launch checklist | `ok owner launch checklist ready`, `blocked owner launch approval missing` |
-| Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `blocked owner license approval missing` |
-| Owner decision intake | `ok owner decision intake ready`, `ok owner decision options available`, `blocked owner decision not captured` |
-| Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `blocked owner license decision missing` |
-| World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` |
-| Launch decision status | `ok launch decision status ready`, `ok technical review sharing ready`, `blocked legal approval not granted`, `blocked owner launch approval missing`, `blocked license implementation missing`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
-| First visitor share audit | `ok first visitor share audit ready`, `ok technical review sharing ready`, `blocked broad public reuse` |
+| Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` |
+| License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
+| License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` |
+| License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` |
+| License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `ok license implementation complete` |
+| Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` |
+| Owner launch checklist | `ok owner launch checklist ready`, `blocked launch channels missing` |
+| Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `ok owner license approval captured` |
+| Owner decision intake | `ok owner decision intake ready`, `ok owner decision options available`, `ok owner decision captured` |
+| Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `ok owner license decision captured` |
+| World-share boundary | `ok world share open source ready`, `blocked production launch channels` |
+| Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
+| First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` |
@@ -168,7 +168,7 @@ Run only the public claim-boundary guard:
 npm run claims:scan
 ```
 
-The guard scans public README, docs, and examples for unsafe release, reuse, open-source, contribution, npm publishing, GitHub release, and hosted-runtime claims while the package license remains `UNLICENSED`.
+The guard scans public README, docs, and examples for unsafe production, contribution, npm publishing, GitHub release, and hosted-runtime claims while the package remains unpublished and not hosted.
 
 It skips fenced code blocks so docs can include unsafe wording examples as examples.
 
@@ -182,9 +182,9 @@ Run only the read-only license approval rehearsal:
 npm run license:rehearsal
 ```
 
-The rehearsal verifies the current `UNLICENSED` boundary, confirms no `LICENSE` file exists, checks publish and release scripts remain blocked, and prints the future owner-approved Apache-2.0 transition checklist.
+The rehearsal verifies the current Apache-2.0 implementation boundary, confirms the `LICENSE` file exists, checks publish and release scripts remain blocked, and confirms the implementation checklist is complete.
 
-It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
+It does not publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or approve production runtime use.
 
 ## License Approval Decision Record
 
@@ -242,9 +242,9 @@ Run only the owner launch decision checklist:
 npm run owner:launch-checklist
 ```
 
-The checklist reports that technical review sharing is ready and broad public launch remains blocked until explicit owner approvals are recorded for licensing, npm publishing, GitHub release publishing, hosted runtime work, and contribution terms.
+The checklist reports that Apache-2.0 source package sharing is ready and launch channels remain blocked until explicit owner approvals are recorded for npm publishing, GitHub release publishing, hosted runtime work, and contribution terms.
 
-It does not approve open-source launch, change package metadata, add a `LICENSE` file, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 ## Owner License Approval Preflight
 
@@ -254,9 +254,9 @@ Run only the final owner license approval preflight:
 npm run owner:license-preflight
 ```
 
-The preflight verifies the approval package is complete, the license decision record is still pending, and owner license approval is still missing.
+The preflight verifies the approval package is complete, the license decision record is implemented, and owner license approval is captured.
 
-It does not approve open-source launch, change package metadata, add a `LICENSE` file, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 ## Owner License Decision Workflow
 
@@ -266,9 +266,9 @@ Run only the owner decision intake:
 npm run owner:decision-intake
 ```
 
-The intake verifies the exact owner decision capture point, the available options, and the current not-captured state.
+The intake verifies the exact owner decision capture point, the available options, and the captured Apache-2.0 decision.
 
-It does not approve open-source launch, change package metadata, add a `LICENSE` file, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 Run only the owner license decision workflow:
 
@@ -276,9 +276,9 @@ Run only the owner license decision workflow:
 npm run owner:decision-workflow
 ```
 
-The workflow verifies the decision docs are present, the exact owner options are available, and the owner license decision is still missing.
+The workflow verifies the decision docs are present, the exact owner options are available, and the owner license decision is captured.
 
-It does not approve open-source launch, change package metadata, add a `LICENSE` file, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 ## World-Share Readiness
 
@@ -288,9 +288,9 @@ Run only the world-share readiness boundary report:
 npm run world:readiness
 ```
 
-The report separates technical-review readiness from broad public reuse. It exits successfully only when the current review-only boundary is intact: `UNLICENSED`, version `0.0.0`, no `LICENSE` file, npm publishing blocked, release blocked, hosted runtime blocked, and code contributions blocked.
+The report separates Apache-2.0 source package sharing from blocked production launch channels. It exits successfully only when the current boundary is intact: Apache-2.0, version `0.0.0`, `LICENSE` file present, npm publishing blocked, release blocked, hosted runtime blocked, and code contributions blocked.
 
-It does not approve open-source launch, publish npm, create a GitHub release, deploy services, add a `LICENSE` file, accept contributions, or grant reuse rights.
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 ## First Visitor Share Audit
 
@@ -300,9 +300,9 @@ Run only the first visitor share audit:
 npm run share:audit
 ```
 
-The audit verifies public review docs, safe share wording, unsafe wording guardrails, and broad-reuse blockers.
+The audit verifies public review docs, safe share wording, unsafe wording guardrails, and production launch blockers.
 
-It does not approve open-source launch, publish npm, create a GitHub release, deploy services, add a `LICENSE` file, accept contributions, or grant reuse rights.
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 ## Launch Decision Status
 
@@ -312,9 +312,9 @@ Run only the one-command launch decision status report:
 npm run launch:decision-status
 ```
 
-The report summarizes what is ready and blocked across technical review sharing, legal approval, owner launch approval, license implementation, npm publishing, GitHub release publishing, hosted runtime work, and contribution acceptance.
+The report summarizes what is ready and blocked across Apache-2.0 source package sharing, npm publishing, GitHub release publishing, hosted runtime work, and contribution acceptance.
 
-It does not approve open-source launch, publish npm, create a GitHub release, deploy services, add a `LICENSE` file, accept contributions, or grant reuse rights.
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 ## Package Dry Run
 
@@ -578,7 +578,7 @@ npm run release:gate
 
 The release gate verifies that current package metadata still matches the release decision:
 
-- license is `UNLICENSED`,
+- license is `Apache-2.0`,
 - version is `0.0.0`,
 - npm publishing remains blocked through restricted publish config,
 - package scripts do not include publish, release, or deployment commands.

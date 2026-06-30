@@ -1,56 +1,37 @@
 # Source-Wire Future License Change Plan
 
-Date: 2026-06-29
+Date: 2026-06-30
 
 Status: future plan only.
 
 ## Purpose
 
-This plan lists the exact changes that would happen only after the owner approves a separate license implementation PRD.
+This plan lists what would happen only after the owner approves a future license, publishing, release, hosted runtime, or contribution-policy change.
 
-It does not change the license now.
+Apache-2.0 source package licensing is already implemented.
 
 For the current one-page owner decision gate, read [License Decision Gate](license-decision-gate.md).
 
 For the full decision-path implementation map, read [License Decision Implementation Plan](license-decision-implementation-plan.md).
 
-For the exact future Apache-2.0 checklist, read [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md).
+For the Apache-2.0 record, read [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md).
 
 ## Current Boundary
 
 Current Source-Wire state:
 
-- package license: `UNLICENSED`,
+- package license: `Apache-2.0`,
 - package version: `0.0.0`,
-- no `LICENSE` file,
+- `LICENSE` file present,
+- source package reuse allowed under Apache-2.0,
 - npm publishing blocked,
 - GitHub release publishing blocked,
-- runtime backend blocked.
+- runtime backend blocked,
+- code contribution acceptance blocked.
 
-## If Apache-2.0 Is Approved Later
+## If npm Publishing Is Approved Later
 
-Expected future package metadata changes:
-
-| File | Future change |
-| --- | --- |
-| `package.json` | Change `"license": "UNLICENSED"` to `"license": "Apache-2.0"`. |
-| `package.json` | Keep `"version": "0.0.0"` unless a separate release PRD approves a release version. |
-| `package.json` | Keep `publishConfig.access` restrictive until a separate publish PRD approves npm publishing. |
-
-Expected future file changes:
-
-| File | Future change |
-| --- | --- |
-| `LICENSE` | Add Apache License 2.0 text. |
-| `README.md` | Add a License section with the approved license and current publish boundary. |
-| `docs/release-decision.md` | Update license status from `UNLICENSED` to the approved license. |
-| `docs/license-version-policy.md` | Update license policy and keep version policy separate. |
-| `docs/publish-readiness.md` | State that license approval is separate from npm publish approval. |
-| `scripts/release-gate.mjs` | Update expected license only inside the approved implementation PRD. |
-
-Expected future verification commands:
-
-When a future owner-approved implementation PRD opens this work, use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 Install dependencies first:
 
@@ -58,41 +39,42 @@ Install dependencies first:
 npm install
 ```
 
-```bash
-test -f LICENSE
-npm run release:gate
-npm run publish:readiness
-npm run safety:scan -- --format=json
-git diff --check
-```
+Expected future work:
 
-## If Staying UNLICENSED Is Approved Later
+- keep the license as `Apache-2.0`,
+- choose a release version or explicitly keep `0.0.0`,
+- update publish access policy,
+- add release notes or changelog if needed,
+- run `npm run publish:readiness`,
+- perform a separate publish proof,
+- keep hosted runtime work separate.
 
-Expected future changes:
+## If GitHub Release Publishing Is Approved Later
 
-- keep `package.json` license as `UNLICENSED`,
-- keep no `LICENSE` file,
-- update `docs/release-decision.md` only if the owner wants to record a longer hold period,
-- keep release gate expecting `UNLICENSED`,
-- keep npm publishing blocked.
+Expected future work:
 
-## If Source-Available Or Noncommercial Is Chosen Later
+- keep the license as `Apache-2.0`,
+- define tag naming and release notes,
+- decide whether the release should include package artifacts,
+- verify docs and marker maps,
+- keep npm publishing separate unless explicitly approved.
+
+## If A Different License Is Approved Later
 
 Expected future work:
 
 - run a separate decision prototype or legal review,
 - choose exact license text,
 - update package metadata only after approval,
-- add the approved license file only after approval,
-- clearly state that the project is source-available or noncommercial, not ordinary permissive open source,
+- replace or add the approved license file only after approval,
+- clearly state whether the project remains open source, source-available, or commercially restricted,
 - keep npm publishing separate unless a release PRD approves it.
 
 ## If Legal Review Is Required First
 
 Expected future work:
 
-- keep package license as `UNLICENSED`,
-- keep no `LICENSE` file,
+- keep package license as `Apache-2.0` unless counsel or owner approves a change,
 - collect questions for counsel,
 - decide contributor policy,
 - decide public support boundary,
@@ -104,20 +86,14 @@ Expected future work:
 This future plan does not approve:
 
 - changing package license,
-- adding a `LICENSE` file,
 - changing package version,
 - npm publishing,
 - GitHub release publishing,
 - deployment,
 - runtime backend behavior,
 - accepting contributors,
-- commercial reuse,
 - private implementation extraction.
 
 ## Next Implementation Gate
 
-If the owner approves Apache-2.0 later, the next implementation PRD should be:
-
-**Source-Wire Apache-2.0 License Implementation Gate**
-
-That PRD should make only the approved license implementation changes and still leave npm publishing blocked unless another release PRD opens it.
+If the owner approves any future change, open a focused PRD for that single lane. Do not mix license changes, npm publishing, GitHub releases, hosted runtime work, and contribution acceptance in one unbounded unit.

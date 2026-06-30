@@ -97,19 +97,19 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 
 | Marker group | Expected markers | What it proves |
 | --- | --- | --- |
-| Release gate | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` | Release, license, version, and publishing boundaries are still blocked. |
+| Release gate | `ok release gate`, `ok license Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` | Apache-2.0 licensing is implemented while version and publishing boundaries stay blocked. |
 | Package required paths | `ok package required paths` | The shared required package path manifest is sorted and duplicate-free. |
-| License decision record | `ok license decision record ready`, `blocked license decision pending`, `blocked license implementation missing` | The owner license decision record exists and is still pending, so no license change has been approved. |
-| License approval request | `ok license approval request ready`, `blocked owner license approval missing`, `blocked license decision pending` | The exact owner approval options are present, but owner license approval is still missing. |
-| License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `blocked license implementation awaiting owner decision` | The four owner decision paths are mapped, but no license implementation is approved. |
-| Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` | Legal or owner review questions are available, but legal approval has not been granted. |
-| Owner launch checklist | `ok owner launch checklist ready`, `blocked owner launch approval missing` | The owner approval order is visible, but broad launch is not approved. |
-| Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `blocked owner license approval missing` | The owner approval package is complete, but owner license approval is still missing. |
-| Owner decision intake | `ok owner decision intake ready`, `ok owner decision options available`, `blocked owner decision not captured` | The exact owner decision intake point is available, but the owner decision has not been captured. |
-| Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `blocked owner license decision missing` | The exact owner decision workflow is available, but the owner license decision is still missing. |
-| World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` | Technical review sharing is ready, but broad public reuse remains blocked. |
-| Launch decision status | `ok launch decision status ready`, `ok technical review sharing ready`, `blocked legal approval not granted`, `blocked owner launch approval missing`, `blocked license implementation missing`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` | One command reports the launch decisions that are ready and blocked without approving any blocked launch path. |
-| First visitor share audit | `ok first visitor share audit ready`, `ok technical review sharing ready`, `blocked broad public reuse` | Public review wording is present and broad public reuse remains blocked. |
+| License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` | The owner license decision record is implemented for Apache-2.0 source package licensing. |
+| License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` | The owner approval path is captured and implemented. |
+| License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `ok license implementation complete` | The Apache-2.0 implementation path is complete and remaining paths stay separate. |
+| Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` | Legal advice is not provided, but owner license approval is recorded and remaining legal questions stay visible. |
+| Owner launch checklist | `ok owner launch checklist ready`, `blocked launch channels missing` | Source package reuse is ready, but launch channels remain blocked. |
+| Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `ok owner license approval captured` | The owner approval package is complete and Apache-2.0 approval is captured. |
+| Owner decision intake | `ok owner decision intake ready`, `ok owner decision options available`, `ok owner decision captured` | The owner decision intake records the selected Apache-2.0 implementation path. |
+| Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `ok owner license decision captured` | The owner decision workflow records the selected Apache-2.0 implementation path. |
+| World-share boundary | `ok world share open source ready`, `blocked production launch channels` | Source package sharing is ready under Apache-2.0, but production launch channels remain blocked. |
+| Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` | One command reports Apache-2.0 source sharing as ready while keeping blocked launch paths explicit. |
+| First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` | First visitors can reuse the source package under Apache-2.0 without confusing it for a product launch. |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` | The local package can be packed and the shared required package path manifest is present. |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` | The shared required package path manifest, README/docs/examples links, and runtime readiness summary assertions work from the packed package after install. |
 | Minimal runtime smoke | `ok minimal runtime boundary smoke` | Exported synthetic in-memory runtime boundary code matches owner-hosted API plus MCP proof cases. |
@@ -118,7 +118,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` | Boundary smoke failures remain useful to diagnose when a synthetic check breaks. |
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok command docs setup` | Readiness summary, required readiness docs, local Markdown links, and command-doc setup pointers are current. |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` | Public-safety scan found no obvious private-data or secret findings. |
-| Public claim boundary | `ok public claim boundary scan` | Public docs do not make unsafe release, reuse, open-source, contribution, publishing, or hosted-runtime claims while Source-Wire remains `UNLICENSED`. |
+| Public claim boundary | `ok public claim boundary scan` | Public docs do not make unsafe production, contribution, npm publishing, GitHub release, or hosted-runtime claims while Source-Wire remains unpublished and not hosted. |
 | CI marker self-smoke | `ok ci markers smoke` | The marker helper accepts a complete synthetic log and rejects an incomplete synthetic log. |
 
 If one marker group is missing, inspect the command that owns that group before treating CI as release-ready.
@@ -172,7 +172,7 @@ The public claim-boundary scan is self-contained inside Source-Wire:
 npm run claims:scan
 ```
 
-It scans public README, docs, and examples for unsafe release, reuse, open-source, contribution, publishing, or hosted-runtime wording while Source-Wire remains `UNLICENSED`.
+It scans public README, docs, and examples for unsafe production, contribution, npm publishing, GitHub release, or hosted-runtime wording while Source-Wire remains unpublished and not hosted.
 
 The scan is non-destructive.
 

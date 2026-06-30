@@ -80,7 +80,7 @@ The next safe expansion should be one of these explicit PRD paths:
 
 1. Documentation or examples that make the existing contract package easier to adopt.
 2. A runtime decision package that chooses the first public runtime boundary before adding server, database, MCP, or connector code.
-3. A license or publish approval gate, if the owner decides Source-Wire is ready to move beyond `UNLICENSED` and `0.0.0`.
+3. A publish or release approval gate, if the owner decides Source-Wire is ready to move beyond Apache-2.0 source package sharing and version `0.0.0`.
 
 The current runtime decision is recorded in [Public Runtime Decision](public-runtime-decision.md).
 

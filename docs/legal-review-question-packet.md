@@ -2,26 +2,26 @@
 
 Status: question packet only.
 
-This document is not legal advice. It does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
+This document is not legal advice. It does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
-Source-Wire is public for technical review, but it is not licensed for reuse.
+Source-Wire is Apache-2.0 licensed as a source package.
 
-Before broad public reuse, contributor intake, npm publishing, commercial adoption, or hosted runtime work, the owner should answer the legal and governance questions below or route them to counsel.
+Before contributor intake, npm publishing, GitHub release publishing, production adoption, or hosted runtime work, the owner should answer the legal and governance questions below or route them to counsel.
 
 ## Current Boundary
 
 | Field | Current value |
 | --- | --- |
-| Package license | `UNLICENSED` |
+| Package license | `Apache-2.0` |
 | Package version | `0.0.0` |
-| `LICENSE` file | none |
+| `LICENSE` file | present |
 | npm publishing | blocked |
 | GitHub release publishing | blocked |
 | Hosted runtime backend | blocked |
 | Code contributions | blocked |
-| Public support | review feedback only |
+| Public support | review feedback and issue templates only |
 | Real user data examples | blocked |
 
 ## Command
@@ -44,10 +44,10 @@ Expected markers:
 
 ```text
 ok legal review packet ready
-blocked legal approval not granted
+ok owner license approval recorded
 ```
 
-The command verifies the current blocked boundary and prints review topics. It does not give legal advice, add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
+The command verifies the current boundary and prints review topics. It does not give legal advice, publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 ## Questions For Counsel Or Owner Review
 

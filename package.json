@@ -22,7 +22,7 @@
     "url": "git+https://github.com/DanielJD1216/Source-Wire.git"
   },
   "type": "module",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "publishConfig": {
     "access": "restricted"
   },

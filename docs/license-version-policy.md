@@ -1,18 +1,18 @@
 # Source-Wire License And Version Policy
 
-Source-Wire is public, but it is not licensed for reuse yet.
+Source-Wire is Apache-2.0 licensed as a source package.
 
 ## License Policy
 
 Current package license:
 
 ```text
-UNLICENSED
+Apache-2.0
 ```
 
-This means public reuse is not approved yet.
+This means source package reuse is allowed under Apache-2.0.
 
-Do not interpret the public repository as permission to copy, redistribute, package, or commercially reuse Source-Wire until the license is changed through an explicit owner-approved release PRD.
+Do not interpret the source license as approval for npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, or code contribution acceptance.
 
 ## Version Policy
 
@@ -25,21 +25,6 @@ Current package version:
 This means Source-Wire has no release compatibility promise yet.
 
 The package may change contracts, schema names, docs, examples, and CLI behavior while it remains pre-release.
-
-## Before The License Can Change
-
-A later PRD must decide:
-
-- intended license,
-- allowed reuse model,
-- contributor policy,
-- public support boundary,
-- private data safety review,
-- owner approval.
-
-Use [License Decision Gate](license-decision-gate.md) for the exact owner approval language.
-
-Use [License Approval Rehearsal](license-approval-rehearsal.md) before implementation to verify the current blocked boundary and preview the approved transition path.
 
 ## Before The Version Can Change
 

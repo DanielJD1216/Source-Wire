@@ -1,6 +1,6 @@
 # Source-Wire Technical Reviewer Guide
 
-This guide is for technical reviewers who want to inspect Source-Wire before it is licensed, published, or turned into a hosted runtime.
+This guide is for technical reviewers who want to inspect Source-Wire before it is published, released, deployed, or turned into a hosted runtime.
 
 For the shortest status summary, read [Public Status](public-status.md).
 
@@ -12,14 +12,14 @@ Source-Wire is currently a public contract package skeleton.
 
 Current state:
 
-- package license is `UNLICENSED`,
+- package license is `Apache-2.0`,
 - package version is `0.0.0`,
-- no `LICENSE` file exists,
+- `LICENSE` file exists,
 - npm publishing is blocked,
 - GitHub release publishing is blocked,
 - hosted runtime backend work is blocked.
 
-Because the package is currently `UNLICENSED`, this guide does not grant permission to reuse, redistribute, sell, host, or publish Source-Wire. Treat it as a reviewable public repository until the owner approves and implements a license.
+The Apache-2.0 license grants source package reuse rights. It does not mean Source-Wire is published to npm, released on GitHub, deployed, hosted, production-ready, or accepting code contributions.
 
 ## What You Can Review Today
 
@@ -62,7 +62,7 @@ Expected high-signal markers:
 ```text
 Package: @source-wire/contracts
 Version: 0.0.0
-License: UNLICENSED
+License: Apache-2.0
 Publish boundary: npm publishing blocked, publishConfig.access restricted
 Runtime boundary: synthetic in-memory boundary only, no backend runtime included
 ok readiness report

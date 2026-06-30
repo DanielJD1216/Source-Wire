@@ -6,11 +6,11 @@ Source-Wire is an agent-first memory architecture skeleton.
 
 It is designed for systems where AI agents need to search, cite, update, and reason over source-backed context without turning every imported note or chat message into trusted memory automatically.
 
-Current public status: Source-Wire is public for technical review, but it is `UNLICENSED`, unreleased, unpublished, and not a hosted runtime. Read [Public Status](docs/public-status.md) before reuse or redistribution assumptions.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. It is unreleased, unpublished to npm, undeployed, and not a hosted runtime. Read [Public Status](docs/public-status.md) before npm, release, deployment, hosted-runtime, production-use, or contribution assumptions.
 
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
-Share-readiness audit: Source-Wire is ready for technical review, not broad reuse. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
+Share-readiness audit: Source-Wire is ready for technical review and source package reuse under Apache-2.0, but not npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, or code contribution acceptance. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
 
 ## What This Public Skeleton Includes
 
@@ -123,13 +123,13 @@ Source-Wire can run a full local publish readiness gate with package dry-run, in
 
 The publish-readiness docs include a local success marker map for `npm run publish:readiness`.
 
-Run the read-only license approval rehearsal before any future license implementation:
+Run the license implementation check before any future publishing, release, hosted runtime, or contribution work:
 
 ```bash
 npm run license:rehearsal
 ```
 
-It verifies the current `UNLICENSED` boundary and prints the future owner-approved Apache-2.0 transition checklist. It does not add a `LICENSE` file, publish, release, deploy, or grant reuse rights.
+It verifies the current Apache-2.0 license implementation and confirms publishing, release, deployment, hosted runtime, and code contribution acceptance remain blocked.
 
 ## Fixtures
 

@@ -5,10 +5,10 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 before release approval");
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED before owner approval");
+assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
-await assertPathMissing("LICENSE", "LICENSE file must not exist before owner license approval");
+await assertPathExists("LICENSE");
 
 for (const requiredPath of [
   "docs/public-status.md",
@@ -28,17 +28,17 @@ const firstVisitorAudit = await readFile("docs/first-time-visitor-share-readines
 const worldReadiness = await readFile("docs/world-share-readiness.md", "utf8");
 
 for (const [label, text, requiredText] of [
-  ["public status", publicStatus, "Source-Wire is public for technical review."],
-  ["public status", publicStatus, "It is not ready for reuse, redistribution, publishing, deployment, or production use."],
-  ["share for review", shareForReview, "Status: technical review only."],
-  ["share for review", shareForReview, "Source-Wire is public for technical review only."],
+  ["public status", publicStatus, "Source-Wire is Apache-2.0 licensed."],
+  ["public status", publicStatus, "It is not published to npm, not released on GitHub, not deployed, and not a hosted runtime."],
+  ["share for review", shareForReview, "Status: Apache-2.0 licensed source package."],
+  ["share for review", shareForReview, "Source-Wire is Apache-2.0 licensed."],
   ["share for review", shareForReview, "Do not say:"],
-  ["share for review", shareForReview, "Source-Wire is open source and ready to use."],
+  ["share for review", shareForReview, "Source-Wire is production-ready."],
   ["first visitor audit", firstVisitorAudit, "Ready for technical review: yes."],
-  ["first visitor audit", firstVisitorAudit, "Ready for broad public reuse: no."],
-  ["first visitor audit", firstVisitorAudit, "Main blocker: owner-approved license implementation."],
-  ["world readiness", worldReadiness, "Source-Wire is ready to share for technical review."],
-  ["world readiness", worldReadiness, "Source-Wire cannot be shared as an open-source project"]
+  ["first visitor audit", firstVisitorAudit, "Ready for source package reuse: yes, under Apache-2.0."],
+  ["first visitor audit", firstVisitorAudit, "Still blocked: npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, and code contribution acceptance."],
+  ["world readiness", worldReadiness, "Source-Wire can be shared as an Apache-2.0 licensed source package."],
+  ["world readiness", worldReadiness, "It is not an npm-published package, GitHub release, deployed service, hosted runtime, or production runtime."]
 ]) {
   if (!text.includes(requiredText)) {
     failures.push(`${label} missing required text: ${requiredText}`);
@@ -56,11 +56,11 @@ if (failures.length > 0) {
 printSection("Source-Wire First Visitor Share Audit");
 printRows([
   ["First visitor audit", "ready"],
-  ["Technical review sharing", "ready"],
-  ["Broad public reuse", "blocked"],
+  ["Source package sharing", "ready"],
+  ["Source package reuse", "Apache-2.0"],
   ["Package license", packageJson.license],
   ["Package version", packageJson.version],
-  ["LICENSE file", "not present"],
+  ["LICENSE file", "present"],
   ["npm publishing", "blocked"],
   ["GitHub release", "blocked"],
   ["Hosted runtime", "blocked"],
@@ -69,34 +69,20 @@ printRows([
 
 printSection("Safe Share Boundary");
 printList([
-  "Share for technical review only.",
-  "Do not describe Source-Wire as open source yet.",
-  "Do not imply reuse, redistribution, publishing, deployment, hosted runtime, or contribution rights."
+  "Share the source repo under Apache-2.0.",
+  "Do not imply npm publication, GitHub release, deployment, hosted runtime, production runtime readiness, or contribution acceptance."
 ]);
 
 console.log("");
 console.log("ok first visitor share audit ready");
-console.log("ok technical review sharing ready");
-console.log("blocked broad public reuse");
+console.log("ok apache 2 reuse ready");
+console.log("blocked production launch channels");
 
 async function assertPathExists(path) {
   try {
     await stat(path);
   } catch {
     failures.push(`missing required path: ${path}`);
-  }
-}
-
-async function assertPathMissing(path, reason) {
-  try {
-    await stat(path);
-    failures.push(reason);
-  } catch (error) {
-    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
-      return;
-    }
-
-    failures.push(`could not inspect ${path}`);
   }
 }
 

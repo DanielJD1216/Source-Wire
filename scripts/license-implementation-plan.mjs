@@ -5,10 +5,10 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 before release approval");
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED before owner approval");
+assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
-await assertPathMissing("LICENSE", "LICENSE file must not exist before owner license approval");
+await assertPathExists("LICENSE");
 
 for (const requiredPath of [
   "docs/license-decision-implementation-plan.md",
@@ -31,11 +31,12 @@ const decisionRecord = await readFile("docs/license-approval-decision-record.md"
 
 for (const requiredText of [
   "Path 1: Apache-2.0 Implementation",
+  "Status: implemented.",
   "Path 2: Stay Unlicensed",
   "Path 3: Legal Review First",
   "Path 4: Compare Source-Available Options",
   "Stop Conditions",
-  "blocked license implementation awaiting owner decision"
+  "ok license implementation complete"
 ]) {
   if (!plan.includes(requiredText)) {
     failures.push(`implementation plan missing required text: ${requiredText}`);
@@ -43,9 +44,9 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "license_decision_status: pending",
-  "approved_license: none",
-  "approval_scope: none"
+  "license_decision_status: implemented",
+  "approved_license: Apache-2.0",
+  "approval_scope: source_package_license_only"
 ]) {
   if (!decisionRecord.includes(requiredText)) {
     failures.push(`decision record missing required text: ${requiredText}`);
@@ -64,11 +65,11 @@ printSection("Source-Wire License Decision Implementation Plan");
 printRows([
   ["Implementation plan", "ready"],
   ["Decision paths", "mapped"],
-  ["License implementation", "awaiting owner decision"],
-  ["Decision record", "pending"],
+  ["License implementation", "complete"],
+  ["Decision record", "implemented"],
   ["Package license", packageJson.license],
   ["Package version", packageJson.version],
-  ["LICENSE file", "not present"],
+  ["LICENSE file", "present"],
   ["npm publishing", "blocked"],
   ["GitHub release", "blocked"],
   ["Hosted runtime", "blocked"],
@@ -86,26 +87,13 @@ printList([
 console.log("");
 console.log("ok license implementation plan ready");
 console.log("ok license decision paths mapped");
-console.log("blocked license implementation awaiting owner decision");
+console.log("ok license implementation complete");
 
 async function assertPathExists(path) {
   try {
     await stat(path);
   } catch {
     failures.push(`missing required path: ${path}`);
-  }
-}
-
-async function assertPathMissing(path, reason) {
-  try {
-    await stat(path);
-    failures.push(reason);
-  } catch (error) {
-    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
-      return;
-    }
-
-    failures.push(`could not inspect ${path}`);
   }
 }
 

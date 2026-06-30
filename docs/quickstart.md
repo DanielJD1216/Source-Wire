@@ -220,9 +220,9 @@ Source-Wire does not currently include:
 
 Current release posture:
 
-- package license is `UNLICENSED`,
+- package license is `Apache-2.0`,
 - package version is `0.0.0`,
-- no `LICENSE` file exists,
+- `LICENSE` file exists,
 - npm publishing is blocked,
 - GitHub release publishing is blocked,
 - runtime backend work is blocked.

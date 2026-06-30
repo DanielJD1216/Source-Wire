@@ -1,31 +1,32 @@
 # Source-Wire World-Share Readiness
 
-Source-Wire is ready to share for technical review.
+Source-Wire can be shared as an Apache-2.0 licensed source package.
 
-It is not ready for broad public reuse, redistribution, npm publishing, GitHub release publishing, deployment, or hosted runtime use.
+It is not an npm-published package, GitHub release, deployed service, hosted runtime, or production runtime.
 
 ## Purpose
 
 This page prevents one mistake:
 
 ```text
-Public repo equals open-source launch.
+Apache-2.0 source package equals production launch.
 ```
 
 That is false for Source-Wire today.
 
-Public visibility currently means reviewers can inspect contracts, schemas, fixtures, examples, docs, and readiness gates. It does not grant reuse rights.
+Apache-2.0 currently means reviewers and adopters can inspect and reuse the source package. It does not mean Source-Wire is published to npm, released on GitHub, deployed, hosted, production-ready, or accepting code contributions.
 
 ## Current Share State
 
 | Area | Current state |
 | --- | --- |
 | Technical review | Ready |
-| Broad reuse | Blocked |
-| Open-source licensing | Blocked |
+| Source package reuse | Ready under Apache-2.0 |
+| Open-source licensing | Implemented |
 | npm publishing | Blocked |
 | GitHub release | Blocked |
 | Hosted runtime | Blocked |
+| Production runtime use | Blocked |
 | Code contributions | Blocked |
 | Real user data examples | Blocked |
 
@@ -48,11 +49,11 @@ npm run world:readiness
 Expected markers:
 
 ```text
-ok world share technical review ready
-blocked world share broad reuse
+ok world share open source ready
+blocked production launch channels
 ```
 
-This command does not publish npm, create a GitHub release, deploy services, add a `LICENSE` file, change package metadata, accept contributions, start runtime services, connect to a database, or grant reuse rights.
+This command does not publish npm, create a GitHub release, deploy services, accept contributions, start runtime services, connect to a database, or approve production runtime use.
 
 To audit first-visitor share wording and unsafe wording guardrails, run:
 
@@ -64,37 +65,23 @@ Expected markers:
 
 ```text
 ok first visitor share audit ready
-ok technical review sharing ready
-blocked broad public reuse
+ok apache 2 reuse ready
+blocked production launch channels
 ```
 
 ## What You Can Do Now
 
-Use [Share For Technical Review](share-for-review.md) to send the repo to a technical reviewer.
+Use [Share For Technical Review](share-for-review.md) to send the repo to a technical reviewer or source-package adopter.
 
 Safe current action:
 
 ```text
-Please review Source-Wire as a public technical-review repo. It is UNLICENSED, unpublished, unreleased, and not hosted.
+Please review Source-Wire as an Apache-2.0 licensed source package. It is version 0.0.0, unpublished to npm, unreleased on GitHub, undeployed, and not hosted.
 ```
 
-## What Must Happen Before Broad Public Reuse
+## What Must Happen Before Product Launch
 
-Before Source-Wire can be described as open source, ready to use, or reusable by the public, the owner must approve and implement a license path from [License Decision Gate](license-decision-gate.md).
-
-The likely path is Apache-2.0, but it is not approved yet.
-
-Read:
-
-- [Owner Launch Checklist](owner-launch-checklist.md)
-- [Legal Review Question Packet](legal-review-question-packet.md)
-- [Owner License Approval Packet](owner-license-approval-packet.md)
-- [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
-- [Future License Change Plan](future-license-change-plan.md)
-
-## What License Approval Still Would Not Allow
-
-Even after a future license approval, separate approvals would still be required for:
+Separate future approvals are still required for:
 
 - npm publishing,
 - GitHub release publishing,
@@ -105,10 +92,19 @@ Even after a future license approval, separate approvals would still be required
 - live connectors,
 - Mission Control UI,
 - real user data examples,
-- trusted Memory Record auto-promotion.
+- trusted Memory Record auto-promotion,
+- code contribution acceptance.
+
+Read:
+
+- [Owner Launch Checklist](owner-launch-checklist.md)
+- [Legal Review Question Packet](legal-review-question-packet.md)
+- [License Approval Decision Record](license-approval-decision-record.md)
+- [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
+- [Future License Change Plan](future-license-change-plan.md)
 
 ## Bottom Line
 
-Source-Wire can be shared for technical review now.
+Source-Wire can be shared as an Apache-2.0 licensed source package now.
 
-Source-Wire cannot be shared as an open-source project, production dependency, hosted memory service, or reusable package until the owner approves and implements the missing release decisions.
+Source-Wire cannot be shared as an npm-published package, GitHub release, hosted memory service, production runtime, or contribution-accepting project until those separate decisions are approved.

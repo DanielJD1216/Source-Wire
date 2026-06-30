@@ -2,11 +2,15 @@
 
 Status: owner approval request only.
 
-This packet does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
+Decision status: owner approval captured.
+
+Approved and implemented: Apache-2.0
+
+This packet records the approved source package license path. This packet does not approve a license change beyond the already implemented Apache-2.0 source package decision, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
-Use this packet when the owner is ready to choose the Source-Wire license path.
+Use this packet to verify the owner-approved Source-Wire license path and the boundaries that remain blocked.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -16,13 +20,13 @@ Install dependencies first:
 npm install
 ```
 
-The current decision record is still pending. Then run:
+Then run:
 
 ```bash
 npm run license:approval-request
 ```
 
-Before asking for the final owner decision, run:
+For the owner approval preflight, run:
 
 ```bash
 npm run owner:license-preflight
@@ -34,13 +38,13 @@ For the one-command decision workflow, run:
 npm run owner:decision-workflow
 ```
 
-To inspect the exact owner decision intake point, run:
+For the decision intake point, run:
 
 ```bash
 npm run owner:decision-intake
 ```
 
-For the post-decision implementation map, run:
+For the implementation map, run:
 
 ```bash
 npm run license:implementation-plan
@@ -50,26 +54,32 @@ Expected markers:
 
 ```text
 ok license approval request ready
-blocked owner license approval missing
-blocked license decision pending
+ok owner license approval captured
+ok license implementation complete
 ```
 
 ## Current State
 
 | Field | Current value |
 | --- | --- |
-| Package license | `UNLICENSED` |
+| Package license | `Apache-2.0` |
 | Package version | `0.0.0` |
-| `LICENSE` file | none |
-| License decision record | pending |
+| `LICENSE` file | present |
+| License decision record | implemented |
 | npm publishing | blocked |
 | GitHub release publishing | blocked |
 | Hosted runtime | blocked |
 | Contributions | blocked |
 
-## Exact Owner Decision Options
+## Implemented Owner Decision
 
-Choose exactly one.
+```text
+Approved for a future Source-Wire license implementation unit: implement Apache-2.0 licensing. Add the Apache-2.0 LICENSE file, update package metadata from UNLICENSED to Apache-2.0, update public docs and release gate expectations, and keep package version 0.0.0. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
+```
+
+## Historical Owner Decision Options
+
+These options were used to capture the owner decision. They are not new open decisions.
 
 ### Option 1: Approve Apache-2.0 Implementation
 
@@ -97,7 +107,7 @@ Approved for a future Source-Wire license comparison unit: compare source-availa
 
 ## What Approval Still Does Not Allow
 
-Even if one option is approved later, separate approval is still required for:
+Separate approval is still required for:
 
 - npm publishing,
 - GitHub release publishing,

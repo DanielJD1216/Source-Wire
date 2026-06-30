@@ -2,13 +2,13 @@
 
 Status: owner decision intake only.
 
-This intake does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
+This intake records the captured owner license decision. This intake does not allow npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
-Use this file when the owner is ready to capture the exact Source-Wire license decision.
+Use this file to verify the exact Source-Wire license decision that was captured and implemented.
 
-The current owner decision has not been captured yet. Until it is captured and implemented in a later unit, Source-Wire remains technical-review only.
+The owner chose exactly one option: Apache-2.0 implementation.
 
 ## Command
 
@@ -31,19 +31,19 @@ Expected markers:
 ```text
 ok owner decision intake ready
 ok owner decision options available
-blocked owner decision not captured
+ok owner decision captured
 ```
 
 ## Current Decision State
 
 | Field | Current value |
 | --- | --- |
-| Decision captured | no |
-| Selected option | none |
-| Package license | `UNLICENSED` |
+| Decision captured | yes |
+| Selected option | Apache-2.0 implementation |
+| Package license | `Apache-2.0` |
 | Package version | `0.0.0` |
-| `LICENSE` file | none |
-| Broad public reuse | blocked |
+| `LICENSE` file | present |
+| Source package reuse | allowed under Apache-2.0 |
 | npm publishing | blocked |
 | GitHub release publishing | blocked |
 | Hosted runtime | blocked |
@@ -51,7 +51,7 @@ blocked owner decision not captured
 
 ## Exact Owner Decision Options
 
-Choose exactly one later.
+The owner chose exactly one option.
 
 ### Option 1: Approve Apache-2.0 Implementation
 
@@ -77,18 +77,10 @@ Approved for a future Source-Wire legal review unit: prepare and route license, 
 Approved for a future Source-Wire license comparison unit: compare source-available and noncommercial license options before any package metadata, LICENSE file, npm publishing, GitHub release, deployment, hosted runtime, or contribution acceptance change.
 ```
 
-## Next Implementation Unit
-
-After the owner chooses exactly one option, open the matching implementation unit from [License Decision Implementation Plan](license-decision-implementation-plan.md).
-
-Do not mix options in one unit.
-
 ## Still Blocked After Intake
 
 This intake does not allow:
 
-- adding a `LICENSE` file,
-- changing package license metadata,
 - npm publishing,
 - GitHub release publishing,
 - deployment,
@@ -101,7 +93,8 @@ This intake does not allow:
 - Mission Control UI,
 - real user data,
 - trusted Memory Record auto-promotion,
-- accepting code contributions.
+- accepting code contributions,
+- production runtime use.
 
 ## Related Docs
 

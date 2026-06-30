@@ -2,13 +2,11 @@
 
 Status: read-only owner approval preflight.
 
-This preflight does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
+This preflight records the implemented owner license approval. It does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
-Run this immediately before asking the owner to choose a Source-Wire license path.
-
-It proves the approval package is complete and the decision is still pending.
+Run this to confirm the owner license approval package is complete and the Apache-2.0 decision is captured.
 
 ## Command
 
@@ -31,19 +29,19 @@ Expected markers:
 ```text
 ok owner license approval preflight ready
 ok owner approval package complete
-blocked owner license approval missing
+ok owner license approval captured
 ```
 
 ## What It Verifies
 
 The command verifies:
 
-- package license remains `UNLICENSED`,
+- package license remains `Apache-2.0`,
 - package version remains `0.0.0`,
-- no `LICENSE` file exists,
+- `LICENSE` file exists,
 - npm publishing is still blocked,
 - the license approval request packet exists,
-- the pending decision record exists,
+- the decision record is implemented,
 - the license decision gate exists,
 - the legal review question packet exists,
 - the owner launch checklist exists,
@@ -51,12 +49,14 @@ The command verifies:
 
 ## Current Owner Action
 
-Read [License Approval Request Packet](license-approval-request-packet.md), then choose one option:
+Apache-2.0 implementation is complete.
 
-- approve Apache-2.0 implementation later,
-- stay `UNLICENSED`,
-- request legal review first,
-- compare source-available options first.
+Next owner choices are separate:
+
+- keep npm publishing blocked until a publish PRD,
+- keep GitHub release publishing blocked until a release PRD,
+- keep hosted runtime work blocked until a runtime PRD,
+- keep code contribution acceptance blocked until contribution terms exist.
 
 For the step-by-step owner path, read [Owner License Decision Workflow](owner-license-decision-workflow.md) or run:
 

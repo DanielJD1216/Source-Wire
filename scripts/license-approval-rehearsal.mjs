@@ -3,15 +3,14 @@ import { access, readFile } from "node:fs/promises";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED before owner approval");
+assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 before release approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while publishing is blocked");
 
 try {
   await access("LICENSE");
-  failures.push("LICENSE file must not exist before owner approval");
 } catch {
-  // Expected before license approval.
+  failures.push("LICENSE file must exist after owner approval");
 }
 
 for (const [scriptName, scriptValue] of Object.entries(packageJson.scripts ?? {})) {
@@ -39,25 +38,23 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("Source-Wire License Approval Rehearsal");
-console.log("---------------------------------------");
+console.log("Source-Wire License Implementation Check");
+console.log("----------------------------------------");
 console.log(`Current license: ${packageJson.license}`);
 console.log(`Current version: ${packageJson.version}`);
-console.log("Current LICENSE file: not present");
+console.log("Current LICENSE file: present");
 console.log("Current publishing: blocked");
 console.log("");
-console.log("Future owner-approved Apache-2.0 transition checklist:");
-console.log("1. Add unmodified Apache License 2.0 text as LICENSE.");
-console.log("2. Change package.json license to Apache-2.0.");
-console.log("3. Update release-gate expectations to Apache-2.0.");
-console.log("4. Update readiness report and public docs.");
-console.log("5. Keep package version 0.0.0.");
-console.log("6. Keep npm publishing blocked.");
-console.log("7. Keep GitHub release publishing blocked.");
-console.log("8. Keep deployment and hosted runtime blocked.");
+console.log("Apache-2.0 implementation state:");
+console.log("1. LICENSE file exists.");
+console.log("2. package.json license is Apache-2.0.");
+console.log("3. package version remains 0.0.0.");
+console.log("4. npm publishing remains blocked.");
+console.log("5. GitHub release publishing remains blocked.");
+console.log("6. deployment and hosted runtime remain blocked.");
 console.log("");
-console.log("ok license rehearsal current boundary");
-console.log("ok license rehearsal future checklist");
+console.log("ok license implementation current boundary");
+console.log("ok license implementation checklist complete");
 
 function assertEqual(actual, expected, reason) {
   if (actual !== expected) {

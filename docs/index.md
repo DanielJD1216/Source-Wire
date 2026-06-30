@@ -106,10 +106,10 @@ Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:rea
 
 Current state:
 
-- package license is `UNLICENSED`,
+- package license is `Apache-2.0`,
 - package version is `0.0.0`,
-- no `LICENSE` file exists,
-- license approval decision record is pending,
+- `LICENSE` file exists,
+- license approval decision record is implemented,
 - npm publishing is blocked,
 - GitHub release publishing is blocked,
 - hosted runtime backend work is blocked.

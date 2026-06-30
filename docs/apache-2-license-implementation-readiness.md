@@ -1,12 +1,10 @@
 # Source-Wire Apache-2.0 License Implementation Readiness
 
-Status: readiness checklist only. Apache-2.0 is not approved or implemented by this document.
+Status: implemented.
 
 ## Purpose
 
-This checklist prepares the exact implementation path for a future owner-approved Apache-2.0 license unit.
-
-It exists so the later implementation can be small, reviewable, and hard to confuse with npm publishing or runtime release.
+This page records the completed Apache-2.0 implementation path and keeps it separate from npm publishing, GitHub release publishing, deployment, hosted runtime work, and contribution acceptance.
 
 For the implementation map across all owner decision options, read [License Decision Implementation Plan](license-decision-implementation-plan.md).
 
@@ -14,55 +12,47 @@ For the implementation map across all owner decision options, read [License Deci
 
 | Field | Current value |
 | --- | --- |
-| Package license | `UNLICENSED` |
+| Package license | `Apache-2.0` |
 | Package version | `0.0.0` |
-| `LICENSE` file | none |
+| `LICENSE` file | present |
+| Source package reuse | allowed under Apache-2.0 |
 | npm publishing | blocked |
 | GitHub release publishing | blocked |
 | Hosted runtime backend | blocked |
+| Code contribution acceptance | blocked |
 
-## Required Owner Approval
+## Owner Approval
 
-Do not execute this checklist until the owner approves this exact path:
+The owner approved this exact path:
 
 ```text
-Approved for Unit 240: implement Apache-2.0 licensing for Source-Wire. Add the Apache-2.0 LICENSE file, update package metadata from UNLICENSED to Apache-2.0, update public docs and release gate expectations, and keep package version 0.0.0. Do not publish npm, create a GitHub release, deploy services, or add hosted runtime behavior.
+Approved for a future Source-Wire license implementation unit: implement Apache-2.0 licensing. Add the Apache-2.0 LICENSE file, update package metadata from UNLICENSED to Apache-2.0, update public docs and release gate expectations, and keep package version 0.0.0. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
 ```
 
-## Future Implementation File Plan
+## Implemented File Plan
 
-When approved, change only these public files unless the implementation PRD records a new required path first.
-
-| File | Future change |
+| File | Implemented change |
 | --- | --- |
-| `LICENSE` | Add the Apache License 2.0 text. |
-| `package.json` | Change `"license": "UNLICENSED"` to `"license": "Apache-2.0"`. |
-| `scripts/release-gate.mjs` | Expect `Apache-2.0` while keeping version `0.0.0` and publishing blocked. |
-| `scripts/readiness-report.mjs` | Report Apache-2.0 as the package license. |
-| `README.md` | Add or update a License section that states Apache-2.0 and still says npm publishing is blocked. |
-| `docs/license-decision-gate.md` | Record that Apache-2.0 implementation was approved and completed. |
-| `docs/owner-license-approval-packet.md` | Move current decision from pending to approved. |
-| `docs/future-license-change-plan.md` | Mark the Apache-2.0 path as implemented. |
-| `docs/license-version-policy.md` | Update license policy while keeping version policy separate. |
-| `docs/release-decision.md` | Update license status while keeping npm publishing and GitHub release blocked. |
-| `docs/publish-readiness.md` | State that license approval is complete but npm publish approval is still separate. |
-| `docs/index.md` | Link the updated license docs if needed. |
+| `LICENSE` | Added the Apache License 2.0 text. |
+| `package.json` | Changed `"license": "UNLICENSED"` to `"license": "Apache-2.0"`. |
+| `scripts/release-gate.mjs` | Expects `Apache-2.0` while keeping version `0.0.0` and publishing blocked. |
+| `scripts/readiness-report.mjs` | Reports Apache-2.0 as the package license. |
+| `README.md` | States Apache-2.0 source package status and blocked launch channels. |
+| `docs/license-decision-gate.md` | Records that Apache-2.0 implementation was approved and completed. |
+| `docs/license-approval-decision-record.md` | Records the implemented owner decision. |
+| `docs/license-version-policy.md` | Updates license policy while keeping version policy separate. |
+| `docs/release-decision.md` | Keeps npm publishing and GitHub release blocked. |
+| `docs/publish-readiness.md` | States that source package licensing is complete but npm publish approval is still separate. |
 
-## Release-Gate Transition
+## Release-Gate State
 
-Before approval, the release gate must keep expecting:
-
-```text
-UNLICENSED
-```
-
-After approval and implementation, the release gate should expect:
+The release gate now expects:
 
 ```text
 Apache-2.0
 ```
 
-It should still enforce:
+It still enforces:
 
 - version remains `0.0.0`,
 - `publishConfig.access` remains restricted,
@@ -72,7 +62,7 @@ It should still enforce:
 
 ## Verification Commands
 
-When approved, use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 Install dependencies first:
 
@@ -91,7 +81,7 @@ npm run safety:scan
 git diff --check
 ```
 
-Expected post-implementation markers:
+Expected markers:
 
 ```text
 ok release gate
@@ -102,7 +92,7 @@ ok publishing blocked
 
 ## Still Blocked After Apache-2.0
 
-Apache-2.0 implementation would not approve:
+Apache-2.0 implementation does not approve:
 
 - npm publishing,
 - GitHub release publishing,
@@ -110,32 +100,9 @@ Apache-2.0 implementation would not approve:
 - hosted API server runtime,
 - real MCP server runtime,
 - database migrations,
-- PostgreSQL or pgvector setup,
-- memory-engine integration,
 - live connectors,
 - Mission Control UI,
-- real user data,
-- trusted Memory Record auto-promotion.
-
-## Stop Conditions
-
-Stop the future implementation if:
-
-- owner approval is missing or ambiguous,
-- the Apache-2.0 license text is edited by hand,
-- package version changes away from `0.0.0`,
-- npm publishing becomes possible,
-- GitHub release publishing is added,
-- deployment behavior is added,
-- hosted runtime behavior is added,
-- real user data appears in public docs or fixtures.
-
-## Related Docs
-
-- [License Decision Gate](license-decision-gate.md)
-- [License Decision Implementation Plan](license-decision-implementation-plan.md)
-- [Owner License Approval Packet](owner-license-approval-packet.md)
-- [Future License Change Plan](future-license-change-plan.md)
-- [License And Version Policy](license-version-policy.md)
-- [Release Decision](release-decision.md)
-- [Publish Readiness](publish-readiness.md)
+- real user data examples,
+- trusted Memory Record auto-promotion,
+- accepting code contributions,
+- production runtime use.

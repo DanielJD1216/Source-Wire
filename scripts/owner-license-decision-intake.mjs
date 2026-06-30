@@ -5,10 +5,10 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 before release approval");
-assertEqual(packageJson.license, "UNLICENSED", "package license must remain UNLICENSED before owner approval");
+assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
-await assertPathMissing("LICENSE", "LICENSE file must not exist before owner license approval");
+await assertPathExists("LICENSE");
 
 for (const requiredPath of [
   "docs/owner-license-decision-intake.md",
@@ -28,13 +28,13 @@ const decisionRecord = await readFile("docs/license-approval-decision-record.md"
 
 for (const requiredText of [
   "Status: owner decision intake only.",
-  "Decision captured | no",
-  "Selected option | none",
+  "Decision captured | yes",
+  "Selected option | Apache-2.0 implementation",
   "Option 1: Approve Apache-2.0 Implementation",
   "Option 2: Stay Unlicensed",
   "Option 3: Request Legal Review First",
   "Option 4: Compare Source-Available Options",
-  "After the owner chooses exactly one option",
+  "The owner chose exactly one option",
   "This intake does not allow:"
 ]) {
   if (!intake.includes(requiredText)) {
@@ -43,9 +43,9 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "license_decision_status: pending",
-  "approved_license: none",
-  "approval_scope: none"
+  "license_decision_status: implemented",
+  "approved_license: Apache-2.0",
+  "approval_scope: source_package_license_only"
 ]) {
   if (!decisionRecord.includes(requiredText)) {
     failures.push(`decision record missing required text: ${requiredText}`);
@@ -64,12 +64,12 @@ printSection("Source-Wire Owner Decision Intake");
 printRows([
   ["Decision intake", "ready"],
   ["Decision options", "available"],
-  ["Owner decision", "not captured"],
-  ["Decision record", "pending"],
+  ["Owner decision", "captured"],
+  ["Decision record", "implemented"],
   ["Package license", packageJson.license],
   ["Package version", packageJson.version],
-  ["LICENSE file", "not present"],
-  ["Broad public reuse", "blocked"],
+  ["LICENSE file", "present"],
+  ["Source package reuse", "allowed under Apache-2.0"],
   ["npm publishing", "blocked"],
   ["GitHub release", "blocked"],
   ["Hosted runtime", "blocked"],
@@ -78,35 +78,22 @@ printRows([
 
 printSection("Next Owner Action");
 printList([
-  "Run npm run owner:license-preflight.",
-  "Read docs/owner-license-decision-intake.md.",
-  "Choose exactly one decision option.",
-  "Open the matching later implementation unit only after that choice."
+  "Use the Apache-2.0 licensed source repo for public sharing.",
+  "Open a separate PRD before npm publishing.",
+  "Open a separate PRD before GitHub release publishing.",
+  "Open separate approvals before hosted runtime work or contribution acceptance."
 ]);
 
 console.log("");
 console.log("ok owner decision intake ready");
 console.log("ok owner decision options available");
-console.log("blocked owner decision not captured");
+console.log("ok owner decision captured");
 
 async function assertPathExists(path) {
   try {
     await stat(path);
   } catch {
     failures.push(`missing required path: ${path}`);
-  }
-}
-
-async function assertPathMissing(path, reason) {
-  try {
-    await stat(path);
-    failures.push(reason);
-  } catch (error) {
-    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
-      return;
-    }
-
-    failures.push(`could not inspect ${path}`);
   }
 }
 

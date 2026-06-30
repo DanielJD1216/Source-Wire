@@ -133,6 +133,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "repository metadata boundary",
+    markers: [
+      "ok repository metadata boundary ready",
+      "ok github about wording current",
+      "blocked metadata launch approval"
+    ]
+  },
+  {
     name: "launch decision status",
     markers: [
       "ok launch decision status ready",

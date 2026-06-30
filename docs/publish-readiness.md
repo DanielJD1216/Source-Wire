@@ -41,6 +41,7 @@ This command runs:
 - `npm run launch:decision-status`
 - `npm run share:audit`
 - `npm run intake:boundary`
+- `npm run repository:metadata`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
@@ -87,6 +88,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |
+| Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` |
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` |
@@ -135,6 +137,18 @@ npm run intake:boundary
 The check verifies `CONTRIBUTING.md`, `SUPPORT.md`, `SECURITY.md`, issue templates, and public feedback docs match the Apache-2.0 source-package state while code contribution acceptance remains blocked.
 
 It does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+## Repository Metadata Boundary
+
+Run only the repository metadata boundary check:
+
+```bash
+npm run repository:metadata
+```
+
+The check verifies the expected GitHub About description, homepage, topics, and feature flags are documented for first visitors.
+
+It does not call GitHub, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
 ## Package Required Paths
 

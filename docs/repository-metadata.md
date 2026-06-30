@@ -33,6 +33,35 @@ https://github.com/DanielJD1216/Source-Wire/blob/main/docs/share-for-review.md
 
 The description must stay short enough for the GitHub About panel but explicit enough that visitors do not confuse Apache-2.0 source reuse with npm publishing, GitHub releases, deployment, hosted runtime behavior, or code contribution acceptance.
 
+## Live GitHub Settings
+
+Expected live repository settings:
+
+- Visibility: public
+- Default branch: `main`
+- License: Apache-2.0
+- Issues: enabled
+- Projects: disabled
+- Wiki: disabled
+
+Expected topics:
+
+- `agent-memory`
+- `apache-2-0`
+- `llm-memory`
+- `mcp`
+- `second-brain`
+- `source-graph`
+- `typescript`
+
+Check live metadata with:
+
+```bash
+gh repo view DanielJD1216/Source-Wire --json name,description,homepageUrl,repositoryTopics,visibility,isArchived,isFork,defaultBranchRef,hasIssuesEnabled,hasProjectsEnabled,hasWikiEnabled,licenseInfo,url
+```
+
+The live metadata should match this page before broad public sharing.
+
 ## GitHub-Visible Files
 
 | File | Purpose |

@@ -28,6 +28,10 @@ const completeLog = [
   "ok release candidate readiness ready",
   "ok local package verification ready",
   "blocked release implementation approval missing",
+  "ok release artifact manifest ready",
+  "ok release artifact package identity @source-wire/contracts@0.0.0",
+  "ok release artifact integrity recorded",
+  "blocked release artifact publish not approved",
   "ok license decision record ready",
   "ok license decision captured",
   "ok license implementation complete",
@@ -124,7 +128,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 34 groups 104 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 35 groups 108 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

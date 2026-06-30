@@ -65,6 +65,14 @@ The command verifies:
 - package scripts do not include package version change commands,
 - package scripts do not include deployment commands.
 
+For artifact identity, run:
+
+```bash
+npm run release:artifact-manifest
+```
+
+That command prints the package filename, file count, size, shasum, and integrity without publishing.
+
 ## Next Action
 
 If this check passes, the next owner decision is whether to open a future release implementation unit.
@@ -80,6 +88,7 @@ Do not publish, tag, release, or deploy from this check.
 ## Related Docs
 
 - [Release Approval Request Packet](release-approval-request-packet.md)
+- [Release Artifact Manifest](release-artifact-manifest.md)
 - [Release Decision](release-decision.md)
 - [Launch Decision Status](launch-decision-status.md)
 - [Publish Readiness](publish-readiness.md)

@@ -57,6 +57,15 @@ const markerGroups = [
     ]
   },
   {
+    name: "release artifact manifest",
+    markers: [
+      "ok release artifact manifest ready",
+      "ok release artifact package identity @source-wire/contracts@0.0.0",
+      "ok release artifact integrity recorded",
+      "blocked release artifact publish not approved"
+    ]
+  },
+  {
     name: "package required paths",
     markers: ["ok package required paths"]
   },

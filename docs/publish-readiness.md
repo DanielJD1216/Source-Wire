@@ -30,6 +30,7 @@ This command runs:
 - `npm run release:review`
 - `npm run release:approval-request`
 - `npm run release:candidate-readiness`
+- `npm run release:artifact-manifest`
 - `npm run license:rehearsal`
 - `npm run license:decision-record`
 - `npm run license:approval-request`
@@ -91,6 +92,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release implementation approval missing` |
+| Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.0.0`, `ok release artifact integrity recorded`, `blocked release artifact publish not approved` |
 | License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
 | License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` |
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` |
@@ -683,6 +685,18 @@ The dry-run check builds the package, runs `npm pack --dry-run --json`, and veri
 It checks the same required package path manifest that `npm run package:content-smoke` verifies after local tarball install.
 
 It does not publish.
+
+## Release Artifact Manifest
+
+Run only the release artifact manifest check:
+
+```bash
+npm run release:artifact-manifest
+```
+
+The release artifact manifest check builds the package, runs `npm pack --dry-run --json`, verifies required and forbidden package paths, and prints the release artifact identity, file count, package size, shasum, and integrity.
+
+It does not publish, create a GitHub release, create a tag, change package version, deploy services, start hosted runtime behavior, or accept code contributions.
 
 ## Consumer Smoke
 

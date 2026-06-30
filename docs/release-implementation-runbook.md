@@ -64,13 +64,14 @@ When a separate release implementation unit is approved, execute in this order:
 
 1. Confirm the owner approval text names the release path and version.
 2. Confirm `npm run publish:readiness` passes from a clean Source-Wire checkout.
-3. Confirm public CI passes on the exact commit to release.
-4. Confirm package name, license, and publish boundary are still intentional.
-5. Change package version only inside the approved implementation unit.
-6. Re-run the full local readiness gate after the version change.
-7. Publish npm only if npm publishing was explicitly approved.
-8. Create the matching GitHub release only if GitHub release publishing was explicitly approved.
-9. Record public release evidence and private closeout proof.
+3. Confirm `npm run release:artifact-manifest` records the exact package identity, shasum, and integrity.
+4. Confirm public CI passes on the exact commit to release.
+5. Confirm package name, license, and publish boundary are still intentional.
+6. Change package version only inside the approved implementation unit.
+7. Re-run the full local readiness gate and artifact manifest after the version change.
+8. Publish npm only if npm publishing was explicitly approved.
+9. Create the matching GitHub release only if GitHub release publishing was explicitly approved.
+10. Record public release evidence and private closeout proof.
 
 ## Stop Conditions
 
@@ -79,6 +80,7 @@ Stop before publishing or releasing if any of these are true:
 - owner approval text is missing or ambiguous,
 - release version is not explicit,
 - `npm run publish:readiness` fails,
+- `npm run release:artifact-manifest` does not record shasum and integrity,
 - public CI is not green on the exact release commit,
 - package contents differ from the approved release package,
 - public docs imply hosted runtime or production runtime behavior,

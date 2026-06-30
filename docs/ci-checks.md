@@ -67,6 +67,7 @@ The readiness gate runs:
 - `npm run release:review`
 - `npm run release:approval-request`
 - `npm run release:candidate-readiness`
+- `npm run release:artifact-manifest`
 - `npm run license:rehearsal`
 - `npm run license:decision-record`
 - `npm run license:approval-request`
@@ -127,6 +128,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` | Current release inputs, draft release notes, and the recommended future first release version are documented while implementation approval is still missing. |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` | Exact future owner release choices are available while npm publishing, GitHub release publishing, and version release remain blocked. |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release implementation approval missing` | The package is locally ready for an owner release decision, but release implementation approval is still missing. |
+| Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.0.0`, `ok release artifact integrity recorded`, `blocked release artifact publish not approved` | The release artifact identity, file count, size, shasum, integrity, required paths, and blocked release channels are verified before any release channel opens. |
 | Package required paths | `ok package required paths` | The shared required package path manifest is sorted and duplicate-free. |
 | License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` | The owner license decision record is implemented for Apache-2.0 source package licensing. |
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` | The owner approval path is captured and implemented. |

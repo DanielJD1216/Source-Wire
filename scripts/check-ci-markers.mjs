@@ -78,6 +78,10 @@ const markerGroups = [
     markers: ["Findings: 0 high=0 medium=0 low=0"]
   },
   {
+    name: "public claim boundary",
+    markers: ["ok public claim boundary scan"]
+  },
+  {
     name: "ci marker self-smoke",
     markers: ["ok ci markers smoke"]
   }

@@ -59,6 +59,7 @@ The readiness gate runs:
 - `npm run minimal-runtime:smoke`
 - `npm run runtime-boundary:smoke`
 - `npm run safety:scan`
+- `npm run claims:scan`
 - `npm run release:gate`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
@@ -71,6 +72,7 @@ The readiness gate runs:
 - `npm run docs:links`
 - `npm run docs:command-setup`
 - `npm run safety:scan`
+- `npm run claims:scan`
 - `npm run ci:markers:smoke`
 
 `npm run ci:check` remains as a sub-gate inside `npm run publish:readiness`.
@@ -93,6 +95,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` | Boundary smoke failures remain useful to diagnose when a synthetic check breaks. |
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok command docs setup` | Readiness summary, required readiness docs, local Markdown links, and command-doc setup pointers are current. |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` | Public-safety scan found no obvious private-data or secret findings. |
+| Public claim boundary | `ok public claim boundary scan` | Public docs do not make unsafe release, reuse, open-source, contribution, publishing, or hosted-runtime claims while Source-Wire remains `UNLICENSED`. |
 | CI marker self-smoke | `ok ci markers smoke` | The marker helper accepts a complete synthetic log and rejects an incomplete synthetic log. |
 
 If one marker group is missing, inspect the command that owns that group before treating CI as release-ready.
@@ -137,6 +140,20 @@ It scans public Source-Wire files for obvious private data, secrets, local paths
 The scan is non-destructive.
 
 It exits non-zero when high-risk findings are present.
+
+## Public Claim Boundary Scan
+
+The public claim-boundary scan is self-contained inside Source-Wire:
+
+```bash
+npm run claims:scan
+```
+
+It scans public README, docs, and examples for unsafe release, reuse, open-source, contribution, publishing, or hosted-runtime wording while Source-Wire remains `UNLICENSED`.
+
+The scan is non-destructive.
+
+It exits non-zero when unsafe claims are present.
 
 ## What CI Does Not Do
 

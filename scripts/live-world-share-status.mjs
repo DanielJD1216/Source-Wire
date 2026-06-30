@@ -10,14 +10,14 @@ assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
-const repoApi = await ghJson(["api", `repos/${repo}`]);
-const mainBranch = await ghJson(["api", `repos/${repo}/branches/main`]);
-const rulesets = await ghJson(["api", `repos/${repo}/rulesets`]);
-const releases = await ghJson(["api", `repos/${repo}/releases`]);
+const repoApi = await ghJson(["api", `repos/${repo}`], `https://api.github.com/repos/${repo}`);
+const mainBranch = await ghJson(["api", `repos/${repo}/branches/main`], `https://api.github.com/repos/${repo}/branches/main`);
+const rulesets = await ghJson(["api", `repos/${repo}/rulesets`], `https://api.github.com/repos/${repo}/rulesets`);
+const releases = await ghJson(["api", `repos/${repo}/releases`], `https://api.github.com/repos/${repo}/releases`);
 const latestRun = await ghJson([
   "api",
   `repos/${repo}/actions/workflows/package-checks.yml/runs?per_page=1`
-]);
+], `https://api.github.com/repos/${repo}/actions/workflows/package-checks.yml/runs?per_page=1`);
 const advisories = await ghJson(["api", `repos/${repo}/security-advisories`]);
 const remoteHead = (await run("git", ["rev-parse", "origin/main"])).stdout.trim();
 const localTags = parseLines((await run("git", ["tag", "--list"])).stdout);
@@ -181,8 +181,32 @@ function parseRemoteTags(text) {
     .filter((ref) => !ref.endsWith("^{}"));
 }
 
-function ghJson(args) {
-  return run("gh", args).then((result) => JSON.parse(result.stdout));
+async function ghJson(args, fallbackUrl = "") {
+  try {
+    const result = await run("gh", args);
+    return JSON.parse(result.stdout);
+  } catch (error) {
+    if (fallbackUrl.length === 0) {
+      throw error;
+    }
+
+    return fetchJson(fallbackUrl);
+  }
+}
+
+async function fetchJson(url) {
+  const response = await fetch(url, {
+    headers: {
+      Accept: "application/vnd.github+json",
+      "User-Agent": "Source-Wire live world share status"
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`GET ${url} failed: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
 }
 
 function run(command, args, options = {}) {

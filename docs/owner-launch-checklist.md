@@ -58,6 +58,7 @@ npm run launch:decision-status
 | Legal or owner review | Ready | Use [Legal Review Question Packet](legal-review-question-packet.md). |
 | Broad public reuse | Blocked | Owner approves and implements a license path. |
 | License decision record | Pending | Use [License Approval Decision Record](license-approval-decision-record.md). |
+| License approval request | Ready | Use [License Approval Request Packet](license-approval-request-packet.md). |
 | Open-source launch | Blocked | Owner approves license implementation and a later release posture. |
 | npm publishing | Blocked | Separate publish PRD after licensing. |
 | GitHub release publishing | Blocked | Separate release PRD. |
@@ -112,6 +113,7 @@ Contributions are open.
 - [World-Share Readiness](world-share-readiness.md)
 - [Launch Decision Status](launch-decision-status.md)
 - [License Approval Decision Record](license-approval-decision-record.md)
+- [License Approval Request Packet](license-approval-request-packet.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)

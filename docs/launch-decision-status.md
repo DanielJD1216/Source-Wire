@@ -73,6 +73,7 @@ The command verifies:
 - [Share For Technical Review](share-for-review.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [License Approval Decision Record](license-approval-decision-record.md)
+- [License Approval Request Packet](license-approval-request-packet.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [License Decision Gate](license-decision-gate.md)

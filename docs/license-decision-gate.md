@@ -50,6 +50,12 @@ Before treating any license path as approved, run the pending [License Approval 
 npm run license:decision-record
 ```
 
+To request the actual owner choice, use [License Approval Request Packet](license-approval-request-packet.md):
+
+```bash
+npm run license:approval-request
+```
+
 Before requesting legal or owner review, run:
 
 ```bash
@@ -138,6 +144,7 @@ unless a later publishing PRD explicitly approves it.
 
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [License Approval Decision Record](license-approval-decision-record.md)
+- [License Approval Request Packet](license-approval-request-packet.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [Future License Change Plan](future-license-change-plan.md)
 - [License And Version Policy](license-version-policy.md)

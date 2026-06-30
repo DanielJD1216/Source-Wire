@@ -23,6 +23,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "license approval request",
+    markers: [
+      "ok license approval request ready",
+      "blocked owner license approval missing",
+      "blocked license decision pending"
+    ]
+  },
+  {
     name: "legal review packet",
     markers: [
       "ok legal review packet ready",

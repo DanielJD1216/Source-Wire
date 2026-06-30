@@ -18,6 +18,8 @@ For the read-only pre-approval command check, read [License Approval Rehearsal](
 
 For the current machine-checked pending decision record, read [License Approval Decision Record](license-approval-decision-record.md).
 
+For the exact owner choice prompt, read [License Approval Request Packet](license-approval-request-packet.md).
+
 For legal or owner review questions before a license decision, read [Legal Review Question Packet](legal-review-question-packet.md).
 
 ## Current State

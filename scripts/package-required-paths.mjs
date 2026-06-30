@@ -26,6 +26,7 @@ export const requiredPackagePaths = [
   "docs/legal-review-question-packet.md",
   "docs/license-approval-decision-record.md",
   "docs/license-approval-rehearsal.md",
+  "docs/license-approval-request-packet.md",
   "docs/license-decision-gate.md",
   "docs/license-version-policy.md",
   "docs/minimal-runtime-implementation-scope.md",

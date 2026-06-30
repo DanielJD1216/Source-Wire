@@ -54,6 +54,12 @@ blocked license decision pending
 blocked license implementation missing
 ```
 
+To request the exact owner choice, run:
+
+```bash
+npm run license:approval-request
+```
+
 ## Future Approval Options
 
 Only update this record in a future owner-approved unit.
@@ -78,6 +84,7 @@ pending
 ## Related Docs
 
 - [License Decision Gate](license-decision-gate.md)
+- [License Approval Request Packet](license-approval-request-packet.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [License Approval Rehearsal](license-approval-rehearsal.md)

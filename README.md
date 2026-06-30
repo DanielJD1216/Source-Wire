@@ -10,6 +10,8 @@ Current public status: Source-Wire is Apache-2.0 licensed as a source package. I
 
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
+Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
+
 Share-readiness audit: Source-Wire is ready for technical review and source package reuse under Apache-2.0, but not npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, or code contribution acceptance. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
 
 ## What This Public Skeleton Includes
@@ -40,6 +42,7 @@ Share-readiness audit: Source-Wire is ready for technical review and source pack
 
 - [Docs Index](docs/index.md)
 - [Public Status](docs/public-status.md)
+- [World Share Kit](docs/world-share-kit.md)
 - [Share For Technical Review](docs/share-for-review.md)
 - [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md)
 - [Repository Metadata](docs/repository-metadata.md)

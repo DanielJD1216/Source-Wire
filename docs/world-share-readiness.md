@@ -108,6 +108,8 @@ blocked production launch channels
 
 Use [Share For Technical Review](share-for-review.md) to send the repo to a technical reviewer or source-package adopter.
 
+Use [World Share Kit](world-share-kit.md) for public-channel copy and unsafe-claim guardrails.
+
 Safe current action:
 
 ```text

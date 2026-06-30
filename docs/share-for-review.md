@@ -8,6 +8,8 @@ Source-Wire is public so reviewers and adopters can inspect and reuse the source
 
 It is not published to npm, not released on GitHub, not deployed, and not a hosted runtime.
 
+For public-channel copy such as YouTube, Substack, X, LinkedIn, Discord, or direct review messages, read [World Share Kit](world-share-kit.md).
+
 ## Safe Invite Copy
 
 Use this when sharing the repo with a reviewer:
@@ -201,6 +203,7 @@ Apache-2.0 source package licensing does not approve:
 ## Related Docs
 
 - [Public Status](public-status.md)
+- [World Share Kit](world-share-kit.md)
 - [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md)
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)

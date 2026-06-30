@@ -90,6 +90,7 @@ blocked production launch channels
 | Evidence | Where |
 | --- | --- |
 | Current public boundary | [Public Status](public-status.md) |
+| Public share copy | [World Share Kit](world-share-kit.md) |
 | GitHub metadata and CI visibility | [Repository Metadata](repository-metadata.md) |
 | Review path | [Technical Reviewer Guide](technical-reviewer-guide.md) |
 | Feedback path | [Reviewer Feedback Guide](reviewer-feedback-guide.md) |

@@ -128,6 +128,7 @@ This means Source-Wire can be shared as an Apache-2.0 licensed source package. I
 Start with:
 
 - [Share For Technical Review](share-for-review.md)
+- [World Share Kit](world-share-kit.md)
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)
 - [Repository Metadata](repository-metadata.md)

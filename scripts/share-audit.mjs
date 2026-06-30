@@ -13,6 +13,7 @@ await assertPathExists("LICENSE");
 for (const requiredPath of [
   "docs/public-status.md",
   "docs/share-for-review.md",
+  "docs/world-share-kit.md",
   "docs/first-time-visitor-share-readiness-audit.md",
   "docs/world-share-readiness.md",
   "docs/technical-reviewer-guide.md",
@@ -24,6 +25,7 @@ for (const requiredPath of [
 
 const publicStatus = await readFile("docs/public-status.md", "utf8");
 const shareForReview = await readFile("docs/share-for-review.md", "utf8");
+const worldShareKit = await readFile("docs/world-share-kit.md", "utf8");
 const firstVisitorAudit = await readFile("docs/first-time-visitor-share-readiness-audit.md", "utf8");
 const worldReadiness = await readFile("docs/world-share-readiness.md", "utf8");
 
@@ -34,6 +36,11 @@ for (const [label, text, requiredText] of [
   ["share for review", shareForReview, "Source-Wire is Apache-2.0 licensed."],
   ["share for review", shareForReview, "Do not say:"],
   ["share for review", shareForReview, "Source-Wire is production-ready."],
+  ["world share kit", worldShareKit, "Status: public source-package share kit only."],
+  ["world share kit", worldShareKit, "Source-Wire is an Apache-2.0 source package skeleton"],
+  ["world share kit", worldShareKit, "Do not say:"],
+  ["world share kit", worldShareKit, "Install it from npm."],
+  ["world share kit", worldShareKit, "Contributions are open."],
   ["first visitor audit", firstVisitorAudit, "Ready for technical review: yes."],
   ["first visitor audit", firstVisitorAudit, "Ready for source package reuse: yes, under Apache-2.0."],
   ["first visitor audit", firstVisitorAudit, "Still blocked: npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, and code contribution acceptance."],

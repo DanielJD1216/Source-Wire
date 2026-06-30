@@ -13,6 +13,7 @@ await assertPathExists("LICENSE");
 for (const requiredPath of [
   "docs/public-status.md",
   "docs/share-for-review.md",
+  "docs/world-share-kit.md",
   "docs/license-decision-gate.md",
   "docs/owner-license-approval-packet.md",
   "docs/apache-2-license-implementation-readiness.md",

@@ -43,6 +43,7 @@ This command runs:
 - `npm run intake:boundary`
 - `npm run license:history-boundary`
 - `npm run repository:metadata`
+- `npm run pull-request:boundary`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
@@ -91,6 +92,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |
 | Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` |
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` |
+| Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` |
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` |
@@ -151,6 +153,18 @@ npm run repository:metadata
 The check verifies the expected GitHub About description, homepage, topics, and feature flags are documented for first visitors.
 
 It does not call GitHub, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+## Pull Request Boundary
+
+Run only the pull request boundary check:
+
+```bash
+npm run pull-request:boundary
+```
+
+The check verifies that the pull request template blocks public code contribution assumptions, routes public feedback to issues, and warns against secrets, private data, local paths, real source payloads, and real memory records.
+
+It does not accept code contributions, publish npm, create a GitHub release, deploy services, or approve production runtime use.
 
 ## Package Required Paths
 

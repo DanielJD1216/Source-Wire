@@ -18,6 +18,8 @@ Use:
 - [Reviewer Feedback Guide](docs/reviewer-feedback-guide.md)
 - [Public Status](docs/public-status.md)
 
+Pull requests are not the public feedback path yet. The pull request template exists only to restate the current boundary for owner-approved maintenance or verification branches.
+
 ## What Is Not Accepted Yet
 
 Do not submit:

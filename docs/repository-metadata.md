@@ -71,6 +71,7 @@ The live metadata should match this page before broad public sharing.
 | `SECURITY.md` | Safe security and boundary concern reporting rules. |
 | `SUPPORT.md` | Review support boundaries and verification-first support path. |
 | `CONTRIBUTING.md` | Structured feedback path and code-contribution boundary. |
+| `.github/pull_request_template.md` | Pull request boundary warning for owner-approved maintenance and verification branches. |
 | `.github/ISSUE_TEMPLATE/*.yml` | Structured issue intake for verification, docs/contracts, and boundary concerns. |
 | `.github/workflows/package-checks.yml` | GitHub Actions package readiness workflow. |
 

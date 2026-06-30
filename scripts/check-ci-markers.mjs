@@ -149,6 +149,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "pull request boundary",
+    markers: [
+      "ok pull request boundary ready",
+      "ok code contribution pr blocked",
+      "blocked private data in pull requests"
+    ]
+  },
+  {
     name: "launch decision status",
     markers: [
       "ok launch decision status ready",

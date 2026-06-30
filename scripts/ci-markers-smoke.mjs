@@ -59,6 +59,9 @@ const completeLog = [
   "ok historical license boundary ready",
   "ok unlicensed recommendation superseded",
   "blocked license history launch approval",
+  "ok pull request boundary ready",
+  "ok code contribution pr blocked",
+  "blocked private data in pull requests",
   "ok launch decision status ready",
   "ok apache 2 license implemented",
   "ok source repo sharing ready",
@@ -110,7 +113,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 30 groups 90 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 31 groups 93 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

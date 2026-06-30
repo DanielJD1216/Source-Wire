@@ -77,6 +77,7 @@ The readiness gate runs:
 - `npm run share:audit`
 - `npm run intake:boundary`
 - `npm run repository:metadata`
+- `npm run pull-request:boundary`
 - `npm run license:history-boundary`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
@@ -122,6 +123,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` | GitHub-visible support, security, contribution, issue-template, and feedback surfaces match Apache-2.0 source reuse while code contribution acceptance remains blocked. |
 | Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` | Expected GitHub About panel, topics, and feature flags match the Apache-2.0 source-package state while launch channels remain blocked. |
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` | Historical license decision docs preserve old `UNLICENSED` analysis without presenting it as current guidance. |
+| Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` | Pull request template blocks code contribution assumptions and private-data leakage until contribution terms are approved. |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` | The local package can be packed and the shared required package path manifest is present. |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` | The shared required package path manifest, README/docs/examples links, and runtime readiness summary assertions work from the packed package after install. |
 | Minimal runtime smoke | `ok minimal runtime boundary smoke` | Exported synthetic in-memory runtime boundary code matches owner-hosted API plus MCP proof cases. |

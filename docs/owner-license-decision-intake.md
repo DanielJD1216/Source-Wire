@@ -1,12 +1,16 @@
-# Source-Wire License Approval Request Packet
+# Source-Wire Owner License Decision Intake
 
-Status: owner approval request only.
+Status: owner decision intake only.
 
-This packet does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
+This intake does not approve a license change, public reuse, npm publishing, GitHub release publishing, deployment, hosted runtime behavior, or code contribution acceptance.
 
 ## Purpose
 
-Use this packet when the owner is ready to choose the Source-Wire license path.
+Use this file when the owner is ready to capture the exact Source-Wire license decision.
+
+The current owner decision has not been captured yet. Until it is captured and implemented in a later unit, Source-Wire remains technical-review only.
+
+## Command
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -16,52 +20,30 @@ Install dependencies first:
 npm install
 ```
 
-The current decision record is still pending. Then run:
-
-```bash
-npm run license:approval-request
-```
-
-Before asking for the final owner decision, run:
-
-```bash
-npm run owner:license-preflight
-```
-
-For the one-command decision workflow, run:
-
-```bash
-npm run owner:decision-workflow
-```
-
-To inspect the exact owner decision intake point, run:
+Then run:
 
 ```bash
 npm run owner:decision-intake
 ```
 
-For the post-decision implementation map, run:
-
-```bash
-npm run license:implementation-plan
-```
-
 Expected markers:
 
 ```text
-ok license approval request ready
-blocked owner license approval missing
-blocked license decision pending
+ok owner decision intake ready
+ok owner decision options available
+blocked owner decision not captured
 ```
 
-## Current State
+## Current Decision State
 
 | Field | Current value |
 | --- | --- |
+| Decision captured | no |
+| Selected option | none |
 | Package license | `UNLICENSED` |
 | Package version | `0.0.0` |
 | `LICENSE` file | none |
-| License decision record | pending |
+| Broad public reuse | blocked |
 | npm publishing | blocked |
 | GitHub release publishing | blocked |
 | Hosted runtime | blocked |
@@ -69,7 +51,7 @@ blocked license decision pending
 
 ## Exact Owner Decision Options
 
-Choose exactly one.
+Choose exactly one later.
 
 ### Option 1: Approve Apache-2.0 Implementation
 
@@ -95,10 +77,18 @@ Approved for a future Source-Wire legal review unit: prepare and route license, 
 Approved for a future Source-Wire license comparison unit: compare source-available and noncommercial license options before any package metadata, LICENSE file, npm publishing, GitHub release, deployment, hosted runtime, or contribution acceptance change.
 ```
 
-## What Approval Still Does Not Allow
+## Next Implementation Unit
 
-Even if one option is approved later, separate approval is still required for:
+After the owner chooses exactly one option, open the matching implementation unit from [License Decision Implementation Plan](license-decision-implementation-plan.md).
 
+Do not mix options in one unit.
+
+## Still Blocked After Intake
+
+This intake does not allow:
+
+- adding a `LICENSE` file,
+- changing package license metadata,
 - npm publishing,
 - GitHub release publishing,
 - deployment,
@@ -115,13 +105,10 @@ Even if one option is approved later, separate approval is still required for:
 
 ## Related Docs
 
-- [License Approval Decision Record](license-approval-decision-record.md)
-- [Owner License Approval Preflight](owner-license-approval-preflight.md)
-- [Owner License Decision Intake](owner-license-decision-intake.md)
 - [Owner License Decision Workflow](owner-license-decision-workflow.md)
+- [License Approval Request Packet](license-approval-request-packet.md)
 - [License Decision Implementation Plan](license-decision-implementation-plan.md)
-- [License Decision Gate](license-decision-gate.md)
-- [Owner License Approval Packet](owner-license-approval-packet.md)
-- [Legal Review Question Packet](legal-review-question-packet.md)
-- [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
+- [Owner License Approval Preflight](owner-license-approval-preflight.md)
+- [License Approval Decision Record](license-approval-decision-record.md)
 - [Launch Decision Status](launch-decision-status.md)
+- [Publish Readiness](publish-readiness.md)

@@ -68,6 +68,7 @@ The readiness gate runs:
 - `npm run legal:packet`
 - `npm run owner:launch-checklist`
 - `npm run owner:license-preflight`
+- `npm run owner:decision-intake`
 - `npm run owner:decision-workflow`
 - `npm run world:readiness`
 - `npm run launch:decision-status`
@@ -104,6 +105,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` | Legal or owner review questions are available, but legal approval has not been granted. |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked owner launch approval missing` | The owner approval order is visible, but broad launch is not approved. |
 | Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `blocked owner license approval missing` | The owner approval package is complete, but owner license approval is still missing. |
+| Owner decision intake | `ok owner decision intake ready`, `ok owner decision options available`, `blocked owner decision not captured` | The exact owner decision intake point is available, but the owner decision has not been captured. |
 | Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `blocked owner license decision missing` | The exact owner decision workflow is available, but the owner license decision is still missing. |
 | World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` | Technical review sharing is ready, but broad public reuse remains blocked. |
 | Launch decision status | `ok launch decision status ready`, `ok technical review sharing ready`, `blocked legal approval not granted`, `blocked owner launch approval missing`, `blocked license implementation missing`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` | One command reports the launch decisions that are ready and blocked without approving any blocked launch path. |

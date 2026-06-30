@@ -22,6 +22,9 @@ const completeLog = [
   "ok owner decision workflow ready",
   "ok owner decision options available",
   "blocked owner license decision missing",
+  "ok owner decision intake ready",
+  "ok owner decision options available",
+  "blocked owner decision not captured",
   "ok legal review packet ready",
   "blocked legal approval not granted",
   "ok owner launch checklist ready",
@@ -82,7 +85,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 22 groups 67 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 23 groups 70 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

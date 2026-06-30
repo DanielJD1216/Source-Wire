@@ -55,6 +55,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "owner decision intake",
+    markers: [
+      "ok owner decision intake ready",
+      "ok owner decision options available",
+      "blocked owner decision not captured"
+    ]
+  },
+  {
     name: "legal review packet",
     markers: [
       "ok legal review packet ready",

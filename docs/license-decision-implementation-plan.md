@@ -10,6 +10,8 @@ Use this after reading the [Owner License Decision Workflow](owner-license-decis
 
 It maps each owner decision option to the next implementation unit, allowed file changes, stop conditions, and verification checks.
 
+Before opening a later implementation unit, use [Owner License Decision Intake](owner-license-decision-intake.md) or run `npm run owner:decision-intake` to confirm the decision has a single exact capture point.
+
 ## Command
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
@@ -217,6 +219,7 @@ Stop any future implementation if:
 ## Related Docs
 
 - [Owner License Decision Workflow](owner-license-decision-workflow.md)
+- [Owner License Decision Intake](owner-license-decision-intake.md)
 - [License Approval Request Packet](license-approval-request-packet.md)
 - [License Approval Decision Record](license-approval-decision-record.md)
 - [License Decision Gate](license-decision-gate.md)

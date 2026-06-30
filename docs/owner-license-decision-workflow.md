@@ -52,8 +52,9 @@ blocked owner license decision missing
 1. Run `npm run owner:license-preflight`.
 2. Read [License Approval Request Packet](license-approval-request-packet.md).
 3. If legal review is needed first, read [Legal Review Question Packet](legal-review-question-packet.md).
-4. Choose exactly one owner decision option.
-5. Start a later implementation unit for that approved option only.
+4. Read [Owner License Decision Intake](owner-license-decision-intake.md).
+5. Choose exactly one owner decision option.
+6. Start a later implementation unit for that approved option only.
 
 To preview the implementation unit for each option, read [License Decision Implementation Plan](license-decision-implementation-plan.md) or run:
 
@@ -111,6 +112,7 @@ Even after this workflow is ready, separate approval is still required for:
 ## Related Docs
 
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
+- [Owner License Decision Intake](owner-license-decision-intake.md)
 - [License Approval Request Packet](license-approval-request-packet.md)
 - [License Approval Decision Record](license-approval-decision-record.md)
 - [License Decision Implementation Plan](license-decision-implementation-plan.md)

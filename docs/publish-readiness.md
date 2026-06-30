@@ -109,6 +109,35 @@ The Docs and readiness row proves the readiness summary, required readiness docs
 
 Use [CI Checks](ci-checks.md) for the same marker map from the GitHub Actions perspective.
 
+## Owner Live GitHub Surface
+
+The local package gate is intentionally portable and does not call GitHub.
+
+Before broad public sharing, the owner can verify the live GitHub repo with:
+
+```bash
+npm run repository:live-github
+```
+
+This read-only check verifies:
+
+- the live GitHub About description, homepage, topics, visibility, default branch, license, issues, projects, and wiki settings,
+- the GitHub release list is empty,
+- the latest `Package Checks` run is green for `origin/main`,
+- version remains `0.0.0`,
+- npm publishing, hosted runtime, and contribution acceptance remain blocked.
+
+Expected markers:
+
+```text
+ok live github public surface ready
+ok live github metadata matches docs
+ok live package checks green
+blocked github release not approved
+```
+
+This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
 ## Marker Helper
 
 Save the local readiness output, then run the marker helper:

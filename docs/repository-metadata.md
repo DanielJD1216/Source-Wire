@@ -62,6 +62,14 @@ gh repo view DanielJD1216/Source-Wire --json name,description,homepageUrl,reposi
 
 The live metadata should match this page before broad public sharing.
 
+Owner-side live check:
+
+```bash
+npm run repository:live-github
+```
+
+This command uses `gh` and the configured GitHub account to verify the live public repository surface, latest Package Checks run, and empty GitHub release list. It is intentionally not part of `publish:readiness` because public reviewers and forks should not need owner GitHub authentication.
+
 ## GitHub-Visible Files
 
 | File | Purpose |

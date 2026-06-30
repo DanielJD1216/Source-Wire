@@ -66,7 +66,30 @@ This command does not publish npm, create a GitHub release, deploy services, acc
 
 ## Owner Live Status
 
-Before broad public sharing, the owner can verify the live repo and live launch channels with:
+Before broad public sharing, the owner can run the complete read-only owner preflight:
+
+```bash
+npm run world:share-preflight
+```
+
+This runs:
+
+- `npm run docs:external-links`
+- `npm run world:live-status`
+- `npm run launch:decision-status`
+
+Expected markers:
+
+```text
+ok world share preflight ready
+ok external reviewer links reachable
+ok live source-package boundary current
+blocked production launch channels
+```
+
+This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
+
+For the live repo and live launch channels only, run:
 
 ```bash
 npm run world:live-status

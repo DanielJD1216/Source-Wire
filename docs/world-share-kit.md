@@ -84,6 +84,21 @@ npm run publish:readiness
 
 Despite the command name, this does not publish npm.
 
+Before broad public sharing, the owner can run the read-only world share preflight:
+
+```bash
+npm run world:share-preflight
+```
+
+Expected markers:
+
+```text
+ok world share preflight ready
+ok external reviewer links reachable
+ok live source-package boundary current
+blocked production launch channels
+```
+
 ## Safe Claims
 
 It is safe to say:

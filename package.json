@@ -97,6 +97,7 @@
     "owner:decision-workflow": "node scripts/owner-decision-workflow.mjs",
     "world:readiness": "node scripts/world-share-readiness.mjs",
     "world:live-status": "node scripts/live-world-share-status.mjs",
+    "world:share-preflight": "node scripts/world-share-preflight.mjs",
     "launch:decision-status": "node scripts/launch-decision-status.mjs",
     "release:implementation-preparation": "node scripts/release-implementation-preparation.mjs",
     "release:implementation-plan": "node scripts/release-implementation-plan.mjs",

@@ -29,7 +29,8 @@ Best first pass:
 5. Run npm run owner:launch-checklist to see which launch approvals are still missing.
 6. Run npm run world:readiness to see the current sharing boundary.
 7. Run npm run share:audit to verify the first-visitor share boundary.
-8. Run npm run publish:readiness if you want the full local verification path.
+8. Run npm run world:share-preflight before broad public sharing.
+9. Run npm run publish:readiness if you want the full local verification path.
 
 Useful feedback: contract clarity, schema consistency, fixture realism, package install behavior, readiness gate coverage, and whether any doc blurs the license, runtime, data, contribution, or trusted-memory boundaries.
 ```
@@ -150,6 +151,23 @@ ok first visitor share audit ready
 ok apache 2 reuse ready
 blocked production launch channels
 ```
+
+Before broad public sharing, the owner can run the read-only owner preflight:
+
+```bash
+npm run world:share-preflight
+```
+
+Expected markers:
+
+```text
+ok world share preflight ready
+ok external reviewer links reachable
+ok live source-package boundary current
+blocked production launch channels
+```
+
+This checks public external links, live world-share status, and launch decision blockers. It does not publish npm, create a GitHub release, create tags, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
 
 ## What To Review
 

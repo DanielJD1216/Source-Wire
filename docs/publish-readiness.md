@@ -150,6 +150,23 @@ This network check verifies public URLs in README, docs, examples, `.github` tem
 For a single live owner-facing share status, run:
 
 ```bash
+npm run world:share-preflight
+```
+
+Expected markers:
+
+```text
+ok world share preflight ready
+ok external reviewer links reachable
+ok live source-package boundary current
+blocked production launch channels
+```
+
+This read-only preflight runs public external-link checks, live world-share status, and launch decision status. It is intentionally outside CI and `publish:readiness` because it depends on public network availability and owner-side live GitHub access.
+
+For the live status portion only, run:
+
+```bash
 npm run world:live-status
 ```
 

@@ -68,6 +68,7 @@ This read-only check verifies:
 - live GitHub metadata, topics, visibility, default branch, and Apache-2.0 license,
 - live `Package Checks` is green for `origin/main`,
 - live GitHub secret scanning and push protection are enabled,
+- package metadata and package-lock root metadata stay aligned on `0.0.0`, `Apache-2.0`, and the installed CLI bin,
 - npm package remains unpublished,
 - local tags, remote tags, and GitHub releases are empty,
 - branch protection and repository ruleset state are visible,
@@ -80,6 +81,7 @@ Expected markers:
 ok live world share status ready
 ok source repo sharing ready
 ok live public surface green
+ok live package lock Apache-2.0
 ok npm package unpublished
 ok release channels empty
 blocked production launch channels

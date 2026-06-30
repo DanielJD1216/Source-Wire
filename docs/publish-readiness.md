@@ -137,7 +137,7 @@ For a single live owner-facing share status, run:
 npm run world:live-status
 ```
 
-This read-only check combines the live GitHub public surface, latest `Package Checks`, npm registry boundary, release and tag boundary, security surface, and branch governance visibility into one status view.
+This read-only check combines the live GitHub public surface, package metadata and package-lock metadata boundary, latest `Package Checks`, npm registry boundary, release and tag boundary, security surface, and branch governance visibility into one status view.
 
 Expected markers:
 
@@ -145,6 +145,7 @@ Expected markers:
 ok live world share status ready
 ok source repo sharing ready
 ok live public surface green
+ok live package lock Apache-2.0
 ok npm package unpublished
 ok release channels empty
 blocked production launch channels

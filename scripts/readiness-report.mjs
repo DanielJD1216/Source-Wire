@@ -225,7 +225,7 @@ printList([
   "docs/world-share-readiness.md separates Apache-2.0 source sharing from blocked production launch channels",
   "npm run docs:anchors verifies local Markdown section links before broad sharing",
   "npm run docs:external-links verifies public-facing external URLs before broad sharing without publishing or deploying",
-  "npm run world:live-status verifies the owner-side live world-share state across GitHub, CI, npm, releases, tags, security, and branch governance before broad public sharing",
+  "npm run world:live-status verifies the owner-side live world-share state across package metadata, package-lock metadata, GitHub, CI, npm, releases, tags, security, and branch governance before broad public sharing",
   "docs/share-for-review.md gives safe public sharing copy, first commands, feedback routing, and launch-channel boundaries",
   "docs/repository-metadata.md records the expected live GitHub About panel, topics, and feature flags for first visitors",
   "npm run repository:live-github verifies the owner-side live GitHub public surface before broad public sharing",

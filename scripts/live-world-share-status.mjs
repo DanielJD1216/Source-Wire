@@ -3,12 +3,17 @@ import { readFile } from "node:fs/promises";
 
 const repo = "DanielJD1216/Source-Wire";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
+const packageLock = JSON.parse(await readFile("package-lock.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageLock.packages?.[""]?.name, packageJson.name, "package-lock root name must match package.json");
+assertEqual(packageLock.packages?.[""]?.version, packageJson.version, "package-lock root version must match package.json");
+assertEqual(packageLock.packages?.[""]?.license, packageJson.license, "package-lock root license must match package.json");
+assertEqual(packageLock.packages?.[""]?.bin?.["source-wire"], "dist/cli.js", "package-lock root bin must include source-wire CLI");
 
 const repoApi = await ghJson(["api", `repos/${repo}`], `https://api.github.com/repos/${repo}`);
 const mainBranch = await ghJson(["api", `repos/${repo}/branches/main`], `https://api.github.com/repos/${repo}/branches/main`);
@@ -116,6 +121,7 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
+  ["Package lock license", packageLock.packages[""].license],
   ["Visibility", repoApi.visibility],
   ["Default branch", repoApi.default_branch],
   ["origin/main SHA", remoteHead],
@@ -137,6 +143,7 @@ console.log("");
 console.log("ok live world share status ready");
 console.log("ok source repo sharing ready");
 console.log("ok live public surface green");
+console.log("ok live package lock Apache-2.0");
 console.log("ok npm package unpublished");
 console.log("ok release channels empty");
 console.log("blocked production launch channels");

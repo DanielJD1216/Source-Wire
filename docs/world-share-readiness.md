@@ -30,6 +30,15 @@ Apache-2.0 currently means reviewers and adopters can inspect and reuse the sour
 | Code contributions | Blocked |
 | Real user data examples | Blocked |
 
+## Current Owner-Decision Issues
+
+These public issues track the remaining owner decisions. They do not publish npm, create a GitHub release, enable branch governance, start hosted runtime work, or accept code contributions.
+
+- [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
+- [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
+- [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
+
 ## Command
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).

@@ -14,6 +14,13 @@ Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Su
 
 Share-readiness audit: Source-Wire is ready for technical review and source package reuse under Apache-2.0, but not npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, or code contribution acceptance. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
 
+Current owner-decision issues:
+
+- [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
+- [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
+- [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
+
 ## What This Public Skeleton Includes
 
 - Source Graph Adapter Contract.

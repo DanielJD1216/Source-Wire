@@ -94,6 +94,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |
 | Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` |
 | Branch governance approval request | `ok branch governance approval request ready`, `blocked branch protection approval missing`, `blocked repository ruleset approval missing` |
+| Branch governance implementation plan | `ok branch governance implementation plan ready`, `ok branch governance recommended path documented`, `blocked branch governance implementation approval missing` |
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` |
 | Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` |
 | Package required paths | `ok package required paths` |
@@ -223,6 +224,22 @@ blocked repository ruleset approval missing
 ```
 
 This local packet check does not call GitHub or change repository settings.
+
+Run only the branch governance implementation plan check:
+
+```bash
+npm run repository:branch-governance-plan
+```
+
+Expected markers:
+
+```text
+ok branch governance implementation plan ready
+ok branch governance recommended path documented
+blocked branch governance implementation approval missing
+```
+
+The plan check verifies the future branch governance implementation order, required preflight, post-change verification, and rollback plan. It does not call GitHub, enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
 ## Owner Live Security Surface
 

@@ -63,7 +63,7 @@ npm run launch:decision-status
 | Owner decision workflow | Captured | Use [Owner License Decision Workflow](owner-license-decision-workflow.md). |
 | npm publishing | Blocked | Separate publish PRD. |
 | GitHub release publishing | Blocked | Separate release PRD. |
-| Branch protection or repository rulesets | Blocked | Separate branch governance approval. |
+| Branch protection or repository rulesets | Blocked | Separate branch governance approval, then use [Branch Governance Implementation Plan](branch-governance-implementation-plan.md). |
 | Hosted runtime | Blocked | Separate runtime PRD. |
 | Code contribution acceptance | Blocked | Explicit contribution terms. |
 

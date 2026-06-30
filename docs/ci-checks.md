@@ -135,6 +135,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` | GitHub-visible support, security, contribution, issue-template, and feedback surfaces match Apache-2.0 source reuse while code contribution acceptance remains blocked. |
 | Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` | Expected GitHub About panel, topics, and feature flags match the Apache-2.0 source-package state while launch channels remain blocked. |
 | Branch governance approval request | `ok branch governance approval request ready`, `blocked branch protection approval missing`, `blocked repository ruleset approval missing` | Future branch protection and repository ruleset decision options are documented while live GitHub settings remain unchanged. |
+| Branch governance implementation plan | `ok branch governance implementation plan ready`, `ok branch governance recommended path documented`, `blocked branch governance implementation approval missing` | Future branch protection implementation order, preflight, post-change verification, and rollback plan are documented while live GitHub settings remain unchanged. |
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` | Historical license decision docs preserve old `UNLICENSED` analysis without presenting it as current guidance. |
 | Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` | Pull request template blocks code contribution assumptions and private-data leakage until contribution terms are approved. |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` | The local package can be packed and the shared required package path manifest is present. |
@@ -149,6 +150,14 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | CI marker self-smoke | `ok ci markers smoke` | The marker helper accepts a complete synthetic log and rejects an incomplete synthetic log. |
 
 If one marker group is missing, inspect the command that owns that group before treating CI as release-ready.
+
+For the branch governance implementation plan marker group, run:
+
+```bash
+npm run repository:branch-governance-plan
+```
+
+This verifies the non-mutating future implementation plan. It does not enable branch protection or create repository rulesets.
 
 ## Marker Helper
 

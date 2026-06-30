@@ -37,6 +37,8 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Draft GitHub Release Notes](release-notes-draft.md)
 - [Release Approval Request Packet](release-approval-request-packet.md)
 - [Release Candidate Readiness](release-candidate-readiness.md)
+- [Branch Governance Approval Request](branch-governance-approval-request.md)
+- [Branch Governance Implementation Plan](branch-governance-implementation-plan.md)
 - [CI Checks](ci-checks.md)
 - [Repository Metadata](repository-metadata.md)
 - [Release Decision](release-decision.md)
@@ -84,11 +86,13 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Draft GitHub Release Notes](release-notes-draft.md)
 - [Release Approval Request Packet](release-approval-request-packet.md)
 - [Release Candidate Readiness](release-candidate-readiness.md)
+- [Branch Governance Approval Request](branch-governance-approval-request.md)
+- [Branch Governance Implementation Plan](branch-governance-implementation-plan.md)
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 - [CI Checks](ci-checks.md)
 
-Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:readiness` marker map, [World-Share Readiness](world-share-readiness.md) for the technical-review versus broad-reuse boundary, [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md) for `npm run share:audit`, [Owner Launch Checklist](owner-launch-checklist.md) for missing launch approvals, [Owner License Approval Preflight](owner-license-approval-preflight.md) for the final approval-package check, [Owner License Decision Intake](owner-license-decision-intake.md) for `npm run owner:decision-intake`, [Owner License Decision Workflow](owner-license-decision-workflow.md) for the next owner action, [License Decision Implementation Plan](license-decision-implementation-plan.md) for the post-decision execution map, [Launch Decision Status](launch-decision-status.md) for the one-command launch decision summary, [Release Implementation Runbook](release-implementation-runbook.md) for future release execution order and stop conditions, [Release Review Packet](release-review-packet.md) for release-review inputs before implementation approval, [First Release Version Recommendation](release-version-recommendation.md) for the recommended future first release version, [Draft GitHub Release Notes](release-notes-draft.md) for release-note copy before a release exists, [Release Approval Request Packet](release-approval-request-packet.md) for the next release owner choice, [Release Candidate Readiness](release-candidate-readiness.md) for release-candidate preflight, and [CI Checks](ci-checks.md) for the GitHub Actions Package Checks marker map.
+Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:readiness` marker map, [World-Share Readiness](world-share-readiness.md) for the technical-review versus broad-reuse boundary, [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md) for `npm run share:audit`, [Owner Launch Checklist](owner-launch-checklist.md) for missing launch approvals, [Owner License Approval Preflight](owner-license-approval-preflight.md) for the final approval-package check, [Owner License Decision Intake](owner-license-decision-intake.md) for `npm run owner:decision-intake`, [Owner License Decision Workflow](owner-license-decision-workflow.md) for the next owner action, [License Decision Implementation Plan](license-decision-implementation-plan.md) for the post-decision execution map, [Launch Decision Status](launch-decision-status.md) for the one-command launch decision summary, [Release Implementation Runbook](release-implementation-runbook.md) for future release execution order and stop conditions, [Release Review Packet](release-review-packet.md) for release-review inputs before implementation approval, [First Release Version Recommendation](release-version-recommendation.md) for the recommended future first release version, [Draft GitHub Release Notes](release-notes-draft.md) for release-note copy before a release exists, [Release Approval Request Packet](release-approval-request-packet.md) for the next release owner choice, [Release Candidate Readiness](release-candidate-readiness.md) for release-candidate preflight, [Branch Governance Approval Request](branch-governance-approval-request.md) for the owner governance choice, [Branch Governance Implementation Plan](branch-governance-implementation-plan.md) for the non-mutating future implementation plan, and [CI Checks](ci-checks.md) for the GitHub Actions Package Checks marker map.
 
 ## Decision Prototypes
 
@@ -117,6 +121,8 @@ Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:rea
 - [Draft GitHub Release Notes](release-notes-draft.md)
 - [Release Approval Request Packet](release-approval-request-packet.md)
 - [Release Candidate Readiness](release-candidate-readiness.md)
+- [Branch Governance Approval Request](branch-governance-approval-request.md)
+- [Branch Governance Implementation Plan](branch-governance-implementation-plan.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)

@@ -141,6 +141,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "branch governance implementation plan",
+    markers: [
+      "ok branch governance implementation plan ready",
+      "ok branch governance recommended path documented",
+      "blocked branch governance implementation approval missing"
+    ]
+  },
+  {
     name: "historical license boundary",
     markers: [
       "ok historical license boundary ready",

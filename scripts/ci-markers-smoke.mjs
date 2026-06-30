@@ -56,6 +56,9 @@ const completeLog = [
   "ok repository metadata boundary ready",
   "ok github about wording current",
   "blocked metadata launch approval",
+  "ok branch governance implementation plan ready",
+  "ok branch governance recommended path documented",
+  "blocked branch governance implementation approval missing",
   "ok historical license boundary ready",
   "ok unlicensed recommendation superseded",
   "blocked license history launch approval",
@@ -115,7 +118,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 31 groups 95 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 32 groups 98 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

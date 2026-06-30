@@ -19,6 +19,7 @@ const requiredScripts = [
   "runtime-boundary:smoke",
   "runtime-boundary:installed-smoke",
   "runtime-boundary:diagnostics-smoke",
+  "reviewer:smoke",
   "docs:links",
   "docs:command-setup",
   "safety:scan",
@@ -135,6 +136,7 @@ printList(requiredScripts.map((scriptName) => `npm run ${scriptName}`));
 
 printSection("Installed Package Smokes");
 printList([
+  "reviewer:smoke validates the documented first reviewer path from a temporary clean checkout-style copy",
   "consumer:smoke validates package-root imports and installed CLI fixture validation",
   "package:content-smoke validates installed required paths, README/docs/examples links, installed runtime readiness summary presence, and installed readiness summary content assertions",
   "examples:installed-smoke validates copied TypeScript examples against installed package declarations",

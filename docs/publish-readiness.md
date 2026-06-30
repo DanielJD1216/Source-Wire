@@ -126,6 +126,18 @@ It does not publish npm.
 
 It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
 
+## Reviewer First-Pass Smoke
+
+Run only the reviewer first-pass smoke:
+
+```bash
+npm run reviewer:smoke
+```
+
+The smoke creates a temporary clean checkout-style copy from git-visible files, runs `npm install`, runs `npm run readiness:report`, checks expected review-only markers, and removes the temporary copy.
+
+It does not publish npm, create a GitHub release, deploy services, start a backend, connect to a database, accept contributions, or use real data.
+
 ## Public Claim Boundary Scan
 
 Run only the public claim-boundary guard:

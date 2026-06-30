@@ -70,6 +70,12 @@ npm install
 npm run readiness:report
 ```
 
+To smoke-test that same first-pass path from a temporary clean checkout-style copy:
+
+```bash
+npm run reviewer:smoke
+```
+
 Expected first-pass markers:
 
 ```text

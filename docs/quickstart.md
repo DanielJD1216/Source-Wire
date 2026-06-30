@@ -105,6 +105,16 @@ This prints a fast read-only summary of package posture, exported surfaces, vali
 
 It does not run the full readiness gate, publish npm, or run backend behavior.
 
+## Run The Reviewer First-Pass Smoke
+
+```bash
+npm run reviewer:smoke
+```
+
+This creates a temporary clean checkout-style copy, runs `npm install`, runs `npm run readiness:report`, checks the expected review-only markers, and removes the temporary copy.
+
+It does not publish npm, create a release, deploy services, start a backend, or use real data.
+
 ## Run The Consumer Smoke Check
 
 ```bash

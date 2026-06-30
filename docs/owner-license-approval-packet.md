@@ -16,6 +16,8 @@ For the exact future Apache-2.0 checklist, read [Apache-2.0 License Implementati
 
 For the read-only pre-approval command check, read [License Approval Rehearsal](license-approval-rehearsal.md).
 
+For legal or owner review questions before a license decision, read [Legal Review Question Packet](legal-review-question-packet.md).
+
 ## Current State
 
 | Field | Current value |
@@ -90,6 +92,10 @@ Approved: pause license implementation until legal review. Keep Source-Wire UNLI
 This packet is not legal advice.
 
 Before accepting contributors, approving commercial reuse, publishing npm, or relying on Source-Wire as a public project, the owner should consider legal review.
+
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
+Use `npm run legal:packet` to verify the legal-review packet and current blocked boundary before that review.
 
 ## No-Publish Boundary
 

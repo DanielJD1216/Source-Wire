@@ -27,7 +27,7 @@ Choose exactly one path before broad public reuse.
 | --- | --- | --- |
 | Apache-2.0 implementation | Make Source-Wire a permissive open-source contract package. | Open an Apache-2.0 license implementation PRD. |
 | Stay `UNLICENSED` | Keep the repo visible but do not grant reuse rights. | Record an explicit hold decision and keep release gate unchanged. |
-| Legal review first | Pause licensing until counsel confirms the reuse and contributor path. | Create a legal-review question packet. |
+| Legal review first | Pause licensing until counsel confirms the reuse and contributor path. | Use the [Legal Review Question Packet](legal-review-question-packet.md). |
 | Source-available comparison | Explore noncommercial or source-available options before deciding. | Run a source-available license decision prototype. |
 
 ## Recommended Path
@@ -43,6 +43,12 @@ That unit should still keep npm publishing, GitHub release publishing, deploymen
 For the exact future implementation checklist, read [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md).
 
 Before executing any future license implementation, run the read-only [License Approval Rehearsal](license-approval-rehearsal.md) to verify the current blocked boundary and preview the transition checklist.
+
+Before requesting legal or owner review, run:
+
+```bash
+npm run legal:packet
+```
 
 ## Exact Owner Approval Language
 

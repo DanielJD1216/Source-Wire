@@ -111,6 +111,7 @@ Source-Wire can run a full local publish readiness gate with package dry-run, in
 
 - [Publish Readiness](docs/publish-readiness.md)
 - [World-Share Readiness](docs/world-share-readiness.md)
+- [Legal Review Question Packet](docs/legal-review-question-packet.md)
 - [License Approval Rehearsal](docs/license-approval-rehearsal.md)
 - [License Decision Gate](docs/license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](docs/apache-2-license-implementation-readiness.md)

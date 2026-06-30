@@ -30,6 +30,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Repository Metadata](repository-metadata.md)
 - [Release Decision](release-decision.md)
 - [License Approval Rehearsal](license-approval-rehearsal.md)
+- [Legal Review Question Packet](legal-review-question-packet.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [License And Version Policy](license-version-policy.md)
@@ -78,6 +79,7 @@ Use [Publish Readiness](publish-readiness.md) for the local `npm run publish:rea
 
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [License Approval Rehearsal](license-approval-rehearsal.md)
+- [Legal Review Question Packet](legal-review-question-packet.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)

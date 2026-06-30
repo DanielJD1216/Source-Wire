@@ -15,6 +15,13 @@ const markerGroups = [
     markers: ["ok package required paths"]
   },
   {
+    name: "legal review packet",
+    markers: [
+      "ok legal review packet ready",
+      "blocked legal approval not granted"
+    ]
+  },
+  {
     name: "world-share boundary",
     markers: [
       "ok world share technical review ready",

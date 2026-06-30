@@ -16,6 +16,7 @@ for (const requiredPath of [
   "docs/license-decision-gate.md",
   "docs/owner-license-approval-packet.md",
   "docs/apache-2-license-implementation-readiness.md",
+  "docs/legal-review-question-packet.md",
   "docs/world-share-readiness.md"
 ]) {
   await assertPathExists(requiredPath);
@@ -52,6 +53,7 @@ printRows([
 printSection("Next Approval Needed");
 printList([
   "To share for technical review, use docs/share-for-review.md.",
+  "To prepare counsel or owner review, use docs/legal-review-question-packet.md.",
   "To share for broad public reuse, first approve and implement a license path from docs/license-decision-gate.md.",
   "To publish npm, open a separate publish PRD after licensing is approved.",
   "To add hosted runtime behavior, open a separate runtime PRD after the runtime gate is approved."

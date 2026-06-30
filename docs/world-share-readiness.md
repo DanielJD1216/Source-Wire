@@ -72,6 +72,7 @@ The likely path is Apache-2.0, but it is not approved yet.
 
 Read:
 
+- [Legal Review Question Packet](legal-review-question-packet.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [Future License Change Plan](future-license-change-plan.md)

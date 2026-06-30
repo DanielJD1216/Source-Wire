@@ -25,6 +25,7 @@ This command runs:
 - `npm run ci:check`
 - `npm run release:gate`
 - `npm run license:rehearsal`
+- `npm run legal:packet`
 - `npm run world:readiness`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
@@ -56,6 +57,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | --- | --- |
 | Release boundary | `ok release gate`, `ok license UNLICENSED`, `ok version 0.0.0`, `ok publishing blocked` |
 | License rehearsal | `ok license rehearsal current boundary`, `ok license rehearsal future checklist` |
+| Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` |
 | World-share boundary | `ok world share technical review ready`, `blocked world share broad reuse` |
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
@@ -165,6 +167,18 @@ npm run license:rehearsal
 The rehearsal verifies the current `UNLICENSED` boundary, confirms no `LICENSE` file exists, checks publish and release scripts remain blocked, and prints the future owner-approved Apache-2.0 transition checklist.
 
 It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
+
+## Legal Review Packet
+
+Run only the legal-review question packet check:
+
+```bash
+npm run legal:packet
+```
+
+The command verifies the current blocked boundary and prints the legal or owner review topics for licensing, commercial reuse, contribution terms, support, security, name and trademark, hosted runtime, and private-data boundaries.
+
+It does not provide legal advice, approve licensing, change package metadata, add a `LICENSE` file, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
 
 ## World-Share Readiness
 

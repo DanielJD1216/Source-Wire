@@ -2,6 +2,10 @@
 
 Date: 2026-06-29
 
+Historical status: superseded.
+
+Apache-2.0 is now implemented for Source-Wire as a source package. This document is retained as decision history from before owner approval. The old evidence below explains why owner approval was needed before implementation; it is not current licensing guidance.
+
 ## Purpose
 
 This document explains the scoring behind the Source-Wire license options matrix.
@@ -182,7 +186,7 @@ There are two different questions:
 1. What should Source-Wire do right now?
 2. What license is the best likely candidate if Source-Wire becomes truly open source?
 
-Right now, Source-Wire should stay `UNLICENSED`.
+At the time this evidence document was written, Source-Wire should have stayed `UNLICENSED` until owner approval.
 
 If the owner chooses a permissive open-source release later, Apache-2.0 is the strongest likely candidate because it fits infrastructure and agent tooling better than MIT.
 

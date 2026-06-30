@@ -28,7 +28,7 @@ The selected path was:
 | Option | What it means | Status |
 | --- | --- | --- |
 | Apache-2.0 implementation | Make Source-Wire a permissive open-source contract package. | Implemented |
-| Stay unlicensed | Keep the repo visible but do not grant reuse rights. | Not selected |
+| Stay unlicensed | Would have kept the repo visible without granting source reuse rights. | Not selected |
 | Legal review first | Pause licensing until counsel confirms the reuse and contributor path. | Not selected |
 | Source-available comparison | Explore noncommercial or source-available options before deciding. | Not selected |
 

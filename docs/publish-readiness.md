@@ -41,6 +41,7 @@ This command runs:
 - `npm run launch:decision-status`
 - `npm run share:audit`
 - `npm run intake:boundary`
+- `npm run license:history-boundary`
 - `npm run repository:metadata`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
@@ -89,6 +90,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |
 | Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` |
+| Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` |
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` |
@@ -256,7 +258,7 @@ The guard scans public README, docs, and examples for unsafe production, contrib
 
 It skips fenced code blocks so docs can include unsafe wording examples as examples.
 
-It does not change files, approve licensing, publish npm, create a release, deploy services, start a runtime, accept contributions, or grant reuse rights.
+It does not change files, change the implemented Apache-2.0 license, publish npm, create a release, deploy services, start a runtime, or accept contributions.
 
 ## License Approval Rehearsal
 
@@ -272,15 +274,15 @@ It does not publish npm, create a GitHub release, deploy services, start a runti
 
 ## License Approval Decision Record
 
-Run only the pending license approval decision record check:
+Run only the license approval decision record check:
 
 ```bash
 npm run license:decision-record
 ```
 
-The command verifies that the owner license decision record exists, still says pending, and has not been confused with license implementation.
+The command verifies that the owner license decision record exists, says implemented, and matches the Apache-2.0 source-package state.
 
-It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
+It does not change the implemented Apache-2.0 license, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, or accept contributions.
 
 ## License Approval Request Packet
 
@@ -290,9 +292,9 @@ Run only the owner license approval request packet check:
 npm run license:approval-request
 ```
 
-The command verifies that the exact owner decision options are present and that owner license approval is still missing.
+The command verifies that the already captured owner decision options are present and that Apache-2.0 implementation is complete.
 
-It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
+It does not change the implemented Apache-2.0 license, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, or accept contributions.
 
 ## License Decision Implementation Plan
 
@@ -302,9 +304,21 @@ Run only the license decision implementation plan:
 npm run license:implementation-plan
 ```
 
-The command verifies that all four owner decision paths are mapped, stop conditions are present, and license implementation is still awaiting owner approval.
+The command verifies that all four historical owner decision paths are mapped, stop conditions are present, and Apache-2.0 implementation is complete.
 
-It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
+It does not change the implemented Apache-2.0 license, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, or accept contributions.
+
+## Historical License Boundary
+
+Run only the historical license boundary check:
+
+```bash
+npm run license:history-boundary
+```
+
+The check verifies that old `UNLICENSED` license recommendation docs are clearly marked as superseded historical decision records and cannot be mistaken for current guidance.
+
+It does not change the implemented Apache-2.0 license, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, or accept contributions.
 
 ## Legal Review Packet
 
@@ -316,7 +330,7 @@ npm run legal:packet
 
 The command verifies the current blocked boundary and prints the legal or owner review topics for licensing, commercial reuse, contribution terms, support, security, name and trademark, hosted runtime, and private-data boundaries.
 
-It does not provide legal advice, approve licensing, change package metadata, add a `LICENSE` file, publish npm, create a GitHub release, deploy services, accept contributions, or grant reuse rights.
+It does not provide legal advice, change the implemented Apache-2.0 license, change package metadata, publish npm, create a GitHub release, deploy services, or accept contributions.
 
 ## Owner Launch Checklist
 

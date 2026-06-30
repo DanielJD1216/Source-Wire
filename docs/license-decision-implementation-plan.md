@@ -81,6 +81,10 @@ git diff --check
 
 ### Path 2: Stay Unlicensed
 
+Status: historical option, not selected.
+
+Apache-2.0 implementation is complete.
+
 Historical option only. It was not selected.
 
 Use only after a separate future owner decision:

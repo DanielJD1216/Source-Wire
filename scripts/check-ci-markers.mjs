@@ -141,6 +141,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "historical license boundary",
+    markers: [
+      "ok historical license boundary ready",
+      "ok unlicensed recommendation superseded",
+      "blocked license history launch approval"
+    ]
+  },
+  {
     name: "launch decision status",
     markers: [
       "ok launch decision status ready",

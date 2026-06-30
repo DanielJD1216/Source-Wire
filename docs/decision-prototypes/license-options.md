@@ -2,6 +2,10 @@
 
 Date: 2026-06-29
 
+Historical status: superseded.
+
+Apache-2.0 is now implemented for Source-Wire as a source package. This document is retained as decision history from before owner approval. The old matrix below explains the tradeoffs considered before implementation; it is not current launch or licensing guidance.
+
 ## Purpose
 
 Source-Wire is public, package-shaped, and package-ready in dry-run form.
@@ -90,7 +94,7 @@ The tradeoff is complexity. It needs clearer docs and likely legal review before
 
 ## Early Read
 
-The best immediate posture is to stay `UNLICENSED` until owner approval.
+At the time this matrix was written, the best immediate posture was to stay `UNLICENSED` until owner approval.
 
 The best likely open-source release candidate is Apache-2.0 if the owner chooses a permissive public release later.
 

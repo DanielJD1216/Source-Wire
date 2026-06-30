@@ -2,6 +2,12 @@
 
 Date: 2026-06-29
 
+Historical status: superseded.
+
+Current implemented license: Apache-2.0.
+
+Apache-2.0 is now implemented for Source-Wire as a source package. This document is retained as decision history from before owner approval. The old recommendation below is not current guidance. Do not use this historical document to argue that Source-Wire is currently unlicensed.
+
 ## Recommendation
 
 The next Source-Wire implementation unit should be:

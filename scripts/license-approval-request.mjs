@@ -70,12 +70,12 @@ printRows([
   ["Contribution acceptance", "blocked"]
 ]);
 
-printSection("Exact Owner Decision Options");
+printSection("Historical Owner Decision Options");
 printList([
-  "Option 1: approve Apache-2.0 implementation in a future unit.",
-  "Option 2: stay UNLICENSED in a future decision unit.",
-  "Option 3: request legal review first.",
-  "Option 4: compare source-available options first."
+  "Option 1 was selected: Apache-2.0 implementation is complete.",
+  "Option 2 was not selected: stay unlicensed.",
+  "Option 3 was not selected: request legal review first.",
+  "Option 4 was not selected: compare source-available options first."
 ]);
 
 console.log("");

@@ -78,10 +78,10 @@ printRows([
 
 printSection("Mapped Decision Paths");
 printList([
-  "Apache-2.0 implementation.",
-  "Stay UNLICENSED.",
-  "Legal review first.",
-  "Compare source-available options first."
+  "Apache-2.0 implementation is complete.",
+  "Stay unlicensed is a historical option and was not selected.",
+  "Legal review first is a historical option and was not selected.",
+  "Compare source-available options first is a historical option and was not selected."
 ]);
 
 console.log("");

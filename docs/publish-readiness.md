@@ -138,6 +138,36 @@ blocked github release not approved
 
 This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
+## Owner Live Security Surface
+
+Before broad public sharing, the owner can verify the live GitHub security and intake boundary with:
+
+```bash
+npm run security:live-surface
+```
+
+This read-only check verifies:
+
+- `SECURITY.md`, `SUPPORT.md`, `CONTRIBUTING.md`, issue templates, and reviewer guides exist,
+- public intake warns against secrets, private data, local paths, client names, real source payloads, real chat logs, and real memory records,
+- live GitHub issues are enabled for structured feedback,
+- live GitHub projects, wiki, and discussions are disabled,
+- live GitHub secret scanning and push protection are enabled,
+- GitHub security advisories are empty,
+- package version remains `0.0.0`,
+- npm publishing, GitHub release publishing, hosted runtime, production security scope, and contribution acceptance remain blocked.
+
+Expected markers:
+
+```text
+ok live security surface ready
+ok security intake boundary current
+ok github secret scanning enabled
+blocked production security scope
+```
+
+This command does not publish npm, create a GitHub release, deploy services, accept code contributions, disclose private data, open a security advisory, or approve production runtime use.
+
 ## Owner Live npm Registry Boundary
 
 Before broad public sharing, the owner can verify the live npm registry boundary with:

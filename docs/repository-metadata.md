@@ -43,6 +43,10 @@ Expected live repository settings:
 - Issues: enabled
 - Projects: disabled
 - Wiki: disabled
+- Discussions: disabled
+- Secret scanning: enabled
+- Secret scanning push protection: enabled
+- Security advisories: none
 
 Expected topics:
 
@@ -69,6 +73,14 @@ npm run repository:live-github
 ```
 
 This command uses `gh` and the configured GitHub account to verify the live public repository surface, latest Package Checks run, and empty GitHub release list. It is intentionally not part of `publish:readiness` because public reviewers and forks should not need owner GitHub authentication.
+
+Owner-side live security check:
+
+```bash
+npm run security:live-surface
+```
+
+This command uses `gh` and the configured GitHub account to verify the live security surface, safe public intake docs, secret scanning, push protection, disabled discussions/projects/wiki, and empty security advisory list. It is intentionally not part of `publish:readiness` because public reviewers and forks should not need owner GitHub authentication.
 
 ## GitHub-Visible Files
 

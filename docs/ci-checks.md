@@ -95,6 +95,13 @@ The readiness gate runs:
 
 `npm run ci:check` remains as a sub-gate inside `npm run publish:readiness`.
 
+Owner-side live GitHub checks are intentionally outside CI and `publish:readiness` because they require `gh` authentication and live repository access:
+
+- `npm run repository:live-github`
+- `npm run security:live-surface`
+- `npm run registry:live-npm`
+- `npm run release:live-tags`
+
 ## Stable Log Markers
 
 Use these markers when reading local or GitHub Actions Package Checks logs.

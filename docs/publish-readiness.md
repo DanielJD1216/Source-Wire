@@ -138,6 +138,34 @@ blocked github release not approved
 
 This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
+## Owner Live npm Registry Boundary
+
+Before broad public sharing, the owner can verify the live npm registry boundary with:
+
+```bash
+npm run registry:live-npm
+```
+
+This read-only check verifies:
+
+- local package name remains `@source-wire/contracts`,
+- local package version remains `0.0.0`,
+- local package license remains `Apache-2.0`,
+- local `publishConfig.access` remains `restricted`,
+- `npm view @source-wire/contracts` returns the unpublished `E404` state,
+- npm publishing, GitHub release publishing, hosted runtime, and contribution acceptance remain blocked.
+
+Expected markers:
+
+```text
+ok live npm registry boundary ready
+ok npm package unpublished
+ok local package publish boundary intact
+blocked npm publishing not approved
+```
+
+This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
 ## Marker Helper
 
 Save the local readiness output, then run the marker helper:

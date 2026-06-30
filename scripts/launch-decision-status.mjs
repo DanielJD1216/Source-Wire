@@ -54,7 +54,10 @@ printRows([
 printSection("Next Approval");
 printList([
   "Use README.md and LICENSE for public source repo sharing.",
-  "Open separate PRDs for npm publishing, GitHub release publishing, hosted runtime, and contribution acceptance."
+  "Before opening a release implementation unit, run npm run release:candidate-readiness.",
+  "Recommended next owner choice: approve a future release implementation unit for npm publishing plus a matching GitHub release, using version 0.1.0 unless final release-candidate verification finds a blocker.",
+  "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them.",
+  "Open separate PRDs for hosted runtime and contribution acceptance."
 ]);
 
 console.log("");

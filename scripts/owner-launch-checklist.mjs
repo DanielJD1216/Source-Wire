@@ -54,11 +54,18 @@ printRows([
 printSection("Approval Order");
 printList([
   "1. Apache-2.0 source package reuse is approved and implemented.",
-  "2. npm publishing needs a separate publish PRD.",
-  "3. GitHub release publishing needs a separate release PRD.",
+  "2. Run npm run release:candidate-readiness.",
+  "3. npm publishing plus a matching GitHub release needs a separate release implementation unit.",
   "4. Branch protection or repository rulesets need separate branch governance approval.",
   "5. Hosted runtime work needs a separate runtime PRD.",
   "6. Code contribution acceptance needs explicit contribution terms."
+]);
+
+printSection("Recommended Next Owner Choice");
+printList([
+  "Approve a future release implementation unit for npm publishing plus a matching GitHub release.",
+  "Use version 0.1.0 for the first public release unless final release-candidate verification finds a blocker.",
+  "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);
 
 console.log("");

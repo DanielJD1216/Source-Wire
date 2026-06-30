@@ -66,6 +66,22 @@ The command verifies:
 | Hosted runtime | Blocked |
 | Contributions | Blocked |
 
+## Next Physical Action
+
+Run the release-candidate check:
+
+```bash
+npm run release:candidate-readiness
+```
+
+If it passes, the recommended next owner decision is:
+
+```text
+Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.
+```
+
+This is still only a future approval path. This status command does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable hosted runtime, or accept contributions.
+
 ## Related Docs
 
 - [Share For Technical Review](share-for-review.md)
@@ -78,3 +94,5 @@ The command verifies:
 - [World-Share Readiness](world-share-readiness.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Publish Readiness](publish-readiness.md)
+- [Release Candidate Readiness](release-candidate-readiness.md)
+- [Release Implementation Runbook](release-implementation-runbook.md)

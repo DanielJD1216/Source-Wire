@@ -69,6 +69,12 @@ The command verifies:
 
 If this check passes, the next owner decision is whether to open a future release implementation unit.
 
+Recommended path:
+
+```text
+Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.
+```
+
 Do not publish, tag, release, or deploy from this check.
 
 ## Related Docs

@@ -50,6 +50,8 @@ printRows([
 printSection("Next Action");
 printList([
   "Ask the owner to choose a release path from docs/release-approval-request-packet.md.",
+  "Recommended path: future release implementation unit for npm publishing plus a matching GitHub release, using version 0.1.0 unless final verification finds a blocker.",
+  "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them.",
   "Do not publish npm, create a GitHub release, create a tag, deploy services, or accept code contributions from this check."
 ]);
 

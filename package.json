@@ -70,6 +70,7 @@
     "repository:metadata": "node scripts/repository-metadata-boundary.mjs",
     "repository:live-github": "node scripts/live-github-surface.mjs",
     "registry:live-npm": "node scripts/live-npm-registry-boundary.mjs",
+    "release:live-tags": "node scripts/live-release-tag-boundary.mjs",
     "pull-request:boundary": "node scripts/pull-request-boundary.mjs",
     "share:audit": "node scripts/share-audit.mjs",
     "intake:boundary": "node scripts/intake-boundary.mjs",

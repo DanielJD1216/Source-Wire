@@ -166,6 +166,33 @@ blocked npm publishing not approved
 
 This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
+## Owner Live Release Tag Boundary
+
+Before broad public sharing, the owner can verify release tags remain blocked with:
+
+```bash
+npm run release:live-tags
+```
+
+This read-only check verifies:
+
+- local git tags are empty,
+- remote git tags are empty,
+- GitHub releases are empty,
+- local package version remains `0.0.0`,
+- npm publishing, GitHub release publishing, release tag creation, hosted runtime, and contribution acceptance remain blocked.
+
+Expected markers:
+
+```text
+ok live release tag boundary ready
+ok local git tags empty
+ok remote git tags empty
+blocked release tag creation not approved
+```
+
+This command does not create a tag, create a GitHub release, publish npm, deploy services, accept code contributions, or approve production runtime use.
+
 ## Marker Helper
 
 Save the local readiness output, then run the marker helper:

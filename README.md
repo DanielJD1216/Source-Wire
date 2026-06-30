@@ -36,6 +36,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - [Quickstart](docs/quickstart.md)
 - [API Reference](docs/api-reference.md)
 - [TypeScript Examples](examples/typescript/README.md)
+- [Minimal Runtime TypeScript Example](examples/typescript/minimal-runtime.ts)
 - [Runtime Implementation Gate](docs/runtime-implementation-gate.md)
 - [Runtime Boundary Readiness](docs/runtime-boundary-readiness.md)
 - [Minimal Synthetic Runtime Boundary](examples/minimal-runtime/)

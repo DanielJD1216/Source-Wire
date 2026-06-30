@@ -157,6 +157,7 @@ Trusted memory must require owner or application approval.
 - [First Runtime PRD Package](first-runtime-prd.md)
 - [Public Runtime Decision](public-runtime-decision.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
+- [Minimal Runtime TypeScript Example](../examples/typescript/minimal-runtime.ts)
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Publish Readiness](publish-readiness.md)

@@ -172,9 +172,7 @@ The package content smoke check installs a locally packed tarball into a tempora
 
 It verifies installed `README.md`, `docs`, and `examples` local links from `node_modules/@source-wire/contracts`.
 
-It also protects the installed readiness summary claims that no runtime implementation is included, Source-Wire-hosted memory remains blocked, Source-Wire does not host memory, and trusted memory requires owner or application approval.
-
-It does not typecheck installed TypeScript examples because those examples currently use repo-local path mapping.
+It also protects the installed readiness summary claims that only a minimal synthetic in-memory boundary is included, Source-Wire-hosted memory remains blocked, Source-Wire does not host memory, and trusted memory requires owner or application approval.
 
 The installed TypeScript examples smoke check installs a locally packed tarball into a temporary project, copies the public TypeScript examples into that project, and typechecks them against the installed package declarations.
 

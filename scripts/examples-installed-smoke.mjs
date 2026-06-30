@@ -50,6 +50,7 @@ try {
 
   const exampleFiles = [
     "contract-types.ts",
+    "minimal-runtime.ts",
     "runtime-boundary.ts",
     "schema-registry.ts",
     "validation-helper.ts"

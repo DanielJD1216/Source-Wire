@@ -10,6 +10,8 @@ It does not start a server, connect to a database, run a real MCP server, crawl 
 - the schema-backed owner-hosted API plus MCP boundary fixture,
 - local synthetic proof cases only.
 
+For a consumer-style TypeScript import from the package root, see [minimal-runtime.ts](../typescript/minimal-runtime.ts).
+
 ## Command
 
 Use Node.js 22 with npm from the repository root. For the complete setup path, read the [Quickstart](../../docs/quickstart.md).

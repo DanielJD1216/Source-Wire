@@ -37,6 +37,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 - [Quickstart](quickstart.md)
 - [API Reference](api-reference.md)
 - [TypeScript Examples](../examples/typescript/README.md)
+- [Minimal Runtime TypeScript Example](../examples/typescript/minimal-runtime.ts)
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)

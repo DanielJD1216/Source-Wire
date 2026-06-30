@@ -7,6 +7,8 @@ export const requiredPackagePaths = [
   "docs/apache-2-license-implementation-readiness.md",
   "docs/api-reference.md",
   "docs/architecture-map.md",
+  "docs/branch-governance-approval-request.md",
+  "docs/branch-governance-implementation-plan.md",
   "docs/ci-checks.md",
   "docs/contracts/mcp-tool-behavior-contract.md",
   "docs/contracts/owner-hosted-api-mcp-boundary-contract.md",

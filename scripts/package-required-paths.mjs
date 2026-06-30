@@ -19,6 +19,7 @@ export const requiredPackagePaths = [
   "docs/decision-prototypes/runtime-adjacent-options.md",
   "docs/decision-prototypes/runtime-adjacent-recommendation.md",
   "docs/first-runtime-prd.md",
+  "docs/first-time-visitor-share-readiness-audit.md",
   "docs/future-license-change-plan.md",
   "docs/index.md",
   "docs/license-decision-gate.md",

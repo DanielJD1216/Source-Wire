@@ -129,3 +129,5 @@ Read:
 Source-Wire is ready for technical review.
 
 It is not ready for reuse, redistribution, publishing, deployment, or production use.
+
+For the first-time visitor audit, read [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md).

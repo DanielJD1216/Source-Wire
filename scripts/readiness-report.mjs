@@ -85,6 +85,7 @@ for (const schemaFile of [
 for (const requiredPath of [
   "README.md",
   "docs/apache-2-license-implementation-readiness.md",
+  "docs/first-time-visitor-share-readiness-audit.md",
   "docs/public-status.md",
   "docs/repository-metadata.md",
   "docs/quickstart.md",
@@ -142,6 +143,7 @@ printSection("Required Readiness Docs");
 printList([
   "README.md is the package entrypoint and public boundary summary",
   "docs/apache-2-license-implementation-readiness.md records the future Apache-2.0 implementation checklist without changing the current license",
+  "docs/first-time-visitor-share-readiness-audit.md records technical-review readiness and broad-reuse blockers",
   "docs/public-status.md states the public review, license, release, publishing, runtime, and reuse boundaries",
   "docs/repository-metadata.md explains GitHub metadata, support, security, contribution, and CI visibility boundaries",
   "docs/quickstart.md defines local setup and first-run commands",

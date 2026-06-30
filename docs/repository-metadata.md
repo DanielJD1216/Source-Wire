@@ -71,6 +71,7 @@ Repository metadata does not approve:
 ## Related Docs
 
 - [Public Status](public-status.md)
+- [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md)
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)
 - [CI Checks](ci-checks.md)

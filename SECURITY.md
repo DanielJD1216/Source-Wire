@@ -2,7 +2,7 @@
 
 Source-Wire is currently public for technical review.
 
-It is `UNLICENSED`, unreleased, unpublished, and not a hosted runtime.
+It is Apache-2.0 licensed as a source package, unreleased, unpublished, and not a hosted runtime.
 
 ## Supported Scope
 
@@ -61,8 +61,6 @@ Include:
 
 Security reporting does not approve:
 
-- Apache-2.0 license implementation,
-- reuse or redistribution,
 - npm publishing,
 - GitHub release publishing,
 - hosted runtime backend,

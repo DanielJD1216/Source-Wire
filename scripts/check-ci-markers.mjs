@@ -125,6 +125,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "public intake boundary",
+    markers: [
+      "ok public intake boundary ready",
+      "ok apache 2 intake wording current",
+      "blocked code contribution acceptance"
+    ]
+  },
+  {
     name: "launch decision status",
     markers: [
       "ok launch decision status ready",

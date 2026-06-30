@@ -2,7 +2,7 @@
 
 Source-Wire is public for technical review only.
 
-It is not licensed for reuse, not published to npm, not released, and not a hosted runtime.
+It is Apache-2.0 licensed as a source package, not published to npm, not released on GitHub, and not a hosted runtime.
 
 ## Supported Questions
 

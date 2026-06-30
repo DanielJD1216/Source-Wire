@@ -75,6 +75,7 @@ The readiness gate runs:
 - `npm run world:readiness`
 - `npm run launch:decision-status`
 - `npm run share:audit`
+- `npm run intake:boundary`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
 - `npm run consumer:smoke`
@@ -116,6 +117,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | World-share boundary | `ok world share open source ready`, `blocked production launch channels` | Source package sharing is ready under Apache-2.0, but production launch channels remain blocked. |
 | Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` | One command reports Apache-2.0 source sharing as ready while keeping blocked launch paths explicit. |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` | First visitors can reuse the source package under Apache-2.0 without confusing it for a product launch. |
+| Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` | GitHub-visible support, security, contribution, issue-template, and feedback surfaces match Apache-2.0 source reuse while code contribution acceptance remains blocked. |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` | The local package can be packed and the shared required package path manifest is present. |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` | The shared required package path manifest, README/docs/examples links, and runtime readiness summary assertions work from the packed package after install. |
 | Minimal runtime smoke | `ok minimal runtime boundary smoke` | Exported synthetic in-memory runtime boundary code matches owner-hosted API plus MCP proof cases. |

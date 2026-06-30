@@ -1,4 +1,5 @@
 export const requiredPackagePaths = [
+  "CONTRIBUTING.md",
   "dist/cli.js",
   "dist/index.d.ts",
   "dist/index.js",
@@ -85,5 +86,7 @@ export const requiredPackagePaths = [
   "schemas/chat-export-message.schema.json",
   "schemas/owner-hosted-api-mcp-boundary.schema.json",
   "schemas/project-context-pack.schema.json",
-  "schemas/second-brain-v1.schema.json"
+  "schemas/second-brain-v1.schema.json",
+  "SECURITY.md",
+  "SUPPORT.md"
 ];

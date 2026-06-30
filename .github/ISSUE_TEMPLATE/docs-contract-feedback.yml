@@ -59,5 +59,5 @@ body:
       options:
         - label: I used only synthetic examples or public repo references.
           required: true
-        - label: I understand this repo is currently UNLICENSED and this issue is review feedback, not permission to reuse or redistribute the project.
+        - label: I understand this repo is Apache-2.0 licensed for source reuse, and this issue is review feedback, not permission to publish npm, create releases, deploy services, or contribute code.
           required: true

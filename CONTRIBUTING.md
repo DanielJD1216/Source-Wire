@@ -1,8 +1,8 @@
 # Contributing To Source-Wire
 
-Source-Wire is public for technical review, but it is not licensed for reuse or redistribution yet.
+Source-Wire is Apache-2.0 licensed as a source package.
 
-Because the repository is currently `UNLICENSED`, code contributions are not accepted until the owner approves license and contribution terms.
+Source reuse is allowed under Apache-2.0, but code contributions are not accepted until the owner approves contribution terms.
 
 ## What Is Welcome Now
 
@@ -67,7 +67,7 @@ Despite the command name, this does not publish npm.
 Expected boundary markers:
 
 ```text
-ok license UNLICENSED
+ok license Apache-2.0
 ok version 0.0.0
 ok publishing blocked
 ```
@@ -76,4 +76,4 @@ ok publishing blocked
 
 Future contribution terms may be added only after explicit owner approval.
 
-Until then, public issues are review feedback, not permission to reuse, redistribute, sell, host, package, publish, or contribute code to Source-Wire.
+Until then, public issues are review feedback. They are not approval to publish npm, create GitHub releases, deploy services, host a runtime, claim production readiness, or contribute code to Source-Wire.

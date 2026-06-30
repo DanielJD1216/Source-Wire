@@ -33,6 +33,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "release implementation preparation",
+    markers: [
+      "ok release implementation preparation ready",
+      "ok release implementation evidence map ready",
+      "blocked release implementation execution approval missing"
+    ]
+  },
+  {
     name: "release implementation rehearsal",
     markers: [
       "ok release implementation rehearsal ready",

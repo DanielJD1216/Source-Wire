@@ -50,6 +50,7 @@ export const requiredPackagePaths = [
   "docs/release-artifact-manifest.md",
   "docs/release-candidate-readiness.md",
   "docs/release-decision.md",
+  "docs/release-implementation-preparation.md",
   "docs/release-implementation-rehearsal.md",
   "docs/release-implementation-runbook.md",
   "docs/release-notes-draft.md",

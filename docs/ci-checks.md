@@ -62,6 +62,7 @@ The readiness gate runs:
 - `npm run claims:scan`
 - `npm run release:gate`
 - `npm run release-command-guard:smoke`
+- `npm run release:implementation-preparation`
 - `npm run release:implementation-plan`
 - `npm run release:implementation-rehearsal`
 - `npm run release:review`
@@ -123,6 +124,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | --- | --- | --- |
 | Release gate | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` | Apache-2.0 licensing is implemented in package metadata and lockfile metadata while version and publishing boundaries stay blocked. |
 | Release command guard smoke | `ok blocked release commands smoke` | The shared release-command guard catches direct package publish, GitHub release, git tag, package version, and service deployment commands in package scripts. |
+| Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release implementation execution approval missing` | The future release execution packet, issue `#255` approval requirement, required evidence, and stop conditions are documented while release execution approval is still missing. |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution approval missing` | Future release execution order, target version, and stop conditions are documented while release execution approval is still missing. |
 | Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `blocked release mutation not performed` | The future `0.1.0` release metadata path is rehearsed in memory while real package and lockfile metadata remain at `0.0.0`. |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` | Current release inputs, draft release notes, and the recommended future first release version are documented while implementation approval is still missing. |

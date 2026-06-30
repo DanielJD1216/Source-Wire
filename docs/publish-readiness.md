@@ -25,6 +25,7 @@ This command runs:
 - `npm run ci:check`
 - `npm run release:gate`
 - `npm run release-command-guard:smoke`
+- `npm run release:implementation-preparation`
 - `npm run release:implementation-plan`
 - `npm run release:implementation-rehearsal`
 - `npm run release:review`
@@ -87,6 +88,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | --- | --- |
 | Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` |
 | Release command guard smoke | `ok blocked release commands smoke` |
+| Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release implementation execution approval missing` |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution approval missing` |
 | Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `blocked release mutation not performed` |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` |
@@ -411,6 +413,16 @@ The manifest check verifies the shared required package path list is sorted and 
 It does not build, pack, install, publish, or run runtime behavior.
 
 ## Release Implementation Plan
+
+Run only the release implementation preparation packet:
+
+```bash
+npm run release:implementation-preparation
+```
+
+The preparation packet records the future release execution evidence map, issue `#255` approval requirement, exact stop conditions, and future publish/release commands without executing them.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
 
 Run only the release implementation runbook check:
 

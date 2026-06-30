@@ -1,6 +1,6 @@
 # Source-Wire Runtime Boundary Readiness
 
-Status: readiness summary only. No runtime implementation is included.
+Status: readiness summary with one minimal synthetic in-memory runtime boundary. No hosted runtime implementation is included.
 
 ## What Exists
 
@@ -8,6 +8,8 @@ Source-Wire currently includes a synthetic runtime-boundary proof lane for a fut
 
 The proof lane includes:
 
+- exported synthetic in-memory runtime boundary code,
+- a local minimal-runtime smoke command,
 - a local synthetic runtime-boundary example,
 - an official local smoke command,
 - an installed-package smoke command,
@@ -30,6 +32,7 @@ The synthetic proof lane checks:
 | Trusted-memory approval | Trusted memory requires owner or application approval. |
 | Agent approval denial | Agents cannot self-promote trusted memory by default. |
 | MCP-to-API boundary | MCP calls go through the synthetic API policy boundary. |
+| Exported runtime boundary | The package exports synthetic in-memory policy code for the proof cases. |
 | Installed package behavior | The packaged synthetic example runs after local tarball install. |
 | Diagnostic failure format | A controlled synthetic failure proves check name, assertion, expected value, received value, and next action remain visible. |
 
@@ -43,7 +46,13 @@ Install dependencies first:
 npm install
 ```
 
-Run the local synthetic smoke:
+Run the minimal exported runtime smoke:
+
+```bash
+npm run minimal-runtime:smoke
+```
+
+Run the original local synthetic example smoke:
 
 ```bash
 npm run runtime-boundary:smoke
@@ -68,6 +77,12 @@ npm run publish:readiness
 ```
 
 ## Stable Success Markers
+
+The minimal runtime smoke should print:
+
+```text
+ok minimal runtime boundary smoke
+```
 
 The local and installed runtime-boundary smokes should print:
 
@@ -125,7 +140,9 @@ This readiness lane does not add or approve:
 
 The only future runtime lane currently described is owner-hosted API plus MCP boundary.
 
-That lane remains blocked until a later runtime implementation PRD explicitly opens it.
+The synthetic in-memory boundary is now open for public package proof only.
+
+Hosted API server runtime, real MCP server runtime, database runtime, live connectors, and deployment remain blocked until later PRDs explicitly open them.
 
 Source-Wire does not host memory.
 
@@ -141,5 +158,6 @@ Trusted memory must require owner or application approval.
 - [Public Runtime Decision](public-runtime-decision.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
+- [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Publish Readiness](publish-readiness.md)
 - [CI Checks](ci-checks.md)

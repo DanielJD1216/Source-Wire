@@ -23,6 +23,18 @@ export const SOURCE_WIRE_RUNTIME_BOUNDARY: SourceWireRuntimeBoundary = {
   missionControlIncluded: false
 };
 
+export type {
+  SourceWireMinimalRuntimeAudit,
+  SourceWireMinimalRuntimeCitation,
+  SourceWireMinimalRuntimeProofResult,
+  SourceWireMinimalRuntimeResult,
+  SourceWireMinimalRuntimeStatus
+} from "./runtime/minimal-boundary.js";
+export {
+  SOURCE_WIRE_MINIMAL_RUNTIME_BOUNDARY,
+  runMinimalRuntimeProofCase,
+  runMinimalRuntimeProofCases
+} from "./runtime/minimal-boundary.js";
 export type * from "./contracts/fixtures.js";
 export type * from "./contracts/mcp-tools.js";
 export type * from "./contracts/second-brain.js";

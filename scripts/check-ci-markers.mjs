@@ -32,6 +32,10 @@ const markerGroups = [
     ]
   },
   {
+    name: "minimal runtime smoke",
+    markers: ["ok minimal runtime boundary smoke"]
+  },
+  {
     name: "runtime boundary smoke",
     markers: [
       "ok runtime boundary check authorized_read",

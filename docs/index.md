@@ -2,7 +2,7 @@
 
 Source-Wire is a public contract package skeleton for agent-first memory systems.
 
-It is not a runtime backend and it is not published to npm yet.
+It now includes a minimal synthetic in-memory runtime boundary. It is not a hosted runtime backend and it is not published to npm yet.
 
 ## Start Here
 
@@ -16,6 +16,7 @@ It is not a runtime backend and it is not published to npm yet.
 - [Minimal Runtime PRD](minimal-runtime-prd.md)
 - [Minimal Runtime Issue Slices](minimal-runtime-issue-slices.md)
 - [Minimal Runtime Implementation Scope](minimal-runtime-implementation-scope.md)
+- [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Publish Readiness](publish-readiness.md)
 - [CI Checks](ci-checks.md)
@@ -36,6 +37,7 @@ It is not a runtime backend and it is not published to npm yet.
 - [Quickstart](quickstart.md)
 - [API Reference](api-reference.md)
 - [TypeScript Examples](../examples/typescript/README.md)
+- [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Publish Readiness](publish-readiness.md)
@@ -66,7 +68,7 @@ Current state:
 - no `LICENSE` file exists,
 - npm publishing is blocked,
 - GitHub release publishing is blocked,
-- runtime backend work is blocked.
+- hosted runtime backend work is blocked.
 
 ## Safety
 
@@ -74,7 +76,7 @@ Current state:
 
 Public examples and fixtures must stay synthetic. Do not add real user data, private implementation history, screenshots, local paths, tokens, domains, emails, account IDs, client names, or production exports.
 
-The synthetic runtime boundary example has local and installed-package smoke proof. It does not start a server, connect to a database, add runtime package behavior, or imply Source-Wire hosts memory.
+The minimal synthetic runtime boundary exports in-memory policy proof code. The synthetic runtime boundary example has local and installed-package smoke proof. Neither path starts a server, connects to a database, stores user memory, or implies Source-Wire hosts memory.
 
 ## Intentional Gaps
 

@@ -44,6 +44,8 @@ export const requiredPackagePaths = [
   "examples/fixtures/project-context-pack/project-context.json",
   "examples/fixtures/README.md",
   "examples/fixtures/second-brain/use-2nd-brain-example.json",
+  "examples/minimal-runtime/minimal-runtime-smoke.mjs",
+  "examples/minimal-runtime/README.md",
   "examples/runtime-boundary/README.md",
   "examples/runtime-boundary/synthetic-boundary-smoke.mjs",
   "examples/typescript/contract-types.ts",

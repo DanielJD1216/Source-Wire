@@ -1,10 +1,10 @@
 # Source-Wire Minimal Runtime Implementation Scope
 
-Status: proposed implementation scope only. No runtime implementation is included.
+Status: minimal synthetic runtime boundary implemented. Hosted runtime implementation remains blocked.
 
-## Allowed Future Runtime Shape
+## Allowed Runtime Shape
 
-The first implementation may be only:
+The first implementation is only:
 
 ```text
 synthetic in-memory policy boundary
@@ -13,19 +13,17 @@ synthetic in-memory policy boundary
   + local smoke tests
 ```
 
-The runtime must stay synthetic, local, and owner-hosted.
+The runtime stays synthetic, local, and owner-hosted.
 
-## Proposed Public File Areas
+## Public File Areas
 
-A later implementation unit may propose files under new public paths such as:
+Unit 236 uses public paths under:
 
 - `src/runtime/`
-- `src/runtime-smoke/`
 - `examples/minimal-runtime/`
-- `docs/minimal-runtime-boundary.md`
-- `scripts/minimal-runtime-smoke.mjs`
+- public docs that link the smoke proof
 
-The exact file list must be approved before implementation starts.
+Hosted runtime file lists must be approved before implementation starts.
 
 ## Required Runtime Behaviors
 
@@ -61,14 +59,14 @@ The minimal runtime boundary must not:
 
 Before running repository commands, use the [Quickstart](quickstart.md) for Node.js 22, npm, and repository-root setup.
 
-A later implementation unit must pass:
+Unit 236 and later runtime-boundary units must pass:
 
 - `npm run typecheck`,
 - `npm run build`,
 - `npm run test`,
 - `npm run cli:smoke`,
+- `npm run minimal-runtime:smoke`,
 - `npm run runtime-boundary:smoke`,
-- new minimal runtime smoke command if added,
 - `npm run safety:scan`,
 - `npm run publish:readiness`.
 

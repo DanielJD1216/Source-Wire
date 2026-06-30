@@ -1,6 +1,6 @@
 # Source-Wire Minimal Runtime PRD
 
-Status: public PRD package only. Runtime implementation is still blocked.
+Status: public PRD package plus minimal synthetic in-memory runtime boundary. Hosted runtime implementation is still blocked.
 
 ## Goal
 
@@ -12,7 +12,7 @@ The goal is to prove the agent-facing memory policy boundary with synthetic data
 
 Agent harnesses need a stable way to ask a memory system for context without letting the agent bypass owner policy, cross namespaces, silently trust source evidence, or promote memory without review.
 
-Contracts and fixtures already define that shape. The next step is a minimal runtime boundary that can exercise those contracts through a tiny owner-hosted API and an MCP tool facade.
+Contracts and fixtures already define that shape. Unit 236 adds a minimal runtime boundary that exercises those contracts through synthetic owner-hosted API policy behavior and an MCP-facing facade.
 
 ## Current Evidence
 
@@ -25,6 +25,8 @@ Source-Wire already includes:
 - public safety scan,
 - package readiness checks,
 - synthetic runtime-boundary smoke examples,
+- a minimal exported synthetic runtime boundary,
+- a minimal runtime smoke command,
 - installed package smokes,
 - owner-hosted API plus MCP boundary proof cases.
 
@@ -49,14 +51,14 @@ MCP tool boundary
   -> never bypasses API policy
 ```
 
-## In Scope For A Later Implementation Unit
+## Unit 236 Implementation
 
-A later implementation unit may add:
+Unit 236 adds:
 
-- minimal public API boundary code,
-- minimal public MCP tool boundary code,
+- minimal public synthetic API policy boundary code,
+- minimal public MCP-facing boundary code,
 - synthetic in-memory fixtures,
-- synthetic request and response examples,
+- synthetic request and response proof handling,
 - namespace and permission checks,
 - no-auto-promotion checks,
 - source evidence versus trusted memory checks,
@@ -115,16 +117,17 @@ A later implementation unit must prove:
 | MCP boundary | MCP tools call API policy instead of bypassing it. |
 | Audit metadata | Results preserve caller, namespace, action, and result metadata. |
 
-## Implementation Starts Blocked
+## Hosted Runtime Remains Blocked
 
-This PRD package does not start implementation.
+This PRD package now has a minimal synthetic implementation.
 
-Before runtime code is added, a later public implementation unit must open exact issue slices, list exact files, run public safety checks, and keep the no-go conditions above intact.
+Before hosted runtime code is added, a later public implementation unit must open exact issue slices, list exact files, run public safety checks, and keep the no-go conditions above intact.
 
 ## Related Docs
 
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Minimal Runtime Issue Slices](minimal-runtime-issue-slices.md)
 - [Minimal Runtime Implementation Scope](minimal-runtime-implementation-scope.md)
+- [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Owner-hosted API plus MCP boundary fixture](../examples/fixtures/owner-hosted-api-mcp-boundary/)

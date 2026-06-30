@@ -1,10 +1,10 @@
 # Source-Wire Minimal Runtime Issue Slices
 
-Status: proposed public issue package only. No runtime implementation is included.
+Status: implemented for minimal synthetic in-memory runtime boundary. Hosted runtime implementation remains blocked.
 
 ## Parent
 
-Proposed future parent:
+Implemented parent:
 
 ```text
 Source-Wire Minimal Runtime Boundary Implementation
@@ -78,6 +78,7 @@ Acceptance criteria:
 - docs state Source-Wire still does not host memory,
 - docs state database migrations remain blocked,
 - docs state Mission Control remains blocked,
+- `npm run minimal-runtime:smoke` passes,
 - `npm run publish:readiness` passes,
 - public safety scan reports 0 high, 0 medium, and 0 low findings.
 

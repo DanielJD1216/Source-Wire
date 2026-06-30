@@ -29,6 +29,7 @@ This command runs:
 - `npm run consumer:smoke`
 - `npm run package:content-smoke`
 - `npm run examples:installed-smoke`
+- `npm run minimal-runtime:smoke`
 - `npm run runtime-boundary:installed-smoke`
 - `npm run runtime-boundary:diagnostics-smoke`
 - `npm run readiness:report`
@@ -39,6 +40,7 @@ This command runs:
 
 The `ci:check` sub-gate includes:
 
+- `npm run minimal-runtime:smoke`
 - `npm run runtime-boundary:smoke`
 
 ## Local Success Marker Map
@@ -53,6 +55,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` |
+| Minimal runtime smoke | `ok minimal runtime boundary smoke` |
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.0.0`, `ok installed runtime boundary example` |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
@@ -202,6 +205,22 @@ This is different from `npm run examples:typecheck`, which checks examples in th
 The installed smoke proves package-root imports from `@source-wire/contracts` work for consumer TypeScript examples.
 
 It does not execute compiled example JavaScript.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Minimal Runtime Smoke
+
+Run only the minimal synthetic runtime smoke:
+
+```bash
+npm run minimal-runtime:smoke
+```
+
+The minimal runtime smoke builds the package and runs `examples/minimal-runtime/minimal-runtime-smoke.mjs`.
+
+It validates exported synthetic in-memory runtime boundary code against the owner-hosted API plus MCP boundary proof cases.
 
 It does not publish npm.
 

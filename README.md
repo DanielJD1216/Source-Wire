@@ -13,10 +13,11 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - Synthetic fixtures for notes, chat exports, project context, and `/2nd-brain` examples.
 - A public extraction checklist for future safety reviews.
 - A lightweight TypeScript package boundary.
+- A minimal synthetic in-memory runtime boundary for owner-hosted API plus MCP policy proof.
 
 ## What Is Intentionally Not Included Yet
 
-- Runtime implementation code.
+- Hosted runtime backend code.
 - Mission Control UI.
 - Real user data.
 - Real Memory Records or Sources.
@@ -37,6 +38,7 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 - [TypeScript Examples](examples/typescript/README.md)
 - [Runtime Implementation Gate](docs/runtime-implementation-gate.md)
 - [Runtime Boundary Readiness](docs/runtime-boundary-readiness.md)
+- [Minimal Synthetic Runtime Boundary](examples/minimal-runtime/)
 - [Synthetic Runtime Boundary Example](examples/runtime-boundary/)
 
 ## Contracts
@@ -59,9 +61,9 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 
 ## Package Boundary
 
-This repo is currently a contract package skeleton.
+This repo is currently a contract package skeleton with a minimal synthetic runtime boundary.
 
-It can define public shapes and validate public fixtures. It does not run a memory backend, database, MCP server, Mission Control UI, memory-engine integration, or live connector.
+It can define public shapes, validate public fixtures, and execute synthetic in-memory policy proof cases. It does not run a memory backend, database, MCP server, Mission Control UI, memory-engine integration, or live connector.
 
 - [Architecture Map](docs/architecture-map.md)
 - [API Reference](docs/api-reference.md)
@@ -109,7 +111,27 @@ All fixtures are fictional and synthetic.
 - [`/2nd-brain` example fixture](examples/fixtures/second-brain/use-2nd-brain-example.json)
 - [Owner-hosted API plus MCP boundary fixture](examples/fixtures/owner-hosted-api-mcp-boundary/)
 
-The owner-hosted API plus MCP boundary fixture contains synthetic proof cases only. It is not schema-backed or validated by the current CLI.
+The owner-hosted API plus MCP boundary fixture contains synthetic proof cases only. It is schema-backed and validated by the current CLI.
+
+## Minimal Synthetic Runtime Boundary
+
+The [minimal synthetic runtime boundary](examples/minimal-runtime/) exports in-memory TypeScript policy code and validates it against the owner-hosted API plus MCP boundary proof cases.
+
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](docs/quickstart.md).
+
+Install dependencies first:
+
+```bash
+npm install
+```
+
+Run it with:
+
+```bash
+npm run minimal-runtime:smoke
+```
+
+It does not start a server, connect to a database, run a real MCP server, store memory, or imply Source-Wire hosts memory.
 
 ## Runtime Boundary Example
 
@@ -141,7 +163,7 @@ Run the diagnostic regression proof with:
 npm run runtime-boundary:diagnostics-smoke
 ```
 
-It does not start a server, connect to a database, add package exports, or imply Source-Wire hosts memory.
+It does not start a server, connect to a database, or imply Source-Wire hosts memory.
 
 ## Safety Rule
 

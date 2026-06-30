@@ -1,12 +1,12 @@
 # Source-Wire Runtime Implementation Gate
 
-Status: implementation gate only. No runtime implementation is included.
+Status: implementation gate with one minimal synthetic in-memory runtime boundary. Hosted runtime implementation remains blocked.
 
 ## Purpose
 
-This gate prevents Source-Wire runtime work from starting just because boundary docs and synthetic fixtures now exist.
+This gate prevents hosted Source-Wire runtime work from starting just because boundary docs, synthetic fixtures, and a minimal synthetic runtime boundary now exist.
 
-Source-Wire is still a public contract package skeleton.
+Source-Wire is still a public contract package skeleton with exported synthetic policy proof code.
 
 It does not host user memory.
 
@@ -14,7 +14,7 @@ It does not include an API server, MCP server runtime, database migrations, depl
 
 ## Current Decision
 
-Runtime implementation is still blocked.
+Hosted runtime implementation is still blocked.
 
 The first eligible runtime lane is only:
 
@@ -26,17 +26,17 @@ owner-hosted API boundary
   + no Mission Control UI until API and MCP boundaries are stable
 ```
 
-This gate does not approve that runtime lane.
+Unit 236 approved only the synthetic in-memory package proof version of that lane.
 
-A later runtime implementation PRD must approve it before runtime files are added.
+A later runtime implementation PRD must approve hosted runtime files before they are added.
 
 The proposed first runtime PRD package is recorded in [First Runtime PRD Package](first-runtime-prd.md).
 
 The current minimal runtime PRD package is recorded in [Minimal Runtime PRD](minimal-runtime-prd.md).
 
-## What A First Runtime PRD May Propose
+## What A Hosted Runtime PRD May Propose
 
-A first runtime implementation PRD may propose public-safe versions of:
+A hosted runtime implementation PRD may propose public-safe versions of:
 
 - owner-hosted API route contracts,
 - MCP tool boundary contracts,
@@ -54,7 +54,7 @@ It must keep npm publishing blocked unless a separate release PRD approves publi
 
 ## Required Proof Matrix
 
-A future runtime implementation PRD must prove these cases before runtime code merges:
+A hosted runtime implementation PRD must prove these cases before hosted runtime code merges:
 
 | Case | Required behavior |
 | --- | --- |
@@ -72,7 +72,7 @@ A future runtime implementation PRD must prove these cases before runtime code m
 
 ## No-Go Conditions
 
-Runtime implementation must not start if any of these are true:
+Hosted runtime implementation must not start if any of these are true:
 
 - examples require secrets,
 - examples use real data,
@@ -123,6 +123,7 @@ It must not silently decide that evidence is trusted memory.
 - [Minimal Runtime PRD](minimal-runtime-prd.md)
 - [Minimal Runtime Issue Slices](minimal-runtime-issue-slices.md)
 - [Minimal Runtime Implementation Scope](minimal-runtime-implementation-scope.md)
+- [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)

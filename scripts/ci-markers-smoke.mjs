@@ -18,6 +18,7 @@ const completeLog = [
   "ok installed runtime readiness summary",
   "ok installed runtime readiness summary content",
   "ok installed package docs links",
+  "ok minimal runtime boundary smoke",
   "ok runtime boundary check authorized_read",
   "ok runtime boundary check unauthorized_read_denial",
   "ok runtime boundary check wrong_namespace_denial",
@@ -52,7 +53,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 10 groups 32 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 11 groups 33 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

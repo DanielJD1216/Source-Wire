@@ -15,6 +15,7 @@ const requiredScripts = [
   "consumer:smoke",
   "package:content-smoke",
   "examples:installed-smoke",
+  "minimal-runtime:smoke",
   "runtime-boundary:smoke",
   "runtime-boundary:installed-smoke",
   "runtime-boundary:diagnostics-smoke",
@@ -89,6 +90,7 @@ for (const requiredPath of [
   "docs/publish-readiness.md",
   "docs/ci-checks.md",
   "examples/fixtures/README.md",
+  "examples/minimal-runtime/README.md",
   "examples/typescript/README.md"
 ]) {
   await assertPathExists(requiredPath);
@@ -107,7 +109,7 @@ printRows([
   ["Version", packageJson.version],
   ["License", packageJson.license],
   ["Publish boundary", "npm publishing blocked, publishConfig.access restricted"],
-  ["Runtime boundary", "contracts only, no backend runtime included"]
+  ["Runtime boundary", "synthetic in-memory boundary only, no backend runtime included"]
 ]);
 
 printSection("Package Surfaces");
@@ -125,6 +127,7 @@ printList([
   "consumer:smoke validates package-root imports and installed CLI fixture validation",
   "package:content-smoke validates installed required paths, README/docs/examples links, installed runtime readiness summary presence, and installed readiness summary content assertions",
   "examples:installed-smoke validates copied TypeScript examples against installed package declarations",
+  "minimal-runtime:smoke validates exported synthetic in-memory runtime boundary code against owner-hosted API plus MCP proof cases",
   "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install",
   "runtime-boundary:diagnostics-smoke validates the synthetic smoke diagnostic failure format"
 ]);
@@ -133,11 +136,12 @@ printSection("Required Readiness Docs");
 printList([
   "README.md is the package entrypoint and public boundary summary",
   "docs/quickstart.md defines local setup and first-run commands",
-  "docs/minimal-runtime-prd.md records the next runtime PRD package while keeping implementation blocked",
+  "docs/minimal-runtime-prd.md records the minimal synthetic runtime boundary while keeping hosted runtime implementation blocked",
   "docs/runtime-boundary-readiness.md summarizes the runtime-boundary proof lane and blocked runtime scope",
   "docs/publish-readiness.md summarizes the local readiness gate and marker map",
   "docs/ci-checks.md summarizes GitHub Actions Package Checks and marker map",
   "examples/fixtures/README.md summarizes synthetic fixture boundaries",
+  "examples/minimal-runtime/README.md summarizes the exported synthetic runtime boundary smoke",
   "examples/typescript/README.md summarizes public TypeScript example checks"
 ]);
 

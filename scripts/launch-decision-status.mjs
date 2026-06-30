@@ -60,6 +60,14 @@ printList([
   "Open separate PRDs for hosted runtime and contribution acceptance."
 ]);
 
+printSection("Owner Decision Issues");
+printList([
+  "#255 First public release path: https://github.com/DanielJD1216/Source-Wire/issues/255",
+  "#256 Branch governance path: https://github.com/DanielJD1216/Source-Wire/issues/256",
+  "#257 Hosted runtime PRD path: https://github.com/DanielJD1216/Source-Wire/issues/257",
+  "#258 Contribution terms before accepting code: https://github.com/DanielJD1216/Source-Wire/issues/258"
+]);
+
 console.log("");
 console.log("ok launch decision status ready");
 console.log("ok apache 2 license implemented");

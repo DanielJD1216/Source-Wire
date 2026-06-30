@@ -8,6 +8,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 
 - [Public Adopter Walkthrough](adopter-walkthrough.md)
 - [Public Status](public-status.md)
+- [Share For Technical Review](share-for-review.md)
 - [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md)
 - [Repository Metadata](repository-metadata.md)
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
@@ -45,6 +46,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is not a host
 
 - [Quickstart](quickstart.md)
 - [Public Status](public-status.md)
+- [Share For Technical Review](share-for-review.md)
 - [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md)
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)

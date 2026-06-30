@@ -4,6 +4,8 @@ This guide explains how to give useful Source-Wire review feedback without cross
 
 For the repo's current public state, read [Public Status](public-status.md).
 
+If you received the repo from someone else, start with [Share For Technical Review](share-for-review.md) for the review-only boundary and first command path.
+
 ## Current Boundary
 
 Source-Wire is public for technical review, but it is still:

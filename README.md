@@ -8,6 +8,8 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 
 Current public status: Source-Wire is public for technical review, but it is `UNLICENSED`, unreleased, unpublished, and not a hosted runtime. Read [Public Status](docs/public-status.md) before reuse or redistribution assumptions.
 
+Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
+
 Share-readiness audit: Source-Wire is ready for technical review, not broad reuse. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
 
 ## What This Public Skeleton Includes
@@ -38,6 +40,7 @@ Share-readiness audit: Source-Wire is ready for technical review, not broad reus
 
 - [Docs Index](docs/index.md)
 - [Public Status](docs/public-status.md)
+- [Share For Technical Review](docs/share-for-review.md)
 - [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md)
 - [Repository Metadata](docs/repository-metadata.md)
 - [Technical Reviewer Guide](docs/technical-reviewer-guide.md)

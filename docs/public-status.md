@@ -91,6 +91,7 @@ For a full marker map, read [Publish Readiness](publish-readiness.md).
 
 Start with:
 
+- [Share For Technical Review](share-for-review.md)
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)
 - [Repository Metadata](repository-metadata.md)

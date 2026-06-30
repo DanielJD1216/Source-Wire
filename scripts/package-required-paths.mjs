@@ -41,6 +41,7 @@ export const requiredPackagePaths = [
   "docs/runtime-boundary.md",
   "docs/runtime-implementation-gate.md",
   "docs/schema-exports.md",
+  "docs/share-for-review.md",
   "docs/technical-reviewer-guide.md",
   "docs/validation-cli.md",
   "examples/fixtures/chat-export/agent-session.jsonl",

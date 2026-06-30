@@ -4,6 +4,8 @@ This guide is for technical reviewers who want to inspect Source-Wire before it 
 
 For the shortest status summary, read [Public Status](public-status.md).
 
+For safe copy/paste invite text and the shortest review path, read [Share For Technical Review](share-for-review.md).
+
 ## Current Review Boundary
 
 Source-Wire is currently a public contract package skeleton.

@@ -55,6 +55,12 @@ blocked owner license decision missing
 4. Choose exactly one owner decision option.
 5. Start a later implementation unit for that approved option only.
 
+To preview the implementation unit for each option, read [License Decision Implementation Plan](license-decision-implementation-plan.md) or run:
+
+```bash
+npm run license:implementation-plan
+```
+
 ## Exact Owner Decision Options
 
 Choose exactly one.
@@ -107,6 +113,7 @@ Even after this workflow is ready, separate approval is still required for:
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
 - [License Approval Request Packet](license-approval-request-packet.md)
 - [License Approval Decision Record](license-approval-decision-record.md)
+- [License Decision Implementation Plan](license-decision-implementation-plan.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)

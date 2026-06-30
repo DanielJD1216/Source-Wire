@@ -8,6 +8,8 @@ This checklist prepares the exact implementation path for a future owner-approve
 
 It exists so the later implementation can be small, reviewable, and hard to confuse with npm publishing or runtime release.
 
+For the implementation map across all owner decision options, read [License Decision Implementation Plan](license-decision-implementation-plan.md).
+
 ## Current State
 
 | Field | Current value |
@@ -131,6 +133,7 @@ Stop the future implementation if:
 ## Related Docs
 
 - [License Decision Gate](license-decision-gate.md)
+- [License Decision Implementation Plan](license-decision-implementation-plan.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [Future License Change Plan](future-license-change-plan.md)
 - [License And Version Policy](license-version-policy.md)

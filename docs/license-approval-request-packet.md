@@ -34,6 +34,12 @@ For the one-command decision workflow, run:
 npm run owner:decision-workflow
 ```
 
+For the post-decision implementation map, run:
+
+```bash
+npm run license:implementation-plan
+```
+
 Expected markers:
 
 ```text
@@ -106,6 +112,7 @@ Even if one option is approved later, separate approval is still required for:
 - [License Approval Decision Record](license-approval-decision-record.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
 - [Owner License Decision Workflow](owner-license-decision-workflow.md)
+- [License Decision Implementation Plan](license-decision-implementation-plan.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)

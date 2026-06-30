@@ -72,6 +72,7 @@
     "license:rehearsal": "node scripts/license-approval-rehearsal.mjs",
     "license:decision-record": "node scripts/license-decision-record.mjs",
     "license:approval-request": "node scripts/license-approval-request.mjs",
+    "license:implementation-plan": "node scripts/license-implementation-plan.mjs",
     "legal:packet": "node scripts/legal-review-packet.mjs",
     "owner:launch-checklist": "node scripts/owner-launch-checklist.mjs",
     "owner:license-preflight": "node scripts/owner-license-preflight.mjs",
@@ -82,7 +83,7 @@
     "release:gate": "node scripts/release-gate.mjs",
     "package:dry-run": "npm run build && node scripts/package-dry-run.mjs",
     "package:content-smoke": "node scripts/package-content-smoke.mjs",
-    "publish:readiness": "npm run ci:check && npm run release:gate && npm run license:rehearsal && npm run license:decision-record && npm run license:approval-request && npm run legal:packet && npm run owner:launch-checklist && npm run owner:license-preflight && npm run owner:decision-workflow && npm run world:readiness && npm run launch:decision-status && npm run package:required-paths && npm run package:dry-run && npm run consumer:smoke && npm run package:content-smoke && npm run examples:installed-smoke && npm run runtime-boundary:installed-smoke && npm run runtime-boundary:diagnostics-smoke && npm run readiness:report && npm run docs:links && npm run docs:command-setup && npm run safety:scan && npm run ci:markers:smoke"
+    "publish:readiness": "npm run ci:check && npm run release:gate && npm run license:rehearsal && npm run license:decision-record && npm run license:approval-request && npm run license:implementation-plan && npm run legal:packet && npm run owner:launch-checklist && npm run owner:license-preflight && npm run owner:decision-workflow && npm run world:readiness && npm run launch:decision-status && npm run package:required-paths && npm run package:dry-run && npm run consumer:smoke && npm run package:content-smoke && npm run examples:installed-smoke && npm run runtime-boundary:installed-smoke && npm run runtime-boundary:diagnostics-smoke && npm run readiness:report && npm run docs:links && npm run docs:command-setup && npm run safety:scan && npm run ci:markers:smoke"
   },
   "devDependencies": {
     "@types/node": "^26.0.1",

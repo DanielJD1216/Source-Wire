@@ -62,6 +62,12 @@ For the step-by-step owner decision workflow, use [Owner License Decision Workfl
 npm run owner:decision-workflow
 ```
 
+For the implementation map after the owner chooses a path, use [License Decision Implementation Plan](license-decision-implementation-plan.md):
+
+```bash
+npm run license:implementation-plan
+```
+
 Before requesting legal or owner review, run:
 
 ```bash
@@ -152,6 +158,7 @@ unless a later publishing PRD explicitly approves it.
 - [License Approval Decision Record](license-approval-decision-record.md)
 - [License Approval Request Packet](license-approval-request-packet.md)
 - [Owner License Decision Workflow](owner-license-decision-workflow.md)
+- [License Decision Implementation Plan](license-decision-implementation-plan.md)
 - [Apache-2.0 License Implementation Readiness](apache-2-license-implementation-readiness.md)
 - [Future License Change Plan](future-license-change-plan.md)
 - [License And Version Policy](license-version-policy.md)

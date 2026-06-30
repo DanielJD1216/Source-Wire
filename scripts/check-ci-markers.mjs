@@ -31,6 +31,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "license implementation plan",
+    markers: [
+      "ok license implementation plan ready",
+      "ok license decision paths mapped",
+      "blocked license implementation awaiting owner decision"
+    ]
+  },
+  {
     name: "owner license approval preflight",
     markers: [
       "ok owner license approval preflight ready",

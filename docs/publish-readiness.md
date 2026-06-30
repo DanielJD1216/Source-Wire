@@ -27,6 +27,7 @@ This command runs:
 - `npm run license:rehearsal`
 - `npm run license:decision-record`
 - `npm run license:approval-request`
+- `npm run license:implementation-plan`
 - `npm run legal:packet`
 - `npm run owner:launch-checklist`
 - `npm run owner:license-preflight`
@@ -65,6 +66,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | License rehearsal | `ok license rehearsal current boundary`, `ok license rehearsal future checklist` |
 | License decision record | `ok license decision record ready`, `blocked license decision pending`, `blocked license implementation missing` |
 | License approval request | `ok license approval request ready`, `blocked owner license approval missing`, `blocked license decision pending` |
+| License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `blocked license implementation awaiting owner decision` |
 | Legal-review packet | `ok legal review packet ready`, `blocked legal approval not granted` |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked owner launch approval missing` |
 | Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `blocked owner license approval missing` |
@@ -201,6 +203,18 @@ npm run license:approval-request
 ```
 
 The command verifies that the exact owner decision options are present and that owner license approval is still missing.
+
+It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
+
+## License Decision Implementation Plan
+
+Run only the license decision implementation plan:
+
+```bash
+npm run license:implementation-plan
+```
+
+The command verifies that all four owner decision paths are mapped, stop conditions are present, and license implementation is still awaiting owner approval.
 
 It does not add a `LICENSE` file, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or grant reuse rights.
 

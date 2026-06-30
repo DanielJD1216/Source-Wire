@@ -72,6 +72,12 @@ To view the next owner action workflow, run:
 npm run owner:decision-workflow
 ```
 
+To view the post-decision implementation map, run:
+
+```bash
+npm run license:implementation-plan
+```
+
 ## Future Approval Options
 
 Only update this record in a future owner-approved unit.
@@ -97,6 +103,7 @@ pending
 
 - [License Decision Gate](license-decision-gate.md)
 - [License Approval Request Packet](license-approval-request-packet.md)
+- [License Decision Implementation Plan](license-decision-implementation-plan.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
 - [Owner License Decision Workflow](owner-license-decision-workflow.md)
 - [Owner License Approval Packet](owner-license-approval-packet.md)

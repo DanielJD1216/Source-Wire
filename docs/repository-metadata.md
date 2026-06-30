@@ -15,6 +15,24 @@ It is still:
 - not a hosted runtime,
 - not accepting code contributions.
 
+## GitHub About Panel
+
+The actual GitHub repository About panel should use review-only wording.
+
+Intended description:
+
+```text
+Review-only agent-memory contract skeleton. UNLICENSED, unpublished, not hosted.
+```
+
+Intended homepage URL:
+
+```text
+https://github.com/DanielJD1216/Source-Wire/blob/main/docs/share-for-review.md
+```
+
+The description must stay short enough for the GitHub About panel but explicit enough that visitors do not confuse public visibility with reuse permission.
+
 ## GitHub-Visible Files
 
 | File | Purpose |

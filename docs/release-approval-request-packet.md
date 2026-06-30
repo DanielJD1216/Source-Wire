@@ -44,6 +44,7 @@ npm run release:decision-preflight
 This runs:
 
 - `npm run world:share-preflight`
+- `npm run release:approval-status`
 - `npm run release:candidate-readiness`
 - `npm run release:artifact-manifest`
 - `npm run release:approval-request`
@@ -54,12 +55,29 @@ Expected final markers:
 ```text
 ok release decision preflight ready
 ok world share preflight current
+ok release approval status current
 ok release candidate evidence current
 ok release artifact evidence current
 blocked release implementation approval missing
 ```
 
 This command does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
+
+To check only whether issue `#255` has a separate exact owner approval record, run:
+
+```bash
+npm run release:approval-status
+```
+
+Expected current markers before owner approval:
+
+```text
+ok release approval status readable
+blocked exact release approval missing
+blocked release implementation approval missing
+```
+
+This check intentionally ignores the recommended approval text in this packet. Approval must be recorded separately in issue `#255`, either in an `Owner Approval Record` section or in an issue comment containing the exact approval text.
 
 ## Current State
 

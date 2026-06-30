@@ -2,6 +2,7 @@ import { execFile } from "node:child_process";
 
 const checks = [
   ["world:share-preflight", "world-share preflight"],
+  ["release:approval-status", "release approval status"],
   ["release:candidate-readiness", "release candidate readiness"],
   ["release:artifact-manifest", "release artifact manifest"],
   ["release:approval-request", "release approval request"],
@@ -20,6 +21,7 @@ for (const [scriptName, label] of checks) {
 printSection("Release Decision Preflight Result");
 console.log("ok release decision preflight ready");
 console.log("ok world share preflight current");
+console.log("ok release approval status current");
 console.log("ok release candidate evidence current");
 console.log("ok release artifact evidence current");
 console.log("blocked release implementation approval missing");

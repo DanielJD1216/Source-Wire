@@ -45,12 +45,13 @@ blocked release implementation execution approval missing
 Before any version change, npm publish, tag, or GitHub release:
 
 1. Issue `#255` must contain the exact owner approval text.
-2. `npm run release:decision-preflight` must pass.
-3. `npm run publish:readiness` must pass from a clean checkout.
-4. `npm run release:artifact-manifest` must record package identity, shasum, and integrity.
-5. GitHub Actions Package Checks must pass on the exact release commit.
-6. Release notes and version target must still be intentional.
-7. Package contents must not include private data, local paths, real user records, or private proof history.
+2. `npm run release:approval-status` must show the exact approval is recorded separately in issue `#255`.
+3. `npm run release:decision-preflight` must pass.
+4. `npm run publish:readiness` must pass from a clean checkout.
+5. `npm run release:artifact-manifest` must record package identity, shasum, and integrity.
+6. GitHub Actions Package Checks must pass on the exact release commit.
+7. Release notes and version target must still be intentional.
+8. Package contents must not include private data, local paths, real user records, or private proof history.
 
 ## Execution Checklist After Approval
 
@@ -58,6 +59,7 @@ Run this sequence only after issue `#255` contains exact approval.
 
 ```bash
 git status --short --branch
+npm run release:approval-status
 npm run release:decision-preflight
 npm run publish:readiness
 npm run release:artifact-manifest
@@ -79,6 +81,7 @@ Those commands are intentionally documented here as future execution commands, n
 Stop before publishing or releasing if any of these are true:
 
 - issue `#255` does not contain the exact owner approval text,
+- `npm run release:approval-status` does not show a separate exact approval record,
 - release version is not explicit,
 - `npm run release:decision-preflight` fails,
 - `npm run publish:readiness` fails,

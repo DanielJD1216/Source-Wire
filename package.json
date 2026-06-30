@@ -104,6 +104,7 @@
     "release:implementation-rehearsal": "node scripts/release-implementation-rehearsal.mjs",
     "release:review": "node scripts/release-review.mjs",
     "release:approval-request": "node scripts/release-approval-request.mjs",
+    "release:approval-status": "node scripts/release-approval-status.mjs",
     "release:decision-preflight": "node scripts/release-decision-preflight.mjs",
     "release:candidate-readiness": "node scripts/release-candidate-readiness.mjs",
     "release:artifact-manifest": "npm run build && node scripts/release-artifact-manifest.mjs",

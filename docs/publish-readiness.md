@@ -24,6 +24,8 @@ This command runs:
 
 - `npm run ci:check`
 - `npm run release:gate`
+- `npm run release:approval-request`
+- `npm run release:candidate-readiness`
 - `npm run license:rehearsal`
 - `npm run license:decision-record`
 - `npm run license:approval-request`
@@ -65,6 +67,8 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Area | Markers to look for |
 | --- | --- |
 | Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` |
+| Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` |
+| Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release implementation approval missing` |
 | License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
 | License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` |
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` |
@@ -125,6 +129,30 @@ npm run package:required-paths
 The manifest check verifies the shared required package path list is sorted and duplicate-free.
 
 It does not build, pack, install, publish, or run runtime behavior.
+
+## Release Approval Request
+
+Run only the release approval request:
+
+```bash
+npm run release:approval-request
+```
+
+The request packet shows exact future owner decision options for npm publishing and GitHub release publishing.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
+
+## Release Candidate Readiness
+
+Run only the release-candidate readiness check:
+
+```bash
+npm run release:candidate-readiness
+```
+
+The check verifies the package is locally ready for an owner release decision while release implementation remains blocked.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
 
 ## Readiness Report
 

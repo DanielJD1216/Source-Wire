@@ -81,11 +81,13 @@
     "owner:decision-workflow": "node scripts/owner-decision-workflow.mjs",
     "world:readiness": "node scripts/world-share-readiness.mjs",
     "launch:decision-status": "node scripts/launch-decision-status.mjs",
+    "release:approval-request": "node scripts/release-approval-request.mjs",
+    "release:candidate-readiness": "node scripts/release-candidate-readiness.mjs",
     "ci:check": "npm run typecheck && npm run build && npm test && npm run validate:fixtures && npm run verify:schema-exports && npm run cli:smoke && npm run minimal-runtime:smoke && npm run runtime-boundary:smoke && npm run safety:scan && npm run claims:scan",
     "release:gate": "node scripts/release-gate.mjs",
     "package:dry-run": "npm run build && node scripts/package-dry-run.mjs",
     "package:content-smoke": "node scripts/package-content-smoke.mjs",
-    "publish:readiness": "npm run ci:check && npm run release:gate && npm run license:rehearsal && npm run license:decision-record && npm run license:approval-request && npm run license:implementation-plan && npm run legal:packet && npm run owner:launch-checklist && npm run owner:license-preflight && npm run owner:decision-intake && npm run owner:decision-workflow && npm run world:readiness && npm run launch:decision-status && npm run share:audit && npm run package:required-paths && npm run package:dry-run && npm run consumer:smoke && npm run package:content-smoke && npm run examples:installed-smoke && npm run runtime-boundary:installed-smoke && npm run runtime-boundary:diagnostics-smoke && npm run readiness:report && npm run docs:links && npm run docs:command-setup && npm run safety:scan && npm run ci:markers:smoke"
+    "publish:readiness": "npm run ci:check && npm run release:gate && npm run release:approval-request && npm run release:candidate-readiness && npm run license:rehearsal && npm run license:decision-record && npm run license:approval-request && npm run license:implementation-plan && npm run legal:packet && npm run owner:launch-checklist && npm run owner:license-preflight && npm run owner:decision-intake && npm run owner:decision-workflow && npm run world:readiness && npm run launch:decision-status && npm run share:audit && npm run package:required-paths && npm run package:dry-run && npm run consumer:smoke && npm run package:content-smoke && npm run examples:installed-smoke && npm run runtime-boundary:installed-smoke && npm run runtime-boundary:diagnostics-smoke && npm run readiness:report && npm run docs:links && npm run docs:command-setup && npm run safety:scan && npm run ci:markers:smoke"
   },
   "devDependencies": {
     "@types/node": "^26.0.1",

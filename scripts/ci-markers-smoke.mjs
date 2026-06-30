@@ -10,6 +10,13 @@ const completeLog = [
   "ok license Apache-2.0",
   "ok version 0.0.0",
   "ok publishing blocked",
+  "ok release approval request ready",
+  "blocked npm publishing not approved",
+  "blocked github release not approved",
+  "blocked version release not approved",
+  "ok release candidate readiness ready",
+  "ok local package verification ready",
+  "blocked release implementation approval missing",
   "ok license decision record ready",
   "ok license decision captured",
   "ok license implementation complete",
@@ -88,7 +95,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 23 groups 68 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 25 groups 75 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

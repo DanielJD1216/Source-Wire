@@ -98,6 +98,8 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Marker group | Expected markers | What it proves |
 | --- | --- | --- |
 | Release gate | `ok release gate`, `ok license Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` | Apache-2.0 licensing is implemented while version and publishing boundaries stay blocked. |
+| Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` | Exact future owner release choices are available while npm publishing, GitHub release publishing, and version release remain blocked. |
+| Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release implementation approval missing` | The package is locally ready for an owner release decision, but release implementation approval is still missing. |
 | Package required paths | `ok package required paths` | The shared required package path manifest is sorted and duplicate-free. |
 | License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` | The owner license decision record is implemented for Apache-2.0 source package licensing. |
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` | The owner approval path is captured and implemented. |

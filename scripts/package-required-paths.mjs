@@ -43,6 +43,8 @@ export const requiredPackagePaths = [
   "docs/public-status.md",
   "docs/publish-readiness.md",
   "docs/quickstart.md",
+  "docs/release-approval-request-packet.md",
+  "docs/release-candidate-readiness.md",
   "docs/release-decision.md",
   "docs/repository-metadata.md",
   "docs/reviewer-feedback-guide.md",

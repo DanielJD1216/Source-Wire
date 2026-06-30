@@ -11,6 +11,23 @@ const markerGroups = [
     ]
   },
   {
+    name: "release approval request",
+    markers: [
+      "ok release approval request ready",
+      "blocked npm publishing not approved",
+      "blocked github release not approved",
+      "blocked version release not approved"
+    ]
+  },
+  {
+    name: "release candidate readiness",
+    markers: [
+      "ok release candidate readiness ready",
+      "ok local package verification ready",
+      "blocked release implementation approval missing"
+    ]
+  },
+  {
     name: "package required paths",
     markers: ["ok package required paths"]
   },

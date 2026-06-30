@@ -77,6 +77,7 @@ const completeLog = [
   "ok installed runtime readiness summary",
   "ok installed runtime readiness summary content",
   "ok installed package docs links",
+  "ok installed package docs anchors",
   "ok minimal runtime boundary smoke",
   "ok runtime boundary check authorized_read",
   "ok runtime boundary check unauthorized_read_denial",
@@ -95,6 +96,7 @@ const completeLog = [
   "ok diagnostic failure includes next action",
   "ok readiness report",
   "ok docs links 38 markdown files",
+  "ok docs anchors 0 anchor links across 38 markdown files",
   "ok command docs setup 15 command-bearing markdown files",
   "Findings: 0 high=0 medium=0 low=0",
   "ok public claim boundary scan",
@@ -113,7 +115,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 31 groups 93 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 31 groups 95 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

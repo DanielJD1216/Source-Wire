@@ -47,13 +47,17 @@ try {
 
   const docsLinkCheckerPath = join(root, "scripts", "check-doc-links.mjs");
   const docsLinksResult = await runChecked(process.execPath, [docsLinkCheckerPath], installedPackageRoot);
+  const docsAnchorCheckerPath = join(root, "scripts", "check-doc-anchors.mjs");
+  const docsAnchorsResult = await runChecked(process.execPath, [docsAnchorCheckerPath], installedPackageRoot);
 
   console.log(`ok package content smoke ${pack.name}@${pack.version}`);
   console.log(`ok installed required paths ${requiredPackagePaths.length}`);
   console.log("ok installed runtime readiness summary");
   console.log("ok installed runtime readiness summary content");
   console.log(docsLinksResult.stdout.trim());
+  console.log(docsAnchorsResult.stdout.trim());
   console.log("ok installed package docs links");
+  console.log("ok installed package docs anchors");
 } finally {
   await rm(tempRoot, { recursive: true, force: true });
 }

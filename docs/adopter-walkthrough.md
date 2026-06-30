@@ -101,6 +101,7 @@ ok consumer installed fixture matrix validation
 ok installed runtime readiness summary
 ok installed runtime readiness summary content
 ok installed package docs links
+ok installed package docs anchors
 ok installed examples package-root imports
 ok minimal runtime boundary smoke
 ok readiness report
@@ -168,7 +169,7 @@ Source-Wire has six installed-package or runtime-boundary smoke checks:
 | Command | What it proves |
 | --- | --- |
 | `npm run consumer:smoke` | A temporary external project can install the packed tarball, import the package root, run the installed `source-wire` CLI, and validate schema-backed installed fixtures. |
-| `npm run package:content-smoke` | Installed required paths exist, installed `README.md`, `docs`, and `examples` local Markdown links work from `node_modules/@source-wire/contracts`, and the installed runtime readiness summary exists with its protected content assertions. |
+| `npm run package:content-smoke` | Installed required paths exist, installed `README.md`, `docs`, and `examples` local Markdown links and anchors work from `node_modules/@source-wire/contracts`, and the installed runtime readiness summary exists with its protected content assertions. |
 | `npm run examples:installed-smoke` | Public TypeScript examples typecheck against installed package declarations without repo-local path mapping. |
 | `npm run minimal-runtime:smoke` | Exported synthetic in-memory runtime boundary code matches owner-hosted API plus MCP proof cases. |
 | `npm run runtime-boundary:installed-smoke` | The packaged synthetic runtime-boundary example runs from an installed tarball. |

@@ -183,7 +183,7 @@ printSection("Installed Package Smokes");
 printList([
   "reviewer:smoke validates the documented first reviewer path from a temporary clean checkout-style copy",
   "consumer:smoke validates package-root imports and installed CLI fixture validation",
-  "package:content-smoke validates installed required paths, README/docs/examples links, installed runtime readiness summary presence, and installed readiness summary content assertions",
+  "package:content-smoke validates installed required paths, README/docs/examples links and anchors, installed runtime readiness summary presence, and installed readiness summary content assertions",
   "examples:installed-smoke validates copied TypeScript examples against installed package declarations",
   "minimal-runtime:smoke validates exported synthetic in-memory runtime boundary code against owner-hosted API plus MCP proof cases",
   "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install",

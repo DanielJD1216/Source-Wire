@@ -131,9 +131,9 @@ It does not publish npm or run backend behavior.
 npm run package:content-smoke
 ```
 
-This creates a temporary external project, installs a locally packed Source-Wire tarball, checks local Markdown links from the installed package root under `node_modules/@source-wire/contracts`, and verifies the installed runtime readiness summary exists with its protected content assertions.
+This creates a temporary external project, installs a locally packed Source-Wire tarball, checks local Markdown links and anchors from the installed package root under `node_modules/@source-wire/contracts`, and verifies the installed runtime readiness summary exists with its protected content assertions.
 
-This proves installed `README.md`, `docs`, and `examples` links work from the packaged artifact and that the packaged runtime readiness summary still carries the expected boundary claims.
+This proves installed `README.md`, `docs`, and `examples` links and anchors work from the packaged artifact and that the packaged runtime readiness summary still carries the expected boundary claims.
 
 It does not publish npm, run backend behavior, or typecheck installed TypeScript examples.
 

@@ -182,7 +182,8 @@ const markerGroups = [
       "ok installed required paths",
       "ok installed runtime readiness summary",
       "ok installed runtime readiness summary content",
-      "ok installed package docs links"
+      "ok installed package docs links",
+      "ok installed package docs anchors"
     ]
   },
   {
@@ -224,6 +225,7 @@ const markerGroups = [
     markers: [
       "ok readiness report",
       "ok docs links",
+      "ok docs anchors",
       "ok command docs setup"
     ]
   },

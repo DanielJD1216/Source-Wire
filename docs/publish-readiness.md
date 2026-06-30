@@ -98,7 +98,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` |
 | Package required paths | `ok package required paths` |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
-| Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links` |
+| Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links`, `ok installed package docs anchors` |
 | Minimal runtime smoke | `ok minimal runtime boundary smoke` |
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.0.0`, `ok installed runtime boundary example` |
@@ -686,7 +686,7 @@ The installed readiness summary content assertions protect:
 - Source-Wire does not host memory,
 - trusted memory requires owner or application approval.
 
-Expected markers include `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, and `ok installed package docs links`.
+Expected markers include `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links`, and `ok installed package docs anchors`.
 
 This is different from `npm run docs:links`, which checks links in the repository checkout.
 

@@ -183,6 +183,16 @@ This validates local Markdown links in README, docs, and examples.
 
 It does not check external URLs or anchor existence.
 
+## Check Local Docs Anchors
+
+```bash
+npm run docs:anchors
+```
+
+This validates local Markdown section anchors in README, docs, and examples.
+
+It does not check external URLs.
+
 ## Check Public External Links
 
 ```bash

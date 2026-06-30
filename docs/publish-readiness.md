@@ -55,6 +55,7 @@ This command runs:
 - `npm run runtime-boundary:diagnostics-smoke`
 - `npm run readiness:report`
 - `npm run docs:links`
+- `npm run docs:anchors`
 - `npm run docs:command-setup`
 - `npm run safety:scan`
 - `npm run claims:scan`
@@ -102,12 +103,12 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.0.0`, `ok installed runtime boundary example` |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
-| Docs and readiness | `ok readiness report`, `ok docs links`, `ok command docs setup` |
+| Docs and readiness | `ok readiness report`, `ok docs links`, `ok docs anchors`, `ok command docs setup` |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` |
 | Public claim boundary | `ok public claim boundary scan` |
 | CI marker self-smoke | `ok ci markers smoke` |
 
-The Docs and readiness row proves the readiness summary, required readiness docs, local Markdown links, and command-doc setup pointers are current.
+The Docs and readiness row proves the readiness summary, required readiness docs, local Markdown links, local Markdown anchors, and command-doc setup pointers are current.
 
 Use [CI Checks](ci-checks.md) for the same marker map from the GitHub Actions perspective.
 

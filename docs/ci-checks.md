@@ -89,6 +89,7 @@ The readiness gate runs:
 - `npm run runtime-boundary:diagnostics-smoke`
 - `npm run readiness:report`
 - `npm run docs:links`
+- `npm run docs:anchors`
 - `npm run docs:command-setup`
 - `npm run safety:scan`
 - `npm run claims:scan`
@@ -142,7 +143,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` | Synthetic owner-hosted API plus MCP boundary cases still fail closed and preserve no-auto-promotion. |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.0.0`, `ok installed runtime boundary example` | The packaged synthetic runtime-boundary example runs after local tarball installation. |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` | Boundary smoke failures remain useful to diagnose when a synthetic check breaks. |
-| Docs and readiness | `ok readiness report`, `ok docs links`, `ok command docs setup` | Readiness summary, required readiness docs, local Markdown links, and command-doc setup pointers are current. |
+| Docs and readiness | `ok readiness report`, `ok docs links`, `ok docs anchors`, `ok command docs setup` | Readiness summary, required readiness docs, local Markdown links, local Markdown anchors, and command-doc setup pointers are current. |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` | Public-safety scan found no obvious private-data or secret findings. |
 | Public claim boundary | `ok public claim boundary scan` | Public docs do not make unsafe production, contribution, npm publishing, GitHub release, or hosted-runtime claims while Source-Wire remains unpublished and not hosted. |
 | CI marker self-smoke | `ok ci markers smoke` | The marker helper accepts a complete synthetic log and rejects an incomplete synthetic log. |

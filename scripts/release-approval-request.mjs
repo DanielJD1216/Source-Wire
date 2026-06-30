@@ -22,7 +22,9 @@ for (const requiredPath of [
 
 for (const requiredText of [
   "Status: release approval request only.",
-  "Option 1: Approve npm plus GitHub release implementation",
+  "Option 1: Approve npm plus GitHub release implementation (recommended)",
+  "Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version.",
+  "keep production runtime claims blocked",
   "Option 2: Approve npm publishing only",
   "Option 3: Approve GitHub release only",
   "Option 4: Keep release publishing blocked",

@@ -36,6 +36,15 @@ ok exact owner approval texts available
 blocked approval recording is manual owner action
 ```
 
+For a guarded dry-run or exact-text issue-comment recorder, run:
+
+```bash
+npm run owner:record-approval
+npm run owner:record-approval -- --issue 255
+```
+
+The recorder does not write unless `--write` and a matching `--confirm-exact` value are supplied.
+
 After recording an approval separately, check status with:
 
 ```bash
@@ -115,6 +124,7 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 ## Related Docs
 
 - [Owner Launch Checklist](owner-launch-checklist.md)
+- [Owner Approval Recorder](owner-approval-recorder.md)
 - [Launch Decision Status](launch-decision-status.md)
 - [Release Approval Request Packet](release-approval-request-packet.md)
 - [Branch Governance Approval Request](branch-governance-approval-request.md)

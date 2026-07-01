@@ -106,6 +106,7 @@
     "owner:decision-intake": "node scripts/owner-license-decision-intake.mjs",
     "owner:decision-workflow": "node scripts/owner-decision-workflow.mjs",
     "owner:decision-status": "node scripts/owner-decision-status.mjs",
+    "owner:record-approval": "node scripts/record-owner-approval.mjs",
     "owner:open-issues-status": "node scripts/owner-open-issues-status.mjs",
     "owner:refresh-decision-issues": "node scripts/refresh-owner-decision-issues.mjs",
     "owner:decision-issues-freshness": "node scripts/check-owner-decision-issue-freshness.mjs",

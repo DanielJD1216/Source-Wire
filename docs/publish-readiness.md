@@ -39,7 +39,6 @@ This command runs:
 - `npm run license:history-boundary`
 - `npm run legal:packet`
 - `npm run runtime:prd-preparation`
-- `npm run runtime:prd-decision-preflight`
 - `npm run contribution:terms-preparation`
 - `npm run owner:approval-packet`
 - `npm run owner:launch-checklist`
@@ -111,7 +110,6 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `ok license implementation complete` |
 | Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` |
 | Hosted runtime PRD preparation | `ok hosted runtime PRD preparation ready`, `ok hosted runtime PRD evidence map ready`, `blocked hosted runtime PRD approval missing` |
-| Hosted runtime PRD decision preflight | `ok hosted runtime PRD decision preflight ready`, `ok world share preflight current`, `ok owner decision status current`, `ok owner open issue boundary current`, `ok hosted runtime PRD evidence current`, `blocked hosted runtime PRD approval missing` |
 | Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `blocked contribution terms PRD approval missing` |
 | Owner approval packet | `ok owner approval packet ready`, `ok exact owner approval texts available`, `blocked approval recording is manual owner action` |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked launch channels missing` |

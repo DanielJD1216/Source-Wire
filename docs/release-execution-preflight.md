@@ -19,7 +19,7 @@ It gathers the strongest release-execution evidence in one place:
 - live release tag boundary,
 - live npm registry boundary.
 
-Today, the expected result is blocked if issue `#255` does not contain the exact owner approval record or this machine is not authenticated to npm and GitHub for release execution.
+Today, the expected result is blocked if issue `#255` does not contain exact owner approval evidence or this machine is not authenticated to npm and GitHub for release execution.
 
 ## Command
 
@@ -72,7 +72,7 @@ Stop before changing package version, publishing npm, creating a GitHub release,
 
 - issue `#255` does not contain the exact owner approval text,
 - `npm run release:auth-preflight` does not show release publish credentials ready,
-- `npm run release:approval-status` does not show a separate exact approval record,
+- `npm run release:approval-status` does not show separate exact approval evidence,
 - `npm run release:decision-preflight` fails,
 - `npm run publish:readiness` fails,
 - `npm run release:artifact-manifest` does not record shasum and integrity,

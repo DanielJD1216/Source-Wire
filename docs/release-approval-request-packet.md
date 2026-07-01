@@ -69,7 +69,7 @@ blocked release execution not performed
 
 This command does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
 
-To check only whether issue `#255` has a separate exact owner approval record, run:
+To check only whether issue `#255` has separate exact owner approval evidence, run:
 
 ```bash
 npm run release:approval-status
@@ -83,7 +83,7 @@ ok exact release approval recorded
 blocked release execution requires npm auth and final preflight
 ```
 
-This check intentionally ignores the recommended approval text in this packet. Approval must be recorded separately in issue `#255`, either in an `Owner Approval Record` section or in an issue comment containing the exact approval text.
+This check intentionally ignores the recommended approval text in this packet. Approval must be recorded separately in issue `#255`, either in an `Owner Approval Record` section or in an issue comment containing the exact approval text. The `Approval evidence` row shows which route is present.
 
 ## Current Recorded Decision
 

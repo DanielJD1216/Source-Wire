@@ -49,13 +49,19 @@ for (const decisionIssue of decisionIssues) {
   const approvalComments = comments.filter((comment) => comment.body?.includes(decisionIssue.exactApprovalText));
   const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "", decisionIssue.exactApprovalText);
   const exactApprovalRecorded = approvalRecordPresent || approvalComments.length > 0;
+  const approvalEvidence = approvalRecordPresent
+    ? "owner approval record section"
+    : approvalComments.length > 0
+      ? "separate issue comment"
+      : "none";
 
   results.push({
     ...decisionIssue,
     issue,
     approvalComments,
     approvalRecordPresent,
-    exactApprovalRecorded
+    exactApprovalRecorded,
+    approvalEvidence
   });
 }
 
@@ -70,6 +76,7 @@ for (const result of results) {
     ["URL", result.issue.url],
     ["State", result.issue.state],
     ["Exact approval", result.exactApprovalRecorded ? "recorded" : "not recorded"],
+    ["Approval evidence", result.approvalEvidence],
     ["Approval record section", result.approvalRecordPresent ? "present" : "missing"],
     ["Approval comments", String(result.approvalComments.length)]
   ]);

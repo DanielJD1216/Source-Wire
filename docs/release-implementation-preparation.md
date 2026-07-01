@@ -83,7 +83,7 @@ Those commands are intentionally documented here as future execution commands, n
 Stop before publishing or releasing if any of these are true:
 
 - issue `#255` does not contain the exact owner approval text,
-- `npm run release:approval-status` does not show a separate exact approval record,
+- `npm run release:approval-status` does not show separate exact approval evidence,
 - `npm run release:auth-preflight` does not show release publish credentials ready,
 - release version is not explicit,
 - `npm run release:decision-preflight` fails,

@@ -19,6 +19,11 @@ const comments = Array.isArray(issue.comments) ? issue.comments : [];
 const approvalComments = comments.filter((comment) => comment.body?.includes(exactApprovalText));
 const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "");
 const exactApprovalRecorded = approvalRecordPresent || approvalComments.length > 0;
+const approvalEvidence = approvalRecordPresent
+  ? "owner approval record section"
+  : approvalComments.length > 0
+    ? "separate issue comment"
+    : "none";
 
 printSection("Source-Wire Release Approval Status");
 printRows([
@@ -26,6 +31,7 @@ printRows([
   ["URL", issue.url],
   ["State", issue.state],
   ["Exact approval", exactApprovalRecorded ? "recorded" : "not recorded"],
+  ["Approval evidence", approvalEvidence],
   ["Approval record section", approvalRecordPresent ? "present" : "missing"],
   ["Approval comments", String(approvalComments.length)],
   ["npm publishing", "blocked"],

@@ -63,7 +63,7 @@ ok owner decision status readable
 blocked owner decisions missing approval records
 ```
 
-This command reads issues `#255` through `#258` and checks for separate exact owner approval records or approval comments. It intentionally does not count recommended approval text as approval.
+This command reads issues `#255` through `#258` and checks for separate exact owner approval records or approval comments. The `Approval evidence` row shows whether approval came from an owner approval record section, a separate issue comment, or no approval evidence. It intentionally does not count recommended approval text as approval.
 
 ## Current Decision State
 

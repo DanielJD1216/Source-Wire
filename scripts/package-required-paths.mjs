@@ -16,6 +16,7 @@ export const requiredPackagePaths = [
   "docs/contracts/second-brain-v1-contract.md",
   "docs/contracts/source-connection-contract.md",
   "docs/contracts/source-graph-adapter-contract.md",
+  "docs/contribution-terms-prd-decision-preflight.md",
   "docs/contribution-terms-prd-preparation.md",
   "docs/decision-prototypes/license-evidence.md",
   "docs/decision-prototypes/license-options.md",

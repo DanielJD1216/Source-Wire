@@ -15,6 +15,7 @@ for (const requiredPath of [
   "docs/license-decision-gate.md",
   "docs/branch-governance-approval-request.md",
   "docs/hosted-runtime-prd-decision-preflight.md",
+  "docs/contribution-terms-prd-decision-preflight.md",
   "docs/world-share-readiness.md",
   "docs/share-for-review.md",
   "docs/publish-readiness.md"
@@ -60,7 +61,8 @@ printList([
   "4. Branch protection or repository rulesets need separate branch governance approval.",
   "5. Run npm run runtime:prd-decision-preflight.",
   "6. Hosted runtime work needs a separate runtime PRD.",
-  "7. Code contribution acceptance needs explicit contribution terms."
+  "7. Run npm run contribution:terms-decision-preflight.",
+  "8. Code contribution acceptance needs explicit contribution terms."
 ]);
 
 printSection("Recommended Next Owner Choice");

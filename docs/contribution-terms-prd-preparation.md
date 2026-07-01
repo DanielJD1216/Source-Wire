@@ -34,6 +34,24 @@ ok contribution terms evidence map ready
 blocked contribution terms PRD approval missing
 ```
 
+Before asking the owner for a contribution terms PRD decision, run the complete read-only decision preflight:
+
+```bash
+npm run contribution:terms-decision-preflight
+```
+
+Expected final markers:
+
+```text
+ok contribution terms PRD decision preflight ready
+ok world share preflight current
+ok owner decision status current
+ok owner open issue boundary current
+ok contribution terms PRD evidence current
+ok public intake boundary current
+blocked contribution terms PRD approval missing
+```
+
 ## Required Approval Before PRD Work
 
 Issue `#258` must contain the exact owner approval text before a future contribution terms PRD unit starts:

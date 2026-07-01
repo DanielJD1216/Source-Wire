@@ -90,7 +90,8 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 4. Decide whether branch protection or repository rulesets should open in a separate governance unit.
 5. Run `npm run runtime:prd-decision-preflight`.
 6. Decide whether hosted runtime work should open in a separate PRD.
-7. Decide whether and how code contributions can be accepted.
+7. Run `npm run contribution:terms-decision-preflight`.
+8. Decide whether and how code contributions can be accepted.
 
 Recommended next owner choice, if the release-decision preflight passes:
 

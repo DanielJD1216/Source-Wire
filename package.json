@@ -97,6 +97,7 @@
     "runtime:prd-preparation": "node scripts/hosted-runtime-prd-preparation.mjs",
     "runtime:prd-decision-preflight": "node scripts/hosted-runtime-prd-decision-preflight.mjs",
     "contribution:terms-preparation": "node scripts/contribution-terms-prd-preparation.mjs",
+    "contribution:terms-decision-preflight": "node scripts/contribution-terms-prd-decision-preflight.mjs",
     "owner:approval-packet": "node scripts/owner-approval-packet.mjs",
     "owner:launch-checklist": "node scripts/owner-launch-checklist.mjs",
     "owner:license-preflight": "node scripts/owner-license-preflight.mjs",

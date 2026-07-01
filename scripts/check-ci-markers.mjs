@@ -171,6 +171,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "reviewer intake smoke",
+    markers: [
+      "ok reviewer intake smoke ready",
+      "ok reviewer issue templates structured",
+      "blocked unsafe reviewer data intake"
+    ]
+  },
+  {
     name: "repository metadata boundary",
     markers: [
       "ok repository metadata boundary ready",

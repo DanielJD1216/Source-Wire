@@ -20,6 +20,8 @@ Source-Wire is Apache-2.0 licensed as a source package, but it is still:
 
 Do not treat Apache-2.0 source package reuse as permission to publish npm, create GitHub releases, deploy services, accept code contributions, or claim production runtime readiness.
 
+Public code contributions are not accepted yet.
+
 ## Choose The Right Issue Template
 
 Use:

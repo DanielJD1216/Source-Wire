@@ -84,6 +84,7 @@ The readiness gate runs:
 - `npm run launch:decision-status`
 - `npm run share:audit`
 - `npm run intake:boundary`
+- `npm run reviewer:intake-smoke`
 - `npm run repository:metadata`
 - `npm run repository:branch-governance-request`
 - `npm run repository:branch-governance-plan`
@@ -149,6 +150,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` | One command reports Apache-2.0 source sharing as ready while keeping blocked launch paths explicit. |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` | First visitors can reuse the source package under Apache-2.0 without confusing it for a product launch. |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` | GitHub-visible support, security, contribution, issue-template, and feedback surfaces match Apache-2.0 source reuse while code contribution acceptance remains blocked. |
+| Reviewer intake smoke | `ok reviewer intake smoke ready`, `ok reviewer issue templates structured`, `blocked unsafe reviewer data intake` | Reviewers have structured issue templates, blank issues are disabled, private-data intake is blocked, and code contributions remain blocked. |
 | Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` | Expected GitHub About panel, topics, and feature flags match the Apache-2.0 source-package state while launch channels remain blocked. |
 | Branch governance approval request | `ok branch governance approval request ready`, `blocked branch protection approval missing`, `blocked repository ruleset approval missing` | Future branch protection and repository ruleset decision options are documented while live GitHub settings remain unchanged. |
 | Branch governance implementation plan | `ok branch governance implementation plan ready`, `ok branch governance recommended path documented`, `blocked branch governance implementation approval missing` | Future branch protection implementation order, preflight, post-change verification, and rollback plan are documented while live GitHub settings remain unchanged. |

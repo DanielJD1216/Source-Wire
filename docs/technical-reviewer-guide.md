@@ -190,6 +190,8 @@ Then open an issue with the failure details.
 
 Use [Reviewer Feedback Guide](reviewer-feedback-guide.md) to choose the right issue template and avoid unsafe data.
 
+Use `verification failure` for command or marker failures, `docs or contract feedback` for unclear docs, schemas, fixtures, examples, or contracts, and `boundary or safety concern` for license, runtime, privacy, publishing, or trusted-memory boundary risks.
+
 ## What Approval Would Unlock Later
 
 Separate owner approvals are still needed for:

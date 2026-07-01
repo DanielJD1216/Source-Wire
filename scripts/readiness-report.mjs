@@ -35,6 +35,7 @@ const requiredScripts = [
   "pull-request:boundary",
   "share:audit",
   "intake:boundary",
+  "reviewer:intake-smoke",
   "safety:scan",
   "claims:scan",
   "package:required-paths",
@@ -202,7 +203,8 @@ printList([
   "examples:installed-smoke validates copied TypeScript examples against installed package declarations",
   "minimal-runtime:smoke validates exported synthetic in-memory runtime boundary code against owner-hosted API plus MCP proof cases",
   "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install",
-  "runtime-boundary:diagnostics-smoke validates the synthetic smoke diagnostic failure format"
+  "runtime-boundary:diagnostics-smoke validates the synthetic smoke diagnostic failure format",
+  "reviewer:intake-smoke validates structured reviewer issue templates, private-data warnings, and blocked code-contribution intake"
 ]);
 
 printSection("Required Readiness Docs");

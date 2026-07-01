@@ -68,6 +68,9 @@ const completeLog = [
   "ok public intake boundary ready",
   "ok apache 2 intake wording current",
   "blocked code contribution acceptance",
+  "ok reviewer intake smoke ready",
+  "ok reviewer issue templates structured",
+  "blocked unsafe reviewer data intake",
   "ok repository metadata boundary ready",
   "ok github about wording current",
   "blocked metadata launch approval",
@@ -134,7 +137,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 37 groups 114 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 38 groups 117 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

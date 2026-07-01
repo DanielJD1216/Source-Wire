@@ -66,6 +66,7 @@ export const requiredPackagePaths = [
   "docs/release-implementation-rehearsal.md",
   "docs/release-implementation-runbook.md",
   "docs/release-notes-draft.md",
+  "docs/release-publish-config-plan.md",
   "docs/release-review-packet.md",
   "docs/release-version-recommendation.md",
   "docs/repository-metadata.md",

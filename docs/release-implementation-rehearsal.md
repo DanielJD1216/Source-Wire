@@ -31,6 +31,7 @@ Expected markers:
 ```text
 ok release implementation rehearsal ready
 ok future version rehearsal 0.1.0
+ok future npm public access rehearsal
 blocked release mutation not performed
 ```
 
@@ -43,8 +44,9 @@ The command verifies:
 - license remains `Apache-2.0`,
 - `publishConfig.access` remains `restricted`,
 - the simulated future manifest uses `0.1.0`,
+- simulated future `publishConfig.access` is `public`,
 - release runbook, version recommendation, release candidate, approval request, and release notes docs exist,
-- required package paths include the release runbook, version recommendation, release notes, `README.md`, `LICENSE`, and `package.json`,
+- required package paths include the release runbook, publish config plan, version recommendation, release notes, `README.md`, `LICENSE`, and `package.json`,
 - package scripts do not include direct publish, release, tag, version, or deploy commands.
 
 ## What It Does Not Do
@@ -63,13 +65,14 @@ The command does not:
 
 ## Current Meaning
 
-If this check passes, Source-Wire has a rehearsed future release path for `0.1.0`, but release execution is still unperformed.
+If this check passes, Source-Wire has a rehearsed future release path for `0.1.0` with public npm package access, but release execution is still unperformed.
 
 The real package must stay at `0.0.0` until approved release execution opens the release channel.
 
 ## Related Docs
 
 - [Release Implementation Runbook](release-implementation-runbook.md)
+- [Release Publish Config Plan](release-publish-config-plan.md)
 - [First Release Version Recommendation](release-version-recommendation.md)
 - [Release Candidate Readiness](release-candidate-readiness.md)
 - [Release Approval Request Packet](release-approval-request-packet.md)

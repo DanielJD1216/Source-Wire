@@ -259,7 +259,7 @@ printList([
   "npm run owner:decision-status verifies whether public owner-decision issues #255 through #258 have separate exact approval records or approval comments without mutating GitHub state",
   "docs/owner-open-issues-status.md records the live open-issue boundary and npm run owner:open-issues-status verifies the only open issues are tracked owner-decision gates #255 through #258",
   "docs/launch-decision-status.md records the one-command launch status view without approving any blocked launch path",
-  "docs/release-implementation-rehearsal.md records the non-mutating 0.1.0 release rehearsal while package metadata remains 0.0.0",
+  "docs/release-implementation-rehearsal.md records the non-mutating 0.1.0 release rehearsal with future public npm access while package metadata remains 0.0.0 and current publish access remains restricted",
   "docs/release-implementation-runbook.md records the future release execution order and stop conditions without approving release execution",
   "docs/release-publish-config-plan.md records the future publishConfig.access transition from restricted to public while keeping current package metadata blocked",
   "docs/release-review-packet.md records release review inputs before release execution",

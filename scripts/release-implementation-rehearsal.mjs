@@ -7,6 +7,7 @@ const packageLock = JSON.parse(await readFile("package-lock.json", "utf8"));
 const failures = [];
 
 const futureVersion = "0.1.0";
+const futurePublishAccess = "public";
 const currentVersion = "0.0.0";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
@@ -20,6 +21,7 @@ for (const requiredPath of [
   "LICENSE",
   "docs/release-implementation-rehearsal.md",
   "docs/release-implementation-runbook.md",
+  "docs/release-publish-config-plan.md",
   "docs/release-version-recommendation.md",
   "docs/release-candidate-readiness.md",
   "docs/release-approval-request-packet.md",
@@ -36,9 +38,11 @@ const releaseNotesDraft = await readFile("docs/release-notes-draft.md", "utf8");
 
 for (const [label, text, requiredText] of [
   ["release implementation runbook", runbook, "Use version 0.1.0 for the first public release"],
+  ["release implementation runbook", runbook, "change `publishConfig.access` from `restricted` to `public`"],
   ["version recommendation", recommendation, "Recommended first public release path:"],
   ["version recommendation", recommendation, futureVersion],
   ["release implementation rehearsal", rehearsalDoc, "Status: non-mutating release rehearsal only."],
+  ["release implementation rehearsal", rehearsalDoc, "simulated future `publishConfig.access` is `public`"],
   ["release implementation rehearsal", rehearsalDoc, "blocked release mutation not performed"],
   ["release notes draft", releaseNotesDraft, "Source-Wire 0.1.0: Agent-first memory contract package"]
 ]) {
@@ -51,6 +55,10 @@ const simulatedManifest = {
   name: packageJson.name,
   version: futureVersion,
   license: packageJson.license,
+  publishConfig: {
+    ...packageJson.publishConfig,
+    access: futurePublishAccess
+  },
   bin: packageJson.bin,
   exports: packageJson.exports,
   files: packageJson.files
@@ -58,6 +66,7 @@ const simulatedManifest = {
 
 assertEqual(simulatedManifest.version, futureVersion, "simulated release manifest must use 0.1.0");
 assertEqual(simulatedManifest.license, "Apache-2.0", "simulated release manifest must keep Apache-2.0");
+assertEqual(simulatedManifest.publishConfig?.access, futurePublishAccess, "simulated release manifest must use public npm access");
 assertEqual(simulatedManifest.bin?.["source-wire"], "./dist/cli.js", "simulated release manifest must keep source-wire bin");
 
 for (const requiredPath of [
@@ -65,6 +74,7 @@ for (const requiredPath of [
   "README.md",
   "LICENSE",
   "docs/release-implementation-runbook.md",
+  "docs/release-publish-config-plan.md",
   "docs/release-version-recommendation.md",
   "docs/release-notes-draft.md"
 ]) {
@@ -88,7 +98,9 @@ printRows([
   ["Rehearsal", "ready"],
   ["Real package version", packageJson.version],
   ["Real package-lock version", packageLock.packages[""].version],
+  ["Real publishConfig.access", packageJson.publishConfig.access],
   ["Simulated future version", simulatedManifest.version],
+  ["Simulated future publishConfig.access", simulatedManifest.publishConfig.access],
   ["License", simulatedManifest.license],
   ["npm publishing", "blocked"],
   ["GitHub release", "blocked"],
@@ -106,6 +118,7 @@ printList([
 console.log("");
 console.log("ok release implementation rehearsal ready");
 console.log("ok future version rehearsal 0.1.0");
+console.log("ok future npm public access rehearsal");
 console.log("blocked release mutation not performed");
 
 async function assertPathExists(path) {

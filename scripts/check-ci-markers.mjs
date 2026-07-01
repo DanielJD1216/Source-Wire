@@ -61,6 +61,7 @@ const markerGroups = [
     markers: [
       "ok release implementation rehearsal ready",
       "ok future version rehearsal 0.1.0",
+      "ok future npm public access rehearsal",
       "blocked release mutation not performed"
     ]
   },

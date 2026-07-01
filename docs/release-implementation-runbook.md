@@ -53,10 +53,11 @@ Expected markers:
 ```text
 ok release implementation rehearsal ready
 ok future version rehearsal 0.1.0
+ok future npm public access rehearsal
 blocked release mutation not performed
 ```
 
-The rehearsal simulates the future `0.1.0` release manifest in memory only. It keeps real `package.json` and `package-lock.json` at `0.0.0`.
+The rehearsal simulates the future `0.1.0` release manifest and future `publishConfig.access: public` in memory only. It keeps real `package.json` and `package-lock.json` at `0.0.0` with current `publishConfig.access: restricted`.
 
 Run the non-mutating npm publish config plan:
 

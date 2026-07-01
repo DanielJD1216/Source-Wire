@@ -133,6 +133,22 @@ const markerGroups = [
     ]
   },
   {
+    name: "hosted runtime PRD preparation",
+    markers: [
+      "ok hosted runtime PRD preparation ready",
+      "ok hosted runtime PRD evidence map ready",
+      "blocked hosted runtime PRD approval missing"
+    ]
+  },
+  {
+    name: "contribution terms PRD preparation",
+    markers: [
+      "ok contribution terms PRD preparation ready",
+      "ok contribution terms evidence map ready",
+      "blocked contribution terms PRD approval missing"
+    ]
+  },
+  {
     name: "owner approval packet",
     markers: [
       "ok owner approval packet ready",

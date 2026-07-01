@@ -55,6 +55,12 @@ const completeLog = [
   "ok owner decision captured",
   "ok legal review packet ready",
   "ok owner license approval recorded",
+  "ok hosted runtime PRD preparation ready",
+  "ok hosted runtime PRD evidence map ready",
+  "blocked hosted runtime PRD approval missing",
+  "ok contribution terms PRD preparation ready",
+  "ok contribution terms evidence map ready",
+  "blocked contribution terms PRD approval missing",
   "ok owner approval packet ready",
   "ok exact owner approval texts available",
   "blocked approval recording is manual owner action",
@@ -144,7 +150,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 41 groups 124 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 43 groups 130 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

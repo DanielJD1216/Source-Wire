@@ -179,6 +179,10 @@ const markerGroups = [
     ]
   },
   {
+    name: "reviewer first-pass smoke",
+    markers: ["ok reviewer first-pass smoke"]
+  },
+  {
     name: "repository metadata boundary",
     markers: [
       "ok repository metadata boundary ready",

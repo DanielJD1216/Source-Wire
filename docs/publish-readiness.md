@@ -48,6 +48,7 @@ This command runs:
 - `npm run share:audit`
 - `npm run intake:boundary`
 - `npm run reviewer:intake-smoke`
+- `npm run reviewer:smoke`
 - `npm run repository:metadata`
 - `npm run repository:branch-governance-request`
 - `npm run repository:branch-governance-plan`
@@ -114,6 +115,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |
 | Reviewer intake smoke | `ok reviewer intake smoke ready`, `ok reviewer issue templates structured`, `blocked unsafe reviewer data intake` |
+| Reviewer first-pass smoke | `ok reviewer first-pass smoke` |
 | Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` |
 | Branch governance approval request | `ok branch governance approval request ready`, `blocked branch protection approval missing`, `blocked repository ruleset approval missing` |
 | Branch governance implementation plan | `ok branch governance implementation plan ready`, `ok branch governance recommended path documented`, `blocked branch governance implementation approval missing` |

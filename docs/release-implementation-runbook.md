@@ -63,15 +63,16 @@ The rehearsal simulates the future `0.1.0` release manifest in memory only. It k
 When a separate release implementation unit is approved, execute in this order:
 
 1. Confirm the owner approval text names the release path and version.
-2. Confirm `npm run publish:readiness` passes from a clean Source-Wire checkout.
-3. Confirm `npm run release:artifact-manifest` records the exact package identity, shasum, and integrity.
-4. Confirm public CI passes on the exact commit to release.
-5. Confirm package name, license, and publish boundary are still intentional.
-6. Change package version only inside the approved implementation unit.
-7. Re-run the full local readiness gate and artifact manifest after the version change.
-8. Publish npm only if npm publishing was explicitly approved.
-9. Create the matching GitHub release only if GitHub release publishing was explicitly approved.
-10. Record public release evidence and private closeout proof.
+2. Confirm `npm run release:auth-preflight` shows npm and GitHub authentication are ready.
+3. Confirm `npm run publish:readiness` passes from a clean Source-Wire checkout.
+4. Confirm `npm run release:artifact-manifest` records the exact package identity, shasum, and integrity.
+5. Confirm public CI passes on the exact commit to release.
+6. Confirm package name, license, and publish boundary are still intentional.
+7. Change package version only inside the approved implementation unit.
+8. Re-run the full local readiness gate and artifact manifest after the version change.
+9. Publish npm only if npm publishing was explicitly approved.
+10. Create the matching GitHub release only if GitHub release publishing was explicitly approved.
+11. Record public release evidence and private closeout proof.
 
 ## Stop Conditions
 
@@ -79,6 +80,7 @@ Stop before publishing or releasing if any of these are true:
 
 - owner approval text is missing or ambiguous,
 - release version is not explicit,
+- `npm run release:auth-preflight` does not show release publish credentials ready,
 - `npm run publish:readiness` fails,
 - `npm run release:artifact-manifest` does not record shasum and integrity,
 - public CI is not green on the exact release commit,

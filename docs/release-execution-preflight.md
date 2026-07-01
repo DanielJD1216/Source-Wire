@@ -11,6 +11,7 @@ Use this command before any future approved release implementation unit.
 It gathers the strongest release-execution evidence in one place:
 
 - exact release approval status,
+- npm and GitHub authentication status,
 - release decision preflight,
 - full package readiness,
 - release artifact manifest,
@@ -18,7 +19,7 @@ It gathers the strongest release-execution evidence in one place:
 - live release tag boundary,
 - live npm registry boundary.
 
-Today, the expected result is still blocked because issue `#255` does not contain the exact owner approval record.
+Today, the expected result is blocked if issue `#255` does not contain the exact owner approval record or this machine is not authenticated to npm and GitHub for release execution.
 
 ## Command
 
@@ -41,11 +42,13 @@ Expected current markers:
 ```text
 ok release execution preflight ready
 ok release approval status current
+ok release auth preflight current
 ok release decision preflight current
 ok publish readiness current
 ok release artifact evidence current
 ok live release boundaries current
-blocked release execution approval missing
+ok exact release approval recorded
+blocked release publish credentials missing
 ```
 
 ## Checks Run
@@ -54,6 +57,7 @@ The command runs:
 
 ```bash
 npm run release:approval-status
+npm run release:auth-preflight
 npm run release:decision-preflight
 npm run publish:readiness
 npm run release:artifact-manifest
@@ -67,6 +71,7 @@ npm run registry:live-npm
 Stop before changing package version, publishing npm, creating a GitHub release, or creating tags if any of these are true:
 
 - issue `#255` does not contain the exact owner approval text,
+- `npm run release:auth-preflight` does not show release publish credentials ready,
 - `npm run release:approval-status` does not show a separate exact approval record,
 - `npm run release:decision-preflight` fails,
 - `npm run publish:readiness` fails,
@@ -97,6 +102,7 @@ Until issue `#255` contains exact owner approval and a focused implementation un
 
 - [Release Implementation Preparation](release-implementation-preparation.md)
 - [Release Implementation Runbook](release-implementation-runbook.md)
+- [Release Auth Preflight](release-auth-preflight.md)
 - [Release Approval Request Packet](release-approval-request-packet.md)
 - [Release Artifact Manifest](release-artifact-manifest.md)
 - [Publish Readiness](publish-readiness.md)

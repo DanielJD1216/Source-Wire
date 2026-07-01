@@ -64,6 +64,22 @@ blocked production launch channels
 
 This command does not publish npm, create a GitHub release, deploy services, accept contributions, start runtime services, connect to a database, or approve production runtime use.
 
+For the copy-and-command packet used when sharing publicly, run:
+
+```bash
+npm run world:share-packet
+```
+
+Expected markers:
+
+```text
+ok world share packet ready
+ok public share copy current
+blocked production launch channels
+```
+
+This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
+
 ## Owner Live Status
 
 Before broad public sharing, the owner can run the complete read-only owner preflight:

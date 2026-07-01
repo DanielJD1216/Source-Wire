@@ -100,6 +100,20 @@ ok owner decision issues current
 blocked production launch channels
 ```
 
+For a single copy-and-command packet:
+
+```bash
+npm run world:share-packet
+```
+
+Expected markers:
+
+```text
+ok world share packet ready
+ok public share copy current
+blocked production launch channels
+```
+
 ## Safe Claims
 
 It is safe to say:

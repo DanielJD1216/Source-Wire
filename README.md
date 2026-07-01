@@ -12,6 +12,8 @@ Share for review: use [Share For Technical Review](docs/share-for-review.md) for
 
 Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
 
+World share packet: use [World Share Packet](docs/world-share-packet.md) or `npm run world:share-packet` for the exact safe copy, first reviewer commands, owner preflight, feedback route, and blocked launch channels in one place.
+
 Share-readiness audit: Source-Wire is ready for technical review and source package reuse under Apache-2.0, but not npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, or code contribution acceptance. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
 
 Current owner-decision issues:
@@ -50,6 +52,7 @@ Current owner-decision issues:
 - [Docs Index](docs/index.md)
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)
+- [World Share Packet](docs/world-share-packet.md)
 - [Share For Technical Review](docs/share-for-review.md)
 - [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md)
 - [Repository Metadata](docs/repository-metadata.md)
@@ -124,6 +127,7 @@ Source-Wire can run a full local publish readiness gate with package dry-run, in
 
 - [Publish Readiness](docs/publish-readiness.md)
 - [World-Share Readiness](docs/world-share-readiness.md)
+- [World Share Packet](docs/world-share-packet.md)
 - [Owner Launch Checklist](docs/owner-launch-checklist.md)
 - [Release Implementation Runbook](docs/release-implementation-runbook.md)
 - [Release Review Packet](docs/release-review-packet.md)

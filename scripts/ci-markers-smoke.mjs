@@ -59,6 +59,9 @@ const completeLog = [
   "blocked launch channels missing",
   "ok world share open source ready",
   "blocked production launch channels",
+  "ok world share packet ready",
+  "ok public share copy current",
+  "blocked production launch channels",
   "ok first visitor share audit ready",
   "ok apache 2 reuse ready",
   "blocked production launch channels",
@@ -131,7 +134,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 36 groups 111 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 37 groups 114 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

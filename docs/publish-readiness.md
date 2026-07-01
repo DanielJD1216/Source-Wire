@@ -43,6 +43,7 @@ This command runs:
 - `npm run owner:decision-intake`
 - `npm run owner:decision-workflow`
 - `npm run world:readiness`
+- `npm run world:share-packet`
 - `npm run launch:decision-status`
 - `npm run share:audit`
 - `npm run intake:boundary`
@@ -107,6 +108,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Owner decision intake | `ok owner decision intake ready`, `ok owner decision options available`, `ok owner decision captured` |
 | Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `ok owner license decision captured` |
 | World-share boundary | `ok world share open source ready`, `blocked production launch channels` |
+| World-share packet | `ok world share packet ready`, `ok public share copy current`, `blocked production launch channels` |
 | Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |

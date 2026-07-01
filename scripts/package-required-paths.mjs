@@ -66,6 +66,7 @@ export const requiredPackagePaths = [
   "docs/technical-reviewer-guide.md",
   "docs/validation-cli.md",
   "docs/world-share-kit.md",
+  "docs/world-share-packet.md",
   "docs/world-share-readiness.md",
   "examples/fixtures/chat-export/agent-session.jsonl",
   "examples/fixtures/markdown-vault/Projects/Atlas Demo Workspace.md",

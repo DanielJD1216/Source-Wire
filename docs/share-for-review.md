@@ -170,6 +170,20 @@ blocked production launch channels
 
 This checks public external links, live world-share status, launch decision blockers, and owner-decision issue status. It does not publish npm, create a GitHub release, create tags, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
 
+For one public-safe copy packet:
+
+```bash
+npm run world:share-packet
+```
+
+Expected markers:
+
+```text
+ok world share packet ready
+ok public share copy current
+blocked production launch channels
+```
+
 ## What To Review
 
 High-value review areas:

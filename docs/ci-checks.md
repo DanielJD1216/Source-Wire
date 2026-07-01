@@ -80,6 +80,7 @@ The readiness gate runs:
 - `npm run owner:decision-intake`
 - `npm run owner:decision-workflow`
 - `npm run world:readiness`
+- `npm run world:share-packet`
 - `npm run launch:decision-status`
 - `npm run share:audit`
 - `npm run intake:boundary`
@@ -144,6 +145,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Owner decision intake | `ok owner decision intake ready`, `ok owner decision options available`, `ok owner decision captured` | The owner decision intake records the selected Apache-2.0 implementation path. |
 | Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `ok owner license decision captured` | The owner decision workflow records the selected Apache-2.0 implementation path. |
 | World-share boundary | `ok world share open source ready`, `blocked production launch channels` | Source package sharing is ready under Apache-2.0, but production launch channels remain blocked. |
+| World-share packet | `ok world share packet ready`, `ok public share copy current`, `blocked production launch channels` | Public-safe copy, first reviewer commands, owner preflight, feedback route, and blocked launch channels are available in one packet. |
 | Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` | One command reports Apache-2.0 source sharing as ready while keeping blocked launch paths explicit. |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` | First visitors can reuse the source package under Apache-2.0 without confusing it for a product launch. |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` | GitHub-visible support, security, contribution, issue-template, and feedback surfaces match Apache-2.0 source reuse while code contribution acceptance remains blocked. |

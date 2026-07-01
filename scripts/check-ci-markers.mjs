@@ -147,6 +147,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "world-share packet",
+    markers: [
+      "ok world share packet ready",
+      "ok public share copy current",
+      "blocked production launch channels"
+    ]
+  },
+  {
     name: "first visitor share audit",
     markers: [
       "ok first visitor share audit ready",

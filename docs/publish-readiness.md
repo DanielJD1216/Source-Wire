@@ -319,12 +319,13 @@ Expected markers:
 ok branch governance decision preflight ready
 ok world share preflight current
 ok owner decision status current
+ok owner open issue boundary current
 ok live branch governance current
 ok branch governance execution plan current
 blocked branch governance implementation approval missing
 ```
 
-This read-only preflight verifies live branch state, owner decision issue state, approval request, implementation plan, and world-share boundary. It stays outside CI and `publish:readiness` because it depends on live GitHub state and owner-side access.
+This read-only preflight verifies live branch state, owner decision issue state, owner open-issue boundary, approval request, implementation plan, and world-share boundary. It stays outside CI and `publish:readiness` because it depends on live GitHub state and owner-side access.
 
 ## Owner Live Security Surface
 

@@ -8,7 +8,7 @@ This preflight does not enable branch protection, create repository rulesets, pu
 
 Use this preflight before any future branch governance implementation unit touches live GitHub settings.
 
-It proves the current public sharing state, owner-decision issue state, live branch state, approval request, and implementation plan are all current before the owner decides whether to enable minimal branch protection.
+It proves the current public sharing state, owner-decision issue state, owner open-issue boundary, live branch state, approval request, and implementation plan are all current before the owner decides whether to enable minimal branch protection.
 
 ## Command
 
@@ -32,6 +32,7 @@ Expected markers:
 ok branch governance decision preflight ready
 ok world share preflight current
 ok owner decision status current
+ok owner open issue boundary current
 ok live branch governance current
 ok branch governance execution plan current
 blocked branch governance implementation approval missing
@@ -43,6 +44,7 @@ This command runs:
 
 - `npm run world:share-preflight`
 - `npm run owner:decision-status`
+- `npm run owner:open-issues-status`
 - `npm run repository:live-branch`
 - `npm run repository:branch-governance-request`
 - `npm run repository:branch-governance-plan`

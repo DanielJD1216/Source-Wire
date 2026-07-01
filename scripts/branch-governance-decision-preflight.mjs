@@ -3,6 +3,7 @@ import { execFile } from "node:child_process";
 const steps = [
   ["world:share-preflight", "world-share preflight"],
   ["owner:decision-status", "owner decision issue status"],
+  ["owner:open-issues-status", "owner open issue boundary"],
   ["repository:live-branch", "live branch governance"],
   ["repository:branch-governance-request", "branch governance approval request"],
   ["repository:branch-governance-plan", "branch governance implementation plan"]
@@ -21,6 +22,7 @@ printSection("Branch Governance Decision Preflight Result");
 console.log("ok branch governance decision preflight ready");
 console.log("ok world share preflight current");
 console.log("ok owner decision status current");
+console.log("ok owner open issue boundary current");
 console.log("ok live branch governance current");
 console.log("ok branch governance execution plan current");
 console.log("blocked branch governance implementation approval missing");

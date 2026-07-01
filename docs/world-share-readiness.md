@@ -23,8 +23,8 @@ Apache-2.0 currently means reviewers and adopters can inspect and reuse the sour
 | Technical review | Ready |
 | Source package reuse | Ready under Apache-2.0 |
 | Open-source licensing | Implemented |
-| npm publishing | Blocked |
-| GitHub release | Blocked |
+| npm publishing | Blocked until npm auth and approved release execution |
+| GitHub release | Blocked until approved release execution |
 | Hosted runtime | Blocked |
 | Production runtime use | Blocked |
 | Code contributions | Blocked |
@@ -38,6 +38,22 @@ These public issues track the remaining owner decisions. They do not publish npm
 - [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
 - [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 - [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
+
+## Release Execution Boundary
+
+Issue [#255](https://github.com/DanielJD1216/Source-Wire/issues/255) records the owner-approved public release path.
+
+That approval does not publish npm or create a GitHub release by itself. Release execution is still blocked until the owner completes npm authentication and the release auth and execution preflights pass.
+
+Current owner command path:
+
+```bash
+npm run release:auth-handoff
+npm login --registry=https://registry.npmjs.org/
+npm whoami
+npm run release:auth-preflight
+npm run release:execution-preflight
+```
 
 ## Command
 

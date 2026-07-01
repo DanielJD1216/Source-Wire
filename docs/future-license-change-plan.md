@@ -68,7 +68,7 @@ Expected future work:
 - update package metadata only after approval,
 - replace or add the approved license file only after approval,
 - clearly state whether the project remains open source, source-available, or commercially restricted,
-- keep npm publishing separate unless a release PRD approves it.
+- keep npm publishing separate unless the approved release execution path is completed.
 
 ## If Legal Review Is Required First
 

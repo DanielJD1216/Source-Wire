@@ -2,7 +2,7 @@
 
 Date: 2026-06-30
 
-Status: not approved for npm publishing, GitHub release publishing, deployment, hosted runtime, or production runtime use.
+Status: public release path approved in [#255](https://github.com/DanielJD1216/Source-Wire/issues/255), with npm publishing and GitHub release execution still blocked until npm auth and final release preflights pass.
 
 For the public-facing summary of this status, read [Public Status](public-status.md).
 
@@ -10,11 +10,13 @@ For the public-facing summary of this status, read [Public Status](public-status
 
 Source-Wire is Apache-2.0 licensed as a source package.
 
-Source-Wire is not approved for npm publishing, GitHub release publishing, service deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+Source-Wire has an owner-approved public release path, but the release has not been executed.
+
+Source-Wire is not approved for service deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 The current repo is a public contract package skeleton. It can define architecture contracts, schemas, synthetic fixtures, validation tools, and package-readiness checks.
 
-It must not be treated as a released product until a later owner-approved release PRD changes that status.
+It must not be treated as an executed npm or GitHub release until the owner completes npm authentication and the release auth plus execution preflights pass.
 
 ## Current Status
 
@@ -22,8 +24,8 @@ It must not be treated as a released product until a later owner-approved releas
 | --- | --- | --- |
 | License | `Apache-2.0` | Source package reuse is approved. |
 | Version | `0.0.0` | The package is not released and has no compatibility promise. |
-| npm publishing | Blocked | Package readiness exists, but publish approval does not. |
-| GitHub release publishing | Blocked | No release approval, release notes, or release tag policy exists yet. |
+| npm publishing | Blocked | Release path approval exists, but npm auth and execution preflight are not complete. |
+| GitHub release publishing | Blocked | Release path approval exists, but execution preflight and release mutation are not complete. |
 | Deployment | Blocked | Source-Wire has no runtime service to deploy. |
 | Runtime backend | Blocked | Runtime belongs to a later explicit unit, not this public skeleton gate. |
 | Code contributions | Blocked | Contribution terms are not approved. |
@@ -63,12 +65,21 @@ It must not be treated as a released product until a later owner-approved releas
 
 A later PRD must explicitly approve any of these changes before they happen:
 
-- changing the package version away from `0.0.0` for release,
-- publishing to npm,
-- creating a GitHub release,
 - deploying a service,
 - adding runtime backend behavior,
 - accepting code contributions.
+
+Before npm publishing, GitHub release creation, or changing the package version away from `0.0.0`, the owner must complete the current release execution path:
+
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
+```bash
+npm run release:auth-handoff
+npm login --registry=https://registry.npmjs.org/
+npm whoami
+npm run release:auth-preflight
+npm run release:execution-preflight
+```
 
 For the current license decision, read [License Decision Gate](license-decision-gate.md).
 

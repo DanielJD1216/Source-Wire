@@ -37,8 +37,8 @@ printRows([
   ["Technical review", "ready"],
   ["Source package reuse", "ready under Apache-2.0"],
   ["Open-source license", "implemented"],
-  ["npm publishing", "blocked until publish PRD approval"],
-  ["GitHub release", "blocked until release PRD approval"],
+  ["npm publishing", "blocked until npm auth and approved release execution"],
+  ["GitHub release", "blocked until approved release execution"],
   ["Hosted runtime", "blocked until runtime PRD approval"],
   ["Code contributions", "blocked until contribution terms approval"]
 ]);
@@ -55,7 +55,7 @@ printRows([
 printSection("Next Approval Needed");
 printList([
   "To share the source repo publicly, point people to README.md and LICENSE.",
-  "To publish npm, open a separate publish PRD.",
+  "To publish npm or create the matching GitHub release, run the release auth handoff, authenticate npm, then run release auth and execution preflights.",
   "To add hosted runtime behavior, open a separate runtime PRD after the runtime gate is approved."
 ]);
 

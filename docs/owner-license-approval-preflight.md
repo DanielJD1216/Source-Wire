@@ -51,10 +51,22 @@ The command verifies:
 
 Apache-2.0 implementation is complete.
 
-Next owner choices are separate:
+Release path approval is recorded in [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255).
 
-- keep npm publishing blocked until a publish PRD,
-- keep GitHub release publishing blocked until a release PRD,
+Release execution remains blocked until npm authentication is resolved and the release auth plus execution preflights pass.
+
+Current release execution command path:
+
+```bash
+npm run release:auth-handoff
+npm login --registry=https://registry.npmjs.org/
+npm whoami
+npm run release:auth-preflight
+npm run release:execution-preflight
+```
+
+Remaining owner choices are separate:
+
 - keep hosted runtime work blocked until a runtime PRD,
 - keep code contribution acceptance blocked until contribution terms exist.
 

@@ -120,7 +120,7 @@ A later runtime implementation unit may start only if:
 - source evidence and trusted memory remain separate,
 - trusted memory is never created automatically,
 - MCP tools cannot bypass API policy,
-- npm publishing remains blocked unless a separate release PRD approves it.
+- npm publishing remains blocked unless the approved release execution path is completed.
 
 ## No-Go Criteria
 

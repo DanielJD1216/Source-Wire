@@ -153,7 +153,7 @@ Good review questions:
 Less useful feedback:
 
 - requests to add real user data,
-- requests to publish npm before release approval,
+- requests to publish npm before release execution,
 - requests to add hosted runtime behavior before the runtime gate opens,
 - requests to remove owner approval from trusted-memory promotion.
 

@@ -4,7 +4,7 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 before release approval");
+assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 before release execution");
 assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
@@ -73,8 +73,8 @@ printRows([
 printSection("Owner Decision Options");
 printList([
   "Apache-2.0 implementation is complete.",
-  "Keep npm publishing blocked until a separate publish PRD.",
-  "Keep GitHub release publishing blocked until a separate release PRD.",
+  "Release path approval is recorded in #255.",
+  "Keep npm publishing and GitHub release publishing blocked until npm auth is resolved and release auth plus execution preflights pass.",
   "Keep hosted runtime and contribution acceptance blocked until separate approvals."
 ]);
 

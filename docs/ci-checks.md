@@ -67,6 +67,7 @@ The readiness gate runs:
 - `npm run release:implementation-rehearsal`
 - `npm run release:review`
 - `npm run release:approval-request`
+- `npm run release:auth-handoff`
 - `npm run release:candidate-readiness`
 - `npm run release:artifact-manifest`
 - `npm run license:rehearsal`
@@ -139,6 +140,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `blocked release mutation not performed` | The future `0.1.0` release metadata path is rehearsed in memory while real package and lockfile metadata remain at `0.0.0`. |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release execution not performed` | Current release inputs, draft release notes, and the recommended future first release version are documented while release mutation remains unperformed. |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing release execution not performed`, `blocked github release execution not performed`, `blocked version release execution not performed` | Exact owner release choices are available while npm publishing, GitHub release publishing, and version release remain blocked until execution. |
+| Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked release auth owner action required` | The owner-side npm login handoff and follow-up release preflights are documented while publish and release execution remain blocked. |
 | Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `blocked release execution still requires implementation unit` | Issue `#255` is readable and contains a separate exact owner approval comment while execution remains blocked. |
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `blocked release execution not performed` | The owner-side world-share preflight, owner open-issue boundary, issue `#255` approval status, release-candidate readiness, artifact manifest, approval request, and launch decision status are current before release execution. |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release execution not performed` | The package is locally ready for approved release execution preflight, but release mutation is not performed. |

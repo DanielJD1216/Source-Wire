@@ -25,6 +25,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "release auth handoff",
+    markers: [
+      "ok release auth handoff ready",
+      "ok npm authentication owner steps documented",
+      "blocked release auth owner action required"
+    ]
+  },
+  {
     name: "release implementation plan",
     markers: [
       "ok release implementation plan ready",

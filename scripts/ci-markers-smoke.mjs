@@ -16,6 +16,9 @@ const completeLog = [
   "blocked npm publishing release execution not performed",
   "blocked github release execution not performed",
   "blocked version release execution not performed",
+  "ok release auth handoff ready",
+  "ok npm authentication owner steps documented",
+  "blocked release auth owner action required",
   "ok release implementation plan ready",
   "ok release version target documented",
   "blocked release execution not performed",
@@ -150,7 +153,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 43 groups 130 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 44 groups 133 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

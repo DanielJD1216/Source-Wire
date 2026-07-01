@@ -165,10 +165,11 @@ ok world share preflight ready
 ok external reviewer links reachable
 ok live source-package boundary current
 ok owner decision issues current
+ok owner open issue boundary current
 blocked production launch channels
 ```
 
-This checks public external links, live world-share status, launch decision blockers, and owner-decision issue status. It does not publish npm, create a GitHub release, create tags, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
+This checks public external links, live world-share status, launch decision blockers, owner-decision issue status, and the owner open-issue boundary. It does not publish npm, create a GitHub release, create tags, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
 
 For one public-safe copy packet:
 

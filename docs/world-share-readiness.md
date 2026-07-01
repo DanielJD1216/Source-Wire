@@ -94,6 +94,7 @@ This runs:
 - `npm run world:live-status`
 - `npm run launch:decision-status`
 - `npm run owner:decision-status`
+- `npm run owner:open-issues-status`
 
 Expected markers:
 
@@ -102,6 +103,7 @@ ok world share preflight ready
 ok external reviewer links reachable
 ok live source-package boundary current
 ok owner decision issues current
+ok owner open issue boundary current
 blocked production launch channels
 ```
 
@@ -125,6 +127,22 @@ blocked owner decisions missing approval records
 ```
 
 This read-only check verifies that issues `#255` through `#258` are readable and that exact approvals are not accidentally inferred from recommended approval text.
+
+For the live open issue boundary only, run:
+
+```bash
+npm run owner:open-issues-status
+```
+
+Expected current markers:
+
+```text
+ok owner open issue boundary readable
+ok only owner decision issues open
+blocked owner decisions remain open
+```
+
+This read-only check verifies that the only open public issues are the tracked owner-decision gates `#255` through `#258`.
 
 For the live repo and live launch channels only, run:
 

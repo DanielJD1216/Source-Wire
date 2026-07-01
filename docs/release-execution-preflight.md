@@ -19,7 +19,7 @@ It gathers the strongest release-execution evidence in one place:
 - live release tag boundary,
 - live npm registry boundary.
 
-Today, the expected result is blocked if issue `#255` does not contain exact owner approval evidence or this machine is not authenticated to npm and GitHub for release execution.
+Current state: issue `#255` contains exact owner approval evidence, GitHub authentication is ready, and npm authentication is missing. The expected result is blocked until this owner-controlled machine is authenticated to npm and the final release execution preflight passes.
 
 ## Command
 
@@ -87,7 +87,7 @@ Stop before changing package version, publishing npm, creating a GitHub release,
 
 ## Still Blocked
 
-Until issue `#255` contains exact owner approval and a focused implementation unit runs:
+Until npm authentication is ready and a focused implementation unit runs:
 
 - npm publishing remains blocked,
 - GitHub release publishing remains blocked,

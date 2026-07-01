@@ -6,7 +6,7 @@ This runbook does not approve npm publishing, GitHub release publishing, release
 
 ## Purpose
 
-Use this runbook only after the owner explicitly approves a future release implementation unit.
+Use this runbook after the owner-approved release path is recorded and before the focused release implementation unit mutates package metadata or release channels.
 
 It records the execution order, stop conditions, and verification evidence needed before Source-Wire is published beyond source-repo sharing.
 
@@ -77,7 +77,7 @@ The plan keeps current `publishConfig.access` as `restricted` while publishing i
 
 ## Future Execution Order
 
-When npm authentication is available and the final release implementation unit is ready, execute in this order:
+Current state: release approval is recorded in issue `#255`, but npm authentication is missing. When npm authentication is available and the final release implementation unit is ready, execute in this order:
 
 1. Confirm `npm run release:approval-status` shows the exact owner approval text is recorded.
 2. Confirm `npm run release:auth-preflight` shows npm and GitHub authentication are ready.

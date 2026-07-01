@@ -57,7 +57,7 @@ Before any version change, npm publish, tag, or GitHub release:
 
 ## Execution Checklist After Approval
 
-Run this sequence only after issue `#255` contains exact approval and before any release mutation.
+Current state: issue `#255` contains exact release approval, but npm authentication is missing. Run this sequence again after npm login and before any release mutation.
 
 ```bash
 git status --short --branch

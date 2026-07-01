@@ -119,6 +119,7 @@ Owner-side live and public-network checks are intentionally outside CI and `publ
 - `npm run repository:live-github`
 - `npm run repository:live-branch`
 - `npm run repository:branch-governance-preflight`
+- `npm run owner:open-issues-status`
 - `npm run security:live-surface`
 - `npm run registry:live-npm`
 - `npm run release:live-tags`

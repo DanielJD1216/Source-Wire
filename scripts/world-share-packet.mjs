@@ -69,7 +69,8 @@ printList([
 printSection("Owner Preflight Before Broad Sharing");
 printList([
   "npm run world:share-preflight",
-  "npm run owner:decision-status"
+  "npm run owner:decision-status",
+  "npm run owner:open-issues-status"
 ]);
 
 printSection("Feedback Route");

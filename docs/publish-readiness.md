@@ -176,10 +176,25 @@ ok world share preflight ready
 ok external reviewer links reachable
 ok live source-package boundary current
 ok owner decision issues current
+ok owner open issue boundary current
 blocked production launch channels
 ```
 
-This read-only preflight runs public external-link checks, live world-share status, launch decision status, and owner-decision issue status. It is intentionally outside CI and `publish:readiness` because it depends on public network availability and owner-side live GitHub access.
+This read-only preflight runs public external-link checks, live world-share status, launch decision status, owner-decision issue status, and owner open-issue boundary status. It is intentionally outside CI and `publish:readiness` because it depends on public network availability and owner-side live GitHub access.
+
+To verify the open issue boundary only, run:
+
+```bash
+npm run owner:open-issues-status
+```
+
+Expected markers:
+
+```text
+ok owner open issue boundary readable
+ok only owner decision issues open
+blocked owner decisions remain open
+```
 
 For the live status portion only, run:
 

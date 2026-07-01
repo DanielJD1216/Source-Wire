@@ -21,7 +21,11 @@ for (const requiredPath of [
 }
 
 for (const requiredText of [
-  "Status: release approval request only.",
+  "Status: release approval request with recorded owner decision.",
+  "Issue [#255](https://github.com/DanielJD1216/Source-Wire/issues/255) records the owner decision to use Option 1",
+  "Release execution remains blocked until npm authentication is resolved and final release preflights pass.",
+  "Current Recorded Decision",
+  "Historical Owner Decision Options",
   "Option 1: Approve npm plus GitHub release implementation (recommended)",
   "Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version.",
   "keep production runtime claims blocked",

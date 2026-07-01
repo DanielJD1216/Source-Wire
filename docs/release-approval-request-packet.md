@@ -1,14 +1,18 @@
 # Source-Wire Release Approval Request Packet
 
-Status: release approval request only.
+Status: release approval request with recorded owner decision.
 
 This packet does not approve npm publishing, GitHub release publishing, release tags, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
-Use this packet when the owner is ready to choose the next Source-Wire release path.
+Use this packet to see the recorded Source-Wire release path and the remaining release execution blocker.
 
 Source-Wire is Apache-2.0 licensed as a source package. It is not yet npm-published, GitHub-released, deployed, hosted, production-ready, or open for code contributions.
+
+Issue [#255](https://github.com/DanielJD1216/Source-Wire/issues/255) records the owner decision to use Option 1: npm plus GitHub release implementation.
+
+That decision does not publish npm or create a GitHub release. Release execution remains blocked until npm authentication is resolved and final release preflights pass.
 
 ## Command
 
@@ -35,7 +39,7 @@ blocked github release execution not performed
 blocked version release execution not performed
 ```
 
-Before asking the owner for a release implementation decision, run the complete read-only decision preflight:
+Before release execution, run the complete read-only decision preflight:
 
 ```bash
 npm run release:decision-preflight
@@ -81,6 +85,16 @@ blocked release execution requires npm auth and final preflight
 
 This check intentionally ignores the recommended approval text in this packet. Approval must be recorded separately in issue `#255`, either in an `Owner Approval Record` section or in an issue comment containing the exact approval text.
 
+## Current Recorded Decision
+
+| Field | Current value |
+| --- | --- |
+| Release decision issue | [`#255`](https://github.com/DanielJD1216/Source-Wire/issues/255) |
+| Selected path | Option 1: npm plus GitHub release implementation |
+| Approval state | recorded |
+| npm auth | blocked until owner login |
+| Release execution | blocked until auth and final preflight pass |
+
 ## Current State
 
 | Field | Current value |
@@ -93,9 +107,9 @@ This check intentionally ignores the recommended approval text in this packet. A
 | Hosted runtime | blocked |
 | Code contributions | blocked |
 
-## Exact Owner Decision Options
+## Historical Owner Decision Options
 
-Choose exactly one later.
+These were the exact choices presented before issue `#255` recorded Option 1. Keep this section for audit history and exact-text matching.
 
 ### Option 1: Approve npm plus GitHub release implementation (recommended)
 

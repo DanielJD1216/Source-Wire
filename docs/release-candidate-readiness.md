@@ -84,6 +84,7 @@ Expected final markers:
 ```text
 ok release decision preflight ready
 ok world share preflight current
+ok owner open issue boundary current
 ok release approval status current
 ok release candidate evidence current
 ok release artifact evidence current

@@ -44,6 +44,7 @@ npm run release:decision-preflight
 This runs:
 
 - `npm run world:share-preflight`
+- `npm run owner:open-issues-status`
 - `npm run release:approval-status`
 - `npm run release:candidate-readiness`
 - `npm run release:artifact-manifest`
@@ -55,6 +56,7 @@ Expected final markers:
 ```text
 ok release decision preflight ready
 ok world share preflight current
+ok owner open issue boundary current
 ok release approval status current
 ok release candidate evidence current
 ok release artifact evidence current

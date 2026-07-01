@@ -101,7 +101,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` |
 | Release approval status | `ok release approval status readable`, `blocked exact release approval missing`, `blocked release implementation approval missing` |
-| Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `blocked release implementation approval missing` |
+| Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `blocked release implementation approval missing` |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release implementation approval missing` |
 | Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.0.0`, `ok release artifact integrity recorded`, `blocked release artifact publish not approved` |
 | License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
@@ -489,7 +489,7 @@ Run only the release implementation preparation packet:
 npm run release:implementation-preparation
 ```
 
-The preparation packet records the future release execution evidence map, issue `#255` approval requirement, exact stop conditions, and future publish/release commands without executing them.
+The preparation packet records the future release execution evidence map, issue `#255` approval requirement, owner open-issue boundary requirement, exact stop conditions, and future publish/release commands without executing them.
 
 It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
 

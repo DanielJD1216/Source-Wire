@@ -5,19 +5,31 @@ const repo = "DanielJD1216/Source-Wire";
 const expectedOpenIssues = [
   {
     number: 255,
-    title: "Owner decision: approve first public release path"
+    title: "Owner decision: approve first public release path",
+    approvalName: "release implementation",
+    exactApprovalText:
+      "Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms."
   },
   {
     number: 256,
-    title: "Owner decision: approve branch governance path"
+    title: "Owner decision: approve branch governance path",
+    approvalName: "branch governance implementation",
+    exactApprovalText:
+      "Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions."
   },
   {
     number: 257,
-    title: "Owner decision: open hosted runtime PRD path"
+    title: "Owner decision: open hosted runtime PRD path",
+    approvalName: "hosted runtime PRD",
+    exactApprovalText:
+      "Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit."
   },
   {
     number: 258,
-    title: "Owner decision: define contribution terms before accepting code"
+    title: "Owner decision: define contribution terms before accepting code",
+    approvalName: "contribution terms PRD",
+    exactApprovalText:
+      "Approved for a future Source-Wire contribution terms PRD unit: define whether and how Source-Wire can accept public code contributions, including DCO or CLA posture, maintainer review policy, private-data exclusion rules, support expectations, security-report scope, license compatibility, and PR workflow boundaries. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions in this PRD unit."
   }
 ];
 
@@ -37,6 +49,7 @@ const issues = await ghJson([
 const expectedByNumber = new Map(expectedOpenIssues.map((issue) => [issue.number, issue]));
 const actualByNumber = new Map(issues.map((issue) => [issue.number, issue]));
 const failures = [];
+const trackedIssueStates = [];
 
 for (const expectedIssue of expectedOpenIssues) {
   const actualIssue = actualByNumber.get(expectedIssue.number);
@@ -48,6 +61,24 @@ for (const expectedIssue of expectedOpenIssues) {
   if (actualIssue.title !== expectedIssue.title) {
     failures.push(`unexpected title for #${expectedIssue.number}: expected "${expectedIssue.title}", received "${actualIssue.title}"`);
   }
+
+  const issue = await ghJson([
+    "issue",
+    "view",
+    String(expectedIssue.number),
+    "--repo",
+    repo,
+    "--json",
+    "body,comments"
+  ]);
+  const comments = Array.isArray(issue.comments) ? issue.comments : [];
+  const approvalComments = comments.filter((comment) => comment.body?.includes(expectedIssue.exactApprovalText));
+  const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "", expectedIssue.exactApprovalText);
+
+  trackedIssueStates.push({
+    ...expectedIssue,
+    exactApprovalRecorded: approvalRecordPresent || approvalComments.length > 0
+  });
 }
 
 for (const actualIssue of issues) {
@@ -82,10 +113,22 @@ if (failures.length > 0) {
 }
 
 console.log("ok only owner decision issues open");
-for (const issue of expectedOpenIssues) {
-  console.log(`blocked #${issue.number} ${issue.title}`);
+
+for (const issue of trackedIssueStates) {
+  if (issue.exactApprovalRecorded) {
+    console.log(`ok #${issue.number} ${issue.approvalName} approval recorded while issue remains open`);
+  } else {
+    console.log(`blocked #${issue.number} ${issue.approvalName} approval missing`);
+  }
 }
-console.log("blocked owner decisions remain open");
+
+if (trackedIssueStates.some((issue) => !issue.exactApprovalRecorded)) {
+  console.log("blocked owner decisions missing approval records");
+} else {
+  console.log("ok all open owner decision approvals recorded");
+}
+
+console.log("blocked owner decision issues remain open");
 
 function ghJson(args) {
   return new Promise((resolve, reject) => {
@@ -102,6 +145,12 @@ function ghJson(args) {
       }
     });
   });
+}
+
+function hasApprovalRecordSection(body, exactApprovalText) {
+  const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
+  const section = body.match(sectionPattern)?.[0] ?? "";
+  return section.includes(exactApprovalText);
 }
 
 function printSection(title) {

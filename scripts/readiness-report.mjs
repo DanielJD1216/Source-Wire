@@ -257,7 +257,7 @@ printList([
   "docs/owner-decision-issue-refresh.md records the owner-side live GitHub issue refresh command for keeping public owner-decision issues current",
   "npm run owner:decision-issues-freshness verifies public owner-decision issue bodies match the current Source-Wire commit and latest green Package Checks without mutating GitHub state",
   "npm run owner:decision-status verifies whether public owner-decision issues #255 through #258 have separate exact approval records or approval comments without mutating GitHub state",
-  "docs/owner-open-issues-status.md records the live open-issue boundary and npm run owner:open-issues-status verifies the only open issues are tracked owner-decision gates #255 through #258",
+  "docs/owner-open-issues-status.md records the live open-issue boundary and npm run owner:open-issues-status verifies the only open issues are tracked owner-decision gates #255 through #258 while distinguishing recorded approval from missing approvals",
   "docs/launch-decision-status.md records the one-command launch status view without approving any blocked launch path",
   "docs/release-implementation-rehearsal.md records the non-mutating 0.1.0 release rehearsal with future public npm access while package metadata remains 0.0.0 and current publish access remains restricted",
   "docs/release-implementation-runbook.md records the future release execution order and stop conditions without approving release execution",

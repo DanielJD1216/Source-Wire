@@ -32,13 +32,20 @@ Expected markers:
 ```text
 ok owner open issue boundary readable
 ok only owner decision issues open
-blocked owner decisions remain open
+ok #255 release implementation approval recorded while issue remains open
+blocked #256 branch governance implementation approval missing
+blocked #257 hosted runtime PRD approval missing
+blocked #258 contribution terms PRD approval missing
+blocked owner decisions missing approval records
+blocked owner decision issues remain open
 ```
 
 ## What It Proves
 
 - GitHub issue access is working through `gh`.
 - Open issues are exactly the tracked owner-decision gates.
+- Issue `#255` has recorded release implementation approval while still remaining open for execution tracking.
+- Issues `#256` through `#258` still need separate owner approvals before those paths open.
 - No unreviewed public open issue is silently hiding behind the share-ready status.
 
 ## What It Does Not Prove

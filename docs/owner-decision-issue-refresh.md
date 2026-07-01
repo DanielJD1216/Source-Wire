@@ -20,6 +20,12 @@ Run:
 npm run owner:refresh-decision-issues
 ```
 
+Read-only freshness check:
+
+```bash
+npm run owner:decision-issues-freshness
+```
+
 ## What It Updates
 
 The command refreshes public owner-decision issues:
@@ -62,3 +68,5 @@ This command mutates GitHub issue bodies only.
 It does not record owner approval, publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, implement hosted runtime behavior, or approve production runtime use.
 
 This command stays outside `npm run publish:readiness` because it depends on live GitHub issue mutation.
+
+The read-only freshness check is also owner-side because it depends on live GitHub issue state and the latest public Package Checks run.

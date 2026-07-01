@@ -8,6 +8,7 @@ const checks = [
   ["contribution:terms-decision-preflight", "contribution terms PRD decision preflight"],
   ["owner:decision-status", "owner decision issue status"],
   ["owner:open-issues-status", "owner open issue boundary"],
+  ["owner:decision-issues-freshness", "owner decision issue freshness"],
   ["launch:decision-status", "launch decision status"]
 ];
 
@@ -28,6 +29,7 @@ console.log("ok branch governance decision preflight current");
 console.log("ok hosted runtime PRD decision preflight current");
 console.log("ok contribution terms PRD decision preflight current");
 console.log("ok owner decision issue boundary current");
+console.log("ok owner decision issue freshness current");
 console.log("blocked production launch channels");
 console.log("blocked owner approvals missing");
 

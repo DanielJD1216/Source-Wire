@@ -106,6 +106,7 @@
     "owner:decision-status": "node scripts/owner-decision-status.mjs",
     "owner:open-issues-status": "node scripts/owner-open-issues-status.mjs",
     "owner:refresh-decision-issues": "node scripts/refresh-owner-decision-issues.mjs",
+    "owner:decision-issues-freshness": "node scripts/check-owner-decision-issue-freshness.mjs",
     "world:readiness": "node scripts/world-share-readiness.mjs",
     "world:share-packet": "node scripts/world-share-packet.mjs",
     "world:live-status": "node scripts/live-world-share-status.mjs",

@@ -141,6 +141,17 @@ const markerGroups = [
     ]
   },
   {
+    name: "hosted runtime PRD decision preflight",
+    markers: [
+      "ok hosted runtime PRD decision preflight ready",
+      "ok world share preflight current",
+      "ok owner decision status current",
+      "ok owner open issue boundary current",
+      "ok hosted runtime PRD evidence current",
+      "blocked hosted runtime PRD approval missing"
+    ]
+  },
+  {
     name: "contribution terms PRD preparation",
     markers: [
       "ok contribution terms PRD preparation ready",

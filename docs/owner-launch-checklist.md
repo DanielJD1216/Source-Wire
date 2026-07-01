@@ -88,8 +88,9 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 2. Run `npm run release:decision-preflight`.
 3. Decide whether npm publishing plus a matching GitHub release should open in a separate release implementation unit.
 4. Decide whether branch protection or repository rulesets should open in a separate governance unit.
-5. Decide whether hosted runtime work should open in a separate PRD.
-6. Decide whether and how code contributions can be accepted.
+5. Run `npm run runtime:prd-decision-preflight`.
+6. Decide whether hosted runtime work should open in a separate PRD.
+7. Decide whether and how code contributions can be accepted.
 
 Recommended next owner choice, if the release-decision preflight passes:
 

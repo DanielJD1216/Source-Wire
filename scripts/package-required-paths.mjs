@@ -26,6 +26,7 @@ export const requiredPackagePaths = [
   "docs/first-runtime-prd.md",
   "docs/first-time-visitor-share-readiness-audit.md",
   "docs/future-license-change-plan.md",
+  "docs/hosted-runtime-prd-decision-preflight.md",
   "docs/hosted-runtime-prd-preparation.md",
   "docs/index.md",
   "docs/launch-decision-status.md",

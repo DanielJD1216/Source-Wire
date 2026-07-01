@@ -34,6 +34,23 @@ ok hosted runtime PRD evidence map ready
 blocked hosted runtime PRD approval missing
 ```
 
+Before asking the owner for a hosted runtime PRD decision, run the complete read-only decision preflight:
+
+```bash
+npm run runtime:prd-decision-preflight
+```
+
+Expected final markers:
+
+```text
+ok hosted runtime PRD decision preflight ready
+ok world share preflight current
+ok owner decision status current
+ok owner open issue boundary current
+ok hosted runtime PRD evidence current
+blocked hosted runtime PRD approval missing
+```
+
 ## Required Approval Before PRD Work
 
 Issue `#257` must contain the exact owner approval text before a future hosted runtime PRD unit starts:

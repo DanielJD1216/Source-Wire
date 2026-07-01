@@ -76,6 +76,7 @@ The readiness gate runs:
 - `npm run license:history-boundary`
 - `npm run legal:packet`
 - `npm run runtime:prd-preparation`
+- `npm run runtime:prd-decision-preflight`
 - `npm run contribution:terms-preparation`
 - `npm run owner:approval-packet`
 - `npm run owner:launch-checklist`
@@ -149,6 +150,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `ok license implementation complete` | The Apache-2.0 implementation path is complete and remaining paths stay separate. |
 | Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` | Legal advice is not provided, but owner license approval is recorded and remaining legal questions stay visible. |
 | Hosted runtime PRD preparation | `ok hosted runtime PRD preparation ready`, `ok hosted runtime PRD evidence map ready`, `blocked hosted runtime PRD approval missing` | Future hosted runtime PRD inputs, evidence, and stop conditions are documented while runtime implementation remains blocked. |
+| Hosted runtime PRD decision preflight | `ok hosted runtime PRD decision preflight ready`, `ok world share preflight current`, `ok owner decision status current`, `ok owner open issue boundary current`, `ok hosted runtime PRD evidence current`, `blocked hosted runtime PRD approval missing` | The owner-side world-share preflight, owner decision issue status, owner open-issue boundary, hosted runtime PRD preparation, and launch decision status are current before hosted runtime PRD approval. |
 | Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `blocked contribution terms PRD approval missing` | Future contribution terms PRD inputs, evidence, and stop conditions are documented while code contribution acceptance remains blocked. |
 | Owner approval packet | `ok owner approval packet ready`, `ok exact owner approval texts available`, `blocked approval recording is manual owner action` | Exact approval text for issues `#255` through `#258` is available while recording approval remains a separate manual owner action. |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked launch channels missing` | Source package reuse is ready, but launch channels remain blocked. |

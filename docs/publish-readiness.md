@@ -38,6 +38,7 @@ This command runs:
 - `npm run license:implementation-plan`
 - `npm run license:history-boundary`
 - `npm run legal:packet`
+- `npm run owner:approval-packet`
 - `npm run owner:launch-checklist`
 - `npm run owner:license-preflight`
 - `npm run owner:decision-intake`
@@ -106,6 +107,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` |
 | License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `ok license implementation complete` |
 | Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` |
+| Owner approval packet | `ok owner approval packet ready`, `ok exact owner approval texts available`, `blocked approval recording is manual owner action` |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked launch channels missing` |
 | Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `ok owner license approval captured` |
 | Owner decision intake | `ok owner decision intake ready`, `ok owner decision options available`, `ok owner decision captured` |

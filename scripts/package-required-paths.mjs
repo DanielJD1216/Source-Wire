@@ -36,6 +36,7 @@ export const requiredPackagePaths = [
   "docs/minimal-runtime-implementation-scope.md",
   "docs/minimal-runtime-issue-slices.md",
   "docs/minimal-runtime-prd.md",
+  "docs/owner-approval-record-packet.md",
   "docs/owner-launch-checklist.md",
   "docs/owner-license-approval-packet.md",
   "docs/owner-license-approval-preflight.md",

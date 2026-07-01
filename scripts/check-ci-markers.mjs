@@ -133,6 +133,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "owner approval packet",
+    markers: [
+      "ok owner approval packet ready",
+      "ok exact owner approval texts available",
+      "blocked approval recording is manual owner action"
+    ]
+  },
+  {
     name: "owner launch checklist",
     markers: [
       "ok owner launch checklist ready",

@@ -170,6 +170,7 @@ Source-Wire can run a full local publish readiness gate with package dry-run, in
 - [Release Implementation Runbook](docs/release-implementation-runbook.md)
 - [Release Review Packet](docs/release-review-packet.md)
 - [Release Approval Request Packet](docs/release-approval-request-packet.md)
+- [Owner Approval Record Packet](docs/owner-approval-record-packet.md)
 - [Release Candidate Readiness](docs/release-candidate-readiness.md)
 - [Legal Review Question Packet](docs/legal-review-question-packet.md)
 - [License Approval Rehearsal](docs/license-approval-rehearsal.md)

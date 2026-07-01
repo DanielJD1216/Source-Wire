@@ -75,6 +75,7 @@ The readiness gate runs:
 - `npm run license:implementation-plan`
 - `npm run license:history-boundary`
 - `npm run legal:packet`
+- `npm run owner:approval-packet`
 - `npm run owner:launch-checklist`
 - `npm run owner:license-preflight`
 - `npm run owner:decision-intake`
@@ -143,6 +144,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` | The owner approval path is captured and implemented. |
 | License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `ok license implementation complete` | The Apache-2.0 implementation path is complete and remaining paths stay separate. |
 | Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` | Legal advice is not provided, but owner license approval is recorded and remaining legal questions stay visible. |
+| Owner approval packet | `ok owner approval packet ready`, `ok exact owner approval texts available`, `blocked approval recording is manual owner action` | Exact approval text for issues `#255` through `#258` is available while recording approval remains a separate manual owner action. |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked launch channels missing` | Source package reuse is ready, but launch channels remain blocked. |
 | Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `ok owner license approval captured` | The owner approval package is complete and Apache-2.0 approval is captured. |
 | Owner decision intake | `ok owner decision intake ready`, `ok owner decision options available`, `ok owner decision captured` | The owner decision intake records the selected Apache-2.0 implementation path. |

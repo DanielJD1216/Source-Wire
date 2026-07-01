@@ -55,6 +55,9 @@ const completeLog = [
   "ok owner decision captured",
   "ok legal review packet ready",
   "ok owner license approval recorded",
+  "ok owner approval packet ready",
+  "ok exact owner approval texts available",
+  "blocked approval recording is manual owner action",
   "ok owner launch checklist ready",
   "blocked launch channels missing",
   "ok world share open source ready",
@@ -141,7 +144,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 40 groups 121 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 41 groups 124 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

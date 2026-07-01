@@ -36,7 +36,7 @@ if (failures.length > 0) {
 
 printSection("Source-Wire Release Candidate Readiness");
 printRows([
-  ["Release candidate", "ready for owner decision"],
+  ["Release candidate", "ready for approved release execution preflight"],
   ["Local package verification", "ready"],
   ["Package", packageJson.name],
   ["License", packageJson.license],
@@ -49,8 +49,8 @@ printRows([
 
 printSection("Next Action");
 printList([
-  "Ask the owner to choose a release path from docs/release-approval-request-packet.md.",
-  "Recommended path: future release implementation unit for npm publishing plus a matching GitHub release, using version 0.1.0 unless final verification finds a blocker.",
+  "Run npm run release:execution-preflight before any release mutation.",
+  "Resolve npm authentication before npm publishing or matching GitHub release creation.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them.",
   "Do not publish npm, create a GitHub release, create a tag, deploy services, or accept code contributions from this check."
 ]);
@@ -58,7 +58,7 @@ printList([
 console.log("");
 console.log("ok release candidate readiness ready");
 console.log("ok local package verification ready");
-console.log("blocked release implementation approval missing");
+console.log("blocked release execution not performed");
 
 async function assertPathExists(path) {
   try {

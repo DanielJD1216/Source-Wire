@@ -68,14 +68,15 @@ printRows([
 
 printSection("Next Action");
 printList([
-  "Ask the owner to choose a release path from docs/release-approval-request-packet.md.",
+  "Run npm run release:execution-preflight before any release mutation.",
+  "Resolve npm authentication before npm publishing or matching GitHub release creation.",
   "Do not publish npm, create a GitHub release, create a tag, change package version, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");
 console.log("ok release review packet ready");
 console.log("ok release decision inputs documented");
-console.log("blocked release implementation approval missing");
+console.log("blocked release execution not performed");
 
 async function assertPathExists(path) {
   try {

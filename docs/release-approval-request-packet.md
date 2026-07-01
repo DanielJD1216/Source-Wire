@@ -30,9 +30,9 @@ Expected markers:
 
 ```text
 ok release approval request ready
-blocked npm publishing not approved
-blocked github release not approved
-blocked version release not approved
+blocked npm publishing release execution not performed
+blocked github release execution not performed
+blocked version release execution not performed
 ```
 
 Before asking the owner for a release implementation decision, run the complete read-only decision preflight:
@@ -60,7 +60,7 @@ ok owner open issue boundary current
 ok release approval status current
 ok release candidate evidence current
 ok release artifact evidence current
-blocked release implementation approval missing
+blocked release execution not performed
 ```
 
 This command does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
@@ -71,12 +71,12 @@ To check only whether issue `#255` has a separate exact owner approval record, r
 npm run release:approval-status
 ```
 
-Expected current markers before owner approval:
+Expected current markers after recorded owner approval:
 
 ```text
 ok release approval status readable
-blocked exact release approval missing
-blocked release implementation approval missing
+ok exact release approval recorded
+blocked release execution still requires implementation unit
 ```
 
 This check intentionally ignores the recommended approval text in this packet. Approval must be recorded separately in issue `#255`, either in an `Owner Approval Record` section or in an issue comment containing the exact approval text.

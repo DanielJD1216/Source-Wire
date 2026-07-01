@@ -2,13 +2,13 @@
 
 Status: release-candidate check only.
 
-This page verifies whether Source-Wire is ready for an owner release decision. It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start hosted runtime behavior, or accept code contributions.
+This page verifies whether Source-Wire is ready for approved release execution preflight. It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start hosted runtime behavior, or accept code contributions.
 
 ## Purpose
 
-Use this check before asking the owner whether to open a release implementation unit.
+Use this check before running the release execution preflight.
 
-The check proves that the package is locally verifiable and that public release channels remain blocked until explicit approval.
+The check proves that the package is locally verifiable and that public release channels remain blocked until the final release implementation unit runs.
 
 ## Command
 
@@ -31,7 +31,7 @@ Expected markers:
 ```text
 ok release candidate readiness ready
 ok local package verification ready
-blocked release implementation approval missing
+blocked release execution not performed
 ```
 
 ## Current Candidate State
@@ -73,7 +73,7 @@ npm run release:artifact-manifest
 
 That command prints the package filename, file count, size, shasum, and integrity without publishing.
 
-Before asking the owner to choose a release path, run the complete owner-side preflight:
+Before any release mutation, run the complete owner-side preflight:
 
 ```bash
 npm run release:decision-preflight
@@ -88,14 +88,14 @@ ok owner open issue boundary current
 ok release approval status current
 ok release candidate evidence current
 ok release artifact evidence current
-blocked release implementation approval missing
+blocked release execution not performed
 ```
 
 ## Next Action
 
-If this check passes, the next owner decision is whether to open a future release implementation unit.
+If this check passes, the next action is to run the release execution preflight and resolve npm authentication before release mutation.
 
-Recommended path:
+Recorded release path:
 
 ```text
 Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.

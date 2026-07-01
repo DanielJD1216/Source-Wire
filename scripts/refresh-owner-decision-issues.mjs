@@ -14,7 +14,7 @@ const decisionIssues = [
       "ok release approval status current",
       "ok release candidate evidence current",
       "ok release artifact evidence current",
-      "blocked release implementation approval missing"
+      "blocked release execution not performed"
     ]
   },
   {
@@ -128,7 +128,7 @@ for (const decisionIssue of decisionIssues) {
 printSection("Owner Decision Issue Refresh Result");
 console.log("ok owner decision issue refresh ready");
 console.log("ok owner decision issue bodies current");
-console.log("blocked owner approvals missing");
+console.log("blocked owner approvals or execution paths missing");
 
 function refreshIssueBody(body, context) {
   let nextBody = body

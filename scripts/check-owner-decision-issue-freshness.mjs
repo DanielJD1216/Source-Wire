@@ -8,7 +8,7 @@ const expectedIssues = [
     command: "npm run release:decision-preflight",
     markers: [
       "ok release decision preflight ready",
-      "blocked release implementation approval missing"
+      "blocked release execution not performed"
     ]
   },
   {
@@ -159,7 +159,7 @@ for (const result of issueResults) {
 printSection("Owner Decision Issue Freshness Result");
 console.log("ok owner decision issue freshness ready");
 console.log("ok owner decision issue bodies current");
-console.log("blocked owner approvals missing");
+console.log("blocked owner approvals or execution paths missing");
 
 async function getLatestPackageChecksRun() {
   const runs = await ghJson([

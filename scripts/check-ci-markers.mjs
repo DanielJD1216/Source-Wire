@@ -19,9 +19,9 @@ const markerGroups = [
     name: "release approval request",
     markers: [
       "ok release approval request ready",
-      "blocked npm publishing not approved",
-      "blocked github release not approved",
-      "blocked version release not approved"
+      "blocked npm publishing release execution not performed",
+      "blocked github release execution not performed",
+      "blocked version release execution not performed"
     ]
   },
   {
@@ -53,7 +53,7 @@ const markerGroups = [
     markers: [
       "ok release review packet ready",
       "ok release decision inputs documented",
-      "blocked release implementation approval missing"
+      "blocked release execution not performed"
     ]
   },
   {
@@ -61,7 +61,7 @@ const markerGroups = [
     markers: [
       "ok release candidate readiness ready",
       "ok local package verification ready",
-      "blocked release implementation approval missing"
+      "blocked release execution not performed"
     ]
   },
   {
@@ -252,8 +252,8 @@ const markerGroups = [
       "ok launch decision status ready",
       "ok apache 2 license implemented",
       "ok source repo sharing ready",
-      "blocked npm publishing not approved",
-      "blocked github release not approved",
+      "blocked npm publishing release execution not performed",
+      "blocked github release execution not performed",
       "blocked hosted runtime not approved",
       "blocked contributions not accepted"
     ]

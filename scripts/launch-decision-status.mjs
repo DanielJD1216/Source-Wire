@@ -45,8 +45,8 @@ printRows([
   ["Owner license approval", "captured"],
   ["License decision record", "implemented"],
   ["License implementation", "complete"],
-  ["npm publishing", "blocked, not approved"],
-  ["GitHub release", "blocked, not approved"],
+  ["npm publishing", "blocked, release execution not performed"],
+  ["GitHub release", "blocked, release execution not performed"],
   ["Hosted runtime", "blocked, not approved"],
   ["Code contributions", "blocked, not accepted"]
 ]);
@@ -54,8 +54,8 @@ printRows([
 printSection("Next Approval");
 printList([
   "Use README.md and LICENSE for public source repo sharing.",
-  "Before opening a release implementation unit, run npm run release:decision-preflight.",
-  "Recommended next owner choice: approve a future release implementation unit for npm publishing plus a matching GitHub release, using version 0.1.0 unless final release-candidate verification finds a blocker.",
+  "Before any release mutation, run npm run release:execution-preflight.",
+  "Resolve npm authentication before npm publishing or matching GitHub release creation.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them.",
   "Open separate PRDs for hosted runtime and contribution acceptance."
 ]);
@@ -72,8 +72,8 @@ console.log("");
 console.log("ok launch decision status ready");
 console.log("ok apache 2 license implemented");
 console.log("ok source repo sharing ready");
-console.log("blocked npm publishing not approved");
-console.log("blocked github release not approved");
+console.log("blocked npm publishing release execution not performed");
+console.log("blocked github release execution not performed");
 console.log("blocked hosted runtime not approved");
 console.log("blocked contributions not accepted");
 

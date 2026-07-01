@@ -145,7 +145,7 @@ Expected current markers:
 
 ```text
 ok owner decision status readable
-blocked release implementation approval missing
+blocked release execution not performed
 blocked branch governance implementation approval missing
 blocked hosted runtime PRD approval missing
 blocked contribution terms PRD approval missing

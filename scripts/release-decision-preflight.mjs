@@ -26,7 +26,7 @@ console.log("ok owner open issue boundary current");
 console.log("ok release approval status current");
 console.log("ok release candidate evidence current");
 console.log("ok release artifact evidence current");
-console.log("blocked release implementation approval missing");
+console.log("blocked release execution not performed");
 
 function runNpmScript(scriptName) {
   return new Promise((resolve, reject) => {

@@ -34,8 +34,8 @@ Expected markers:
 ok launch decision status ready
 ok apache 2 license implemented
 ok source repo sharing ready
-blocked npm publishing not approved
-blocked github release not approved
+blocked npm publishing release execution not performed
+blocked github release execution not performed
 blocked hosted runtime not approved
 blocked contributions not accepted
 ```
@@ -61,20 +61,20 @@ The command verifies:
 | Owner license approval | Captured |
 | License decision record | Implemented |
 | License implementation | Complete |
-| npm publishing | Blocked |
-| GitHub release | Blocked |
+| npm publishing | Blocked, release execution not performed |
+| GitHub release | Blocked, release execution not performed |
 | Hosted runtime | Blocked |
 | Contributions | Blocked |
 
 ## Next Physical Action
 
-Run the release-decision preflight:
+Run the release-execution preflight:
 
 ```bash
-npm run release:decision-preflight
+npm run release:execution-preflight
 ```
 
-If it passes, the recommended next owner decision is:
+The recorded release path is:
 
 ```text
 Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.

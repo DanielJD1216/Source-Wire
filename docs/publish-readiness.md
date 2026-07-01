@@ -98,11 +98,11 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release implementation execution approval missing` |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution approval missing` |
 | Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `blocked release mutation not performed` |
-| Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release implementation approval missing` |
-| Release approval request | `ok release approval request ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked version release not approved` |
-| Release approval status | `ok release approval status readable`, `blocked exact release approval missing`, `blocked release implementation approval missing` |
-| Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `blocked release implementation approval missing` |
-| Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release implementation approval missing` |
+| Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release execution not performed` |
+| Release approval request | `ok release approval request ready`, `blocked npm publishing release execution not performed`, `blocked github release execution not performed`, `blocked version release execution not performed` |
+| Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `blocked release execution still requires implementation unit` |
+| Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `blocked release execution not performed` |
+| Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release execution not performed` |
 | Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.0.0`, `ok release artifact integrity recorded`, `blocked release artifact publish not approved` |
 | License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
 | License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` |
@@ -118,7 +118,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `ok owner license decision captured` |
 | World-share boundary | `ok world share open source ready`, `blocked production launch channels` |
 | World-share packet | `ok world share packet ready`, `ok public share copy current`, `blocked production launch channels` |
-| Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
+| Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing release execution not performed`, `blocked github release execution not performed`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | README entrypoint smoke | `ok readme entrypoint smoke ready`, `ok readme first reviewer path visible`, `blocked unsafe readme launch claims` |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |
@@ -547,7 +547,7 @@ Run only the release-candidate readiness check:
 npm run release:candidate-readiness
 ```
 
-The check verifies the package is locally ready for an owner release decision while release implementation remains blocked.
+The check verifies the package is locally ready for approved release execution preflight while release execution remains unperformed.
 
 It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
 

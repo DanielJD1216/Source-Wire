@@ -45,7 +45,7 @@ Expected markers:
 ```text
 ok release review packet ready
 ok release decision inputs documented
-blocked release implementation approval missing
+blocked release execution not performed
 ```
 
 ## Release Review Inputs

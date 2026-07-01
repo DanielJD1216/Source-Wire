@@ -66,9 +66,9 @@ printList([
 
 console.log("");
 console.log("ok release approval request ready");
-console.log("blocked npm publishing not approved");
-console.log("blocked github release not approved");
-console.log("blocked version release not approved");
+console.log("blocked npm publishing release execution not performed");
+console.log("blocked github release execution not performed");
+console.log("blocked version release execution not performed");
 
 async function assertPathExists(path) {
   try {

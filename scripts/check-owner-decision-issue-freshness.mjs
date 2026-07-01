@@ -5,6 +5,9 @@ const repo = "DanielJD1216/Source-Wire";
 const expectedIssues = [
   {
     number: 255,
+    approvalName: "release implementation",
+    exactApprovalText:
+      "Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.",
     command: "npm run release:decision-preflight",
     markers: [
       "Release implementation approval: recorded in issue comment",
@@ -16,6 +19,9 @@ const expectedIssues = [
   },
   {
     number: 256,
+    approvalName: "branch governance implementation",
+    exactApprovalText:
+      "Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.",
     command: "npm run repository:branch-governance-preflight",
     markers: [
       "ok branch governance decision preflight ready",
@@ -24,6 +30,9 @@ const expectedIssues = [
   },
   {
     number: 257,
+    approvalName: "hosted runtime PRD",
+    exactApprovalText:
+      "Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit.",
     command: "npm run runtime:prd-decision-preflight",
     markers: [
       "ok hosted runtime PRD decision preflight ready",
@@ -32,6 +41,9 @@ const expectedIssues = [
   },
   {
     number: 258,
+    approvalName: "contribution terms PRD",
+    exactApprovalText:
+      "Approved for a future Source-Wire contribution terms PRD unit: define whether and how Source-Wire can accept public code contributions, including DCO or CLA posture, maintainer review policy, private-data exclusion rules, support expectations, security-report scope, license compatibility, and PR workflow boundaries. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions in this PRD unit.",
     command: "npm run contribution:terms-decision-preflight",
     markers: [
       "ok contribution terms PRD decision preflight ready",
@@ -79,16 +91,20 @@ for (const expectedIssue of expectedIssues) {
     "--repo",
     repo,
     "--json",
-    "body,title,state,url"
+    "body,comments,title,state,url"
   ]);
   const body = issue.body ?? "";
+  const comments = Array.isArray(issue.comments) ? issue.comments : [];
+  const approvalComments = comments.filter((comment) => comment.body?.includes(expectedIssue.exactApprovalText));
+  const approvalRecordPresent = hasApprovalRecordSection(body, expectedIssue.exactApprovalText);
+  const exactApprovalRecorded = approvalRecordPresent || approvalComments.length > 0;
   const refreshCount = (body.match(/^## Latest Status Refresh$/gmu) ?? []).length;
   const currentSha = body.includes(head);
   const currentRun = body.includes(latestRun.url);
   const finalPreflight = finalPreflightMarkers.every((marker) => body.includes(marker));
   const issueCommand = body.includes(expectedIssue.command);
   const issueMarkers = expectedIssue.markers.every((marker) => body.includes(marker));
-  const approvalStillBlocked = body.includes("This refresh does not record owner approval or approve blocked work.");
+  const refreshBoundaryPresent = body.includes("This refresh does not record owner approval or approve blocked work.");
 
   if (refreshCount !== 1) {
     failures.push(`#${expectedIssue.number} must have exactly one Latest Status Refresh section, found ${refreshCount}`);
@@ -108,12 +124,13 @@ for (const expectedIssue of expectedIssues) {
   if (!issueMarkers) {
     failures.push(`#${expectedIssue.number} must include issue-specific gate proof markers`);
   }
-  if (!approvalStillBlocked) {
+  if (!refreshBoundaryPresent) {
     failures.push(`#${expectedIssue.number} must state the refresh does not record owner approval`);
   }
 
   issueResults.push({
     number: expectedIssue.number,
+    approvalName: expectedIssue.approvalName,
     title: issue.title,
     state: issue.state,
     url: issue.url,
@@ -123,7 +140,8 @@ for (const expectedIssue of expectedIssues) {
     finalPreflight,
     issueCommand,
     issueMarkers,
-    approvalStillBlocked
+    exactApprovalRecorded,
+    refreshBoundaryPresent
   });
 }
 
@@ -155,7 +173,8 @@ for (const result of issueResults) {
     ["Final preflight proof", result.finalPreflight ? "present" : "missing"],
     ["Issue command", result.issueCommand ? "present" : "missing"],
     ["Issue gate proof", result.issueMarkers ? "present" : "missing"],
-    ["Approval boundary", result.approvalStillBlocked ? "blocked" : "missing"]
+    ["Approval status", result.exactApprovalRecorded ? "recorded" : "not recorded"],
+    ["Refresh boundary", result.refreshBoundaryPresent ? "does not record approval" : "missing"]
   ]);
 }
 
@@ -163,6 +182,12 @@ printSection("Owner Decision Issue Freshness Result");
 console.log("ok owner decision issue freshness ready");
 console.log("ok owner decision issue bodies current");
 console.log("blocked owner approvals or execution paths missing");
+
+function hasApprovalRecordSection(body, exactApprovalText) {
+  const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
+  const section = body.match(sectionPattern)?.[0] ?? "";
+  return section.includes(exactApprovalText);
+}
 
 async function getLatestPackageChecksRun() {
   const runs = await ghJson([

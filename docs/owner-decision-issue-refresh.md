@@ -58,7 +58,7 @@ ok owner decision issue #257 refreshed
 ok owner decision issue #258 refreshed
 ok owner decision issue refresh ready
 ok owner decision issue bodies current
-blocked owner approvals missing
+blocked owner approvals or execution paths missing
 ```
 
 ## Boundaries

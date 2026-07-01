@@ -64,6 +64,7 @@ The readiness gate runs:
 - `npm run release-command-guard:smoke`
 - `npm run release:implementation-preparation`
 - `npm run release:implementation-plan`
+- `npm run release:publish-config-plan`
 - `npm run release:implementation-rehearsal`
 - `npm run release:review`
 - `npm run release:approval-request`
@@ -137,6 +138,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Release command guard smoke | `ok blocked release commands smoke` | The shared release-command guard catches direct package publish, GitHub release, git tag, package version, and service deployment commands in package scripts. |
 | Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release execution not performed` | The release execution packet, issue `#255` approval evidence, required evidence, and stop conditions are documented while release execution remains unperformed. |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution not performed` | Release execution order, target version, and stop conditions are documented while release execution remains unperformed. |
+| Release publish config plan | `ok release publish config plan ready`, `ok future npm public access documented`, `blocked publish config mutation not performed` | The future `publishConfig.access` transition from `restricted` to `public` is documented while current package metadata remains blocked. |
 | Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `blocked release mutation not performed` | The future `0.1.0` release metadata path is rehearsed in memory while real package and lockfile metadata remain at `0.0.0`. |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release execution not performed` | Current release inputs, draft release notes, and the recommended future first release version are documented while release mutation remains unperformed. |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing release execution not performed`, `blocked github release execution not performed`, `blocked version release execution not performed` | Exact owner release choices are available while npm publishing, GitHub release publishing, and version release remain blocked until execution. |

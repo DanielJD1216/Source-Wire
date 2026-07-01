@@ -58,6 +58,22 @@ blocked release mutation not performed
 
 The rehearsal simulates the future `0.1.0` release manifest in memory only. It keeps real `package.json` and `package-lock.json` at `0.0.0`.
 
+Run the non-mutating npm publish config plan:
+
+```bash
+npm run release:publish-config-plan
+```
+
+Expected markers:
+
+```text
+ok release publish config plan ready
+ok future npm public access documented
+blocked publish config mutation not performed
+```
+
+The plan keeps current `publishConfig.access` as `restricted` while publishing is blocked. During approved public npm release execution, change `publishConfig.access` from `restricted` to `public` before publishing.
+
 ## Future Execution Order
 
 When npm authentication is available and the final release implementation unit is ready, execute in this order:
@@ -69,10 +85,11 @@ When npm authentication is available and the final release implementation unit i
 5. Confirm public CI passes on the exact commit to release.
 6. Confirm package name, license, and publish boundary are still intentional.
 7. Change package version only inside the approved implementation unit.
-8. Re-run the full local readiness gate and artifact manifest after the version change.
-9. Publish npm only if npm publishing was explicitly approved.
-10. Create the matching GitHub release only if GitHub release publishing was explicitly approved.
-11. Record public release evidence and private closeout proof.
+8. Change `publishConfig.access` from `restricted` to `public` only inside the approved public npm release execution unit.
+9. Re-run the full local readiness gate and artifact manifest after the metadata changes.
+10. Publish npm only if npm publishing was explicitly approved.
+11. Create the matching GitHub release only if GitHub release publishing was explicitly approved.
+12. Record public release evidence and private closeout proof.
 
 ## Stop Conditions
 
@@ -80,6 +97,7 @@ Stop before publishing or releasing if any of these are true:
 
 - owner approval text is missing or ambiguous,
 - release version is not explicit,
+- `publishConfig.access` is still `restricted` during the approved public npm release execution unit,
 - `npm run release:auth-preflight` does not show release publish credentials ready,
 - `npm run publish:readiness` fails,
 - `npm run release:artifact-manifest` does not record shasum and integrity,

@@ -41,6 +41,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "release publish config plan",
+    markers: [
+      "ok release publish config plan ready",
+      "ok future npm public access documented",
+      "blocked publish config mutation not performed"
+    ]
+  },
+  {
     name: "release implementation preparation",
     markers: [
       "ok release implementation preparation ready",

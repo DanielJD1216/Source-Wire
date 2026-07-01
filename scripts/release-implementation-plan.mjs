@@ -11,6 +11,7 @@ assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.acce
 
 const requiredDocs = [
   "docs/release-implementation-runbook.md",
+  "docs/release-publish-config-plan.md",
   "docs/release-review-packet.md",
   "docs/release-version-recommendation.md",
   "docs/release-notes-draft.md",
@@ -29,6 +30,7 @@ const runbook = await readFile("docs/release-implementation-runbook.md", "utf8")
 for (const requiredText of [
   "Status: implementation runbook only.",
   "Use version 0.1.0 for the first public release",
+  "change `publishConfig.access` from `restricted` to `public`",
   "ok release implementation plan ready",
   "blocked release execution not performed",
   "package version remains `0.0.0`"

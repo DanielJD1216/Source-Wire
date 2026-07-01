@@ -27,6 +27,7 @@ This command runs:
 - `npm run release-command-guard:smoke`
 - `npm run release:implementation-preparation`
 - `npm run release:implementation-plan`
+- `npm run release:publish-config-plan`
 - `npm run release:implementation-rehearsal`
 - `npm run release:review`
 - `npm run release:approval-request`
@@ -98,6 +99,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release command guard smoke | `ok blocked release commands smoke` |
 | Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release execution not performed` |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution not performed` |
+| Release publish config plan | `ok release publish config plan ready`, `ok future npm public access documented`, `blocked publish config mutation not performed` |
 | Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `blocked release mutation not performed` |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release execution not performed` |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing release execution not performed`, `blocked github release execution not performed`, `blocked version release execution not performed` |

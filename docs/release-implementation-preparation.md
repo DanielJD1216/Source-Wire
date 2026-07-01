@@ -52,7 +52,8 @@ Before any version change, npm publish, tag, or GitHub release:
 6. `npm run release:artifact-manifest` must record package identity, shasum, and integrity.
 7. GitHub Actions Package Checks must pass on the exact release commit.
 8. Release notes and version target must still be intentional.
-9. Package contents must not include private data, local paths, real user records, or private proof history.
+9. `publishConfig.access` must be intentionally changed from `restricted` to `public` during the approved public npm release execution unit.
+10. Package contents must not include private data, local paths, real user records, or private proof history.
 
 ## Execution Checklist After Approval
 
@@ -63,13 +64,14 @@ git status --short --branch
 npm run release:approval-status
 npm run release:auth-preflight
 npm run release:decision-preflight
+npm run release:publish-config-plan
 npm run publish:readiness
 npm run release:artifact-manifest
 gh run list --repo DanielJD1216/Source-Wire --workflow package-checks.yml --limit 5 --json databaseId,status,conclusion,url,headSha,createdAt
 gh run watch <run-id> --repo DanielJD1216/Source-Wire --exit-status
 ```
 
-If all evidence is green, the approved release implementation unit may change the package version to `0.1.0`, rerun all gates, and then use the approved release commands:
+If all evidence is green, the approved release implementation unit may change the package version to `0.1.0`, change `publishConfig.access` from `restricted` to `public`, rerun all gates, and then use the approved release commands:
 
 ```bash
 npm publish
@@ -86,6 +88,7 @@ Stop before publishing or releasing if any of these are true:
 - `npm run release:approval-status` does not show separate exact approval evidence,
 - `npm run release:auth-preflight` does not show release publish credentials ready,
 - release version is not explicit,
+- `publishConfig.access` is still `restricted` during the approved public npm release execution unit,
 - `npm run release:decision-preflight` fails,
 - `npm run publish:readiness` fails,
 - `npm run release:artifact-manifest` does not record shasum and integrity,
@@ -127,6 +130,7 @@ Until npm and GitHub release credentials are ready and approved release executio
 ## Related Docs
 
 - [Release Implementation Runbook](release-implementation-runbook.md)
+- [Release Publish Config Plan](release-publish-config-plan.md)
 - [Release Approval Request Packet](release-approval-request-packet.md)
 - [Release Candidate Readiness](release-candidate-readiness.md)
 - [Release Artifact Manifest](release-artifact-manifest.md)

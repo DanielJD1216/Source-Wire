@@ -29,7 +29,7 @@ const markerGroups = [
     markers: [
       "ok release implementation plan ready",
       "ok release version target documented",
-      "blocked release execution approval missing"
+      "blocked release execution not performed"
     ]
   },
   {
@@ -37,7 +37,7 @@ const markerGroups = [
     markers: [
       "ok release implementation preparation ready",
       "ok release implementation evidence map ready",
-      "blocked release implementation execution approval missing"
+      "blocked release execution not performed"
     ]
   },
   {

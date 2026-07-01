@@ -4,7 +4,7 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release approval");
+assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until approved release execution");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
 await assertPathExists("LICENSE");
@@ -37,8 +37,8 @@ printRows([
   ["Legal review packet", "ready"],
   ["Source package reuse", "ready under Apache-2.0"],
   ["Open-source license", "implemented"],
-  ["npm publishing", "blocked, publish approval missing"],
-  ["GitHub release", "blocked, release approval missing"],
+  ["npm publishing", "blocked, release execution not performed"],
+  ["GitHub release", "blocked, release execution not performed"],
   ["Branch governance", "blocked, branch governance approval missing"],
   ["Hosted runtime", "blocked, runtime approval missing"],
   ["Code contributions", "blocked, contribution terms approval missing"]
@@ -56,8 +56,8 @@ printRows([
 printSection("Approval Order");
 printList([
   "1. Apache-2.0 source package reuse is approved and implemented.",
-  "2. Run npm run release:decision-preflight.",
-  "3. npm publishing plus a matching GitHub release needs a separate release implementation unit.",
+  "2. Run npm run release:execution-preflight.",
+  "3. Resolve npm authentication before npm publishing or matching GitHub release creation.",
   "4. Branch protection or repository rulesets need separate branch governance approval.",
   "5. Run npm run runtime:prd-decision-preflight.",
   "6. Hosted runtime work needs a separate runtime PRD.",
@@ -67,8 +67,8 @@ printList([
 
 printSection("Recommended Next Owner Choice");
 printList([
-  "Approve a future release implementation unit for npm publishing plus a matching GitHub release.",
-  "Use version 0.1.0 for the first public release unless final release-candidate verification finds a blocker.",
+  "Authenticate npm, then rerun npm run release:auth-preflight and npm run release:execution-preflight.",
+  "Use version 0.1.0 for the first public release unless final release execution verification finds a blocker.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);
 

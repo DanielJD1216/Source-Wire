@@ -4,13 +4,13 @@ Status: release implementation preparation only.
 
 This packet does not approve npm publishing, GitHub release publishing, release tags, package version changes, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
-Do not execute this packet until owner approval is recorded in issue `#255`.
+Do not execute release mutation until npm and GitHub release credentials are ready.
 
 ## Purpose
 
 Use this packet after the owner approves the first public release path. It turns the release runbook into a concrete execution checklist with required evidence, stop conditions, and exact commands.
 
-The recommended approval text remains:
+The recorded approval text is:
 
 ```text
 Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.
@@ -37,7 +37,7 @@ Expected markers:
 ```text
 ok release implementation preparation ready
 ok release implementation evidence map ready
-blocked release implementation execution approval missing
+blocked release execution not performed
 ```
 
 ## Required Evidence Before Execution
@@ -56,7 +56,7 @@ Before any version change, npm publish, tag, or GitHub release:
 
 ## Execution Checklist After Approval
 
-Run this sequence only after issue `#255` contains exact approval.
+Run this sequence only after issue `#255` contains exact approval and before any release mutation.
 
 ```bash
 git status --short --branch
@@ -113,7 +113,7 @@ This packet does not approve:
 
 ## Current Boundary
 
-Until issue `#255` contains exact owner approval:
+Until npm and GitHub release credentials are ready and approved release execution runs:
 
 - npm publishing remains blocked,
 - GitHub release publishing remains blocked,

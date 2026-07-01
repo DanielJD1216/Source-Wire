@@ -6,7 +6,7 @@ This rehearsal does not publish npm, create a GitHub release, create a tag, chan
 
 ## Purpose
 
-Use this check before any future release implementation approval.
+Use this check before approved release execution.
 
 It proves the planned first release path is internally consistent while the real package remains blocked at version `0.0.0`.
 
@@ -63,9 +63,9 @@ The command does not:
 
 ## Current Meaning
 
-If this check passes, Source-Wire has a rehearsed future release path for `0.1.0`, but release implementation is still blocked.
+If this check passes, Source-Wire has a rehearsed future release path for `0.1.0`, but release execution is still unperformed.
 
-The real package must stay at `0.0.0` until a separate owner-approved release implementation unit opens the release channel.
+The real package must stay at `0.0.0` until approved release execution opens the release channel.
 
 ## Related Docs
 

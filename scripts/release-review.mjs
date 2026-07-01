@@ -6,7 +6,7 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release implementation approval");
+assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until approved release execution");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
 const requiredDocs = [
@@ -31,7 +31,7 @@ const releaseNotesDraft = await readFile("docs/release-notes-draft.md", "utf8");
 for (const [label, text, requiredText] of [
   ["release review packet", reviewPacket, "Status: release review only."],
   ["release review packet", reviewPacket, "npm registry state | `E404 Not Found` observed on 2026-06-30"],
-  ["release review packet", reviewPacket, "Recommended release path:"],
+  ["release review packet", reviewPacket, "Recorded release approval:"],
   ["version recommendation", versionRecommendation, "Recommended first public release path:"],
   ["version recommendation", versionRecommendation, "0.1.0"],
   ["release notes draft", releaseNotesDraft, "Source-Wire 0.1.0: Agent-first memory contract package"],

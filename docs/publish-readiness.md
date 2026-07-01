@@ -95,8 +95,8 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | --- | --- |
 | Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` |
 | Release command guard smoke | `ok blocked release commands smoke` |
-| Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release implementation execution approval missing` |
-| Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution approval missing` |
+| Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release execution not performed` |
+| Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution not performed` |
 | Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `blocked release mutation not performed` |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release execution not performed` |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing release execution not performed`, `blocked github release execution not performed`, `blocked version release execution not performed` |

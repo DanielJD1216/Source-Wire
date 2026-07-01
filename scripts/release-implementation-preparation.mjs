@@ -40,7 +40,7 @@ for (const requiredText of [
   "gh run watch",
   "npm publish",
   "gh release create",
-  "Do not execute this packet until owner approval is recorded in issue `#255`."
+  "Do not execute release mutation until npm and GitHub release credentials are ready."
 ]) {
   if (!preparationDoc.includes(requiredText)) {
     failures.push(`release implementation preparation doc missing required text: ${requiredText}`);
@@ -86,14 +86,14 @@ printList([
 
 printSection("Next Action");
 printList([
-  "Use docs/release-implementation-preparation.md as the execution packet after approval.",
+  "Use docs/release-implementation-preparation.md as the execution packet after npm and GitHub release credentials are ready.",
   "Do not publish npm, create a GitHub release, create a tag, change package version, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");
 console.log("ok release implementation preparation ready");
 console.log("ok release implementation evidence map ready");
-console.log("blocked release implementation execution approval missing");
+console.log("blocked release execution not performed");
 
 async function assertPathExists(path) {
   try {

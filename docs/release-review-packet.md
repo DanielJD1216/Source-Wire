@@ -6,9 +6,9 @@ This packet does not approve npm publishing, GitHub release publishing, release 
 
 ## Purpose
 
-Use this packet before the owner chooses a release implementation path.
+Use this packet before approved release execution.
 
-It collects the release decision inputs that matter before publishing Source-Wire beyond source-repo sharing.
+It collects the release decision inputs that matter before publishing Source-Wire beyond source-repo sharing while release execution remains unperformed.
 
 ## Current Release State
 
@@ -60,12 +60,12 @@ Before approving npm publishing or GitHub release publishing, review:
 - [Public Status](public-status.md)
 - [CI Checks](ci-checks.md)
 
-## Recommended Next Decision
+## Recorded Release Path
 
-Recommended release path:
+Recorded release approval:
 
 ```text
-Approve a future npm plus GitHub release implementation unit using an explicit release version selected in that unit.
+Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.
 ```
 
 Reason:
@@ -73,8 +73,9 @@ Reason:
 - Source package licensing is complete.
 - Local package readiness is verified.
 - Public CI is green.
-- Release review materials now exist.
-- Publishing and release creation remain separate from hosted runtime and contribution acceptance.
+- Exact owner release approval is recorded in issue `#255`.
+- Publishing and release creation remain blocked until npm authentication and final release execution preflights pass.
+- Hosted runtime and contribution acceptance remain separate decisions.
 
 ## Release Risks To Keep Visible
 

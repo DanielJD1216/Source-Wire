@@ -10,10 +10,10 @@ const futureVersion = "0.1.0";
 const currentVersion = "0.0.0";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, currentVersion, "real package version must remain 0.0.0 until release implementation approval");
+assertEqual(packageJson.version, currentVersion, "real package version must remain 0.0.0 until approved release execution");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while release execution is blocked");
-assertEqual(packageLock.packages?.[""]?.version, currentVersion, "real package-lock root version must remain 0.0.0 until release implementation approval");
+assertEqual(packageLock.packages?.[""]?.version, currentVersion, "real package-lock root version must remain 0.0.0 until approved release execution");
 assertEqual(packageLock.packages?.[""]?.license, packageJson.license, "package-lock root license must match package.json");
 
 for (const requiredPath of [
@@ -99,7 +99,7 @@ printRows([
 
 printSection("Next Action");
 printList([
-  "Use this rehearsal before any future release implementation approval.",
+  "Use this rehearsal before approved release execution.",
   "Do not change package.json, package-lock.json, create a tag, publish npm, create a GitHub release, deploy services, or accept code contributions from this check."
 ]);
 

@@ -12,7 +12,7 @@ It records the execution order, stop conditions, and verification evidence neede
 
 ## Current Recommended Path
 
-Recommended future approval:
+Recorded release approval:
 
 ```text
 Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.
@@ -39,7 +39,7 @@ Expected markers:
 ```text
 ok release implementation plan ready
 ok release version target documented
-blocked release execution approval missing
+blocked release execution not performed
 ```
 
 Run the non-mutating release implementation rehearsal:
@@ -60,9 +60,9 @@ The rehearsal simulates the future `0.1.0` release manifest in memory only. It k
 
 ## Future Execution Order
 
-When a separate release implementation unit is approved, execute in this order:
+When npm authentication is available and the final release implementation unit is ready, execute in this order:
 
-1. Confirm the owner approval text names the release path and version.
+1. Confirm `npm run release:approval-status` shows the exact owner approval text is recorded.
 2. Confirm `npm run release:auth-preflight` shows npm and GitHub authentication are ready.
 3. Confirm `npm run publish:readiness` passes from a clean Source-Wire checkout.
 4. Confirm `npm run release:artifact-manifest` records the exact package identity, shasum, and integrity.
@@ -106,7 +106,7 @@ The future release implementation must not silently include:
 
 ## Current Blocked State
 
-Until a future owner-approved release implementation unit exists:
+Until approved release execution runs:
 
 - npm publishing remains blocked,
 - GitHub release publishing remains blocked,

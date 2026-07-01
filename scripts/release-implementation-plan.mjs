@@ -6,7 +6,7 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release implementation approval");
+assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until approved release execution");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while release execution is blocked");
 
 const requiredDocs = [
@@ -30,7 +30,7 @@ for (const requiredText of [
   "Status: implementation runbook only.",
   "Use version 0.1.0 for the first public release",
   "ok release implementation plan ready",
-  "blocked release execution approval missing",
+  "blocked release execution not performed",
   "package version remains `0.0.0`"
 ]) {
   if (!runbook.includes(requiredText)) {
@@ -62,14 +62,15 @@ printRows([
 
 printSection("Next Action");
 printList([
-  "Get explicit owner approval before release execution.",
+  "Run npm run release:execution-preflight before any release mutation.",
+  "Resolve npm authentication before npm publishing or matching GitHub release creation.",
   "Do not publish npm, create a GitHub release, create a tag, change package version, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");
 console.log("ok release implementation plan ready");
 console.log("ok release version target documented");
-console.log("blocked release execution approval missing");
+console.log("blocked release execution not performed");
 
 async function assertPathExists(path) {
   try {

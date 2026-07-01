@@ -83,6 +83,7 @@ The readiness gate runs:
 - `npm run world:share-packet`
 - `npm run launch:decision-status`
 - `npm run share:audit`
+- `npm run readme:entrypoint-smoke`
 - `npm run intake:boundary`
 - `npm run reviewer:intake-smoke`
 - `npm run reviewer:smoke`
@@ -150,6 +151,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | World-share packet | `ok world share packet ready`, `ok public share copy current`, `blocked production launch channels` | Public-safe copy, first reviewer commands, owner preflight, feedback route, and blocked launch channels are available in one packet. |
 | Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` | One command reports Apache-2.0 source sharing as ready while keeping blocked launch paths explicit. |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` | First visitors can reuse the source package under Apache-2.0 without confusing it for a product launch. |
+| README entrypoint smoke | `ok readme entrypoint smoke ready`, `ok readme first reviewer path visible`, `blocked unsafe readme launch claims` | README keeps the public status, first reviewer path, share links, and blocked launch channels visible before package details. |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` | GitHub-visible support, security, contribution, issue-template, and feedback surfaces match Apache-2.0 source reuse while code contribution acceptance remains blocked. |
 | Reviewer intake smoke | `ok reviewer intake smoke ready`, `ok reviewer issue templates structured`, `blocked unsafe reviewer data intake` | Reviewers have structured issue templates, blank issues are disabled, private-data intake is blocked, and code contributions remain blocked. |
 | Reviewer first-pass smoke | `ok reviewer first-pass smoke` | A temporary clean checkout-style copy can install dependencies and run the first reviewer readiness report path. |

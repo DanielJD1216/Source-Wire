@@ -23,6 +23,44 @@ Current owner-decision issues:
 - [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 - [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 
+## First Reviewer Quickstart
+
+Use Node.js 22 with npm. For complete setup details, read [Quickstart](docs/quickstart.md).
+
+```bash
+git clone https://github.com/DanielJD1216/Source-Wire.git
+cd Source-Wire
+npm install
+npm run readiness:report
+```
+
+To prove the same first-reviewer path from a temporary clean checkout-style copy:
+
+```bash
+npm run reviewer:smoke
+```
+
+For the full local verification gate:
+
+```bash
+npm run publish:readiness
+```
+
+Despite the command name, `publish:readiness` does not publish npm.
+
+Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Review](docs/share-for-review.md), and [Reviewer Feedback Guide](docs/reviewer-feedback-guide.md) when sharing the repo or sending feedback.
+
+## Still Blocked
+
+- npm publishing,
+- GitHub release publishing,
+- release tags,
+- package version change,
+- branch governance enforcement,
+- hosted runtime,
+- production runtime use,
+- code contribution acceptance.
+
 ## What This Public Skeleton Includes
 
 - Source Graph Adapter Contract.

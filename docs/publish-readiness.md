@@ -46,6 +46,7 @@ This command runs:
 - `npm run world:share-packet`
 - `npm run launch:decision-status`
 - `npm run share:audit`
+- `npm run readme:entrypoint-smoke`
 - `npm run intake:boundary`
 - `npm run reviewer:intake-smoke`
 - `npm run reviewer:smoke`
@@ -113,6 +114,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | World-share packet | `ok world share packet ready`, `ok public share copy current`, `blocked production launch channels` |
 | Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing not approved`, `blocked github release not approved`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
+| README entrypoint smoke | `ok readme entrypoint smoke ready`, `ok readme first reviewer path visible`, `blocked unsafe readme launch claims` |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |
 | Reviewer intake smoke | `ok reviewer intake smoke ready`, `ok reviewer issue templates structured`, `blocked unsafe reviewer data intake` |
 | Reviewer first-pass smoke | `ok reviewer first-pass smoke` |

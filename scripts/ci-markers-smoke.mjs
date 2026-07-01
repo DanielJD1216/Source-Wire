@@ -65,6 +65,9 @@ const completeLog = [
   "ok first visitor share audit ready",
   "ok apache 2 reuse ready",
   "blocked production launch channels",
+  "ok readme entrypoint smoke ready",
+  "ok readme first reviewer path visible",
+  "blocked unsafe readme launch claims",
   "ok public intake boundary ready",
   "ok apache 2 intake wording current",
   "blocked code contribution acceptance",
@@ -138,7 +141,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 39 groups 118 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 40 groups 121 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

@@ -163,6 +163,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "readme entrypoint smoke",
+    markers: [
+      "ok readme entrypoint smoke ready",
+      "ok readme first reviewer path visible",
+      "blocked unsafe readme launch claims"
+    ]
+  },
+  {
     name: "public intake boundary",
     markers: [
       "ok public intake boundary ready",

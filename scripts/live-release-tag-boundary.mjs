@@ -14,15 +14,15 @@ const remoteTags = parseRemoteTags(await run("git", ["ls-remote", "--tags", "ori
 const releases = JSON.parse(await run("gh", ["release", "list", "--repo", "DanielJD1216/Source-Wire", "--limit", "20", "--json", "tagName,name,isLatest,createdAt"]));
 
 if (localTags.length > 0) {
-  failures.push(`local git tags must remain empty until release approval: ${localTags.join(", ")}`);
+  failures.push(`local git tags must remain empty until release execution: ${localTags.join(", ")}`);
 }
 
 if (remoteTags.length > 0) {
-  failures.push(`remote git tags must remain empty until release approval: ${remoteTags.join(", ")}`);
+  failures.push(`remote git tags must remain empty until release execution: ${remoteTags.join(", ")}`);
 }
 
 if (releases.length > 0) {
-  failures.push(`GitHub releases must remain empty until release approval: ${releases.map((release) => release.tagName).join(", ")}`);
+  failures.push(`GitHub releases must remain empty until release execution: ${releases.map((release) => release.tagName).join(", ")}`);
 }
 
 if (failures.length > 0) {

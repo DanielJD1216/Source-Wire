@@ -44,6 +44,15 @@ ok release auth preflight readable
 blocked release publish credentials missing
 ```
 
+When credentials are missing, the command also prints a next-action section. For the common npm `ENEEDAUTH` case, run:
+
+```bash
+npm run release:auth-handoff
+npm login --registry=https://registry.npmjs.org/
+npm whoami
+npm run release:auth-preflight
+```
+
 ## Current Stop Condition
 
 If `npm run release:auth-preflight` prints `blocked npm auth missing`, stop before:
@@ -56,6 +65,9 @@ If `npm run release:auth-preflight` prints `blocked npm auth missing`, stop befo
 Configure npm authentication first, then rerun:
 
 ```bash
+npm run release:auth-handoff
+npm login --registry=https://registry.npmjs.org/
+npm whoami
 npm run release:auth-preflight
 npm run release:execution-preflight
 ```

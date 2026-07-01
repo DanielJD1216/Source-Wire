@@ -4,7 +4,7 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release approval");
+assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release execution");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while publishing is blocked");
 
 await assertPathExists("LICENSE");

@@ -85,7 +85,7 @@ assertEqual(repoApi.has_wiki, false, "GitHub API wiki must stay disabled");
 assertEqual(repoApi.license?.spdx_id, "Apache-2.0", "GitHub API license SPDX id must be Apache-2.0");
 
 if (!Array.isArray(releases) || releases.length !== 0) {
-  failures.push("GitHub releases must remain empty until release approval");
+  failures.push("GitHub releases must remain empty until release execution");
 }
 
 const [runInfo] = latestRun;

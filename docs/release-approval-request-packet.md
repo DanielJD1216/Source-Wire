@@ -76,7 +76,7 @@ Expected current markers after recorded owner approval:
 ```text
 ok release approval status readable
 ok exact release approval recorded
-blocked release execution still requires implementation unit
+blocked release execution requires npm auth and final preflight
 ```
 
 This check intentionally ignores the recommended approval text in this packet. Approval must be recorded separately in issue `#255`, either in an `Owner Approval Record` section or in an issue comment containing the exact approval text.

@@ -198,7 +198,7 @@ function refreshReleaseApprovalIssueBody(body, context) {
   const approvalSource = approvalRecorded ? "recorded in issue comment" : "blocked because no separate exact owner approval record exists yet";
   let nextBody = body.replace(
     /- Release implementation approval: .+/u,
-    `- Release implementation approval: ${approvalSource}${approvalRecorded ? "; release execution still requires a focused implementation unit and npm authentication" : ""}`
+    `- Release implementation approval: ${approvalSource}${approvalRecorded ? "; release execution still requires npm authentication and final release preflight" : ""}`
   );
 
   const ownerDecisionStatusProof = [
@@ -218,7 +218,7 @@ function refreshReleaseApprovalIssueBody(body, context) {
     `Approval comments      : ${context.approvalComments.length}`,
     "ok release approval status readable",
     ...(approvalRecorded
-      ? ["ok exact release approval recorded", "blocked release execution still requires implementation unit"]
+      ? ["ok exact release approval recorded", "blocked release execution requires npm auth and final preflight"]
       : ["blocked exact release approval missing", "blocked release implementation approval missing"])
   ].join("\n");
 

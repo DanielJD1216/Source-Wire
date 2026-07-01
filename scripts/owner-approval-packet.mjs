@@ -33,7 +33,7 @@ const approvalTargets = [
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release approval");
+assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release execution");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
 for (const requiredPath of [

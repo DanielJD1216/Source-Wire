@@ -6,7 +6,7 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release approval");
+assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release execution");
 assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
 
 for (const requiredPath of [
@@ -55,13 +55,12 @@ printRows([
   ["Version release", "blocked"]
 ]);
 
-printSection("Next Owner Decision Options");
+printSection("Recorded Owner Decision And Next Action");
 printList([
-  "Approve npm plus GitHub release implementation later.",
-  "Approve npm publishing only later.",
-  "Approve GitHub release only later.",
-  "Keep release publishing blocked.",
-  "Request release review first."
+  "Issue #255 records approval for npm plus GitHub release implementation.",
+  "Resolve npm authentication before npm publishing or matching GitHub release creation.",
+  "Run npm run release:auth-preflight and npm run release:execution-preflight.",
+  "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);
 
 console.log("");

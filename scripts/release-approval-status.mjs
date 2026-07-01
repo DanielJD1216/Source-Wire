@@ -41,7 +41,7 @@ console.log("ok release approval status readable");
 
 if (exactApprovalRecorded) {
   console.log("ok exact release approval recorded");
-  console.log("blocked release execution still requires implementation unit");
+  console.log("blocked release execution requires npm auth and final preflight");
 } else {
   console.log("blocked exact release approval missing");
   console.log("blocked release implementation approval missing");

@@ -76,16 +76,16 @@ if (!Array.isArray(rulesets)) {
   failures.push("GitHub rulesets response must be an array");
 }
 if (!Array.isArray(releases) || releases.length !== 0) {
-  failures.push("GitHub releases must remain empty until release approval");
+  failures.push("GitHub releases must remain empty until release execution");
 }
 if (!Array.isArray(advisories) || advisories.length !== 0) {
   failures.push("GitHub security advisories must remain empty until an owner-managed advisory is needed");
 }
 if (localTags.length > 0) {
-  failures.push(`local git tags must remain empty until release approval: ${localTags.join(", ")}`);
+  failures.push(`local git tags must remain empty until release execution: ${localTags.join(", ")}`);
 }
 if (remoteTags.length > 0) {
-  failures.push(`remote git tags must remain empty until release approval: ${remoteTags.join(", ")}`);
+  failures.push(`remote git tags must remain empty until release execution: ${remoteTags.join(", ")}`);
 }
 if (npmRegistryState.state !== "unpublished") {
   failures.push(`npm registry state must remain unpublished: ${npmRegistryState.summary || "unknown npm state"}`);

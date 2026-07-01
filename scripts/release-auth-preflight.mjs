@@ -51,6 +51,19 @@ if (npmPing.ok && npmWhoami.ok && ghAuth.ok) {
   console.log("ok release publish credentials ready");
 } else {
   console.log("blocked release publish credentials missing");
+  printSection("Next Required Owner Action");
+  if (!npmPing.ok) {
+    console.log("- Fix npm registry reachability, then rerun npm run release:auth-preflight.");
+  }
+  if (!npmWhoami.ok) {
+    console.log("- Run npm run release:auth-handoff.");
+    console.log("- Run npm login --registry=https://registry.npmjs.org/ in an owner-controlled terminal.");
+    console.log("- Run npm whoami and confirm the expected npm account.");
+  }
+  if (!ghAuth.ok) {
+    console.log("- Run gh auth login or repair GitHub CLI authentication, then rerun npm run release:auth-preflight.");
+  }
+  console.log("- Stop before npm publish, GitHub release creation, tags, or package version changes until release:execution-preflight passes.");
 }
 
 async function commandText(command, args) {

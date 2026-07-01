@@ -74,6 +74,7 @@
     "repository:live-branch": "node scripts/live-branch-governance.mjs",
     "repository:branch-governance-request": "node scripts/branch-governance-approval-request.mjs",
     "repository:branch-governance-plan": "node scripts/branch-governance-implementation-plan.mjs",
+    "repository:branch-governance-preflight": "node scripts/branch-governance-decision-preflight.mjs",
     "security:live-surface": "node scripts/live-security-surface.mjs",
     "registry:live-npm": "node scripts/live-npm-registry-boundary.mjs",
     "release:live-tags": "node scripts/live-release-tag-boundary.mjs",

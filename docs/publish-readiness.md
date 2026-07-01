@@ -288,6 +288,25 @@ blocked branch governance implementation approval missing
 
 The plan check verifies the future branch governance implementation order, required preflight, post-change verification, and rollback plan. It does not call GitHub, enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
+Before a future branch governance implementation unit changes live GitHub settings, run:
+
+```bash
+npm run repository:branch-governance-preflight
+```
+
+Expected markers:
+
+```text
+ok branch governance decision preflight ready
+ok world share preflight current
+ok owner decision status current
+ok live branch governance current
+ok branch governance execution plan current
+blocked branch governance implementation approval missing
+```
+
+This read-only preflight verifies live branch state, owner decision issue state, approval request, implementation plan, and world-share boundary. It stays outside CI and `publish:readiness` because it depends on live GitHub state and owner-side access.
+
 ## Owner Live Security Surface
 
 Before broad public sharing, the owner can verify the live GitHub security and intake boundary with:

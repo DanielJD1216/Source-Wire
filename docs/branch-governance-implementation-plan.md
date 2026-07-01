@@ -42,9 +42,10 @@ Before any future branch governance implementation unit changes live GitHub sett
 
 1. Run `npm run publish:readiness`.
 2. Run `npm run repository:live-branch`.
-3. Confirm latest `Package Checks` is green on `origin/main`.
-4. Confirm `origin/main` matches local `main`.
-5. Confirm no npm publishing, GitHub release, deployment, hosted runtime, or contribution acceptance is being opened in the same unit.
+3. Run `npm run repository:branch-governance-preflight`.
+4. Confirm latest `Package Checks` is green on `origin/main`.
+5. Confirm `origin/main` matches local `main`.
+6. Confirm no npm publishing, GitHub release, deployment, hosted runtime, or contribution acceptance is being opened in the same unit.
 
 ## Option A: Minimal Branch Protection
 
@@ -145,6 +146,7 @@ Branch governance approval would not allow:
 ## Related Docs
 
 - [Branch Governance Approval Request](branch-governance-approval-request.md)
+- [Branch Governance Decision Preflight](branch-governance-decision-preflight.md)
 - [Repository Metadata](repository-metadata.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)

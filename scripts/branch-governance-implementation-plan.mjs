@@ -11,6 +11,7 @@ assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.acce
 for (const requiredPath of [
   "docs/branch-governance-implementation-plan.md",
   "docs/branch-governance-approval-request.md",
+  "docs/branch-governance-decision-preflight.md",
   "docs/repository-metadata.md",
   "docs/publish-readiness.md",
   "docs/ci-checks.md",
@@ -32,6 +33,7 @@ for (const requiredText of [
   "Recommended first implementation path: Option A",
   "Rollback Plan",
   "Required Preflight",
+  "npm run repository:branch-governance-preflight",
   "Required Post-Change Verification",
   "blocked branch governance implementation approval missing"
 ]) {

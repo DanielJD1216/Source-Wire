@@ -76,8 +76,8 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 | License approval request | Captured | Use [License Approval Request Packet](license-approval-request-packet.md). |
 | Owner license preflight | Captured | Use [Owner License Approval Preflight](owner-license-approval-preflight.md). |
 | Owner decision workflow | Captured | Use [Owner License Decision Workflow](owner-license-decision-workflow.md). |
-| npm publishing | Blocked | Resolve npm authentication, then run release execution preflight. |
-| GitHub release publishing | Blocked | Resolve npm authentication, then run release execution preflight. |
+| npm publishing | Blocked | Run [Release Auth Handoff](release-auth-handoff.md), resolve npm authentication, then run release auth and execution preflights. |
+| GitHub release publishing | Blocked | Run [Release Auth Handoff](release-auth-handoff.md), resolve npm authentication, then run release auth and execution preflights. |
 | Branch protection or repository rulesets | Blocked | Separate branch governance approval, then use [Branch Governance Implementation Plan](branch-governance-implementation-plan.md). |
 | Hosted runtime | Blocked | Separate runtime PRD. |
 | Code contribution acceptance | Blocked | Explicit contribution terms. |
@@ -85,13 +85,29 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 ## Approval Order
 
 1. Apache-2.0 source package reuse is approved and implemented.
-2. Run `npm run release:execution-preflight`.
+2. Run `npm run release:auth-handoff`.
 3. Resolve npm authentication before npm publishing or matching GitHub release creation.
-4. Decide whether branch protection or repository rulesets should open in a separate governance unit.
-5. Run `npm run runtime:prd-decision-preflight`.
-6. Decide whether hosted runtime work should open in a separate PRD.
-7. Run `npm run contribution:terms-decision-preflight`.
-8. Decide whether and how code contributions can be accepted.
+4. Run `npm run release:auth-preflight`.
+5. Run `npm run release:execution-preflight`.
+6. Decide whether branch protection or repository rulesets should open in a separate governance unit.
+7. Run `npm run runtime:prd-decision-preflight`.
+8. Decide whether hosted runtime work should open in a separate PRD.
+9. Run `npm run contribution:terms-decision-preflight`.
+10. Decide whether and how code contributions can be accepted.
+
+## Current Release Blocker Path
+
+The current limiting release blocker is npm authentication. Use this sequence before any release mutation:
+
+```bash
+npm run release:auth-handoff
+npm login --registry=https://registry.npmjs.org/
+npm whoami
+npm run release:auth-preflight
+npm run release:execution-preflight
+```
+
+Stop if `npm run release:auth-preflight` still reports `blocked release publish credentials missing`.
 
 Recorded release approval:
 
@@ -148,4 +164,7 @@ Contributions are open.
 - [License Approval Request Packet](license-approval-request-packet.md)
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
 - [Owner License Decision Workflow](owner-license-decision-workflow.md)
+- [Release Auth Handoff](release-auth-handoff.md)
+- [Release Auth Preflight](release-auth-preflight.md)
+- [Release Execution Preflight](release-execution-preflight.md)
 - [Branch Governance Approval Request](branch-governance-approval-request.md)

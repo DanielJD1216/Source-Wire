@@ -54,8 +54,9 @@ printRows([
 printSection("Next Approval");
 printList([
   "Use README.md and LICENSE for public source repo sharing.",
-  "Before any release mutation, run npm run release:execution-preflight.",
+  "Before any release mutation, run npm run release:auth-handoff.",
   "Resolve npm authentication before npm publishing or matching GitHub release creation.",
+  "Then run npm run release:auth-preflight and npm run release:execution-preflight.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them.",
   "Open separate PRDs for hosted runtime and contribution acceptance."
 ]);

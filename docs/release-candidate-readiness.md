@@ -93,7 +93,15 @@ blocked release execution not performed
 
 ## Next Action
 
-If this check passes, the next action is to run the release execution preflight and resolve npm authentication before release mutation.
+If this check passes, the next action is to run the release auth handoff, resolve npm authentication, then run the release auth and execution preflights before release mutation:
+
+```bash
+npm run release:auth-handoff
+npm login --registry=https://registry.npmjs.org/
+npm whoami
+npm run release:auth-preflight
+npm run release:execution-preflight
+```
 
 Recorded release path:
 

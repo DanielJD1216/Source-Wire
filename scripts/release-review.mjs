@@ -68,8 +68,9 @@ printRows([
 
 printSection("Next Action");
 printList([
-  "Run npm run release:execution-preflight before any release mutation.",
+  "Run npm run release:auth-handoff before any release mutation.",
   "Resolve npm authentication before npm publishing or matching GitHub release creation.",
+  "Then run npm run release:auth-preflight and npm run release:execution-preflight.",
   "Do not publish npm, create a GitHub release, create a tag, change package version, deploy services, or accept code contributions from this check."
 ]);
 

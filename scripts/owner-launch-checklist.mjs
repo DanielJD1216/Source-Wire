@@ -16,6 +16,9 @@ for (const requiredPath of [
   "docs/branch-governance-approval-request.md",
   "docs/hosted-runtime-prd-decision-preflight.md",
   "docs/contribution-terms-prd-decision-preflight.md",
+  "docs/release-auth-handoff.md",
+  "docs/release-auth-preflight.md",
+  "docs/release-execution-preflight.md",
   "docs/world-share-readiness.md",
   "docs/share-for-review.md",
   "docs/publish-readiness.md"
@@ -56,18 +59,20 @@ printRows([
 printSection("Approval Order");
 printList([
   "1. Apache-2.0 source package reuse is approved and implemented.",
-  "2. Run npm run release:execution-preflight.",
+  "2. Run npm run release:auth-handoff.",
   "3. Resolve npm authentication before npm publishing or matching GitHub release creation.",
-  "4. Branch protection or repository rulesets need separate branch governance approval.",
-  "5. Run npm run runtime:prd-decision-preflight.",
-  "6. Hosted runtime work needs a separate runtime PRD.",
-  "7. Run npm run contribution:terms-decision-preflight.",
-  "8. Code contribution acceptance needs explicit contribution terms."
+  "4. Run npm run release:auth-preflight.",
+  "5. Run npm run release:execution-preflight.",
+  "6. Branch protection or repository rulesets need separate branch governance approval.",
+  "7. Run npm run runtime:prd-decision-preflight.",
+  "8. Hosted runtime work needs a separate runtime PRD.",
+  "9. Run npm run contribution:terms-decision-preflight.",
+  "10. Code contribution acceptance needs explicit contribution terms."
 ]);
 
 printSection("Recommended Next Owner Choice");
 printList([
-  "Authenticate npm, then rerun npm run release:auth-preflight and npm run release:execution-preflight.",
+  "Run npm run release:auth-handoff, authenticate npm, then rerun npm run release:auth-preflight and npm run release:execution-preflight.",
   "Use version 0.1.0 for the first public release unless final release execution verification finds a blocker.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);

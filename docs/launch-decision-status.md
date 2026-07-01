@@ -68,9 +68,13 @@ The command verifies:
 
 ## Next Physical Action
 
-Run the release-execution preflight:
+Run the release auth handoff, authenticate npm, then run the release auth and execution preflights:
 
 ```bash
+npm run release:auth-handoff
+npm login --registry=https://registry.npmjs.org/
+npm whoami
+npm run release:auth-preflight
 npm run release:execution-preflight
 ```
 

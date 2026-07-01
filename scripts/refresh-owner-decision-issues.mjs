@@ -6,6 +6,8 @@ const refreshedAt = new Date().toISOString().slice(0, 10);
 const decisionIssues = [
   {
     number: 255,
+    exactApprovalText:
+      "Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.",
     command: "npm run release:decision-preflight",
     gateProof: [
       "ok release decision preflight ready",
@@ -97,16 +99,20 @@ for (const decisionIssue of decisionIssues) {
     "--repo",
     repo,
     "--json",
-    "body,title,url"
+    "body,title,url,comments"
   ]);
+  const approvalComments = getApprovalComments(issue.comments, decisionIssue.exactApprovalText);
 
   const nextBody = refreshIssueBody(issue.body ?? "", {
+    issueNumber: decisionIssue.number,
+    issueTitle: issue.title,
     commit,
     commitMessage,
     packageChecksUrl: latestRun.url,
     packageChecksConclusion: latestRun.conclusion,
     command: decisionIssue.command,
     gateProof: decisionIssue.gateProof,
+    approvalComments,
     artifactManifest
   });
 
@@ -141,6 +147,10 @@ function refreshIssueBody(body, context) {
 
   const manifestBlock = `Current artifact manifest from the latest verified commit:\n\n\`\`\`text\n${context.artifactManifest}\n\`\`\``;
   nextBody = nextBody.replace(/Current artifact manifest from the latest verified commit:\n\n```text\n[\s\S]*?```/u, manifestBlock);
+
+  if (context.issueNumber === 255) {
+    nextBody = refreshReleaseApprovalIssueBody(nextBody, context);
+  }
 
   const refreshSection = buildRefreshSection(context);
   const refreshSectionPattern = /^## Latest Status Refresh\s*$[\s\S]*?(?=^## )/mu;
@@ -181,6 +191,69 @@ ${context.gateProof.join("\n")}
 \`\`\`
 
 This refresh does not record owner approval or approve blocked work.`;
+}
+
+function refreshReleaseApprovalIssueBody(body, context) {
+  const approvalRecorded = context.approvalComments.length > 0;
+  const approvalSource = approvalRecorded ? "recorded in issue comment" : "blocked because no separate exact owner approval record exists yet";
+  let nextBody = body.replace(
+    /- Release implementation approval: .+/u,
+    `- Release implementation approval: ${approvalSource}${approvalRecorded ? "; release execution still requires a focused implementation unit and npm authentication" : ""}`
+  );
+
+  const ownerDecisionStatusProof = [
+    "ok owner decision status readable",
+    ...(approvalRecorded ? ["ok exact release implementation approval recorded"] : ["blocked release implementation approval missing"]),
+    "blocked branch governance implementation approval missing",
+    "blocked hosted runtime PRD approval missing",
+    "blocked contribution terms PRD approval missing",
+    "blocked owner decisions missing approval records"
+  ].join("\n");
+
+  const releaseApprovalStatusProof = [
+    `Issue                  : #${context.issueNumber} ${context.issueTitle}`,
+    "State                  : OPEN",
+    `Exact approval         : ${approvalRecorded ? "recorded" : "not recorded"}`,
+    "Approval record section: missing",
+    `Approval comments      : ${context.approvalComments.length}`,
+    "ok release approval status readable",
+    ...(approvalRecorded
+      ? ["ok exact release approval recorded", "blocked release execution still requires implementation unit"]
+      : ["blocked exact release approval missing", "blocked release implementation approval missing"])
+  ].join("\n");
+
+  const releaseDecisionPreflightProof = [
+    "ok release decision preflight ready",
+    "ok world share preflight current",
+    "ok owner open issue boundary current",
+    "ok release approval status current",
+    "ok release candidate evidence current",
+    "ok release artifact evidence current",
+    approvalRecorded ? "blocked release execution not performed" : "blocked release implementation approval missing"
+  ].join("\n");
+
+  nextBody = replaceProofBlock(nextBody, "Current owner-decision status proof", ownerDecisionStatusProof);
+  nextBody = replaceProofBlock(nextBody, "Current release approval status proof", releaseApprovalStatusProof);
+  nextBody = replaceProofBlock(nextBody, "Current release-decision preflight proof", releaseDecisionPreflightProof);
+
+  return nextBody;
+}
+
+function replaceProofBlock(body, label, proof) {
+  const pattern = new RegExp(`${escapeRegExp(label)}:\\n\\n\`\`\`text\\n[\\s\\S]*?\`\`\``, "u");
+  return body.replace(pattern, `${label}:\n\n\`\`\`text\n${proof}\n\`\`\``);
+}
+
+function getApprovalComments(comments, exactApprovalText) {
+  if (!exactApprovalText || !Array.isArray(comments)) {
+    return [];
+  }
+
+  return comments.filter((comment) => comment.body?.includes(exactApprovalText));
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 }
 
 async function getLatestPackageChecksRun() {

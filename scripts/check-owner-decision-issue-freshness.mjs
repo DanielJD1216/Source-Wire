@@ -7,6 +7,9 @@ const expectedIssues = [
     number: 255,
     command: "npm run release:decision-preflight",
     markers: [
+      "Release implementation approval: recorded in issue comment",
+      "Exact approval         : recorded",
+      "ok exact release implementation approval recorded",
       "ok release decision preflight ready",
       "blocked release execution not performed"
     ]

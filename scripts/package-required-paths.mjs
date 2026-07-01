@@ -72,6 +72,7 @@ export const requiredPackagePaths = [
   "docs/share-for-review.md",
   "docs/technical-reviewer-guide.md",
   "docs/validation-cli.md",
+  "docs/world-share-final-preflight.md",
   "docs/world-share-kit.md",
   "docs/world-share-packet.md",
   "docs/world-share-readiness.md",

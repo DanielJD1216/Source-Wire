@@ -65,12 +65,16 @@ Despite the command name, this does not publish npm.
 Before broad public sharing, the owner can run:
 
 ```bash
-npm run world:share-preflight
-npm run owner:decision-status
-npm run owner:open-issues-status
+npm run world:share-final-preflight
 ```
 
-These commands are read-only. They do not publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
+This command is read-only. It does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, implement hosted runtime behavior, or approve production runtime use.
+
+For the lighter source-package-only preflight, run:
+
+```bash
+npm run world:share-preflight
+```
 
 ## Feedback Route
 

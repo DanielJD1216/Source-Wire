@@ -109,6 +109,7 @@
     "world:share-packet": "node scripts/world-share-packet.mjs",
     "world:live-status": "node scripts/live-world-share-status.mjs",
     "world:share-preflight": "node scripts/world-share-preflight.mjs",
+    "world:share-final-preflight": "node scripts/world-share-final-preflight.mjs",
     "launch:decision-status": "node scripts/launch-decision-status.mjs",
     "release:implementation-preparation": "node scripts/release-implementation-preparation.mjs",
     "release:implementation-plan": "node scripts/release-implementation-plan.mjs",

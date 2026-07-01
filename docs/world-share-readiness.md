@@ -85,6 +85,30 @@ This command does not publish npm, create a GitHub release, create tags, deploy 
 Before broad public sharing, the owner can run the complete read-only owner preflight:
 
 ```bash
+npm run world:share-final-preflight
+```
+
+This runs the live source-package preflight plus the release, branch governance, hosted runtime PRD, and contribution terms PRD decision preflights.
+
+Expected final markers:
+
+```text
+ok world share final preflight ready
+ok world share preflight current
+ok release decision preflight current
+ok branch governance decision preflight current
+ok hosted runtime PRD decision preflight current
+ok contribution terms PRD decision preflight current
+ok owner decision issue boundary current
+blocked production launch channels
+blocked owner approvals missing
+```
+
+This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
+
+For the lighter source-package-only preflight, run:
+
+```bash
 npm run world:share-preflight
 ```
 

@@ -6,6 +6,7 @@ const checks = [
   ["repository:branch-governance-preflight", "branch governance decision preflight"],
   ["runtime:prd-decision-preflight", "hosted runtime PRD decision preflight"],
   ["contribution:terms-decision-preflight", "contribution terms PRD decision preflight"],
+  ["reviewer:labels", "reviewer labels status"],
   ["owner:decision-status", "owner decision issue status"],
   ["owner:open-issues-status", "owner open issue boundary"],
   ["owner:decision-issues-freshness", "owner decision issue freshness"],
@@ -28,6 +29,7 @@ console.log("ok release decision preflight current");
 console.log("ok branch governance decision preflight current");
 console.log("ok hosted runtime PRD decision preflight current");
 console.log("ok contribution terms PRD decision preflight current");
+console.log("ok reviewer labels current");
 console.log("ok owner decision issue boundary current");
 console.log("ok owner decision issue freshness current");
 console.log("blocked production launch channels");

@@ -44,6 +44,7 @@ const finalPreflightMarkers = [
   "ok branch governance decision preflight current",
   "ok hosted runtime PRD decision preflight current",
   "ok contribution terms PRD decision preflight current",
+  "ok reviewer labels current",
   "ok owner decision issue boundary current",
   "ok owner decision issue freshness current",
   "blocked production launch channels",

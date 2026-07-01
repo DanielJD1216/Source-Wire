@@ -64,6 +64,8 @@
     "runtime-boundary:installed-smoke": "node scripts/runtime-boundary-installed-smoke.mjs",
     "runtime-boundary:diagnostics-smoke": "node scripts/runtime-boundary-diagnostics-smoke.mjs",
     "reviewer:smoke": "node scripts/reviewer-first-pass-smoke.mjs",
+    "reviewer:labels": "node scripts/reviewer-labels-status.mjs",
+    "reviewer:labels:ensure": "node scripts/reviewer-labels-status.mjs --ensure",
     "readiness:report": "node scripts/readiness-report.mjs",
     "docs:links": "node scripts/check-doc-links.mjs",
     "docs:anchors": "node scripts/check-doc-anchors.mjs",

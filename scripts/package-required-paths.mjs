@@ -66,6 +66,7 @@ export const requiredPackagePaths = [
   "docs/release-version-recommendation.md",
   "docs/repository-metadata.md",
   "docs/reviewer-feedback-guide.md",
+  "docs/reviewer-labels.md",
   "docs/runtime-boundary-readiness.md",
   "docs/runtime-boundary.md",
   "docs/runtime-implementation-gate.md",

@@ -20,6 +20,8 @@ const requiredScripts = [
   "runtime-boundary:installed-smoke",
   "runtime-boundary:diagnostics-smoke",
   "reviewer:smoke",
+  "reviewer:labels",
+  "reviewer:labels:ensure",
   "docs:links",
   "docs:anchors",
   "docs:external-links",
@@ -220,7 +222,8 @@ printList([
   "minimal-runtime:smoke validates exported synthetic in-memory runtime boundary code against owner-hosted API plus MCP proof cases",
   "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install",
   "runtime-boundary:diagnostics-smoke validates the synthetic smoke diagnostic failure format",
-  "reviewer:intake-smoke validates structured reviewer issue templates, private-data warnings, and blocked code-contribution intake"
+  "reviewer:intake-smoke validates structured reviewer issue templates, private-data warnings, and blocked code-contribution intake",
+  "reviewer:labels validates live GitHub reviewer labels used by the issue templates"
 ]);
 
 printSection("Required Readiness Docs");
@@ -290,6 +293,7 @@ printList([
   ".github/pull_request_template.md blocks public code contribution assumptions and private-data leakage through pull requests",
   "docs/technical-reviewer-guide.md gives reviewers the clone, verify, inspect, feedback, and license-boundary path",
   "docs/reviewer-feedback-guide.md defines structured public issue feedback without asking for private data",
+  "docs/reviewer-labels.md records the live GitHub label check and owner-side label repair command for reviewer intake",
   "npm run readme:entrypoint-smoke verifies README keeps the public status, first reviewer path, share links, and blocked launch channels visible before package details",
   "CONTRIBUTING.md, SUPPORT.md, SECURITY.md, and issue templates define public intake boundaries without accepting code contributions",
   "docs/ci-checks.md summarizes GitHub Actions Package Checks and marker map",

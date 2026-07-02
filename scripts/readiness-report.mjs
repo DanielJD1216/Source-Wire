@@ -81,6 +81,7 @@ const requiredScripts = [
   "owner:decision-issues-freshness",
   "world:readiness",
   "world:share-packet",
+  "world:share-operator-summary",
   "world:live-status",
   "world:share-preflight",
   "world:share-final-preflight",
@@ -206,6 +207,7 @@ for (const requiredPath of [
   "docs/world-share-readiness.md",
   "docs/world-share-kit.md",
   "docs/world-share-packet.md",
+  "docs/world-share-operator-summary.md",
   "docs/world-share-post-share-monitor.md",
   "docs/share-for-review.md",
   "docs/technical-reviewer-guide.md",
@@ -256,6 +258,7 @@ printList([
   "reviewer:intake-smoke validates structured reviewer issue templates, private-data warnings, and blocked code-contribution intake",
   "runtime:child-issue-publish:smoke validates the hosted-runtime child issue publisher dry run and missing-approval write guard without GitHub mutations",
   "world:post-share-monitor:smoke validates post-share issue and pull request classification rules without live GitHub issues",
+  "world:share-operator-summary validates the local owner next-action summary while keeping hosted runtime child issue publication blocked",
   "reviewer:labels validates live GitHub reviewer labels used by the issue templates"
 ]);
 

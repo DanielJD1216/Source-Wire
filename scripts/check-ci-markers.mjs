@@ -267,6 +267,16 @@ const markerGroups = [
     ]
   },
   {
+    name: "world-share operator summary",
+    markers: [
+      "ok world share operator summary ready",
+      "ok current share actions summarized",
+      "ok hosted runtime PRD approval retained",
+      "blocked hosted runtime child issue publication pending owner approval",
+      "blocked production launch channels"
+    ]
+  },
+  {
     name: "first visitor share audit",
     markers: [
       "ok first visitor share audit ready",

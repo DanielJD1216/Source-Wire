@@ -78,6 +78,12 @@ For the lighter source-package-only preflight, run:
 npm run world:share-preflight
 ```
 
+For the short owner next-action summary, run:
+
+```bash
+npm run world:share-operator-summary
+```
+
 ## Post-Share Monitor
 
 After public sharing starts, run:
@@ -121,6 +127,7 @@ Do not ask reviewers to send:
 
 - [Public Status](public-status.md)
 - [World Share Kit](world-share-kit.md)
+- [World Share Operator Summary](world-share-operator-summary.md)
 - [Share For Technical Review](share-for-review.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [World Share Post-Share Monitor](world-share-post-share-monitor.md)

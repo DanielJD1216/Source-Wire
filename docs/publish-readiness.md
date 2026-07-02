@@ -57,6 +57,7 @@ This command runs:
 - `npm run owner:decision-workflow`
 - `npm run world:readiness`
 - `npm run world:share-packet`
+- `npm run world:share-operator-summary`
 - `npm run launch:decision-status`
 - `npm run share:audit`
 - `npm run readme:entrypoint-smoke`
@@ -139,6 +140,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `ok owner license decision captured` |
 | World-share boundary | `ok world share open source ready`, `blocked production launch channels` |
 | World-share packet | `ok world share packet ready`, `ok public share copy current`, `blocked production launch channels` |
+| World-share operator summary | `ok world share operator summary ready`, `ok current share actions summarized`, `ok hosted runtime PRD approval retained`, `blocked hosted runtime child issue publication pending owner approval`, `blocked production launch channels` |
 | Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0`, `blocked hosted runtime implementation`, `blocked contributions not accepted` |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | README entrypoint smoke | `ok readme entrypoint smoke ready`, `ok readme first reviewer path visible`, `blocked unsafe readme launch claims` |

@@ -14,6 +14,8 @@ Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Su
 
 World share packet: use [World Share Packet](docs/world-share-packet.md) or `npm run world:share-packet` for the exact safe copy, first reviewer commands, owner preflight, feedback route, and blocked launch channels in one place.
 
+Operator summary: use [World Share Operator Summary](docs/world-share-operator-summary.md) or `npm run world:share-operator-summary` for the short current-state answer before deciding what to share or approve next.
+
 Post-share monitor: after public sharing, use [World Share Post-Share Monitor](docs/world-share-post-share-monitor.md) or `npm run world:post-share-monitor` to verify open reviewer feedback stays structured while pull requests remain blocked.
 
 Share-readiness audit: Source-Wire is ready for technical review, npm package installation, GitHub release review, and source package reuse under Apache-2.0, but not deployment, hosted runtime use, production runtime use, or code contribution acceptance. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
@@ -91,6 +93,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)
 - [World Share Packet](docs/world-share-packet.md)
+- [World Share Operator Summary](docs/world-share-operator-summary.md)
 - [World Share Post-Share Monitor](docs/world-share-post-share-monitor.md)
 - [Share For Technical Review](docs/share-for-review.md)
 - [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md)
@@ -167,6 +170,7 @@ Source-Wire can run a full local readiness gate with package dry-run, installed 
 - [Publish Readiness](docs/publish-readiness.md)
 - [World-Share Readiness](docs/world-share-readiness.md)
 - [World Share Packet](docs/world-share-packet.md)
+- [World Share Operator Summary](docs/world-share-operator-summary.md)
 - [World Share Post-Share Monitor](docs/world-share-post-share-monitor.md)
 - [Owner Launch Checklist](docs/owner-launch-checklist.md)
 - [Release Implementation Runbook](docs/release-implementation-runbook.md)

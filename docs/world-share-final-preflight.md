@@ -34,6 +34,7 @@ This runs:
 - `npm run release:decision-preflight`
 - `npm run repository:branch-governance-preflight`
 - `npm run runtime:prd-decision-preflight`
+- `npm run runtime:child-issue-approval-status`
 - `npm run contribution:terms-decision-preflight`
 - `npm run owner:decision-status`
 - `npm run owner:open-issues-status`
@@ -49,6 +50,7 @@ ok world share preflight current
 ok release decision preflight current
 ok branch governance decision preflight current
 ok hosted runtime PRD decision preflight current
+ok hosted runtime child issue approval status current
 ok contribution terms PRD decision preflight current
 ok reviewer labels current
 ok owner decision issue boundary current
@@ -77,6 +79,7 @@ Stop broad public sharing if:
 - GitHub releases or tags exist without a release implementation unit,
 - branch protection or repository rulesets changed without owner approval,
 - hosted runtime behavior appears in public docs or package surfaces,
+- the child issue publication approval status is unreadable,
 - code contribution acceptance appears before a separate implementation unit explicitly opens it,
 - private data, real user data, local private paths, real chat logs, screenshots, client names, account IDs, tokens, or production exports appear in public package contents.
 

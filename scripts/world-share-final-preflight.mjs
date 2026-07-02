@@ -5,6 +5,7 @@ const checks = [
   ["release:decision-preflight", "release decision preflight"],
   ["repository:branch-governance-preflight", "branch governance decision preflight"],
   ["runtime:prd-decision-preflight", "hosted runtime PRD decision preflight"],
+  ["runtime:child-issue-approval-status", "hosted runtime child issue approval status"],
   ["contribution:terms-decision-preflight", "contribution terms PRD decision preflight"],
   ["reviewer:labels", "reviewer labels status"],
   ["owner:decision-status", "owner decision issue status"],
@@ -29,6 +30,7 @@ console.log("ok world share preflight current");
 console.log("ok release decision preflight current");
 console.log("ok branch governance decision preflight current");
 console.log("ok hosted runtime PRD decision preflight current");
+console.log("ok hosted runtime child issue approval status current");
 console.log("ok contribution terms PRD decision preflight current");
 console.log("ok reviewer labels current");
 console.log("ok owner decision issue boundary current");

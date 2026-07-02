@@ -66,6 +66,7 @@ Security reporting does not approve:
 - database setup,
 - live connectors,
 - real data examples,
-- contribution license terms.
+- code contribution acceptance,
+- contribution enforcement or maintainer workflow changes.
 
 Read [Public Status](docs/public-status.md) for the current repo state.

@@ -50,7 +50,9 @@ for (const [label, text, requiredText] of [
   ["CONTRIBUTING.md", contributing, "ok license Apache-2.0"],
   ["SUPPORT.md", support, "Apache-2.0 licensed as a source package"],
   ["SECURITY.md", security, "Apache-2.0 licensed as a source package"],
-  ["SECURITY.md", security, "Security reporting does not approve:"]
+  ["SECURITY.md", security, "Security reporting does not approve:"],
+  ["SECURITY.md", security, "code contribution acceptance"],
+  ["SECURITY.md", security, "contribution enforcement or maintainer workflow changes"]
 ]) {
   if (!text.includes(requiredText)) {
     failures.push(`${label} missing required intake boundary text: ${requiredText}`);

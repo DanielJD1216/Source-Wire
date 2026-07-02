@@ -50,6 +50,7 @@ Expected fixture-smoke markers:
 ```text
 ok hosted runtime child issue publisher smoke
 blocked child issue publication approval missing
+blocked child issue duplicate publication
 blocked hosted runtime implementation
 ```
 
@@ -63,6 +64,13 @@ Expected marker if write mode is attempted before the approval is recorded on `#
 
 ```text
 blocked child issue publication approval missing
+blocked hosted runtime implementation
+```
+
+Expected marker if write mode is attempted after matching planning issue titles already exist:
+
+```text
+blocked child issue duplicate publication
 blocked hosted runtime implementation
 ```
 

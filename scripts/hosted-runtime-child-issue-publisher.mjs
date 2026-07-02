@@ -5,7 +5,6 @@ const repo = "DanielJD1216/Source-Wire";
 const parentIssueNumber = 257;
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const args = parseArgs(process.argv.slice(2));
-const fixtureState = buildFixtureState(args.fixture);
 const failures = [];
 const createdIssues = [];
 
@@ -121,6 +120,8 @@ const issues = [
   }
 ];
 
+const fixtureState = buildFixtureState(args.fixture);
+
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
@@ -165,7 +166,7 @@ console.log("Default mode is read-only.");
 console.log("Write mode requires --write, the exact --confirm-exact approval text, and recorded approval on parent issue #257.");
 console.log("It does not implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, create tags, accept code contributions, add real user data, or approve production runtime use.");
 if (fixtureState) {
-  console.log(`Fixture mode: ${args.fixture}. No GitHub API calls are made for approval status.`);
+  console.log(`Fixture mode: ${args.fixture}. No GitHub API calls are made for fixture-backed approval or issue state.`);
 }
 printRows([
   ["Repository", repo],
@@ -214,7 +215,7 @@ if (!approvalStatus.recorded) {
   process.exit(1);
 }
 
-const existingOpenIssues = await ghJson([
+const openIssues = fixtureState?.openIssues ?? await ghJson([
   "issue",
   "list",
   "--repo",
@@ -226,13 +227,15 @@ const existingOpenIssues = await ghJson([
   "--json",
   "number,title,url"
 ]);
-const existingTitles = new Set(existingOpenIssues.map((issue) => issue.title));
+const existingTitles = new Set(openIssues.map((issue) => issue.title));
 const duplicateTitles = issues.filter((issue) => existingTitles.has(issue.title));
 if (duplicateTitles.length > 0) {
   console.error("failed hosted runtime child issue publisher: matching open child issue titles already exist");
   for (const issue of duplicateTitles) {
     console.error(`- ${issue.title}`);
   }
+  console.error("blocked child issue duplicate publication");
+  console.error("blocked hosted runtime implementation");
   process.exit(1);
 }
 
@@ -340,20 +343,39 @@ function hasApprovalRecordSection(body, exactApprovalTextToFind) {
 function buildFixtureState(fixture) {
   if (!fixture) return null;
 
-  if (fixture !== "approval-missing") {
-    throw new Error(`unknown fixture: ${fixture}`);
+  if (fixture === "approval-missing") {
+    return {
+      approvalStatus: {
+        issue: {
+          number: parentIssueNumber,
+          title: "Owner decision: open hosted runtime PRD path",
+          url: "https://example.invalid/source-wire/issues/257"
+        },
+        recorded: false
+      },
+      openIssues: []
+    };
   }
 
-  return {
-    approvalStatus: {
-      issue: {
-        number: parentIssueNumber,
-        title: "Owner decision: open hosted runtime PRD path",
-        url: "https://example.invalid/source-wire/issues/257"
+  if (fixture === "approval-recorded-with-duplicates") {
+    return {
+      approvalStatus: {
+        issue: {
+          number: parentIssueNumber,
+          title: "Owner decision: open hosted runtime PRD path",
+          url: "https://example.invalid/source-wire/issues/257"
+        },
+        recorded: true
       },
-      recorded: false
-    }
-  };
+      openIssues: issues.map((issue, index) => ({
+        number: 900 + index,
+        title: issue.title,
+        url: `https://example.invalid/source-wire/planning/${index + 1}`
+      }))
+    };
+  }
+
+  throw new Error(`unknown fixture: ${fixture}`);
 }
 
 function execGh(ghArgs) {
@@ -424,6 +446,7 @@ function printUsage() {
   console.log("  npm run runtime:child-issue-publish");
   console.log("  npm run runtime:child-issue-publish -- --write --confirm-exact \"<exact approval text>\"");
   console.log("  npm run runtime:child-issue-publish -- --fixture approval-missing --write --confirm-exact \"<exact approval text>\"");
+  console.log("  npm run runtime:child-issue-publish -- --fixture approval-recorded-with-duplicates --write --confirm-exact \"<exact approval text>\"");
 }
 
 function printSection(title) {

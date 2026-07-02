@@ -17,10 +17,23 @@ const missingApproval = await runPublisher([
   exactApproval
 ]);
 assertExitCode(missingApproval, 1, "missing approval fixture");
-assertIncludes(missingApproval.stdout, "Fixture mode: approval-missing. No GitHub API calls are made for approval status.", "missing approval fixture");
+assertIncludes(missingApproval.stdout, "Fixture mode: approval-missing. No GitHub API calls are made for fixture-backed approval or issue state.", "missing approval fixture");
 assertIncludes(missingApproval.stderr, "failed hosted runtime child issue publisher: exact child issue publication approval is not recorded on parent issue #257", "missing approval fixture");
 assertIncludes(missingApproval.stderr, "blocked child issue publication approval missing", "missing approval fixture");
 assertIncludes(missingApproval.stderr, "blocked hosted runtime implementation", "missing approval fixture");
+
+const duplicatePublication = await runPublisher([
+  "--fixture",
+  "approval-recorded-with-duplicates",
+  "--write",
+  "--confirm-exact",
+  exactApproval
+]);
+assertExitCode(duplicatePublication, 1, "duplicate publication fixture");
+assertIncludes(duplicatePublication.stdout, "Fixture mode: approval-recorded-with-duplicates. No GitHub API calls are made for fixture-backed approval or issue state.", "duplicate publication fixture");
+assertIncludes(duplicatePublication.stderr, "failed hosted runtime child issue publisher: matching open child issue titles already exist", "duplicate publication fixture");
+assertIncludes(duplicatePublication.stderr, "blocked child issue duplicate publication", "duplicate publication fixture");
+assertIncludes(duplicatePublication.stderr, "blocked hosted runtime implementation", "duplicate publication fixture");
 
 console.log("ok hosted runtime child issue publisher smoke");
 

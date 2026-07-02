@@ -143,12 +143,20 @@ function refreshIssueBody(body, context) {
     .replace(/Source-Wire commit: `[0-9a-f]{40}`/gu, `Source-Wire commit: \`${context.commit}\``)
     .replace(/Commit message: `[^`]+`/gu, `Commit message: \`${context.commitMessage}\``)
     .replace(/Package Checks run: `https:\/\/github\.com\/DanielJD1216\/Source-Wire\/actions\/runs\/\d+`/gu, `Package Checks run: \`${context.packageChecksUrl}\``)
+    .replace(/- npm publishing: blocked/gu, "- npm publishing: published as `@source-wire/contracts@0.1.0`")
+    .replace(/- GitHub release publishing: blocked/gu, "- GitHub release publishing: published as `v0.1.0`")
+    .replace(/- GitHub release: blocked/gu, "- GitHub release: published as `v0.1.0`")
+    .replace(/- Release tags: blocked/gu, "- Release tags: published as `v0.1.0`")
+    .replace(/- Version: `0\.0\.0`/gu, "- Version: `0.1.0`")
+    .replace(/^npm publishing: blocked$/gmu, "npm publishing: published")
+    .replace(/^GitHub release: blocked$/gmu, "GitHub release: published")
     .replace(/https:\/\/github\.com\/DanielJD1216\/Source-Wire\/actions\/runs\/\d+/gu, context.packageChecksUrl)
     .replace(/Latest Package Checks for that commit:\n\n```text\nhttps:\/\/github\.com\/DanielJD1216\/Source-Wire\/actions\/runs\/\d+\n```/u, `Latest Package Checks for that commit:\n\n\`\`\`text\n${context.packageChecksUrl}\n\`\`\``)
     .replace(/Latest verified Source-Wire commit:\n\n```text\n[0-9a-f]{40}\n[^`]+```/u, `Latest verified Source-Wire commit:\n\n\`\`\`text\n${context.commit}\n${context.commitMessage}\n\`\`\``);
 
   const manifestBlock = `Current artifact manifest from the latest verified commit:\n\n\`\`\`text\n${context.artifactManifest}\n\`\`\``;
   nextBody = nextBody.replace(/Current artifact manifest from the latest verified commit:\n\n```text\n[\s\S]*?```/u, manifestBlock);
+  nextBody = replaceProofBlock(nextBody, "Current owner-decision status proof", currentOwnerDecisionStatusProof());
 
   if (context.issueNumber === 255) {
     nextBody = refreshReleaseApprovalIssueBody(nextBody, context);
@@ -203,15 +211,6 @@ function refreshReleaseApprovalIssueBody(body, context) {
     `- Release implementation approval: ${approvalSource}`
   );
 
-  const ownerDecisionStatusProof = [
-    "ok owner decision status readable",
-    ...(approvalRecorded ? ["ok exact release implementation approval recorded"] : ["blocked release implementation approval missing"]),
-    "blocked branch governance implementation approval missing",
-    "blocked hosted runtime PRD approval missing",
-    "blocked contribution terms PRD approval missing",
-    "blocked owner decisions missing approval records"
-  ].join("\n");
-
   const releaseApprovalStatusProof = [
     `Issue                  : #${context.issueNumber} ${context.issueTitle}`,
     "State                  : OPEN",
@@ -240,11 +239,21 @@ function refreshReleaseApprovalIssueBody(body, context) {
       : ["blocked release implementation approval missing"])
   ].join("\n");
 
-  nextBody = replaceProofBlock(nextBody, "Current owner-decision status proof", ownerDecisionStatusProof);
   nextBody = replaceProofBlock(nextBody, "Current release approval status proof", releaseApprovalStatusProof);
   nextBody = replaceProofBlock(nextBody, "Current release-decision preflight proof", releaseDecisionPreflightProof);
 
   return nextBody;
+}
+
+function currentOwnerDecisionStatusProof() {
+  return [
+    "ok owner decision status readable",
+    "ok exact release implementation approval recorded",
+    "blocked branch governance implementation approval missing",
+    "blocked hosted runtime PRD approval missing",
+    "blocked contribution terms PRD approval missing",
+    "blocked owner decisions missing approval records"
+  ].join("\n");
 }
 
 function replaceProofBlock(body, label, proof) {

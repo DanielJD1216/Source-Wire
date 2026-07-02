@@ -2,7 +2,7 @@
 
 Status: owner-side read-only preflight.
 
-This preflight does not enable branch protection, create repository rulesets, publish npm, create a GitHub release, create tags, deploy services, accept code contributions, approve hosted runtime use, or change package metadata.
+This preflight does not enable branch protection, create repository rulesets, publish a new npm version, create a new GitHub release, create tags, deploy services, accept code contributions, approve hosted runtime use, or change package metadata.
 
 ## Purpose
 
@@ -65,9 +65,9 @@ Until that exact approval is recorded, branch governance enforcement remains blo
 
 This preflight does not allow:
 
-- npm publishing,
-- GitHub release publishing,
-- release tags,
+- publishing a new npm package version,
+- creating a new GitHub release,
+- creating new release tags,
 - package version changes,
 - deployment,
 - hosted runtime behavior,

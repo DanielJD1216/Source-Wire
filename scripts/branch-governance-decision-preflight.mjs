@@ -11,7 +11,7 @@ const steps = [
 
 printSection("Source-Wire Branch Governance Decision Preflight");
 console.log("This owner-side preflight is read-only.");
-console.log("It does not enable branch protection, create repository rulesets, publish npm, create a GitHub release, create tags, deploy services, accept code contributions, or approve hosted runtime use.");
+console.log("It does not enable branch protection, create repository rulesets, publish a new npm version, create a new GitHub release, create tags, deploy services, accept code contributions, or approve hosted runtime use.");
 
 for (const [scriptName, label] of steps) {
   printSection(label);

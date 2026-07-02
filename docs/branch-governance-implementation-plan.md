@@ -2,7 +2,7 @@
 
 Status: implementation plan only.
 
-This plan does not enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
+This plan does not enable branch protection, create repository rulesets, publish a new npm version, create a new GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
 
 ## Purpose
 
@@ -45,7 +45,7 @@ Before any future branch governance implementation unit changes live GitHub sett
 3. Run `npm run repository:branch-governance-preflight`.
 4. Confirm latest `Package Checks` is green on `origin/main`.
 5. Confirm `origin/main` matches local `main`.
-6. Confirm no npm publishing, GitHub release, deployment, hosted runtime, or contribution acceptance is being opened in the same unit.
+6. Confirm no new npm publishing, new GitHub release, deployment, hosted runtime, or contribution acceptance is being opened in the same unit.
 
 ## Option A: Minimal Branch Protection
 
@@ -122,15 +122,15 @@ If branch governance blocks owner maintenance unexpectedly:
 1. Disable the new branch protection rule or repository ruleset.
 2. Run `npm run repository:live-branch`.
 3. Record the failure and rollback in a proof file.
-4. Keep npm publishing, GitHub release publishing, deployment, hosted runtime behavior, and code contribution acceptance blocked.
+4. Keep new npm publishing, new GitHub release creation, deployment, hosted runtime behavior, and code contribution acceptance blocked.
 
 ## What This Still Would Not Allow
 
 Branch governance approval would not allow:
 
-- npm publishing,
-- GitHub release publishing,
-- release tag creation,
+- publishing a new npm package version,
+- creating a new GitHub release,
+- creating new release tags,
 - deployment,
 - hosted API server runtime,
 - real MCP server runtime,

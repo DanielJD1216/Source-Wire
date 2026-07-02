@@ -4,9 +4,9 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after first release");
 
 for (const requiredPath of [
   "docs/branch-governance-approval-request.md",
@@ -30,7 +30,7 @@ for (const requiredText of [
   "Option 4: Request governance review first",
   "blocked branch protection approval missing",
   "blocked repository ruleset approval missing",
-  "This packet does not enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions."
+  "This packet does not enable branch protection, create repository rulesets, publish a new npm version, create a new GitHub release, deploy services, add hosted runtime behavior, or accept code contributions."
 ]) {
   assertIncludes(approvalPacket, requiredText, "branch governance approval packet");
 }
@@ -68,8 +68,8 @@ printRows([
   ["Default branch", "main"],
   ["Branch protection", "blocked, approval missing"],
   ["Repository rulesets", "blocked, approval missing"],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);

@@ -2,13 +2,13 @@
 
 Status: branch governance approval request only.
 
-This packet does not enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
+This packet does not enable branch protection, create repository rulesets, publish a new npm version, create a new GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
 
 ## Purpose
 
 Use this packet when the owner is ready to decide whether Source-Wire `main` should move from owner-direct maintenance to protected branch governance.
 
-Source-Wire is Apache-2.0 licensed as a source package. It is not yet npm-published, GitHub-released, deployed, hosted, production-ready, or open for code contributions.
+Source-Wire is Apache-2.0 licensed as a source package and published as `@source-wire/contracts@0.1.0` with GitHub release `v0.1.0`. It is not deployed, hosted, production-runtime-ready, or open for code contributions.
 
 ## Command
 
@@ -39,12 +39,12 @@ blocked repository ruleset approval missing
 | Field | Current value |
 | --- | --- |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
+| Package version | `0.1.0` |
 | Default branch | `main` |
 | Branch protection | not enabled |
 | Repository rulesets | none |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
+| npm publishing | published as `@source-wire/contracts@0.1.0` |
+| GitHub release publishing | published as `v0.1.0` |
 | Hosted runtime | blocked |
 | Code contributions | blocked |
 
@@ -86,9 +86,9 @@ Approved for a future Source-Wire branch governance review unit: review branch p
 
 Separate approval is still required for:
 
-- npm publishing,
-- GitHub release publishing,
-- release tags,
+- publishing a new npm package version,
+- creating a new GitHub release,
+- creating new release tags,
 - hosted API server runtime,
 - real MCP server runtime,
 - database migrations,

@@ -87,7 +87,7 @@ The command prints the current public owner-decision issues:
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
 - Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
 - Completed: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
-- Approved for PRD only: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
+- Completed PRD only: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 
 ## Related Docs
 

@@ -6,13 +6,11 @@ This command is read-only. It does not close issues, create issues, publish npm,
 
 ## Purpose
 
-Use this check before broad public sharing when you want to prove the visible open issue surface is limited to unresolved owner-decision gates.
+Use this check before broad public sharing when you want to prove the visible open issue surface has no unresolved owner-decision gates.
 
-The current expected open issue is:
+The current expected open issue list is empty.
 
-- `#257` Owner decision: open hosted runtime PRD path
-
-Issues `#255`, `#256`, and `#258` are expected to be closed because the first public release path, minimal branch governance path, and contribution terms PRD path are complete. Any extra open issue is treated as a failure because it means the public state has drifted and needs owner review before broad sharing.
+Issues `#255`, `#256`, `#257`, and `#258` are expected to be closed because the first public release path, minimal branch governance path, hosted runtime PRD path, and contribution terms PRD path are complete. Any open issue is treated as a failure unless it is structured reviewer feedback with the expected reviewer labels in the post-share monitor.
 
 ## Command
 
@@ -32,21 +30,22 @@ ok completed owner decision #255 closed
 ok exact release implementation approval retained
 ok completed owner decision #256 closed
 ok exact branch governance implementation approval retained
+ok completed owner decision #257 closed
+ok exact hosted runtime PRD approval retained
 ok completed owner decision #258 closed
 ok exact contribution terms PRD approval retained
-ok only unresolved owner decision issues open
-ok #257 hosted runtime PRD approval recorded
-ok all tracked owner decision approvals recorded
-blocked unresolved owner decision issues remain open
+ok no unresolved owner decision issues open
+ok all completed owner decision approvals retained
+blocked hosted runtime child issue publication pending owner approval
 ```
 
 ## What It Proves
 
 - GitHub issue access is working through `gh`.
-- Open issues are exactly the unresolved owner-decision gates.
+- No owner-decision gates remain open.
 - Issue `#255` has recorded release implementation approval and is closed as completed release history.
 - Issue `#256` has recorded branch governance implementation approval and is closed as completed branch-governance history.
-- Issue `#257` has recorded hosted runtime PRD approval and remains open as the parent tracker until the approved PRD and later slice decisions are reconciled.
+- Issue `#257` has recorded hosted runtime PRD approval and is closed as completed PRD history.
 - Issue `#258` has exact owner approval retained and is closed as completed contribution-terms PRD history, while code contribution acceptance remains blocked.
 - No unreviewed public open issue is silently hiding behind the share-ready status.
 

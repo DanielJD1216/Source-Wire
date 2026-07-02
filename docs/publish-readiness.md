@@ -229,12 +229,13 @@ ok completed owner decision #255 closed
 ok exact release implementation approval retained
 ok completed owner decision #256 closed
 ok exact branch governance implementation approval retained
+ok completed owner decision #257 closed
+ok exact hosted runtime PRD approval retained
 ok completed owner decision #258 closed
 ok exact contribution terms PRD approval retained
-ok only unresolved owner decision issues open
-ok #257 hosted runtime PRD approval recorded
-ok all tracked owner decision approvals recorded
-blocked unresolved owner decision issues remain open
+ok no unresolved owner decision issues open
+ok all completed owner decision approvals retained
+blocked hosted runtime child issue publication pending owner approval
 ```
 
 For the live status portion only, run:

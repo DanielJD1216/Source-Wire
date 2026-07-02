@@ -43,7 +43,7 @@ blocked code contribution PRs
 
 The monitor allows:
 
-- owner-decision issue `#257`,
+- no open owner-decision issues,
 - public reviewer issues with `reviewer-feedback`,
 - reviewer issues with at least one topic label: `verification`, `docs`, `contracts`, `boundary`, or `safety`.
 

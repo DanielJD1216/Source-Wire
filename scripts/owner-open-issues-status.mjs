@@ -18,6 +18,13 @@ const completedDecisionIssues = [
       "Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions."
   },
   {
+    number: 257,
+    title: "Owner decision: open hosted runtime PRD path",
+    approvalName: "hosted runtime PRD",
+    exactApprovalText:
+      "Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit."
+  },
+  {
     number: 258,
     title: "Owner decision: define contribution terms before accepting code",
     approvalName: "contribution terms PRD",
@@ -26,15 +33,7 @@ const completedDecisionIssues = [
   }
 ];
 
-const expectedOpenIssues = [
-  {
-    number: 257,
-    title: "Owner decision: open hosted runtime PRD path",
-    approvalName: "hosted runtime PRD",
-    exactApprovalText:
-      "Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit."
-  }
-];
+const expectedOpenIssues = [];
 
 const issues = await ghJson([
   "issue",
@@ -53,7 +52,6 @@ const expectedByNumber = new Map(expectedOpenIssues.map((issue) => [issue.number
 const actualByNumber = new Map(issues.map((issue) => [issue.number, issue]));
 const failures = [];
 const completedIssueStates = [];
-const trackedIssueStates = [];
 
 for (const completedIssue of completedDecisionIssues) {
   const issue = await ghJson([
@@ -87,36 +85,6 @@ for (const completedIssue of completedDecisionIssues) {
   });
 }
 
-for (const expectedIssue of expectedOpenIssues) {
-  const actualIssue = actualByNumber.get(expectedIssue.number);
-  if (!actualIssue) {
-    failures.push(`missing open owner decision issue #${expectedIssue.number}: ${expectedIssue.title}`);
-    continue;
-  }
-
-  if (actualIssue.title !== expectedIssue.title) {
-    failures.push(`unexpected title for #${expectedIssue.number}: expected "${expectedIssue.title}", received "${actualIssue.title}"`);
-  }
-
-  const issue = await ghJson([
-    "issue",
-    "view",
-    String(expectedIssue.number),
-    "--repo",
-    repo,
-    "--json",
-    "body,comments"
-  ]);
-  const comments = Array.isArray(issue.comments) ? issue.comments : [];
-  const approvalComments = comments.filter((comment) => comment.body?.includes(expectedIssue.exactApprovalText));
-  const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "", expectedIssue.exactApprovalText);
-
-  trackedIssueStates.push({
-    ...expectedIssue,
-    exactApprovalRecorded: approvalRecordPresent || approvalComments.length > 0
-  });
-}
-
 for (const actualIssue of issues) {
   if (!expectedByNumber.has(actualIssue.number)) {
     failures.push(`unexpected open issue #${actualIssue.number}: ${actualIssue.title}`);
@@ -125,7 +93,7 @@ for (const actualIssue of issues) {
 
 printSection("Source-Wire Owner Open Issues Status");
 console.log("This owner-side status check is read-only.");
-console.log("It verifies that the public open issue surface is limited to unresolved owner-decision gates.");
+console.log("It verifies that the public open issue surface has no unresolved owner-decision gates.");
 console.log("It does not close issues, create issues, publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.");
 
 printSection("Completed Owner Decisions");
@@ -160,23 +128,10 @@ for (const issue of completedIssueStates) {
   console.log(`ok exact ${issue.approvalName} approval retained`);
 }
 
-console.log("ok only unresolved owner decision issues open");
+console.log("ok no unresolved owner decision issues open");
 
-for (const issue of trackedIssueStates) {
-  if (issue.exactApprovalRecorded) {
-    console.log(`ok #${issue.number} ${issue.approvalName} approval recorded while issue remains open`);
-  } else {
-    console.log(`blocked #${issue.number} ${issue.approvalName} approval missing`);
-  }
-}
-
-if (trackedIssueStates.some((issue) => !issue.exactApprovalRecorded)) {
-  console.log("blocked owner decisions missing approval records");
-} else {
-  console.log("ok all open owner decision approvals recorded");
-}
-
-console.log("blocked unresolved owner decision issues remain open");
+console.log("ok all completed owner decision approvals retained");
+console.log("blocked hosted runtime child issue publication pending owner approval");
 
 function ghJson(args) {
   return new Promise((resolve, reject) => {

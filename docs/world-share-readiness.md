@@ -32,12 +32,12 @@ Apache-2.0 currently means reviewers and adopters can inspect and reuse the sour
 
 ## Current Owner-Decision Status
 
-These public issues track completed release and branch-governance history plus remaining owner decisions. They do not start hosted runtime work, enable repository rulesets, or accept code contributions.
+These public issues track completed release, branch-governance, hosted-runtime PRD, and contribution-terms history. They do not start hosted runtime work, enable repository rulesets, or accept code contributions.
 
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
 - Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Completed: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 - Completed: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
-- Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 
 ## Release Execution Boundary
 
@@ -202,15 +202,16 @@ ok completed owner decision #255 closed
 ok exact release implementation approval retained
 ok completed owner decision #256 closed
 ok exact branch governance implementation approval retained
+ok completed owner decision #257 closed
+ok exact hosted runtime PRD approval retained
 ok completed owner decision #258 closed
 ok exact contribution terms PRD approval retained
-ok only unresolved owner decision issues open
-ok #257 hosted runtime PRD approval recorded
-ok all tracked owner decision approvals recorded
-blocked unresolved owner decision issues remain open
+ok no unresolved owner decision issues open
+ok all completed owner decision approvals retained
+blocked hosted runtime child issue publication pending owner approval
 ```
 
-This read-only check verifies that the only open public issue is owner-decision gate `#257`, and distinguishes completed release, branch-governance, and contribution-terms history on `#255`, `#256`, and `#258` from the missing hosted runtime approval on `#257`.
+This read-only check verifies that no owner-decision issue remains open, and distinguishes completed release, branch-governance, hosted-runtime PRD, and contribution-terms history on `#255`, `#256`, `#257`, and `#258` from the still-blocked hosted runtime child issue publication step.
 
 For the live repo and live launch channels only, run:
 

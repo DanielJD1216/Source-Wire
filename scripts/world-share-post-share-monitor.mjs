@@ -2,9 +2,7 @@ import { execFile } from "node:child_process";
 import { readFile, stat } from "node:fs/promises";
 
 const repo = "DanielJD1216/Source-Wire";
-const ownerDecisionIssues = new Map([
-  [257, "Owner decision: open hosted runtime PRD path"]
-]);
+const ownerDecisionIssues = new Map();
 const requiredReviewerLabel = "reviewer-feedback";
 const reviewerTopicLabels = new Set(["verification", "docs", "contracts", "boundary", "safety"]);
 const expectedReviewerLabels = new Set([requiredReviewerLabel, ...reviewerTopicLabels]);

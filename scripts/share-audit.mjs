@@ -28,6 +28,7 @@ const shareForReview = await readFile("docs/share-for-review.md", "utf8");
 const worldShareKit = await readFile("docs/world-share-kit.md", "utf8");
 const firstVisitorAudit = await readFile("docs/first-time-visitor-share-readiness-audit.md", "utf8");
 const worldReadiness = await readFile("docs/world-share-readiness.md", "utf8");
+const safeInviteCopy = extractSectionCodeBlock(shareForReview, "Safe Invite Copy");
 
 for (const [label, text, requiredText] of [
   ["public status", publicStatus, "Source-Wire is Apache-2.0 licensed."],
@@ -36,6 +37,8 @@ for (const [label, text, requiredText] of [
   ["share for review", shareForReview, "Source-Wire is Apache-2.0 licensed."],
   ["share for review", shareForReview, "Do not say:"],
   ["share for review", shareForReview, "Source-Wire is production-ready."],
+  ["share for review", shareForReview, "Reviewer-safe first pass:"],
+  ["share for review", shareForReview, "Owner-only preflight before broad public sharing:"],
   ["world share kit", worldShareKit, "Status: public source-package and package-release share kit only."],
   ["world share kit", worldShareKit, "Source-Wire is an Apache-2.0 package of agent-first memory contracts and examples"],
   ["world share kit", worldShareKit, "Do not say:"],
@@ -50,6 +53,14 @@ for (const [label, text, requiredText] of [
   if (!text.includes(requiredText)) {
     failures.push(`${label} missing required text: ${requiredText}`);
   }
+}
+
+if (safeInviteCopy.includes("npm run owner:")) {
+  failures.push("safe invite copy must not ask reviewers to run owner-only commands");
+}
+
+if (safeInviteCopy.includes("npm run world:share-preflight") || safeInviteCopy.includes("npm run world:share-final-preflight")) {
+  failures.push("safe invite copy must separate owner world-share preflight commands from reviewer-safe first-pass commands");
 }
 
 if (failures.length > 0) {
@@ -116,4 +127,19 @@ function printList(items) {
   for (const item of items) {
     console.log(`- ${item}`);
   }
+}
+
+function extractSectionCodeBlock(text, heading) {
+  const pattern = new RegExp(`## ${escapeRegExp(heading)}[\\s\\S]*?\`\`\`text\\n(?<block>[\\s\\S]*?)\`\`\``, "u");
+  const match = text.match(pattern);
+  if (!match?.groups?.block) {
+    failures.push(`${heading} missing text code block`);
+    return "";
+  }
+
+  return match.groups.block;
+}
+
+function escapeRegExp(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 }

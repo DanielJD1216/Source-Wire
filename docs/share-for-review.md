@@ -21,18 +21,23 @@ Repo: https://github.com/DanielJD1216/Source-Wire
 
 Important boundary: Source-Wire is Apache-2.0 licensed as a source package. It is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime. Please do not assume production readiness, hosted memory behavior, or code contribution acceptance yet.
 
-Best first pass:
+Reviewer-safe first pass:
 1. Read docs/public-status.md.
 2. Read docs/share-for-review.md.
 3. Run npm install.
 4. Run npm run readiness:report.
-5. Run npm run owner:launch-checklist to see which launch approvals are still missing.
-6. Run npm run world:readiness to see the current sharing boundary.
-7. Run npm run share:audit to verify the first-visitor share boundary.
-8. Run npm run world:share-preflight before broad public sharing.
-9. Run npm run publish:readiness if you want the full local verification path.
+5. Run npm run world:readiness to see the current sharing boundary.
+6. Run npm run share:audit to verify the first-visitor share boundary.
+7. Run npm run publish:readiness if you want the full local verification path.
 
 Useful feedback: contract clarity, schema consistency, fixture realism, package install behavior, readiness gate coverage, and whether any doc blurs the license, runtime, data, contribution, or trusted-memory boundaries.
+```
+
+Owner-only preflight before broad public sharing:
+
+```bash
+npm run world:share-final-preflight
+npm run world:post-share-monitor
 ```
 
 ## Short Safe Version

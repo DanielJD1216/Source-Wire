@@ -27,6 +27,7 @@ const expectedIssues = [
     command: "npm run repository:branch-governance-preflight",
     markers: [
       "ok branch governance decision preflight ready",
+      "ok branch governance execution packet current",
       "blocked branch governance implementation approval missing"
     ]
   },

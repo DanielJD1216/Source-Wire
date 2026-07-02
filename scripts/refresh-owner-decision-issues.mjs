@@ -31,6 +31,7 @@ const decisionIssues = [
       "ok owner open issue boundary current",
       "ok live branch governance current",
       "ok branch governance execution plan current",
+      "ok branch governance execution packet current",
       "blocked branch governance implementation approval missing"
     ]
   },

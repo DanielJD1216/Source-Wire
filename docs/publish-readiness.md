@@ -58,6 +58,7 @@ This command runs:
 - `npm run repository:metadata`
 - `npm run repository:branch-governance-request`
 - `npm run repository:branch-governance-plan`
+- `npm run repository:branch-governance-execution-packet`
 - `npm run pull-request:boundary`
 - `npm run package:required-paths`
 - `npm run package:dry-run`
@@ -131,6 +132,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` |
 | Branch governance approval request | `ok branch governance approval request ready`, `blocked branch protection approval missing`, `blocked repository ruleset approval missing` |
 | Branch governance implementation plan | `ok branch governance implementation plan ready`, `ok branch governance recommended path documented`, `blocked branch governance implementation approval missing` |
+| Branch governance execution packet | `ok branch governance execution packet ready`, `ok minimal branch protection settings documented`, `blocked branch governance implementation approval missing` |
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` |
 | Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` |
 | Package required paths | `ok package required paths` |
@@ -315,6 +317,22 @@ blocked branch governance implementation approval missing
 ```
 
 The plan check verifies the future branch governance implementation order, required preflight, post-change verification, and rollback plan. It does not call GitHub, enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+Run only the branch governance execution packet check:
+
+```bash
+npm run repository:branch-governance-execution-packet
+```
+
+Expected markers:
+
+```text
+ok branch governance execution packet ready
+ok minimal branch protection settings documented
+blocked branch governance implementation approval missing
+```
+
+The execution packet check verifies the exact future minimal branch protection settings, required check name, owner emergency access, pre-execution checks, post-change verification, and rollback path. It does not call GitHub, enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
 Before a future branch governance implementation unit changes live GitHub settings, run:
 

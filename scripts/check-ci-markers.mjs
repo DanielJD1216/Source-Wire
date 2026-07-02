@@ -248,6 +248,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "branch governance execution packet",
+    markers: [
+      "ok branch governance execution packet ready",
+      "ok minimal branch protection settings documented",
+      "blocked branch governance implementation approval missing"
+    ]
+  },
+  {
     name: "historical license boundary",
     markers: [
       "ok historical license boundary ready",

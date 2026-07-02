@@ -147,6 +147,7 @@ Branch governance approval would not allow:
 
 - [Branch Governance Approval Request](branch-governance-approval-request.md)
 - [Branch Governance Decision Preflight](branch-governance-decision-preflight.md)
+- [Branch Governance Execution Packet](branch-governance-execution-packet.md)
 - [Repository Metadata](repository-metadata.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)

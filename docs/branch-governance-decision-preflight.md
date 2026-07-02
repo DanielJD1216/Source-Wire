@@ -8,7 +8,7 @@ This preflight does not enable branch protection, create repository rulesets, pu
 
 Use this preflight before any future branch governance implementation unit touches live GitHub settings.
 
-It proves the current public sharing state, owner-decision issue state, owner open-issue boundary, live branch state, approval request, and implementation plan are all current before the owner decides whether to enable minimal branch protection.
+It proves the current public sharing state, owner-decision issue state, owner open-issue boundary, live branch state, approval request, implementation plan, and execution packet are all current before the owner decides whether to enable minimal branch protection.
 
 ## Command
 
@@ -35,6 +35,7 @@ ok owner decision status current
 ok owner open issue boundary current
 ok live branch governance current
 ok branch governance execution plan current
+ok branch governance execution packet current
 blocked branch governance implementation approval missing
 ```
 
@@ -48,6 +49,7 @@ This command runs:
 - `npm run repository:live-branch`
 - `npm run repository:branch-governance-request`
 - `npm run repository:branch-governance-plan`
+- `npm run repository:branch-governance-execution-packet`
 
 These checks are intentionally outside `npm run publish:readiness` because they use live GitHub state and owner-side access.
 
@@ -79,5 +81,6 @@ This preflight does not allow:
 - [Owner Approval Record Packet](owner-approval-record-packet.md)
 - [Branch Governance Approval Request](branch-governance-approval-request.md)
 - [Branch Governance Implementation Plan](branch-governance-implementation-plan.md)
+- [Branch Governance Execution Packet](branch-governance-execution-packet.md)
 - [Repository Metadata](repository-metadata.md)
 - [World Share Packet](world-share-packet.md)

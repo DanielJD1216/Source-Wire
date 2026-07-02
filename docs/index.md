@@ -4,8 +4,11 @@ Source-Wire is a public contract package skeleton for agent-first memory systems
 
 It now includes a minimal synthetic in-memory runtime boundary. It is published to npm as `@source-wire/contracts@0.1.0`, released on GitHub as `v0.1.0`, and is not a hosted runtime backend.
 
+Its intended product direction is a public BYO, owner-hosted memory system that adopters can run with their own device/server, database, API keys, sources, and MCP-capable agent harnesses. The current repo is the contracts-first public package, not that full runtime yet.
+
 ## Start Here
 
+- [Product Direction](product-direction.md)
 - [Public Adopter Walkthrough](adopter-walkthrough.md)
 - [Public Status](public-status.md)
 - [World Share Kit](world-share-kit.md)

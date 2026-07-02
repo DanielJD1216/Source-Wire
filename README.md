@@ -8,6 +8,8 @@ It is designed for systems where AI agents need to search, cite, update, and rea
 
 Current public status: Source-Wire is Apache-2.0 licensed as a source package. It is published to npm, released on GitHub, undeployed, and not a hosted runtime. Read [Public Status](docs/public-status.md) before deployment, hosted-runtime, production-use, or contribution assumptions.
 
+Product direction: Source-Wire is intended to become a public BYO, owner-hosted memory system that adopters can run with their own device/server, PostgreSQL-compatible database, API keys, data sources, and MCP-capable agent harnesses. The current repo is the contracts-first public package, not that full runtime yet. Read [Product Direction](docs/product-direction.md).
+
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
 Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
@@ -92,6 +94,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 ## Documentation
 
 - [Docs Index](docs/index.md)
+- [Product Direction](docs/product-direction.md)
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)
 - [World Share Packet](docs/world-share-packet.md)

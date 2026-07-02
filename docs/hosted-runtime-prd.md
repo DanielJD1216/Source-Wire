@@ -24,6 +24,12 @@ Plain English ownership rule:
 - Source-Wire does not host everyone else's memory by default.
 - Managed-hosted or Source-Wire-operated memory would require a separate future approval, threat model, cost model, and implementation unit.
 
+Product direction rule:
+
+- Source-Wire is intended to become the public self-hosted product people can fork, run, and connect to their own tools.
+- The current public package is only the contracts-first release, not the full runtime.
+- `Source-Wire-Memory-Engine` is a runtime baseline candidate, but its AGPLv3 license posture must be handled before copying runtime code into Apache-2.0 Source-Wire.
+
 The runtime will be planned as two cooperating surfaces:
 
 1. An API server boundary that owns authentication, namespaces, policy checks, audit records, source evidence, candidate creation, and trusted-memory approval rules.

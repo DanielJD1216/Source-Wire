@@ -56,6 +56,13 @@ The intended first runtime posture is owner-hosted:
 - each owner carries their own infrastructure cost,
 - managed-hosted operation remains a separate later path.
 
+The product direction is bigger than the current package:
+
+- current state: contracts-first public package,
+- intended direction: public self-hosted memory system people can fork and run,
+- runtime baseline candidate: `Source-Wire-Memory-Engine`,
+- license gate: AGPLv3 runtime code cannot be casually copied into Apache-2.0 Source-Wire.
+
 ## Still Blocked
 
 - new npm package publishing,

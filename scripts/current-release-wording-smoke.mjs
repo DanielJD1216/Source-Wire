@@ -10,6 +10,7 @@ const checkedFiles = [
   "docs/license-decision-implementation-plan.md",
   "docs/license-decision-gate.md",
   "docs/legal-review-question-packet.md",
+  "docs/future-license-change-plan.md",
   "docs/owner-license-approval-packet.md",
   "docs/owner-launch-checklist.md",
   "docs/owner-license-approval-preflight.md",
@@ -23,7 +24,11 @@ const checkedFiles = [
   "docs/release-implementation-preparation.md",
   "docs/release-implementation-rehearsal.md",
   "docs/release-implementation-runbook.md",
+  "docs/release-notes-draft.md",
+  "docs/release-version-recommendation.md",
   "docs/runtime-boundary.md",
+  "docs/license-version-policy.md",
+  "docs/public-runtime-decision.md",
   "docs/runtime-implementation-gate.md",
   "docs/share-for-review.md",
   "docs/technical-reviewer-guide.md",
@@ -84,7 +89,19 @@ const stalePatterns = [
   /\bGitHub release creation are still unperformed\b/iu,
   /\bnpm publishing remains blocked\b/iu,
   /\bSource-Wire as unpublished\b/iu,
-  /\buntil a later PRD explicitly opens npm publishing\b/iu
+  /\buntil a later PRD explicitly opens npm publishing\b/iu,
+  /^Publishing remains blocked\.$/imu,
+  /\brelease gate still blocks npm publishing\b/iu,
+  /\bnpm_publish_approval: blocked\b/iu,
+  /\bgithub_release_approval: blocked\b/iu,
+  /\bCurrent package version:\s*```text\s*0\.0\.0/su,
+  /\bCurrent Version\s*```text\s*0\.0\.0/su,
+  /\bUse `0\.1\.0` only in a future release implementation unit\b/iu,
+  /\bIf approved later, `0\.1\.0` should mean\b/iu,
+  /\bDo not publish this note until npm publishing is actually approved and completed\b/iu,
+  /\bIf npm publishing is approved later\b/iu,
+  /\bThis release would provide\b/iu,
+  /\bThis release would not include\b/iu
 ];
 
 const failures = [];

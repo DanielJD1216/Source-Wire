@@ -27,8 +27,9 @@ Source-Wire current state:
 license_decision_status: implemented
 approved_license: Apache-2.0
 approval_scope: source_package_license_only
-npm_publish_approval: blocked
-github_release_approval: blocked
+first_npm_publish_approval: recorded_in_issue_255
+first_github_release_approval: recorded_in_issue_255
+future_release_mutation_approval: blocked
 hosted_runtime_approval: blocked
 contribution_acceptance: blocked
 ```

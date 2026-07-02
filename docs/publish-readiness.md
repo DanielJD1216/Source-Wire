@@ -1107,7 +1107,7 @@ The package should not include:
 
 ## Current Publish Boundary
 
-Publishing remains blocked.
+The first npm publication and matching GitHub release are complete.
 
 Do not run:
 
@@ -1115,7 +1115,7 @@ Do not run:
 npm publish
 ```
 
-until a later release unit explicitly opens a future package version and records owner approval.
+for a future package version until a later release unit explicitly opens that version and records owner approval.
 
 ## Release Gate
 

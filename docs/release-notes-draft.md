@@ -1,8 +1,8 @@
-# Source-Wire Draft GitHub Release Notes
+# Source-Wire GitHub Release Notes Source
 
-Status: draft only.
+Status: published release note source for `v0.1.0`.
 
-These notes do not create a GitHub release, create a tag, publish npm, change package version, deploy services, or accept code contributions.
+These notes record the release text source for `v0.1.0`. They do not create a new GitHub release, create a new tag, publish a new npm version, change package version, deploy services, or accept code contributions.
 
 ## Draft Title
 
@@ -14,7 +14,7 @@ Source-Wire 0.1.0: Agent-first memory contract package
 
 Source-Wire is an Apache-2.0 licensed contract package skeleton for agent-first memory systems.
 
-This release would provide public contracts, JSON schemas, synthetic fixtures, validation tooling, package-readiness checks, and a minimal synthetic runtime-boundary proof. It would not provide a hosted runtime, real MCP server runtime, database-backed memory engine, live connectors, Mission Control UI, or production memory service.
+This release provides public contracts, JSON schemas, synthetic fixtures, validation tooling, package-readiness checks, and a minimal synthetic runtime-boundary proof. It does not provide a hosted runtime, real MCP server runtime, database-backed memory engine, live connectors, Mission Control UI, or production memory service.
 
 ## Draft Highlights
 
@@ -30,15 +30,17 @@ This release would provide public contracts, JSON schemas, synthetic fixtures, v
 - Minimal synthetic in-memory runtime-boundary proof.
 - Readiness, safety, claim-boundary, and package-content gates.
 
-## Draft Install Note
+## Install Note
 
-Do not publish this note until npm publishing is actually approved and completed.
+The npm package is published as:
 
-If npm publishing is approved later, update this section with the final install command.
+```bash
+npm install @source-wire/contracts
+```
 
 ## Explicit Non-Goals
 
-This release would not include:
+This release does not include:
 
 - hosted memory service,
 - API server runtime,

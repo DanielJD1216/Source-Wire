@@ -12,25 +12,25 @@ Apache-2.0
 
 This means source package reuse is allowed under Apache-2.0.
 
-Do not interpret the source license as approval for npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, or code contribution acceptance.
+Do not interpret the source license as approval for future package versions, future GitHub releases, deployment, hosted runtime use, production runtime use, or code contribution acceptance.
 
 ## Version Policy
 
 Current package version:
 
 ```text
-0.0.0
+0.1.0
 ```
 
-This means Source-Wire has no release compatibility promise yet.
+This means Source-Wire has an early public contract-package release, not a production runtime promise.
 
-The package may change contracts, schema names, docs, examples, and CLI behavior while it remains pre-release.
+The package may still change contracts, schema names, docs, examples, and CLI behavior across future `0.x` releases.
 
-## Before The Version Can Change
+## Before The Version Can Change Again
 
 A later PRD must decide:
 
-- first release version,
+- next release version,
 - compatibility promise,
 - changelog format,
 - release notes,
@@ -39,7 +39,7 @@ A later PRD must decide:
 
 ## Current Publishing Rule
 
-Publishing remains blocked.
+The first npm publication and matching GitHub release are complete.
 
 Do not run:
 
@@ -47,4 +47,4 @@ Do not run:
 npm publish
 ```
 
-until a later PRD explicitly opens publishing and records owner approval.
+for a future package version until a later approved release unit explicitly opens that version and records owner approval.

@@ -21,15 +21,17 @@ For the Apache-2.0 record, read [Apache-2.0 License Implementation Readiness](ap
 Current Source-Wire state:
 
 - package license: `Apache-2.0`,
-- package version: `0.0.0`,
+- package version: `0.1.0`,
 - `LICENSE` file present,
 - source package reuse allowed under Apache-2.0,
-- npm publishing blocked,
-- GitHub release publishing blocked,
+- npm package published as `@source-wire/contracts@0.1.0`,
+- GitHub release published as `v0.1.0`,
+- future package versions blocked until a new approved release unit,
+- future GitHub releases blocked until a new approved release unit,
 - runtime backend blocked,
 - code contribution acceptance blocked.
 
-## If npm Publishing Is Approved Later
+## If A Future npm Package Version Is Approved Later
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -42,14 +44,14 @@ npm install
 Expected future work:
 
 - keep the license as `Apache-2.0`,
-- choose a release version or explicitly keep `0.0.0`,
+- choose a release version,
 - update publish access policy,
 - add release notes or changelog if needed,
 - run `npm run publish:readiness`,
 - perform a separate publish proof,
 - keep hosted runtime work separate.
 
-## If GitHub Release Publishing Is Approved Later
+## If A Future GitHub Release Is Approved Later
 
 Expected future work:
 
@@ -57,7 +59,7 @@ Expected future work:
 - define tag naming and release notes,
 - decide whether the release should include package artifacts,
 - verify docs and marker maps,
-- keep npm publishing separate unless explicitly approved.
+- keep future npm package versions separate unless explicitly approved.
 
 ## If A Different License Is Approved Later
 
@@ -68,7 +70,7 @@ Expected future work:
 - update package metadata only after approval,
 - replace or add the approved license file only after approval,
 - clearly state whether the project remains open source, source-available, or commercially restricted,
-- keep npm publishing separate unless the approved release execution path is completed.
+- keep future npm package versions separate unless the approved release execution path is completed.
 
 ## If Legal Review Is Required First
 
@@ -87,8 +89,8 @@ This future plan does not approve:
 
 - changing package license,
 - changing package version,
-- npm publishing,
-- GitHub release publishing,
+- publishing a new npm package version,
+- creating a new GitHub release,
 - deployment,
 - runtime backend behavior,
 - accepting contributors,
@@ -96,4 +98,4 @@ This future plan does not approve:
 
 ## Next Implementation Gate
 
-If the owner approves any future change, open a focused PRD for that single lane. Do not mix license changes, npm publishing, GitHub releases, hosted runtime work, and contribution acceptance in one unbounded unit.
+If the owner approves any future change, open a focused PRD for that single lane. Do not mix license changes, future npm package versions, GitHub releases, hosted runtime work, and contribution acceptance in one unbounded unit.

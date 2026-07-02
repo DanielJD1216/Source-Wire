@@ -121,7 +121,7 @@ Before Source-Wire adds runtime code, the first runtime PRD must prove:
 - trusted memory is never created automatically,
 - no real local paths, tokens, domains, emails, account IDs, client names, or production exports are included,
 - package remains safe to run without secrets,
-- release gate still blocks npm publishing unless separately approved.
+- future package versions remain blocked unless a separate approved release unit opens them.
 
 ## Trust Boundary
 

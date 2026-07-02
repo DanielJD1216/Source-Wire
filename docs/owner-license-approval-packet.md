@@ -99,9 +99,10 @@ A license decision does not approve:
 Current decision remains:
 
 - keep `Apache-2.0`,
-- keep version `0.0.0`,
+- keep version `0.1.0`,
 - keep the license approval decision record implemented,
-- keep npm publishing blocked,
-- keep GitHub release publishing blocked,
+- keep first npm publication complete as `@source-wire/contracts@0.1.0`,
+- keep first GitHub release complete as `v0.1.0`,
+- keep future package versions and future GitHub releases blocked until a new approved release unit,
 - keep runtime backend blocked,
 - keep code contribution acceptance blocked.

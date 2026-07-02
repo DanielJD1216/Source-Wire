@@ -1,26 +1,26 @@
 # Source-Wire First Release Version Recommendation
 
-Status: recommendation only.
+Status: historical recommendation, implemented for the first public release.
 
-This document does not change package version, publish npm, create a GitHub release, create a tag, deploy services, or accept code contributions.
+This document records the first public version recommendation. It does not change package version again, publish a new npm version, create a new GitHub release, create a new tag, deploy services, or accept code contributions.
 
 ## Current Version
-
-```text
-0.0.0
-```
-
-`0.0.0` is useful while Source-Wire is a pre-release package skeleton, but it is not a good public release signal.
-
-## Recommended Release Version Path
-
-Recommended first public release path:
 
 ```text
 0.1.0
 ```
 
-Use `0.1.0` only in a future release implementation unit after owner approval.
+`0.1.0` is the implemented first public release version.
+
+## Recommended Release Version Path
+
+Implemented first public release path:
+
+```text
+0.1.0
+```
+
+Issue `#255` recorded owner approval for this first release path. Future version changes require a new approved release unit.
 
 ## Why 0.1.0
 
@@ -28,9 +28,9 @@ Use `0.1.0` only in a future release implementation unit after owner approval.
 - Source-Wire does not yet have a hosted runtime, real MCP server runtime, database backend, live connectors, or contribution intake.
 - `0.1.0` honestly signals early public package availability without implying production runtime maturity.
 
-## What 0.1.0 Would Mean
+## What 0.1.0 Means
 
-If approved later, `0.1.0` should mean:
+`0.1.0` means:
 
 - Apache-2.0 source package release,
 - public TypeScript contract package,
@@ -52,4 +52,4 @@ If approved later, `0.1.0` should mean:
 
 ## Still Blocked
 
-Changing the package version is blocked until a future release implementation unit records owner approval.
+Changing the package version again is blocked until a future release implementation unit records owner approval.

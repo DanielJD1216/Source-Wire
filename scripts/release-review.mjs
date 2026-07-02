@@ -32,10 +32,10 @@ for (const [label, text, requiredText] of [
   ["release review packet", reviewPacket, "Status: release review only."],
   ["release review packet", reviewPacket, "npm registry state | Published as `@source-wire/contracts@0.1.0`"],
   ["release review packet", reviewPacket, "Recorded release approval:"],
-  ["version recommendation", versionRecommendation, "Recommended first public release path:"],
+  ["version recommendation", versionRecommendation, "Implemented first public release path:"],
   ["version recommendation", versionRecommendation, "0.1.0"],
   ["release notes draft", releaseNotesDraft, "Source-Wire 0.1.0: Agent-first memory contract package"],
-  ["release notes draft", releaseNotesDraft, "Do not publish this note until npm publishing is actually approved and completed."]
+  ["release notes draft", releaseNotesDraft, "npm install @source-wire/contracts"]
 ]) {
   if (!text.includes(requiredText)) {
     failures.push(`${label} missing required text: ${requiredText}`);

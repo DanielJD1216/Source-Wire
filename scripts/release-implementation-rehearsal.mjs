@@ -43,7 +43,7 @@ for (const [label, text, requiredText] of [
     runbook,
     "keep access public unless the owner explicitly approves a different package distribution path"
   ],
-  ["version recommendation", recommendation, "Recommended first public release path:"],
+  ["version recommendation", recommendation, "Implemented first public release path:"],
   ["version recommendation", recommendation, futureVersion],
   ["release implementation rehearsal", rehearsalDoc, "Status: approved release metadata check."],
   ["release implementation rehearsal", rehearsalDoc, "real `publishConfig.access` is `public`"],

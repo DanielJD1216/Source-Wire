@@ -121,8 +121,8 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` |
 | Hosted runtime PRD preparation | `ok hosted runtime PRD preparation ready`, `ok hosted runtime PRD evidence map ready`, `blocked hosted runtime PRD approval missing` |
 | Hosted runtime PRD execution packet | `ok hosted runtime PRD execution packet ready`, `ok hosted runtime PRD execution scope documented`, `blocked hosted runtime PRD approval missing` |
-| Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `blocked contribution terms PRD approval missing` |
-| Contribution terms PRD execution packet | `ok contribution terms PRD execution packet ready`, `ok contribution terms PRD execution scope documented`, `blocked contribution terms PRD approval missing` |
+| Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
+| Contribution terms PRD execution packet | `ok contribution terms PRD execution packet ready`, `ok contribution terms PRD execution scope documented`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
 | Owner approval packet | `ok owner approval packet ready`, `ok exact owner approval texts available`, `blocked approval recording is manual owner action` |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked launch channels missing` |
 | Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `ok owner license approval captured` |
@@ -425,7 +425,8 @@ Expected markers:
 ```text
 ok contribution terms PRD execution packet ready
 ok contribution terms PRD execution scope documented
-blocked contribution terms PRD approval missing
+ok exact contribution terms PRD approval recorded
+blocked code contribution acceptance
 ```
 
 The execution packet check verifies the exact future contribution terms PRD scope, required pre-execution checks, verification path, and stop conditions. It does not accept code contributions, add CLA or DCO enforcement, or change GitHub collaboration settings.

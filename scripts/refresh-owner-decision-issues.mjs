@@ -61,7 +61,8 @@ const decisionIssues = [
       "ok contribution terms PRD evidence current",
       "ok contribution terms PRD execution packet current",
       "ok public intake boundary current",
-      "blocked contribution terms PRD approval missing"
+      "ok exact contribution terms PRD approval recorded",
+      "blocked code contribution acceptance"
     ]
   }
 ];
@@ -256,7 +257,7 @@ function currentOwnerDecisionStatusProof() {
     "ok exact release implementation approval recorded",
     "ok exact branch governance implementation approval recorded",
     "blocked hosted runtime PRD approval missing",
-    "blocked contribution terms PRD approval missing",
+    "ok exact contribution terms PRD approval recorded",
     "blocked owner decisions missing approval records"
   ].join("\n");
 }

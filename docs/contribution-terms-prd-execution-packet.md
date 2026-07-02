@@ -31,7 +31,8 @@ Expected markers:
 ```text
 ok contribution terms PRD execution packet ready
 ok contribution terms PRD execution scope documented
-blocked contribution terms PRD approval missing
+ok exact contribution terms PRD approval recorded
+blocked code contribution acceptance
 ```
 
 This command verifies the packet and docs only. It does not accept pull requests, add contribution legal terms, or change GitHub collaboration settings.

@@ -31,7 +31,8 @@ Expected markers:
 ```text
 ok contribution terms PRD preparation ready
 ok contribution terms evidence map ready
-blocked contribution terms PRD approval missing
+ok exact contribution terms PRD approval recorded
+blocked code contribution acceptance
 ```
 
 Before asking the owner for a contribution terms PRD decision, run the complete read-only decision preflight:
@@ -49,7 +50,8 @@ ok owner decision status current
 ok owner open issue boundary current
 ok contribution terms PRD evidence current
 ok public intake boundary current
-blocked contribution terms PRD approval missing
+ok exact contribution terms PRD approval recorded
+blocked code contribution acceptance
 ```
 
 ## Required Approval Before PRD Work

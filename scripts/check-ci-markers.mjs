@@ -180,7 +180,8 @@ const markerGroups = [
     markers: [
       "ok contribution terms PRD preparation ready",
       "ok contribution terms evidence map ready",
-      "blocked contribution terms PRD approval missing"
+      "ok exact contribution terms PRD approval recorded",
+      "blocked code contribution acceptance"
     ]
   },
   {
@@ -188,7 +189,8 @@ const markerGroups = [
     markers: [
       "ok contribution terms PRD execution packet ready",
       "ok contribution terms PRD execution scope documented",
-      "blocked contribution terms PRD approval missing"
+      "ok exact contribution terms PRD approval recorded",
+      "blocked code contribution acceptance"
     ]
   },
   {

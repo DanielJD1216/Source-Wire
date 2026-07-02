@@ -182,7 +182,7 @@ ok owner decision status readable
 ok exact release implementation approval recorded
 ok exact branch governance implementation approval recorded
 blocked hosted runtime PRD approval missing
-blocked contribution terms PRD approval missing
+ok exact contribution terms PRD approval recorded
 blocked owner decisions missing approval records
 ```
 

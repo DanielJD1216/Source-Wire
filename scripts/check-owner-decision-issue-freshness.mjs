@@ -54,7 +54,8 @@ const expectedIssues = [
     markers: [
       "ok contribution terms PRD decision preflight ready",
       "ok contribution terms PRD execution packet current",
-      "blocked contribution terms PRD approval missing"
+      "ok exact contribution terms PRD approval recorded",
+      "blocked code contribution acceptance"
     ]
   }
 ];

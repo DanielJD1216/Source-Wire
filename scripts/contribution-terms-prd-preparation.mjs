@@ -1,4 +1,10 @@
 import { readFile, stat } from "node:fs/promises";
+import { execFile } from "node:child_process";
+
+const repo = "DanielJD1216/Source-Wire";
+const contributionTermsIssue = 258;
+const exactContributionTermsApprovalText =
+  "Approved for a future Source-Wire contribution terms PRD unit: define whether and how Source-Wire can accept public code contributions, including DCO or CLA posture, maintainer review policy, private-data exclusion rules, support expectations, security-report scope, license compatibility, and PR workflow boundaries. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions in this PRD unit.";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
@@ -33,13 +39,14 @@ for (const requiredText of [
   "DCO, CLA, or no-external-code posture",
   "private-data exclusion rules",
   "Stop before PRD implementation if:",
-  "blocked contribution terms PRD approval missing"
+  "ok exact contribution terms PRD approval recorded",
+  "blocked code contribution acceptance"
 ]) {
   assertIncludes(preparation, requiredText, "contribution terms PRD preparation");
 }
 
 for (const requiredText of [
-  "Approved for a future Source-Wire contribution terms PRD unit",
+  exactContributionTermsApprovalText,
   "Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions in this PRD unit."
 ]) {
   assertIncludes(approvalPacket, requiredText, "owner approval packet contribution terms approval text");
@@ -66,6 +73,10 @@ for (const requiredText of [
   "contribution policy"
 ]) {
   assertIncludes(legalPacket, requiredText, "legal review contribution questions");
+}
+
+if (!(await hasContributionTermsApproval())) {
+  failures.push("issue #258 exact contribution terms PRD approval is not recorded");
 }
 
 if (failures.length > 0) {
@@ -102,7 +113,8 @@ printList([
 console.log("");
 console.log("ok contribution terms PRD preparation ready");
 console.log("ok contribution terms evidence map ready");
-console.log("blocked contribution terms PRD approval missing");
+console.log("ok exact contribution terms PRD approval recorded");
+console.log("blocked code contribution acceptance");
 
 async function assertPathExists(path) {
   try {
@@ -122,6 +134,53 @@ function assertIncludes(text, requiredText, reason) {
   if (!text.includes(requiredText)) {
     failures.push(`${reason}: missing ${JSON.stringify(requiredText)}`);
   }
+}
+
+async function hasContributionTermsApproval() {
+  const issue = await commandJson("gh", [
+    "issue",
+    "view",
+    String(contributionTermsIssue),
+    "--repo",
+    repo,
+    "--json",
+    "body,comments"
+  ]);
+  const body = issue.body ?? "";
+  const comments = Array.isArray(issue.comments) ? issue.comments : [];
+  return hasApprovalRecordSection(body) || comments.some((comment) => comment.body?.includes(exactContributionTermsApprovalText));
+}
+
+function hasApprovalRecordSection(body) {
+  const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
+  const section = body.match(sectionPattern)?.[0] ?? "";
+  return section.includes(exactContributionTermsApprovalText);
+}
+
+async function commandJson(command, args) {
+  const result = await commandResult(command, args);
+  if (!result.ok) {
+    throw new Error(`${command} ${args.join(" ")} failed\n${result.stderr || result.errorMessage}`);
+  }
+
+  try {
+    return JSON.parse(result.stdout);
+  } catch (parseError) {
+    throw new Error(`Unable to parse ${command} JSON: ${parseError.message}`);
+  }
+}
+
+function commandResult(command, args) {
+  return new Promise((resolve) => {
+    execFile(command, args, { cwd: process.cwd(), maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => {
+      resolve({
+        ok: !error,
+        stdout,
+        stderr,
+        errorMessage: error?.message ?? ""
+      });
+    });
+  });
 }
 
 function printSection(title) {

@@ -44,6 +44,7 @@ blocked hosted runtime implementation
 
 - The world-share preflight is current.
 - Hosted runtime PRD approval remains recorded on issue `#257`.
+- Hosted runtime PRD preparation and execution evidence are current without nesting the full PRD decision preflight.
 - The child issue publication packet is current.
 - The child issue publisher dry run validates payloads without writing.
 - The publisher smoke proves missing-approval and duplicate-publication guards.

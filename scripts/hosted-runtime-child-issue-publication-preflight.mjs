@@ -2,7 +2,8 @@ import { execFile } from "node:child_process";
 
 const checks = [
   ["world:share-preflight", "world-share preflight"],
-  ["runtime:prd-decision-preflight", "hosted runtime PRD decision preflight"],
+  ["runtime:prd-preparation", "hosted runtime PRD preparation"],
+  ["runtime:prd-execution-packet", "hosted runtime PRD execution packet"],
   ["runtime:child-issue-publication-packet", "hosted runtime child issue publication packet"],
   ["runtime:child-issue-publish", "hosted runtime child issue publisher dry run"],
   ["runtime:child-issue-publish:smoke", "hosted runtime child issue publisher guard smoke"],

@@ -18,6 +18,8 @@ Post-share monitor: after public sharing, use [World Share Post-Share Monitor](d
 
 Share-readiness audit: Source-Wire is ready for technical review, npm package installation, GitHub release review, and source package reuse under Apache-2.0, but not deployment, hosted runtime use, production runtime use, or code contribution acceptance. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
 
+Snapshot boundary: npm `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` may contain post-release documentation and readiness hardening. Read [Release Snapshot Boundary](docs/release-snapshot-boundary.md).
+
 Current owner-decision issues:
 
 - [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
@@ -172,6 +174,7 @@ Source-Wire can run a full local readiness gate with package dry-run, installed 
 - [Release Approval Request Packet](docs/release-approval-request-packet.md)
 - [Owner Approval Record Packet](docs/owner-approval-record-packet.md)
 - [Release Candidate Readiness](docs/release-candidate-readiness.md)
+- [Release Snapshot Boundary](docs/release-snapshot-boundary.md)
 - [Hosted Runtime PRD Preparation](docs/hosted-runtime-prd-preparation.md)
 - [Contribution Terms PRD Preparation](docs/contribution-terms-prd-preparation.md)
 - [Legal Review Question Packet](docs/legal-review-question-packet.md)

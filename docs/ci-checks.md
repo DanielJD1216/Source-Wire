@@ -71,6 +71,7 @@ The readiness gate runs:
 - `npm run release:auth-handoff`
 - `npm run release:candidate-readiness`
 - `npm run release:artifact-manifest`
+- `npm run release:snapshot-boundary`
 - `npm run license:rehearsal`
 - `npm run license:decision-record`
 - `npm run license:approval-request`
@@ -152,6 +153,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` | The owner-side world-share preflight, owner open-issue boundary, issue `#255` approval status, release-candidate readiness, artifact manifest, approval request, and launch decision status are current after release execution. |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `ok release execution completed` | The package is locally verifiable after first release execution, while future new release channels remain blocked. |
 | Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.1.0`, `ok release artifact integrity recorded`, `ok release artifact publication recorded`, `ok published npm artifact metadata recorded` | The current source dry-run artifact and immutable published npm artifact metadata are recorded separately, including file count, size, shasum, integrity, required paths, and publication state. |
+| Release snapshot boundary | `ok release snapshot boundary ready`, `ok latest main can differ from v0.1.0 release snapshot`, `ok npm artifact immutable at @source-wire/contracts@0.1.0`, `blocked future release mutation approval missing` | Latest `main`, the immutable npm package, and the immutable `v0.1.0` release snapshot are separated while future release mutations remain blocked. |
 | Package required paths | `ok package required paths` | The shared required package path manifest is sorted and duplicate-free. |
 | License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` | The owner license decision record is implemented for Apache-2.0 source package licensing. |
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` | The owner approval path is captured and implemented. |

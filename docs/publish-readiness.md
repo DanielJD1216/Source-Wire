@@ -34,6 +34,7 @@ This command runs:
 - `npm run release:auth-handoff`
 - `npm run release:candidate-readiness`
 - `npm run release:artifact-manifest`
+- `npm run release:snapshot-boundary`
 - `npm run license:rehearsal`
 - `npm run license:decision-record`
 - `npm run license:approval-request`
@@ -112,6 +113,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `ok release execution completed` |
 | Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.1.0`, `ok release artifact integrity recorded`, `ok release artifact publication recorded`, `ok published npm artifact metadata recorded` |
+| Release snapshot boundary | `ok release snapshot boundary ready`, `ok latest main can differ from v0.1.0 release snapshot`, `ok npm artifact immutable at @source-wire/contracts@0.1.0`, `blocked future release mutation approval missing` |
 | License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
 | License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` |
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` |
@@ -879,6 +881,18 @@ The release artifact manifest check builds the package, runs `npm pack --dry-run
 The current source dry-run artifact can differ from the already-published npm artifact after post-release docs or source changes. That difference is expected and does not publish a new version.
 
 It does not publish, create a GitHub release, create a tag, change package version, deploy services, start hosted runtime behavior, or accept code contributions.
+
+## Release Snapshot Boundary
+
+Run only the release snapshot boundary check:
+
+```bash
+npm run release:snapshot-boundary
+```
+
+The release snapshot boundary check reads the public remote release tag and live npm registry metadata to distinguish latest `main`, the immutable npm package `@source-wire/contracts@0.1.0`, and the immutable `v0.1.0` release snapshot.
+
+It does not publish a new npm version, create a GitHub release, create a tag, change package version, deploy services, start hosted runtime behavior, or accept code contributions.
 
 ## Consumer Smoke
 

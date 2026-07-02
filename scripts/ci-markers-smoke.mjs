@@ -43,6 +43,10 @@ const completeLog = [
   "ok release artifact integrity recorded",
   "ok release artifact publication recorded",
   "ok published npm artifact metadata recorded",
+  "ok release snapshot boundary ready",
+  "ok latest main can differ from v0.1.0 release snapshot",
+  "ok npm artifact immutable at @source-wire/contracts@0.1.0",
+  "blocked future release mutation approval missing",
   "ok license decision record ready",
   "ok license decision captured",
   "ok license implementation complete",
@@ -167,7 +171,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 48 groups 147 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 49 groups 151 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

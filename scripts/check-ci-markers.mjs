@@ -92,6 +92,15 @@ const markerGroups = [
     ]
   },
   {
+    name: "release snapshot boundary",
+    markers: [
+      "ok release snapshot boundary ready",
+      "ok latest main can differ from v0.1.0 release snapshot",
+      "ok npm artifact immutable at @source-wire/contracts@0.1.0",
+      "blocked future release mutation approval missing"
+    ]
+  },
+  {
     name: "package required paths",
     markers: ["ok package required paths"]
   },

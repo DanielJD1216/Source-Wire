@@ -42,7 +42,7 @@ for (const [label, text, requiredText] of [
   ["world share kit", worldShareKit, "Status: public source-package and package-release share kit only."],
   ["world share kit", worldShareKit, "Source-Wire is an Apache-2.0 package of agent-first memory contracts and examples"],
   ["world share kit", worldShareKit, "Do not say:"],
-  ["world share kit", worldShareKit, "Install it from npm."],
+  ["world share kit", worldShareKit, "Install it as a hosted runtime backend."],
   ["world share kit", worldShareKit, "Contributions are open."],
   ["first visitor audit", firstVisitorAudit, "Ready for technical review: yes."],
   ["first visitor audit", firstVisitorAudit, "Ready for source package reuse: yes, under Apache-2.0."],

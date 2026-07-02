@@ -157,7 +157,7 @@ Source-Wire is production-ready.
 Do not say:
 
 ```text
-Install it from npm.
+Install it as a hosted runtime backend.
 ```
 
 Do not say:

@@ -27,7 +27,7 @@
     "access": "public"
   },
   "bin": {
-    "source-wire": "./dist/cli.js"
+    "source-wire": "dist/cli.js"
   },
   "exports": {
     ".": {

@@ -109,7 +109,7 @@ assertEqual(packageJson.name, "@source-wire/contracts", "package name must remai
 assertEqual(packageJson.version, "0.1.0", "package version must match approved release version");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must match approved release access");
-assertEqual(packageJson.bin?.["source-wire"], "./dist/cli.js", "source-wire bin must point to ./dist/cli.js");
+assertEqual(packageJson.bin?.["source-wire"], "dist/cli.js", "source-wire bin must point to dist/cli.js");
 
 for (const scriptName of requiredScripts) {
   if (typeof packageJson.scripts?.[scriptName] !== "string") {

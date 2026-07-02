@@ -67,7 +67,7 @@ const simulatedManifest = {
 assertEqual(simulatedManifest.version, futureVersion, "simulated release manifest must use 0.1.0");
 assertEqual(simulatedManifest.license, "Apache-2.0", "simulated release manifest must keep Apache-2.0");
 assertEqual(simulatedManifest.publishConfig?.access, futurePublishAccess, "simulated release manifest must use public npm access");
-assertEqual(simulatedManifest.bin?.["source-wire"], "./dist/cli.js", "simulated release manifest must keep source-wire bin");
+assertEqual(simulatedManifest.bin?.["source-wire"], "dist/cli.js", "simulated release manifest must keep source-wire bin");
 
 for (const requiredPath of [
   "package.json",

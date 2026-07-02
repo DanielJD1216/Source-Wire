@@ -98,6 +98,8 @@ Acceptance criteria:
 
 Issue draft: [04 BYO Self-Hosted Setup Path For Nontechnical Owners](issues/memory-engine-baseline-audit/04-byo-self-hosted-setup-path.md).
 
+Local artifact: [Memory Engine Baseline BYO Self-Hosted Setup Path](memory-engine-baseline-byo-self-hosted-setup-path.md).
+
 Type: HITL.
 
 Blocked by: Slice 1 and Slice 3.

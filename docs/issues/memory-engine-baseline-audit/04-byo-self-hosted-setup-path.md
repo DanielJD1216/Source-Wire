@@ -1,5 +1,7 @@
 # BYO Self-Hosted Setup Path For Nontechnical Owners
 
+Local artifact: [Memory Engine Baseline BYO Self-Hosted Setup Path](../../memory-engine-baseline-byo-self-hosted-setup-path.md).
+
 ## Parent
 
 Source-Wire Memory Engine Baseline Audit PRD.

@@ -36,8 +36,8 @@ These public issues track completed release and branch-governance history plus r
 
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
 - Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Completed: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 - Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
-- Unresolved: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 
 ## Release Execution Boundary
 
@@ -202,14 +202,15 @@ ok completed owner decision #255 closed
 ok exact release implementation approval retained
 ok completed owner decision #256 closed
 ok exact branch governance implementation approval retained
+ok completed owner decision #258 closed
+ok exact contribution terms PRD approval retained
 ok only unresolved owner decision issues open
 blocked #257 hosted runtime PRD approval missing
-ok #258 contribution terms PRD approval recorded while issue remains open
 blocked owner decisions missing approval records
 blocked unresolved owner decision issues remain open
 ```
 
-This read-only check verifies that the only open public issues are owner-decision gates `#257` and `#258`, and distinguishes completed release and branch-governance history on `#255` and `#256` from the missing hosted runtime approval on `#257` and recorded contribution terms PRD approval on `#258`.
+This read-only check verifies that the only open public issue is owner-decision gate `#257`, and distinguishes completed release, branch-governance, and contribution-terms history on `#255`, `#256`, and `#258` from the missing hosted runtime approval on `#257`.
 
 For the live repo and live launch channels only, run:
 

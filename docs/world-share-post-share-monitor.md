@@ -43,7 +43,7 @@ blocked code contribution PRs
 
 The monitor allows:
 
-- owner-decision issues `#255` through `#258`,
+- owner-decision issue `#257`,
 - public reviewer issues with `reviewer-feedback`,
 - reviewer issues with at least one topic label: `verification`, `docs`, `contracts`, `boundary`, or `safety`.
 
@@ -60,7 +60,7 @@ The monitor fails if:
 
 ## Why Open PRs Fail
 
-Source-Wire is Apache-2.0 licensed for source reuse, but code contribution acceptance is still blocked until issue `#258` has exact approval and a future contribution terms PRD is completed.
+Source-Wire is Apache-2.0 licensed for source reuse, and the contribution terms PRD is complete, but code contribution acceptance is still blocked until a separate contribution-acceptance implementation unit opens it.
 
 Public review feedback belongs in issues, not pull requests, until that policy changes.
 
@@ -79,7 +79,7 @@ If the monitor fails because an open pull request exists:
 1. Do not merge it.
 2. Respond with the current contribution boundary.
 3. Ask the reporter to file structured issue feedback instead.
-4. Keep issue `#258` as the approval gate for future contribution policy work.
+4. Keep code contribution acceptance blocked until a separate contribution-acceptance implementation unit opens it.
 
 ## Still Blocked
 

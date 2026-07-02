@@ -227,9 +227,10 @@ ok completed owner decision #255 closed
 ok exact release implementation approval retained
 ok completed owner decision #256 closed
 ok exact branch governance implementation approval retained
+ok completed owner decision #258 closed
+ok exact contribution terms PRD approval retained
 ok only unresolved owner decision issues open
 blocked #257 hosted runtime PRD approval missing
-ok #258 contribution terms PRD approval recorded while issue remains open
 blocked owner decisions missing approval records
 blocked unresolved owner decision issues remain open
 ```

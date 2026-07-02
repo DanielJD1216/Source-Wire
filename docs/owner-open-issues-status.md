@@ -8,12 +8,11 @@ This command is read-only. It does not close issues, create issues, publish npm,
 
 Use this check before broad public sharing when you want to prove the visible open issue surface is limited to unresolved owner-decision gates.
 
-The current expected open issues are:
+The current expected open issue is:
 
 - `#257` Owner decision: open hosted runtime PRD path
-- `#258` Owner decision: define contribution terms before accepting code
 
-Issues `#255` and `#256` are expected to be closed because the first public release path and minimal branch governance path are complete. Any extra open issue is treated as a failure because it means the public state has drifted and needs owner review before broad sharing.
+Issues `#255`, `#256`, and `#258` are expected to be closed because the first public release path, minimal branch governance path, and contribution terms PRD path are complete. Any extra open issue is treated as a failure because it means the public state has drifted and needs owner review before broad sharing.
 
 ## Command
 
@@ -33,9 +32,10 @@ ok completed owner decision #255 closed
 ok exact release implementation approval retained
 ok completed owner decision #256 closed
 ok exact branch governance implementation approval retained
+ok completed owner decision #258 closed
+ok exact contribution terms PRD approval retained
 ok only unresolved owner decision issues open
 blocked #257 hosted runtime PRD approval missing
-ok #258 contribution terms PRD approval recorded while issue remains open
 blocked owner decisions missing approval records
 blocked unresolved owner decision issues remain open
 ```
@@ -47,7 +47,7 @@ blocked unresolved owner decision issues remain open
 - Issue `#255` has recorded release implementation approval and is closed as completed release history.
 - Issue `#256` has recorded branch governance implementation approval and is closed as completed branch-governance history.
 - Issue `#257` still needs separate owner approval before hosted runtime PRD work opens.
-- Issue `#258` has exact owner approval recorded for contribution terms PRD work, while code contribution acceptance remains blocked.
+- Issue `#258` has exact owner approval retained and is closed as completed contribution-terms PRD history, while code contribution acceptance remains blocked.
 - No unreviewed public open issue is silently hiding behind the share-ready status.
 
 ## What It Does Not Prove

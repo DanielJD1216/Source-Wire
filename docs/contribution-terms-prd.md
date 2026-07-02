@@ -100,7 +100,7 @@ Before code contribution acceptance can open, a separate implementation unit mus
 2. Add DCO sign-off instructions or explicitly choose no DCO.
 3. Add or document contribution labels and review states.
 4. Verify Package Checks and public-safety scans.
-5. Decide whether issue `#258` should close as completed history.
+5. Issue `#258` may close as completed contribution-terms PRD history after this PRD and policy pass readiness.
 6. Run `npm run publish:readiness`.
 7. Run owner-side live checks after the readiness commit.
 

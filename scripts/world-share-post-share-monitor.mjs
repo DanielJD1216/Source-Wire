@@ -3,10 +3,7 @@ import { readFile, stat } from "node:fs/promises";
 
 const repo = "DanielJD1216/Source-Wire";
 const ownerDecisionIssues = new Map([
-  [255, "Owner decision: approve first public release path"],
-  [256, "Owner decision: approve branch governance path"],
-  [257, "Owner decision: open hosted runtime PRD path"],
-  [258, "Owner decision: define contribution terms before accepting code"]
+  [257, "Owner decision: open hosted runtime PRD path"]
 ]);
 const requiredReviewerLabel = "reviewer-feedback";
 const reviewerTopicLabels = new Set(["verification", "docs", "contracts", "boundary", "safety"]);

@@ -16,6 +16,13 @@ const completedDecisionIssues = [
     approvalName: "branch governance implementation",
     exactApprovalText:
       "Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions."
+  },
+  {
+    number: 258,
+    title: "Owner decision: define contribution terms before accepting code",
+    approvalName: "contribution terms PRD",
+    exactApprovalText:
+      "Approved for a future Source-Wire contribution terms PRD unit: define whether and how Source-Wire can accept public code contributions, including DCO or CLA posture, maintainer review policy, private-data exclusion rules, support expectations, security-report scope, license compatibility, and PR workflow boundaries. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions in this PRD unit."
   }
 ];
 
@@ -26,13 +33,6 @@ const expectedOpenIssues = [
     approvalName: "hosted runtime PRD",
     exactApprovalText:
       "Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit."
-  },
-  {
-    number: 258,
-    title: "Owner decision: define contribution terms before accepting code",
-    approvalName: "contribution terms PRD",
-    exactApprovalText:
-      "Approved for a future Source-Wire contribution terms PRD unit: define whether and how Source-Wire can accept public code contributions, including DCO or CLA posture, maintainer review policy, private-data exclusion rules, support expectations, security-report scope, license compatibility, and PR workflow boundaries. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions in this PRD unit."
   }
 ];
 

@@ -4,7 +4,7 @@ Status: implemented.
 
 ## Purpose
 
-This page records the completed Apache-2.0 implementation path and keeps it separate from npm publishing, GitHub release publishing, deployment, hosted runtime work, and contribution acceptance.
+This page records the completed Apache-2.0 implementation path and keeps it separate from future package releases, deployment, hosted runtime work, and contribution acceptance.
 
 For the implementation map across all owner decision options, read [License Decision Implementation Plan](license-decision-implementation-plan.md).
 
@@ -13,11 +13,11 @@ For the implementation map across all owner decision options, read [License Deci
 | Field | Current value |
 | --- | --- |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
+| Package version | `0.1.0` |
 | `LICENSE` file | present |
 | Source package reuse | allowed under Apache-2.0 |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
+| npm package | published as `@source-wire/contracts@0.1.0` |
+| GitHub release | published as `v0.1.0` |
 | Hosted runtime backend | blocked |
 | Code contribution acceptance | blocked |
 
@@ -35,15 +35,15 @@ Approved for a future Source-Wire license implementation unit: implement Apache-
 | --- | --- |
 | `LICENSE` | Added the Apache License 2.0 text. |
 | `package.json` | Changed `"license": "UNLICENSED"` to `"license": "Apache-2.0"`. |
-| `package-lock.json` | Root package metadata matches `Apache-2.0`, version `0.0.0`, and the installed CLI bin. |
-| `scripts/release-gate.mjs` | Expects `Apache-2.0` while keeping version `0.0.0` and publishing blocked. |
+| `package-lock.json` | Root package metadata matches `Apache-2.0`, version `0.1.0`, and the installed CLI bin. |
+| `scripts/release-gate.mjs` | Expects `Apache-2.0`, version `0.1.0`, and public npm package access. |
 | `scripts/readiness-report.mjs` | Reports Apache-2.0 as the package license. |
 | `README.md` | States Apache-2.0 source package status and blocked launch channels. |
 | `docs/license-decision-gate.md` | Records that Apache-2.0 implementation was approved and completed. |
 | `docs/license-approval-decision-record.md` | Records the implemented owner decision. |
 | `docs/license-version-policy.md` | Updates license policy while keeping version policy separate. |
-| `docs/release-decision.md` | Keeps npm publishing and GitHub release blocked. |
-| `docs/publish-readiness.md` | States that source package licensing is complete but npm publish approval is still separate. |
+| `docs/release-decision.md` | Records the first release as complete while keeping future release mutation gated. |
+| `docs/publish-readiness.md` | States that source package licensing and first release are complete while hosted runtime and contribution acceptance remain blocked. |
 
 ## Release-Gate State
 
@@ -55,9 +55,9 @@ Apache-2.0
 
 It still enforces:
 
-- version remains `0.0.0`,
-- `publishConfig.access` remains restricted,
-- scripts do not run package-manager publish commands,
+- version remains `0.1.0`,
+- `publishConfig.access` remains public,
+- scripts do not run package-manager publish commands for new versions,
 - scripts do not create GitHub releases,
 - scripts do not create release tags,
 - scripts do not change package version,
@@ -90,8 +90,8 @@ Expected markers:
 ok release gate
 ok license Apache-2.0
 ok package lock Apache-2.0
-ok version 0.0.0
-ok publishing blocked
+ok version 0.1.0
+ok npm public access ready
 ```
 
 ## Still Blocked After Apache-2.0

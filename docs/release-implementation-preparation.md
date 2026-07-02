@@ -52,12 +52,12 @@ Before any version change, npm publish, tag, or GitHub release:
 6. `npm run release:artifact-manifest` must record package identity, shasum, and integrity.
 7. GitHub Actions Package Checks must pass on the exact release commit.
 8. Release notes and version target must still be intentional.
-9. `publishConfig.access` must be intentionally changed from `restricted` to `public` during the approved public npm release execution unit.
+9. `publishConfig.access` must remain `public` unless a future approved release unit explicitly changes the package distribution path.
 10. Package contents must not include private data, local paths, real user records, or private proof history.
 
 ## Execution Checklist After Approval
 
-Current state: issue `#255` contains exact release approval, but npm authentication is missing. Run this sequence again after npm login and before any release mutation.
+Current state: issue `#255` contains exact release approval and the first release is complete. Run this sequence again only before a future release mutation.
 
 ```bash
 git status --short --branch
@@ -71,7 +71,7 @@ gh run list --repo DanielJD1216/Source-Wire --workflow package-checks.yml --limi
 gh run watch <run-id> --repo DanielJD1216/Source-Wire --exit-status
 ```
 
-If all evidence is green, the approved release implementation unit may change the package version to `0.1.0`, change `publishConfig.access` from `restricted` to `public`, rerun all gates, and then use the approved release commands:
+If all evidence is green inside a future approved release implementation unit, the release implementer may change the package version, keep `publishConfig.access` public, rerun all gates, and then use the approved release commands:
 
 ```bash
 npm publish
@@ -88,7 +88,7 @@ Stop before publishing or releasing if any of these are true:
 - `npm run release:approval-status` does not show separate exact approval evidence,
 - `npm run release:auth-preflight` does not show release publish credentials ready,
 - release version is not explicit,
-- `publishConfig.access` is still `restricted` during the approved public npm release execution unit,
+- `publishConfig.access` is changed away from `public` without an explicit owner-approved distribution-path change,
 - `npm run release:decision-preflight` fails,
 - `npm run publish:readiness` fails,
 - `npm run release:artifact-manifest` does not record shasum and integrity,

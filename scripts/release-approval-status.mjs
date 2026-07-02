@@ -36,8 +36,8 @@ printRows([
   ["Approval comments", String(approvalComments.length)],
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
-  ["Release tag", "blocked"],
-  ["Version change", "blocked"],
+  ["Release tag", "published as v0.1.0"],
+  ["Future version change", "blocked"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
@@ -47,7 +47,7 @@ console.log("ok release approval status readable");
 
 if (exactApprovalRecorded) {
   console.log("ok exact release approval recorded");
-  console.log("blocked release execution requires npm auth and final preflight");
+  console.log("ok release execution completed");
 } else {
   console.log("blocked exact release approval missing");
   console.log("blocked release implementation approval missing");

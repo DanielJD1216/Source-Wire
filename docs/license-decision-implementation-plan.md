@@ -2,7 +2,7 @@
 
 Status: implemented.
 
-This plan records the implemented Apache-2.0 source package license path. It does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This plan records the implemented Apache-2.0 source package license path. It does not approve a future npm package version, future GitHub release, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
@@ -37,11 +37,11 @@ ok license implementation complete
 | Field | Current value |
 | --- | --- |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
+| Package version | `0.1.0` |
 | `LICENSE` file | present |
 | License decision record | implemented |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
+| npm package | published as `@source-wire/contracts@0.1.0` |
+| GitHub release | published as `v0.1.0` |
 | Hosted runtime | blocked |
 | Contributions | blocked |
 | Source package reuse | allowed under Apache-2.0 |
@@ -56,15 +56,15 @@ Implemented after this exact owner decision:
 Approved for a future Source-Wire license implementation unit: implement Apache-2.0 licensing. Add the Apache-2.0 LICENSE file, update package metadata from UNLICENSED to Apache-2.0, update public docs and release gate expectations, and keep package version 0.0.0. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
 ```
 
-Implemented changes:
+Implemented changes at the time of the license implementation:
 
 - added unmodified Apache License 2.0 text as `LICENSE`,
 - changed `package.json` license from `UNLICENSED` to `Apache-2.0`,
 - updated release gate expectations,
 - updated public docs that described the old pending license state,
-- kept package version `0.0.0`,
-- kept npm publishing blocked,
-- kept GitHub release publishing blocked,
+- kept package version `0.0.0` until the later approved release unit,
+- kept npm publishing blocked until the later approved release unit,
+- kept GitHub release publishing blocked until the later approved release unit,
 - kept hosted runtime blocked,
 - kept contribution acceptance blocked.
 

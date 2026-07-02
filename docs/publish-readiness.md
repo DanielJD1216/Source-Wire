@@ -108,7 +108,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `ok release execution completed` |
 | Release approval request | `ok release approval request ready`, `ok npm publishing completed @source-wire/contracts@0.1.0`, `ok github release completed v0.1.0`, `ok version release completed 0.1.0` |
 | Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked future release auth owner action required` |
-| Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `blocked release execution requires npm auth and final preflight` |
+| Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `ok release execution completed` |
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `ok release execution completed` |
 | Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.1.0`, `ok release artifact integrity recorded`, `ok release artifact publication recorded` |
@@ -1115,7 +1115,7 @@ Do not run:
 npm publish
 ```
 
-until a later PRD explicitly opens npm publishing and records owner approval.
+until a later release unit explicitly opens a future package version and records owner approval.
 
 ## Release Gate
 

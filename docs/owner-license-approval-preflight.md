@@ -37,9 +37,9 @@ ok owner license approval captured
 The command verifies:
 
 - package license remains `Apache-2.0`,
-- package version remains `0.0.0`,
+- package version remains `0.1.0`,
 - `LICENSE` file exists,
-- npm publishing is still blocked,
+- first npm package publication is complete,
 - the license approval request packet exists,
 - the decision record is implemented,
 - the license decision gate exists,

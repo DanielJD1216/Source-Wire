@@ -2,7 +2,7 @@
 
 Status: owner decision workflow only.
 
-This workflow records the captured owner license decision. It does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This workflow records the captured owner license decision. It does not approve a future npm package version, future GitHub release, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
@@ -39,11 +39,11 @@ ok owner license decision captured
 | Field | Current value |
 | --- | --- |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
+| Package version | `0.1.0` |
 | `LICENSE` file | present |
 | Source package reuse | allowed under Apache-2.0 |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
+| npm package | published as `@source-wire/contracts@0.1.0` |
+| GitHub release | published as `v0.1.0` |
 | Hosted runtime | blocked |
 | Contributions | blocked |
 
@@ -54,7 +54,7 @@ ok owner license decision captured
 3. Read [Owner License Decision Intake](owner-license-decision-intake.md).
 4. Confirm the owner chose exactly one option.
 5. Confirm [License Approval Decision Record](license-approval-decision-record.md) says `license_decision_status: implemented`.
-6. Keep npm, GitHub release, hosted runtime, production runtime, and contribution decisions in separate future units.
+6. Keep future package versions, hosted runtime, production runtime, and contribution decisions in separate future units.
 
 To inspect the implementation map, read [License Decision Implementation Plan](license-decision-implementation-plan.md) or run:
 

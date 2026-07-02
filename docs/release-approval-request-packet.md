@@ -39,7 +39,7 @@ ok github release completed v0.1.0
 ok version release completed 0.1.0
 ```
 
-Before release execution, run the complete read-only decision preflight:
+Before any future release mutation, run the complete read-only decision preflight:
 
 ```bash
 npm run release:decision-preflight
@@ -64,7 +64,7 @@ ok owner open issue boundary current
 ok release approval status current
 ok release candidate evidence current
 ok release artifact evidence current
-blocked release execution not performed
+ok release execution completed
 ```
 
 This command does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
@@ -80,7 +80,7 @@ Expected current markers after recorded owner approval:
 ```text
 ok release approval status readable
 ok exact release approval recorded
-blocked release execution requires npm auth and final preflight
+ok release execution completed
 ```
 
 This check intentionally ignores the recommended approval text in this packet. Approval must be recorded separately in issue `#255`, either in an `Owner Approval Record` section or in an issue comment containing the exact approval text. The `Approval evidence` row shows which route is present.

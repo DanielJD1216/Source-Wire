@@ -38,7 +38,11 @@ const releaseNotesDraft = await readFile("docs/release-notes-draft.md", "utf8");
 
 for (const [label, text, requiredText] of [
   ["release implementation runbook", runbook, "Use version 0.1.0 for the first public release"],
-  ["release implementation runbook", runbook, "change `publishConfig.access` from `restricted` to `public`"],
+  [
+    "release implementation runbook",
+    runbook,
+    "keep access public unless the owner explicitly approves a different package distribution path"
+  ],
   ["version recommendation", recommendation, "Recommended first public release path:"],
   ["version recommendation", recommendation, futureVersion],
   ["release implementation rehearsal", rehearsalDoc, "Status: approved release metadata check."],

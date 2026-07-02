@@ -2,7 +2,7 @@
 
 Status: owner decision intake only.
 
-This intake records the captured owner license decision. This intake does not allow npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This intake records the captured owner license decision. This intake does not allow a future npm package version, future GitHub release, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
@@ -41,11 +41,11 @@ ok owner decision captured
 | Decision captured | yes |
 | Selected option | Apache-2.0 implementation |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
+| Package version | `0.1.0` |
 | `LICENSE` file | present |
 | Source package reuse | allowed under Apache-2.0 |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
+| npm package | published as `@source-wire/contracts@0.1.0` |
+| GitHub release | published as `v0.1.0` |
 | Hosted runtime | blocked |
 | Contributions | blocked |
 

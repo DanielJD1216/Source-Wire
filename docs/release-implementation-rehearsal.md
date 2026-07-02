@@ -62,9 +62,9 @@ The command does not:
 
 ## Current Meaning
 
-If this check passes, Source-Wire has approved release metadata applied for `0.1.0` with public npm package access, but npm publishing and GitHub release creation are still unperformed.
+If this check passes, Source-Wire has approved release metadata applied for `0.1.0`, public npm package access is configured, npm publication is complete, and the matching GitHub release exists.
 
-The next gate is final local readiness, exact-commit CI, then npm publish and matching GitHub release creation.
+The next gate for a future version is final local readiness, exact-commit CI, then an approved npm publish and matching GitHub release update.
 
 ## Related Docs
 

@@ -25,11 +25,11 @@ For remaining legal or owner review questions, read [Legal Review Question Packe
 | Field | Current value |
 | --- | --- |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
+| Package version | `0.1.0` |
 | `LICENSE` file | present |
 | Source package reuse | allowed under Apache-2.0 |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
+| npm package | published as `@source-wire/contracts@0.1.0` |
+| GitHub release | published as `v0.1.0` |
 | Runtime backend | blocked |
 | Code contribution acceptance | blocked |
 
@@ -37,14 +37,14 @@ For remaining legal or owner review questions, read [Legal Review Question Packe
 
 The owner selected Apache-2.0 implementation.
 
-This approval applies only to the source package license. It does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This approval applies only to the source package license. It does not approve a future npm package version, future GitHub release, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Practical Impact
 
 | Path | Public adoption | Owner control | Commercial reuse | Enterprise comfort | Complexity |
 | --- | --- | --- | --- | --- | --- |
 | Apache-2.0 implemented | High for source package reuse | Lower than unlicensed | Allowed under license terms | High | Medium |
-| npm publishing later | Blocked | Owner controlled | Not applicable yet | Higher after release | Medium |
+| future package versions | Blocked | Owner controlled | Not applicable here | Higher after release policy | Medium |
 | Hosted runtime later | Blocked | Owner controlled | Separate future decision | Requires security review | High |
 | Code contributions later | Blocked | Owner controlled | Requires contribution terms | Higher after policy | Medium |
 
@@ -60,15 +60,15 @@ Approved for a future Source-Wire license implementation unit: implement Apache-
 
 This packet is not legal advice.
 
-Before accepting contributors, publishing npm, creating a GitHub release, deploying services, or relying on Source-Wire as a production runtime, the owner should consider legal or governance review.
+Before accepting contributors, publishing a future npm package version, creating a future GitHub release, deploying services, or relying on Source-Wire as a production runtime, the owner should consider legal or governance review.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 Use `npm run legal:packet` to verify the legal-review packet and current blocked boundary before that review.
 
-## No-Publish Boundary
+## Future Publish Boundary
 
-License approval is not publish approval.
+License approval is not approval for future package versions.
 
 Do not run:
 
@@ -76,7 +76,7 @@ Do not run:
 npm publish
 ```
 
-until a later PRD explicitly opens publishing and records owner approval.
+for a future package version until a later approved release unit records owner approval.
 
 ## Runtime Boundary
 

@@ -78,8 +78,8 @@ Stop before changing package version, publishing npm, creating a GitHub release,
 - `npm run publish:readiness` fails,
 - `npm run release:artifact-manifest` does not record shasum and integrity,
 - `npm run world:live-status` does not match the expected public source-package boundary,
-- `npm run release:live-tags` shows existing local tags, remote tags, or GitHub releases,
-- `npm run registry:live-npm` does not show Source-Wire as unpublished,
+- `npm run release:live-tags` does not show the expected release tag and GitHub release,
+- `npm run registry:live-npm` does not show `@source-wire/contracts@0.1.0` as published,
 - public CI is not green on the exact release commit,
 - package contents differ from the approved release package,
 - public docs imply hosted runtime or production runtime behavior,
@@ -88,11 +88,11 @@ Stop before changing package version, publishing npm, creating a GitHub release,
 
 ## Still Blocked
 
-Until npm authentication plus publish second-factor evidence are ready and a focused implementation unit runs:
+Until a future release execution unit is approved and its preflights pass:
 
-- npm publishing remains blocked,
-- GitHub release publishing remains blocked,
-- release tag creation remains blocked,
+- new npm package versions remain blocked,
+- new GitHub release publishing remains blocked,
+- new release tag creation remains blocked,
 - package version remains `0.1.0`,
 - deployment remains blocked,
 - hosted runtime behavior remains blocked,

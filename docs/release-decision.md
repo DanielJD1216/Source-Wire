@@ -67,9 +67,11 @@ A later PRD must explicitly approve any of these changes before they happen:
 
 - deploying a service,
 - adding runtime backend behavior,
+- publishing a new package version,
+- creating a new GitHub release,
 - accepting code contributions.
 
-Before npm publishing, GitHub release creation, or changing the package version away from `0.0.0`, the owner must complete the current release execution path:
+Before any future package version, GitHub release, dist-tag, or release-asset mutation, the owner must complete a new approved release execution path:
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -91,4 +93,4 @@ Package readiness only answers: "Can the package shape be checked?"
 
 Release approval answers: "Should this be published and supported as a release?"
 
-Those are different decisions. Source-Wire has the first capability and Apache-2.0 source reuse, but not npm publishing, GitHub release, hosted runtime, or production approval.
+Those are different decisions. Source-Wire has package-readiness checks, Apache-2.0 source reuse, npm publication, and a first GitHub release. It still does not have hosted runtime, production runtime approval, or contribution acceptance.

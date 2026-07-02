@@ -69,15 +69,15 @@ Expected markers:
 
 ```text
 ok release publish config plan ready
-ok future npm public access documented
-blocked publish config mutation not performed
+ok current npm public access documented
+blocked future publish config mutation not performed
 ```
 
-The plan keeps current `publishConfig.access` as `restricted` while publishing is blocked. During approved public npm release execution, change `publishConfig.access` from `restricted` to `public` before publishing.
+The plan keeps current `publishConfig.access` as `public` for the published package. During any future approved public npm release execution, keep access public unless the owner explicitly approves a different package distribution path.
 
 ## Future Execution Order
 
-Current state: release approval is recorded in issue `#255`, but npm authentication is missing. When npm authentication is available and the final release implementation unit is ready, execute in this order:
+Current state: release approval is recorded in issue `#255` and the first release is complete. When a future release implementation unit is approved and ready, execute in this order:
 
 1. Confirm `npm run release:approval-status` shows the exact owner approval text is recorded.
 2. Confirm `npm run release:auth-preflight` shows npm and GitHub authentication are ready.
@@ -86,7 +86,7 @@ Current state: release approval is recorded in issue `#255`, but npm authenticat
 5. Confirm public CI passes on the exact commit to release.
 6. Confirm package name, license, and publish boundary are still intentional.
 7. Change package version only inside the approved implementation unit.
-8. Change `publishConfig.access` from `restricted` to `public` only inside the approved public npm release execution unit.
+8. Keep `publishConfig.access` public unless an approved release unit explicitly changes the distribution path.
 9. Re-run the full local readiness gate and artifact manifest after the metadata changes.
 10. Publish npm only if npm publishing was explicitly approved.
 11. Create the matching GitHub release only if GitHub release publishing was explicitly approved.
@@ -98,7 +98,7 @@ Stop before publishing or releasing if any of these are true:
 
 - owner approval text is missing or ambiguous,
 - release version is not explicit,
-- `publishConfig.access` is still `restricted` during the approved public npm release execution unit,
+- `publishConfig.access` is changed away from `public` without an explicit owner-approved distribution-path change,
 - `npm run release:auth-preflight` does not show release publish credentials ready,
 - `npm run publish:readiness` fails,
 - `npm run release:artifact-manifest` does not record shasum and integrity,

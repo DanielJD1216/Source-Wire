@@ -30,7 +30,7 @@ const runbook = await readFile("docs/release-implementation-runbook.md", "utf8")
 for (const requiredText of [
   "Status: historical first-release runbook.",
   "Use version 0.1.0 for the first public release",
-  "change `publishConfig.access` from `restricted` to `public`",
+  "keep access public unless the owner explicitly approves a different package distribution path",
   "ok release implementation plan ready",
   "ok release execution completed",
   "package version remains `0.1.0`"

@@ -4,19 +4,19 @@ Status: owner decision implemented.
 
 Apache-2.0 license implementation is approved and complete.
 
-This record approves only the source package license change. It does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This record approves only the source package license change. It does not approve a future npm package version, future GitHub release, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
 This is the single decision record for the Source-Wire source package license implementation.
 
-Source-Wire now remains:
+Source-Wire current state:
 
 - Apache-2.0 licensed,
-- version `0.0.0`,
+- version `0.1.0`,
 - with a `LICENSE` file,
-- unpublished to npm,
-- unreleased on GitHub,
+- published to npm as `@source-wire/contracts@0.1.0`,
+- released on GitHub as `v0.1.0`,
 - undeployed,
 - not a hosted runtime,
 - not accepting code contributions.
@@ -84,8 +84,8 @@ implemented
 
 Separate future approvals are still required for:
 
-- npm publishing,
-- GitHub release publishing,
+- future npm package versions,
+- future GitHub releases,
 - hosted runtime work,
 - production runtime use,
 - code contribution acceptance.

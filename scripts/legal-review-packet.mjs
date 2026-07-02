@@ -5,7 +5,7 @@ const failures = [];
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
 assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until release execution");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 await assertPathExists("LICENSE");
 

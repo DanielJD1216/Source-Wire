@@ -6,7 +6,7 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 const templatePaths = [
   ".github/ISSUE_TEMPLATE/verification-failure.yml",

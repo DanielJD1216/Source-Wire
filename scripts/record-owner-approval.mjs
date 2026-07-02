@@ -74,15 +74,9 @@ printRows([
   ["State", issue.state],
   ["Decision", target.label],
   ["Exact approval", exactApprovalRecorded ? "already recorded" : "not recorded"],
-  ["Approval record section", approvalRecordPresent ? "present" : "missing"],
+  ["Approval record section", approvalRecordStatus(approvalRecordPresent, approvalComments.length)],
   ["Approval comments", String(approvalComments.length)]
 ]);
-
-if (issue.state !== "OPEN") {
-  console.error("");
-  console.error(`failed owner approval recorder: issue #${target.issue} must be OPEN`);
-  process.exit(1);
-}
 
 if (exactApprovalRecorded) {
   console.log("");
@@ -90,6 +84,12 @@ if (exactApprovalRecorded) {
   console.log(`ok exact ${target.approvalName} approval already recorded`);
   console.log("blocked execution still requires focused implementation unit");
   process.exit(0);
+}
+
+if (issue.state !== "OPEN") {
+  console.error("");
+  console.error(`failed owner approval recorder: issue #${target.issue} must be OPEN`);
+  process.exit(1);
 }
 
 if (!args.write) {
@@ -134,6 +134,12 @@ function hasApprovalRecordSection(body, exactApprovalText) {
   const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
   const section = body.match(sectionPattern)?.[0] ?? "";
   return section.includes(exactApprovalText);
+}
+
+function approvalRecordStatus(approvalRecordPresent, approvalCommentCount) {
+  if (approvalRecordPresent) return "present";
+  if (approvalCommentCount > 0) return "not used, approval is in comment";
+  return "missing";
 }
 
 function parseArgs(argv) {

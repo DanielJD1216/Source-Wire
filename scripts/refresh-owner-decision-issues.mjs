@@ -224,7 +224,7 @@ function refreshReleaseApprovalIssueBody(body, context) {
     `Issue                  : #${context.issueNumber} ${context.issueTitle}`,
     "State                  : OPEN",
     `Exact approval         : ${approvalRecorded ? "recorded" : "not recorded"}`,
-    "Approval record section: missing",
+    `Approval record section: ${approvalRecorded ? "not used, approval is in comment" : "missing"}`,
     `Approval comments      : ${context.approvalComments.length}`,
     "ok release approval status readable",
     ...(approvalRecorded

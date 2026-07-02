@@ -32,7 +32,7 @@ printRows([
   ["State", issue.state],
   ["Exact approval", exactApprovalRecorded ? "recorded" : "not recorded"],
   ["Approval evidence", approvalEvidence],
-  ["Approval record section", approvalRecordPresent ? "present" : "missing"],
+  ["Approval record section", approvalRecordStatus(approvalRecordPresent, approvalComments.length)],
   ["Approval comments", String(approvalComments.length)],
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
@@ -57,6 +57,12 @@ function hasApprovalRecordSection(body) {
   const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
   const section = body.match(sectionPattern)?.[0] ?? "";
   return section.includes(exactApprovalText);
+}
+
+function approvalRecordStatus(approvalRecordPresent, approvalCommentCount) {
+  if (approvalRecordPresent) return "present";
+  if (approvalCommentCount > 0) return "not used, approval is in comment";
+  return "missing";
 }
 
 function ghJson(args) {

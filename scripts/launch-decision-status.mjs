@@ -48,7 +48,8 @@ printRows([
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
   ["Branch protection", "implemented with Source-Wire package checks required"],
-  ["Hosted runtime PRD", "approved"],
+  ["Hosted runtime PRD", "approved and documented"],
+  ["Hosted runtime child issue packet", "ready"],
   ["Hosted runtime implementation", "blocked"],
   ["Code contributions", "blocked, not accepted"]
 ]);
@@ -60,7 +61,8 @@ printList([
   "Use the GitHub v0.1.0 release for the first public release snapshot.",
   "Keep hosted runtime implementation, production runtime claims, repository rulesets, and contribution acceptance blocked unless separate approval opens them.",
   "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
-  "Start the approved hosted runtime PRD before any hosted runtime implementation."
+  "Approve hosted runtime child issue publication before publishing the six PRD/planning issues.",
+  "Keep hosted runtime implementation blocked until a separate implementation approval opens it."
 ]);
 
 printSection("Owner Decision Status");

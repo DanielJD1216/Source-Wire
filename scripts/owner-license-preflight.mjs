@@ -76,7 +76,9 @@ printList([
   "Release path approval is recorded in #255.",
   "Use a future approved release unit before publishing a new npm version or creating a new GitHub release.",
   "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
-  "Hosted runtime PRD work is approved; implementation still needs a separate approved unit."
+  "Hosted runtime PRD is approved and documented.",
+  "Hosted runtime child issue publication needs exact owner approval before six PRD/planning issues are published.",
+  "Hosted runtime implementation still needs a separate approved unit."
 ]);
 
 console.log("");

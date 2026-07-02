@@ -64,18 +64,22 @@ const expectedIssues = [
 const finalPreflightMarkers = [
   "ok world share final preflight ready",
   "ok world share preflight current",
+  "ok world share operator summary current",
   "ok release decision preflight current",
   "ok branch governance decision preflight current",
   "ok hosted runtime PRD decision preflight current",
+  "ok hosted runtime child issue publication preflight current",
+  "ok hosted runtime child issue approval status current",
   "ok contribution terms PRD decision preflight current",
   "ok reviewer labels current",
   "ok owner decision issue boundary current",
+  "ok owner open issue future planning smoke current",
   "ok owner decision issue freshness current",
   "blocked production launch channels",
   "blocked focused implementation units required"
 ];
 
-const failures = [];
+let failures = [];
 
 const head = (await run("git", ["rev-parse", "HEAD"])).stdout.trim();
 const originMain = (await run("git", ["rev-parse", "origin/main"])).stdout.trim();
@@ -91,67 +95,19 @@ if (latestRun.status !== "completed" || latestRun.conclusion !== "success") {
   failures.push(`latest Package Checks must be successful: ${JSON.stringify(latestRun)}`);
 }
 
-const issueResults = [];
-for (const expectedIssue of expectedIssues) {
-  const issue = await ghJson([
-    "issue",
-    "view",
-    String(expectedIssue.number),
-    "--repo",
-    repo,
-    "--json",
-    "body,comments,title,state,url"
-  ]);
-  const body = issue.body ?? "";
-  const comments = Array.isArray(issue.comments) ? issue.comments : [];
-  const approvalComments = comments.filter((comment) => comment.body?.includes(expectedIssue.exactApprovalText));
-  const approvalRecordPresent = hasApprovalRecordSection(body, expectedIssue.exactApprovalText);
-  const exactApprovalRecorded = approvalRecordPresent || approvalComments.length > 0;
-  const refreshCount = (body.match(/^## Latest Status Refresh$/gmu) ?? []).length;
-  const currentSha = body.includes(head);
-  const currentRun = body.includes(latestRun.url);
-  const finalPreflight = finalPreflightMarkers.every((marker) => body.includes(marker));
-  const issueCommand = body.includes(expectedIssue.command);
-  const issueMarkers = expectedIssue.markers.every((marker) => body.includes(marker));
-  const refreshBoundaryPresent = body.includes("This refresh does not record owner approval or approve blocked work.");
-
-  if (refreshCount !== 1) {
-    failures.push(`#${expectedIssue.number} must have exactly one Latest Status Refresh section, found ${refreshCount}`);
-  }
-  if (!currentSha) {
-    failures.push(`#${expectedIssue.number} must reference current Source-Wire SHA ${head}`);
-  }
-  if (!currentRun) {
-    failures.push(`#${expectedIssue.number} must reference current Package Checks run ${latestRun.url}`);
-  }
-  if (!finalPreflight) {
-    failures.push(`#${expectedIssue.number} must include current final-preflight proof markers`);
-  }
-  if (!issueCommand) {
-    failures.push(`#${expectedIssue.number} must include issue-specific command ${expectedIssue.command}`);
-  }
-  if (!issueMarkers) {
-    failures.push(`#${expectedIssue.number} must include issue-specific gate proof markers`);
-  }
-  if (!refreshBoundaryPresent) {
-    failures.push(`#${expectedIssue.number} must state the refresh does not record owner approval`);
+let issueResults = [];
+for (let attempt = 1; attempt <= 3; attempt += 1) {
+  ({ failures, issueResults } = await checkIssueFreshness());
+  if (failures.length === 0) {
+    break;
   }
 
-  issueResults.push({
-    number: expectedIssue.number,
-    approvalName: expectedIssue.approvalName,
-    title: issue.title,
-    state: issue.state,
-    url: issue.url,
-    refreshCount,
-    currentSha,
-    currentRun,
-    finalPreflight,
-    issueCommand,
-    issueMarkers,
-    exactApprovalRecorded,
-    refreshBoundaryPresent
-  });
+  const retryable = failures.every((failure) => failure.includes("must reference current Source-Wire SHA") || failure.includes("must reference current Package Checks run"));
+  if (!retryable || attempt === 3) {
+    break;
+  }
+
+  await delay(2500 * attempt);
 }
 
 if (failures.length > 0) {
@@ -206,6 +162,8 @@ async function getLatestPackageChecksRun() {
     repo,
     "--branch",
     "main",
+    "--workflow",
+    "Package Checks",
     "--limit",
     "1",
     "--json",
@@ -221,6 +179,81 @@ async function getLatestPackageChecksRun() {
 
 function ghJson(args) {
   return run("gh", args, { maxBuffer: 1024 * 1024 * 20 }).then((result) => JSON.parse(result.stdout));
+}
+
+async function checkIssueFreshness() {
+  const nextFailures = [];
+  const nextIssueResults = [];
+
+  for (const expectedIssue of expectedIssues) {
+    const issue = await ghJson([
+      "issue",
+      "view",
+      String(expectedIssue.number),
+      "--repo",
+      repo,
+      "--json",
+      "body,comments,title,state,url"
+    ]);
+    const body = issue.body ?? "";
+    const comments = Array.isArray(issue.comments) ? issue.comments : [];
+    const approvalComments = comments.filter((comment) => comment.body?.includes(expectedIssue.exactApprovalText));
+    const approvalRecordPresent = hasApprovalRecordSection(body, expectedIssue.exactApprovalText);
+    const exactApprovalRecorded = approvalRecordPresent || approvalComments.length > 0;
+    const refreshCount = (body.match(/^## Latest Status Refresh$/gmu) ?? []).length;
+    const currentSha = body.includes(head);
+    const currentRun = body.includes(latestRun.url);
+    const finalPreflight = finalPreflightMarkers.every((marker) => body.includes(marker));
+    const issueCommand = body.includes(expectedIssue.command);
+    const issueMarkers = expectedIssue.markers.every((marker) => body.includes(marker));
+    const refreshBoundaryPresent = body.includes("This refresh does not record owner approval or approve blocked work.");
+
+    if (refreshCount !== 1) {
+      nextFailures.push(`#${expectedIssue.number} must have exactly one Latest Status Refresh section, found ${refreshCount}`);
+    }
+    if (!currentSha) {
+      nextFailures.push(`#${expectedIssue.number} must reference current Source-Wire SHA ${head}`);
+    }
+    if (!currentRun) {
+      nextFailures.push(`#${expectedIssue.number} must reference current Package Checks run ${latestRun.url}`);
+    }
+    if (!finalPreflight) {
+      nextFailures.push(`#${expectedIssue.number} must include current final-preflight proof markers`);
+    }
+    if (!issueCommand) {
+      nextFailures.push(`#${expectedIssue.number} must include issue-specific command ${expectedIssue.command}`);
+    }
+    if (!issueMarkers) {
+      nextFailures.push(`#${expectedIssue.number} must include issue-specific gate proof markers`);
+    }
+    if (!refreshBoundaryPresent) {
+      nextFailures.push(`#${expectedIssue.number} must state the refresh does not record owner approval`);
+    }
+
+    nextIssueResults.push({
+      number: expectedIssue.number,
+      approvalName: expectedIssue.approvalName,
+      title: issue.title,
+      state: issue.state,
+      url: issue.url,
+      refreshCount,
+      currentSha,
+      currentRun,
+      finalPreflight,
+      issueCommand,
+      issueMarkers,
+      exactApprovalRecorded,
+      refreshBoundaryPresent
+    });
+  }
+
+  return { failures: nextFailures, issueResults: nextIssueResults };
+}
+
+function delay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 function run(command, args, options = {}) {

@@ -41,6 +41,7 @@ It updates each issue with:
 - current commit message,
 - latest successful Package Checks run,
 - `npm run world:share-final-preflight` as the final owner-side preflight,
+- current world-share operator summary marker inside the final preflight,
 - the issue-specific gate command,
 - current final-preflight proof markers,
 - current issue-specific gate proof markers.
@@ -70,3 +71,5 @@ It does not record owner approval, publish npm, create a GitHub release, create 
 This command stays outside `npm run publish:readiness` because it depends on live GitHub issue mutation.
 
 The read-only freshness check is also owner-side because it depends on live GitHub issue state and the latest public Package Checks run.
+
+The freshness check retries brief GitHub issue-body read-after-write lag only when the stale evidence is limited to the current Source-Wire SHA or Package Checks run. Other missing markers, approval boundaries, or issue-specific proof failures fail immediately.

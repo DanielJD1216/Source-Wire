@@ -73,6 +73,8 @@ Acceptance criteria:
 
 Issue draft: [03 Owner-Hosted API And MCP Wrapper Boundary](issues/memory-engine-baseline-audit/03-owner-hosted-api-and-mcp-wrapper-boundary.md).
 
+Local artifact: [Memory Engine Baseline API And MCP Wrapper Boundary](memory-engine-baseline-api-mcp-wrapper-boundary.md).
+
 Type: AFK after Slice 1.
 
 Blocked by: Slice 1.

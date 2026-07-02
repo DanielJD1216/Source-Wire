@@ -1,5 +1,7 @@
 # Owner-Hosted API And MCP Wrapper Boundary
 
+Local artifact: [Memory Engine Baseline API And MCP Wrapper Boundary](../../memory-engine-baseline-api-mcp-wrapper-boundary.md).
+
 ## Parent
 
 Source-Wire Memory Engine Baseline Audit PRD.

@@ -45,6 +45,18 @@ const markerGroups = [
     ]
   },
   {
+    name: "release patch candidate rehearsal",
+    markers: [
+      "ok release patch candidate rehearsal ready",
+      "ok patch candidate version 0.1.1",
+      "ok patch candidate export matches package version",
+      "ok patch candidate consumer smoke",
+      "blocked real package version unchanged",
+      "blocked npm publish not performed",
+      "blocked github release not created"
+    ]
+  },
+  {
     name: "release auth handoff",
     markers: [
       "ok release auth handoff ready",

@@ -26,6 +26,13 @@ const completeLog = [
   "ok patch approval recorder target ready",
   "blocked exact patch release approval missing",
   "blocked patch release mutation not approved",
+  "ok release patch candidate rehearsal ready",
+  "ok patch candidate version 0.1.1",
+  "ok patch candidate export matches package version",
+  "ok patch candidate consumer smoke",
+  "blocked real package version unchanged",
+  "blocked npm publish not performed",
+  "blocked github release not created",
   "ok release auth handoff ready",
   "ok npm authentication owner steps documented",
   "blocked future release auth owner action required",
@@ -216,7 +223,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 57 groups 196 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 58 groups 203 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

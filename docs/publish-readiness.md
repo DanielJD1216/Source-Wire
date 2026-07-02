@@ -33,6 +33,7 @@ This command runs:
 - `npm run release:approval-request`
 - `npm run release:patch-approval-request`
 - `npm run release:patch-execution-preflight`
+- `npm run release:patch-candidate-rehearsal`
 - `npm run release:auth-handoff`
 - `npm run release:candidate-readiness`
 - `npm run release:artifact-manifest`
@@ -119,6 +120,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release approval request | `ok release approval request ready`, `ok npm publishing completed @source-wire/contracts@0.1.0`, `ok github release completed v0.1.0`, `ok version release completed 0.1.0` |
 | Release patch approval request | `ok release patch approval request ready`, `ok exported version fix on main`, `blocked patch release approval missing`, `blocked npm artifact immutable at @source-wire/contracts@0.1.0` |
 | Release patch execution preflight | `ok release patch execution preflight ready`, `ok patch source export fixed on main`, `ok patch npm artifact mismatch disclosed`, `ok patch approval recorder target ready`, `blocked exact patch release approval missing`, `blocked patch release mutation not approved` |
+| Release patch candidate rehearsal | `ok release patch candidate rehearsal ready`, `ok patch candidate version 0.1.1`, `ok patch candidate export matches package version`, `ok patch candidate consumer smoke`, `blocked real package version unchanged`, `blocked npm publish not performed`, `blocked github release not created` |
 | Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked future release auth owner action required` |
 | Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `ok release execution completed` |
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` |

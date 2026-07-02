@@ -12,6 +12,17 @@ The current expected open issue list is empty.
 
 Issues `#255`, `#256`, `#257`, and `#258` are expected to be closed because the first public release path, minimal branch governance path, hosted runtime PRD path, and contribution terms PRD path are complete. Any open issue is treated as a failure unless it is structured reviewer feedback with the expected reviewer labels in the post-share monitor.
 
+After the owner separately approves hosted-runtime child issue publication, the six exact hosted-runtime PRD/planning issue titles are allowed as expected planning work:
+
+- `Hosted Runtime Threat Model And Trust Boundary`
+- `API Server Runtime Contract`
+- `MCP Server Runtime Contract`
+- `Database Posture And Data Lifecycle`
+- `Public-Safe Fixture And Verification Plan`
+- `Deployment Boundary And Runtime Stop Conditions`
+
+Those planning issues still do not approve implementation, deployment, production runtime use, real user data, npm publishing, GitHub release creation, tags, or code contribution acceptance.
+
 ## Command
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
@@ -39,10 +50,18 @@ ok all completed owner decision approvals retained
 blocked hosted runtime child issue publication pending owner approval
 ```
 
+After the separately approved child publication unit creates the six planning issues, the command may also print:
+
+```text
+ok expected hosted runtime planning issues open
+blocked hosted runtime implementation
+```
+
 ## What It Proves
 
 - GitHub issue access is working through `gh`.
 - No owner-decision gates remain open.
+- Approved hosted-runtime child PRD/planning issues, when present with exact expected titles, are planning work rather than unresolved owner-decision gates.
 - Issue `#255` has recorded release implementation approval and is closed as completed release history.
 - Issue `#256` has recorded branch governance implementation approval and is closed as completed branch-governance history.
 - Issue `#257` has recorded hosted runtime PRD approval and is closed as completed PRD history.
@@ -56,6 +75,7 @@ blocked hosted runtime child issue publication pending owner approval
 - It does not approve hosted runtime implementation.
 - It does not itself approve contribution terms work or code contribution acceptance.
 - It does not close or edit any issue.
+- It does not approve hosted runtime implementation when hosted-runtime planning issues are open.
 
 ## Related Commands
 

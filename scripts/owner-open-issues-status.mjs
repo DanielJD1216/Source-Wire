@@ -34,6 +34,14 @@ const completedDecisionIssues = [
 ];
 
 const expectedOpenIssues = [];
+const expectedHostedRuntimePlanningIssueTitles = [
+  "Hosted Runtime Threat Model And Trust Boundary",
+  "API Server Runtime Contract",
+  "MCP Server Runtime Contract",
+  "Database Posture And Data Lifecycle",
+  "Public-Safe Fixture And Verification Plan",
+  "Deployment Boundary And Runtime Stop Conditions"
+];
 
 const issues = await ghJson([
   "issue",
@@ -50,6 +58,9 @@ const issues = await ghJson([
 
 const expectedByNumber = new Map(expectedOpenIssues.map((issue) => [issue.number, issue]));
 const actualByNumber = new Map(issues.map((issue) => [issue.number, issue]));
+const expectedPlanningTitleSet = new Set(expectedHostedRuntimePlanningIssueTitles);
+const openPlanningIssues = issues.filter((issue) => expectedPlanningTitleSet.has(issue.title));
+const unexpectedOpenIssues = issues.filter((issue) => !expectedPlanningTitleSet.has(issue.title));
 const failures = [];
 const completedIssueStates = [];
 
@@ -85,7 +96,7 @@ for (const completedIssue of completedDecisionIssues) {
   });
 }
 
-for (const actualIssue of issues) {
+for (const actualIssue of unexpectedOpenIssues) {
   if (!expectedByNumber.has(actualIssue.number)) {
     failures.push(`unexpected open issue #${actualIssue.number}: ${actualIssue.title}`);
   }
@@ -113,6 +124,14 @@ if (issues.length === 0) {
   }
 }
 
+if (openPlanningIssues.length > 0) {
+  printSection("Expected Hosted Runtime Planning Issues");
+  for (const issue of openPlanningIssues.toSorted((left, right) => left.number - right.number)) {
+    console.log(`#${issue.number} ${issue.title}`);
+    console.log(`URL: ${issue.url}`);
+  }
+}
+
 printSection("Owner Open Issues Result");
 console.log("ok owner open issue boundary readable");
 
@@ -130,8 +149,16 @@ for (const issue of completedIssueStates) {
 
 console.log("ok no unresolved owner decision issues open");
 
+if (openPlanningIssues.length > 0) {
+  console.log("ok expected hosted runtime planning issues open");
+}
+
 console.log("ok all completed owner decision approvals retained");
-console.log("blocked hosted runtime child issue publication pending owner approval");
+if (openPlanningIssues.length === 0) {
+  console.log("blocked hosted runtime child issue publication pending owner approval");
+} else {
+  console.log("blocked hosted runtime implementation");
+}
 
 function ghJson(args) {
   return new Promise((resolve, reject) => {

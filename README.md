@@ -20,12 +20,12 @@ Share-readiness audit: Source-Wire is ready for technical review, npm package in
 
 Snapshot boundary: npm `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` may contain post-release documentation and readiness hardening. Read [Release Snapshot Boundary](docs/release-snapshot-boundary.md).
 
-Current owner-decision issues:
+Current owner-decision status:
 
-- [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
-- [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
-- [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
-- [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
+- Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
+- Unresolved: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
+- Unresolved: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 
 ## First Reviewer Quickstart
 

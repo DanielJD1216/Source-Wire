@@ -19,7 +19,7 @@ It gathers the strongest release-execution evidence in one place:
 - live release tag boundary,
 - live npm registry boundary.
 
-Current state: issue `#255` contains exact owner approval evidence, GitHub authentication is ready, and npm login is present, but npm publish is blocked until the owner provides a publish second-factor path. The expected result is blocked until this owner-controlled machine can publish with npm 2FA for writes or a granular publish token with bypass 2FA enabled.
+Current state: issue `#255` contains exact owner approval evidence, the first npm package is published as `@source-wire/contracts@0.1.0`, the matching GitHub release is published as `v0.1.0`, GitHub authentication is ready, and npm release authentication is owner-controlled. The expected result is ready for read-only evidence gathering, while future release mutation remains blocked until a new approved release unit exists.
 
 ## Command
 
@@ -48,7 +48,7 @@ ok publish readiness current
 ok release artifact evidence current
 ok live release boundaries current
 ok exact release approval recorded
-blocked release publish credentials missing
+ok release publish credentials ready
 ```
 
 ## Checks Run
@@ -72,7 +72,7 @@ Stop before changing package version, publishing npm, creating a GitHub release,
 
 - issue `#255` does not contain the exact owner approval text,
 - `npm run release:auth-preflight` does not show release publish credentials ready,
-- npm publish second-factor evidence is missing,
+- npm publish second-factor evidence is missing for a future approved release mutation,
 - `npm run release:approval-status` does not show separate exact approval evidence,
 - `npm run release:decision-preflight` fails,
 - `npm run publish:readiness` fails,

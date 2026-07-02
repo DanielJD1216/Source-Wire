@@ -28,7 +28,7 @@ for (const requiredText of [
 
 for (const [label, text, requiredText] of [
   ["release auth preflight doc", authPreflightDoc, "blocked release publish credentials missing"],
-  ["release execution preflight doc", executionPreflightDoc, "blocked release publish credentials missing"]
+  ["release execution preflight doc", executionPreflightDoc, "ok release publish credentials ready"]
 ]) {
   if (!text.includes(requiredText)) {
     failures.push(`${label} missing required text: ${requiredText}`);

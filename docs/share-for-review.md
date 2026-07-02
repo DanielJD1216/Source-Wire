@@ -46,14 +46,14 @@ npm run world:post-share-monitor
 Source-Wire is Apache-2.0 licensed as a source package. Its `0.1.0` package and GitHub release are live. Please review the contracts, schemas, fixtures, docs, and readiness gates without assuming production readiness or code contribution acceptance.
 ```
 
-## Current Owner-Decision Issues
+## Current Owner-Decision Status
 
-These public issues track the remaining owner decisions. They do not approve the blocked work.
+These public issues track completed release history and remaining owner decisions. They do not approve the blocked work.
 
-- [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
-- [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
-- [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
-- [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
+- Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
+- Unresolved: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
+- Unresolved: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 
 ## Unsafe Wording To Avoid
 

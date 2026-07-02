@@ -79,14 +79,14 @@ npm run owner:decision-status
 
 The first public release path has been executed. The remaining approval lanes are branch governance, hosted runtime PRD, and contribution terms. This status command does not create new release artifacts, deploy services, enable hosted runtime, or accept contributions.
 
-## Owner Decision Issues
+## Owner Decision Status
 
 The command prints the current public owner-decision issues:
 
-- [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
-- [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
-- [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
-- [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
+- Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
+- Unresolved: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
+- Unresolved: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 
 ## Related Docs
 

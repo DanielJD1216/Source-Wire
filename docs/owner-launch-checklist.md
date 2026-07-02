@@ -115,14 +115,14 @@ Recorded release approval:
 Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.
 ```
 
-## Owner Decision Issues
+## Owner Decision Status
 
 The command prints the current public owner-decision issues:
 
-- [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
-- [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
-- [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
-- [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
+- Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
+- Unresolved: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
+- Unresolved: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 
 ## Exact Current Safe Share Copy
 

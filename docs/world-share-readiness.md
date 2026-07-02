@@ -30,14 +30,14 @@ Apache-2.0 currently means reviewers and adopters can inspect and reuse the sour
 | Code contributions | Blocked |
 | Real user data examples | Blocked |
 
-## Current Owner-Decision Issues
+## Current Owner-Decision Status
 
-These public issues track the remaining owner decisions. They do not enable branch governance, start hosted runtime work, or accept code contributions.
+These public issues track completed release history and remaining owner decisions. They do not enable branch governance, start hosted runtime work, or accept code contributions.
 
-- [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
-- [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
-- [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
-- [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
+- Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
+- Unresolved: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
+- Unresolved: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 
 ## Release Execution Boundary
 

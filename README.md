@@ -25,7 +25,7 @@ Current owner-decision status:
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
 - Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
 - Completed: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
-- Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
+- Approved for PRD only: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 
 ## First Reviewer Quickstart
 
@@ -175,6 +175,8 @@ Source-Wire can run a full local readiness gate with package dry-run, installed 
 - [Owner Approval Record Packet](docs/owner-approval-record-packet.md)
 - [Release Candidate Readiness](docs/release-candidate-readiness.md)
 - [Release Snapshot Boundary](docs/release-snapshot-boundary.md)
+- [Hosted Runtime PRD](docs/hosted-runtime-prd.md)
+- [Hosted Runtime PRD Slice Map](docs/hosted-runtime-issue-slices.md)
 - [Hosted Runtime PRD Preparation](docs/hosted-runtime-prd-preparation.md)
 - [Contribution Terms PRD Preparation](docs/contribution-terms-prd-preparation.md)
 - [Contribution Terms PRD](docs/contribution-terms-prd.md)

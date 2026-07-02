@@ -4,9 +4,9 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until release execution");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 for (const requiredPath of [
   "LICENSE",
@@ -38,24 +38,26 @@ printRows([
   ["License", packageJson.license],
   ["Source repo", "https://github.com/DanielJD1216/Source-Wire"],
   ["Share state", "ready for Apache-2.0 source-package review and reuse"],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["npm package", "published @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Production runtime", "blocked"],
   ["Code contributions", "blocked"]
 ]);
 
 printSection("One-Line Copy");
-console.log("Source-Wire is an Apache-2.0 source package skeleton for agent-first memory systems, ready for technical review and source reuse, but not npm-published, GitHub-released, hosted, production-ready, or open for code contributions yet.");
+console.log("Source-Wire is an Apache-2.0 package of agent-first memory contracts and examples, published as @source-wire/contracts@0.1.0, with hosted runtime and production-use claims still blocked.");
 
 printSection("Short Public Copy");
 console.log("I opened Source-Wire for technical review.");
 console.log("");
-console.log("It is an Apache-2.0 source package skeleton for agent-first memory systems: contracts, schemas, fixtures, examples, and readiness gates.");
+console.log("It is an Apache-2.0 package for agent-first memory systems: contracts, schemas, fixtures, examples, and readiness gates.");
 console.log("");
-console.log("Important boundary: it is version 0.0.0, unpublished to npm, unreleased on GitHub, undeployed, and not a hosted runtime.");
+console.log("Important boundary: it is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime.");
 console.log("");
 console.log("Repo: https://github.com/DanielJD1216/Source-Wire");
+console.log("npm: https://www.npmjs.com/package/@source-wire/contracts");
+console.log("Release: https://github.com/DanielJD1216/Source-Wire/releases/tag/v0.1.0");
 console.log("Start here: docs/public-status.md");
 
 printSection("First Reviewer Commands");
@@ -85,10 +87,6 @@ printList([
 
 printSection("Still Blocked");
 printList([
-  "npm publishing",
-  "GitHub release publishing",
-  "release tags",
-  "package version change",
   "branch governance enforcement",
   "hosted runtime",
   "production runtime use",

@@ -2,7 +2,7 @@
 
 Source-Wire is currently public for technical review.
 
-It is Apache-2.0 licensed as a source package, unreleased, unpublished, and not a hosted runtime.
+It is Apache-2.0 licensed as a source package, published to npm, released on GitHub, and not a hosted runtime.
 
 ## Supported Scope
 
@@ -61,8 +61,6 @@ Include:
 
 Security reporting does not approve:
 
-- npm publishing,
-- GitHub release publishing,
 - hosted runtime backend,
 - real MCP server runtime,
 - database setup,

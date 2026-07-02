@@ -6,9 +6,9 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 for (const requiredPath of [
   "SECURITY.md",
@@ -35,10 +35,10 @@ const boundaryTemplate = await readFile(".github/ISSUE_TEMPLATE/boundary-safety-
 const reviewerGuide = await readFile("docs/reviewer-feedback-guide.md", "utf8");
 const publicStatus = await readFile("docs/public-status.md", "utf8");
 
-assertIncludes(securityPolicy, "It is Apache-2.0 licensed as a source package, unreleased, unpublished, and not a hosted runtime.", "SECURITY.md current source-package boundary");
+assertIncludes(securityPolicy, "It is Apache-2.0 licensed as a source package, published to npm, released on GitHub, and not a hosted runtime.", "SECURITY.md current source-package boundary");
 assertIncludes(securityPolicy, "Security reporting does not approve:", "SECURITY.md blocked security approval list");
 assertIncludes(securityPolicy, "real source payloads", "SECURITY.md private-data warning");
-assertIncludes(supportPolicy, "not published to npm, not released on GitHub, and not a hosted runtime", "SUPPORT.md live channel boundary");
+assertIncludes(supportPolicy, "published to npm, released on GitHub, and not a hosted runtime", "SUPPORT.md live channel boundary");
 assertIncludes(supportPolicy, "code contribution acceptance", "SUPPORT.md contribution boundary");
 assertIncludes(contributingPolicy, "code contributions are not accepted until the owner approves contribution terms", "CONTRIBUTING.md contribution boundary");
 assertIncludes(contributingPolicy, "Use synthetic examples or public repo references only.", "CONTRIBUTING.md public-only feedback rule");
@@ -117,8 +117,8 @@ printRows([
   ["Contribution acceptance", "blocked"],
   ["Private data in public intake", "blocked"],
   ["Version", packageJson.version],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["npm publishing", "published"],
+  ["GitHub release", "published"],
   ["Hosted runtime", "blocked"]
 ]);
 

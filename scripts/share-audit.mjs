@@ -4,9 +4,9 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 before release execution");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 await assertPathExists("LICENSE");
 
@@ -31,21 +31,21 @@ const worldReadiness = await readFile("docs/world-share-readiness.md", "utf8");
 
 for (const [label, text, requiredText] of [
   ["public status", publicStatus, "Source-Wire is Apache-2.0 licensed."],
-  ["public status", publicStatus, "It is not published to npm, not released on GitHub, not deployed, and not a hosted runtime."],
+  ["public status", publicStatus, "It is published to npm and released on GitHub, but not deployed and not a hosted runtime."],
   ["share for review", shareForReview, "Status: Apache-2.0 licensed source package."],
   ["share for review", shareForReview, "Source-Wire is Apache-2.0 licensed."],
   ["share for review", shareForReview, "Do not say:"],
   ["share for review", shareForReview, "Source-Wire is production-ready."],
-  ["world share kit", worldShareKit, "Status: public source-package share kit only."],
-  ["world share kit", worldShareKit, "Source-Wire is an Apache-2.0 source package skeleton"],
+  ["world share kit", worldShareKit, "Status: public source-package and package-release share kit only."],
+  ["world share kit", worldShareKit, "Source-Wire is an Apache-2.0 package of agent-first memory contracts and examples"],
   ["world share kit", worldShareKit, "Do not say:"],
   ["world share kit", worldShareKit, "Install it from npm."],
   ["world share kit", worldShareKit, "Contributions are open."],
   ["first visitor audit", firstVisitorAudit, "Ready for technical review: yes."],
   ["first visitor audit", firstVisitorAudit, "Ready for source package reuse: yes, under Apache-2.0."],
-  ["first visitor audit", firstVisitorAudit, "Still blocked: npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, and code contribution acceptance."],
+  ["first visitor audit", firstVisitorAudit, "Still blocked: deployment, hosted runtime use, production runtime use, and code contribution acceptance."],
   ["world readiness", worldReadiness, "Source-Wire can be shared as an Apache-2.0 licensed source package."],
-  ["world readiness", worldReadiness, "It is not an npm-published package, GitHub release, deployed service, hosted runtime, or production runtime."]
+  ["world readiness", worldReadiness, "It is an npm-published package and GitHub release, but not a deployed service, hosted runtime, or production runtime."]
 ]) {
   if (!text.includes(requiredText)) {
     failures.push(`${label} missing required text: ${requiredText}`);
@@ -68,8 +68,8 @@ printRows([
   ["Package license", packageJson.license],
   ["Package version", packageJson.version],
   ["LICENSE file", "present"],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["npm publishing", "published"],
+  ["GitHub release", "published"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
@@ -77,7 +77,8 @@ printRows([
 printSection("Safe Share Boundary");
 printList([
   "Share the source repo under Apache-2.0.",
-  "Do not imply npm publication, GitHub release, deployment, hosted runtime, production runtime readiness, or contribution acceptance."
+  "Share npm package @source-wire/contracts@0.1.0 and GitHub release v0.1.0.",
+  "Do not imply deployment, hosted runtime, production runtime readiness, or contribution acceptance."
 ]);
 
 console.log("");

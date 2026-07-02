@@ -16,27 +16,17 @@ const unsafeClaims = [
   {
     kind: "production_ready_claim",
     pattern: /\bsource-wire\s+is\s+(?:production[- ]ready|ready\s+for\s+production)\b/i,
-    reason: "Production use remains blocked because Source-Wire is not a hosted runtime or released package."
+    reason: "Production use remains blocked because Source-Wire is not a hosted runtime."
   },
   {
     kind: "unsafe_publish_or_host_claim",
     pattern: /\byou\s+can\s+(?:host|publish|build\s+your\s+product\s+on)\s+(?:source-wire|this)\b/i,
-    reason: "Publishing, hosted runtime, and production-product use remain blocked."
+    reason: "Hosted runtime and production-product use remain blocked."
   },
   {
     kind: "contribution_open_claim",
     pattern: /\b(?:contributions\s+are\s+open|code\s+contributions\s+are\s+accepted|open\s+for\s+contributions)\b/i,
     reason: "Code contribution acceptance and contribution license terms are not approved."
-  },
-  {
-    kind: "npm_published_claim",
-    pattern: /\bsource-wire\s+is\s+(?:published|available)\s+on\s+npm\b/i,
-    reason: "npm publishing remains blocked."
-  },
-  {
-    kind: "github_release_claim",
-    pattern: /\bsource-wire\s+has\s+(?:a\s+)?github\s+release\b/i,
-    reason: "GitHub release publishing remains blocked."
   },
   {
     kind: "hosted_runtime_claim",

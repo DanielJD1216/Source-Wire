@@ -1,8 +1,8 @@
 # Source-Wire World Share Packet
 
-Status: public source-package sharing packet only.
+Status: public source-package and package-release sharing packet only.
 
-This packet does not approve npm publishing, GitHub release publishing, release tags, deployment, hosted runtime behavior, production runtime use, code contribution acceptance, or real data examples.
+This packet does not approve deployment, hosted runtime behavior, production runtime use, code contribution acceptance, or real data examples.
 
 ## Purpose
 
@@ -25,7 +25,7 @@ blocked production launch channels
 ## One-Line Copy
 
 ```text
-Source-Wire is an Apache-2.0 source package skeleton for agent-first memory systems, ready for technical review and source reuse, but not npm-published, GitHub-released, hosted, production-ready, or open for code contributions yet.
+Source-Wire is an Apache-2.0 package of agent-first memory contracts and examples, published as @source-wire/contracts@0.1.0, with hosted runtime and production-use claims still blocked.
 ```
 
 ## Short Public Copy
@@ -33,11 +33,13 @@ Source-Wire is an Apache-2.0 source package skeleton for agent-first memory syst
 ```text
 I opened Source-Wire for technical review.
 
-It is an Apache-2.0 source package skeleton for agent-first memory systems: contracts, schemas, fixtures, examples, and readiness gates.
+It is an Apache-2.0 package for agent-first memory systems: contracts, schemas, fixtures, examples, and readiness gates.
 
-Important boundary: it is version 0.0.0, unpublished to npm, unreleased on GitHub, undeployed, and not a hosted runtime.
+Important boundary: it is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime.
 
 Repo: https://github.com/DanielJD1216/Source-Wire
+npm: https://www.npmjs.com/package/@source-wire/contracts
+Release: https://github.com/DanielJD1216/Source-Wire/releases/tag/v0.1.0
 Start here: docs/public-status.md
 ```
 
@@ -58,7 +60,7 @@ For the full local verification path:
 npm run publish:readiness
 ```
 
-Despite the command name, this does not publish npm.
+Despite the command name, this does not publish a new package version.
 
 ## Owner Preflight Before Broad Sharing
 
@@ -68,7 +70,7 @@ Before broad public sharing, the owner can run:
 npm run world:share-final-preflight
 ```
 
-This command is read-only. It does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, implement hosted runtime behavior, or approve production runtime use.
+This command is read-only. It does not publish a new package version, create a new GitHub release, create new tags, change package version, deploy services, enable branch governance, accept code contributions, implement hosted runtime behavior, or approve production runtime use.
 
 For the lighter source-package-only preflight, run:
 
@@ -100,10 +102,6 @@ Do not ask reviewers to send:
 
 ## Still Blocked
 
-- npm publishing,
-- GitHub release publishing,
-- release tags,
-- package version change,
 - branch governance enforcement,
 - hosted runtime,
 - production runtime use,

@@ -3,27 +3,30 @@ import { readFile } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
+const expectedTag = "v0.1.0";
+const expectedTarget = "bd240283ec45e5b83ecd0e1c1cc9650097fd6509";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while release publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after release publication");
 
 const localTags = parseLines(await run("git", ["tag", "--list"]));
 const remoteTags = parseRemoteTags(await run("git", ["ls-remote", "--tags", "origin"]));
-const releases = JSON.parse(await run("gh", ["release", "list", "--repo", "DanielJD1216/Source-Wire", "--limit", "20", "--json", "tagName,name,isLatest,createdAt"]));
+const release = JSON.parse(await run("gh", ["release", "view", expectedTag, "--repo", "DanielJD1216/Source-Wire", "--json", "tagName,name,isDraft,isPrerelease,targetCommitish,publishedAt,url"]));
 
-if (localTags.length > 0) {
-  failures.push(`local git tags must remain empty until release execution: ${localTags.join(", ")}`);
+if (!localTags.includes(expectedTag)) {
+  failures.push(`local git tags must include ${expectedTag}`);
 }
 
-if (remoteTags.length > 0) {
-  failures.push(`remote git tags must remain empty until release execution: ${remoteTags.join(", ")}`);
+if (!remoteTags.includes(expectedTag)) {
+  failures.push(`remote git tags must include ${expectedTag}`);
 }
 
-if (releases.length > 0) {
-  failures.push(`GitHub releases must remain empty until release execution: ${releases.map((release) => release.tagName).join(", ")}`);
-}
+assertEqual(release.tagName, expectedTag, "GitHub release tag must match expected tag");
+assertEqual(release.targetCommitish, expectedTarget, "GitHub release target commit must match release commit");
+assertEqual(release.isDraft, false, "GitHub release must not be draft");
+assertEqual(release.isPrerelease, false, "GitHub release must not be prerelease");
 
 if (failures.length > 0) {
   console.error("failed live release tag boundary");
@@ -38,21 +41,24 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Local git tags", "none"],
-  ["Remote git tags", "none"],
-  ["GitHub releases", "none"],
-  ["npm publishing", "blocked"],
-  ["GitHub release publishing", "blocked"],
-  ["Release tag creation", "blocked"],
+  ["Local git tag", expectedTag],
+  ["Remote git tag", expectedTag],
+  ["GitHub release", release.url],
+  ["Release target", release.targetCommitish],
+  ["Published at", release.publishedAt],
+  ["npm publishing", "published"],
+  ["GitHub release publishing", "published"],
+  ["Release tag creation", "complete"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
 
 console.log("");
 console.log("ok live release tag boundary ready");
-console.log("ok local git tags empty");
-console.log("ok remote git tags empty");
-console.log("blocked release tag creation not approved");
+console.log("ok local release tag v0.1.0");
+console.log("ok remote release tag v0.1.0");
+console.log("ok github release published v0.1.0");
+console.log("blocked hosted runtime not approved");
 
 function parseLines(text) {
   return text

@@ -2,7 +2,7 @@
 
 Source-Wire can be shared as an Apache-2.0 licensed source package.
 
-It is not an npm-published package, GitHub release, deployed service, hosted runtime, or production runtime.
+It is an npm-published package and GitHub release, but not a deployed service, hosted runtime, or production runtime.
 
 ## Purpose
 
@@ -14,7 +14,7 @@ Apache-2.0 source package equals production launch.
 
 That is false for Source-Wire today.
 
-Apache-2.0 currently means reviewers and adopters can inspect and reuse the source package. It does not mean Source-Wire is published to npm, released on GitHub, deployed, hosted, production-ready, or accepting code contributions.
+Apache-2.0 currently means reviewers and adopters can inspect and reuse the source package. npm publication and the GitHub release are live. None of that means Source-Wire is deployed, hosted, production-ready, or accepting code contributions.
 
 ## Current Share State
 
@@ -23,8 +23,8 @@ Apache-2.0 currently means reviewers and adopters can inspect and reuse the sour
 | Technical review | Ready |
 | Source package reuse | Ready under Apache-2.0 |
 | Open-source licensing | Implemented |
-| npm publishing | Blocked until npm auth and approved release execution |
-| GitHub release | Blocked until approved release execution |
+| npm package | Published as `@source-wire/contracts@0.1.0` |
+| GitHub release | Published as `v0.1.0` |
 | Hosted runtime | Blocked |
 | Production runtime use | Blocked |
 | Code contributions | Blocked |
@@ -32,7 +32,7 @@ Apache-2.0 currently means reviewers and adopters can inspect and reuse the sour
 
 ## Current Owner-Decision Issues
 
-These public issues track the remaining owner decisions. They do not publish npm, create a GitHub release, enable branch governance, start hosted runtime work, or accept code contributions.
+These public issues track the remaining owner decisions. They do not enable branch governance, start hosted runtime work, or accept code contributions.
 
 - [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
 - [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
@@ -43,17 +43,12 @@ These public issues track the remaining owner decisions. They do not publish npm
 
 Issue [#255](https://github.com/DanielJD1216/Source-Wire/issues/255) records the owner-approved public release path.
 
-That approval does not publish npm or create a GitHub release by itself. Release execution is still blocked until the owner completes npm authentication and the release auth and execution preflights pass.
+That release path has been executed for `0.1.0`. The public npm package and matching GitHub release are live.
 
-Current owner command path:
+Current live release:
 
-```bash
-npm run release:auth-handoff
-npm login --registry=https://registry.npmjs.org/
-npm whoami
-npm run release:auth-preflight
-npm run release:execution-preflight
-```
+- npm: `@source-wire/contracts@0.1.0`
+- GitHub release: `v0.1.0`
 
 ## Command
 
@@ -78,7 +73,7 @@ ok world share open source ready
 blocked production launch channels
 ```
 
-This command does not publish npm, create a GitHub release, deploy services, accept contributions, start runtime services, connect to a database, or approve production runtime use.
+This command does not publish a new package version, create a new GitHub release, deploy services, accept contributions, start runtime services, connect to a database, or approve production runtime use.
 
 For the copy-and-command packet used when sharing publicly, run:
 
@@ -94,7 +89,7 @@ ok public share copy current
 blocked production launch channels
 ```
 
-This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
+This command does not publish a new package version, create a new GitHub release, create new tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
 
 ## Owner Live Status
 
@@ -122,7 +117,7 @@ blocked production launch channels
 blocked owner approvals missing
 ```
 
-This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
+This command does not publish a new package version, create a new GitHub release, create new tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
 
 For the lighter source-package-only preflight, run:
 
@@ -149,7 +144,7 @@ ok owner open issue boundary current
 blocked production launch channels
 ```
 
-This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
+This command does not publish a new package version, create a new GitHub release, create new tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
 
 For the public owner-decision issues only, run:
 
@@ -202,11 +197,11 @@ This read-only check verifies:
 - live GitHub metadata, topics, visibility, default branch, and Apache-2.0 license,
 - live `Package Checks` is green for `origin/main`,
 - live GitHub secret scanning and push protection are enabled,
-- package metadata and package-lock root metadata stay aligned on `0.0.0`, `Apache-2.0`, and the installed CLI bin,
-- npm package remains unpublished,
-- local tags, remote tags, and GitHub releases are empty,
+- package metadata and package-lock root metadata stay aligned on `0.1.0`, `Apache-2.0`, and the installed CLI bin,
+- npm package is published as `@source-wire/contracts@0.1.0`,
+- local tags, remote tags, and GitHub release include `v0.1.0`,
 - branch protection and repository ruleset state are visible,
-- package version remains `0.0.0`,
+- package version remains `0.1.0`,
 - hosted runtime, production runtime use, and code contribution acceptance remain blocked.
 
 Expected markers:
@@ -216,8 +211,8 @@ ok live world share status ready
 ok source repo sharing ready
 ok live public surface green
 ok live package lock Apache-2.0
-ok npm package unpublished
-ok release channels empty
+ok npm package published @source-wire/contracts@0.1.0
+ok release channels published v0.1.0
 blocked production launch channels
 blocked branch governance enforcement not approved
 ```
@@ -247,15 +242,13 @@ Use [World Share Kit](world-share-kit.md) for public-channel copy and unsafe-cla
 Safe current action:
 
 ```text
-Please review Source-Wire as an Apache-2.0 licensed source package. It is version 0.0.0, unpublished to npm, unreleased on GitHub, undeployed, and not hosted.
+Please review Source-Wire as an Apache-2.0 licensed source package. It is version 0.1.0, published to npm, released on GitHub, undeployed, and not hosted.
 ```
 
 ## What Must Happen Before Product Launch
 
 Separate future approvals are still required for:
 
-- npm publishing,
-- GitHub release publishing,
 - deployment,
 - hosted API server runtime,
 - real MCP server runtime,

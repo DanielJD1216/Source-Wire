@@ -10,7 +10,7 @@ Ready for technical review: yes.
 
 Ready for source package reuse: yes, under Apache-2.0.
 
-Still blocked: npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, and code contribution acceptance.
+Still blocked: deployment, hosted runtime use, production runtime use, and code contribution acceptance.
 
 ## Why Technical Review And Source Reuse Are Ready
 
@@ -59,7 +59,7 @@ npm install
 npm run publish:readiness
 ```
 
-Despite the command name, this does not publish npm.
+Despite the command name, this does not publish a new package version.
 
 Expected boundary markers:
 
@@ -67,8 +67,8 @@ Expected boundary markers:
 ok release gate
 ok license Apache-2.0
 ok package lock Apache-2.0
-ok version 0.0.0
-ok publishing blocked
+ok version 0.1.0
+ok npm public access ready
 ```
 
 To check this first-visitor share audit directly:
@@ -103,9 +103,9 @@ blocked production launch channels
 
 Product launch channels remain blocked because:
 
-- npm publishing is blocked,
-- GitHub release publishing is blocked,
-- package version remains `0.0.0`,
+- npm package `@source-wire/contracts@0.1.0` is published,
+- GitHub release `v0.1.0` is published,
+- package version remains `0.1.0`,
 - contribution license terms are not approved,
 - code contributions are not accepted,
 - no hosted runtime exists,
@@ -118,8 +118,8 @@ Product launch channels remain blocked because:
 
 A visitor must not assume:
 
-- npm publishing is approved,
-- a GitHub release exists,
+- hosted runtime behavior is available,
+- production runtime behavior is available,
 - Source-Wire hosts memory,
 - Source-Wire includes a production backend,
 - Source-Wire accepts code contributions,
@@ -130,7 +130,7 @@ A visitor must not assume:
 Safe wording:
 
 ```text
-Source-Wire is Apache-2.0 licensed as a source package. It is version 0.0.0, unpublished to npm, unreleased on GitHub, undeployed, and not a hosted runtime.
+Source-Wire is Apache-2.0 licensed as a source package. It is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime.
 ```
 
 Unsafe wording:
@@ -145,4 +145,4 @@ Ready for technical review: yes.
 
 Ready for source package reuse: yes, under Apache-2.0.
 
-Still blocked: npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, and code contribution acceptance.
+Still blocked: deployment, hosted runtime use, production runtime use, and code contribution acceptance.

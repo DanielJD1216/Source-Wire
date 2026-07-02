@@ -6,7 +6,7 @@ Source-Wire is an agent-first memory architecture skeleton.
 
 It is designed for systems where AI agents need to search, cite, update, and reason over source-backed context without turning every imported note or chat message into trusted memory automatically.
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. It is unreleased, unpublished to npm, undeployed, and not a hosted runtime. Read [Public Status](docs/public-status.md) before npm, release, deployment, hosted-runtime, production-use, or contribution assumptions.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. It is published to npm, released on GitHub, undeployed, and not a hosted runtime. Read [Public Status](docs/public-status.md) before deployment, hosted-runtime, production-use, or contribution assumptions.
 
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
@@ -14,7 +14,7 @@ Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Su
 
 World share packet: use [World Share Packet](docs/world-share-packet.md) or `npm run world:share-packet` for the exact safe copy, first reviewer commands, owner preflight, feedback route, and blocked launch channels in one place.
 
-Share-readiness audit: Source-Wire is ready for technical review and source package reuse under Apache-2.0, but not npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, or code contribution acceptance. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
+Share-readiness audit: Source-Wire is ready for technical review, npm package installation, GitHub release review, and source package reuse under Apache-2.0, but not deployment, hosted runtime use, production runtime use, or code contribution acceptance. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
 
 Current owner-decision issues:
 
@@ -46,16 +46,12 @@ For the full local verification gate:
 npm run publish:readiness
 ```
 
-Despite the command name, `publish:readiness` does not publish npm.
+Despite the command name, `publish:readiness` is now a local readiness and boundary gate. It does not publish a new package version.
 
 Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Review](docs/share-for-review.md), and [Reviewer Feedback Guide](docs/reviewer-feedback-guide.md) when sharing the repo or sending feedback.
 
 ## Still Blocked
 
-- npm publishing,
-- GitHub release publishing,
-- release tags,
-- package version change,
 - branch governance enforcement,
 - hosted runtime,
 - production runtime use,
@@ -161,7 +157,7 @@ The CI docs include a stable log marker map for reading GitHub Actions Package C
 
 ## Publish Readiness
 
-Source-Wire can run a full local publish readiness gate with package dry-run, installed package smokes, runtime-boundary smokes, docs links, command-doc setup checks, and public-safety checks, but it is not published to npm yet.
+Source-Wire can run a full local readiness gate with package dry-run, installed package smokes, runtime-boundary smokes, docs links, command-doc setup checks, and public-safety checks. The public package is `@source-wire/contracts@0.1.0`, and the first GitHub release is `v0.1.0`.
 
 - [Publish Readiness](docs/publish-readiness.md)
 - [World-Share Readiness](docs/world-share-readiness.md)
@@ -185,13 +181,13 @@ Source-Wire can run a full local publish readiness gate with package dry-run, in
 
 The publish-readiness docs include a local success marker map for `npm run publish:readiness`.
 
-Run the license implementation check before any future publishing, release, hosted runtime, or contribution work:
+Run the license implementation check before any future package version, hosted runtime, or contribution work:
 
 ```bash
 npm run license:rehearsal
 ```
 
-It verifies the current Apache-2.0 license implementation and confirms publishing, release, deployment, hosted runtime, and code contribution acceptance remain blocked.
+It verifies the current Apache-2.0 license implementation and confirms deployment, hosted runtime, production runtime use, and code contribution acceptance remain blocked.
 
 ## Fixtures
 

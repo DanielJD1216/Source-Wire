@@ -2,7 +2,7 @@
 
 Source-Wire is public for technical review only.
 
-It is Apache-2.0 licensed as a source package, not published to npm, not released on GitHub, and not a hosted runtime.
+It is Apache-2.0 licensed as a source package, published to npm, released on GitHub, and not a hosted runtime.
 
 ## Supported Questions
 
@@ -23,7 +23,6 @@ Start with:
 Source-Wire does not currently support:
 
 - production usage,
-- npm installation from the registry,
 - hosted runtime setup,
 - MCP server runtime setup,
 - database setup,
@@ -60,6 +59,6 @@ npm install
 npm run publish:readiness
 ```
 
-Despite the command name, this does not publish npm.
+Despite the command name, this does not publish a new package version.
 
 If it fails, use the Verification failure issue template.

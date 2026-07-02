@@ -5,7 +5,8 @@ const repo = "DanielJD1216/Source-Wire";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
-const expectedDescription = "Apache-2.0 agent-memory contract skeleton. Unpublished, unreleased, not hosted.";
+const expectedDescription = "Apache-2.0 agent-memory contracts. npm v0.1.0, GitHub release v0.1.0, not hosted.";
+const expectedReleaseTag = "v0.1.0";
 const expectedHomepage = "https://github.com/DanielJD1216/Source-Wire/blob/main/docs/share-for-review.md";
 const expectedTopics = [
   "agent-memory",
@@ -18,8 +19,8 @@ const expectedTopics = [
 ];
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 const repoView = await ghJson([
   "repo",
@@ -84,8 +85,8 @@ assertEqual(repoApi.has_projects, false, "GitHub API projects must stay disabled
 assertEqual(repoApi.has_wiki, false, "GitHub API wiki must stay disabled");
 assertEqual(repoApi.license?.spdx_id, "Apache-2.0", "GitHub API license SPDX id must be Apache-2.0");
 
-if (!Array.isArray(releases) || releases.length !== 0) {
-  failures.push("GitHub releases must remain empty until release execution");
+if (!Array.isArray(releases) || !releases.some((release) => release.tagName === expectedReleaseTag)) {
+  failures.push(`GitHub releases must include ${expectedReleaseTag}`);
 }
 
 const [runInfo] = latestRun;
@@ -119,10 +120,10 @@ printRows([
   ["Issues", "enabled"],
   ["Projects", "disabled"],
   ["Wiki", "disabled"],
-  ["GitHub releases", "none"],
+  ["GitHub release", expectedReleaseTag],
   ["Latest Package Checks", `${runInfo.conclusion} ${runInfo.url}`],
   ["Version", packageJson.version],
-  ["npm publishing", "blocked"],
+  ["npm publishing", "published"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
@@ -131,7 +132,8 @@ console.log("");
 console.log("ok live github public surface ready");
 console.log("ok live github metadata matches docs");
 console.log("ok live package checks green");
-console.log("blocked github release not approved");
+console.log("ok github release published v0.1.0");
+console.log("blocked hosted runtime not approved");
 
 function ghJson(args) {
   return run("gh", args).then((stdout) => JSON.parse(stdout));

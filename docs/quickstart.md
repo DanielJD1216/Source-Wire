@@ -4,7 +4,7 @@ Source-Wire is a public contract package skeleton for agent-first memory systems
 
 This quickstart verifies the package locally with synthetic fixtures.
 
-It does not run a backend, sync sources, connect to MCP, call a database, create memories, or publish npm.
+It does not run a backend, sync sources, connect to MCP, call a database, create memories, or publish a new package version.
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ It does not run a backend, sync sources, connect to MCP, call a database, create
 
 Node.js 22 matches GitHub Actions Package Checks.
 
-The package is not published to npm yet, so use the local repository checkout.
+The package is published to npm as `@source-wire/contracts@0.1.0`. Use the local repository checkout for development and full verification.
 
 ## Install
 
@@ -234,17 +234,16 @@ Source-Wire does not currently include:
 - memory-engine integration,
 - live connectors,
 - Mission Control UI,
-- npm publishing,
 - real user data,
 - trusted Memory Record promotion.
 
 Current release posture:
 
 - package license is `Apache-2.0`,
-- package version is `0.0.0`,
+- package version is `0.1.0`,
 - `LICENSE` file exists,
-- npm publishing is blocked,
-- GitHub release publishing is blocked,
+- npm package `@source-wire/contracts@0.1.0` is published,
+- GitHub release `v0.1.0` is published,
 - runtime backend work is blocked.
 
 ## Safety Rule

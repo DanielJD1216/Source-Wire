@@ -8,9 +8,9 @@ Source-Wire is Apache-2.0 licensed as a source package.
 
 It is still:
 
-- version `0.0.0`,
-- unpublished to npm,
-- unreleased on GitHub,
+- version `0.1.0`,
+- published to npm as `@source-wire/contracts@0.1.0`,
+- released on GitHub as `v0.1.0`,
 - undeployed,
 - not a hosted runtime,
 - not accepting code contributions.
@@ -22,7 +22,7 @@ The actual GitHub repository About panel should use source-package wording.
 Intended description:
 
 ```text
-Apache-2.0 agent-memory contract skeleton. Unpublished, unreleased, not hosted.
+Apache-2.0 agent-memory contracts. npm v0.1.0, GitHub release v0.1.0, not hosted.
 ```
 
 Intended homepage URL:
@@ -31,7 +31,7 @@ Intended homepage URL:
 https://github.com/DanielJD1216/Source-Wire/blob/main/docs/share-for-review.md
 ```
 
-The description must stay short enough for the GitHub About panel but explicit enough that visitors do not confuse Apache-2.0 source reuse with npm publishing, GitHub releases, deployment, hosted runtime behavior, or code contribution acceptance.
+The description must stay short enough for the GitHub About panel but explicit enough that visitors do not confuse Apache-2.0 source reuse, npm publication, or GitHub release publication with deployment, hosted runtime behavior, or code contribution acceptance.
 
 ## Live GitHub Settings
 
@@ -74,7 +74,7 @@ Owner-side live check:
 npm run repository:live-github
 ```
 
-This command uses `gh` and the configured GitHub account to verify the live public repository surface, latest Package Checks run, and empty GitHub release list. It is intentionally not part of `publish:readiness` because public reviewers and forks should not need owner GitHub authentication.
+This command uses `gh` and the configured GitHub account to verify the live public repository surface, latest Package Checks run, and published GitHub release. It is intentionally not part of `publish:readiness` because public reviewers and forks should not need owner GitHub authentication.
 
 Owner-side live security check:
 
@@ -122,15 +122,15 @@ npm ci
 npm run publish:readiness
 ```
 
-Despite the command name, this does not publish npm.
+Despite the command name, this does not publish a new package version.
 
 The release gate must still print:
 
 ```text
 ok license Apache-2.0
 ok package lock Apache-2.0
-ok version 0.0.0
-ok publishing blocked
+ok version 0.1.0
+ok npm public access ready
 ```
 
 ## What Metadata Does Not Approve
@@ -138,8 +138,6 @@ ok publishing blocked
 Repository metadata does not approve:
 
 - code contribution acceptance,
-- npm publishing,
-- GitHub release publishing,
 - hosted runtime backend,
 - production runtime use,
 - real MCP server runtime,

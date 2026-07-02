@@ -5,11 +5,13 @@ const repo = "DanielJD1216/Source-Wire";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const packageLock = JSON.parse(await readFile("package-lock.json", "utf8"));
 const failures = [];
+const expectedTag = "v0.1.0";
+const expectedTarget = "bd240283ec45e5b83ecd0e1c1cc9650097fd6509";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 assertEqual(packageLock.packages?.[""]?.name, packageJson.name, "package-lock root name must match package.json");
 assertEqual(packageLock.packages?.[""]?.version, packageJson.version, "package-lock root version must match package.json");
 assertEqual(packageLock.packages?.[""]?.license, packageJson.license, "package-lock root license must match package.json");
@@ -30,7 +32,7 @@ const remoteTags = parseRemoteTags((await run("git", ["ls-remote", "--tags", "or
 const npmView = await run("npm", ["view", packageJson.name, "name", "version", "dist-tags", "--json"], { allowFailure: true });
 const npmRegistryState = getNpmRegistryState(npmView);
 
-const expectedDescription = "Apache-2.0 agent-memory contract skeleton. Unpublished, unreleased, not hosted.";
+const expectedDescription = "Apache-2.0 agent-memory contracts. npm v0.1.0, GitHub release v0.1.0, not hosted.";
 const expectedHomepage = "https://github.com/DanielJD1216/Source-Wire/blob/main/docs/share-for-review.md";
 const expectedTopics = [
   "agent-memory",
@@ -75,21 +77,32 @@ assertEqual(mainBranch.commit?.sha, remoteHead, "live GitHub main branch must ma
 if (!Array.isArray(rulesets)) {
   failures.push("GitHub rulesets response must be an array");
 }
-if (!Array.isArray(releases) || releases.length !== 0) {
-  failures.push("GitHub releases must remain empty until release execution");
+if (!Array.isArray(releases)) {
+  failures.push("GitHub releases response must be an array");
+} else {
+  const release = releases.find((item) => item.tag_name === expectedTag);
+  if (!release) {
+    failures.push(`GitHub releases must include ${expectedTag}`);
+  } else {
+    assertEqual(release.draft, false, "GitHub release must not be draft");
+    assertEqual(release.prerelease, false, "GitHub release must not be prerelease");
+    assertEqual(release.target_commitish, expectedTarget, "GitHub release target commit must match release commit");
+  }
 }
 if (!Array.isArray(advisories) || advisories.length !== 0) {
   failures.push("GitHub security advisories must remain empty until an owner-managed advisory is needed");
 }
-if (localTags.length > 0) {
-  failures.push(`local git tags must remain empty until release execution: ${localTags.join(", ")}`);
+if (!localTags.includes(expectedTag)) {
+  failures.push(`local git tags must include ${expectedTag}`);
 }
-if (remoteTags.length > 0) {
-  failures.push(`remote git tags must remain empty until release execution: ${remoteTags.join(", ")}`);
+if (!remoteTags.includes(expectedTag)) {
+  failures.push(`remote git tags must include ${expectedTag}`);
 }
-if (npmRegistryState.state !== "unpublished") {
-  failures.push(`npm registry state must remain unpublished: ${npmRegistryState.summary || "unknown npm state"}`);
+if (npmRegistryState.state !== "published") {
+  failures.push(`npm registry state must be published: ${npmRegistryState.summary || "unknown npm state"}`);
 }
+assertEqual(npmRegistryState.version, packageJson.version, "npm registry version must match package.json");
+assertEqual(npmRegistryState.latest, packageJson.version, "npm latest dist-tag must match package.json version");
 
 const [runInfo] = latestRun.workflow_runs ?? [];
 if (!runInfo) {
@@ -127,9 +140,10 @@ printRows([
   ["origin/main SHA", remoteHead],
   ["Latest Package Checks", `${runInfo.conclusion} ${runInfo.html_url}`],
   ["npm registry", npmRegistryState.state],
-  ["GitHub releases", "none"],
-  ["Local git tags", "none"],
-  ["Remote git tags", "none"],
+  ["npm latest", npmRegistryState.latest],
+  ["GitHub release", expectedTag],
+  ["Local git tags", expectedTag],
+  ["Remote git tags", expectedTag],
   ["Secret scanning", repoApi.security_and_analysis.secret_scanning.status],
   ["Push protection", repoApi.security_and_analysis.secret_scanning_push_protection.status],
   ["Branch protection", branchProtectionState],
@@ -144,14 +158,21 @@ console.log("ok live world share status ready");
 console.log("ok source repo sharing ready");
 console.log("ok live public surface green");
 console.log("ok live package lock Apache-2.0");
-console.log("ok npm package unpublished");
-console.log("ok release channels empty");
+console.log("ok npm package published @source-wire/contracts@0.1.0");
+console.log("ok release channels published v0.1.0");
 console.log("blocked production launch channels");
 console.log("blocked branch governance enforcement not approved");
 
 function getNpmRegistryState(result) {
   if (result.exitCode === 0) {
-    return { state: "published", code: "", summary: "npm view succeeded" };
+    const data = JSON.parse(result.stdout);
+    return {
+      state: "published",
+      code: "",
+      summary: "npm view succeeded",
+      version: data.version ?? "",
+      latest: data["dist-tags"]?.latest ?? ""
+    };
   }
 
   const parsed = parseNpmError(result.stdout);
@@ -159,10 +180,10 @@ function getNpmRegistryState(result) {
   const summary = parsed?.error?.summary ?? result.stderr.trim();
 
   if (code === "E404" || /Not Found/i.test(summary)) {
-    return { state: "unpublished", code, summary };
+    return { state: "unpublished", code, summary, version: "", latest: "" };
   }
 
-  return { state: "unknown", code, summary };
+  return { state: "unknown", code, summary, version: "", latest: "" };
 }
 
 function parseNpmError(stdout) {

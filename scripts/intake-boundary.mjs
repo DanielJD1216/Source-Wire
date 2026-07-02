@@ -4,8 +4,8 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public");
 
 const intakeFiles = [
   "CONTRIBUTING.md",
@@ -64,9 +64,7 @@ const claimLines = [...scannedTexts.values()]
 for (const unsafePattern of [
   /\bcode\s+contributions\s+are\s+accepted\b/i,
   /\bopen\s+for\s+contributions\b/i,
-  /\bcontributions\s+are\s+open\b/i,
-  /\bpublished\s+to\s+npm\b/i,
-  /\breleased\s+on\s+GitHub\b/i
+  /\bcontributions\s+are\s+open\b/i
 ]) {
   if (unsafePattern.test(claimLines)) {
     failures.push(`public intake surfaces contain unsafe claim matching ${unsafePattern}`);
@@ -88,8 +86,8 @@ printRows([
   ["Source reuse", "allowed under Apache-2.0"],
   ["Feedback issues", "structured and allowed"],
   ["Code contributions", "blocked"],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["npm publishing", "published"],
+  ["GitHub release", "published"],
   ["Hosted runtime", "blocked"]
 ]);
 

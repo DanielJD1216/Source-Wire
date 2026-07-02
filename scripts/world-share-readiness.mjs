@@ -4,9 +4,9 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until release execution");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner license approval");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 await assertPathExists("LICENSE");
 
@@ -37,8 +37,8 @@ printRows([
   ["Technical review", "ready"],
   ["Source package reuse", "ready under Apache-2.0"],
   ["Open-source license", "implemented"],
-  ["npm publishing", "blocked until npm auth and approved release execution"],
-  ["GitHub release", "blocked until approved release execution"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked until runtime PRD approval"],
   ["Code contributions", "blocked until contribution terms approval"]
 ]);
@@ -49,13 +49,14 @@ printRows([
   ["Version", packageJson.version],
   ["License", packageJson.license],
   ["LICENSE file", "present"],
-  ["Publish boundary", "npm publishing blocked, publishConfig.access restricted"]
+  ["Publish boundary", "npm package public, hosted runtime blocked"]
 ]);
 
 printSection("Next Approval Needed");
 printList([
   "To share the source repo publicly, point people to README.md and LICENSE.",
-  "To publish npm or create the matching GitHub release, run the release auth handoff, authenticate npm, then run release auth and execution preflights.",
+  "To install the public package, use npm install @source-wire/contracts.",
+  "To review the first release snapshot, use the v0.1.0 GitHub release.",
   "To add hosted runtime behavior, open a separate runtime PRD after the runtime gate is approved."
 ]);
 

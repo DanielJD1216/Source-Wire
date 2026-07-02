@@ -3,7 +3,7 @@ import { readFile, stat } from "node:fs/promises";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
-const expectedDescription = "Apache-2.0 agent-memory contract skeleton. Unpublished, unreleased, not hosted.";
+const expectedDescription = "Apache-2.0 agent-memory contracts. npm v0.1.0, GitHub release v0.1.0, not hosted.";
 const expectedHomepage = "https://github.com/DanielJD1216/Source-Wire/blob/main/docs/share-for-review.md";
 const expectedTopics = [
   "agent-memory",
@@ -16,8 +16,8 @@ const expectedTopics = [
 ];
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public");
 
 for (const requiredPath of [
   "README.md",
@@ -42,8 +42,8 @@ for (const [label, text, requiredText] of [
   ["repository metadata", repositoryMetadata, "License: Apache-2.0"],
   ["repository metadata", repositoryMetadata, "Visibility: public"],
   ["repository metadata", repositoryMetadata, "code contribution acceptance"],
-  ["repository metadata", repositoryMetadata, "npm publishing"],
-  ["repository metadata", repositoryMetadata, "GitHub release publishing"],
+  ["repository metadata", repositoryMetadata, "published to npm as `@source-wire/contracts@0.1.0`"],
+  ["repository metadata", repositoryMetadata, "released on GitHub as `v0.1.0`"],
   ["repository metadata", repositoryMetadata, "hosted runtime backend"],
   ["README", readme, "[Repository Metadata](docs/repository-metadata.md)"]
 ]) {
@@ -65,8 +65,6 @@ const unsafeLines = repositoryMetadata
 
 for (const unsafePattern of [
   /\bUNLICENSED\b/,
-  /\bpublished\s+to\s+npm\b/i,
-  /\breleased\s+on\s+GitHub\b/i,
   /\bhosted\s+runtime\s+is\s+available\b/i,
   /\bproduction\s+ready\b/i,
   /\bcode\s+contributions\s+are\s+accepted\b/i
@@ -94,8 +92,8 @@ printRows([
   ["Wiki", "disabled"],
   ["License", packageJson.license],
   ["Version", packageJson.version],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["npm publishing", "published"],
+  ["GitHub release", "published"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
@@ -103,7 +101,7 @@ printRows([
 console.log("");
 console.log("ok repository metadata boundary ready");
 console.log("ok github about wording current");
-console.log("blocked metadata launch approval");
+console.log("blocked hosted runtime not approved");
 
 async function assertPathExists(path) {
   try {
@@ -132,5 +130,5 @@ function printRows(rows) {
 }
 
 function isExplicitBoundaryLine(line) {
-  return /\b(?:not|no|blocked|do not|does not|without|unsafe|avoid|must not|cannot|currently|until|before|disabled|unpublished|unreleased|undeployed)\b/i.test(line);
+  return /\b(?:not|no|blocked|do not|does not|without|unsafe|avoid|must not|cannot|currently|until|before|disabled|unpublished|unreleased|undeployed|published|released)\b/i.test(line);
 }

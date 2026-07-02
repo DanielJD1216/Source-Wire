@@ -1,19 +1,19 @@
 # Source-Wire World Share Kit
 
-Status: public source-package share kit only.
+Status: public source-package and package-release share kit only.
 
-This kit does not approve npm publishing, GitHub release publishing, release tags, deployment, hosted runtime behavior, production runtime use, code contribution acceptance, or real data examples.
+This kit does not approve deployment, hosted runtime behavior, production runtime use, code contribution acceptance, or real data examples.
 
 ## Purpose
 
 Use this page when sharing Source-Wire in public channels such as YouTube, Substack, X, LinkedIn, Discord, or a direct technical-review message.
 
-The goal is simple: invite useful review without making people think Source-Wire is already an npm package, GitHub release, hosted service, production backend, or contribution-accepting project.
+The goal is simple: invite useful review without making people think Source-Wire is already a hosted service, production backend, or contribution-accepting project.
 
 ## One-Line Copy
 
 ```text
-Source-Wire is an Apache-2.0 source package skeleton for agent-first memory systems, ready for technical review and source reuse, but not npm-published, GitHub-released, hosted, production-ready, or open for code contributions yet.
+Source-Wire is an Apache-2.0 package of agent-first memory contracts and examples, published as @source-wire/contracts@0.1.0, with hosted runtime and production-use claims still blocked.
 ```
 
 ## Short Social Copy
@@ -21,11 +21,13 @@ Source-Wire is an Apache-2.0 source package skeleton for agent-first memory syst
 ```text
 I opened Source-Wire for technical review.
 
-It is an Apache-2.0 source package skeleton for agent-first memory systems: contracts, schemas, fixtures, examples, and readiness gates.
+It is an Apache-2.0 package for agent-first memory systems: contracts, schemas, fixtures, examples, and readiness gates.
 
-Important boundary: it is version 0.0.0, unpublished to npm, unreleased on GitHub, undeployed, and not a hosted runtime.
+Important boundary: it is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime.
 
 Repo: https://github.com/DanielJD1216/Source-Wire
+npm: https://www.npmjs.com/package/@source-wire/contracts
+Release: https://github.com/DanielJD1216/Source-Wire/releases/tag/v0.1.0
 Start here: docs/public-status.md
 ```
 
@@ -38,7 +40,7 @@ Source-Wire is an Apache-2.0 source package skeleton for agent-first memory syst
 
 Repo: https://github.com/DanielJD1216/Source-Wire
 
-Please do not assume npm install from the registry, GitHub release availability, hosted memory behavior, production runtime readiness, or code contribution acceptance yet.
+Please do not assume hosted memory behavior, production runtime readiness, or code contribution acceptance yet.
 
 Best first pass:
 1. Read docs/public-status.md.
@@ -124,8 +126,8 @@ It is safe to say:
 - Source-Wire can be reused as a source package under Apache-2.0.
 - Source-Wire has contracts, schemas, synthetic fixtures, examples, validation CLI, package dry-run checks, installed package smokes, and readiness gates.
 - Source-Wire has a minimal synthetic in-memory runtime-boundary proof.
-- Source-Wire is not an npm-published package yet.
-- Source-Wire is not a GitHub release yet.
+- Source-Wire is published to npm as `@source-wire/contracts@0.1.0`.
+- Source-Wire has a GitHub release at `v0.1.0`.
 - Source-Wire is not a hosted runtime.
 - Source-Wire is not production-ready.
 - Source-Wire is not accepting code contributions yet.

@@ -6,7 +6,7 @@ Source-Wire is Apache-2.0 licensed.
 
 Source-Wire is public so reviewers and adopters can inspect and reuse the source package boundary: contracts, schemas, fixtures, examples, and readiness gates.
 
-Its release metadata is applied for `0.1.0`, but it is not published to npm yet, not released on GitHub yet, not deployed, and not a hosted runtime.
+It is published as `@source-wire/contracts@0.1.0` and released on GitHub as `v0.1.0`, but it is not deployed and not a hosted runtime.
 
 For public-channel copy such as YouTube, Substack, X, LinkedIn, Discord, or direct review messages, read [World Share Kit](world-share-kit.md).
 
@@ -19,7 +19,7 @@ I am looking for technical review on Source-Wire, an agent-first memory contract
 
 Repo: https://github.com/DanielJD1216/Source-Wire
 
-Important boundary: Source-Wire is Apache-2.0 licensed as a source package. It is version 0.1.0 with release metadata applied, not published to npm yet, unreleased on GitHub, undeployed, and not a hosted runtime. Please do not assume npm install from the registry, production readiness, hosted memory behavior, or code contribution acceptance yet.
+Important boundary: Source-Wire is Apache-2.0 licensed as a source package. It is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime. Please do not assume production readiness, hosted memory behavior, or code contribution acceptance yet.
 
 Best first pass:
 1. Read docs/public-status.md.
@@ -38,7 +38,7 @@ Useful feedback: contract clarity, schema consistency, fixture realism, package 
 ## Short Safe Version
 
 ```text
-Source-Wire is Apache-2.0 licensed as a source package. Its `0.1.0` release metadata is applied, but npm publish and GitHub release creation are not performed yet. Please review the contracts, schemas, fixtures, docs, and readiness gates without assuming production readiness or code contribution acceptance.
+Source-Wire is Apache-2.0 licensed as a source package. Its `0.1.0` package and GitHub release are live. Please review the contracts, schemas, fixtures, docs, and readiness gates without assuming production readiness or code contribution acceptance.
 ```
 
 ## Current Owner-Decision Issues
@@ -99,7 +99,7 @@ Expected first-pass markers:
 Package: @source-wire/contracts
 Version: 0.1.0
 License: Apache-2.0
-Publish boundary: approved release metadata applied, npm publish not yet performed
+Publish boundary: npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked
 Runtime boundary: synthetic in-memory boundary only, no backend runtime included
 ok readiness report
 ```
@@ -110,7 +110,7 @@ For the full local verification path:
 npm run publish:readiness
 ```
 
-Despite the command name, this does not publish npm.
+Despite the command name, this does not publish a new package version.
 
 To check the owner launch approval order:
 
@@ -169,7 +169,7 @@ ok owner open issue boundary current
 blocked production launch channels
 ```
 
-This checks public external links, live world-share status, launch decision blockers, owner-decision issue status, and the owner open-issue boundary. It does not publish npm, create a GitHub release, create tags, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
+This checks public external links, live world-share status, launch decision blockers, owner-decision issue status, and the owner open-issue boundary. It does not publish a new package version, create a new GitHub release, create new tags, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.
 
 For one public-safe copy packet:
 
@@ -231,8 +231,6 @@ Use synthetic examples or public repo references only.
 
 Apache-2.0 source package licensing does not approve:
 
-- npm publishing,
-- GitHub release publishing,
 - hosted runtime backend,
 - real MCP server runtime,
 - database setup,

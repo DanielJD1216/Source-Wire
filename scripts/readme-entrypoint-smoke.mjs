@@ -5,13 +5,13 @@ const readme = await readFile("README.md", "utf8");
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public");
 
 for (const requiredText of [
   "Current public status: Source-Wire is Apache-2.0 licensed as a source package.",
-  "It is unreleased, unpublished to npm, undeployed, and not a hosted runtime.",
+  "It is published to npm, released on GitHub, undeployed, and not a hosted runtime.",
   "## First Reviewer Quickstart",
   "Use Node.js 22 with npm.",
   "npm install",
@@ -19,8 +19,6 @@ for (const requiredText of [
   "npm run reviewer:smoke",
   "npm run publish:readiness",
   "## Still Blocked",
-  "npm publishing",
-  "GitHub release publishing",
   "hosted runtime",
   "production runtime use",
   "code contribution acceptance",

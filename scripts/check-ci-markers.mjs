@@ -236,7 +236,7 @@ const markerGroups = [
     markers: [
       "ok repository metadata boundary ready",
       "ok github about wording current",
-      "blocked metadata launch approval"
+      "blocked hosted runtime not approved"
     ]
   },
   {
@@ -269,8 +269,8 @@ const markerGroups = [
       "ok launch decision status ready",
       "ok apache 2 license implemented",
       "ok source repo sharing ready",
-      "blocked npm publishing release execution not performed",
-      "blocked github release execution not performed",
+      "ok npm package published @source-wire/contracts@0.1.0",
+      "ok github release published v0.1.0",
       "blocked hosted runtime not approved",
       "blocked contributions not accepted"
     ]

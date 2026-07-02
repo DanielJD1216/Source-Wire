@@ -2,7 +2,7 @@
 
 Source-Wire is Apache-2.0 licensed.
 
-It is not published to npm, not released on GitHub, not deployed, and not a hosted runtime.
+It is published to npm and released on GitHub, but not deployed and not a hosted runtime.
 
 ## Current State
 
@@ -10,12 +10,12 @@ It is not published to npm, not released on GitHub, not deployed, and not a host
 | --- | --- |
 | Repository visibility | Public source repository |
 | Package name | `@source-wire/contracts` |
-| Package version | `0.0.0` |
+| Package version | `0.1.0` |
 | License | `Apache-2.0` |
 | `LICENSE` file | Present |
 | Source package reuse | Allowed under Apache-2.0 |
-| npm publishing | Blocked |
-| GitHub release | Blocked |
+| npm package | Published as `@source-wire/contracts@0.1.0` |
+| GitHub release | Published as `v0.1.0` |
 | Hosted runtime | Not included |
 | MCP server runtime | Not included |
 | Database or migrations | Not included |
@@ -53,8 +53,6 @@ It currently includes:
 
 Source-Wire is not yet:
 
-- an npm package you can install from the registry,
-- a GitHub release,
 - a hosted memory service,
 - an API server,
 - an MCP server runtime,
@@ -77,6 +75,7 @@ You may:
 - open structured feedback issues using the provided templates.
 
 The Apache-2.0 license does not mean Source-Wire is published, released, deployed, hosted, production-ready, or accepting code contributions.
+The npm package and GitHub release do not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.
 
 ## Main Verification Command
 
@@ -95,8 +94,8 @@ Expected boundary markers include:
 ok release gate
 ok license Apache-2.0
 ok package lock Apache-2.0
-ok version 0.0.0
-ok publishing blocked
+ok version 0.1.0
+ok npm public access ready
 ```
 
 For a full marker map, read [Publish Readiness](publish-readiness.md).
@@ -130,7 +129,7 @@ ok world share open source ready
 blocked production launch channels
 ```
 
-This means Source-Wire can be shared as an Apache-2.0 licensed source package. It still cannot be described as npm-published, GitHub-released, deployed, hosted, production-ready, or open for code contributions.
+This means Source-Wire can be shared as an Apache-2.0 licensed source package. It can now be described as npm-published and GitHub-released, but not deployed, hosted, production-ready, or open for code contributions.
 
 ## How To Give Feedback
 
@@ -154,8 +153,6 @@ Do not include secrets, tokens, private data, local private paths, private scree
 
 Separate owner approvals are still required before any of these happen:
 
-- npm publishing,
-- GitHub release publishing,
 - hosted runtime backend,
 - real MCP server runtime,
 - database setup,
@@ -177,8 +174,8 @@ Read:
 
 ## Bottom Line
 
-Source-Wire is ready for technical review and source package reuse under Apache-2.0.
+Source-Wire is ready for technical review, npm package installation, GitHub release review, and source package reuse under Apache-2.0.
 
-It is not ready for npm publishing, GitHub release publishing, deployment, hosted runtime use, production runtime use, or code contribution acceptance.
+It is not ready for deployment, hosted runtime use, production runtime use, or code contribution acceptance.
 
 For the first-time visitor audit, read [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md).

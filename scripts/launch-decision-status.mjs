@@ -4,9 +4,9 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until release execution");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 await assertPathExists("LICENSE");
 
@@ -45,8 +45,8 @@ printRows([
   ["Owner license approval", "captured"],
   ["License decision record", "implemented"],
   ["License implementation", "complete"],
-  ["npm publishing", "blocked, release execution not performed"],
-  ["GitHub release", "blocked, release execution not performed"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked, not approved"],
   ["Code contributions", "blocked, not accepted"]
 ]);
@@ -54,9 +54,8 @@ printRows([
 printSection("Next Approval");
 printList([
   "Use README.md and LICENSE for public source repo sharing.",
-  "Before any release mutation, run npm run release:auth-handoff.",
-  "Resolve npm authentication before npm publishing or matching GitHub release creation.",
-  "Then run npm run release:auth-preflight and npm run release:execution-preflight.",
+  "Use npm install @source-wire/contracts for the public package.",
+  "Use the GitHub v0.1.0 release for the first public release snapshot.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them.",
   "Open separate PRDs for hosted runtime and contribution acceptance."
 ]);
@@ -73,8 +72,8 @@ console.log("");
 console.log("ok launch decision status ready");
 console.log("ok apache 2 license implemented");
 console.log("ok source repo sharing ready");
-console.log("blocked npm publishing release execution not performed");
-console.log("blocked github release execution not performed");
+console.log("ok npm package published @source-wire/contracts@0.1.0");
+console.log("ok github release published v0.1.0");
 console.log("blocked hosted runtime not approved");
 console.log("blocked contributions not accepted");
 

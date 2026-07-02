@@ -64,6 +64,7 @@ npm run release:approval-status
 | `#255` | First public release path | Record approval before a future release implementation unit. |
 | `#256` | Branch governance path | Record approval before a future branch governance implementation unit. |
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
+| `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Record approval before publishing the six PRD/planning child issues. |
 | `#258` | Contribution terms path | Record approval before a future contribution terms PRD unit. |
 
 ## Exact Approval Texts
@@ -72,11 +73,15 @@ Copy exactly one of these only when the owner is ready to approve that future un
 
 ### Issue #255: First public release path
 
+Target: `release-implementation`
+
 ```text
 Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.
 ```
 
 ### Issue #256: Branch governance path
+
+Target: `branch-governance-implementation`
 
 ```text
 Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
@@ -84,11 +89,23 @@ Approved for a future Source-Wire branch governance implementation unit: enable 
 
 ### Issue #257: Hosted runtime PRD path
 
+Target: `hosted-runtime-prd`
+
 ```text
 Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit.
 ```
 
+### Issue #257: Hosted runtime child issue publication path
+
+Target: `hosted-runtime-child-issue-publication`
+
+```text
+Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.
+```
+
 ### Issue #258: Contribution terms path
+
+Target: `contribution-terms-prd`
 
 ```text
 Approved for a future Source-Wire contribution terms PRD unit: define whether and how Source-Wire can accept public code contributions, including DCO or CLA posture, maintainer review policy, private-data exclusion rules, support expectations, security-report scope, license compatibility, and PR workflow boundaries. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions in this PRD unit.

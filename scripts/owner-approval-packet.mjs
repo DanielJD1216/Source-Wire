@@ -6,24 +6,35 @@ const failures = [];
 
 const approvalTargets = [
   {
+    target: "release-implementation",
     issue: 255,
     label: "First public release path",
     exactText:
       "Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms."
   },
   {
+    target: "branch-governance-implementation",
     issue: 256,
     label: "Branch governance path",
     exactText:
       "Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions."
   },
   {
+    target: "hosted-runtime-prd",
     issue: 257,
     label: "Hosted runtime PRD path",
     exactText:
       "Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit."
   },
   {
+    target: "hosted-runtime-child-issue-publication",
+    issue: 257,
+    label: "Hosted runtime child issue publication path",
+    exactText:
+      "Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked."
+  },
+  {
+    target: "contribution-terms-prd",
     issue: 258,
     label: "Contribution terms path",
     exactText:
@@ -59,6 +70,7 @@ for (const requiredText of [
 
 for (const target of approvalTargets) {
   assertIncludes(approvalPacket, `#${target.issue}`, `owner approval packet references issue ${target.issue}`);
+  assertIncludes(approvalPacket, target.target, `owner approval packet references target ${target.target}`);
   assertIncludes(approvalPacket, target.exactText, `owner approval packet includes exact approval text for issue ${target.issue}`);
 }
 
@@ -86,6 +98,7 @@ printRows([
 printSection("Exact Approval Texts");
 for (const target of approvalTargets) {
   console.log(`#${target.issue} ${target.label}`);
+  console.log(`target: ${target.target}`);
   console.log(target.exactText);
   console.log("");
 }

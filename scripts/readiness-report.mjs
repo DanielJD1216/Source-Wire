@@ -59,6 +59,7 @@ const requiredScripts = [
   "runtime:prd-decision-preflight",
   "runtime:slice-approval-request",
   "runtime:child-issue-publication-packet",
+  "runtime:child-issue-publish",
   "contribution:terms-preparation",
   "contribution:terms-execution-packet",
   "contribution:terms-policy",

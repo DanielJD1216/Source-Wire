@@ -10,6 +10,8 @@ Use this packet after reading the [Hosted Runtime Slice Approval Request](hosted
 
 The packet makes the future GitHub issue payloads explicit so the publication step can stay mechanical after owner approval.
 
+The guarded publisher is documented in [Hosted Runtime Child Issue Publisher](hosted-runtime-child-issue-publisher.md). Its default mode is read-only. Write mode requires the exact approval text, `--write`, and `--confirm-exact`.
+
 ## Command
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
@@ -24,6 +26,7 @@ Then run:
 
 ```bash
 npm run runtime:child-issue-publication-packet
+npm run runtime:child-issue-publish
 ```
 
 Expected markers:
@@ -33,6 +36,8 @@ ok hosted runtime child issue publication packet ready
 ok hosted runtime issue payloads validated
 blocked child issue publication pending owner approval
 blocked hosted runtime implementation
+ok hosted runtime child issue publisher ready
+blocked child issue publication requires --write
 ```
 
 ## Exact Approval Text

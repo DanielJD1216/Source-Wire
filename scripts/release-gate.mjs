@@ -6,9 +6,9 @@ const packageLock = JSON.parse(await readFile("package-lock.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0 after owner license approval");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 until release execution");
+assertEqual(packageJson.version, "0.1.0", "package version must be 0.1.0 for approved first release execution");
 assertEqual(packageJson.private, false, "package private flag should stay false for package-shape checks");
-assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must be public for approved npm release execution");
 assertEqual(packageLock.packages?.[""]?.name, packageJson.name, "package-lock root name must match package.json");
 assertEqual(packageLock.packages?.[""]?.version, packageJson.version, "package-lock root version must match package.json");
 assertEqual(packageLock.packages?.[""]?.license, packageJson.license, "package-lock root license must match package.json");
@@ -26,8 +26,8 @@ if (failures.length > 0) {
 console.log("ok release gate");
 console.log("ok license Apache-2.0");
 console.log("ok package lock Apache-2.0");
-console.log("ok version 0.0.0");
-console.log("ok publishing blocked");
+console.log("ok version 0.1.0");
+console.log("ok npm public access ready");
 
 function assertEqual(actual, expected, reason) {
   if (actual !== expected) {

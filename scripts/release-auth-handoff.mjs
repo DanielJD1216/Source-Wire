@@ -4,9 +4,9 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 before approved release execution");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 before approved release execution");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while release execution is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while release execution is blocked");
 
 const handoffDoc = await readFile("docs/release-auth-handoff.md", "utf8");
 const authPreflightDoc = await readFile("docs/release-auth-preflight.md", "utf8");

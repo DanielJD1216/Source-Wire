@@ -1,6 +1,6 @@
 {
   "name": "@source-wire/contracts",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "Public Source-Wire contract package skeleton for agent-first memory systems.",
   "keywords": [
@@ -24,7 +24,7 @@
   "type": "module",
   "license": "Apache-2.0",
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "bin": {
     "source-wire": "./dist/cli.js"

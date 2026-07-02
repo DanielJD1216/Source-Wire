@@ -1,14 +1,14 @@
 # Source-Wire Release Implementation Rehearsal
 
-Status: non-mutating release rehearsal only.
+Status: approved release metadata check.
 
-This rehearsal does not publish npm, create a GitHub release, create a tag, change package version, change package-lock metadata, deploy services, start hosted runtime behavior, approve production runtime use, or accept code contributions.
+This check does not publish npm, create a GitHub release, create a tag, deploy services, start hosted runtime behavior, approve production runtime use, or accept code contributions.
 
 ## Purpose
 
-Use this check before approved release execution.
+Use this check after approved release metadata is applied and before npm publish plus GitHub release creation.
 
-It proves the planned first release path is internally consistent while the real package remains blocked at version `0.0.0`.
+It proves the first release metadata is internally consistent at version `0.1.0` with public npm package access while release channels are still waiting for final verification.
 
 ## Command
 
@@ -32,17 +32,17 @@ Expected markers:
 ok release implementation rehearsal ready
 ok future version rehearsal 0.1.0
 ok future npm public access rehearsal
-blocked release mutation not performed
+ok release metadata applied
 ```
 
 ## What It Checks
 
 The command verifies:
 
-- real `package.json` version remains `0.0.0`,
-- real `package-lock.json` root version remains `0.0.0`,
+- real `package.json` version is `0.1.0`,
+- real `package-lock.json` root version is `0.1.0`,
 - license remains `Apache-2.0`,
-- `publishConfig.access` remains `restricted`,
+- real `publishConfig.access` is `public`,
 - the simulated future manifest uses `0.1.0`,
 - simulated future `publishConfig.access` is `public`,
 - release runbook, version recommendation, release candidate, approval request, and release notes docs exist,
@@ -53,9 +53,6 @@ The command verifies:
 
 The command does not:
 
-- edit `package.json`,
-- edit `package-lock.json`,
-- run `npm version`,
 - run `npm publish`,
 - create a GitHub release,
 - create a git tag,
@@ -65,9 +62,9 @@ The command does not:
 
 ## Current Meaning
 
-If this check passes, Source-Wire has a rehearsed future release path for `0.1.0` with public npm package access, but release execution is still unperformed.
+If this check passes, Source-Wire has approved release metadata applied for `0.1.0` with public npm package access, but npm publishing and GitHub release creation are still unperformed.
 
-The real package must stay at `0.0.0` until approved release execution opens the release channel.
+The next gate is final local readiness, exact-commit CI, then npm publish and matching GitHub release creation.
 
 ## Related Docs
 

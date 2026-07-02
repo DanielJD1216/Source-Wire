@@ -8,13 +8,13 @@ const failures = [];
 
 const futureVersion = "0.1.0";
 const futurePublishAccess = "public";
-const currentVersion = "0.0.0";
+const currentVersion = "0.1.0";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, currentVersion, "real package version must remain 0.0.0 until approved release execution");
+assertEqual(packageJson.version, currentVersion, "real package version must match approved release version");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while release execution is blocked");
-assertEqual(packageLock.packages?.[""]?.version, currentVersion, "real package-lock root version must remain 0.0.0 until approved release execution");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must match approved release access");
+assertEqual(packageLock.packages?.[""]?.version, currentVersion, "real package-lock root version must match approved release version");
 assertEqual(packageLock.packages?.[""]?.license, packageJson.license, "package-lock root license must match package.json");
 
 for (const requiredPath of [
@@ -41,9 +41,9 @@ for (const [label, text, requiredText] of [
   ["release implementation runbook", runbook, "change `publishConfig.access` from `restricted` to `public`"],
   ["version recommendation", recommendation, "Recommended first public release path:"],
   ["version recommendation", recommendation, futureVersion],
-  ["release implementation rehearsal", rehearsalDoc, "Status: non-mutating release rehearsal only."],
-  ["release implementation rehearsal", rehearsalDoc, "simulated future `publishConfig.access` is `public`"],
-  ["release implementation rehearsal", rehearsalDoc, "blocked release mutation not performed"],
+  ["release implementation rehearsal", rehearsalDoc, "Status: approved release metadata check."],
+  ["release implementation rehearsal", rehearsalDoc, "real `publishConfig.access` is `public`"],
+  ["release implementation rehearsal", rehearsalDoc, "ok release metadata applied"],
   ["release notes draft", releaseNotesDraft, "Source-Wire 0.1.0: Agent-first memory contract package"]
 ]) {
   if (!text.includes(requiredText)) {
@@ -99,27 +99,27 @@ printRows([
   ["Real package version", packageJson.version],
   ["Real package-lock version", packageLock.packages[""].version],
   ["Real publishConfig.access", packageJson.publishConfig.access],
-  ["Simulated future version", simulatedManifest.version],
-  ["Simulated future publishConfig.access", simulatedManifest.publishConfig.access],
+  ["Approved release version", simulatedManifest.version],
+  ["Approved release publishConfig.access", simulatedManifest.publishConfig.access],
   ["License", simulatedManifest.license],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
-  ["Release mutation", "not performed"],
+  ["npm publishing", "not yet performed"],
+  ["GitHub release", "not yet performed"],
+  ["Release metadata", "applied"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
 
 printSection("Next Action");
 printList([
-  "Use this rehearsal before approved release execution.",
-  "Do not change package.json, package-lock.json, create a tag, publish npm, create a GitHub release, deploy services, or accept code contributions from this check."
+  "Use this check after approved release metadata is applied and before npm publish plus GitHub release creation.",
+  "Do not create a tag, publish npm, create a GitHub release, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");
 console.log("ok release implementation rehearsal ready");
 console.log("ok future version rehearsal 0.1.0");
 console.log("ok future npm public access rehearsal");
-console.log("blocked release mutation not performed");
+console.log("ok release metadata applied");
 
 async function assertPathExists(path) {
   try {

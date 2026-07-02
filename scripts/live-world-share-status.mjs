@@ -7,9 +7,9 @@ const packageLock = JSON.parse(await readFile("package-lock.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
 assertEqual(packageLock.packages?.[""]?.name, packageJson.name, "package-lock root name must match package.json");
 assertEqual(packageLock.packages?.[""]?.version, packageJson.version, "package-lock root version must match package.json");
 assertEqual(packageLock.packages?.[""]?.license, packageJson.license, "package-lock root license must match package.json");

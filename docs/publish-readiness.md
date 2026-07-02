@@ -95,7 +95,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 
 | Area | Markers to look for |
 | --- | --- |
-| Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` |
+| Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.1.0`, `ok npm public access ready` |
 | Release command guard smoke | `ok blocked release commands smoke` |
 | Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release execution not performed` |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution not performed` |

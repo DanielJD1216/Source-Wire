@@ -13,9 +13,9 @@ Source-Wire is currently a public contract package skeleton.
 Current state:
 
 - package license is `Apache-2.0`,
-- package version is `0.0.0`,
+- package version is `0.1.0`,
 - `LICENSE` file exists,
-- npm publishing is blocked,
+- npm release metadata is applied and npm publish is not yet performed,
 - GitHub release publishing is blocked,
 - hosted runtime backend work is blocked.
 
@@ -61,9 +61,9 @@ Expected high-signal markers:
 
 ```text
 Package: @source-wire/contracts
-Version: 0.0.0
+Version: 0.1.0
 License: Apache-2.0
-Publish boundary: npm publishing blocked, publishConfig.access restricted
+Publish boundary: approved release metadata applied, npm publish not yet performed
 Runtime boundary: synthetic in-memory boundary only, no backend runtime included
 ok readiness report
 ```
@@ -93,9 +93,9 @@ npm run package:dry-run
 Expected markers:
 
 ```text
-ok package dry-run @source-wire/contracts@0.0.0
+ok package dry-run @source-wire/contracts@0.1.0
 ok package file count
-ok package filename source-wire-contracts-0.0.0.tgz
+ok package filename source-wire-contracts-0.1.0.tgz
 ```
 
 This builds and checks the package contents. It does not publish.

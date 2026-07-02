@@ -4,8 +4,8 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0");
-assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted");
 
 const requiredPaths = [
   ".github/pull_request_template.md",

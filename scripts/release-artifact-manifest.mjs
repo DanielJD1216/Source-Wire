@@ -29,9 +29,9 @@ const files = pack.files.map((entry) => entry.path).sort();
 const failures = [];
 
 assertEqual(pack.name, "@source-wire/contracts", "package name");
-assertEqual(pack.version, "0.0.0", "package version");
+assertEqual(pack.version, "0.1.0", "package version");
 assertEqual(packageJson.license, "Apache-2.0", "package license");
-assertEqual(packageJson.publishConfig?.access, "restricted", "publish access");
+assertEqual(packageJson.publishConfig?.access, "public", "publish access");
 
 for (const requiredPath of requiredPackagePaths) {
   if (!files.includes(requiredPath)) {

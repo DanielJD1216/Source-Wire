@@ -9,9 +9,9 @@ const checkoutRoot = join(tempRoot, "Source-Wire");
 
 const requiredMarkers = [
   "Package: @source-wire/contracts",
-  "Version: 0.0.0",
+  "Version: 0.1.0",
   "License: Apache-2.0",
-  "Publish boundary: npm publishing blocked, publishConfig.access restricted",
+  "Publish boundary: approved release metadata applied, npm publish not yet performed",
   "Runtime boundary: synthetic in-memory boundary only, no backend runtime included",
   "ok readiness report"
 ];

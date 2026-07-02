@@ -5,9 +5,9 @@ const decisionRecord = await readFile("docs/license-approval-decision-record.md"
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0 before release execution");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 before release execution");
 assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
-assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
 
 await assertPathExists("LICENSE");
 

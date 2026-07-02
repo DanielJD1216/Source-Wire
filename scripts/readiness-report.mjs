@@ -106,9 +106,9 @@ const blockedScope = [
 ];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.0.0", "package version must remain 0.0.0");
+assertEqual(packageJson.version, "0.1.0", "package version must match approved release version");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "restricted", "publishConfig.access must stay restricted");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must match approved release access");
 assertEqual(packageJson.bin?.["source-wire"], "./dist/cli.js", "source-wire bin must point to ./dist/cli.js");
 
 for (const scriptName of requiredScripts) {
@@ -206,7 +206,7 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Publish boundary", "npm publishing blocked, publishConfig.access restricted"],
+  ["Publish boundary", "approved release metadata applied, npm publish not yet performed"],
   ["Runtime boundary", "synthetic in-memory boundary only, no backend runtime included"]
 ]);
 

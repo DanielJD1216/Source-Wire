@@ -7,8 +7,8 @@ const markerGroups = [
       "ok release gate",
       "ok license Apache-2.0",
       "ok package lock Apache-2.0",
-      "ok version 0.0.0",
-      "ok publishing blocked"
+      "ok version 0.1.0",
+      "ok npm public access ready"
     ]
   },
   {
@@ -62,7 +62,7 @@ const markerGroups = [
       "ok release implementation rehearsal ready",
       "ok future version rehearsal 0.1.0",
       "ok future npm public access rehearsal",
-      "blocked release mutation not performed"
+      "ok release metadata applied"
     ]
   },
   {
@@ -85,7 +85,7 @@ const markerGroups = [
     name: "release artifact manifest",
     markers: [
       "ok release artifact manifest ready",
-      "ok release artifact package identity @source-wire/contracts@0.0.0",
+      "ok release artifact package identity @source-wire/contracts@0.1.0",
       "ok release artifact integrity recorded",
       "blocked release artifact publish not approved"
     ]
@@ -278,14 +278,14 @@ const markerGroups = [
   {
     name: "package dry run",
     markers: [
-      "ok package dry-run @source-wire/contracts@0.0.0",
+      "ok package dry-run @source-wire/contracts@0.1.0",
       "ok package file count"
     ]
   },
   {
     name: "package content smoke",
     markers: [
-      "ok package content smoke @source-wire/contracts@0.0.0",
+      "ok package content smoke @source-wire/contracts@0.1.0",
       "ok installed required paths",
       "ok installed runtime readiness summary",
       "ok installed runtime readiness summary content",
@@ -312,7 +312,7 @@ const markerGroups = [
   {
     name: "installed runtime boundary smoke",
     markers: [
-      "ok runtime boundary installed smoke @source-wire/contracts@0.0.0",
+      "ok runtime boundary installed smoke @source-wire/contracts@0.1.0",
       "ok installed runtime boundary example"
     ]
   },

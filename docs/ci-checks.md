@@ -134,7 +134,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 
 | Marker group | Expected markers | What it proves |
 | --- | --- | --- |
-| Release gate | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.0.0`, `ok publishing blocked` | Apache-2.0 licensing is implemented in package metadata and lockfile metadata while version and publishing boundaries stay blocked. |
+| Release gate | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.1.0`, `ok npm public access ready` | Apache-2.0 licensing, first release package version, public npm access, and package-lock metadata are aligned for approved first release execution. |
 | Release command guard smoke | `ok blocked release commands smoke` | The shared release-command guard catches direct package publish, GitHub release, git tag, package version, and service deployment commands in package scripts. |
 | Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release execution not performed` | The release execution packet, issue `#255` approval evidence, required evidence, and stop conditions are documented while release execution remains unperformed. |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution not performed` | Release execution order, target version, and stop conditions are documented while release execution remains unperformed. |

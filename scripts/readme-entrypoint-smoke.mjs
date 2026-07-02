@@ -24,7 +24,8 @@ for (const requiredText of [
   "code contribution acceptance",
   "[World Share Packet](docs/world-share-packet.md)",
   "[Share For Technical Review](docs/share-for-review.md)",
-  "[Reviewer Feedback Guide](docs/reviewer-feedback-guide.md)"
+  "[Reviewer Feedback Guide](docs/reviewer-feedback-guide.md)",
+  "Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`"
 ]) {
   assertIncludes(readme, requiredText, `README public entrypoint includes ${requiredText}`);
 }

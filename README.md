@@ -22,6 +22,8 @@ Share-readiness audit: Source-Wire is ready for technical review, npm package in
 
 Snapshot boundary: npm `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` may contain post-release documentation and readiness hardening. Read [Release Snapshot Boundary](docs/release-snapshot-boundary.md).
 
+Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though package metadata is `0.1.0`. Latest `main` fixes this source export and adds a consumer-smoke guard. Correcting the registry artifact requires a future owner-approved patch release.
+
 Current owner-decision status:
 
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)

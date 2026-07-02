@@ -55,6 +55,8 @@ console.log("It is an Apache-2.0 package for agent-first memory systems: contrac
 console.log("");
 console.log("Important boundary: it is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime.");
 console.log("");
+console.log("Known package issue: the immutable npm 0.1.0 artifact exports SOURCE_WIRE_PACKAGE_VERSION as 0.0.0; latest main fixes this for a future patch release.");
+console.log("");
 console.log("Repo: https://github.com/DanielJD1216/Source-Wire");
 console.log("npm: https://www.npmjs.com/package/@source-wire/contracts");
 console.log("Release: https://github.com/DanielJD1216/Source-Wire/releases/tag/v0.1.0");

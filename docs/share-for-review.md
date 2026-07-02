@@ -8,6 +8,8 @@ Source-Wire is public so reviewers and adopters can inspect and reuse the source
 
 It is published as `@source-wire/contracts@0.1.0` and released on GitHub as `v0.1.0`, but it is not deployed and not a hosted runtime.
 
+Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though the package metadata is `0.1.0`. Latest `main` fixes this for a future owner-approved patch release.
+
 For public-channel copy such as YouTube, Substack, X, LinkedIn, Discord, or direct review messages, read [World Share Kit](world-share-kit.md).
 
 ## Safe Invite Copy
@@ -19,7 +21,7 @@ I am looking for technical review on Source-Wire, an agent-first memory contract
 
 Repo: https://github.com/DanielJD1216/Source-Wire
 
-Important boundary: Source-Wire is Apache-2.0 licensed as a source package. It is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime. Please do not assume production readiness, hosted memory behavior, or code contribution acceptance yet.
+Important boundary: Source-Wire is Apache-2.0 licensed as a source package. It is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime. Known package issue: the immutable npm 0.1.0 artifact exports SOURCE_WIRE_PACKAGE_VERSION as 0.0.0; latest main fixes this for a future patch release. Please do not assume production readiness, hosted memory behavior, or code contribution acceptance yet.
 
 Reviewer-safe first pass:
 1. Read docs/public-status.md.

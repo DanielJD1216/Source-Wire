@@ -17,6 +17,7 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 | npm package | Published as `@source-wire/contracts@0.1.0` |
 | GitHub release | Published as `v0.1.0` |
 | Snapshot boundary | npm `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` may contain post-release documentation and readiness hardening. |
+| Known `v0.1.0` artifact issue | The immutable npm `0.1.0` package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`. Latest `main` fixes this for a future owner-approved patch release. |
 | Hosted runtime | Not included |
 | MCP server runtime | Not included |
 | Database or migrations | Not included |
@@ -83,6 +84,8 @@ The npm package and GitHub release do not mean Source-Wire is deployed, hosted, 
 Use [Release Snapshot Boundary](release-snapshot-boundary.md) to distinguish the immutable npm package, the immutable `v0.1.0` release snapshot, and latest `main`.
 
 Latest `main` may move ahead with public docs, issue gates, and readiness checks. That does not mutate the already-published npm package or the already-published `v0.1.0` release snapshot.
+
+Known `v0.1.0` artifact issue: the published npm package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though the package metadata is `0.1.0`. Latest `main` corrects the source export and adds a consumer-smoke guard. The npm artifact remains immutable, so correcting the public registry artifact requires a future owner-approved patch release.
 
 Until a future owner-approved release implementation unit exists, publishing a new package version, creating a new release, creating a new tag, deploying services, starting hosted runtime behavior, and accepting code contributions remain blocked.
 

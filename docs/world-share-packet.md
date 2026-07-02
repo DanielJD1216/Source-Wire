@@ -37,6 +37,8 @@ It is an Apache-2.0 package for agent-first memory systems: contracts, schemas, 
 
 Important boundary: it is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime.
 
+Known package issue: the immutable npm 0.1.0 artifact exports SOURCE_WIRE_PACKAGE_VERSION as 0.0.0; latest main fixes this for a future patch release.
+
 Repo: https://github.com/DanielJD1216/Source-Wire
 npm: https://www.npmjs.com/package/@source-wire/contracts
 Release: https://github.com/DanielJD1216/Source-Wire/releases/tag/v0.1.0

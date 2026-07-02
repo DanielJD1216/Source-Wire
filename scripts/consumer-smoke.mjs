@@ -108,6 +108,9 @@ console.log(JSON.stringify({
   if (parsedRuntime.ok !== true || parsedRuntime.packageKind !== "contract_skeleton") {
     throw new Error(`unexpected consumer runtime result: ${runtimeResult.stdout}`);
   }
+  if (parsedRuntime.version !== pack.version) {
+    throw new Error(`package root version export ${parsedRuntime.version} does not match package version ${pack.version}`);
+  }
 
   const installedCliPath = join(
     consumerRoot,

@@ -61,6 +61,7 @@ const requiredScripts = [
   "runtime:child-issue-publication-packet",
   "runtime:child-issue-approval-status",
   "runtime:child-issue-publish",
+  "runtime:child-issue-publish:smoke",
   "contribution:terms-preparation",
   "contribution:terms-execution-packet",
   "contribution:terms-policy",
@@ -251,6 +252,7 @@ printList([
   "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install",
   "runtime-boundary:diagnostics-smoke validates the synthetic smoke diagnostic failure format",
   "reviewer:intake-smoke validates structured reviewer issue templates, private-data warnings, and blocked code-contribution intake",
+  "runtime:child-issue-publish:smoke validates the hosted-runtime child issue publisher dry run and missing-approval write guard without GitHub mutations",
   "world:post-share-monitor:smoke validates post-share issue and pull request classification rules without live GitHub issues",
   "reviewer:labels validates live GitHub reviewer labels used by the issue templates"
 ]);

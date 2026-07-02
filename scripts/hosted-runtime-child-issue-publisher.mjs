@@ -5,6 +5,7 @@ const repo = "DanielJD1216/Source-Wire";
 const parentIssueNumber = 257;
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const args = parseArgs(process.argv.slice(2));
+const fixtureState = buildFixtureState(args.fixture);
 const failures = [];
 const createdIssues = [];
 
@@ -161,8 +162,11 @@ if (failures.length > 0) {
 
 printSection("Source-Wire Hosted Runtime Child Issue Publisher");
 console.log("Default mode is read-only.");
-console.log("Write mode requires --write and the exact --confirm-exact approval text.");
+console.log("Write mode requires --write, the exact --confirm-exact approval text, and recorded approval on parent issue #257.");
 console.log("It does not implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, create tags, accept code contributions, add real user data, or approve production runtime use.");
+if (fixtureState) {
+  console.log(`Fixture mode: ${args.fixture}. No GitHub API calls are made for approval status.`);
+}
 printRows([
   ["Repository", repo],
   ["Package", packageJson.name],
@@ -305,6 +309,10 @@ function ghJson(ghArgs) {
 }
 
 async function getChildIssuePublicationApprovalStatus() {
+  if (fixtureState) {
+    return fixtureState.approvalStatus;
+  }
+
   const issue = await ghJson([
     "issue",
     "view",
@@ -327,6 +335,25 @@ function hasApprovalRecordSection(body, exactApprovalTextToFind) {
   const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
   const section = body.match(sectionPattern)?.[0] ?? "";
   return section.includes(exactApprovalTextToFind);
+}
+
+function buildFixtureState(fixture) {
+  if (!fixture) return null;
+
+  if (fixture !== "approval-missing") {
+    throw new Error(`unknown fixture: ${fixture}`);
+  }
+
+  return {
+    approvalStatus: {
+      issue: {
+        number: parentIssueNumber,
+        title: "Owner decision: open hosted runtime PRD path",
+        url: "https://example.invalid/source-wire/issues/257"
+      },
+      recorded: false
+    }
+  };
 }
 
 function execGh(ghArgs) {
@@ -365,7 +392,8 @@ function assertIncludes(text, requiredText, reason) {
 function parseArgs(rawArgs) {
   const parsed = {
     write: false,
-    confirmExact: ""
+    confirmExact: "",
+    fixture: null
   };
 
   for (let index = 0; index < rawArgs.length; index += 1) {
@@ -374,6 +402,9 @@ function parseArgs(rawArgs) {
       parsed.write = true;
     } else if (arg === "--confirm-exact") {
       parsed.confirmExact = rawArgs[index + 1] ?? "";
+      index += 1;
+    } else if (arg === "--fixture") {
+      parsed.fixture = rawArgs[index + 1] ?? "";
       index += 1;
     } else if (arg === "--help" || arg === "-h") {
       printUsage();
@@ -392,6 +423,7 @@ function printUsage() {
   console.log("Usage:");
   console.log("  npm run runtime:child-issue-publish");
   console.log("  npm run runtime:child-issue-publish -- --write --confirm-exact \"<exact approval text>\"");
+  console.log("  npm run runtime:child-issue-publish -- --fixture approval-missing --write --confirm-exact \"<exact approval text>\"");
 }
 
 function printSection(title) {

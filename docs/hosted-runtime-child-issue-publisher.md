@@ -39,6 +39,20 @@ blocked child issue publication requires --write
 blocked hosted runtime implementation
 ```
 
+Fixture smoke:
+
+```bash
+npm run runtime:child-issue-publish:smoke
+```
+
+Expected fixture-smoke markers:
+
+```text
+ok hosted runtime child issue publisher smoke
+blocked child issue publication approval missing
+blocked hosted runtime implementation
+```
+
 Write mode, only after exact owner approval:
 
 ```bash

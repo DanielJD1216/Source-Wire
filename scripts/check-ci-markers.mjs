@@ -190,6 +190,8 @@ const markerGroups = [
       "ok hosted runtime child issue publisher ready",
       "ok hosted runtime issue payloads validated",
       "blocked child issue publication requires --write",
+      "ok hosted runtime child issue publisher smoke",
+      "blocked child issue publication approval missing",
       "blocked hosted runtime implementation"
     ]
   },

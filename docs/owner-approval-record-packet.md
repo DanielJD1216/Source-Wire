@@ -42,6 +42,7 @@ For a guarded dry-run or exact-text issue-comment recorder, run:
 npm run owner:record-approval
 npm run owner:record-approval -- --issue 255
 npm run owner:record-approval -- --target patch-release-implementation
+npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
 ```
 
 The recorder does not write unless `--write` and a matching `--confirm-exact` value are supplied.
@@ -50,6 +51,12 @@ After recording an approval separately, check status with:
 
 ```bash
 npm run owner:decision-status
+```
+
+For hosted-runtime child issue publication approval only, also run:
+
+```bash
+npm run runtime:child-issue-approval-status
 ```
 
 For release approval only, also run:

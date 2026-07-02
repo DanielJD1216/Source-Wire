@@ -70,6 +70,8 @@ for (const requiredText of [
   "This packet does not approve npm publishing",
   "Approval must be recorded separately",
   "## Owner Approval Record",
+  "npm run owner:record-approval -- --target hosted-runtime-child-issue-publication",
+  "npm run runtime:child-issue-approval-status",
   "blocked approval recording is manual owner action"
 ]) {
   assertIncludes(approvalPacket, requiredText, `owner approval packet includes ${requiredText}`);
@@ -112,6 +114,7 @@ for (const target of approvalTargets) {
 
 printSection("Next Checks After Manual Approval");
 console.log("npm run owner:decision-status");
+console.log("npm run runtime:child-issue-approval-status");
 console.log("npm run release:approval-status");
 
 console.log("");

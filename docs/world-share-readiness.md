@@ -119,6 +119,24 @@ blocked owner approvals missing
 
 This command does not publish a new package version, create a new GitHub release, create new tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
 
+## Post-Share Monitor
+
+After broad public sharing starts, reviewer issues may exist. Use the read-only post-share monitor instead of the pre-share open-issue boundary:
+
+```bash
+npm run world:post-share-monitor
+```
+
+Expected markers:
+
+```text
+ok post-share monitor ready
+ok structured reviewer issue intake current
+blocked code contribution PRs
+```
+
+This command allows owner-decision issues and structured reviewer feedback issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
+
 For the lighter source-package-only preflight, run:
 
 ```bash

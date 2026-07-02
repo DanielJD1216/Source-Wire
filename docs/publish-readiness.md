@@ -192,6 +192,22 @@ blocked production launch channels
 
 This read-only preflight runs public external-link checks, live world-share status, launch decision status, owner-decision issue status, and owner open-issue boundary status. It is intentionally outside CI and `publish:readiness` because it depends on public network availability and owner-side live GitHub access.
 
+After public sharing starts, run the post-share monitor:
+
+```bash
+npm run world:post-share-monitor
+```
+
+Expected markers:
+
+```text
+ok post-share monitor ready
+ok structured reviewer issue intake current
+blocked code contribution PRs
+```
+
+This read-only monitor allows owner-decision issues and structured reviewer feedback issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
+
 To verify the open issue boundary only, run:
 
 ```bash

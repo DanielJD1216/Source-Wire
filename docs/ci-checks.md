@@ -121,6 +121,7 @@ Owner-side live and public-network checks are intentionally outside CI and `publ
 - `npm run docs:external-links`
 - `npm run world:live-status`
 - `npm run world:share-preflight`
+- `npm run world:post-share-monitor`
 - `npm run repository:live-github`
 - `npm run repository:live-branch`
 - `npm run repository:branch-governance-preflight`

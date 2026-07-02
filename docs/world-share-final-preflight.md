@@ -10,6 +10,8 @@ Use this command immediately before broad public sharing when the owner wants on
 
 This is stronger than `npm run world:share-preflight` because it also runs the release, branch governance, hosted runtime PRD, and contribution terms PRD decision preflights.
 
+After public sharing starts and reviewer feedback issues may be open, use [World Share Post-Share Monitor](world-share-post-share-monitor.md) instead of treating open reviewer issues as a pre-share failure.
+
 ## Command
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
@@ -95,6 +97,7 @@ This preflight keeps these blocked:
 ## Related Docs
 
 - [World Share Packet](world-share-packet.md)
+- [World Share Post-Share Monitor](world-share-post-share-monitor.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)
 - [Owner Approval Record Packet](owner-approval-record-packet.md)

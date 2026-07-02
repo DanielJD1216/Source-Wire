@@ -82,6 +82,7 @@ export const requiredPackagePaths = [
   "docs/world-share-final-preflight.md",
   "docs/world-share-kit.md",
   "docs/world-share-packet.md",
+  "docs/world-share-post-share-monitor.md",
   "docs/world-share-readiness.md",
   "examples/fixtures/chat-export/agent-session.jsonl",
   "examples/fixtures/markdown-vault/Projects/Atlas Demo Workspace.md",

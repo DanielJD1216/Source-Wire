@@ -117,6 +117,20 @@ ok public share copy current
 blocked production launch channels
 ```
 
+After public sharing starts, use the read-only post-share monitor:
+
+```bash
+npm run world:post-share-monitor
+```
+
+Expected markers:
+
+```text
+ok post-share monitor ready
+ok structured reviewer issue intake current
+blocked code contribution PRs
+```
+
 ## Safe Claims
 
 It is safe to say:
@@ -194,6 +208,7 @@ Do not ask reviewers to send:
 - [Share For Technical Review](share-for-review.md)
 - [Technical Reviewer Guide](technical-reviewer-guide.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)
+- [World Share Post-Share Monitor](world-share-post-share-monitor.md)
 - [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [Publish Readiness](publish-readiness.md)

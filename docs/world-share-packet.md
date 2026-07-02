@@ -78,6 +78,16 @@ For the lighter source-package-only preflight, run:
 npm run world:share-preflight
 ```
 
+## Post-Share Monitor
+
+After public sharing starts, run:
+
+```bash
+npm run world:post-share-monitor
+```
+
+This command is read-only. It allows structured reviewer feedback issues and owner-decision issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
+
 ## Feedback Route
 
 Use GitHub issue templates for:
@@ -113,5 +123,6 @@ Do not ask reviewers to send:
 - [World Share Kit](world-share-kit.md)
 - [Share For Technical Review](share-for-review.md)
 - [World-Share Readiness](world-share-readiness.md)
+- [World Share Post-Share Monitor](world-share-post-share-monitor.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)

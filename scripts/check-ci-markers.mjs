@@ -208,6 +208,15 @@ const markerGroups = [
     ]
   },
   {
+    name: "hosted runtime PRD acceptance matrix",
+    markers: [
+      "ok hosted runtime PRD acceptance matrix ready",
+      "ok hosted runtime PRD clauses mapped",
+      "ok hosted runtime PRD stop conditions retained",
+      "blocked hosted runtime implementation"
+    ]
+  },
+  {
     name: "hosted runtime child issue publication packet",
     markers: [
       "ok hosted runtime child issue publication packet ready",

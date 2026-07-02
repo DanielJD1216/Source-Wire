@@ -83,6 +83,7 @@ The readiness gate runs:
 - `npm run legal:packet`
 - `npm run runtime:prd-preparation`
 - `npm run runtime:prd-execution-packet`
+- `npm run runtime:prd-acceptance-matrix`
 - `npm run runtime:slice-approval-request`
 - `npm run runtime:child-issue-publication-packet`
 - `npm run runtime:child-issue-publish`
@@ -177,6 +178,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` | Legal advice is not provided, but owner license approval is recorded and remaining legal questions stay visible. |
 | Hosted runtime PRD preparation | `ok hosted runtime PRD preparation ready`, `ok hosted runtime PRD evidence map ready`, `ok exact hosted runtime PRD approval recorded` | Future hosted runtime PRD inputs, evidence, and stop conditions are documented while runtime implementation remains blocked. |
 | Hosted runtime PRD execution packet | `ok hosted runtime PRD execution packet ready`, `ok hosted runtime PRD execution scope documented`, `ok exact hosted runtime PRD approval recorded` | Future hosted runtime PRD scope, pre-execution checks, verification path, and stop conditions are documented while runtime implementation remains blocked. |
+| Hosted runtime PRD acceptance matrix | `ok hosted runtime PRD acceptance matrix ready`, `ok hosted runtime PRD clauses mapped`, `ok hosted runtime PRD stop conditions retained`, `blocked hosted runtime implementation` | Each approved hosted-runtime PRD clause is mapped to evidence and stop conditions while runtime implementation remains blocked. |
 | Hosted runtime child issue publisher | `ok hosted runtime child issue publisher ready`, `ok hosted runtime issue payloads validated`, `blocked child issue publication requires --write`, `ok hosted runtime child issue publisher smoke`, `blocked child issue publication approval missing`, `blocked child issue duplicate publication`, `blocked hosted runtime implementation` | The future child issue publication command is validated in dry-run mode, and the fixture smoke proves write mode fails before creating issues when exact approval is not recorded on `#257` or when matching planning issues already exist. |
 | Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` | Future contribution terms PRD inputs, evidence, approval, and stop conditions are documented while code contribution acceptance remains blocked. |
 | Contribution terms PRD execution packet | `ok contribution terms PRD execution packet ready`, `ok contribution terms PRD execution scope documented`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` | Future contribution terms PRD scope, pre-execution checks, verification path, approval, and stop conditions are documented while code contribution acceptance remains blocked. |

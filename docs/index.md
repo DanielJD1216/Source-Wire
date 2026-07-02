@@ -28,6 +28,7 @@ It now includes a minimal synthetic in-memory runtime boundary. It is published 
 - [Minimal Runtime PRD](minimal-runtime-prd.md)
 - [Minimal Runtime Issue Slices](minimal-runtime-issue-slices.md)
 - [Hosted Runtime PRD](hosted-runtime-prd.md)
+- [Hosted Runtime PRD Acceptance Matrix](hosted-runtime-prd-acceptance-matrix.md)
 - [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md)
 - [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md)
 - [Hosted Runtime Child Issue Publication Packet](hosted-runtime-child-issue-publication-packet.md)

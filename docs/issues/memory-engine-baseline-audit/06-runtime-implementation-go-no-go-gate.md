@@ -1,5 +1,7 @@
 # Runtime Implementation Go/No-Go Gate
 
+Local artifact: [Memory Engine Baseline Runtime Implementation Go/No-Go Gate](../../memory-engine-baseline-runtime-implementation-go-no-go-gate.md).
+
 ## Parent
 
 Source-Wire Memory Engine Baseline Audit PRD.

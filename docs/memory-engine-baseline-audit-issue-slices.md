@@ -147,6 +147,8 @@ Acceptance criteria:
 
 Issue draft: [06 Runtime Implementation Go/No-Go Gate](issues/memory-engine-baseline-audit/06-runtime-implementation-go-no-go-gate.md).
 
+Local artifact: [Memory Engine Baseline Runtime Implementation Go/No-Go Gate](memory-engine-baseline-runtime-implementation-go-no-go-gate.md).
+
 Type: HITL.
 
 Blocked by: Slices 1, 2, 3, 4, and 5.

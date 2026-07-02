@@ -2,6 +2,7 @@ import { execFile } from "node:child_process";
 
 const checks = [
   ["world:share-preflight", "world-share preflight"],
+  ["world:share-operator-summary", "world-share operator summary"],
   ["release:decision-preflight", "release decision preflight"],
   ["repository:branch-governance-preflight", "branch governance decision preflight"],
   ["runtime:prd-decision-preflight", "hosted runtime PRD decision preflight"],
@@ -28,6 +29,7 @@ for (const [scriptName, label] of checks) {
 printSection("World Share Final Preflight Result");
 console.log("ok world share final preflight ready");
 console.log("ok world share preflight current");
+console.log("ok world share operator summary current");
 console.log("ok release decision preflight current");
 console.log("ok branch governance decision preflight current");
 console.log("ok hosted runtime PRD decision preflight current");

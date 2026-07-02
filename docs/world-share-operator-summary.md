@@ -4,6 +4,8 @@ Status: local owner summary for safe sharing and next actions.
 
 This summary does not publish npm, create a GitHub release, create tags, deploy services, publish hosted runtime child issues, implement hosted runtime behavior, accept code contributions, or add real user data.
 
+The final broad-sharing preflight also runs this summary through [World Share Final Preflight](world-share-final-preflight.md).
+
 ## Purpose
 
 Use this page when you need the short answer to: what is safe to do now, what is still blocked, and what approval is needed next?

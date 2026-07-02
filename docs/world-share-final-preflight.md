@@ -10,6 +10,8 @@ Use this command immediately before broad public sharing when the owner wants on
 
 This is stronger than `npm run world:share-preflight` because it also runs the release, branch governance, hosted runtime PRD, hosted runtime child issue publication, and contribution terms PRD decision preflights.
 
+It also runs the local [World Share Operator Summary](world-share-operator-summary.md) so the final owner-side preflight includes the short current-state and next-approval answer.
+
 After public sharing starts and reviewer feedback issues may be open, use [World Share Post-Share Monitor](world-share-post-share-monitor.md) instead of treating open reviewer issues as a pre-share failure.
 
 ## Command
@@ -31,6 +33,7 @@ npm run world:share-final-preflight
 This runs:
 
 - `npm run world:share-preflight`
+- `npm run world:share-operator-summary`
 - `npm run release:decision-preflight`
 - `npm run repository:branch-governance-preflight`
 - `npm run runtime:prd-decision-preflight`
@@ -48,6 +51,7 @@ Expected final markers:
 ```text
 ok world share final preflight ready
 ok world share preflight current
+ok world share operator summary current
 ok release decision preflight current
 ok branch governance decision preflight current
 ok hosted runtime PRD decision preflight current
@@ -107,6 +111,7 @@ This preflight keeps these blocked:
 ## Related Docs
 
 - [World Share Packet](world-share-packet.md)
+- [World Share Operator Summary](world-share-operator-summary.md)
 - [World Share Post-Share Monitor](world-share-post-share-monitor.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)

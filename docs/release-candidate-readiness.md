@@ -93,7 +93,7 @@ ok release execution completed
 
 ## Next Action
 
-If this check passes, the next action is to verify live release evidence and keep the remaining owner-decision gates explicit:
+If this check passes, the next action is to verify live release evidence and keep the completed owner-decision gate evidence explicit:
 
 ```bash
 npm run registry:live-npm

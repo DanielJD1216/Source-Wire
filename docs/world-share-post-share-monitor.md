@@ -8,9 +8,9 @@ This monitor is read-only. It does not close issues, edit issues, publish npm, c
 
 Use this after Source-Wire is shared publicly.
 
-`npm run world:share-final-preflight` is the clean baseline before broad sharing. It expects only owner-decision issues to be open. After sharing, reviewers may file structured feedback issues, so the ongoing monitor needs a different rule:
+`npm run world:share-final-preflight` is the clean baseline before broad sharing. It expects no unresolved owner-decision issues to be open. After sharing, reviewers may file structured feedback issues, so the ongoing monitor needs a different rule:
 
-- owner-decision issues stay allowed,
+- owner-decision issues are expected to stay closed,
 - structured reviewer feedback issues stay allowed,
 - unstructured public issues fail the monitor,
 - open pull requests fail the monitor because code contributions are still blocked.

@@ -86,7 +86,7 @@ After public sharing starts, run:
 npm run world:post-share-monitor
 ```
 
-This command is read-only. It allows structured reviewer feedback issues and owner-decision issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
+This command is read-only. It expects owner-decision issues to stay closed and allows structured reviewer feedback issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
 
 ## Feedback Route
 

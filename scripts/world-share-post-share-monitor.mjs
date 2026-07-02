@@ -126,7 +126,7 @@ if (openPullRequests.length > 0) {
 
 printSection("Source-Wire Post-Share Monitor");
 console.log("This owner-side monitor is read-only.");
-console.log("It allows owner-decision issues and structured reviewer feedback issues after public sharing.");
+console.log("It expects owner-decision issues to stay closed and allows structured reviewer feedback issues after public sharing.");
 console.log("It does not close issues, edit issues, publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, implement hosted runtime behavior, or approve production runtime use.");
 
 printRows([

@@ -140,7 +140,7 @@ ok structured reviewer issue intake current
 blocked code contribution PRs
 ```
 
-This command allows owner-decision issues and structured reviewer feedback issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
+This command expects owner-decision issues to stay closed and allows structured reviewer feedback issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
 
 For the lighter source-package-only preflight, run:
 

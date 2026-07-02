@@ -26,7 +26,7 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 
 ## Current Owner-Decision Status
 
-These public issues track completed release history and remaining owner decisions. They do not approve or execute blocked work.
+These public issues track completed release, branch-governance, hosted-runtime PRD, and contribution-terms history. They do not approve or execute blocked work.
 
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
 - Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)

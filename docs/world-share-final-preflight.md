@@ -6,7 +6,7 @@ This preflight is read-only. It does not publish npm, create a GitHub release, c
 
 ## Purpose
 
-Use this command immediately before broad public sharing when the owner wants one live check that the public source-package state and all remaining owner-decision gates are current.
+Use this command immediately before broad public sharing when the owner wants one live check that the public source-package state and all completed owner-decision gates are current.
 
 This is stronger than `npm run world:share-preflight` because it also runs the release, branch governance, hosted runtime PRD, and contribution terms PRD decision preflights.
 

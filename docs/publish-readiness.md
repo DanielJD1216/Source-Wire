@@ -213,7 +213,7 @@ ok structured reviewer issue intake current
 blocked code contribution PRs
 ```
 
-This read-only monitor allows owner-decision issues and structured reviewer feedback issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
+This read-only monitor expects owner-decision issues to stay closed and allows structured reviewer feedback issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
 
 To verify the open issue boundary only, run:
 

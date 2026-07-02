@@ -211,6 +211,14 @@ npm run repository:branch-governance-execution-packet
 
 This verifies the non-mutating future execution packet. It does not enable branch protection or create repository rulesets.
 
+For the branch governance implementation dry run, run:
+
+```bash
+npm run repository:branch-governance-dry-run
+```
+
+This verifies the future branch-protection payload and live required check context. It does not enable branch protection or create repository rulesets.
+
 For the hosted runtime PRD execution packet marker group, run:
 
 ```bash

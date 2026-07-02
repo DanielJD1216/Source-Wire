@@ -53,11 +53,12 @@ Before changing live GitHub settings:
 1. Run `npm run publish:readiness`.
 2. Run `npm run repository:live-branch`.
 3. Run `npm run repository:branch-governance-preflight`.
-4. Run `npm run owner:decision-status`.
-5. Confirm issue `#256` has exact approval recorded.
-6. Confirm latest `Package Checks` is green on `origin/main`.
-7. Confirm local `main` and `origin/main` point to the same commit.
-8. Confirm no new npm package version, GitHub release, tag, deployment, hosted runtime, or contribution acceptance is being opened in the same unit.
+4. Run `npm run repository:branch-governance-dry-run`.
+5. Run `npm run owner:decision-status`.
+6. Confirm issue `#256` has exact approval recorded.
+7. Confirm latest `Package Checks` is green on `origin/main`.
+8. Confirm local `main` and `origin/main` point to the same commit.
+9. Confirm no new npm package version, GitHub release, tag, deployment, hosted runtime, or contribution acceptance is being opened in the same unit.
 
 ## Minimal Branch Protection Settings
 
@@ -135,6 +136,7 @@ This packet does not approve:
 
 - [Branch Governance Approval Request](branch-governance-approval-request.md)
 - [Branch Governance Decision Preflight](branch-governance-decision-preflight.md)
+- [Branch Governance Implementation Dry Run](branch-governance-implementation-dry-run.md)
 - [Branch Governance Implementation Plan](branch-governance-implementation-plan.md)
 - [Repository Metadata](repository-metadata.md)
 - [World-Share Readiness](world-share-readiness.md)

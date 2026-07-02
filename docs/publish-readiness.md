@@ -359,6 +359,23 @@ blocked branch governance implementation approval missing
 
 The execution packet check verifies the exact future minimal branch protection settings, required check name, owner emergency access, pre-execution checks, post-change verification, and rollback path. It does not call GitHub, enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
+Run only the branch governance implementation dry run:
+
+```bash
+npm run repository:branch-governance-dry-run
+```
+
+Expected markers:
+
+```text
+ok branch governance implementation dry run ready
+ok branch protection payload documented
+ok required status check resolved Source-Wire package checks
+blocked branch governance implementation approval missing
+```
+
+The dry run resolves the exact live GitHub Actions check context and prints the future branch-protection payload. It does not enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
 Run only the hosted runtime PRD execution packet check:
 
 ```bash
@@ -407,6 +424,7 @@ ok owner open issue boundary current
 ok live branch governance current
 ok branch governance execution plan current
 ok branch governance execution packet current
+ok branch governance implementation dry run current
 blocked branch governance implementation approval missing
 ```
 

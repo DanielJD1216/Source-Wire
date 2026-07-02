@@ -36,6 +36,7 @@ ok owner open issue boundary current
 ok live branch governance current
 ok branch governance execution plan current
 ok branch governance execution packet current
+ok branch governance implementation dry run current
 blocked branch governance implementation approval missing
 ```
 
@@ -50,6 +51,7 @@ This command runs:
 - `npm run repository:branch-governance-request`
 - `npm run repository:branch-governance-plan`
 - `npm run repository:branch-governance-execution-packet`
+- `npm run repository:branch-governance-dry-run`
 
 These checks are intentionally outside `npm run publish:readiness` because they use live GitHub state and owner-side access.
 
@@ -82,5 +84,6 @@ This preflight does not allow:
 - [Branch Governance Approval Request](branch-governance-approval-request.md)
 - [Branch Governance Implementation Plan](branch-governance-implementation-plan.md)
 - [Branch Governance Execution Packet](branch-governance-execution-packet.md)
+- [Branch Governance Implementation Dry Run](branch-governance-implementation-dry-run.md)
 - [Repository Metadata](repository-metadata.md)
 - [World Share Packet](world-share-packet.md)

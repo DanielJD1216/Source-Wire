@@ -114,6 +114,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 ## Contracts
 
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
+- [Wrapper Runtime Policy Contract](contracts/wrapper-runtime-policy-contract.md)
 - [Source Graph Adapter Contract](contracts/source-graph-adapter-contract.md)
 - [Source Connection Contract](contracts/source-connection-contract.md)
 - [`second-brain.v1` Contract](contracts/second-brain-v1-contract.md)

@@ -1,5 +1,7 @@
 # Wrapper Runtime Policy Contract And Threat Boundary
 
+Local artifact: [Wrapper Runtime Policy Contract](../../contracts/wrapper-runtime-policy-contract.md).
+
 ## Parent
 
 Source-Wire Memory Engine Wrapper Runtime PRD.
@@ -10,12 +12,12 @@ Define the exact policy contract and threat boundary for the future wrapper runt
 
 ## Acceptance criteria
 
-- [ ] Owner, harness, namespace, capability, source, trusted-memory, citation, gap, denied-result, audit, and runtime-adapter policy terms are defined.
-- [ ] MCP bypass is explicitly forbidden.
-- [ ] Trusted-memory auto-promotion is explicitly forbidden.
-- [ ] Direct runtime merge and AGPLv3 code copy remain blocked.
-- [ ] Stop conditions are listed before code starts.
-- [ ] No implementation is added.
+- [x] Owner, harness, namespace, capability, source, trusted-memory, citation, gap, denied-result, audit, and runtime-adapter policy terms are defined.
+- [x] MCP bypass is explicitly forbidden.
+- [x] Trusted-memory auto-promotion is explicitly forbidden.
+- [x] Direct runtime merge and AGPLv3 code copy remain blocked.
+- [x] Stop conditions are listed before code starts.
+- [x] No implementation is added.
 
 ## Blocked by
 

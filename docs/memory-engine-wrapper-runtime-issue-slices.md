@@ -24,6 +24,8 @@ Source-Wire Memory Engine Wrapper Runtime PRD
 
 Issue draft: [01 Wrapper Runtime Policy Contract And Threat Boundary](issues/memory-engine-wrapper-runtime/01-wrapper-runtime-policy-contract-and-threat-boundary.md).
 
+Local artifact: [Wrapper Runtime Policy Contract](contracts/wrapper-runtime-policy-contract.md).
+
 Type: HITL.
 
 Blocked by: none.

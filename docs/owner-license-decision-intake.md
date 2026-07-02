@@ -81,8 +81,8 @@ Approved for a future Source-Wire license comparison unit: compare source-availa
 
 This intake does not allow:
 
-- npm publishing,
-- GitHub release publishing,
+- future npm package versions,
+- future GitHub releases,
 - deployment,
 - hosted API server runtime,
 - real MCP server runtime,

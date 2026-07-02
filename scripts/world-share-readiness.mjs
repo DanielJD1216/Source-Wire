@@ -57,6 +57,7 @@ printList([
   "To share the source repo publicly, point people to README.md and LICENSE.",
   "To install the public package, use npm install @source-wire/contracts.",
   "To review the first release snapshot, use the v0.1.0 GitHub release.",
+  "Before accepting code contributions, open contribution terms after the contribution terms gate is approved.",
   "To add hosted runtime behavior, open a separate runtime PRD after the runtime gate is approved."
 ]);
 

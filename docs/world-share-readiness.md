@@ -101,6 +101,11 @@ npm run world:share-final-preflight
 
 This runs the live source-package preflight plus the release, branch governance, hosted runtime PRD, and contribution terms PRD decision preflights.
 
+Recommended next owner decision:
+
+1. Define contribution terms before accepting public code contributions.
+2. Define hosted runtime scope only after the runtime PRD gate is explicitly approved.
+
 Expected final markers:
 
 ```text

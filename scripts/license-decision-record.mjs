@@ -64,8 +64,8 @@ printSection("Remaining Execution And Approvals");
 printList([
   "Release path approval is recorded in #255.",
   "Use a future approved release unit before publishing a new npm version or creating a new GitHub release.",
-  "Open a separate PRD before hosted runtime work.",
-  "Open a separate PRD before accepting code contributions."
+  "Open contribution terms before accepting code contributions.",
+  "Open a separate PRD before hosted runtime work."
 ]);
 
 console.log("");

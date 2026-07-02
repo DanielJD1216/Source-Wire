@@ -15,8 +15,8 @@ Can I share Source-Wire with the world now?
 Short answer:
 
 ```text
-As an Apache-2.0 licensed source package, yes.
-As an npm package, GitHub release, hosted runtime, or production runtime, not yet.
+As an Apache-2.0 source package, npm package, and GitHub release, yes.
+As a hosted runtime, production runtime, or contribution-accepting project, not yet.
 ```
 
 ## Command
@@ -91,14 +91,16 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 4. Run `npm run release:auth-preflight` only before future release mutation.
 5. Run `npm run release:execution-preflight` only before future release mutation.
 6. Minimal branch protection is implemented; decide later whether repository rulesets should open in a separate governance unit.
-7. Run `npm run runtime:prd-decision-preflight`.
-8. Decide whether hosted runtime work should open in a separate PRD.
-9. Run `npm run contribution:terms-decision-preflight`.
-10. Decide whether and how code contributions can be accepted.
+7. Run `npm run contribution:terms-decision-preflight`.
+8. Decide whether and how code contributions can be accepted.
+9. Run `npm run runtime:prd-decision-preflight`.
+10. Decide whether hosted runtime work should open in a separate PRD.
 
-## Current Release Blocker Path
+## Future Release Mutation Path
 
-The current limiting release blocker is npm authentication. Use this sequence before any release mutation:
+The first npm package publication and matching GitHub release are complete.
+
+Use this sequence only before a future package version, npm dist-tag change, GitHub release asset change, or release mutation:
 
 ```bash
 npm run release:auth-handoff
@@ -108,7 +110,7 @@ npm run release:auth-preflight
 npm run release:execution-preflight
 ```
 
-Stop if `npm run release:auth-preflight` still reports `blocked release publish credentials missing`.
+Stop if `npm run release:auth-preflight` reports `blocked future release auth owner action required` or any future release mutation approval is missing.
 
 Recorded release approval:
 
@@ -142,7 +144,7 @@ Source-Wire is production-ready.
 Do not say:
 
 ```text
-You can install Source-Wire from npm.
+Source-Wire is a hosted memory backend.
 ```
 
 Do not say:

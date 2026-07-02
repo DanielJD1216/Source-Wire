@@ -94,8 +94,8 @@ Approved for a future Source-Wire license comparison unit: compare source-availa
 
 Even after this workflow is ready, separate approval is still required for:
 
-- npm publishing,
-- GitHub release publishing,
+- future npm package versions,
+- future GitHub releases,
 - deployment,
 - hosted API server runtime,
 - real MCP server runtime,

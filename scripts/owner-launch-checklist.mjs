@@ -64,16 +64,17 @@ printList([
   "4. Run npm run release:auth-preflight only before future release mutation.",
   "5. Run npm run release:execution-preflight only before future release mutation.",
   "6. Minimal branch protection is implemented; repository rulesets remain deferred.",
-  "7. Run npm run runtime:prd-decision-preflight.",
-  "8. Hosted runtime work needs a separate runtime PRD.",
-  "9. Run npm run contribution:terms-decision-preflight.",
-  "10. Code contribution acceptance needs explicit contribution terms."
+  "7. Run npm run contribution:terms-decision-preflight.",
+  "8. Code contribution acceptance needs explicit contribution terms.",
+  "9. Run npm run runtime:prd-decision-preflight.",
+  "10. Hosted runtime work needs a separate runtime PRD."
 ]);
 
 printSection("Recommended Next Owner Choice");
 printList([
   "Keep the published first release at version 0.1.0.",
   "Use a future approved release unit before changing package version, npm dist-tags, or GitHub release assets.",
+  "Open contribution terms before hosted runtime so public feedback and pull request expectations are clear.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);
 

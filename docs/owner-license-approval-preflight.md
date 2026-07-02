@@ -2,7 +2,7 @@
 
 Status: read-only owner approval preflight.
 
-This preflight records the implemented owner license approval. It does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This preflight records the implemented owner license approval. It does not approve a future npm package version, future GitHub release, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
@@ -67,8 +67,8 @@ npm run release:execution-preflight
 
 Remaining owner choices are separate:
 
-- keep hosted runtime work blocked until a runtime PRD,
-- keep code contribution acceptance blocked until contribution terms exist.
+- keep code contribution acceptance blocked until contribution terms exist,
+- keep hosted runtime work blocked until a runtime PRD.
 
 For the step-by-step owner path, read [Owner License Decision Workflow](owner-license-decision-workflow.md) or run:
 

@@ -49,6 +49,8 @@ Acceptance criteria:
 
 Issue draft: [02 License Path Decision Packet](issues/memory-engine-baseline-audit/02-license-path-decision-packet.md).
 
+Local artifact: [Memory Engine Baseline License Path Decision Packet](memory-engine-baseline-license-path-decision-packet.md).
+
 Type: HITL.
 
 Blocked by: Slice 1.

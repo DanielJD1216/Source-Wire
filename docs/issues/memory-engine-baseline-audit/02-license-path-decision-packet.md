@@ -1,5 +1,7 @@
 # License Path Decision Packet
 
+Local artifact: [Memory Engine Baseline License Path Decision Packet](../../memory-engine-baseline-license-path-decision-packet.md).
+
 ## Parent
 
 Source-Wire Memory Engine Baseline Audit PRD.

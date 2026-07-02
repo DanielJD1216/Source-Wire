@@ -48,9 +48,7 @@ if (issue.number !== branchGovernanceIssue) {
   failures.push(`owner decision issue must be #${branchGovernanceIssue}`);
 }
 
-if (issue.state !== "OPEN") {
-  failures.push(`owner decision issue #${branchGovernanceIssue} must stay open until execution is complete`);
-}
+const issueCompleted = issue.state === "CLOSED";
 
 const comments = Array.isArray(issue.comments) ? issue.comments : [];
 const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "", exactApprovalText);
@@ -95,17 +93,18 @@ printRows([
   ["Latest check status", `${packageCheckRun.status}/${packageCheckRun.conclusion}`],
   ["Current branch protection", mainBranch.protected ? "enabled" : "not enabled"],
   ["Owner approval issue", `#${issue.number} ${issue.title}`],
+  ["Owner approval issue state", issueCompleted ? "closed" : issue.state.toLowerCase()],
   ["Exact approval", exactApprovalRecorded ? "recorded" : "not recorded"],
   ["Approval comments", String(approvalComments.length)]
 ]);
 
-printSection("Future Branch Protection Payload");
+printSection("Reviewed Branch Protection Payload");
 console.log(JSON.stringify(branchProtectionPayload, null, 2));
 
-printSection("Future Reviewed API Shape");
+printSection("Reviewed API Shape");
 console.log(`gh api --method PUT repos/${owner}/${repoName}/branches/${targetBranch}/protection --input <reviewed-payload.json>`);
 
-printSection("Future Verification Commands");
+printSection("Verification Commands");
 console.log("npm run repository:live-branch");
 console.log("npm run world:live-status");
 console.log("npm run publish:readiness");
@@ -116,7 +115,12 @@ console.log("ok branch protection payload documented");
 console.log(`ok required status check resolved ${expectedCheckRun}`);
 if (exactApprovalRecorded) {
   console.log("ok branch governance implementation approval recorded");
-  console.log("blocked live branch governance mutation still requires focused implementation step");
+  if (mainBranch.protected) {
+    console.log("ok minimal branch protection implemented");
+    console.log("blocked repository rulesets not enabled");
+  } else {
+    console.log("blocked live branch governance mutation still requires focused implementation step");
+  }
 } else {
   console.log("blocked branch governance implementation approval missing");
 }

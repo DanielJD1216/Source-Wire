@@ -28,7 +28,7 @@ for (const requiredText of [
   "Option 2: Approve repository ruleset governance",
   "Option 3: Keep owner-direct maintenance for now",
   "Option 4: Request governance review first",
-  "blocked branch protection approval missing",
+  "ok branch protection approval recorded",
   "blocked repository ruleset approval missing",
   "This packet does not enable branch protection, create repository rulesets, publish a new npm version, create a new GitHub release, deploy services, add hosted runtime behavior, or accept code contributions."
 ]) {
@@ -36,7 +36,7 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Branch protection: not enabled",
+  "Branch protection: enabled",
   "Repository rulesets: none",
   "npm run repository:live-branch"
 ]) {
@@ -44,9 +44,9 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "blocked branch protection not enabled",
+  "ok branch protection enabled",
   "blocked repository rulesets not enabled",
-  "Branch protection or repository rulesets should be handled in a separate owner-approved governance unit"
+  "Repository rulesets remain deferred because minimal branch protection is enough for the current source-package sharing state."
 ]) {
   assertIncludes(publishReadiness, requiredText, "publish readiness branch governance boundary");
 }
@@ -66,7 +66,7 @@ printRows([
   ["License", packageJson.license],
   ["Version", packageJson.version],
   ["Default branch", "main"],
-  ["Branch protection", "blocked, approval missing"],
+  ["Branch protection", "approval recorded, implemented"],
   ["Repository rulesets", "blocked, approval missing"],
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
@@ -76,15 +76,15 @@ printRows([
 
 printSection("Next Owner Decision Options");
 printList([
-  "Approve minimal branch protection later.",
+  "Minimal branch protection is already approved and implemented.",
   "Approve repository ruleset governance later.",
-  "Keep owner-direct maintenance for now.",
+  "Keep repository rulesets disabled for now.",
   "Request governance review first."
 ]);
 
 console.log("");
 console.log("ok branch governance approval request ready");
-console.log("blocked branch protection approval missing");
+console.log("ok branch protection approval recorded");
 console.log("blocked repository ruleset approval missing");
 
 async function assertPathExists(path) {

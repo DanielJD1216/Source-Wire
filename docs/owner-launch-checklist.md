@@ -78,7 +78,8 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 | Owner decision workflow | Captured | Use [Owner License Decision Workflow](owner-license-decision-workflow.md). |
 | npm package | Published as `@source-wire/contracts@0.1.0` | First public release is complete. |
 | GitHub release | Published as `v0.1.0` | First public release is complete. |
-| Branch protection or repository rulesets | Blocked | Separate branch governance approval, then use [Branch Governance Implementation Plan](branch-governance-implementation-plan.md). |
+| Minimal branch protection | Implemented | Use [Branch Governance Apply Guard](branch-governance-apply.md) and [Repository Metadata](repository-metadata.md) for live proof. |
+| Repository rulesets | Deferred | Separate future governance approval if stronger repository-side policy is needed. |
 | Hosted runtime | Blocked | Separate runtime PRD. |
 | Code contribution acceptance | Blocked | Explicit contribution terms. |
 
@@ -89,7 +90,7 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 3. Use a future approved release unit before changing package version, npm dist-tags, or GitHub release assets.
 4. Run `npm run release:auth-preflight` only before future release mutation.
 5. Run `npm run release:execution-preflight` only before future release mutation.
-6. Decide whether branch protection or repository rulesets should open in a separate governance unit.
+6. Minimal branch protection is implemented; decide later whether repository rulesets should open in a separate governance unit.
 7. Run `npm run runtime:prd-decision-preflight`.
 8. Decide whether hosted runtime work should open in a separate PRD.
 9. Run `npm run contribution:terms-decision-preflight`.
@@ -120,7 +121,7 @@ Approved for a future Source-Wire release implementation unit: prepare and publi
 The command prints the current public owner-decision issues:
 
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
-- Unresolved: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
 - Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 - Unresolved: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 

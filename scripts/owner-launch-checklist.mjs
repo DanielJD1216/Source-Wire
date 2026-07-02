@@ -42,7 +42,7 @@ printRows([
   ["Open-source license", "implemented"],
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
-  ["Branch governance", "blocked, branch governance approval missing"],
+  ["Branch governance", "minimal branch protection implemented"],
   ["Hosted runtime", "blocked, runtime approval missing"],
   ["Code contributions", "blocked, contribution terms approval missing"]
 ]);
@@ -63,7 +63,7 @@ printList([
   "3. Future package versions require a new approved release unit.",
   "4. Run npm run release:auth-preflight only before future release mutation.",
   "5. Run npm run release:execution-preflight only before future release mutation.",
-  "6. Branch protection or repository rulesets need separate branch governance approval.",
+  "6. Minimal branch protection is implemented; repository rulesets remain deferred.",
   "7. Run npm run runtime:prd-decision-preflight.",
   "8. Hosted runtime work needs a separate runtime PRD.",
   "9. Run npm run contribution:terms-decision-preflight.",
@@ -80,7 +80,7 @@ printList([
 printSection("Owner Decision Status");
 printList([
   "Completed #255 First public release path: https://github.com/DanielJD1216/Source-Wire/issues/255",
-  "Unresolved #256 Branch governance path: https://github.com/DanielJD1216/Source-Wire/issues/256",
+  "Completed #256 Branch governance path: https://github.com/DanielJD1216/Source-Wire/issues/256",
   "Unresolved #257 Hosted runtime PRD path: https://github.com/DanielJD1216/Source-Wire/issues/257",
   "Unresolved #258 Contribution terms before accepting code: https://github.com/DanielJD1216/Source-Wire/issues/258"
 ]);

@@ -85,7 +85,7 @@ This preflight keeps these blocked:
 - release tags,
 - package version changes,
 - deployment,
-- branch governance enforcement,
+- repository ruleset governance,
 - hosted runtime implementation,
 - API server runtime,
 - MCP server runtime,

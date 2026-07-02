@@ -32,7 +32,9 @@ const decisionIssues = [
       "ok live branch governance current",
       "ok branch governance execution plan current",
       "ok branch governance execution packet current",
-      "blocked branch governance implementation approval missing"
+      "ok branch governance implementation approval recorded",
+      "ok minimal branch protection implemented",
+      "blocked repository rulesets not enabled"
     ]
   },
   {
@@ -252,7 +254,7 @@ function currentOwnerDecisionStatusProof() {
   return [
     "ok owner decision status readable",
     "ok exact release implementation approval recorded",
-    "blocked branch governance implementation approval missing",
+    "ok exact branch governance implementation approval recorded",
     "blocked hosted runtime PRD approval missing",
     "blocked contribution terms PRD approval missing",
     "blocked owner decisions missing approval records"

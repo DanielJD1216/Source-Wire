@@ -37,7 +37,7 @@ for (const requiredText of [
   "Repository rulesets | disabled for this first governance step",
   "Future Verification",
   "Rollback",
-  "blocked branch governance implementation approval missing"
+  "ok branch governance implementation approval recorded"
 ]) {
   assertIncludes(executionPacket, requiredText, "branch governance execution packet");
 }
@@ -52,7 +52,7 @@ for (const requiredText of [
 
 for (const requiredText of [
   "Option 1: Approve minimal branch protection",
-  "blocked branch protection approval missing",
+  "ok branch protection approval recorded",
   "blocked repository ruleset approval missing"
 ]) {
   assertIncludes(approvalPacket, requiredText, "branch governance approval packet");
@@ -75,25 +75,25 @@ printRows([
   ["Target branch", "main"],
   ["Recommended path", "minimal branch protection first"],
   ["Required check", "Package Checks / Source-Wire package checks"],
-  ["Force pushes", "blocked by future rule"],
-  ["Branch deletion", "blocked by future rule"],
+  ["Force pushes", "blocked by branch protection"],
+  ["Branch deletion", "blocked by branch protection"],
   ["Repository rulesets", "deferred"],
-  ["Owner approval", "missing"],
+  ["Owner approval", "recorded"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
 
-printSection("Future Implementation Boundary");
+printSection("Implementation Boundary");
 printList([
-  "Do not change GitHub settings until issue #256 records exact owner approval.",
+  "Issue #256 records exact owner approval for the minimal branch-protection path.",
   "Do not publish a new npm version, create a new GitHub release, create tags, deploy services, add hosted runtime behavior, or accept code contributions from this packet.",
-  "Run live branch, world status, and publish readiness verification after any future settings change."
+  "Run live branch, world status, and publish readiness verification after any settings change."
 ]);
 
 console.log("");
 console.log("ok branch governance execution packet ready");
 console.log("ok minimal branch protection settings documented");
-console.log("blocked branch governance implementation approval missing");
+console.log("ok branch governance implementation approval recorded");
 
 async function assertPathExists(path) {
   try {

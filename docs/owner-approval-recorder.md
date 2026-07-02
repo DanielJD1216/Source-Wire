@@ -109,7 +109,7 @@ The recorder does not execute any of these:
 - GitHub release publishing,
 - release tags,
 - package version change,
-- branch governance enforcement,
+- repository ruleset governance,
 - hosted runtime,
 - production runtime use,
 - code contribution acceptance.

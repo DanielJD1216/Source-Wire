@@ -85,7 +85,7 @@ This preflight keeps these blocked:
 - package version changes,
 - deployment,
 - hosted runtime behavior,
-- branch governance enforcement,
+- repository ruleset governance,
 - production runtime use.
 
 ## Related Docs

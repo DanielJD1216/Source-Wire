@@ -80,7 +80,7 @@ This preflight keeps these blocked:
 - GitHub release publishing,
 - release tags,
 - package version changes,
-- branch governance enforcement,
+- repository ruleset governance,
 - production runtime use,
 - code contribution acceptance.
 

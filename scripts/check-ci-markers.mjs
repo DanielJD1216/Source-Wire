@@ -270,7 +270,7 @@ const markerGroups = [
     markers: [
       "ok branch governance implementation plan ready",
       "ok branch governance recommended path documented",
-      "blocked branch governance implementation approval missing"
+      "ok branch governance implementation approval recorded"
     ]
   },
   {
@@ -278,7 +278,7 @@ const markerGroups = [
     markers: [
       "ok branch governance execution packet ready",
       "ok minimal branch protection settings documented",
-      "blocked branch governance implementation approval missing"
+      "ok branch governance implementation approval recorded"
     ]
   },
   {

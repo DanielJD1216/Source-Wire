@@ -6,9 +6,9 @@ This preflight does not enable branch protection, create repository rulesets, pu
 
 ## Purpose
 
-Use this preflight before any future branch governance implementation unit touches live GitHub settings.
+Use this preflight to verify the completed minimal branch-protection path and the still-deferred repository ruleset path.
 
-It proves the current public sharing state, owner-decision issue state, owner open-issue boundary, live branch state, approval request, implementation plan, and execution packet are all current before the owner decides whether to enable minimal branch protection.
+It proves the current public sharing state, owner-decision issue state, owner open-issue boundary, live branch state, approval request, implementation plan, execution packet, dry run, and guarded apply command are all current after minimal branch protection was enabled.
 
 ## Command
 
@@ -38,7 +38,9 @@ ok branch governance execution plan current
 ok branch governance execution packet current
 ok branch governance implementation dry run current
 ok branch governance apply guard current
-blocked branch governance implementation approval missing
+ok branch governance implementation approval recorded
+ok minimal branch protection implemented
+blocked repository rulesets not enabled
 ```
 
 ## What It Runs
@@ -57,15 +59,15 @@ This command runs:
 
 These checks are intentionally outside `npm run publish:readiness` because they use live GitHub state and owner-side access.
 
-## Required Approval Before Execution
+## Recorded Approval
 
-Issue `#256` must contain the exact owner approval text before a future implementation unit changes branch governance:
+Issue `#256` contains the exact owner approval text for the minimal branch-protection implementation:
 
 ```text
 Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
 ```
 
-Until that exact approval is recorded, branch governance enforcement remains blocked.
+That approval covered minimal branch protection only. Repository ruleset governance remains deferred and would need a separate future approval.
 
 ## Still Blocked
 

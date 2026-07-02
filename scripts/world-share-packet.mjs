@@ -87,7 +87,7 @@ printList([
 
 printSection("Still Blocked");
 printList([
-  "branch governance enforcement",
+  "repository ruleset governance",
   "hosted runtime",
   "production runtime use",
   "code contribution acceptance"

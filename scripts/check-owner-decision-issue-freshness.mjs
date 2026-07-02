@@ -28,7 +28,9 @@ const expectedIssues = [
     markers: [
       "ok branch governance decision preflight ready",
       "ok branch governance execution packet current",
-      "blocked branch governance implementation approval missing"
+      "ok branch governance implementation approval recorded",
+      "ok minimal branch protection implemented",
+      "blocked repository rulesets not enabled"
     ]
   },
   {
@@ -68,7 +70,7 @@ const finalPreflightMarkers = [
   "ok owner decision issue boundary current",
   "ok owner decision issue freshness current",
   "blocked production launch channels",
-  "blocked owner approvals missing"
+    "blocked owner approvals missing"
 ];
 
 const failures = [];

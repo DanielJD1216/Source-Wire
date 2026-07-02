@@ -85,7 +85,7 @@ If the monitor fails because an open pull request exists:
 
 This monitor does not approve:
 
-- branch governance enforcement,
+- repository ruleset governance,
 - hosted runtime implementation,
 - API server runtime,
 - MCP server runtime,

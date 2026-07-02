@@ -31,7 +31,9 @@ console.log("ok branch governance execution plan current");
 console.log("ok branch governance execution packet current");
 console.log("ok branch governance implementation dry run current");
 console.log("ok branch governance apply guard current");
-console.log("blocked branch governance implementation approval missing");
+console.log("ok branch governance implementation approval recorded");
+console.log("ok minimal branch protection implemented");
+console.log("blocked repository rulesets not enabled");
 
 function runScript(scriptName) {
   return new Promise((resolve, reject) => {

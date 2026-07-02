@@ -9,17 +9,17 @@ const completedDecisionIssues = [
     approvalName: "release implementation",
     exactApprovalText:
       "Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms."
-  }
-];
-
-const expectedOpenIssues = [
+  },
   {
     number: 256,
     title: "Owner decision: approve branch governance path",
     approvalName: "branch governance implementation",
     exactApprovalText:
       "Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions."
-  },
+  }
+];
+
+const expectedOpenIssues = [
   {
     number: 257,
     title: "Owner decision: open hosted runtime PRD path",

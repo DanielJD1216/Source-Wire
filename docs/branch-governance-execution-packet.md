@@ -33,14 +33,14 @@ Expected markers:
 ```text
 ok branch governance execution packet ready
 ok minimal branch protection settings documented
-blocked branch governance implementation approval missing
+ok branch governance implementation approval recorded
 ```
 
 This command verifies the packet and docs only. It does not call GitHub APIs or change repository settings.
 
 ## Required Owner Approval
 
-Do not change live branch settings until this exact approval is recorded on issue `#256`:
+Issue `#256` records this exact approval:
 
 ```text
 Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.

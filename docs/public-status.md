@@ -29,7 +29,7 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 These public issues track completed release history and remaining owner decisions. They do not approve or execute blocked work.
 
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
-- Unresolved: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
 - Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 - Unresolved: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 

@@ -8,7 +8,7 @@ This command does not publish npm, create a GitHub release, create tags, deploy 
 
 ## Purpose
 
-Use this command as the future implementation path for minimal branch protection after branch governance approval is recorded.
+Use this command as the guarded implementation path for minimal branch protection after branch governance approval is recorded.
 
 The guard exists so the branch protection payload, required status check context, approval state, and write intent are checked in one place before live GitHub settings change.
 
@@ -42,7 +42,8 @@ Expected markers after approval is recorded but before write mode:
 ```text
 ok branch governance apply guard ready
 ok branch governance implementation approval recorded
-blocked branch governance apply requires --write
+ok minimal branch protection implemented
+blocked repository rulesets not enabled
 ```
 
 ## Write Mode
@@ -53,7 +54,7 @@ Write mode must not run until issue `#256` records this exact approval:
 Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
 ```
 
-After that approval is recorded and the focused branch governance implementation unit is active, run:
+After that approval is recorded and the focused branch governance implementation unit is active, write mode can run:
 
 ```bash
 npm run repository:branch-governance-apply -- --write --confirm-exact "<exact approval text>"
@@ -85,7 +86,7 @@ The command applies the reviewed minimal branch protection payload:
 
 ## Required Verification After Write Mode
 
-After the future live settings change, run:
+After the live settings change, run:
 
 ```bash
 npm run repository:live-branch

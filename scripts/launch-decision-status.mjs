@@ -47,6 +47,7 @@ printRows([
   ["License implementation", "complete"],
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
+  ["Branch protection", "implemented with Source-Wire package checks required"],
   ["Hosted runtime", "blocked, not approved"],
   ["Code contributions", "blocked, not accepted"]
 ]);
@@ -56,14 +57,14 @@ printList([
   "Use README.md and LICENSE for public source repo sharing.",
   "Use npm install @source-wire/contracts for the public package.",
   "Use the GitHub v0.1.0 release for the first public release snapshot.",
-  "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them.",
+  "Keep hosted runtime, production runtime claims, repository rulesets, and contribution acceptance blocked unless separate approval opens them.",
   "Open separate PRDs for hosted runtime and contribution acceptance."
 ]);
 
 printSection("Owner Decision Status");
 printList([
   "Completed #255 First public release path: https://github.com/DanielJD1216/Source-Wire/issues/255",
-  "Unresolved #256 Branch governance path: https://github.com/DanielJD1216/Source-Wire/issues/256",
+  "Completed #256 Branch governance path: https://github.com/DanielJD1216/Source-Wire/issues/256",
   "Unresolved #257 Hosted runtime PRD path: https://github.com/DanielJD1216/Source-Wire/issues/257",
   "Unresolved #258 Contribution terms before accepting code: https://github.com/DanielJD1216/Source-Wire/issues/258"
 ]);

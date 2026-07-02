@@ -10,11 +10,10 @@ Use this check before broad public sharing when you want to prove the visible op
 
 The current expected open issues are:
 
-- `#256` Owner decision: approve branch governance path
 - `#257` Owner decision: open hosted runtime PRD path
 - `#258` Owner decision: define contribution terms before accepting code
 
-Issue `#255` is expected to be closed because the first public release path is complete. Any extra open issue is treated as a failure because it means the public state has drifted and needs owner review before broad sharing.
+Issues `#255` and `#256` are expected to be closed because the first public release path and minimal branch governance path are complete. Any extra open issue is treated as a failure because it means the public state has drifted and needs owner review before broad sharing.
 
 ## Command
 
@@ -32,8 +31,9 @@ Expected markers:
 ok owner open issue boundary readable
 ok completed owner decision #255 closed
 ok exact release implementation approval retained
+ok completed owner decision #256 closed
+ok exact branch governance implementation approval retained
 ok only unresolved owner decision issues open
-blocked #256 branch governance implementation approval missing
 blocked #257 hosted runtime PRD approval missing
 blocked #258 contribution terms PRD approval missing
 blocked owner decisions missing approval records
@@ -45,13 +45,14 @@ blocked unresolved owner decision issues remain open
 - GitHub issue access is working through `gh`.
 - Open issues are exactly the unresolved owner-decision gates.
 - Issue `#255` has recorded release implementation approval and is closed as completed release history.
-- Issues `#256` through `#258` still need separate owner approvals before those paths open.
+- Issue `#256` has recorded branch governance implementation approval and is closed as completed branch-governance history.
+- Issues `#257` and `#258` still need separate owner approvals before those paths open.
 - No unreviewed public open issue is silently hiding behind the share-ready status.
 
 ## What It Does Not Prove
 
 - It does not approve release execution.
-- It does not approve branch governance enforcement.
+- It does not approve repository ruleset governance.
 - It does not approve hosted runtime PRD work.
 - It does not approve contribution terms work.
 - It does not close or edit any issue.

@@ -32,10 +32,10 @@ Apache-2.0 currently means reviewers and adopters can inspect and reuse the sour
 
 ## Current Owner-Decision Status
 
-These public issues track completed release history and remaining owner decisions. They do not enable branch governance, start hosted runtime work, or accept code contributions.
+These public issues track completed release and branch-governance history plus remaining owner decisions. They do not start hosted runtime work, enable repository rulesets, or accept code contributions.
 
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
-- Unresolved: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
 - Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 - Unresolved: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 
@@ -175,7 +175,7 @@ Expected current markers:
 ```text
 ok owner decision status readable
 ok exact release implementation approval recorded
-blocked branch governance implementation approval missing
+ok exact branch governance implementation approval recorded
 blocked hosted runtime PRD approval missing
 blocked contribution terms PRD approval missing
 blocked owner decisions missing approval records
@@ -195,15 +195,16 @@ Expected current markers:
 ok owner open issue boundary readable
 ok completed owner decision #255 closed
 ok exact release implementation approval retained
+ok completed owner decision #256 closed
+ok exact branch governance implementation approval retained
 ok only unresolved owner decision issues open
-blocked #256 branch governance implementation approval missing
 blocked #257 hosted runtime PRD approval missing
 blocked #258 contribution terms PRD approval missing
 blocked owner decisions missing approval records
 blocked unresolved owner decision issues remain open
 ```
 
-This read-only check verifies that the only open public issues are the unresolved owner-decision gates `#256` through `#258`, and distinguishes completed release history on `#255` from missing approvals on `#256` through `#258`.
+This read-only check verifies that the only open public issues are the unresolved owner-decision gates `#257` and `#258`, and distinguishes completed release and branch-governance history on `#255` and `#256` from missing approvals on `#257` and `#258`.
 
 For the live repo and live launch channels only, run:
 
@@ -233,7 +234,8 @@ ok live package lock Apache-2.0
 ok npm package published @source-wire/contracts@0.1.0
 ok release channels published v0.1.0
 blocked production launch channels
-blocked branch governance enforcement not approved
+ok minimal branch protection implemented
+blocked repository rulesets not enabled
 ```
 
 This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.

@@ -23,7 +23,7 @@ Snapshot boundary: npm `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0
 Current owner-decision status:
 
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
-- Unresolved: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
+- Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
 - Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 - Unresolved: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
 
@@ -56,7 +56,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 
 ## Still Blocked
 
-- branch governance enforcement,
+- repository ruleset governance,
 - hosted runtime,
 - production runtime use,
 - code contribution acceptance.

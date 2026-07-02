@@ -6,7 +6,7 @@ This dry run does not enable branch protection, create repository rulesets, publ
 
 ## Purpose
 
-Use this command before the future branch governance implementation step.
+Use this command to review the branch-protection payload, required status check, approval record, and live implementation state.
 
 It resolves the live successful GitHub Actions check-run name for `origin/main`, builds the reviewed minimal branch-protection payload, and confirms whether issue `#256` has the exact owner approval recorded.
 
@@ -37,14 +37,15 @@ ok required status check resolved Source-Wire package checks
 blocked branch governance implementation approval missing
 ```
 
-Expected markers after approval is recorded but before live settings change:
+Expected markers after approval is recorded and minimal branch protection is live:
 
 ```text
 ok branch governance implementation dry run ready
 ok branch protection payload documented
 ok required status check resolved Source-Wire package checks
 ok branch governance implementation approval recorded
-blocked live branch governance mutation still requires focused implementation step
+ok minimal branch protection implemented
+blocked repository rulesets not enabled
 ```
 
 ## Payload Shape
@@ -71,13 +72,13 @@ Do not change live branch settings until this exact approval is recorded on issu
 Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
 ```
 
-## Future Implementation Boundary
+## Implementation Boundary
 
-After exact approval is recorded, a focused implementation step may use GitHub UI or the guarded [Branch Governance Apply Guard](branch-governance-apply.md) command.
+After exact approval was recorded, the focused implementation step used the guarded [Branch Governance Apply Guard](branch-governance-apply.md) command.
 
-The dry run itself does not execute that call.
+The dry run itself does not execute that call and remains safe to run after implementation.
 
-After the future live settings change, run:
+After live settings change, run:
 
 ```bash
 npm run repository:live-branch

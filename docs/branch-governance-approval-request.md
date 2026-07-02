@@ -30,7 +30,7 @@ Expected markers:
 
 ```text
 ok branch governance approval request ready
-blocked branch protection approval missing
+ok branch protection approval recorded
 blocked repository ruleset approval missing
 ```
 
@@ -41,7 +41,7 @@ blocked repository ruleset approval missing
 | Package license | `Apache-2.0` |
 | Package version | `0.1.0` |
 | Default branch | `main` |
-| Branch protection | not enabled |
+| Branch protection | enabled |
 | Repository rulesets | none |
 | npm publishing | published as `@source-wire/contracts@0.1.0` |
 | GitHub release publishing | published as `v0.1.0` |
@@ -63,6 +63,8 @@ Choose exactly one later.
 ```text
 Approved for a future Source-Wire branch governance implementation unit: enable minimal branch protection for main after current Package Checks are green. Require status checks before merge, block force pushes, block branch deletion, keep owner direct emergency access if needed, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
 ```
+
+Current status: approved, implemented, and tracked as completed on issue `#256`.
 
 ### Option 2: Approve repository ruleset governance
 

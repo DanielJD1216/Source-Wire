@@ -2,7 +2,7 @@
 
 Status: owner approval copy packet only.
 
-This packet does not approve npm publishing, GitHub release publishing, release tags, package version changes, deployment, branch governance enforcement, hosted runtime behavior, production runtime use, code contribution acceptance, or real data examples.
+This packet does not approve npm publishing, GitHub release publishing, release tags, package version changes, deployment, repository ruleset governance, hosted runtime behavior, production runtime use, code contribution acceptance, or real data examples.
 
 ## Purpose
 
@@ -116,7 +116,7 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - GitHub release publishing,
 - release tags,
 - package version change,
-- branch governance enforcement,
+- repository ruleset governance,
 - hosted runtime,
 - production runtime use,
 - code contribution acceptance.

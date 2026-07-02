@@ -137,9 +137,9 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Reviewer intake smoke | `ok reviewer intake smoke ready`, `ok reviewer issue templates structured`, `blocked unsafe reviewer data intake` |
 | Reviewer first-pass smoke | `ok reviewer first-pass smoke` |
 | Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` |
-| Branch governance approval request | `ok branch governance approval request ready`, `blocked branch protection approval missing`, `blocked repository ruleset approval missing` |
-| Branch governance implementation plan | `ok branch governance implementation plan ready`, `ok branch governance recommended path documented`, `blocked branch governance implementation approval missing` |
-| Branch governance execution packet | `ok branch governance execution packet ready`, `ok minimal branch protection settings documented`, `blocked branch governance implementation approval missing` |
+| Branch governance approval request | `ok branch governance approval request ready`, `ok branch protection approval recorded`, `blocked repository ruleset approval missing` |
+| Branch governance implementation plan | `ok branch governance implementation plan ready`, `ok branch governance recommended path documented`, `ok branch governance implementation approval recorded` |
+| Branch governance execution packet | `ok branch governance execution packet ready`, `ok minimal branch protection settings documented`, `ok branch governance implementation approval recorded` |
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` |
 | Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` |
 | Package required paths | `ok package required paths` |
@@ -223,8 +223,9 @@ Expected markers:
 ok owner open issue boundary readable
 ok completed owner decision #255 closed
 ok exact release implementation approval retained
+ok completed owner decision #256 closed
+ok exact branch governance implementation approval retained
 ok only unresolved owner decision issues open
-blocked #256 branch governance implementation approval missing
 blocked #257 hosted runtime PRD approval missing
 blocked #258 contribution terms PRD approval missing
 blocked owner decisions missing approval records
@@ -249,7 +250,8 @@ ok live package lock Apache-2.0
 ok npm package published @source-wire/contracts@0.1.0
 ok release channels published v0.1.0
 blocked production launch channels
-blocked branch governance enforcement not approved
+ok minimal branch protection implemented
+blocked repository rulesets not enabled
 ```
 
 This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
@@ -305,14 +307,14 @@ Expected markers in the current owner-direct-maintenance state:
 ```text
 ok live branch governance readable
 ok main branch matches origin
-blocked branch protection not enabled
-blocked branch protection required check not enabled
+ok branch protection enabled
+ok branch protection requires Source-Wire package checks
 blocked repository rulesets not enabled
 ```
 
-The blocked markers mean branch protection and repository rulesets are not currently configured. This command does not enable branch protection, create a ruleset, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+The remaining blocked marker means repository rulesets are not currently configured. This command does not enable branch protection, create a ruleset, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
-Branch protection or repository rulesets should be handled in a separate owner-approved governance unit because they can affect how the owner commits, pushes, and maintains the public repo.
+Repository rulesets remain deferred because minimal branch protection is enough for the current source-package sharing state.
 
 For exact future owner decision options, run:
 
@@ -324,7 +326,7 @@ Expected markers:
 
 ```text
 ok branch governance approval request ready
-blocked branch protection approval missing
+ok branch protection approval recorded
 blocked repository ruleset approval missing
 ```
 
@@ -341,7 +343,7 @@ Expected markers:
 ```text
 ok branch governance implementation plan ready
 ok branch governance recommended path documented
-blocked branch governance implementation approval missing
+ok branch governance implementation approval recorded
 ```
 
 The plan check verifies the future branch governance implementation order, required preflight, post-change verification, and rollback plan. It does not call GitHub, enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
@@ -357,7 +359,7 @@ Expected markers:
 ```text
 ok branch governance execution packet ready
 ok minimal branch protection settings documented
-blocked branch governance implementation approval missing
+ok branch governance implementation approval recorded
 ```
 
 The execution packet check verifies the exact future minimal branch protection settings, required check name, owner emergency access, pre-execution checks, post-change verification, and rollback path. It does not call GitHub, enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
@@ -446,7 +448,9 @@ ok branch governance execution plan current
 ok branch governance execution packet current
 ok branch governance implementation dry run current
 ok branch governance apply guard current
-blocked branch governance implementation approval missing
+ok branch governance implementation approval recorded
+ok minimal branch protection implemented
+blocked repository rulesets not enabled
 ```
 
 This read-only preflight verifies live branch state, owner decision issue state, owner open-issue boundary, approval request, implementation plan, and world-share boundary. It stays outside CI and `publish:readiness` because it depends on live GitHub state and owner-side access.

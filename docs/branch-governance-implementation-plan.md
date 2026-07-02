@@ -6,9 +6,9 @@ This plan does not enable branch protection, create repository rulesets, publish
 
 ## Purpose
 
-Use this plan after the owner approves branch governance implementation.
+Use this plan as the preserved implementation record after the owner approved branch governance implementation.
 
-Source-Wire is currently shareable as an Apache-2.0 source package, but `main` is still owner-direct. Branch governance is the next repo-hardening step before broader public attention because it reduces accidental force pushes, branch deletion, and unchecked changes to the public source package.
+Source-Wire is currently shareable as an Apache-2.0 source package, and `main` now has minimal branch protection. This record preserves the implementation plan and keeps repository rulesets deferred.
 
 ## Command
 
@@ -31,7 +31,7 @@ Expected markers:
 ```text
 ok branch governance implementation plan ready
 ok branch governance recommended path documented
-blocked branch governance implementation approval missing
+ok branch governance implementation approval recorded
 ```
 
 This command verifies the plan and docs only. It does not change GitHub settings.

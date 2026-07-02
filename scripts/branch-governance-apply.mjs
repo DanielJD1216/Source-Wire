@@ -49,9 +49,7 @@ if (issue.number !== branchGovernanceIssue) {
   failures.push(`owner decision issue must be #${branchGovernanceIssue}`);
 }
 
-if (issue.state !== "OPEN") {
-  failures.push(`owner decision issue #${branchGovernanceIssue} must stay open until execution is complete`);
-}
+const issueCompleted = issue.state === "CLOSED";
 
 const comments = Array.isArray(issue.comments) ? issue.comments : [];
 const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "", exactApprovalText);
@@ -97,6 +95,7 @@ printRows([
   ["Latest check status", `${packageCheckRun.status}/${packageCheckRun.conclusion}`],
   ["Current branch protection", mainBranch.protected ? "enabled" : "not enabled"],
   ["Owner approval issue", `#${issue.number} ${issue.title}`],
+  ["Owner approval issue state", issueCompleted ? "closed" : issue.state.toLowerCase()],
   ["Exact approval", exactApprovalRecorded ? "recorded" : "not recorded"],
   ["Mode", args.write ? "write requested" : "dry run"]
 ]);
@@ -119,7 +118,12 @@ if (!args.write) {
   console.log("");
   console.log("ok branch governance apply guard ready");
   console.log("ok branch governance implementation approval recorded");
-  console.log("blocked branch governance apply requires --write");
+  if (mainBranch.protected) {
+    console.log("ok minimal branch protection implemented");
+    console.log("blocked repository rulesets not enabled");
+  } else {
+    console.log("blocked branch governance apply requires --write");
+  }
   process.exit(0);
 }
 

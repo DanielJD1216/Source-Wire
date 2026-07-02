@@ -47,7 +47,7 @@ Expected live repository settings:
 - Secret scanning: enabled
 - Secret scanning push protection: enabled
 - Security advisories: none
-- Branch protection: not enabled
+- Branch protection: enabled
 - Repository rulesets: none
 
 Expected topics:
@@ -90,7 +90,7 @@ Owner-side live branch governance check:
 npm run repository:live-branch
 ```
 
-This command uses `gh` and the configured GitHub account to verify the default branch, live `main` SHA, local `origin/main` match, branch protection state, required branch-protection check context when enabled, and repository ruleset state. It reports the current unprotected branch state as a blocked owner-governance item instead of silently treating it as production hardening.
+This command uses `gh` and the configured GitHub account to verify the default branch, live `main` SHA, local `origin/main` match, branch protection state, required branch-protection check context when enabled, and repository ruleset state. It reports minimal branch protection as implemented and repository rulesets as deferred.
 
 ## GitHub-Visible Files
 

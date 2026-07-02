@@ -35,7 +35,7 @@ for (const requiredText of [
   "Required Preflight",
   "npm run repository:branch-governance-preflight",
   "Required Post-Change Verification",
-  "blocked branch governance implementation approval missing"
+  "ok branch governance implementation approval recorded"
 ]) {
   assertIncludes(implementationPlan, requiredText, "branch governance implementation plan");
 }
@@ -43,7 +43,7 @@ for (const requiredText of [
 for (const requiredText of [
   "Option 1: Approve minimal branch protection",
   "Option 2: Approve repository ruleset governance",
-  "blocked branch protection approval missing",
+  "ok branch protection approval recorded",
   "blocked repository ruleset approval missing"
 ]) {
   assertIncludes(approvalPacket, requiredText, "branch governance approval packet");
@@ -53,7 +53,7 @@ for (const requiredText of [
   "npm run repository:branch-governance-plan",
   "ok branch governance implementation plan ready",
   "ok branch governance recommended path documented",
-  "blocked branch governance implementation approval missing"
+  "ok branch governance implementation approval recorded"
 ]) {
   assertIncludes(publishReadiness, requiredText, "publish readiness branch governance plan");
   assertIncludes(ciChecks, requiredText, "ci checks branch governance plan");
@@ -81,19 +81,19 @@ printRows([
   ["Contribution acceptance", "blocked"]
 ]);
 
-printSection("Future Implementation Boundaries");
+printSection("Implementation Boundaries");
 printList([
-  "Require current Package Checks to be green before changing branch governance.",
+  "Require current Package Checks to be green before any branch governance change.",
   "Prefer minimal branch protection before repository rulesets.",
   "Block force pushes and branch deletion.",
   "Keep owner emergency access documented.",
-  "Verify live branch governance after any future settings change."
+  "Verify live branch governance after any settings change."
 ]);
 
 console.log("");
 console.log("ok branch governance implementation plan ready");
 console.log("ok branch governance recommended path documented");
-console.log("blocked branch governance implementation approval missing");
+console.log("ok branch governance implementation approval recorded");
 
 async function assertPathExists(path) {
   try {

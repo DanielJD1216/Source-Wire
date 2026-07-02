@@ -161,7 +161,8 @@ console.log("ok live package lock Apache-2.0");
 console.log("ok npm package published @source-wire/contracts@0.1.0");
 console.log("ok release channels published v0.1.0");
 console.log("blocked production launch channels");
-console.log("blocked branch governance enforcement not approved");
+console.log("ok minimal branch protection implemented");
+console.log("blocked repository rulesets not enabled");
 
 function getNpmRegistryState(result) {
   if (result.exitCode === 0) {

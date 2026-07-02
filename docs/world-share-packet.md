@@ -112,7 +112,7 @@ Do not ask reviewers to send:
 
 ## Still Blocked
 
-- branch governance enforcement,
+- repository ruleset governance,
 - hosted runtime,
 - production runtime use,
 - code contribution acceptance.

@@ -155,6 +155,7 @@ function refreshIssueBody(body, context) {
     .replace(/- GitHub release: blocked/gu, "- GitHub release: published as `v0.1.0`")
     .replace(/- Release tags: blocked/gu, "- Release tags: published as `v0.1.0`")
     .replace(/- Version: `0\.0\.0`/gu, "- Version: `0.1.0`")
+    .replace(/- Version: 0\.0\.0/gu, "- Version: 0.1.0")
     .replace(/- Contribution terms approval: blocked because no separate exact owner approval record exists yet/gu, "- Contribution terms PRD: complete; code contribution acceptance blocked")
     .replace(/^npm publishing: blocked$/gmu, "npm publishing: published")
     .replace(/^GitHub release: blocked$/gmu, "GitHub release: published")

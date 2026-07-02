@@ -103,6 +103,7 @@
     "runtime:prd-preparation": "node scripts/hosted-runtime-prd-preparation.mjs",
     "runtime:prd-execution-packet": "node scripts/hosted-runtime-prd-execution-packet.mjs",
     "runtime:prd-decision-preflight": "node scripts/hosted-runtime-prd-decision-preflight.mjs",
+    "runtime:slice-approval-request": "node scripts/hosted-runtime-slice-approval-request.mjs",
     "contribution:terms-preparation": "node scripts/contribution-terms-prd-preparation.mjs",
     "contribution:terms-execution-packet": "node scripts/contribution-terms-prd-execution-packet.mjs",
     "contribution:terms-policy": "node scripts/contribution-terms-policy.mjs",

@@ -64,7 +64,8 @@ The command verifies:
 | License implementation | Complete |
 | npm publishing | Published as `@source-wire/contracts@0.1.0` |
 | GitHub release | Published as `v0.1.0` |
-| Hosted runtime | Blocked |
+| Hosted runtime PRD | Approved |
+| Hosted runtime implementation | Blocked |
 | Contributions | Blocked |
 
 ## Next Physical Action
@@ -77,7 +78,7 @@ npm run launch:decision-status
 npm run owner:decision-status
 ```
 
-The first public release path, minimal branch-governance path, and contribution terms PRD path have been executed. The remaining approval lane is hosted runtime PRD. This status command does not create new release artifacts, deploy services, enable hosted runtime, enable repository rulesets, or accept contributions.
+The first public release path, minimal branch-governance path, contribution terms PRD path, and hosted runtime PRD path have been approved or executed as applicable. The remaining runtime lane is child issue publication and later hosted runtime implementation. This status command does not create new release artifacts, deploy services, enable hosted runtime, enable repository rulesets, or accept contributions.
 
 ## Owner Decision Status
 
@@ -86,7 +87,7 @@ The command prints the current public owner-decision issues:
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
 - Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
 - Completed: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
-- Unresolved: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
+- Approved for PRD only: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
 
 ## Related Docs
 

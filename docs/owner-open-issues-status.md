@@ -46,7 +46,7 @@ blocked unresolved owner decision issues remain open
 - Open issues are exactly the unresolved owner-decision gates.
 - Issue `#255` has recorded release implementation approval and is closed as completed release history.
 - Issue `#256` has recorded branch governance implementation approval and is closed as completed branch-governance history.
-- Issue `#257` still needs separate owner approval before hosted runtime PRD work opens.
+- Issue `#257` has recorded hosted runtime PRD approval and remains open as the parent tracker until the approved PRD and later slice decisions are reconciled.
 - Issue `#258` has exact owner approval retained and is closed as completed contribution-terms PRD history, while code contribution acceptance remains blocked.
 - No unreviewed public open issue is silently hiding behind the share-ready status.
 
@@ -54,7 +54,7 @@ blocked unresolved owner decision issues remain open
 
 - It does not approve release execution.
 - It does not approve repository ruleset governance.
-- It does not approve hosted runtime PRD work.
+- It does not approve hosted runtime implementation.
 - It does not itself approve contribution terms work or code contribution acceptance.
 - It does not close or edit any issue.
 

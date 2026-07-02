@@ -64,6 +64,12 @@ blocked hosted runtime implementation
 
 That is not a failure. It means the future publication path is mechanically ready, but exact owner approval for publishing the six PRD/planning issues has not been recorded.
 
+Dry-run the guarded approval recorder before any write:
+
+```bash
+npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
+```
+
 ## Exact Approval Text
 
 Do not publish child issues until the owner approves this exact approval text:
@@ -80,4 +86,5 @@ Approved for a future Source-Wire hosted runtime child issue publication unit: p
 - [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md)
 - [Hosted Runtime Child Issue Publication Packet](hosted-runtime-child-issue-publication-packet.md)
 - [Hosted Runtime Child Issue Publisher](hosted-runtime-child-issue-publisher.md)
+- [Owner Approval Recorder](owner-approval-recorder.md)
 - [Owner Open Issues Status](owner-open-issues-status.md)

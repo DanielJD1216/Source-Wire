@@ -3,9 +3,11 @@ import { readFile, stat } from "node:fs/promises";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const hostedRuntimePreparation = await readFile("docs/hosted-runtime-prd-preparation.md", "utf8");
 const childIssueApprovalRequest = await readFile("docs/hosted-runtime-slice-approval-request.md", "utf8");
+const ownerApprovalRecorder = await readFile("docs/owner-approval-recorder.md", "utf8");
 const failures = [];
 
 const hostedRuntimeApprovalText = "Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit.";
+const hostedRuntimeChildIssuePublicationTarget = "hosted-runtime-child-issue-publication";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
@@ -23,7 +25,8 @@ for (const requiredPath of [
   "docs/hosted-runtime-prd-preparation.md",
   "docs/hosted-runtime-prd-execution-packet.md",
   "docs/hosted-runtime-child-issue-publication-preflight.md",
-  "docs/hosted-runtime-slice-approval-request.md"
+  "docs/hosted-runtime-slice-approval-request.md",
+  "docs/owner-approval-recorder.md"
 ]) {
   await assertPathExists(requiredPath);
 }
@@ -34,6 +37,10 @@ if (!hostedRuntimePreparation.includes(hostedRuntimeApprovalText)) {
 
 if (!childIssueApprovalRequest.includes("Approved for a future Source-Wire hosted runtime child issue publication unit")) {
   failures.push("hosted runtime child issue publication approval text must remain documented");
+}
+
+if (!ownerApprovalRecorder.includes(hostedRuntimeChildIssuePublicationTarget)) {
+  failures.push("owner approval recorder must document the hosted runtime child issue publication target");
 }
 
 if (failures.length > 0) {
@@ -82,6 +89,7 @@ printList([
 printSection("Next Approval Path");
 printList([
   "If you want the hosted runtime PRD child issues published, use the exact approval text in docs/hosted-runtime-slice-approval-request.md.",
+  "Dry-run the guarded recorder with npm run owner:record-approval -- --target hosted-runtime-child-issue-publication.",
   "If you want hosted runtime implementation later, open a separate implementation unit after child issues exist and the PRD gates are green.",
   "If you want code contributions later, open a separate contribution-acceptance implementation unit."
 ]);

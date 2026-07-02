@@ -66,6 +66,12 @@ The hosted runtime PRD is approved and documented on issue `#257`.
 
 Publishing hosted runtime PRD child issues still needs a separate exact owner approval. Use [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md) for that approval text.
 
+Before recording that approval, dry-run the guarded recorder:
+
+```bash
+npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
+```
+
 Hosted runtime implementation still needs another later implementation approval after the child issues exist and the PRD gates are green.
 
 ## Related Docs
@@ -75,5 +81,6 @@ Hosted runtime implementation still needs another later implementation approval 
 - [World Share Final Preflight](world-share-final-preflight.md)
 - [World Share Post-Share Monitor](world-share-post-share-monitor.md)
 - [Launch Decision Status](launch-decision-status.md)
+- [Owner Approval Recorder](owner-approval-recorder.md)
 - [Hosted Runtime PRD Preparation](hosted-runtime-prd-preparation.md)
 - [Hosted Runtime PRD Execution Packet](hosted-runtime-prd-execution-packet.md)

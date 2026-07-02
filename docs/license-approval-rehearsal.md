@@ -13,11 +13,11 @@ It exists to keep license implementation small, predictable, and hard to confuse
 | Field | Required current value |
 | --- | --- |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
+| Package version | `0.1.0` |
 | `LICENSE` file | present |
-| `publishConfig.access` | `restricted` |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
+| `publishConfig.access` | `public` |
+| npm publishing | published as `@source-wire/contracts@0.1.0` |
+| GitHub release publishing | published as `v0.1.0` |
 | Deployment scripts | blocked |
 
 ## Run The Check
@@ -48,8 +48,8 @@ ok license implementation checklist complete
 The command reads local repository files and checks that:
 
 - `package.json` says `Apache-2.0`,
-- package version is still `0.0.0`,
-- `publishConfig.access` is still `restricted`,
+- package version is still `0.1.0`,
+- `publishConfig.access` is still `public`,
 - `LICENSE` file exists,
 - package scripts do not contain package-manager publish commands,
 - package scripts do not contain `gh release`,

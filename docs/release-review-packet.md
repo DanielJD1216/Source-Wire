@@ -2,13 +2,13 @@
 
 Status: release review only.
 
-This packet does not approve npm publishing, GitHub release publishing, release tags, package version changes, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This packet does not approve publishing a new npm version, creating a new GitHub release, release tags, package version changes, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
-Use this packet before approved release execution.
+Use this packet to inspect the first release decision inputs and keep future release boundaries clear.
 
-It collects the release decision inputs that matter before publishing Source-Wire beyond source-repo sharing while release execution remains unperformed.
+It records the release decision inputs that mattered before publishing Source-Wire beyond source-repo sharing and now shows the first release as completed.
 
 ## Current Release State
 
@@ -16,11 +16,11 @@ It collects the release decision inputs that matter before publishing Source-Wir
 | --- | --- |
 | Package name | `@source-wire/contracts` |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
-| npm registry state | `E404 Not Found` observed on 2026-06-30 from local `npm view` |
-| GitHub release state | no releases observed on 2026-06-30 from local `gh release list` |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
+| Package version | `0.1.0` |
+| npm registry state | Published as `@source-wire/contracts@0.1.0` |
+| GitHub release state | Published as `v0.1.0` |
+| npm publishing | complete for `0.1.0` |
+| GitHub release publishing | complete for `v0.1.0` |
 | Hosted runtime | blocked |
 | Code contributions | blocked |
 
@@ -45,7 +45,7 @@ Expected markers:
 ```text
 ok release review packet ready
 ok release decision inputs documented
-blocked release execution not performed
+ok release execution completed
 ```
 
 ## Release Review Inputs
@@ -74,22 +74,22 @@ Reason:
 - Local package readiness is verified.
 - Public CI is green.
 - Exact owner release approval is recorded in issue `#255`.
-- Publishing and release creation remain blocked until npm authentication and final release execution preflights pass.
+- Publishing and release creation are complete for `0.1.0`.
+- Future new package versions and GitHub releases remain blocked without separate owner approval.
 - Hosted runtime and contribution acceptance remain separate decisions.
 
 ## Release Risks To Keep Visible
 
-- A `0.0.0` npm publish is possible technically, but it creates a weak public signal. Prefer choosing a real pre-release or first release version in the release implementation unit.
-- A GitHub release without npm can be useful for visibility, but it may confuse users if package installation remains registry-blocked.
-- npm publishing without a GitHub release can work, but it gives users less context.
+- Future package versions still need explicit owner approval and fresh release evidence.
+- GitHub releases should stay paired with the matching npm package version.
 - Code contribution acceptance still needs separate contribution terms.
 - Hosted runtime work still needs a separate runtime PRD.
 
 ## Still Blocked
 
-- npm publishing,
-- GitHub release publishing,
-- release tag creation,
+- publishing a new npm package version,
+- creating a new GitHub release,
+- creating a new release tag,
 - package version change,
 - deployment,
 - hosted runtime behavior,

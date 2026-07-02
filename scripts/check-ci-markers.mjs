@@ -44,8 +44,8 @@ const markerGroups = [
     name: "release publish config plan",
     markers: [
       "ok release publish config plan ready",
-      "ok future npm public access documented",
-      "blocked publish config mutation not performed"
+      "ok current npm public access documented",
+      "blocked future publish config mutation not performed"
     ]
   },
   {
@@ -70,7 +70,7 @@ const markerGroups = [
     markers: [
       "ok release review packet ready",
       "ok release decision inputs documented",
-      "blocked release execution not performed"
+      "ok release execution completed"
     ]
   },
   {
@@ -78,7 +78,7 @@ const markerGroups = [
     markers: [
       "ok release candidate readiness ready",
       "ok local package verification ready",
-      "blocked release execution not performed"
+      "ok release execution completed"
     ]
   },
   {
@@ -87,7 +87,7 @@ const markerGroups = [
       "ok release artifact manifest ready",
       "ok release artifact package identity @source-wire/contracts@0.1.0",
       "ok release artifact integrity recorded",
-      "blocked release artifact publish not approved"
+      "ok release artifact publication recorded"
     ]
   },
   {

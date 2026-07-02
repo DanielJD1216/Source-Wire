@@ -6,14 +6,14 @@ This plan does not change package metadata, publish npm, create a GitHub release
 
 ## Purpose
 
-Source-Wire is a scoped npm package. While npm publishing is blocked, the current package metadata intentionally keeps publishing closed:
+Source-Wire is a scoped npm package. The first public release is complete, so the current package metadata intentionally keeps public package access explicit:
 
 ```text
-Current package version: 0.0.0
-Current `publishConfig.access`: `restricted`
+Current package version: 0.1.0
+Current `publishConfig.access`: `public`
 ```
 
-The first approved public npm release needs an explicit access transition so the package is not accidentally prepared as a private scoped package.
+Future package version changes still need a separate owner-approved release unit.
 
 ## Command
 
@@ -35,25 +35,25 @@ Expected markers:
 
 ```text
 ok release publish config plan ready
-ok future npm public access documented
-blocked publish config mutation not performed
+ok current npm public access documented
+blocked future publish config mutation not performed
 ```
 
 ## Current Boundary
 
-Current `publishConfig.access`: `restricted`
+Current `publishConfig.access`: `public`
 
-That is correct while npm publishing is blocked.
+That is correct after the first public npm release.
 
-## Future Approved Release Value
+## Future New Release Boundary
 
-Future approved release value: `public`
+Future new release changes require separate approval.
 
-During an approved release execution unit, after npm auth is ready and before `npm publish`, the release implementer must:
+During a future approved release execution unit, after npm auth is ready and before publishing a new package version, the release implementer must:
 
-1. Change `package.json` version from `0.0.0` to `0.1.0`.
-2. Change `package-lock.json` version from `0.0.0` to `0.1.0`.
-3. Change `publishConfig.access` from `restricted` to `public`.
+1. Choose the next explicit package version.
+2. Change `package.json` and `package-lock.json` to that approved version.
+3. Keep `publishConfig.access` as `public`.
 4. Re-run `npm run publish:readiness`.
 5. Re-run `npm run release:artifact-manifest`.
 6. Confirm GitHub Actions Package Checks pass on the exact release commit.
@@ -63,7 +63,7 @@ During an approved release execution unit, after npm auth is ready and before `n
 
 Stop before publishing if any of these are true:
 
-- `publishConfig.access` is still `restricted` during the approved public npm release execution unit,
+- `publishConfig.access` changes away from `public` without an explicit owner decision,
 - package version and package-lock version do not match,
 - the intended release version is not explicit,
 - `npm run release:auth-preflight` does not show release publish credentials ready,
@@ -74,11 +74,11 @@ Stop before publishing if any of these are true:
 
 ## Still Blocked
 
-Until approved release execution starts:
+Until a future new release execution is approved:
 
-- `publishConfig.access` remains `restricted`,
-- package version remains `0.0.0`,
-- package-lock version remains `0.0.0`,
-- npm publishing remains blocked,
-- GitHub release publishing remains blocked,
-- release tag creation remains blocked.
+- `publishConfig.access` remains `public`,
+- package version remains `0.1.0`,
+- package-lock version remains `0.1.0`,
+- publishing a new npm version remains blocked,
+- creating a new GitHub release remains blocked,
+- creating a new release tag remains blocked.

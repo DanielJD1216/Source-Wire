@@ -80,9 +80,9 @@ printRows([
   ["Unpacked size bytes", String(pack.unpackedSize)],
   ["Shasum", pack.shasum],
   ["Integrity", pack.integrity],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
-  ["Release tag", "blocked"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
+  ["Release tag", "published as v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Code contributions", "blocked"]
 ]);
@@ -91,7 +91,7 @@ console.log("");
 console.log("ok release artifact manifest ready");
 console.log(`ok release artifact package identity ${pack.name}@${pack.version}`);
 console.log("ok release artifact integrity recorded");
-console.log("blocked release artifact publish not approved");
+console.log("ok release artifact publication recorded");
 
 function assertEqual(actual, expected, label) {
   if (actual === expected) {

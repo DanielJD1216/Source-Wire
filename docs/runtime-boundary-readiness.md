@@ -99,7 +99,7 @@ ok synthetic runtime boundary smoke
 The installed smoke should also print:
 
 ```text
-ok runtime boundary installed smoke @source-wire/contracts@0.0.0
+ok runtime boundary installed smoke @source-wire/contracts@0.1.0
 ok installed runtime boundary example
 ```
 

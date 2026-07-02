@@ -6,8 +6,8 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until approved release execution");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after first release");
 
 const requiredDocs = [
   "docs/release-review-packet.md",
@@ -30,7 +30,7 @@ const releaseNotesDraft = await readFile("docs/release-notes-draft.md", "utf8");
 
 for (const [label, text, requiredText] of [
   ["release review packet", reviewPacket, "Status: release review only."],
-  ["release review packet", reviewPacket, "npm registry state | `E404 Not Found` observed on 2026-06-30"],
+  ["release review packet", reviewPacket, "npm registry state | Published as `@source-wire/contracts@0.1.0`"],
   ["release review packet", reviewPacket, "Recorded release approval:"],
   ["version recommendation", versionRecommendation, "Recommended first public release path:"],
   ["version recommendation", versionRecommendation, "0.1.0"],
@@ -59,25 +59,23 @@ printRows([
   ["Package", packageJson.name],
   ["License", packageJson.license],
   ["Current version", packageJson.version],
-  ["Recommended future version", "0.1.0"],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["Published version", "0.1.0"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
 
 printSection("Next Action");
 printList([
-  "Run npm run release:auth-handoff before any release mutation.",
-  "Resolve npm authentication before npm publishing or matching GitHub release creation.",
-  "Then run npm run release:auth-preflight and npm run release:execution-preflight.",
-  "Do not publish npm, create a GitHub release, create a tag, change package version, deploy services, or accept code contributions from this check."
+  "Use release live checks and owner-decision freshness checks for post-release evidence.",
+  "Do not publish a new npm version, create a new GitHub release, create a new tag, change package version, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");
 console.log("ok release review packet ready");
 console.log("ok release decision inputs documented");
-console.log("blocked release execution not performed");
+console.log("ok release execution completed");
 
 async function assertPathExists(path) {
   try {

@@ -2,11 +2,11 @@
 
 Status: release artifact manifest only.
 
-This check does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start hosted runtime behavior, or accept code contributions.
+This check does not publish a new npm version, create a new GitHub release, create a tag, change package version, deploy services, start hosted runtime behavior, or accept code contributions.
 
 ## Purpose
 
-Use this check before any future release implementation decision to see the exact package artifact identity that would be released.
+Use this check to see the exact package artifact identity for the current published package shape.
 
 The command runs `npm pack --dry-run --json`, validates the required package paths, blocks private or source-only paths, and prints the package filename, file count, size, shasum, and integrity.
 
@@ -30,9 +30,9 @@ Expected markers:
 
 ```text
 ok release artifact manifest ready
-ok release artifact package identity @source-wire/contracts@0.0.0
+ok release artifact package identity @source-wire/contracts@0.1.0
 ok release artifact integrity recorded
-blocked release artifact publish not approved
+ok release artifact publication recorded
 ```
 
 ## What This Check Proves
@@ -40,9 +40,9 @@ blocked release artifact publish not approved
 The command verifies:
 
 - package name remains `@source-wire/contracts`,
-- package version remains `0.0.0`,
+- package version remains `0.1.0`,
 - package license remains `Apache-2.0`,
-- `publishConfig.access` remains `restricted`,
+- `publishConfig.access` remains `public`,
 - every required package path is included,
 - source-only paths such as `src/` and `scripts/` are not included,
 - local or private files such as `.env`, `.env.local`, `package-lock.json`, and `tsconfig.json` are not included,
@@ -52,18 +52,18 @@ The command verifies:
 
 `npm run package:dry-run` proves the package shape is valid.
 
-`npm run release:artifact-manifest` gives the owner and future release implementer a compact artifact identity record before any release channel opens.
+`npm run release:artifact-manifest` gives the owner and future release implementer a compact artifact identity record for the current package shape.
 
-If a future approved release implementation changes version from `0.0.0` to `0.1.0`, this manifest should be rerun after the version change and before publishing.
+If a future approved release implementation changes the package version, this manifest should be rerun after the version change and before publishing the new version.
 
 ## Current Boundary
 
-Until a separate owner-approved release implementation unit exists:
+Until a future owner-approved release implementation unit exists:
 
-- npm publishing remains blocked,
-- GitHub release publishing remains blocked,
-- release tag creation remains blocked,
-- package version remains `0.0.0`,
+- publishing a new npm package version remains blocked,
+- creating a new GitHub release remains blocked,
+- creating a new release tag remains blocked,
+- package version remains `0.1.0`,
 - deployment remains blocked,
 - hosted runtime behavior remains blocked,
 - production runtime claims remain blocked,

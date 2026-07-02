@@ -6,9 +6,9 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until approved release execution");
-assertEqual(packageLock.version, "0.1.0", "package-lock version must remain 0.0.0 until approved release execution");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
+assertEqual(packageLock.version, "0.1.0", "package-lock version must remain 0.1.0 after first release");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after first release");
 
 for (const requiredPath of [
   "docs/release-publish-config-plan.md",
@@ -22,11 +22,11 @@ for (const requiredPath of [
 const planDoc = await readFile("docs/release-publish-config-plan.md", "utf8");
 for (const requiredText of [
   "Status: publish-config transition plan only.",
-  "Current `publishConfig.access`: `restricted`",
-  "Future approved release value: `public`",
+  "Current `publishConfig.access`: `public`",
+  "Future new release changes require separate approval.",
   "ok release publish config plan ready",
-  "ok future npm public access documented",
-  "blocked publish config mutation not performed"
+  "ok current npm public access documented",
+  "blocked future publish config mutation not performed"
 ]) {
   if (!planDoc.includes(requiredText)) {
     failures.push(`release publish config plan doc missing required text: ${requiredText}`);
@@ -48,27 +48,26 @@ printRows([
   ["Current package version", packageJson.version],
   ["Current package-lock version", packageLock.version],
   ["Current publishConfig.access", packageJson.publishConfig.access],
-  ["Future approved release version", "0.1.0"],
-  ["Future approved release access", "public"],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["Published package version", "0.1.0"],
+  ["Published package access", "public"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
 
 printSection("Future Release Mutation Boundary");
 printList([
-  "Keep publishConfig.access restricted until the approved release execution unit is active.",
-  "During approved release execution, change package.json and package-lock.json from 0.0.0 to 0.1.0.",
-  "During approved release execution, change publishConfig.access from restricted to public before npm publish.",
-  "Rerun publish:readiness, release:artifact-manifest, Package Checks, and release:execution-preflight after those metadata changes.",
-  "Do not publish npm, create a GitHub release, create tags, deploy services, or accept code contributions from this check."
+  "Keep publishConfig.access public for the published package.",
+  "Treat any future package version change as a new owner-approved release unit.",
+  "Rerun publish:readiness, release:artifact-manifest, Package Checks, and release:execution-preflight before any future new release.",
+  "Do not publish a new npm version, create a new GitHub release, create tags, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");
 console.log("ok release publish config plan ready");
-console.log("ok future npm public access documented");
-console.log("blocked publish config mutation not performed");
+console.log("ok current npm public access documented");
+console.log("blocked future publish config mutation not performed");
 
 async function assertPathExists(path) {
   try {

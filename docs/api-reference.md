@@ -53,7 +53,7 @@ Those examples use the package import shape while local typechecking maps `@sour
 
 | Export | Kind | Purpose |
 | --- | --- | --- |
-| `SOURCE_WIRE_PACKAGE_VERSION` | value | Current package version string. Currently `0.0.0`. |
+| `SOURCE_WIRE_PACKAGE_VERSION` | value | Current package version string. Currently `0.1.0`. |
 | `SourceWireRuntimeBoundary` | type | Compile-time shape for the runtime boundary object. |
 | `SOURCE_WIRE_RUNTIME_BOUNDARY` | value | Declares this package is a contract skeleton, not runtime software. |
 | `SOURCE_WIRE_MINIMAL_RUNTIME_BOUNDARY` | value | Declares the minimal synthetic in-memory runtime proof boundary. |
@@ -269,10 +269,10 @@ Source-Wire does not currently export:
 Current package posture:
 
 - license is `Apache-2.0`,
-- version is `0.0.0`,
+- version is `0.1.0`,
 - `LICENSE` file exists,
-- npm publishing is blocked,
-- GitHub release publishing is blocked,
+- npm package `@source-wire/contracts@0.1.0` is published,
+- GitHub release `v0.1.0` is published,
 - runtime backend work is blocked.
 
 This API reference documents the current contract package surface only.

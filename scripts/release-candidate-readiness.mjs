@@ -6,9 +6,9 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until release execution");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
 assertEqual(packageJson.private, false, "package private flag should stay false for package-shape checks");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after first release");
 
 for (const requiredPath of [
   "LICENSE",
@@ -36,30 +36,29 @@ if (failures.length > 0) {
 
 printSection("Source-Wire Release Candidate Readiness");
 printRows([
-  ["Release candidate", "ready for approved release execution preflight"],
+  ["Release candidate", "published and ready for post-release verification"],
   ["Local package verification", "ready"],
   ["Package", packageJson.name],
   ["License", packageJson.license],
   ["Version", packageJson.version],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
 
 printSection("Next Action");
 printList([
-  "Run npm run release:auth-handoff before any release mutation.",
-  "Resolve npm authentication before npm publishing or matching GitHub release creation.",
-  "Then run npm run release:auth-preflight and npm run release:execution-preflight.",
+  "Use npm run registry:live-npm and npm run release:live-tags to verify live publication.",
+  "Use npm run release:decision-preflight to verify release evidence remains current.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them.",
-  "Do not publish npm, create a GitHub release, create a tag, deploy services, or accept code contributions from this check."
+  "Do not publish a new npm version, create a new GitHub release, create a new tag, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");
 console.log("ok release candidate readiness ready");
 console.log("ok local package verification ready");
-console.log("blocked release execution not performed");
+console.log("ok release execution completed");
 
 async function assertPathExists(path) {
   try {

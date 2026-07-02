@@ -99,15 +99,15 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release command guard smoke | `ok blocked release commands smoke` |
 | Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release execution not performed` |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution not performed` |
-| Release publish config plan | `ok release publish config plan ready`, `ok future npm public access documented`, `blocked publish config mutation not performed` |
-| Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `ok future npm public access rehearsal`, `blocked release mutation not performed` |
-| Release review | `ok release review packet ready`, `ok release decision inputs documented`, `blocked release execution not performed` |
+| Release publish config plan | `ok release publish config plan ready`, `ok current npm public access documented`, `blocked future publish config mutation not performed` |
+| Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `ok future npm public access rehearsal`, `ok release metadata applied` |
+| Release review | `ok release review packet ready`, `ok release decision inputs documented`, `ok release execution completed` |
 | Release approval request | `ok release approval request ready`, `blocked npm publishing release execution not performed`, `blocked github release execution not performed`, `blocked version release execution not performed` |
 | Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked release auth owner action required` |
 | Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `blocked release execution requires npm auth and final preflight` |
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` |
-| Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release execution not performed` |
-| Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.0.0`, `ok release artifact integrity recorded`, `blocked release artifact publish not approved` |
+| Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `ok release execution completed` |
+| Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.1.0`, `ok release artifact integrity recorded`, `ok release artifact publication recorded` |
 | License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
 | License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` |
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` |
@@ -134,11 +134,11 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` |
 | Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` |
 | Package required paths | `ok package required paths` |
-| Package dry run | `ok package dry-run @source-wire/contracts@0.0.0`, `ok package file count` |
-| Package content smoke | `ok package content smoke @source-wire/contracts@0.0.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links`, `ok installed package docs anchors` |
+| Package dry run | `ok package dry-run @source-wire/contracts@0.1.0`, `ok package file count` |
+| Package content smoke | `ok package content smoke @source-wire/contracts@0.1.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links`, `ok installed package docs anchors` |
 | Minimal runtime smoke | `ok minimal runtime boundary smoke` |
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
-| Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.0.0`, `ok installed runtime boundary example` |
+| Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.1.0`, `ok installed runtime boundary example` |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok docs anchors`, `ok command docs setup`, `ok readiness command docs match package scripts` |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` |
@@ -220,8 +220,8 @@ ok live world share status ready
 ok source repo sharing ready
 ok live public surface green
 ok live package lock Apache-2.0
-ok npm package unpublished
-ok release channels empty
+ok npm package published @source-wire/contracts@0.1.0
+ok release channels published v0.1.0
 blocked production launch channels
 blocked branch governance enforcement not approved
 ```
@@ -377,19 +377,22 @@ npm run registry:live-npm
 This read-only check verifies:
 
 - local package name remains `@source-wire/contracts`,
-- local package version remains `0.0.0`,
+- local package version remains `0.1.0`,
 - local package license remains `Apache-2.0`,
-- local `publishConfig.access` remains `restricted`,
-- `npm view @source-wire/contracts` returns the unpublished `E404` state,
-- npm publishing, GitHub release publishing, hosted runtime, and contribution acceptance remain blocked.
+- local `publishConfig.access` remains `public`,
+- `npm view @source-wire/contracts` returns published package data,
+- npm latest dist-tag is `0.1.0`,
+- npm access status is public,
+- hosted runtime and contribution acceptance remain blocked.
 
 Expected markers:
 
 ```text
 ok live npm registry boundary ready
-ok npm package unpublished
-ok local package publish boundary intact
-blocked npm publishing not approved
+ok npm package published @source-wire/contracts@0.1.0
+ok npm latest dist-tag 0.1.0
+ok npm package public
+blocked hosted runtime not approved
 ```
 
 This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
@@ -530,7 +533,7 @@ Run only the non-mutating release implementation rehearsal:
 npm run release:implementation-rehearsal
 ```
 
-The rehearsal checks the future `0.1.0` release path in memory only. It verifies that real package metadata and package-lock metadata stay at `0.0.0`, the simulated future manifest uses `0.1.0`, required release docs exist, and package scripts still block direct publish, release, tag, version, and deploy commands.
+The rehearsal checks that the approved `0.1.0` release metadata remains applied. It verifies that real package metadata and package-lock metadata stay at `0.1.0`, the simulated manifest uses `0.1.0`, required release docs exist, and package scripts still block direct publish, release, tag, version, and deploy commands.
 
 It does not publish npm, create a GitHub release, create a tag, change package version, change package-lock metadata, deploy services, start a runtime, accept contributions, or approve production runtime use.
 
@@ -612,7 +615,7 @@ Run only the public claim-boundary guard:
 npm run claims:scan
 ```
 
-The guard scans public README, docs, and examples for unsafe production, contribution, npm publishing, GitHub release, and hosted-runtime claims while the package remains unpublished and not hosted.
+The guard scans public README, docs, and examples for unsafe production, contribution, npm publishing, GitHub release, and hosted-runtime claims while the package remains not hosted.
 
 It skips fenced code blocks so docs can include unsafe wording examples as examples.
 
@@ -744,7 +747,7 @@ Run only the world-share readiness boundary report:
 npm run world:readiness
 ```
 
-The report separates Apache-2.0 source package sharing from blocked production launch channels. It exits successfully only when the current boundary is intact: Apache-2.0, version `0.0.0`, `LICENSE` file present, npm publishing blocked, release blocked, hosted runtime blocked, and code contributions blocked.
+The report separates Apache-2.0 source package sharing from blocked production launch channels. It exits successfully only when the current boundary is intact: Apache-2.0, version `0.1.0`, `LICENSE` file present, npm package published, GitHub release published, hosted runtime blocked, and code contributions blocked.
 
 It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
@@ -1049,8 +1052,8 @@ The release gate verifies that current package metadata still matches the releas
 
 - license is `Apache-2.0`,
 - package-lock root license is `Apache-2.0`,
-- version is `0.0.0`,
-- npm publishing remains blocked through restricted publish config,
+- version is `0.1.0`,
+- npm public access is explicit through `publishConfig.access: public`,
 - package scripts do not include publish, release, tag, version-change, or deployment commands.
 
 Release decision docs:

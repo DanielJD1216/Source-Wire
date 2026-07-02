@@ -10,15 +10,15 @@ If you received the repo from someone else, start with [Share For Technical Revi
 
 Source-Wire is Apache-2.0 licensed as a source package, but it is still:
 
-- version `0.0.0`,
-- not published to npm,
-- not released on GitHub,
+- version `0.1.0`,
+- published to npm as `@source-wire/contracts@0.1.0`,
+- released on GitHub as `v0.1.0`,
 - not a hosted runtime,
 - not a real MCP server runtime,
 - not a database or connector system,
 - not approved for real user data examples.
 
-Do not treat Apache-2.0 source package reuse as permission to publish npm, create GitHub releases, deploy services, accept code contributions, or claim production runtime readiness.
+Do not treat Apache-2.0 source package reuse or the first `0.1.0` release as permission to publish new package versions, create new GitHub releases, deploy services, accept code contributions, or claim production runtime readiness.
 
 Public code contributions are not accepted yet.
 

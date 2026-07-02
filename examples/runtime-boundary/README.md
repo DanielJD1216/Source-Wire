@@ -53,7 +53,7 @@ npm run runtime-boundary:installed-smoke
 Expected installed smoke markers:
 
 ```text
-ok runtime boundary installed smoke @source-wire/contracts@0.0.0
+ok runtime boundary installed smoke @source-wire/contracts@0.1.0
 ok installed runtime boundary example
 ```
 

@@ -127,7 +127,7 @@ The command prints the current public owner-decision issues:
 ## Exact Current Safe Share Copy
 
 ```text
-Source-Wire is Apache-2.0 licensed as a source package. It is version 0.0.0, unpublished to npm, unreleased on GitHub, undeployed, and not a hosted runtime.
+Source-Wire is Apache-2.0 licensed as a source package. It is version 0.1.0, published to npm as `@source-wire/contracts@0.1.0`, released on GitHub as `v0.1.0`, undeployed, and not a hosted runtime.
 ```
 
 ## What Not To Say Yet

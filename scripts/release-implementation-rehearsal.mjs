@@ -102,8 +102,8 @@ printRows([
   ["Approved release version", simulatedManifest.version],
   ["Approved release publishConfig.access", simulatedManifest.publishConfig.access],
   ["License", simulatedManifest.license],
-  ["npm publishing", "not yet performed"],
-  ["GitHub release", "not yet performed"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Release metadata", "applied"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
@@ -111,8 +111,8 @@ printRows([
 
 printSection("Next Action");
 printList([
-  "Use this check after approved release metadata is applied and before npm publish plus GitHub release creation.",
-  "Do not create a tag, publish npm, create a GitHub release, deploy services, or accept code contributions from this check."
+  "Use this check to confirm first-release metadata remains applied.",
+  "Do not create a new tag, publish a new npm version, create a new GitHub release, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");

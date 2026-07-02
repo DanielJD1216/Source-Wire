@@ -35,7 +35,7 @@ Expected markers:
 ```text
 Source-Wire Package Readiness Report
 Package: @source-wire/contracts
-Version: 0.0.0
+Version: 0.1.0
 License: Apache-2.0
 Runtime boundary: synthetic in-memory boundary only, no backend runtime included
 ok readiness report
@@ -96,7 +96,7 @@ Expected markers include:
 
 ```text
 ok release gate
-ok package dry-run @source-wire/contracts@0.0.0
+ok package dry-run @source-wire/contracts@0.1.0
 ok consumer installed fixture matrix validation
 ok installed runtime readiness summary
 ok installed runtime readiness summary content
@@ -151,7 +151,7 @@ npm run examples:installed-smoke
 Expected markers:
 
 ```text
-ok examples installed smoke @source-wire/contracts@0.0.0
+ok examples installed smoke @source-wire/contracts@0.1.0
 ok installed TypeScript examples 5 files
 ok installed examples package-root imports
 ```
@@ -206,7 +206,7 @@ npm run runtime-boundary:installed-smoke
 Expected markers:
 
 ```text
-ok runtime boundary installed smoke @source-wire/contracts@0.0.0
+ok runtime boundary installed smoke @source-wire/contracts@0.1.0
 ok runtime boundary check authorized_read
 ok runtime boundary check unauthorized_read_denial
 ok runtime boundary check wrong_namespace_denial
@@ -240,8 +240,8 @@ The runtime-boundary smokes use synthetic data only. They do not start a backend
 
 Source-Wire does not currently include:
 
-- npm publishing,
-- GitHub release publishing,
+- publishing a new npm package version,
+- creating a new GitHub release,
 - deployment,
 - API server runtime,
 - MCP server runtime,
@@ -256,9 +256,9 @@ Source-Wire does not currently include:
 Current release posture:
 
 - package license is `Apache-2.0`,
-- package version is `0.0.0`,
+- package version is `0.1.0`,
 - `LICENSE` file exists,
-- npm publishing is blocked,
+- npm package `@source-wire/contracts@0.1.0` is published,
 - runtime backend work is blocked.
 
 ## Related Docs

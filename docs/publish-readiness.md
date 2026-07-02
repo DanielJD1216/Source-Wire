@@ -45,6 +45,7 @@ This command runs:
 - `npm run runtime:prd-execution-packet`
 - `npm run contribution:terms-preparation`
 - `npm run contribution:terms-execution-packet`
+- `npm run contribution:terms-policy`
 - `npm run owner:approval-packet`
 - `npm run owner:launch-checklist`
 - `npm run owner:license-preflight`
@@ -123,6 +124,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Hosted runtime PRD execution packet | `ok hosted runtime PRD execution packet ready`, `ok hosted runtime PRD execution scope documented`, `blocked hosted runtime PRD approval missing` |
 | Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
 | Contribution terms PRD execution packet | `ok contribution terms PRD execution packet ready`, `ok contribution terms PRD execution scope documented`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
+| Contribution terms policy | `ok contribution terms PRD defined`, `ok contribution policy boundary current`, `blocked code contribution acceptance` |
 | Owner approval packet | `ok owner approval packet ready`, `ok exact owner approval texts available`, `blocked approval recording is manual owner action` |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked launch channels missing` |
 | Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `ok owner license approval captured` |
@@ -227,7 +229,7 @@ ok completed owner decision #256 closed
 ok exact branch governance implementation approval retained
 ok only unresolved owner decision issues open
 blocked #257 hosted runtime PRD approval missing
-blocked #258 contribution terms PRD approval missing
+ok #258 contribution terms PRD approval recorded while issue remains open
 blocked owner decisions missing approval records
 blocked unresolved owner decision issues remain open
 ```

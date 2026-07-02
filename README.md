@@ -177,6 +177,8 @@ Source-Wire can run a full local readiness gate with package dry-run, installed 
 - [Release Snapshot Boundary](docs/release-snapshot-boundary.md)
 - [Hosted Runtime PRD Preparation](docs/hosted-runtime-prd-preparation.md)
 - [Contribution Terms PRD Preparation](docs/contribution-terms-prd-preparation.md)
+- [Contribution Terms PRD](docs/contribution-terms-prd.md)
+- [Contribution Policy](docs/contribution-policy.md)
 - [Legal Review Question Packet](docs/legal-review-question-packet.md)
 - [License Approval Rehearsal](docs/license-approval-rehearsal.md)
 - [License Decision Gate](docs/license-decision-gate.md)

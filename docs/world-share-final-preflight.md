@@ -73,7 +73,7 @@ Stop broad public sharing if:
 - GitHub releases or tags exist without a release implementation unit,
 - branch protection or repository rulesets changed without owner approval,
 - hosted runtime behavior appears in public docs or package surfaces,
-- code contribution acceptance appears before contribution terms are approved,
+- code contribution acceptance appears before a separate implementation unit explicitly opens it,
 - private data, real user data, local private paths, real chat logs, screenshots, client names, account IDs, tokens, or production exports appear in public package contents.
 
 ## Still Blocked

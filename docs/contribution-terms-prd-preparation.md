@@ -82,6 +82,8 @@ The future PRD must define:
 Before starting the PRD unit, review:
 
 - [Contributing Boundary](../CONTRIBUTING.md)
+- [Contribution Terms PRD](contribution-terms-prd.md)
+- [Contribution Policy](contribution-policy.md)
 - [Support Boundary](../SUPPORT.md)
 - [Security Policy](../SECURITY.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)

@@ -70,12 +70,13 @@ Expected boundary markers:
 
 ```text
 ok license Apache-2.0
-ok version 0.0.0
-ok publishing blocked
+ok version 0.1.0
+ok npm package published @source-wire/contracts@0.1.0
+blocked code contribution acceptance
 ```
 
 ## Future Contribution Terms
 
-Future contribution terms may be added only after explicit owner approval.
+Future contribution terms PRD work is approved, but public code contribution acceptance remains blocked until those terms are implemented and separately opened.
 
 Until then, public issues are review feedback. They are not approval to publish npm, create GitHub releases, deploy services, host a runtime, claim production readiness, or contribute code to Source-Wire.

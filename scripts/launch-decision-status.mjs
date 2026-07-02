@@ -58,7 +58,7 @@ printList([
   "Use npm install @source-wire/contracts for the public package.",
   "Use the GitHub v0.1.0 release for the first public release snapshot.",
   "Keep hosted runtime, production runtime claims, repository rulesets, and contribution acceptance blocked unless separate approval opens them.",
-  "Open contribution terms before accepting code contributions.",
+  "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
   "Open a separate PRD before hosted runtime work."
 ]);
 

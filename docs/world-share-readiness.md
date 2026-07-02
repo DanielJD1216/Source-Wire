@@ -204,12 +204,12 @@ ok completed owner decision #256 closed
 ok exact branch governance implementation approval retained
 ok only unresolved owner decision issues open
 blocked #257 hosted runtime PRD approval missing
-blocked #258 contribution terms PRD approval missing
+ok #258 contribution terms PRD approval recorded while issue remains open
 blocked owner decisions missing approval records
 blocked unresolved owner decision issues remain open
 ```
 
-This read-only check verifies that the only open public issues are the unresolved owner-decision gates `#257` and `#258`, and distinguishes completed release and branch-governance history on `#255` and `#256` from missing approvals on `#257` and `#258`.
+This read-only check verifies that the only open public issues are owner-decision gates `#257` and `#258`, and distinguishes completed release and branch-governance history on `#255` and `#256` from the missing hosted runtime approval on `#257` and recorded contribution terms PRD approval on `#258`.
 
 For the live repo and live launch channels only, run:
 

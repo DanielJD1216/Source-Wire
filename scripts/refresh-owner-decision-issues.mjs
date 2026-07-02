@@ -60,6 +60,7 @@ const decisionIssues = [
       "ok owner open issue boundary current",
       "ok contribution terms PRD evidence current",
       "ok contribution terms PRD execution packet current",
+      "ok contribution terms policy current",
       "ok public intake boundary current",
       "ok exact contribution terms PRD approval recorded",
       "blocked code contribution acceptance"

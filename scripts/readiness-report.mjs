@@ -59,6 +59,7 @@ const requiredScripts = [
   "runtime:prd-decision-preflight",
   "contribution:terms-preparation",
   "contribution:terms-execution-packet",
+  "contribution:terms-policy",
   "contribution:terms-decision-preflight",
   "owner:approval-packet",
   "owner:launch-checklist",

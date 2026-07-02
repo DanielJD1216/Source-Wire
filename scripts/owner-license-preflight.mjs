@@ -75,7 +75,7 @@ printList([
   "Apache-2.0 implementation is complete.",
   "Release path approval is recorded in #255.",
   "Use a future approved release unit before publishing a new npm version or creating a new GitHub release.",
-  "Open contribution terms before accepting code contributions.",
+  "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
   "Open a separate PRD before hosted runtime work."
 ]);
 

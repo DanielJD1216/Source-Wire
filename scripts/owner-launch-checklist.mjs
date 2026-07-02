@@ -44,7 +44,7 @@ printRows([
   ["GitHub release", "published as v0.1.0"],
   ["Branch governance", "minimal branch protection implemented"],
   ["Hosted runtime", "blocked, runtime approval missing"],
-  ["Code contributions", "blocked, contribution terms approval missing"]
+  ["Code contributions", "blocked, contribution terms PRD approved; acceptance not open"]
 ]);
 
 printSection("Current Guarded State");
@@ -65,7 +65,7 @@ printList([
   "5. Run npm run release:execution-preflight only before future release mutation.",
   "6. Minimal branch protection is implemented; repository rulesets remain deferred.",
   "7. Run npm run contribution:terms-decision-preflight.",
-  "8. Code contribution acceptance needs explicit contribution terms.",
+  "8. Contribution terms PRD work is approved; code contribution acceptance still needs explicit contribution terms implementation.",
   "9. Run npm run runtime:prd-decision-preflight.",
   "10. Hosted runtime work needs a separate runtime PRD."
 ]);
@@ -74,7 +74,7 @@ printSection("Recommended Next Owner Choice");
 printList([
   "Keep the published first release at version 0.1.0.",
   "Use a future approved release unit before changing package version, npm dist-tags, or GitHub release assets.",
-  "Open contribution terms before hosted runtime so public feedback and pull request expectations are clear.",
+  "Keep contribution acceptance blocked until a separate implementation unit explicitly opens it.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);
 

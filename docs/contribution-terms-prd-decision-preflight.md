@@ -32,6 +32,8 @@ This runs:
 - `npm run owner:decision-status`
 - `npm run owner:open-issues-status`
 - `npm run contribution:terms-preparation`
+- `npm run contribution:terms-execution-packet`
+- `npm run contribution:terms-policy`
 - `npm run pull-request:boundary`
 - `npm run intake:boundary`
 - `npm run launch:decision-status`
@@ -44,6 +46,8 @@ ok world share preflight current
 ok owner decision status current
 ok owner open issue boundary current
 ok contribution terms PRD evidence current
+ok contribution terms PRD execution packet current
+ok contribution terms policy current
 ok public intake boundary current
 ok exact contribution terms PRD approval recorded
 blocked code contribution acceptance
@@ -68,6 +72,8 @@ Stop before PRD work if:
 - `npm run owner:open-issues-status` shows unexpected open issues,
 - `npm run world:share-preflight` fails,
 - `npm run contribution:terms-preparation` fails,
+- `npm run contribution:terms-execution-packet` fails,
+- `npm run contribution:terms-policy` fails,
 - `npm run pull-request:boundary` fails,
 - `npm run intake:boundary` fails,
 - the planned PRD accepts code contributions instead of defining contribution terms,
@@ -92,6 +98,8 @@ This preflight keeps these blocked:
 ## Related Docs
 
 - [Contribution Terms PRD Preparation](contribution-terms-prd-preparation.md)
+- [Contribution Terms PRD](contribution-terms-prd.md)
+- [Contribution Policy](contribution-policy.md)
 - [Owner Approval Record Packet](owner-approval-record-packet.md)
 - [Owner Open Issues Status](owner-open-issues-status.md)
 - [Pull Request Boundary](https://github.com/DanielJD1216/Source-Wire/blob/main/.github/pull_request_template.md)

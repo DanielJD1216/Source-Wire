@@ -194,6 +194,14 @@ const markerGroups = [
     ]
   },
   {
+    name: "contribution terms policy",
+    markers: [
+      "ok contribution terms PRD defined",
+      "ok contribution policy boundary current",
+      "blocked code contribution acceptance"
+    ]
+  },
+  {
     name: "owner approval packet",
     markers: [
       "ok owner approval packet ready",

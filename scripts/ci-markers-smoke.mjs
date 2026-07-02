@@ -81,6 +81,9 @@ const completeLog = [
   "ok contribution terms PRD execution scope documented",
   "ok exact contribution terms PRD approval recorded",
   "blocked code contribution acceptance",
+  "ok contribution terms PRD defined",
+  "ok contribution policy boundary current",
+  "blocked code contribution acceptance",
   "ok owner approval packet ready",
   "ok exact owner approval texts available",
   "blocked approval recording is manual owner action",
@@ -173,7 +176,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 49 groups 153 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 50 groups 156 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

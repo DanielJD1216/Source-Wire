@@ -80,6 +80,7 @@ After the future PRD unit lands, run:
 ```bash
 npm run publish:readiness
 npm run world:share-final-preflight
+npm run contribution:terms-policy
 npm run owner:refresh-decision-issues
 npm run owner:decision-issues-freshness
 ```
@@ -89,7 +90,8 @@ Expected future result while contribution acceptance remains blocked:
 ```text
 ok contribution terms PRD decision preflight ready
 ok contribution terms PRD evidence current
-blocked contribution acceptance not approved
+ok contribution terms policy current
+blocked code contribution acceptance
 ```
 
 ## Stop Conditions
@@ -123,6 +125,8 @@ This packet does not approve:
 ## Related Docs
 
 - [Contribution Terms PRD Preparation](contribution-terms-prd-preparation.md)
+- [Contribution Terms PRD](contribution-terms-prd.md)
+- [Contribution Policy](contribution-policy.md)
 - [Contribution Terms PRD Decision Preflight](contribution-terms-prd-decision-preflight.md)
 - [Reviewer Feedback Guide](reviewer-feedback-guide.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)

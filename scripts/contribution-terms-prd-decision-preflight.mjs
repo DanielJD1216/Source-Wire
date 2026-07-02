@@ -11,6 +11,7 @@ const checks = [
   ["owner:open-issues-status", "owner open issue boundary"],
   ["contribution:terms-preparation", "contribution terms PRD preparation"],
   ["contribution:terms-execution-packet", "contribution terms PRD execution packet"],
+  ["contribution:terms-policy", "contribution terms policy"],
   ["pull-request:boundary", "pull request boundary"],
   ["intake:boundary", "public intake boundary"],
   ["launch:decision-status", "launch decision status"]
@@ -34,6 +35,7 @@ console.log("ok owner decision status current");
 console.log("ok owner open issue boundary current");
 console.log("ok contribution terms PRD evidence current");
 console.log("ok contribution terms PRD execution packet current");
+console.log("ok contribution terms policy current");
 console.log("ok public intake boundary current");
 if (contributionTermsApprovalRecorded) {
   console.log("ok exact contribution terms PRD approval recorded");

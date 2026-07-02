@@ -19,6 +19,8 @@ Current state:
 - GitHub release is published as `v0.1.0`,
 - hosted runtime backend work is blocked.
 
+Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though the package metadata is `0.1.0`. Latest `main` fixes this for a future owner-approved patch release.
+
 The Apache-2.0 license plus first release grants source package reuse rights. It does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.
 
 ## What You Can Review Today
@@ -63,7 +65,7 @@ Expected high-signal markers:
 Package: @source-wire/contracts
 Version: 0.1.0
 License: Apache-2.0
-Publish boundary: approved release metadata applied, npm publish not yet performed
+Publish boundary: npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked
 Runtime boundary: synthetic in-memory boundary only, no backend runtime included
 ok readiness report
 ```

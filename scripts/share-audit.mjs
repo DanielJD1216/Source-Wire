@@ -28,6 +28,7 @@ const shareForReview = await readFile("docs/share-for-review.md", "utf8");
 const worldShareKit = await readFile("docs/world-share-kit.md", "utf8");
 const firstVisitorAudit = await readFile("docs/first-time-visitor-share-readiness-audit.md", "utf8");
 const worldReadiness = await readFile("docs/world-share-readiness.md", "utf8");
+const technicalReviewerGuide = await readFile("docs/technical-reviewer-guide.md", "utf8");
 const safeInviteCopy = extractSectionCodeBlock(shareForReview, "Safe Invite Copy");
 
 for (const [label, text, requiredText] of [
@@ -48,6 +49,8 @@ for (const [label, text, requiredText] of [
   ["first visitor audit", firstVisitorAudit, "Ready for technical review: yes."],
   ["first visitor audit", firstVisitorAudit, "Ready for source package reuse: yes, under Apache-2.0."],
   ["first visitor audit", firstVisitorAudit, "Still blocked: deployment, hosted runtime use, production runtime use, and code contribution acceptance."],
+  ["technical reviewer guide", technicalReviewerGuide, "Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`"],
+  ["technical reviewer guide", technicalReviewerGuide, "Publish boundary: npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked"],
   ["world readiness", worldReadiness, "Source-Wire can be shared as an Apache-2.0 licensed source package."],
   ["world readiness", worldReadiness, "It is an npm-published package and GitHub release, but not a deployed service, hosted runtime, or production runtime."]
 ]) {

@@ -42,6 +42,7 @@ const completeLog = [
   "ok release artifact package identity @source-wire/contracts@0.1.0",
   "ok release artifact integrity recorded",
   "ok release artifact publication recorded",
+  "ok published npm artifact metadata recorded",
   "ok license decision record ready",
   "ok license decision captured",
   "ok license implementation complete",
@@ -166,7 +167,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 48 groups 146 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 48 groups 147 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

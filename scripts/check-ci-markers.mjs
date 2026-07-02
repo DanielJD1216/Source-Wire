@@ -87,7 +87,8 @@ const markerGroups = [
       "ok release artifact manifest ready",
       "ok release artifact package identity @source-wire/contracts@0.1.0",
       "ok release artifact integrity recorded",
-      "ok release artifact publication recorded"
+      "ok release artifact publication recorded",
+      "ok published npm artifact metadata recorded"
     ]
   },
   {

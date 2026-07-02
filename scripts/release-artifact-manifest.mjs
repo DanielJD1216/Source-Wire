@@ -25,6 +25,13 @@ if (packResult.exitCode !== 0) {
 }
 
 const [pack] = JSON.parse(packResult.stdout);
+const liveDistResult = await run("npm", ["view", `${pack.name}@${pack.version}`, "dist", "--json"]);
+if (liveDistResult.exitCode !== 0) {
+  console.error(liveDistResult.stderr.trim() || liveDistResult.stdout.trim());
+  process.exit(liveDistResult.exitCode);
+}
+
+const liveDist = JSON.parse(liveDistResult.stdout);
 const files = pack.files.map((entry) => entry.path).sort();
 const failures = [];
 
@@ -58,6 +65,26 @@ if (typeof pack.integrity !== "string" || !pack.integrity.startsWith("sha512-"))
   failures.push("package dry-run did not return sha512 integrity");
 }
 
+if (typeof liveDist.shasum !== "string" || liveDist.shasum.length !== 40) {
+  failures.push("published npm artifact did not return a sha1 shasum");
+}
+
+if (typeof liveDist.integrity !== "string" || !liveDist.integrity.startsWith("sha512-")) {
+  failures.push("published npm artifact did not return sha512 integrity");
+}
+
+if (typeof liveDist.tarball !== "string" || !liveDist.tarball.includes("/@source-wire/contracts/-/contracts-0.1.0.tgz")) {
+  failures.push("published npm artifact tarball URL is missing or unexpected");
+}
+
+if (!Number.isInteger(liveDist.fileCount) || liveDist.fileCount <= 0) {
+  failures.push("published npm artifact file count is missing or invalid");
+}
+
+if (!Number.isInteger(liveDist.unpackedSize) || liveDist.unpackedSize <= 0) {
+  failures.push("published npm artifact unpacked size is missing or invalid");
+}
+
 if (failures.length > 0) {
   console.error("failed release artifact manifest");
   for (const failure of failures) {
@@ -69,6 +96,8 @@ if (failures.length > 0) {
 console.log("");
 console.log("Source-Wire Release Artifact Manifest");
 console.log("-------------------------------------");
+console.log("");
+console.log("Local source dry-run artifact");
 printRows([
   ["Package", pack.name],
   ["Version", pack.version],
@@ -79,7 +108,30 @@ printRows([
   ["Tarball size bytes", String(pack.size)],
   ["Unpacked size bytes", String(pack.unpackedSize)],
   ["Shasum", pack.shasum],
-  ["Integrity", pack.integrity],
+  ["Integrity", pack.integrity]
+]);
+
+console.log("");
+console.log("Published npm artifact");
+printRows([
+  ["Package", pack.name],
+  ["Version", pack.version],
+  ["Tarball", liveDist.tarball],
+  ["File count", String(liveDist.fileCount)],
+  ["Unpacked size bytes", String(liveDist.unpackedSize)],
+  ["Shasum", liveDist.shasum],
+  ["Integrity", liveDist.integrity]
+]);
+
+const relation =
+  pack.shasum === liveDist.shasum && pack.integrity === liveDist.integrity
+    ? "local dry-run matches published npm artifact"
+    : "local dry-run differs from published npm artifact; published npm artifact remains immutable";
+
+console.log("");
+console.log("Publication boundary");
+printRows([
+  ["Local vs published", relation],
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
   ["Release tag", "published as v0.1.0"],
@@ -92,6 +144,7 @@ console.log("ok release artifact manifest ready");
 console.log(`ok release artifact package identity ${pack.name}@${pack.version}`);
 console.log("ok release artifact integrity recorded");
 console.log("ok release artifact publication recorded");
+console.log("ok published npm artifact metadata recorded");
 
 function assertEqual(actual, expected, label) {
   if (actual === expected) {

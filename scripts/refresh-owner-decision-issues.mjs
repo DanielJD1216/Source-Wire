@@ -299,24 +299,12 @@ async function getLatestPackageChecksRun() {
 
 async function getReleaseArtifactManifest() {
   const result = await run("npm", ["run", "release:artifact-manifest"], { maxBuffer: 1024 * 1024 * 20 });
-  const manifestMatch = result.stdout.match(/Package\s*: (?<packageName>.+)\nVersion\s*: (?<version>.+)\nLicense\s*: (?<license>.+)\nFilename\s*: (?<filename>.+)\nFile count\s*: (?<fileCount>.+)\nRequired path count: (?<requiredPathCount>.+)\nTarball size bytes : (?<tarballSize>.+)\nUnpacked size bytes: (?<unpackedSize>.+)\nShasum\s*: (?<shasum>.+)\nIntegrity\s*: (?<integrity>.+)/u);
-  if (!manifestMatch?.groups) {
+  const manifestMatch = result.stdout.match(/Source-Wire Release Artifact Manifest\n[-]+\n(?<manifest>[\s\S]*?)\nok release artifact manifest ready/u);
+  if (!manifestMatch?.groups?.manifest) {
     throw new Error("unable to parse release artifact manifest");
   }
 
-  const groups = manifestMatch.groups;
-  return [
-    `Package            : ${groups.packageName}`,
-    `Version            : ${groups.version}`,
-    `License            : ${groups.license}`,
-    `Filename           : ${groups.filename}`,
-    `File count         : ${groups.fileCount}`,
-    `Required path count: ${groups.requiredPathCount}`,
-    `Tarball size bytes : ${groups.tarballSize}`,
-    `Unpacked size bytes: ${groups.unpackedSize}`,
-    `Shasum             : ${groups.shasum}`,
-    `Integrity          : ${groups.integrity}`
-  ].join("\n");
+  return manifestMatch.groups.manifest.trim();
 }
 
 function ghJson(args) {

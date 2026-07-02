@@ -111,7 +111,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `ok release execution completed` |
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `ok release execution completed` |
-| Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.1.0`, `ok release artifact integrity recorded`, `ok release artifact publication recorded` |
+| Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.1.0`, `ok release artifact integrity recorded`, `ok release artifact publication recorded`, `ok published npm artifact metadata recorded` |
 | License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
 | License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` |
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` |
@@ -874,7 +874,9 @@ Run only the release artifact manifest check:
 npm run release:artifact-manifest
 ```
 
-The release artifact manifest check builds the package, runs `npm pack --dry-run --json`, verifies required and forbidden package paths, and prints the release artifact identity, file count, package size, shasum, and integrity.
+The release artifact manifest check builds the package, runs `npm pack --dry-run --json`, verifies required and forbidden package paths, reads the live npm registry metadata, and prints both the current source dry-run artifact identity and the immutable published npm artifact identity.
+
+The current source dry-run artifact can differ from the already-published npm artifact after post-release docs or source changes. That difference is expected and does not publish a new version.
 
 It does not publish, create a GitHub release, create a tag, change package version, deploy services, start hosted runtime behavior, or accept code contributions.
 

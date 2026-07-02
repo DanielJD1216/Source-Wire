@@ -6,9 +6,12 @@ This check does not publish a new npm version, create a new GitHub release, crea
 
 ## Purpose
 
-Use this check to see the exact package artifact identity for the current published package shape.
+Use this check to see both package artifact identities that matter after the first public release:
 
-The command runs `npm pack --dry-run --json`, validates the required package paths, blocks private or source-only paths, and prints the package filename, file count, size, shasum, and integrity.
+- the current source checkout package dry-run artifact,
+- the immutable published npm artifact for `@source-wire/contracts@0.1.0`.
+
+The command runs `npm pack --dry-run --json`, validates the required package paths, blocks private or source-only paths, reads the live npm registry metadata, and prints the package filename, file count, size, shasum, and integrity for the relevant artifact boundary.
 
 ## Command
 
@@ -33,6 +36,7 @@ ok release artifact manifest ready
 ok release artifact package identity @source-wire/contracts@0.1.0
 ok release artifact integrity recorded
 ok release artifact publication recorded
+ok published npm artifact metadata recorded
 ```
 
 ## What This Check Proves
@@ -46,13 +50,17 @@ The command verifies:
 - every required package path is included,
 - source-only paths such as `src/` and `scripts/` are not included,
 - local or private files such as `.env`, `.env.local`, `package-lock.json`, and `tsconfig.json` are not included,
-- npm dry-run returns a shasum and sha512 integrity value.
+- npm dry-run returns a shasum and sha512 integrity value,
+- the live npm registry returns published tarball metadata for `@source-wire/contracts@0.1.0`,
+- the published npm artifact shasum, integrity, tarball URL, file count, and unpacked size are recorded.
+
+The local source dry-run artifact may differ from the already-published npm artifact after post-release source or documentation changes. That is expected. npm packages are immutable, so this check records that boundary instead of pretending the current checkout is byte-identical to the published tarball.
 
 ## Why This Exists
 
 `npm run package:dry-run` proves the package shape is valid.
 
-`npm run release:artifact-manifest` gives the owner and future release implementer a compact artifact identity record for the current package shape.
+`npm run release:artifact-manifest` gives the owner and future release implementer a compact artifact identity record for the current package shape and the published npm package.
 
 If a future approved release implementation changes the package version, this manifest should be rerun after the version change and before publishing the new version.
 

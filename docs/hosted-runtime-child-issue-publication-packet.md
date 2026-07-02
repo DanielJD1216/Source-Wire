@@ -10,7 +10,7 @@ Use this packet after reading the [Hosted Runtime Slice Approval Request](hosted
 
 The packet makes the future GitHub issue payloads explicit so the publication step can stay mechanical after owner approval.
 
-The guarded publisher is documented in [Hosted Runtime Child Issue Publisher](hosted-runtime-child-issue-publisher.md). Its default mode is read-only. Write mode requires the exact approval text, `--write`, and `--confirm-exact`.
+The guarded publisher is documented in [Hosted Runtime Child Issue Publisher](hosted-runtime-child-issue-publisher.md). Its default mode is read-only. Write mode requires the exact approval text, `--write`, `--confirm-exact`, and a separately recorded exact approval on parent issue `#257`.
 
 ## Command
 

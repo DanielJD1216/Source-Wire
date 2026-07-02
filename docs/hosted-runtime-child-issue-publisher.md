@@ -2,7 +2,7 @@
 
 Status: guarded owner-side publisher.
 
-Default mode is read-only. Write mode requires the exact owner approval text, `--write`, and `--confirm-exact`.
+Default mode is read-only. Write mode requires the exact owner approval text, `--write`, `--confirm-exact`, and a separately recorded exact approval on parent issue `#257`.
 
 This command does not implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, create tags, accept code contributions, add real user data, or approve production runtime use.
 
@@ -11,6 +11,8 @@ This command does not implement hosted runtime behavior, add an API server, add 
 Use this command after the owner separately approves the exact child-issue publication text from the [Hosted Runtime Child Issue Publication Packet](hosted-runtime-child-issue-publication-packet.md).
 
 The command creates the six hosted-runtime PRD/planning issues in dependency order only when the write gate is deliberately opened. Without write flags, it validates the local payloads and prints the exact future command.
+
+Write mode also reads parent issue `#257` and refuses to create issues unless the exact child-issue publication approval is already recorded there in an `Owner Approval Record` section.
 
 ## Command
 
@@ -43,6 +45,13 @@ Write mode, only after exact owner approval:
 npm run runtime:child-issue-publish -- --write --confirm-exact "<exact approval text>"
 ```
 
+Expected marker if write mode is attempted before the approval is recorded on `#257`:
+
+```text
+blocked child issue publication approval missing
+blocked hosted runtime implementation
+```
+
 Expected write markers:
 
 ```text
@@ -66,6 +75,12 @@ Write mode may only:
 - create six GitHub issues from `docs/hosted-runtime-issue-slices.md`,
 - attach the planned labels,
 - include the shared blocked boundary in every issue.
+
+Write mode must first verify:
+
+- exact `--confirm-exact` text is provided,
+- exact child-issue publication approval is recorded on issue `#257`,
+- matching open child issue titles do not already exist.
 
 Write mode must not:
 

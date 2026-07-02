@@ -2,6 +2,7 @@ import { execFile } from "node:child_process";
 import { readFile, stat } from "node:fs/promises";
 
 const repo = "DanielJD1216/Source-Wire";
+const parentIssueNumber = 257;
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const args = parseArgs(process.argv.slice(2));
 const failures = [];
@@ -199,6 +200,16 @@ if (args.confirmExact !== exactApproval) {
   process.exit(1);
 }
 
+const approvalStatus = await getChildIssuePublicationApprovalStatus();
+if (!approvalStatus.recorded) {
+  console.error("failed hosted runtime child issue publisher: exact child issue publication approval is not recorded on parent issue #257");
+  console.error(`parent issue: #${approvalStatus.issue.number} ${approvalStatus.issue.title}`);
+  console.error(`url: ${approvalStatus.issue.url}`);
+  console.error("blocked child issue publication approval missing");
+  console.error("blocked hosted runtime implementation");
+  process.exit(1);
+}
+
 const existingOpenIssues = await ghJson([
   "issue",
   "list",
@@ -291,6 +302,31 @@ async function ghIssueCreate(issue) {
 
 function ghJson(ghArgs) {
   return execGh(ghArgs).then((stdout) => JSON.parse(stdout));
+}
+
+async function getChildIssuePublicationApprovalStatus() {
+  const issue = await ghJson([
+    "issue",
+    "view",
+    String(parentIssueNumber),
+    "--repo",
+    repo,
+    "--json",
+    "number,title,state,body,comments,url"
+  ]);
+  const comments = Array.isArray(issue.comments) ? issue.comments : [];
+  const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "", exactApproval);
+  const approvalCommentPresent = comments.some((comment) => hasApprovalRecordSection(comment.body ?? "", exactApproval));
+  return {
+    issue,
+    recorded: approvalRecordPresent || approvalCommentPresent
+  };
+}
+
+function hasApprovalRecordSection(body, exactApprovalTextToFind) {
+  const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
+  const section = body.match(sectionPattern)?.[0] ?? "";
+  return section.includes(exactApprovalTextToFind);
 }
 
 function execGh(ghArgs) {

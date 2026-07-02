@@ -80,6 +80,12 @@ npm run owner:decision-status
 
 The first public release path, minimal branch-governance path, contribution terms PRD path, and hosted runtime PRD path have been approved or executed as applicable. The remaining runtime lane is child issue publication and later hosted runtime implementation. This status command does not create new release artifacts, deploy services, enable hosted runtime, enable repository rulesets, or accept contributions.
 
+Before recording the next child issue publication approval, dry-run the guarded recorder:
+
+```bash
+npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
+```
+
 ## Owner Decision Status
 
 The command prints the current public owner-decision issues:
@@ -98,6 +104,7 @@ The command prints the current public owner-decision issues:
 - [Owner License Approval Preflight](owner-license-approval-preflight.md)
 - [Owner License Decision Workflow](owner-license-decision-workflow.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)
+- [Owner Approval Recorder](owner-approval-recorder.md)
 - [World-Share Readiness](world-share-readiness.md)
 - [License Decision Gate](license-decision-gate.md)
 - [Publish Readiness](publish-readiness.md)

@@ -61,6 +61,7 @@ printList([
   "To review the first release snapshot, use the v0.1.0 GitHub release.",
   "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
   "Approve hosted runtime child issue publication before publishing the six PRD/planning issues.",
+  "Dry-run that approval path first with npm run owner:record-approval -- --target hosted-runtime-child-issue-publication.",
   "Keep hosted runtime implementation blocked until a separate implementation approval opens it."
 ]);
 

@@ -80,8 +80,9 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 | GitHub release | Published as `v0.1.0` | First public release is complete. |
 | Minimal branch protection | Implemented | Use [Branch Governance Apply Guard](branch-governance-apply.md) and [Repository Metadata](repository-metadata.md) for live proof. |
 | Repository rulesets | Deferred | Separate future governance approval if stronger repository-side policy is needed. |
-| Hosted runtime | Blocked | Separate runtime PRD. |
-| Code contribution acceptance | Blocked | Explicit contribution terms. |
+| Hosted runtime child issue publication | Blocked | Use the guarded owner approval recorder target before publishing six PRD/planning issues. |
+| Hosted runtime implementation | Blocked | Separate runtime implementation approval after child issues exist and gates are green. |
+| Code contribution acceptance | Blocked | Explicit contribution terms implementation approval. |
 
 ## Approval Order
 
@@ -94,7 +95,19 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 7. Run `npm run contribution:terms-decision-preflight`.
 8. Decide whether and how code contributions can be accepted.
 9. Run `npm run runtime:prd-decision-preflight`.
-10. Decide whether hosted runtime work should open in a separate PRD.
+10. Dry-run `npm run owner:record-approval -- --target hosted-runtime-child-issue-publication`.
+11. Decide whether to record the exact hosted-runtime child issue publication approval.
+12. Keep hosted runtime implementation blocked until child issues exist and a separate implementation approval is recorded.
+
+## Hosted Runtime Child Issue Approval Path
+
+Before recording the next approval, dry-run:
+
+```bash
+npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
+```
+
+Then use the exact approval text from [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md). Recording that approval only opens publication of six PRD/planning issues. It does not open hosted runtime implementation.
 
 ## Future Release Mutation Path
 
@@ -170,4 +183,6 @@ Contributions are open.
 - [Release Auth Handoff](release-auth-handoff.md)
 - [Release Auth Preflight](release-auth-preflight.md)
 - [Release Execution Preflight](release-execution-preflight.md)
+- [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md)
+- [Owner Approval Recorder](owner-approval-recorder.md)
 - [Branch Governance Approval Request](branch-governance-approval-request.md)

@@ -62,6 +62,7 @@ printList([
   "Keep hosted runtime implementation, production runtime claims, repository rulesets, and contribution acceptance blocked unless separate approval opens them.",
   "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
   "Approve hosted runtime child issue publication before publishing the six PRD/planning issues.",
+  "Dry-run that approval path first with npm run owner:record-approval -- --target hosted-runtime-child-issue-publication.",
   "Keep hosted runtime implementation blocked until a separate implementation approval opens it."
 ]);
 

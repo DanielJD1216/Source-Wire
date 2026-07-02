@@ -103,20 +103,25 @@ This runs the live source-package preflight plus the release, branch governance,
 
 Recommended next owner decision:
 
-1. Define contribution terms before accepting public code contributions.
-2. Define hosted runtime scope only after the runtime PRD gate is explicitly approved.
+1. Dry-run `npm run owner:record-approval -- --target hosted-runtime-child-issue-publication`.
+2. Decide whether to record the exact hosted-runtime child issue publication approval from [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md).
+3. Keep hosted runtime implementation blocked until child issues exist and a separate implementation approval is recorded.
 
 Expected final markers:
 
 ```text
 ok world share final preflight ready
 ok world share preflight current
+ok world share operator summary current
 ok release decision preflight current
 ok branch governance decision preflight current
 ok hosted runtime PRD decision preflight current
+ok hosted runtime child issue publication preflight current
+ok hosted runtime child issue approval status current
 ok contribution terms PRD decision preflight current
 ok reviewer labels current
 ok owner decision issue boundary current
+ok owner open issue future planning smoke current
 ok owner decision issue freshness current
 blocked production launch channels
 blocked focused implementation units required

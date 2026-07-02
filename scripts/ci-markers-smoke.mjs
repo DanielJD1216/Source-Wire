@@ -73,6 +73,10 @@ const completeLog = [
   "ok hosted runtime PRD execution packet ready",
   "ok hosted runtime PRD execution scope documented",
   "ok exact hosted runtime PRD approval recorded",
+  "ok hosted runtime child issue publication packet ready",
+  "ok hosted runtime issue payloads validated",
+  "blocked child issue publication pending owner approval",
+  "blocked hosted runtime implementation",
   "ok contribution terms PRD preparation ready",
   "ok contribution terms evidence map ready",
   "ok exact contribution terms PRD approval recorded",
@@ -176,7 +180,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 50 groups 156 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 51 groups 160 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

@@ -176,6 +176,15 @@ const markerGroups = [
     ]
   },
   {
+    name: "hosted runtime child issue publication packet",
+    markers: [
+      "ok hosted runtime child issue publication packet ready",
+      "ok hosted runtime issue payloads validated",
+      "blocked child issue publication pending owner approval",
+      "blocked hosted runtime implementation"
+    ]
+  },
+  {
     name: "contribution terms PRD preparation",
     markers: [
       "ok contribution terms PRD preparation ready",

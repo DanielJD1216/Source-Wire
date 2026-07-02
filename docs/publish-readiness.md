@@ -43,6 +43,8 @@ This command runs:
 - `npm run legal:packet`
 - `npm run runtime:prd-preparation`
 - `npm run runtime:prd-execution-packet`
+- `npm run runtime:slice-approval-request`
+- `npm run runtime:child-issue-publication-packet`
 - `npm run contribution:terms-preparation`
 - `npm run contribution:terms-execution-packet`
 - `npm run contribution:terms-policy`

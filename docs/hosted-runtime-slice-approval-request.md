@@ -103,5 +103,6 @@ If the open-issue boundary changes because child issues are now expected, update
 
 - [Hosted Runtime PRD](hosted-runtime-prd.md)
 - [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md)
+- [Hosted Runtime Child Issue Publication Packet](hosted-runtime-child-issue-publication-packet.md)
 - [Hosted Runtime PRD Decision Preflight](hosted-runtime-prd-decision-preflight.md)
 - [Owner Open Issues Status](owner-open-issues-status.md)

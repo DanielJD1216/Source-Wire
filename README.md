@@ -178,6 +178,7 @@ Source-Wire can run a full local readiness gate with package dry-run, installed 
 - [Hosted Runtime PRD](docs/hosted-runtime-prd.md)
 - [Hosted Runtime PRD Slice Map](docs/hosted-runtime-issue-slices.md)
 - [Hosted Runtime Slice Approval Request](docs/hosted-runtime-slice-approval-request.md)
+- [Hosted Runtime Child Issue Publication Packet](docs/hosted-runtime-child-issue-publication-packet.md)
 - [Hosted Runtime PRD Preparation](docs/hosted-runtime-prd-preparation.md)
 - [Contribution Terms PRD Preparation](docs/contribution-terms-prd-preparation.md)
 - [Contribution Terms PRD](docs/contribution-terms-prd.md)

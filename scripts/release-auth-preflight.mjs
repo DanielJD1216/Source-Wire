@@ -5,7 +5,12 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const registry = await commandText("npm", ["config", "get", "registry"]);
 const npmPing = await commandResult("npm", ["ping"]);
 const npmWhoami = await commandResult("npm", ["whoami"]);
+const npmProfile = await commandResult("npm", ["profile", "get", "--json"]);
 const ghAuth = await commandResult("gh", ["auth", "status"]);
+const npmProfileData = parseJson(npmProfile.stdout);
+const npmAccountTfa = npmProfileData?.tfa;
+const npmTokenPresent = Boolean(process.env.NODE_AUTH_TOKEN || process.env.NPM_TOKEN);
+const npmPublishSecondFactorReady = npmTokenPresent || npmAccountTfa !== false;
 
 printSection("Source-Wire Release Auth Preflight");
 console.log("This owner-side preflight is read-only.");
@@ -38,6 +43,20 @@ if (npmWhoami.ok) {
   console.log(`npm auth error: ${firstMeaningfulLine(npmWhoami.stderr || npmWhoami.errorMessage)}`);
 }
 
+if (npmProfile.ok) {
+  console.log(`ok npm profile readable tfa ${String(npmAccountTfa)}`);
+} else {
+  console.log("blocked npm profile unreadable");
+  console.log(`npm profile error: ${firstMeaningfulLine(npmProfile.stderr || npmProfile.errorMessage)}`);
+}
+
+if (npmPublishSecondFactorReady) {
+  console.log("ok npm publish second factor path present");
+} else {
+  console.log("blocked npm publish second factor missing");
+  console.log("npm publish requires account 2FA for writes or a granular publish token with bypass 2FA enabled.");
+}
+
 if (ghAuth.ok) {
   console.log("ok github auth ready");
 } else {
@@ -47,7 +66,7 @@ if (ghAuth.ok) {
 
 printSection("Release Auth Preflight Result");
 console.log("ok release auth preflight readable");
-if (npmPing.ok && npmWhoami.ok && ghAuth.ok) {
+if (npmPing.ok && npmWhoami.ok && npmProfile.ok && npmPublishSecondFactorReady && ghAuth.ok) {
   console.log("ok release publish credentials ready");
 } else {
   console.log("blocked release publish credentials missing");
@@ -59,6 +78,10 @@ if (npmPing.ok && npmWhoami.ok && ghAuth.ok) {
     console.log("- Run npm run release:auth-handoff.");
     console.log("- Run npm login --registry=https://registry.npmjs.org/ in an owner-controlled terminal.");
     console.log("- Run npm whoami and confirm the expected npm account.");
+  }
+  if (!npmProfile.ok || !npmPublishSecondFactorReady) {
+    console.log("- Enable npm 2FA for writes on the publishing account, then publish with npm publish --access public --otp <current-code>.");
+    console.log("- Alternative: create an owner-controlled granular npm publish token with bypass 2FA enabled, export it only for the release command, then rerun this preflight.");
   }
   if (!ghAuth.ok) {
     console.log("- Run gh auth login or repair GitHub CLI authentication, then rerun npm run release:auth-preflight.");
@@ -90,6 +113,14 @@ function firstMeaningfulLine(text) {
     .map((value) => value.trim())
     .find((value) => value.length > 0 && !value.startsWith("npm error A complete log"));
   return line ?? "unknown";
+}
+
+function parseJson(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
 }
 
 function printSection(title) {

@@ -50,6 +50,11 @@ npm whoami
 
 Confirm `npm whoami` shows the expected npm account for publishing `@source-wire/contracts`.
 
+Then confirm the account has a publish second-factor path. `npm whoami` alone is not enough for publish execution. npm may still reject `npm publish` unless one of these is true:
+
+- npm 2FA for writes is enabled on the publishing account, and the publish command includes a current OTP,
+- an owner-controlled granular npm publish token with bypass 2FA enabled is used only for the release command.
+
 Then rerun the release gates:
 
 ```bash

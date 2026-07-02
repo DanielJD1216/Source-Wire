@@ -11,7 +11,7 @@ Use this command before any future approved release implementation unit.
 It gathers the strongest release-execution evidence in one place:
 
 - exact release approval status,
-- npm and GitHub authentication status,
+- npm authentication, npm publish second-factor status, and GitHub authentication status,
 - release decision preflight,
 - full package readiness,
 - release artifact manifest,
@@ -19,7 +19,7 @@ It gathers the strongest release-execution evidence in one place:
 - live release tag boundary,
 - live npm registry boundary.
 
-Current state: issue `#255` contains exact owner approval evidence, GitHub authentication is ready, and npm authentication is missing. The expected result is blocked until this owner-controlled machine is authenticated to npm and the final release execution preflight passes.
+Current state: issue `#255` contains exact owner approval evidence, GitHub authentication is ready, and npm login is present, but npm publish is blocked until the owner provides a publish second-factor path. The expected result is blocked until this owner-controlled machine can publish with npm 2FA for writes or a granular publish token with bypass 2FA enabled.
 
 ## Command
 
@@ -72,6 +72,7 @@ Stop before changing package version, publishing npm, creating a GitHub release,
 
 - issue `#255` does not contain the exact owner approval text,
 - `npm run release:auth-preflight` does not show release publish credentials ready,
+- npm publish second-factor evidence is missing,
 - `npm run release:approval-status` does not show separate exact approval evidence,
 - `npm run release:decision-preflight` fails,
 - `npm run publish:readiness` fails,
@@ -87,12 +88,12 @@ Stop before changing package version, publishing npm, creating a GitHub release,
 
 ## Still Blocked
 
-Until npm authentication is ready and a focused implementation unit runs:
+Until npm authentication plus publish second-factor evidence are ready and a focused implementation unit runs:
 
 - npm publishing remains blocked,
 - GitHub release publishing remains blocked,
 - release tag creation remains blocked,
-- package version remains `0.0.0`,
+- package version remains `0.1.0`,
 - deployment remains blocked,
 - hosted runtime behavior remains blocked,
 - production runtime use remains blocked,

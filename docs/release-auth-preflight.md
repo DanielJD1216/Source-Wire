@@ -12,6 +12,7 @@ It checks:
 
 - npm registry reachability,
 - npm authentication with `npm whoami`,
+- npm profile second-factor state with `npm profile get --json`,
 - GitHub authentication with `gh auth status`.
 
 ## Command
@@ -53,9 +54,26 @@ npm whoami
 npm run release:auth-preflight
 ```
 
+For the publish-time npm 2FA case, `npm whoami` can pass while `npm publish` still fails. If the preflight prints:
+
+```text
+blocked npm publish second factor missing
+blocked release publish credentials missing
+```
+
+use one owner-controlled path:
+
+1. Enable npm 2FA for writes on the publishing account, then publish with a current OTP:
+
+```bash
+npm publish --access public --otp <current-code>
+```
+
+2. Or create a granular npm publish token with bypass 2FA enabled, export it only for the release command, then rerun this preflight.
+
 ## Current Stop Condition
 
-If `npm run release:auth-preflight` prints `blocked npm auth missing`, stop before:
+If `npm run release:auth-preflight` prints `blocked npm auth missing`, `blocked npm publish second factor missing`, or `blocked release publish credentials missing`, stop before:
 
 - changing package version,
 - publishing npm,

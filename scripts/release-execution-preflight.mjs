@@ -90,8 +90,12 @@ async function hasReleaseApproval() {
 
 async function hasReleaseAuth() {
   const npmWhoami = await commandResult("npm", ["whoami"]);
+  const npmProfile = await commandResult("npm", ["profile", "get", "--json"]);
   const ghAuth = await commandResult("gh", ["auth", "status"]);
-  return npmWhoami.ok && ghAuth.ok;
+  const npmProfileData = parseJson(npmProfile.stdout);
+  const npmPublishSecondFactorReady =
+    Boolean(process.env.NODE_AUTH_TOKEN || process.env.NPM_TOKEN) || npmProfileData?.tfa !== false;
+  return npmWhoami.ok && npmProfile.ok && npmPublishSecondFactorReady && ghAuth.ok;
 }
 
 function hasApprovalRecordSection(body) {
@@ -110,6 +114,14 @@ async function commandJson(command, args) {
     return JSON.parse(result.stdout);
   } catch (parseError) {
     throw new Error(`Unable to parse ${command} JSON: ${parseError.message}`);
+  }
+}
+
+function parseJson(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
   }
 }
 

@@ -59,6 +59,12 @@ For hosted-runtime child issue publication approval only, also run:
 npm run runtime:child-issue-approval-status
 ```
 
+For patch release approval only, also run:
+
+```bash
+npm run release:patch-execution-preflight
+```
+
 For release approval only, also run:
 
 ```bash

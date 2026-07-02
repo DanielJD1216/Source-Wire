@@ -293,6 +293,7 @@ This read-only check verifies:
 - live GitHub `main` matches local `origin/main`,
 - forking remains enabled for source-package reuse,
 - branch protection state is visible,
+- required branch-protection check context is visible when branch protection is enabled,
 - repository ruleset state is visible,
 - package version remains `0.1.0`,
 - npm package publication and GitHub release publication are complete,
@@ -304,6 +305,7 @@ Expected markers in the current owner-direct-maintenance state:
 ok live branch governance readable
 ok main branch matches origin
 blocked branch protection not enabled
+blocked branch protection required check not enabled
 blocked repository rulesets not enabled
 ```
 
@@ -376,6 +378,23 @@ blocked branch governance implementation approval missing
 
 The dry run resolves the exact live GitHub Actions check context and prints the future branch-protection payload. It does not enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
+Run only the branch governance apply guard:
+
+```bash
+npm run repository:branch-governance-apply
+```
+
+Expected markers before approval:
+
+```text
+ok branch governance apply guard ready
+ok branch protection payload documented
+ok required status check resolved Source-Wire package checks
+blocked branch governance implementation approval missing
+```
+
+The apply guard verifies the future write path and branch-protection payload. Default mode does not enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use. Future write mode still requires exact issue `#256` approval, `--write`, and `--confirm-exact`.
+
 Run only the hosted runtime PRD execution packet check:
 
 ```bash
@@ -425,6 +444,7 @@ ok live branch governance current
 ok branch governance execution plan current
 ok branch governance execution packet current
 ok branch governance implementation dry run current
+ok branch governance apply guard current
 blocked branch governance implementation approval missing
 ```
 

@@ -73,7 +73,7 @@ Approved for a future Source-Wire branch governance implementation unit: enable 
 
 ## Future Implementation Boundary
 
-After exact approval is recorded, a focused implementation step may use GitHub UI or an equivalent reviewed API call.
+After exact approval is recorded, a focused implementation step may use GitHub UI or the guarded [Branch Governance Apply Guard](branch-governance-apply.md) command.
 
 The dry run itself does not execute that call.
 
@@ -90,5 +90,6 @@ npm run publish:readiness
 - [Branch Governance Approval Request](branch-governance-approval-request.md)
 - [Branch Governance Decision Preflight](branch-governance-decision-preflight.md)
 - [Branch Governance Execution Packet](branch-governance-execution-packet.md)
+- [Branch Governance Apply Guard](branch-governance-apply.md)
 - [Branch Governance Implementation Plan](branch-governance-implementation-plan.md)
 - [Owner Approval Recorder](owner-approval-recorder.md)

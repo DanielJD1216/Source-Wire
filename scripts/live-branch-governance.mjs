@@ -2,6 +2,7 @@ import { execFile } from "node:child_process";
 import { readFile } from "node:fs/promises";
 
 const repo = "DanielJD1216/Source-Wire";
+const expectedCheckRun = "Source-Wire package checks";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
@@ -14,6 +15,9 @@ const repoApi = await ghJson(["api", `repos/${repo}`]);
 const mainBranch = await ghJson(["api", `repos/${repo}/branches/main`]);
 const rulesets = await ghJson(["api", `repos/${repo}/rulesets`]);
 const remoteHead = (await run("git", ["rev-parse", "origin/main"])).trim();
+const branchProtection = mainBranch.protected
+  ? await ghJson(["api", `repos/${repo}/branches/main/protection`])
+  : null;
 
 assertEqual(repoApi.default_branch, "main", "live GitHub default branch must stay main");
 assertEqual(repoApi.allow_forking, true, "live GitHub fork setting should stay enabled for source-package reuse");
@@ -22,6 +26,19 @@ assertEqual(mainBranch.commit?.sha, remoteHead, "live GitHub main branch must ma
 
 if (!Array.isArray(rulesets)) {
   failures.push("GitHub rulesets response must be an array");
+}
+
+const requiredContexts = branchProtection?.required_status_checks?.contexts ?? [];
+if (mainBranch.protected && !requiredContexts.includes(expectedCheckRun)) {
+  failures.push(`branch protection must require ${JSON.stringify(expectedCheckRun)}`);
+}
+
+if (mainBranch.protected && branchProtection?.allow_force_pushes?.enabled !== false) {
+  failures.push("branch protection must keep force pushes disabled");
+}
+
+if (mainBranch.protected && branchProtection?.allow_deletions?.enabled !== false) {
+  failures.push("branch protection must keep branch deletion disabled");
 }
 
 if (failures.length > 0) {
@@ -35,9 +52,13 @@ if (failures.length > 0) {
 const activeRulesets = rulesets.filter((ruleset) => ruleset.enforcement !== "disabled");
 const protectedState = mainBranch.protected ? "enabled" : "not enabled";
 const rulesetState = activeRulesets.length > 0 ? `${activeRulesets.length} active` : "none";
+const requiredCheckState = mainBranch.protected ? requiredContexts.join(", ") || "none" : "not enabled";
 const branchProtectionMarker = mainBranch.protected
   ? "ok branch protection enabled"
   : "blocked branch protection not enabled";
+const requiredCheckMarker = mainBranch.protected
+  ? `ok branch protection requires ${expectedCheckRun}`
+  : "blocked branch protection required check not enabled";
 const rulesetMarker = activeRulesets.length > 0
   ? "ok repository rulesets active"
   : "blocked repository rulesets not enabled";
@@ -51,6 +72,7 @@ printRows([
   ["Local origin/main SHA", remoteHead],
   ["Forking", repoApi.allow_forking ? "enabled" : "disabled"],
   ["Branch protection", protectedState],
+  ["Required branch check", requiredCheckState],
   ["Active rulesets", rulesetState],
   ["Version", packageJson.version],
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
@@ -63,6 +85,7 @@ console.log("");
 console.log("ok live branch governance readable");
 console.log("ok main branch matches origin");
 console.log(branchProtectionMarker);
+console.log(requiredCheckMarker);
 console.log(rulesetMarker);
 
 function ghJson(args) {

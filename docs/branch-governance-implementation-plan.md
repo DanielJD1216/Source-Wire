@@ -44,9 +44,10 @@ Before any future branch governance implementation unit changes live GitHub sett
 2. Run `npm run repository:live-branch`.
 3. Run `npm run repository:branch-governance-preflight`.
 4. Run `npm run repository:branch-governance-dry-run`.
-5. Confirm latest `Package Checks` is green on `origin/main`.
-6. Confirm `origin/main` matches local `main`.
-7. Confirm no new npm publishing, new GitHub release, deployment, hosted runtime, or contribution acceptance is being opened in the same unit.
+5. Run `npm run repository:branch-governance-apply` in dry-run mode.
+6. Confirm latest `Package Checks` is green on `origin/main`.
+7. Confirm `origin/main` matches local `main`.
+8. Confirm no new npm publishing, new GitHub release, deployment, hosted runtime, or contribution acceptance is being opened in the same unit.
 
 ## Option A: Minimal Branch Protection
 
@@ -105,6 +106,7 @@ Expected future outcome for minimal branch protection:
 ok live branch governance readable
 ok main branch matches origin
 ok branch protection enabled
+ok branch protection requires Source-Wire package checks
 blocked repository rulesets not enabled
 ```
 
@@ -149,6 +151,7 @@ Branch governance approval would not allow:
 - [Branch Governance Approval Request](branch-governance-approval-request.md)
 - [Branch Governance Decision Preflight](branch-governance-decision-preflight.md)
 - [Branch Governance Implementation Dry Run](branch-governance-implementation-dry-run.md)
+- [Branch Governance Apply Guard](branch-governance-apply.md)
 - [Branch Governance Execution Packet](branch-governance-execution-packet.md)
 - [Repository Metadata](repository-metadata.md)
 - [World-Share Readiness](world-share-readiness.md)

@@ -8,7 +8,8 @@ const steps = [
   ["repository:branch-governance-request", "branch governance approval request"],
   ["repository:branch-governance-plan", "branch governance implementation plan"],
   ["repository:branch-governance-execution-packet", "branch governance execution packet"],
-  ["repository:branch-governance-dry-run", "branch governance implementation dry run"]
+  ["repository:branch-governance-dry-run", "branch governance implementation dry run"],
+  ["repository:branch-governance-apply", "branch governance apply guard"]
 ];
 
 printSection("Source-Wire Branch Governance Decision Preflight");
@@ -29,6 +30,7 @@ console.log("ok live branch governance current");
 console.log("ok branch governance execution plan current");
 console.log("ok branch governance execution packet current");
 console.log("ok branch governance implementation dry run current");
+console.log("ok branch governance apply guard current");
 console.log("blocked branch governance implementation approval missing");
 
 function runScript(scriptName) {

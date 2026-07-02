@@ -78,6 +78,7 @@
     "repository:branch-governance-plan": "node scripts/branch-governance-implementation-plan.mjs",
     "repository:branch-governance-execution-packet": "node scripts/branch-governance-execution-packet.mjs",
     "repository:branch-governance-dry-run": "node scripts/branch-governance-implementation-dry-run.mjs",
+    "repository:branch-governance-apply": "node scripts/branch-governance-apply.mjs",
     "repository:branch-governance-preflight": "node scripts/branch-governance-decision-preflight.mjs",
     "security:live-surface": "node scripts/live-security-surface.mjs",
     "registry:live-npm": "node scripts/live-npm-registry-boundary.mjs",

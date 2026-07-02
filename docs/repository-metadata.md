@@ -90,7 +90,7 @@ Owner-side live branch governance check:
 npm run repository:live-branch
 ```
 
-This command uses `gh` and the configured GitHub account to verify the default branch, live `main` SHA, local `origin/main` match, branch protection state, and repository ruleset state. It reports the current unprotected branch state as a blocked owner-governance item instead of silently treating it as production hardening.
+This command uses `gh` and the configured GitHub account to verify the default branch, live `main` SHA, local `origin/main` match, branch protection state, required branch-protection check context when enabled, and repository ruleset state. It reports the current unprotected branch state as a blocked owner-governance item instead of silently treating it as production hardening.
 
 ## GitHub-Visible Files
 

@@ -44,6 +44,7 @@ const decisionIssues = [
       "ok owner decision status current",
       "ok owner open issue boundary current",
       "ok hosted runtime PRD evidence current",
+      "ok hosted runtime PRD execution packet current",
       "blocked hosted runtime PRD approval missing"
     ]
   },
@@ -56,6 +57,7 @@ const decisionIssues = [
       "ok owner decision status current",
       "ok owner open issue boundary current",
       "ok contribution terms PRD evidence current",
+      "ok contribution terms PRD execution packet current",
       "ok public intake boundary current",
       "blocked contribution terms PRD approval missing"
     ]

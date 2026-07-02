@@ -158,10 +158,26 @@ const markerGroups = [
     ]
   },
   {
+    name: "hosted runtime PRD execution packet",
+    markers: [
+      "ok hosted runtime PRD execution packet ready",
+      "ok hosted runtime PRD execution scope documented",
+      "blocked hosted runtime PRD approval missing"
+    ]
+  },
+  {
     name: "contribution terms PRD preparation",
     markers: [
       "ok contribution terms PRD preparation ready",
       "ok contribution terms evidence map ready",
+      "blocked contribution terms PRD approval missing"
+    ]
+  },
+  {
+    name: "contribution terms PRD execution packet",
+    markers: [
+      "ok contribution terms PRD execution packet ready",
+      "ok contribution terms PRD execution scope documented",
       "blocked contribution terms PRD approval missing"
     ]
   },

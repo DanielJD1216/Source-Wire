@@ -5,6 +5,7 @@ const checks = [
   ["owner:decision-status", "owner decision issue status"],
   ["owner:open-issues-status", "owner open issue boundary"],
   ["runtime:prd-preparation", "hosted runtime PRD preparation"],
+  ["runtime:prd-execution-packet", "hosted runtime PRD execution packet"],
   ["launch:decision-status", "launch decision status"]
 ];
 
@@ -23,6 +24,7 @@ console.log("ok world share preflight current");
 console.log("ok owner decision status current");
 console.log("ok owner open issue boundary current");
 console.log("ok hosted runtime PRD evidence current");
+console.log("ok hosted runtime PRD execution packet current");
 console.log("blocked hosted runtime PRD approval missing");
 
 function runNpmScript(scriptName) {

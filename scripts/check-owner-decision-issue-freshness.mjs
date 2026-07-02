@@ -39,6 +39,7 @@ const expectedIssues = [
     command: "npm run runtime:prd-decision-preflight",
     markers: [
       "ok hosted runtime PRD decision preflight ready",
+      "ok hosted runtime PRD execution packet current",
       "blocked hosted runtime PRD approval missing"
     ]
   },
@@ -50,6 +51,7 @@ const expectedIssues = [
     command: "npm run contribution:terms-decision-preflight",
     markers: [
       "ok contribution terms PRD decision preflight ready",
+      "ok contribution terms PRD execution packet current",
       "blocked contribution terms PRD approval missing"
     ]
   }

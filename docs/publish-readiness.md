@@ -41,7 +41,9 @@ This command runs:
 - `npm run license:history-boundary`
 - `npm run legal:packet`
 - `npm run runtime:prd-preparation`
+- `npm run runtime:prd-execution-packet`
 - `npm run contribution:terms-preparation`
+- `npm run contribution:terms-execution-packet`
 - `npm run owner:approval-packet`
 - `npm run owner:launch-checklist`
 - `npm run owner:license-preflight`
@@ -115,7 +117,9 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `ok license implementation complete` |
 | Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` |
 | Hosted runtime PRD preparation | `ok hosted runtime PRD preparation ready`, `ok hosted runtime PRD evidence map ready`, `blocked hosted runtime PRD approval missing` |
+| Hosted runtime PRD execution packet | `ok hosted runtime PRD execution packet ready`, `ok hosted runtime PRD execution scope documented`, `blocked hosted runtime PRD approval missing` |
 | Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `blocked contribution terms PRD approval missing` |
+| Contribution terms PRD execution packet | `ok contribution terms PRD execution packet ready`, `ok contribution terms PRD execution scope documented`, `blocked contribution terms PRD approval missing` |
 | Owner approval packet | `ok owner approval packet ready`, `ok exact owner approval texts available`, `blocked approval recording is manual owner action` |
 | Owner launch checklist | `ok owner launch checklist ready`, `blocked launch channels missing` |
 | Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `ok owner license approval captured` |
@@ -334,6 +338,38 @@ blocked branch governance implementation approval missing
 
 The execution packet check verifies the exact future minimal branch protection settings, required check name, owner emergency access, pre-execution checks, post-change verification, and rollback path. It does not call GitHub, enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
 
+Run only the hosted runtime PRD execution packet check:
+
+```bash
+npm run runtime:prd-execution-packet
+```
+
+Expected markers:
+
+```text
+ok hosted runtime PRD execution packet ready
+ok hosted runtime PRD execution scope documented
+blocked hosted runtime PRD approval missing
+```
+
+The execution packet check verifies the exact future hosted runtime PRD scope, required pre-execution checks, verification path, and stop conditions. It does not add runtime code, deployment configuration, infrastructure, live connectors, or real user data.
+
+Run only the contribution terms PRD execution packet check:
+
+```bash
+npm run contribution:terms-execution-packet
+```
+
+Expected markers:
+
+```text
+ok contribution terms PRD execution packet ready
+ok contribution terms PRD execution scope documented
+blocked contribution terms PRD approval missing
+```
+
+The execution packet check verifies the exact future contribution terms PRD scope, required pre-execution checks, verification path, and stop conditions. It does not accept code contributions, add CLA or DCO enforcement, or change GitHub collaboration settings.
+
 Before a future branch governance implementation unit changes live GitHub settings, run:
 
 ```bash
@@ -349,6 +385,7 @@ ok owner decision status current
 ok owner open issue boundary current
 ok live branch governance current
 ok branch governance execution plan current
+ok branch governance execution packet current
 blocked branch governance implementation approval missing
 ```
 
@@ -370,7 +407,7 @@ This read-only check verifies:
 - live GitHub projects, wiki, and discussions are disabled,
 - live GitHub secret scanning and push protection are enabled,
 - GitHub security advisories are empty,
-- package version remains `0.0.0`,
+- package version remains `0.1.0`,
 - npm publishing, GitHub release publishing, hosted runtime, production security scope, and contribution acceptance remain blocked.
 
 Expected markers:

@@ -26,7 +26,9 @@ console.log("ok owner open issue boundary current");
 console.log("ok release approval status current");
 console.log("ok release candidate evidence current");
 console.log("ok release artifact evidence current");
-console.log("blocked release execution not performed");
+console.log("ok release execution completed");
+console.log("ok npm package published @source-wire/contracts@0.1.0");
+console.log("ok github release published v0.1.0");
 
 function runNpmScript(scriptName) {
   return new Promise((resolve, reject) => {

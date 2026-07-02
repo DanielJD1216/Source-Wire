@@ -14,7 +14,9 @@ const expectedIssues = [
       "Exact approval         : recorded",
       "ok exact release implementation approval recorded",
       "ok release decision preflight ready",
-      "blocked release execution not performed"
+      "ok release execution completed",
+      "ok npm package published @source-wire/contracts@0.1.0",
+      "ok github release published v0.1.0"
     ]
   },
   {

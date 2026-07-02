@@ -2,7 +2,7 @@
 
 Status: read-only launch decision report.
 
-This command reports the current launch boundary. It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
+This command reports the current launch boundary. It does not publish a new npm version, create a new GitHub release, deploy services, accept contributions, or approve production runtime use.
 
 ## Purpose
 
@@ -34,8 +34,8 @@ Expected markers:
 ok launch decision status ready
 ok apache 2 license implemented
 ok source repo sharing ready
-blocked npm publishing release execution not performed
-blocked github release execution not performed
+ok npm package published @source-wire/contracts@0.1.0
+ok github release published v0.1.0
 blocked hosted runtime not approved
 blocked contributions not accepted
 ```
@@ -45,10 +45,11 @@ blocked contributions not accepted
 The command verifies:
 
 - package name remains `@source-wire/contracts`,
-- package version remains `0.0.0`,
+- package version remains `0.1.0`,
 - package license remains `Apache-2.0`,
 - `LICENSE` file exists,
-- npm publishing remains blocked through restricted publish config,
+- npm package publication is complete for `@source-wire/contracts@0.1.0`,
+- GitHub release publication is complete for `v0.1.0`,
 - launch decision docs exist,
 - support, security, and contribution boundary docs exist.
 
@@ -61,30 +62,22 @@ The command verifies:
 | Owner license approval | Captured |
 | License decision record | Implemented |
 | License implementation | Complete |
-| npm publishing | Blocked, release execution not performed |
-| GitHub release | Blocked, release execution not performed |
+| npm publishing | Published as `@source-wire/contracts@0.1.0` |
+| GitHub release | Published as `v0.1.0` |
 | Hosted runtime | Blocked |
 | Contributions | Blocked |
 
 ## Next Physical Action
 
-Run the release auth handoff, authenticate npm, then run the release auth and execution preflights:
+Use the public package and release for review, then choose the next approval lane:
 
 ```bash
-npm run release:auth-handoff
-npm login --registry=https://registry.npmjs.org/
-npm whoami
-npm run release:auth-preflight
-npm run release:execution-preflight
+npm install @source-wire/contracts
+npm run launch:decision-status
+npm run owner:decision-status
 ```
 
-The recorded release path is:
-
-```text
-Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.
-```
-
-This is still only a future approval path. This status command does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable hosted runtime, or accept contributions.
+The first public release path has been executed. The remaining approval lanes are branch governance, hosted runtime PRD, and contribution terms. This status command does not create new release artifacts, deploy services, enable hosted runtime, or accept contributions.
 
 ## Owner Decision Issues
 

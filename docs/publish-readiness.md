@@ -105,7 +105,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release approval request | `ok release approval request ready`, `blocked npm publishing release execution not performed`, `blocked github release execution not performed`, `blocked version release execution not performed` |
 | Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked release auth owner action required` |
 | Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `blocked release execution requires npm auth and final preflight` |
-| Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `blocked release execution not performed` |
+| Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release execution not performed` |
 | Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.0.0`, `ok release artifact integrity recorded`, `blocked release artifact publish not approved` |
 | License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
@@ -122,7 +122,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `ok owner license decision captured` |
 | World-share boundary | `ok world share open source ready`, `blocked production launch channels` |
 | World-share packet | `ok world share packet ready`, `ok public share copy current`, `blocked production launch channels` |
-| Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `blocked npm publishing release execution not performed`, `blocked github release execution not performed`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
+| Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | README entrypoint smoke | `ok readme entrypoint smoke ready`, `ok readme first reviewer path visible`, `blocked unsafe readme launch claims` |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |

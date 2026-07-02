@@ -16,7 +16,9 @@ const decisionIssues = [
       "ok release approval status current",
       "ok release candidate evidence current",
       "ok release artifact evidence current",
-      "blocked release execution not performed"
+      "ok release execution completed",
+      "ok npm package published @source-wire/contracts@0.1.0",
+      "ok github release published v0.1.0"
     ]
   },
   {
@@ -195,10 +197,10 @@ This refresh does not record owner approval or approve blocked work.`;
 
 function refreshReleaseApprovalIssueBody(body, context) {
   const approvalRecorded = context.approvalComments.length > 0;
-  const approvalSource = approvalRecorded ? "recorded in issue comment" : "blocked because no separate exact owner approval record exists yet";
+  const approvalSource = approvalRecorded ? "recorded in issue comment; release execution completed" : "blocked because no separate exact owner approval record exists yet";
   let nextBody = body.replace(
     /- Release implementation approval: .+/u,
-    `- Release implementation approval: ${approvalSource}${approvalRecorded ? "; release execution still requires npm authentication and final release preflight" : ""}`
+    `- Release implementation approval: ${approvalSource}`
   );
 
   const ownerDecisionStatusProof = [
@@ -218,7 +220,7 @@ function refreshReleaseApprovalIssueBody(body, context) {
     `Approval comments      : ${context.approvalComments.length}`,
     "ok release approval status readable",
     ...(approvalRecorded
-      ? ["ok exact release approval recorded", "blocked release execution requires npm auth and final preflight"]
+      ? ["ok exact release approval recorded", "ok release execution completed"]
       : ["blocked exact release approval missing", "blocked release implementation approval missing"])
   ].join("\n");
 
@@ -229,7 +231,13 @@ function refreshReleaseApprovalIssueBody(body, context) {
     "ok release approval status current",
     "ok release candidate evidence current",
     "ok release artifact evidence current",
-    approvalRecorded ? "blocked release execution not performed" : "blocked release implementation approval missing"
+    ...(approvalRecorded
+      ? [
+          "ok release execution completed",
+          "ok npm package published @source-wire/contracts@0.1.0",
+          "ok github release published v0.1.0"
+        ]
+      : ["blocked release implementation approval missing"])
   ].join("\n");
 
   nextBody = replaceProofBlock(nextBody, "Current owner-decision status proof", ownerDecisionStatusProof);

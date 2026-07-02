@@ -2,14 +2,17 @@ import { execFile } from "node:child_process";
 
 const repo = "DanielJD1216/Source-Wire";
 
-const expectedOpenIssues = [
+const completedDecisionIssues = [
   {
     number: 255,
     title: "Owner decision: approve first public release path",
     approvalName: "release implementation",
     exactApprovalText:
       "Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms."
-  },
+  }
+];
+
+const expectedOpenIssues = [
   {
     number: 256,
     title: "Owner decision: approve branch governance path",
@@ -49,7 +52,40 @@ const issues = await ghJson([
 const expectedByNumber = new Map(expectedOpenIssues.map((issue) => [issue.number, issue]));
 const actualByNumber = new Map(issues.map((issue) => [issue.number, issue]));
 const failures = [];
+const completedIssueStates = [];
 const trackedIssueStates = [];
+
+for (const completedIssue of completedDecisionIssues) {
+  const issue = await ghJson([
+    "issue",
+    "view",
+    String(completedIssue.number),
+    "--repo",
+    repo,
+    "--json",
+    "body,comments,state,title,url"
+  ]);
+  const comments = Array.isArray(issue.comments) ? issue.comments : [];
+  const approvalComments = comments.filter((comment) => comment.body?.includes(completedIssue.exactApprovalText));
+  const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "", completedIssue.exactApprovalText);
+  const exactApprovalRecorded = approvalRecordPresent || approvalComments.length > 0;
+
+  if (issue.title !== completedIssue.title) {
+    failures.push(`unexpected title for completed decision #${completedIssue.number}: expected "${completedIssue.title}", received "${issue.title}"`);
+  }
+  if (issue.state !== "CLOSED") {
+    failures.push(`completed owner decision issue #${completedIssue.number} must be closed, received ${issue.state}`);
+  }
+  if (!exactApprovalRecorded) {
+    failures.push(`completed owner decision issue #${completedIssue.number} must retain exact ${completedIssue.approvalName} approval evidence`);
+  }
+
+  completedIssueStates.push({
+    ...completedIssue,
+    issue,
+    exactApprovalRecorded
+  });
+}
 
 for (const expectedIssue of expectedOpenIssues) {
   const actualIssue = actualByNumber.get(expectedIssue.number);
@@ -89,8 +125,15 @@ for (const actualIssue of issues) {
 
 printSection("Source-Wire Owner Open Issues Status");
 console.log("This owner-side status check is read-only.");
-console.log("It verifies that the public open issue surface is limited to tracked owner-decision gates.");
+console.log("It verifies that the public open issue surface is limited to unresolved owner-decision gates.");
 console.log("It does not close issues, create issues, publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.");
+
+printSection("Completed Owner Decisions");
+for (const issue of completedIssueStates.toSorted((left, right) => left.number - right.number)) {
+  console.log(`#${issue.number} ${issue.title}`);
+  console.log(`State: ${issue.issue.state}`);
+  console.log(`URL: ${issue.issue.url}`);
+}
 
 printSection("Open Issues");
 if (issues.length === 0) {
@@ -112,7 +155,12 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("ok only owner decision issues open");
+for (const issue of completedIssueStates) {
+  console.log(`ok completed owner decision #${issue.number} closed`);
+  console.log(`ok exact ${issue.approvalName} approval retained`);
+}
+
+console.log("ok only unresolved owner decision issues open");
 
 for (const issue of trackedIssueStates) {
   if (issue.exactApprovalRecorded) {
@@ -128,7 +176,7 @@ if (trackedIssueStates.some((issue) => !issue.exactApprovalRecorded)) {
   console.log("ok all open owner decision approvals recorded");
 }
 
-console.log("blocked owner decision issues remain open");
+console.log("blocked unresolved owner decision issues remain open");
 
 function ghJson(args) {
   return new Promise((resolve, reject) => {

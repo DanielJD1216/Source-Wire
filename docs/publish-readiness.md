@@ -221,13 +221,14 @@ Expected markers:
 
 ```text
 ok owner open issue boundary readable
-ok only owner decision issues open
-ok #255 release implementation approval recorded while issue remains open
+ok completed owner decision #255 closed
+ok exact release implementation approval retained
+ok only unresolved owner decision issues open
 blocked #256 branch governance implementation approval missing
 blocked #257 hosted runtime PRD approval missing
 blocked #258 contribution terms PRD approval missing
 blocked owner decisions missing approval records
-blocked owner decision issues remain open
+blocked unresolved owner decision issues remain open
 ```
 
 For the live status portion only, run:

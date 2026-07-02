@@ -6,16 +6,15 @@ This command is read-only. It does not close issues, create issues, publish npm,
 
 ## Purpose
 
-Use this check before broad public sharing when you want to prove the visible open issue surface is limited to the tracked owner-decision gates.
+Use this check before broad public sharing when you want to prove the visible open issue surface is limited to unresolved owner-decision gates.
 
 The current expected open issues are:
 
-- `#255` Owner decision: approve first public release path
 - `#256` Owner decision: approve branch governance path
 - `#257` Owner decision: open hosted runtime PRD path
 - `#258` Owner decision: define contribution terms before accepting code
 
-Any extra open issue is treated as a failure because it means the public state has drifted and needs owner review before broad sharing.
+Issue `#255` is expected to be closed because the first public release path is complete. Any extra open issue is treated as a failure because it means the public state has drifted and needs owner review before broad sharing.
 
 ## Command
 
@@ -31,20 +30,21 @@ Expected markers:
 
 ```text
 ok owner open issue boundary readable
-ok only owner decision issues open
-ok #255 release implementation approval recorded while issue remains open
+ok completed owner decision #255 closed
+ok exact release implementation approval retained
+ok only unresolved owner decision issues open
 blocked #256 branch governance implementation approval missing
 blocked #257 hosted runtime PRD approval missing
 blocked #258 contribution terms PRD approval missing
 blocked owner decisions missing approval records
-blocked owner decision issues remain open
+blocked unresolved owner decision issues remain open
 ```
 
 ## What It Proves
 
 - GitHub issue access is working through `gh`.
-- Open issues are exactly the tracked owner-decision gates.
-- Issue `#255` has recorded release implementation approval while still remaining open for execution tracking.
+- Open issues are exactly the unresolved owner-decision gates.
+- Issue `#255` has recorded release implementation approval and is closed as completed release history.
 - Issues `#256` through `#258` still need separate owner approvals before those paths open.
 - No unreviewed public open issue is silently hiding behind the share-ready status.
 

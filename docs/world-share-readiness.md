@@ -193,16 +193,17 @@ Expected current markers:
 
 ```text
 ok owner open issue boundary readable
-ok only owner decision issues open
-ok #255 release implementation approval recorded while issue remains open
+ok completed owner decision #255 closed
+ok exact release implementation approval retained
+ok only unresolved owner decision issues open
 blocked #256 branch governance implementation approval missing
 blocked #257 hosted runtime PRD approval missing
 blocked #258 contribution terms PRD approval missing
 blocked owner decisions missing approval records
-blocked owner decision issues remain open
+blocked unresolved owner decision issues remain open
 ```
 
-This read-only check verifies that the only open public issues are the tracked owner-decision gates `#255` through `#258`, and distinguishes recorded approval on `#255` from missing approvals on `#256` through `#258`.
+This read-only check verifies that the only open public issues are the unresolved owner-decision gates `#256` through `#258`, and distinguishes completed release history on `#255` from missing approvals on `#256` through `#258`.
 
 For the live repo and live launch channels only, run:
 

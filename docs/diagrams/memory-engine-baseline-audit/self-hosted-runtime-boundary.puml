@@ -1,0 +1,82 @@
+@startuml
+!pragma layout smetana
+title Source-Wire Self-Hosted Runtime Boundary
+
+top to bottom direction
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam nodesep 45
+skinparam ranksep 55
+skinparam componentStyle rectangle
+skinparam rectangle {
+  BorderColor #2F3A45
+  FontColor #111827
+  BackgroundColor #F9FAFB
+}
+skinparam package {
+  BorderColor #6B7280
+  FontColor #111827
+  BackgroundColor #FFFFFF
+}
+skinparam database {
+  BorderColor #374151
+  BackgroundColor #EEF2FF
+}
+skinparam note {
+  BorderColor #9A3412
+  BackgroundColor #FFF7ED
+}
+
+actor "Memory Owner\nor Adopter" as Owner
+actor "Agent Harness\nCodex / Claude / OpenClaw" as Harness
+
+rectangle "Private Proof System\nreal data stays private" as PrivateProof
+rectangle "Redaction Gate\nonly public-safe lessons move out" as RedactionGate
+
+package "Public Source-Wire\nApache-2.0" as SW {
+  rectangle "Contracts + schemas\nsynthetic fixtures\nminimal synthetic boundary" as Contracts
+  rectangle "Future wrapper\nAPI + MCP policy" as Wrapper
+}
+
+rectangle "License Gate\nAGPLv3 code is audited/wrapped first\nnot copied into Apache-2.0 by default" as LicenseGate #FFF7ED
+
+package "Separate Runtime Candidate\nSource-Wire-Memory-Engine\nAGPLv3" as Engine {
+  rectangle "FastAPI + MCP\nmemory tools" as EngineApi
+  rectangle "RLM search\nembeddings + rerank" as EngineAi
+}
+
+package "Owner-Hosted Environment\nBYO device / server / cloud" as OwnerEnv {
+  rectangle "Owner runtime\nprocesses" as OwnerRuntime
+  database "Owner Postgres\n+ pgvector" as OwnerDb
+  rectangle "Owner sources\nand API keys" as OwnerInputs
+}
+
+Owner --> OwnerEnv : runs and controls
+Harness --> Wrapper : calls tools through policy
+
+PrivateProof --> RedactionGate : generalize
+RedactionGate ..> Contracts : public-safe lessons only
+
+Contracts --> Wrapper : defines behavior
+Wrapper --> OwnerRuntime : future self-hosted implementation
+Wrapper ..> LicenseGate : runtime fit decision
+LicenseGate ..> EngineApi : audit or adapter candidate
+EngineApi --> EngineAi : search + rerank
+EngineAi --> OwnerDb : vector memory store
+
+OwnerRuntime --> OwnerDb : stores owner memory
+OwnerRuntime --> OwnerInputs : imports owner-approved data
+
+note bottom of OwnerEnv
+Default product path:
+Source-Wire does not host other people's memory.
+Each owner brings infrastructure.
+end note
+
+note bottom of PrivateProof
+No private owner or client data
+in public Source-Wire examples.
+end note
+
+@enduml

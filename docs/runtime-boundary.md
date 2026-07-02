@@ -86,6 +86,13 @@ The current runtime decision is recorded in [Public Runtime Decision](public-run
 
 The current runtime implementation gate is recorded in [Runtime Implementation Gate](runtime-implementation-gate.md).
 
+The memory-engine baseline audit path is recorded in:
+
+- [Memory Engine Baseline Grill Outcome](memory-engine-baseline-grill-outcome.md)
+- [Memory Engine Baseline Audit PRD](memory-engine-baseline-audit-prd.md)
+- [Memory Engine Baseline Audit Issue Slices](memory-engine-baseline-audit-issue-slices.md)
+- [Memory Engine Baseline Audit Diagram Pack](diagrams/memory-engine-baseline-audit/README.md)
+
 Any runtime PRD must keep this trust boundary:
 
 ```text

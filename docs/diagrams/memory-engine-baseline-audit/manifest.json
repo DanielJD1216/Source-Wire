@@ -1,0 +1,10 @@
+{
+  "diagram_pack": "docs/diagrams/memory-engine-baseline-audit",
+  "diagrams": [
+    {
+      "png": "self-hosted-runtime-boundary.png",
+      "source": "self-hosted-runtime-boundary.puml",
+      "svg": "self-hosted-runtime-boundary.svg"
+    }
+  ]
+}

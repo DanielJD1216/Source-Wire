@@ -68,6 +68,14 @@ Before Source-Wire becomes the runnable self-hosted product, run a focused audit
 4. What setup path lets a nontechnical owner run it with their own device/server and PostgreSQL-compatible database?
 5. What must stay blocked until public safety, namespace isolation, auth, audit, and no-private-data gates are green?
 
+Current audit package:
+
+- [Memory Engine Baseline Grill Outcome](memory-engine-baseline-grill-outcome.md)
+- [Memory Engine Baseline Audit PRD](memory-engine-baseline-audit-prd.md)
+- [Memory Engine Baseline Audit Issue Slices](memory-engine-baseline-audit-issue-slices.md)
+- [Memory Engine Baseline Issue Publication Approval Request](memory-engine-baseline-issue-publication-approval-request.md)
+- [Memory Engine Baseline Audit Diagram Pack](diagrams/memory-engine-baseline-audit/README.md)
+
 ## Hard Boundaries
 
 Do not treat this direction doc as approval to implement runtime behavior.

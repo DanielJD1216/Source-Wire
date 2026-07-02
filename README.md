@@ -10,6 +10,8 @@ Current public status: Source-Wire is Apache-2.0 licensed as a source package. I
 
 Product direction: Source-Wire is intended to become a public BYO, owner-hosted memory system that adopters can run with their own device/server, PostgreSQL-compatible database, API keys, data sources, and MCP-capable agent harnesses. The current repo is the contracts-first public package, not that full runtime yet. Read [Product Direction](docs/product-direction.md).
 
+Memory-engine baseline path: `Source-Wire-Memory-Engine` is an AGPLv3 reference runtime candidate. It stays separate while Source-Wire audits the boundary, license path, and owner-hosted setup path. Read [Memory Engine Baseline Audit PRD](docs/memory-engine-baseline-audit-prd.md).
+
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
 Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
@@ -95,6 +97,9 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 
 - [Docs Index](docs/index.md)
 - [Product Direction](docs/product-direction.md)
+- [Memory Engine Baseline Audit PRD](docs/memory-engine-baseline-audit-prd.md)
+- [Memory Engine Baseline Audit Issue Slices](docs/memory-engine-baseline-audit-issue-slices.md)
+- [Memory Engine Baseline Audit Issue Drafts](docs/issues/memory-engine-baseline-audit/README.md)
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)
 - [World Share Packet](docs/world-share-packet.md)

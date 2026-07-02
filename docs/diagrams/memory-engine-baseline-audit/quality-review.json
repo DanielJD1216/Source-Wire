@@ -1,0 +1,20 @@
+{
+  "status": "rendered-and-reviewed",
+  "diagrams": [
+    {
+      "diagram": "self-hosted-runtime-boundary",
+      "lane": "PlantUML",
+      "technical_score": 9,
+      "presentation_score": 8,
+      "presentation_ready": true,
+      "why": "Evidence-backed source-truth diagram. The second render removed the warning banner and reduced width. It clearly shows private proof system, public Source-Wire, AGPL runtime candidate, owner-hosted environment, license gate, and no-SaaS/default BYO boundary.",
+      "fix_needed": "Optional later polish: create an editorial SVG if this diagram is used in a public deck or landing page."
+    }
+  ],
+  "overall_average_score": 8.5,
+  "review_notes": [
+    "PlantUML is the correct lane for this planning artifact.",
+    "Rendered PNG was inspected locally and is readable without clipping.",
+    "No private owner or client data appears in the diagram."
+  ]
+}

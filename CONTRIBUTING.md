@@ -2,7 +2,7 @@
 
 Source-Wire is Apache-2.0 licensed as a source package.
 
-Source reuse is allowed under Apache-2.0, but code contributions are not accepted until the owner approves contribution terms.
+Source reuse is allowed under Apache-2.0. Contribution terms are defined, but code contributions are not accepted until a separate contribution-acceptance implementation unit explicitly opens them.
 
 ## What Is Welcome Now
 
@@ -75,8 +75,8 @@ ok npm package published @source-wire/contracts@0.1.0
 blocked code contribution acceptance
 ```
 
-## Future Contribution Terms
+## Contribution Terms
 
-Future contribution terms PRD work is approved, but public code contribution acceptance remains blocked until those terms are implemented and separately opened.
+Contribution terms PRD work is approved and defined, but public code contribution acceptance remains blocked until those terms are implemented and separately opened.
 
 Until then, public issues are review feedback. They are not approval to publish npm, create GitHub releases, deploy services, host a runtime, claim production readiness, or contribute code to Source-Wire.

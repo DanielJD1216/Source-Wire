@@ -46,7 +46,8 @@ for (const [label, text, requiredText] of [
   ["contribution policy", policy, "Security Report Scope"],
   ["contribution policy", policy, "License Compatibility"],
   ["contribution policy", policy, "Code contribution acceptance remains blocked."],
-  ["CONTRIBUTING.md", contributing, "Future contribution terms PRD work is approved"],
+  ["CONTRIBUTING.md", contributing, "Contribution terms are defined, but code contributions are not accepted until a separate contribution-acceptance implementation unit explicitly opens them."],
+  ["CONTRIBUTING.md", contributing, "Contribution terms PRD work is approved and defined"],
   ["pull request template", pullRequestTemplate, "Source-Wire is Apache-2.0 licensed as a source package, but code contributions are not accepted yet."]
 ]) {
   assertIncludes(text, requiredText, label);

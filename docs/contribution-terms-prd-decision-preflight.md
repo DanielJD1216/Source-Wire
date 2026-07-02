@@ -6,9 +6,9 @@ This preflight does not accept code contributions, change contribution policy, a
 
 ## Purpose
 
-Use this before opening a future contribution terms PRD unit from issue `#258`.
+Use this to verify the completed contribution terms PRD evidence remains current while public code contribution acceptance stays blocked.
 
-This command proves the public source-package state, owner decision issues, open-issue boundary, contribution terms preparation packet, public intake boundary, pull request boundary, and launch decision blockers are current before contribution terms PRD work starts.
+This command proves the public source-package state, owner decision issues, open-issue boundary, contribution terms preparation packet, public intake boundary, pull request boundary, and launch decision blockers are current after the contribution terms PRD work has been approved and defined.
 
 ## Command
 
@@ -53,9 +53,9 @@ ok exact contribution terms PRD approval recorded
 blocked code contribution acceptance
 ```
 
-## Required Approval Before PRD Work
+## Recorded PRD Approval
 
-Issue `#258` must contain the exact owner approval text before a future contribution terms PRD unit starts:
+Issue `#258` records the exact owner approval text for the completed contribution terms PRD unit:
 
 ```text
 Approved for a future Source-Wire contribution terms PRD unit: define whether and how Source-Wire can accept public code contributions, including DCO or CLA posture, maintainer review policy, private-data exclusion rules, support expectations, security-report scope, license compatibility, and PR workflow boundaries. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions in this PRD unit.
@@ -65,7 +65,7 @@ This check intentionally does not count recommended approval text as approval. A
 
 ## Stop Conditions
 
-Stop before PRD work if:
+Stop before contribution acceptance work if:
 
 - issue `#258` does not contain exact owner approval,
 - `npm run owner:decision-status` cannot read issue `#258`,

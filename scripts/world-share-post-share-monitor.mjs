@@ -51,7 +51,7 @@ for (const requiredText of [
   assertIncludes(monitorDoc, requiredText, "post-share monitor doc");
 }
 
-assertIncludes(contributing, "code contributions are not accepted until the owner approves contribution terms", "contributing contribution boundary");
+assertIncludes(contributing, "Contribution terms are defined, but code contributions are not accepted until a separate contribution-acceptance implementation unit explicitly opens them.", "contributing contribution boundary");
 assertIncludes(pullRequestTemplate, "I understand Source-Wire is not accepting public code contributions yet.", "pull request contribution boundary");
 
 const fixtureState = buildFixtureState(args.fixture);

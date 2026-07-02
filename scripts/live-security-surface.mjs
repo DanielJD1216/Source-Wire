@@ -40,7 +40,7 @@ assertIncludes(securityPolicy, "Security reporting does not approve:", "SECURITY
 assertIncludes(securityPolicy, "real source payloads", "SECURITY.md private-data warning");
 assertIncludes(supportPolicy, "published to npm, released on GitHub, and not a hosted runtime", "SUPPORT.md live channel boundary");
 assertIncludes(supportPolicy, "code contribution acceptance", "SUPPORT.md contribution boundary");
-assertIncludes(contributingPolicy, "code contributions are not accepted until the owner approves contribution terms", "CONTRIBUTING.md contribution boundary");
+assertIncludes(contributingPolicy, "Contribution terms are defined, but code contributions are not accepted until a separate contribution-acceptance implementation unit explicitly opens them.", "CONTRIBUTING.md contribution boundary");
 assertIncludes(contributingPolicy, "Use synthetic examples or public repo references only.", "CONTRIBUTING.md public-only feedback rule");
 for (const requiredText of [
   "secrets",

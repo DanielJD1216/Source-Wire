@@ -27,6 +27,8 @@ Then run:
 npm run runtime:child-issue-approval-status
 ```
 
+This command uses live GitHub issue state and owner-side `gh` access, so it is intentionally covered by `npm run world:share-final-preflight` instead of the public reviewer `npm run publish:readiness` gate.
+
 Current expected markers before approval:
 
 ```text

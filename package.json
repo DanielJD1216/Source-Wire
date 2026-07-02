@@ -106,6 +106,7 @@
     "runtime:prd-decision-preflight": "node scripts/hosted-runtime-prd-decision-preflight.mjs",
     "runtime:slice-approval-request": "node scripts/hosted-runtime-slice-approval-request.mjs",
     "runtime:child-issue-publication-packet": "node scripts/hosted-runtime-child-issue-publication-packet.mjs",
+    "runtime:child-issue-publication-preflight": "node scripts/hosted-runtime-child-issue-publication-preflight.mjs",
     "runtime:child-issue-approval-status": "node scripts/hosted-runtime-child-issue-approval-status.mjs",
     "runtime:child-issue-publish": "node scripts/hosted-runtime-child-issue-publisher.mjs",
     "runtime:child-issue-publish:smoke": "node scripts/hosted-runtime-child-issue-publisher-smoke.mjs",

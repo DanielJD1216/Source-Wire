@@ -84,6 +84,15 @@ const completeLog = [
   "blocked child issue publication approval missing",
   "blocked child issue duplicate publication",
   "blocked hosted runtime implementation",
+  "ok hosted runtime child issue publication preflight ready",
+  "ok child issue publication packet current",
+  "ok child issue publisher dry run current",
+  "ok child issue publisher guard smoke current",
+  "ok child issue approval status current",
+  "ok owner open issue boundary current",
+  "ok owner open issue future planning smoke current",
+  "blocked hosted runtime child issue publication pending owner approval",
+  "blocked hosted runtime implementation",
   "ok contribution terms PRD preparation ready",
   "ok contribution terms evidence map ready",
   "ok exact contribution terms PRD approval recorded",
@@ -192,7 +201,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 53 groups 172 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 54 groups 181 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

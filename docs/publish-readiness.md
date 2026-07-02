@@ -127,6 +127,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` |
 | Hosted runtime PRD preparation | `ok hosted runtime PRD preparation ready`, `ok hosted runtime PRD evidence map ready`, `ok exact hosted runtime PRD approval recorded` |
 | Hosted runtime PRD execution packet | `ok hosted runtime PRD execution packet ready`, `ok hosted runtime PRD execution scope documented`, `ok exact hosted runtime PRD approval recorded` |
+| Hosted runtime child issue publication preflight | `ok hosted runtime child issue publication preflight ready`, `ok child issue publication packet current`, `ok child issue publisher dry run current`, `ok child issue publisher guard smoke current`, `ok child issue approval status current`, `ok owner open issue boundary current`, `ok owner open issue future planning smoke current`, `blocked hosted runtime child issue publication pending owner approval`, `blocked hosted runtime implementation` |
 | Hosted runtime child issue publisher | `ok hosted runtime child issue publisher ready`, `ok hosted runtime issue payloads validated`, `blocked child issue publication requires --write`, `ok hosted runtime child issue publisher smoke`, `blocked child issue publication approval missing`, `blocked child issue duplicate publication`, `blocked hosted runtime implementation` |
 | Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
 | Contribution terms PRD execution packet | `ok contribution terms PRD execution packet ready`, `ok contribution terms PRD execution scope documented`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
@@ -254,6 +255,28 @@ ok no unresolved owner decision issues open
 ok all completed owner decision approvals retained
 blocked hosted runtime child issue publication pending owner approval
 ```
+
+Before publishing any future hosted-runtime child issues, run:
+
+```bash
+npm run runtime:child-issue-publication-preflight
+```
+
+Expected markers:
+
+```text
+ok hosted runtime child issue publication preflight ready
+ok child issue publication packet current
+ok child issue publisher dry run current
+ok child issue publisher guard smoke current
+ok child issue approval status current
+ok owner open issue boundary current
+ok owner open issue future planning smoke current
+blocked hosted runtime child issue publication pending owner approval
+blocked hosted runtime implementation
+```
+
+This owner-side preflight is intentionally outside CI and `publish:readiness` because it depends on live GitHub issue state. It does not publish child issues or approve hosted runtime implementation.
 
 For the live status portion only, run:
 

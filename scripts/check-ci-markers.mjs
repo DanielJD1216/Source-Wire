@@ -197,6 +197,20 @@ const markerGroups = [
     ]
   },
   {
+    name: "hosted runtime child issue publication preflight",
+    markers: [
+      "ok hosted runtime child issue publication preflight ready",
+      "ok child issue publication packet current",
+      "ok child issue publisher dry run current",
+      "ok child issue publisher guard smoke current",
+      "ok child issue approval status current",
+      "ok owner open issue boundary current",
+      "ok owner open issue future planning smoke current",
+      "blocked hosted runtime child issue publication pending owner approval",
+      "blocked hosted runtime implementation"
+    ]
+  },
+  {
     name: "contribution terms PRD preparation",
     markers: [
       "ok contribution terms PRD preparation ready",

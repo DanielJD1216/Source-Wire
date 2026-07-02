@@ -114,7 +114,7 @@ async function checkUrl(url) {
     return { ok: true };
   }
 
-  if (headResult.status !== 405 && headResult.status !== 403 && headResult.status !== 404) {
+  if (headResult.status !== 0 && headResult.status !== 405 && headResult.status !== 403 && headResult.status !== 404) {
     return { ok: false, reason: headResult.reason };
   }
 
@@ -140,35 +140,52 @@ async function checkUrl(url) {
 }
 
 async function fetchWithTimeout(url, method) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10_000);
+  const attempts = 3;
+  const reasons = [];
 
-  try {
-    const response = await fetch(url, {
-      method,
-      redirect: "follow",
-      signal: controller.signal,
-      headers: {
-        "User-Agent": "Source-Wire external link checker"
-      }
-    });
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15_000);
 
-    return {
-      status: response.status,
-      reason: `${method} ${response.status} ${response.statusText}`.trim()
-    };
-  } catch (error) {
-    return {
-      status: 0,
-      reason: `${method} ${error.name}: ${error.message}`
-    };
-  } finally {
-    clearTimeout(timeout);
+    try {
+      const response = await fetch(url, {
+        method,
+        redirect: "follow",
+        signal: controller.signal,
+        headers: {
+          "User-Agent": "Source-Wire external link checker"
+        }
+      });
+
+      return {
+        status: response.status,
+        reason: `${method} ${response.status} ${response.statusText}`.trim()
+      };
+    } catch (error) {
+      reasons.push(`${method} attempt ${attempt} ${error.name}: ${error.message}`);
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    if (attempt < attempts) {
+      await delay(500 * attempt);
+    }
   }
+
+  return {
+    status: 0,
+    reason: reasons.join("; ")
+  };
 }
 
 function isAcceptableStatus(status) {
   return status >= 200 && status < 400;
+}
+
+function delay(milliseconds) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
 }
 
 function npmRegistryUrlForPackagePage(rawUrl) {

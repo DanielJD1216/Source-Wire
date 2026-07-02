@@ -16,6 +16,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Memory Engine Baseline License Path Decision Packet](memory-engine-baseline-license-path-decision-packet.md)
 - [Memory Engine Baseline API And MCP Wrapper Boundary](memory-engine-baseline-api-mcp-wrapper-boundary.md)
 - [Memory Engine Baseline BYO Self-Hosted Setup Path](memory-engine-baseline-byo-self-hosted-setup-path.md)
+- [Memory Engine Baseline Public-Safe Fixtures And Verification Gates](memory-engine-baseline-public-safe-fixtures-and-verification-gates.md)
 - [Memory Engine Baseline Audit Issue Drafts](issues/memory-engine-baseline-audit/README.md)
 - [Memory Engine Baseline Issue Publication Approval Request](memory-engine-baseline-issue-publication-approval-request.md)
 - [Memory Engine Baseline Docs Audit Checkpoint](memory-engine-baseline-docs-audit-checkpoint.md)

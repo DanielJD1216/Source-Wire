@@ -1,5 +1,7 @@
 # Public-Safe Fixtures And Verification Gates
 
+Local artifact: [Memory Engine Baseline Public-Safe Fixtures And Verification Gates](../../memory-engine-baseline-public-safe-fixtures-and-verification-gates.md).
+
 ## Parent
 
 Source-Wire Memory Engine Baseline Audit PRD.

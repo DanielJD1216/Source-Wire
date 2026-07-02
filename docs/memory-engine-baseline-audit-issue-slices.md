@@ -123,6 +123,8 @@ Acceptance criteria:
 
 Issue draft: [05 Public-Safe Fixtures And Verification Gates](issues/memory-engine-baseline-audit/05-public-safe-fixtures-and-verification-gates.md).
 
+Local artifact: [Memory Engine Baseline Public-Safe Fixtures And Verification Gates](memory-engine-baseline-public-safe-fixtures-and-verification-gates.md).
+
 Type: AFK after Slices 1, 2, and 3.
 
 Blocked by: Slice 1, Slice 2, Slice 3.

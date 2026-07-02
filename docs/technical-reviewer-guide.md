@@ -1,6 +1,6 @@
 # Source-Wire Technical Reviewer Guide
 
-This guide is for technical reviewers who want to inspect Source-Wire before it is published, released, deployed, or turned into a hosted runtime.
+This guide is for technical reviewers who want to inspect Source-Wire after its first npm and GitHub release, before it is deployed or turned into a hosted runtime.
 
 For the shortest status summary, read [Public Status](public-status.md).
 
@@ -15,11 +15,11 @@ Current state:
 - package license is `Apache-2.0`,
 - package version is `0.1.0`,
 - `LICENSE` file exists,
-- npm release metadata is applied and npm publish is not yet performed,
-- GitHub release publishing is blocked,
+- npm package is published as `@source-wire/contracts@0.1.0`,
+- GitHub release is published as `v0.1.0`,
 - hosted runtime backend work is blocked.
 
-The Apache-2.0 license grants source package reuse rights. It does not mean Source-Wire is published to npm, released on GitHub, deployed, hosted, production-ready, or accepting code contributions.
+The Apache-2.0 license plus first release grants source package reuse rights. It does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.
 
 ## What You Can Review Today
 
@@ -153,7 +153,7 @@ Good review questions:
 Less useful feedback:
 
 - requests to add real user data,
-- requests to publish npm before release execution,
+- requests to publish a new npm version without a future approved release unit,
 - requests to add hosted runtime behavior before the runtime gate opens,
 - requests to remove owner approval from trusted-memory promotion.
 

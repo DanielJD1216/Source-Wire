@@ -1,14 +1,14 @@
 # Source-Wire Release Implementation Runbook
 
-Status: implementation runbook only.
+Status: historical first-release runbook.
 
-This runbook does not approve npm publishing, GitHub release publishing, release tags, package version changes, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This runbook records the first release path. It does not approve a future npm package version, future GitHub release, future release tags, package version changes, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
-Use this runbook after the owner-approved release path is recorded and before the focused release implementation unit mutates package metadata or release channels.
+Use this runbook as historical evidence for the owner-approved first release path.
 
-It records the execution order, stop conditions, and verification evidence needed before Source-Wire is published beyond source-repo sharing.
+It records the execution order, stop conditions, and verification evidence used before Source-Wire was published beyond source-repo sharing.
 
 ## Current Recommended Path
 
@@ -39,7 +39,7 @@ Expected markers:
 ```text
 ok release implementation plan ready
 ok release version target documented
-blocked release execution not performed
+ok release execution completed
 ```
 
 Run the non-mutating release implementation rehearsal:
@@ -57,7 +57,7 @@ ok future npm public access rehearsal
 blocked release mutation not performed
 ```
 
-The rehearsal simulates the future `0.1.0` release manifest and future `publishConfig.access: public` in memory only. It keeps real `package.json` and `package-lock.json` at `0.0.0` with current `publishConfig.access: restricted`.
+The rehearsal preserves the published `0.1.0` release manifest and `publishConfig.access: public` posture in memory only. It does not mutate the current release.
 
 Run the non-mutating npm publish config plan:
 
@@ -123,14 +123,15 @@ The future release implementation must not silently include:
 - trusted Memory Record auto-promotion,
 - code contribution acceptance.
 
-## Current Blocked State
+## Current Guarded State
 
-Until approved release execution runs:
+After approved first release execution:
 
-- npm publishing remains blocked,
-- GitHub release publishing remains blocked,
-- release tag creation remains blocked,
-- package version remains `0.0.0`,
+- npm package is published as `@source-wire/contracts@0.1.0`,
+- GitHub release is published as `v0.1.0`,
+- release tag `v0.1.0` exists,
+- package version remains `0.1.0`,
+- future release mutation remains blocked without a new approved release unit,
 - deployment remains blocked,
 - hosted runtime behavior remains blocked,
 - production runtime claims remain blocked,

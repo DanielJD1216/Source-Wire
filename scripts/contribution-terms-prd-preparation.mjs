@@ -87,7 +87,7 @@ printRows([
   ["CLA or DCO enforcement", "blocked"],
   ["Public pull request acceptance", "blocked"],
   ["Hosted runtime", "blocked"],
-  ["npm publishing", "blocked"]
+  ["npm publishing", "published as @source-wire/contracts@0.1.0, future versions gated"]
 ]);
 
 printSection("Required Evidence Before PRD");

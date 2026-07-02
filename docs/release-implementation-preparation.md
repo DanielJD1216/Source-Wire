@@ -1,10 +1,10 @@
 # Source-Wire Release Implementation Preparation
 
-Status: release implementation preparation only.
+Status: historical first-release preparation.
 
-This packet does not approve npm publishing, GitHub release publishing, release tags, package version changes, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This packet records first-release preparation. It does not approve a future npm package version, future GitHub release, future release tags, package version changes, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
-Do not execute release mutation until npm and GitHub release credentials are ready.
+Do not execute future release mutation without a new approved release unit and current npm plus GitHub release credentials.
 
 ## Purpose
 
@@ -37,7 +37,7 @@ Expected markers:
 ```text
 ok release implementation preparation ready
 ok release implementation evidence map ready
-blocked release execution not performed
+ok release execution completed
 ```
 
 ## Required Evidence Before Execution
@@ -116,12 +116,13 @@ This packet does not approve:
 
 ## Current Boundary
 
-Until npm and GitHub release credentials are ready and approved release execution runs:
+After approved first release execution:
 
-- npm publishing remains blocked,
-- GitHub release publishing remains blocked,
-- release tag creation remains blocked,
-- package version remains `0.0.0`,
+- npm package is published as `@source-wire/contracts@0.1.0`,
+- GitHub release is published as `v0.1.0`,
+- release tag `v0.1.0` exists,
+- package version remains `0.1.0`,
+- future release mutation remains blocked without a new approved release unit,
 - deployment remains blocked,
 - hosted runtime behavior remains blocked,
 - production runtime claims remain blocked,

@@ -4,22 +4,22 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 before approved release execution");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while release execution is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 const handoffDoc = await readFile("docs/release-auth-handoff.md", "utf8");
 const authPreflightDoc = await readFile("docs/release-auth-preflight.md", "utf8");
 const executionPreflightDoc = await readFile("docs/release-execution-preflight.md", "utf8");
 
 for (const requiredText of [
-  "Status: owner-side npm authentication handoff only.",
+  "Status: owner-side future-release npm authentication handoff only.",
   "npm login --registry=https://registry.npmjs.org/",
   "npm whoami",
   "npm run release:auth-preflight",
   "npm run release:execution-preflight",
   "Do not run `npm publish` from this handoff.",
-  "blocked release auth owner action required"
+  "blocked future release auth owner action required"
 ]) {
   if (!handoffDoc.includes(requiredText)) {
     failures.push(`release auth handoff doc missing required text: ${requiredText}`);
@@ -44,33 +44,33 @@ if (failures.length > 0) {
 
 printSection("Source-Wire Release Auth Handoff");
 console.log("This owner-side handoff is read-only.");
-console.log("It documents the exact npm authentication step required before approved release execution.");
+console.log("It documents the exact npm authentication step required before future release mutation.");
 console.log("It does not authenticate npm, publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, implement hosted runtime behavior, or approve production runtime use.");
 
 printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Owner action", "npm authentication required"],
-  ["npm publish", "blocked until final release execution"],
-  ["GitHub release", "blocked until final release execution"],
+  ["Owner action", "future release npm authentication required before mutation"],
+  ["npm publish", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
 
 printSection("Next Owner Actions");
 printList([
-  "Run npm login --registry=https://registry.npmjs.org/ in an owner-controlled terminal.",
-  "Run npm whoami and confirm the expected npm account.",
-  "Run npm run release:auth-preflight.",
-  "Run npm run release:execution-preflight.",
-  "Stop before npm publish, GitHub release creation, tag creation, or package version changes unless the final release execution unit is active."
+  "For any future package version, run npm login --registry=https://registry.npmjs.org/ in an owner-controlled terminal.",
+  "Run npm whoami and confirm the expected npm account before future release mutation.",
+  "Run npm run release:auth-preflight before future release mutation.",
+  "Run npm run release:execution-preflight before future release mutation.",
+  "Stop before publishing a new npm version, creating a new GitHub release, creating a tag, or changing package version unless a future release execution unit is active."
 ]);
 
 console.log("");
 console.log("ok release auth handoff ready");
 console.log("ok npm authentication owner steps documented");
-console.log("blocked release auth owner action required");
+console.log("blocked future release auth owner action required");
 
 function assertEqual(actual, expected, message) {
   if (actual !== expected) {

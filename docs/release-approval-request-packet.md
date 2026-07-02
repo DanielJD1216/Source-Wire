@@ -2,17 +2,17 @@
 
 Status: release approval request with recorded owner decision.
 
-This packet does not approve npm publishing, GitHub release publishing, release tags, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This packet records the first release approval. It does not approve a future npm package version, future GitHub release, future release tags, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
-Use this packet to see the recorded Source-Wire release path and the remaining release execution blocker.
+Use this packet to see the recorded Source-Wire release path and the remaining post-release blockers.
 
-Source-Wire is Apache-2.0 licensed as a source package. It is not yet npm-published, GitHub-released, deployed, hosted, production-ready, or open for code contributions.
+Source-Wire is Apache-2.0 licensed as a source package. It is npm-published, GitHub-released, undeployed, not hosted, not production-ready, and not open for code contributions.
 
 Issue [#255](https://github.com/DanielJD1216/Source-Wire/issues/255) records the owner decision to use Option 1: npm plus GitHub release implementation.
 
-That decision does not publish npm or create a GitHub release. Release execution remains blocked until npm authentication is resolved and final release preflights pass.
+That decision authorized the first npm publication and matching GitHub release. Future release mutation remains blocked until a new approved release unit and final release preflights pass.
 
 ## Command
 
@@ -34,9 +34,9 @@ Expected markers:
 
 ```text
 ok release approval request ready
-blocked npm publishing release execution not performed
-blocked github release execution not performed
-blocked version release execution not performed
+ok npm publishing completed @source-wire/contracts@0.1.0
+ok github release completed v0.1.0
+ok version release completed 0.1.0
 ```
 
 Before release execution, run the complete read-only decision preflight:
@@ -92,18 +92,18 @@ This check intentionally ignores the recommended approval text in this packet. A
 | Release decision issue | [`#255`](https://github.com/DanielJD1216/Source-Wire/issues/255) |
 | Selected path | Option 1: npm plus GitHub release implementation |
 | Approval state | recorded |
-| npm auth | blocked until owner login |
-| Release execution | blocked until auth and final preflight pass |
+| npm auth | complete for first release |
+| Release execution | complete for first release |
 
 ## Current State
 
 | Field | Current value |
 | --- | --- |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
-| Git tag creation | blocked |
+| Package version | `0.1.0` |
+| npm package | published as `@source-wire/contracts@0.1.0` |
+| GitHub release | published as `v0.1.0` |
+| Git tag | `v0.1.0` |
 | Hosted runtime | blocked |
 | Code contributions | blocked |
 

@@ -174,7 +174,7 @@ Expected current markers:
 
 ```text
 ok owner decision status readable
-blocked release execution not performed
+ok exact release implementation approval recorded
 blocked branch governance implementation approval missing
 blocked hosted runtime PRD approval missing
 blocked contribution terms PRD approval missing

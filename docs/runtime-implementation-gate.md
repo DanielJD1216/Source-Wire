@@ -50,7 +50,7 @@ It must use synthetic data only.
 
 It must run without secrets.
 
-It must keep npm publishing blocked unless the approved release execution path is completed.
+It must keep future package publishing blocked unless a new approved release execution path is completed.
 
 ## Required Proof Matrix
 

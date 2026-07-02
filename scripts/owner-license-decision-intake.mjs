@@ -4,9 +4,9 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 before release execution");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
 assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 await assertPathExists("LICENSE");
 
@@ -70,8 +70,8 @@ printRows([
   ["Package version", packageJson.version],
   ["LICENSE file", "present"],
   ["Source package reuse", "allowed under Apache-2.0"],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
@@ -80,7 +80,7 @@ printSection("Next Owner Action");
 printList([
   "Use the Apache-2.0 licensed source repo for public sharing.",
   "Release path approval is recorded in #255.",
-  "Complete npm auth, release auth preflight, and release execution preflight before npm publishing or GitHub release creation.",
+  "Use a future approved release unit before publishing a new npm version or creating a new GitHub release.",
   "Open separate approvals before hosted runtime work or contribution acceptance."
 ]);
 

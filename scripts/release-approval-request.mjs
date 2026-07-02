@@ -6,8 +6,8 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until release execution");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 for (const requiredPath of [
   "LICENSE",
@@ -23,7 +23,7 @@ for (const requiredPath of [
 for (const requiredText of [
   "Status: release approval request with recorded owner decision.",
   "Issue [#255](https://github.com/DanielJD1216/Source-Wire/issues/255) records the owner decision to use Option 1",
-  "Release execution remains blocked until npm authentication is resolved and final release preflights pass.",
+  "Future release mutation remains blocked until a new approved release unit and final release preflights pass.",
   "Current Recorded Decision",
   "Historical Owner Decision Options",
   "Option 1: Approve npm plus GitHub release implementation (recommended)",
@@ -33,7 +33,7 @@ for (const requiredText of [
   "Option 3: Approve GitHub release only",
   "Option 4: Keep release publishing blocked",
   "Option 5: Request release review first",
-  "This packet does not approve npm publishing"
+  "This packet records the first release approval"
 ]) {
   if (!approvalPacket.includes(requiredText)) {
     failures.push(`release approval request missing required text: ${requiredText}`);
@@ -54,24 +54,24 @@ printRows([
   ["Package", packageJson.name],
   ["License", packageJson.license],
   ["Version", packageJson.version],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
-  ["Version release", "blocked"]
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
+  ["Version release", "0.1.0 complete"]
 ]);
 
 printSection("Recorded Owner Decision And Next Action");
 printList([
   "Issue #255 records approval for npm plus GitHub release implementation.",
-  "Resolve npm authentication before npm publishing or matching GitHub release creation.",
-  "Run npm run release:auth-preflight and npm run release:execution-preflight.",
+  "The first npm publication and matching GitHub release are complete.",
+  "Use a future approved release unit before changing package version, npm dist-tags, or GitHub release assets.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);
 
 console.log("");
 console.log("ok release approval request ready");
-console.log("blocked npm publishing release execution not performed");
-console.log("blocked github release execution not performed");
-console.log("blocked version release execution not performed");
+console.log("ok npm publishing completed @source-wire/contracts@0.1.0");
+console.log("ok github release completed v0.1.0");
+console.log("ok version release completed 0.1.0");
 
 async function assertPathExists(path) {
   try {

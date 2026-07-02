@@ -31,7 +31,7 @@ for (const requiredDoc of requiredDocs) {
 
 const preparationDoc = await readFile("docs/release-implementation-preparation.md", "utf8");
 for (const requiredText of [
-  "Status: release implementation preparation only.",
+  "Status: historical first-release preparation.",
   approvedReleaseText,
   "npm run release:approval-status",
   "npm run release:auth-preflight",
@@ -41,7 +41,7 @@ for (const requiredText of [
   "gh run watch",
   "npm publish",
   "gh release create",
-  "Do not execute release mutation until npm and GitHub release credentials are ready."
+  "Do not execute future release mutation without a new approved release unit and current npm plus GitHub release credentials."
 ]) {
   if (!preparationDoc.includes(requiredText)) {
     failures.push(`release implementation preparation doc missing required text: ${requiredText}`);
@@ -66,9 +66,9 @@ printRows([
   ["Future version target", "0.1.0"],
   ["Current package version", packageJson.version],
   ["Current license", packageJson.license],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
-  ["Release tag", "blocked"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
+  ["Release tag", "v0.1.0 complete"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
@@ -88,14 +88,14 @@ printList([
 
 printSection("Next Action");
 printList([
-  "Use docs/release-implementation-preparation.md as the execution packet after npm and GitHub release credentials are ready.",
-  "Do not publish npm, create a GitHub release, create a tag, change package version, deploy services, or accept code contributions from this check."
+  "Use docs/release-implementation-preparation.md as historical evidence for the first release path.",
+  "Do not publish a new npm version, create a new GitHub release, create a new tag, change package version, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");
 console.log("ok release implementation preparation ready");
 console.log("ok release implementation evidence map ready");
-console.log("blocked release execution not performed");
+console.log("ok release execution completed");
 
 async function assertPathExists(path) {
   try {

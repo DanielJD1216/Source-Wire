@@ -1,8 +1,8 @@
 # Source-Wire Publish Readiness
 
-Source-Wire has package readiness checks, but it is not published to npm yet.
+Source-Wire has package readiness checks and is published as `@source-wire/contracts@0.1.0` with GitHub release `v0.1.0`.
 
-Publishing requires a later explicit release decision.
+Future package versions, deployment, hosted runtime behavior, production runtime use, and code contribution acceptance still require later explicit owner decisions.
 
 ## Local Readiness Command
 
@@ -75,6 +75,7 @@ This command runs:
 - `npm run docs:command-setup`
 - `npm run safety:scan`
 - `npm run claims:scan`
+- `npm run release:current-wording`
 - `npm run ci:markers:smoke`
 
 The `ci:check` sub-gate includes:
@@ -100,13 +101,13 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | --- | --- |
 | Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.1.0`, `ok npm public access ready` |
 | Release command guard smoke | `ok blocked release commands smoke` |
-| Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `blocked release execution not performed` |
-| Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `blocked release execution not performed` |
+| Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `ok release execution completed` |
+| Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `ok release execution completed` |
 | Release publish config plan | `ok release publish config plan ready`, `ok current npm public access documented`, `blocked future publish config mutation not performed` |
 | Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `ok future npm public access rehearsal`, `ok release metadata applied` |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `ok release execution completed` |
-| Release approval request | `ok release approval request ready`, `blocked npm publishing release execution not performed`, `blocked github release execution not performed`, `blocked version release execution not performed` |
-| Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked release auth owner action required` |
+| Release approval request | `ok release approval request ready`, `ok npm publishing completed @source-wire/contracts@0.1.0`, `ok github release completed v0.1.0`, `ok version release completed 0.1.0` |
+| Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked future release auth owner action required` |
 | Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `blocked release execution requires npm auth and final preflight` |
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` |
 | Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `ok release execution completed` |
@@ -259,10 +260,11 @@ npm run repository:live-github
 This read-only check verifies:
 
 - the live GitHub About description, homepage, topics, visibility, default branch, license, issues, projects, and wiki settings,
-- the GitHub release list is empty,
+- the GitHub release list includes `v0.1.0`,
 - the latest `Package Checks` run is green for `origin/main`,
-- version remains `0.0.0`,
-- npm publishing, hosted runtime, and contribution acceptance remain blocked.
+- version remains `0.1.0`,
+- npm package publication is complete,
+- hosted runtime and contribution acceptance remain blocked.
 
 Expected markers:
 
@@ -270,7 +272,7 @@ Expected markers:
 ok live github public surface ready
 ok live github metadata matches docs
 ok live package checks green
-blocked github release not approved
+ok github release published v0.1.0
 ```
 
 This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
@@ -290,8 +292,9 @@ This read-only check verifies:
 - forking remains enabled for source-package reuse,
 - branch protection state is visible,
 - repository ruleset state is visible,
-- package version remains `0.0.0`,
-- npm publishing, GitHub release publishing, hosted runtime, and contribution acceptance remain blocked.
+- package version remains `0.1.0`,
+- npm package publication and GitHub release publication are complete,
+- hosted runtime and contribution acceptance remain blocked.
 
 Expected markers in the current owner-direct-maintenance state:
 
@@ -424,7 +427,8 @@ This read-only check verifies:
 - live GitHub secret scanning and push protection are enabled,
 - GitHub security advisories are empty,
 - package version remains `0.1.0`,
-- npm publishing, GitHub release publishing, hosted runtime, production security scope, and contribution acceptance remain blocked.
+- npm package publication and GitHub release publication are complete,
+- hosted runtime, production security scope, and contribution acceptance remain blocked.
 
 Expected markers:
 
@@ -470,7 +474,7 @@ This command does not publish npm, create a GitHub release, deploy services, acc
 
 ## Owner Live Release Tag Boundary
 
-Before broad public sharing, the owner can verify release tags remain blocked with:
+Before broad public sharing, the owner can verify the first release tag is published and future release mutation remains blocked with:
 
 ```bash
 npm run release:live-tags
@@ -478,19 +482,21 @@ npm run release:live-tags
 
 This read-only check verifies:
 
-- local git tags are empty,
-- remote git tags are empty,
-- GitHub releases are empty,
-- local package version remains `0.0.0`,
-- npm publishing, GitHub release publishing, release tag creation, hosted runtime, and contribution acceptance remain blocked.
+- local git tags include `v0.1.0`,
+- remote git tags include `v0.1.0`,
+- GitHub release `v0.1.0` exists,
+- local package version remains `0.1.0`,
+- npm package publication and GitHub release publication are complete,
+- hosted runtime and contribution acceptance remain blocked.
 
 Expected markers:
 
 ```text
 ok live release tag boundary ready
-ok local git tags empty
-ok remote git tags empty
-blocked release tag creation not approved
+ok local release tag v0.1.0
+ok remote release tag v0.1.0
+ok github release published v0.1.0
+blocked hosted runtime not approved
 ```
 
 This command does not create a tag, create a GitHub release, publish npm, deploy services, accept code contributions, or approve production runtime use.
@@ -772,7 +778,7 @@ Run only the owner launch decision checklist:
 npm run owner:launch-checklist
 ```
 
-The checklist reports that Apache-2.0 source package sharing is ready and launch channels remain blocked until explicit owner approvals are recorded for npm publishing, GitHub release publishing, hosted runtime work, and contribution terms.
+The checklist reports that Apache-2.0 source package sharing is ready, the first npm and GitHub release are complete, and the remaining launch channels stay blocked until explicit owner approvals are recorded for hosted runtime work, branch governance, and contribution terms.
 
 It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 
@@ -842,7 +848,7 @@ Run only the one-command launch decision status report:
 npm run launch:decision-status
 ```
 
-The report summarizes what is ready and blocked across Apache-2.0 source package sharing, npm publishing, GitHub release publishing, hosted runtime work, and contribution acceptance.
+The report summarizes what is ready and blocked across Apache-2.0 source package sharing, the first npm and GitHub release, hosted runtime work, branch governance, and contribution acceptance.
 
 It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
 

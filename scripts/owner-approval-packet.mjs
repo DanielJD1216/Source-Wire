@@ -33,8 +33,8 @@ const approvalTargets = [
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until release execution");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 for (const requiredPath of [
   "docs/owner-approval-record-packet.md",
@@ -77,8 +77,8 @@ printRows([
   ["License", packageJson.license],
   ["Approval target count", String(approvalTargets.length)],
   ["Approval recording", "manual owner action"],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Code contributions", "blocked"]
 ]);

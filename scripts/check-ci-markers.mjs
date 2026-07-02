@@ -19,9 +19,9 @@ const markerGroups = [
     name: "release approval request",
     markers: [
       "ok release approval request ready",
-      "blocked npm publishing release execution not performed",
-      "blocked github release execution not performed",
-      "blocked version release execution not performed"
+      "ok npm publishing completed @source-wire/contracts@0.1.0",
+      "ok github release completed v0.1.0",
+      "ok version release completed 0.1.0"
     ]
   },
   {
@@ -29,7 +29,7 @@ const markerGroups = [
     markers: [
       "ok release auth handoff ready",
       "ok npm authentication owner steps documented",
-      "blocked release auth owner action required"
+      "blocked future release auth owner action required"
     ]
   },
   {
@@ -37,7 +37,7 @@ const markerGroups = [
     markers: [
       "ok release implementation plan ready",
       "ok release version target documented",
-      "blocked release execution not performed"
+      "ok release execution completed"
     ]
   },
   {
@@ -53,7 +53,7 @@ const markerGroups = [
     markers: [
       "ok release implementation preparation ready",
       "ok release implementation evidence map ready",
-      "blocked release execution not performed"
+      "ok release execution completed"
     ]
   },
   {

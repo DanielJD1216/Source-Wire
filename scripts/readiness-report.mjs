@@ -277,7 +277,7 @@ printList([
   "docs/release-notes-draft.md records release notes source text",
   "docs/release-approval-request-packet.md records exact release decision options and owner approval history",
   "npm run release:approval-status verifies whether issue #255 has a separate exact owner approval record or approval comment",
-  "docs/release-auth-handoff.md records the owner-side npm authentication handoff used before release execution",
+  "docs/release-auth-handoff.md records the owner-side npm authentication handoff for future release mutation",
   "docs/release-auth-preflight.md records the owner-side npm and GitHub authentication preflight",
   "npm run release:decision-preflight verifies world-share, owner open-issue boundary, release-candidate, artifact, approval-request, and launch-decision evidence",
   "docs/release-execution-preflight.md records the read-only owner-side release execution preflight and live release evidence",

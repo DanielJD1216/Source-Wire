@@ -38,8 +38,8 @@ printRows([
   ["Current license", packageJson.license],
   ["Current version", packageJson.version],
   ["LICENSE file", "present"],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Code contributions", "blocked"]
 ]);

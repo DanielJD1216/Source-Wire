@@ -6,18 +6,18 @@ Status: decision implemented.
 
 This gate records the owner decision that moved Source-Wire from an unlicensed public review repo to an Apache-2.0 licensed source package.
 
-Source-Wire is now Apache-2.0 licensed as a source package. It remains version `0.0.0`, unpublished to npm, unreleased on GitHub, undeployed, and not a hosted runtime.
+Source-Wire is now Apache-2.0 licensed as a source package. It is version `0.1.0`, published to npm, released on GitHub, undeployed, and not a hosted runtime.
 
 ## Current State
 
 | Field | Current value |
 | --- | --- |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
+| Package version | `0.1.0` |
 | `LICENSE` file | present |
 | Source package reuse | allowed under Apache-2.0 |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
+| npm package | published as `@source-wire/contracts@0.1.0` |
+| GitHub release | published as `v0.1.0` |
 | Hosted runtime backend | blocked |
 | Code contribution acceptance | blocked |
 

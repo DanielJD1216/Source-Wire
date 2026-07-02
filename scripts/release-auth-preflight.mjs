@@ -14,7 +14,7 @@ const npmPublishSecondFactorReady = npmTokenPresent || npmAccountTfa !== false;
 
 printSection("Source-Wire Release Auth Preflight");
 console.log("This owner-side preflight is read-only.");
-console.log("It checks whether this machine can authenticate to npm and GitHub before release execution.");
+console.log("It checks whether this machine can authenticate to npm and GitHub before future release mutation.");
 console.log("It does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, implement hosted runtime behavior, or approve production runtime use.");
 
 printRows([
@@ -22,8 +22,8 @@ printRows([
   ["Version", packageJson.version],
   ["License", packageJson.license],
   ["Registry", registry.trim() || "unknown"],
-  ["npm publish", "blocked until final release execution"],
-  ["GitHub release", "blocked until final release execution"],
+  ["npm publish", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
@@ -76,7 +76,7 @@ if (npmPing.ok && npmWhoami.ok && npmProfile.ok && npmPublishSecondFactorReady &
   }
   if (!npmWhoami.ok) {
     console.log("- Run npm run release:auth-handoff.");
-    console.log("- Run npm login --registry=https://registry.npmjs.org/ in an owner-controlled terminal.");
+    console.log("- For a future package version, run npm login --registry=https://registry.npmjs.org/ in an owner-controlled terminal.");
     console.log("- Run npm whoami and confirm the expected npm account.");
   }
   if (!npmProfile.ok || !npmPublishSecondFactorReady) {

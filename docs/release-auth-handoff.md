@@ -1,19 +1,19 @@
 # Source-Wire Release Auth Handoff
 
-Status: owner-side npm authentication handoff only.
+Status: owner-side future-release npm authentication handoff only.
 
-This handoff is read-only. It does not publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, implement hosted runtime behavior, or approve production runtime use.
+This handoff is read-only. It does not publish a new npm package version, create a new GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, implement hosted runtime behavior, or approve production runtime use.
 
 ## Purpose
 
-Use this handoff when `npm run release:auth-preflight` reports:
+Use this handoff before a future release mutation, or when `npm run release:auth-preflight` reports:
 
 ```text
 blocked npm auth missing
 blocked release publish credentials missing
 ```
 
-It tells the owner exactly what to do next without opening any release channel.
+It tells the owner exactly what to do next without opening a new release channel.
 
 ## Command
 
@@ -36,26 +36,26 @@ Expected markers:
 ```text
 ok release auth handoff ready
 ok npm authentication owner steps documented
-blocked release auth owner action required
+blocked future release auth owner action required
 ```
 
-## Owner Action
+## Future Owner Action
 
-Run npm authentication from an owner-controlled terminal:
+For a future package version, run npm authentication from an owner-controlled terminal:
 
 ```bash
 npm login --registry=https://registry.npmjs.org/
 npm whoami
 ```
 
-Confirm `npm whoami` shows the expected npm account for publishing `@source-wire/contracts`.
+Confirm `npm whoami` shows the expected npm account before publishing any future `@source-wire/contracts` version.
 
-Then confirm the account has a publish second-factor path. `npm whoami` alone is not enough for publish execution. npm may still reject `npm publish` unless one of these is true:
+Then confirm the account has a publish second-factor path. `npm whoami` alone is not enough for future publish execution. npm may still reject `npm publish` unless one of these is true:
 
 - npm 2FA for writes is enabled on the publishing account, and the publish command includes a current OTP,
 - an owner-controlled granular npm publish token with bypass 2FA enabled is used only for the release command.
 
-Then rerun the release gates:
+Then rerun the release gates before future release mutation:
 
 ```bash
 npm run release:auth-preflight
@@ -69,14 +69,14 @@ Do not run `npm publish` from this handoff.
 Stop before:
 
 - changing package version,
-- publishing npm,
-- creating a GitHub release,
+- publishing a new npm package version,
+- creating a new GitHub release,
 - creating release tags,
 - deploying services,
 - enabling hosted runtime,
 - accepting code contributions.
 
-If `npm run release:auth-preflight` still prints `blocked release publish credentials missing`, do not continue release execution.
+If `npm run release:auth-preflight` still prints `blocked release publish credentials missing`, do not continue future release execution.
 
 ## Related Docs
 

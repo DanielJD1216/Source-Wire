@@ -76,8 +76,8 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 | License approval request | Captured | Use [License Approval Request Packet](license-approval-request-packet.md). |
 | Owner license preflight | Captured | Use [Owner License Approval Preflight](owner-license-approval-preflight.md). |
 | Owner decision workflow | Captured | Use [Owner License Decision Workflow](owner-license-decision-workflow.md). |
-| npm publishing | Blocked | Run [Release Auth Handoff](release-auth-handoff.md), resolve npm authentication, then run release auth and execution preflights. |
-| GitHub release publishing | Blocked | Run [Release Auth Handoff](release-auth-handoff.md), resolve npm authentication, then run release auth and execution preflights. |
+| npm package | Published as `@source-wire/contracts@0.1.0` | First public release is complete. |
+| GitHub release | Published as `v0.1.0` | First public release is complete. |
 | Branch protection or repository rulesets | Blocked | Separate branch governance approval, then use [Branch Governance Implementation Plan](branch-governance-implementation-plan.md). |
 | Hosted runtime | Blocked | Separate runtime PRD. |
 | Code contribution acceptance | Blocked | Explicit contribution terms. |
@@ -85,10 +85,10 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 ## Approval Order
 
 1. Apache-2.0 source package reuse is approved and implemented.
-2. Run `npm run release:auth-handoff`.
-3. Resolve npm authentication before npm publishing or matching GitHub release creation.
-4. Run `npm run release:auth-preflight`.
-5. Run `npm run release:execution-preflight`.
+2. First npm publication and matching GitHub release are complete.
+3. Use a future approved release unit before changing package version, npm dist-tags, or GitHub release assets.
+4. Run `npm run release:auth-preflight` only before future release mutation.
+5. Run `npm run release:execution-preflight` only before future release mutation.
 6. Decide whether branch protection or repository rulesets should open in a separate governance unit.
 7. Run `npm run runtime:prd-decision-preflight`.
 8. Decide whether hosted runtime work should open in a separate PRD.

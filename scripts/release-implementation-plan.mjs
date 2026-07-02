@@ -6,8 +6,8 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until approved release execution");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while release execution is blocked");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 const requiredDocs = [
   "docs/release-implementation-runbook.md",
@@ -28,12 +28,12 @@ for (const requiredPath of ["LICENSE", ...requiredDocs]) {
 const runbook = await readFile("docs/release-implementation-runbook.md", "utf8");
 
 for (const requiredText of [
-  "Status: implementation runbook only.",
+  "Status: historical first-release runbook.",
   "Use version 0.1.0 for the first public release",
   "change `publishConfig.access` from `restricted` to `public`",
   "ok release implementation plan ready",
-  "blocked release execution not performed",
-  "package version remains `0.0.0`"
+  "ok release execution completed",
+  "package version remains `0.1.0`"
 ]) {
   if (!runbook.includes(requiredText)) {
     failures.push(`release implementation runbook missing required text: ${requiredText}`);
@@ -55,25 +55,25 @@ printRows([
   ["Implementation runbook", "ready"],
   ["Recommended future version", "0.1.0"],
   ["Current package version", packageJson.version],
-  ["npm publishing", "blocked"],
-  ["GitHub release", "blocked"],
-  ["Release tags", "blocked"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
+  ["Release tags", "v0.1.0 complete"],
   ["Hosted runtime", "blocked"],
   ["Contribution acceptance", "blocked"]
 ]);
 
 printSection("Next Action");
 printList([
-  "Run npm run release:auth-handoff before any release mutation.",
-  "Resolve npm authentication before npm publishing or matching GitHub release creation.",
-  "Then run npm run release:auth-preflight and npm run release:execution-preflight.",
-  "Do not publish npm, create a GitHub release, create a tag, change package version, deploy services, or accept code contributions from this check."
+  "Treat docs/release-implementation-runbook.md as historical evidence for the first release.",
+  "Use a future approved release unit before publishing a new npm version or matching GitHub release.",
+  "Run npm run release:auth-preflight and npm run release:execution-preflight only before future release mutation.",
+  "Do not publish a new npm version, create a new GitHub release, create a new tag, change package version, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");
 console.log("ok release implementation plan ready");
 console.log("ok release version target documented");
-console.log("blocked release execution not performed");
+console.log("ok release execution completed");
 
 async function assertPathExists(path) {
   try {

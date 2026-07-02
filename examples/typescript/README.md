@@ -16,7 +16,7 @@ import { SOURCE_WIRE_RUNTIME_BOUNDARY } from "@source-wire/contracts";
 import type { SourceWireSourceGraph } from "@source-wire/contracts";
 ```
 
-Because this package is not published to npm yet, local repo examples map `@source-wire/contracts` to `../../src/index.ts` through `examples/typescript/tsconfig.json`.
+The package is published to npm. Local repo examples still map `@source-wire/contracts` to `../../src/index.ts` through `examples/typescript/tsconfig.json` so maintainers can typecheck the current checkout before packing or publishing a future version.
 
 The installed examples smoke copies these same `.ts` files into a temporary external project and typechecks them against a locally packed package install.
 

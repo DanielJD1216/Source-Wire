@@ -2,7 +2,7 @@
 
 Date: 2026-06-30
 
-Status: public release path approved in [#255](https://github.com/DanielJD1216/Source-Wire/issues/255), with npm publishing and GitHub release execution still blocked until npm auth and final release preflights pass.
+Status: first public release executed from the path approved in [#255](https://github.com/DanielJD1216/Source-Wire/issues/255). Source-Wire is published as `@source-wire/contracts@0.1.0` and released on GitHub as `v0.1.0`.
 
 For the public-facing summary of this status, read [Public Status](public-status.md).
 
@@ -10,22 +10,22 @@ For the public-facing summary of this status, read [Public Status](public-status
 
 Source-Wire is Apache-2.0 licensed as a source package.
 
-Source-Wire has an owner-approved public release path, but the release has not been executed.
+Source-Wire has an owner-approved public release path, and the first release has been executed.
 
 Source-Wire is not approved for service deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 The current repo is a public contract package skeleton. It can define architecture contracts, schemas, synthetic fixtures, validation tools, and package-readiness checks.
 
-It must not be treated as an executed npm or GitHub release until the owner completes npm authentication and the release auth plus execution preflights pass.
+It must not be treated as a hosted runtime, deployed service, production backend, or code-contribution-accepting project.
 
 ## Current Status
 
 | Area | Status | Reason |
 | --- | --- | --- |
 | License | `Apache-2.0` | Source package reuse is approved. |
-| Version | `0.0.0` | The package is not released and has no compatibility promise. |
-| npm publishing | Blocked | Release path approval exists, but npm auth and execution preflight are not complete. |
-| GitHub release publishing | Blocked | Release path approval exists, but execution preflight and release mutation are not complete. |
+| Version | `0.1.0` | First public package release is complete. |
+| npm package | Published as `@source-wire/contracts@0.1.0` | First public package release is complete. |
+| GitHub release | Published as `v0.1.0` | Matching GitHub release is complete. |
 | Deployment | Blocked | Source-Wire has no runtime service to deploy. |
 | Runtime backend | Blocked | Runtime belongs to a later explicit unit, not this public skeleton gate. |
 | Code contributions | Blocked | Contribution terms are not approved. |

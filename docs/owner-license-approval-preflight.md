@@ -53,7 +53,7 @@ Apache-2.0 implementation is complete.
 
 Release path approval is recorded in [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255).
 
-Release execution remains blocked until npm authentication is resolved and the release auth plus execution preflights pass.
+The first npm publication and matching GitHub release are complete. Future release mutation remains blocked until a new approved release unit and current release preflights pass.
 
 Current release execution command path:
 

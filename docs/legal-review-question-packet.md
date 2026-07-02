@@ -2,23 +2,23 @@
 
 Status: question packet only.
 
-This document is not legal advice. It does not approve npm publishing, GitHub release publishing, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+This document is not legal advice. It does not approve a future npm package version, future GitHub release, deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
 
 ## Purpose
 
 Source-Wire is Apache-2.0 licensed as a source package.
 
-Before contributor intake, npm publishing, GitHub release publishing, production adoption, or hosted runtime work, the owner should answer the legal and governance questions below or route them to counsel.
+Before contributor intake, future package releases, production adoption, or hosted runtime work, the owner should answer the legal and governance questions below or route them to counsel.
 
 ## Current Boundary
 
 | Field | Current value |
 | --- | --- |
 | Package license | `Apache-2.0` |
-| Package version | `0.0.0` |
+| Package version | `0.1.0` |
 | `LICENSE` file | present |
-| npm publishing | blocked |
-| GitHub release publishing | blocked |
+| npm package | published as `@source-wire/contracts@0.1.0` |
+| GitHub release | published as `v0.1.0` |
 | Hosted runtime backend | blocked |
 | Code contributions | blocked |
 | Public support | review feedback and issue templates only |
@@ -77,7 +77,7 @@ The command verifies the current boundary and prints review topics. It does not 
 - What public support is offered before licensing, publishing, or runtime release?
 - What support is explicitly not offered?
 - Should issue templates keep blocking real user data, local paths, account IDs, client names, screenshots, and production exports?
-- Should the support boundary change after licensing but before npm publishing?
+- Should the support boundary change after licensing and first package publication?
 
 ### 5. Security Boundary
 

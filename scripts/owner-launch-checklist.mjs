@@ -4,8 +4,8 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must be Apache-2.0 after owner approval");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.0.0 until approved release execution");
-assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay restricted while npm publishing is blocked");
+assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
+assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 await assertPathExists("LICENSE");
 
@@ -40,8 +40,8 @@ printRows([
   ["Legal review packet", "ready"],
   ["Source package reuse", "ready under Apache-2.0"],
   ["Open-source license", "implemented"],
-  ["npm publishing", "blocked, release execution not performed"],
-  ["GitHub release", "blocked, release execution not performed"],
+  ["npm publishing", "published as @source-wire/contracts@0.1.0"],
+  ["GitHub release", "published as v0.1.0"],
   ["Branch governance", "blocked, branch governance approval missing"],
   ["Hosted runtime", "blocked, runtime approval missing"],
   ["Code contributions", "blocked, contribution terms approval missing"]
@@ -53,16 +53,16 @@ printRows([
   ["Version", packageJson.version],
   ["License", packageJson.license],
   ["LICENSE file", "present"],
-  ["Publish boundary", "npm publishing blocked, publishConfig.access restricted"]
+  ["Publish boundary", "first release published, future package versions require a new approved release unit"]
 ]);
 
 printSection("Approval Order");
 printList([
   "1. Apache-2.0 source package reuse is approved and implemented.",
-  "2. Run npm run release:auth-handoff.",
-  "3. Resolve npm authentication before npm publishing or matching GitHub release creation.",
-  "4. Run npm run release:auth-preflight.",
-  "5. Run npm run release:execution-preflight.",
+  "2. First npm publication and matching GitHub release are complete.",
+  "3. Future package versions require a new approved release unit.",
+  "4. Run npm run release:auth-preflight only before future release mutation.",
+  "5. Run npm run release:execution-preflight only before future release mutation.",
   "6. Branch protection or repository rulesets need separate branch governance approval.",
   "7. Run npm run runtime:prd-decision-preflight.",
   "8. Hosted runtime work needs a separate runtime PRD.",
@@ -72,8 +72,8 @@ printList([
 
 printSection("Recommended Next Owner Choice");
 printList([
-  "Run npm run release:auth-handoff, authenticate npm, then rerun npm run release:auth-preflight and npm run release:execution-preflight.",
-  "Use version 0.1.0 for the first public release unless final release execution verification finds a blocker.",
+  "Keep the published first release at version 0.1.0.",
+  "Use a future approved release unit before changing package version, npm dist-tags, or GitHub release assets.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);
 

@@ -22,6 +22,8 @@ Source-Wire Memory Engine Baseline Audit PRD
 
 Issue draft: [01 Runtime Baseline Capability Audit](issues/memory-engine-baseline-audit/01-runtime-baseline-capability-audit.md).
 
+Local artifact: [Memory Engine Baseline Runtime Capability Audit](memory-engine-baseline-runtime-capability-audit.md).
+
 Type: AFK.
 
 Blocked by: none.

@@ -12,6 +12,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Memory Engine Baseline Grill Outcome](memory-engine-baseline-grill-outcome.md)
 - [Memory Engine Baseline Audit PRD](memory-engine-baseline-audit-prd.md)
 - [Memory Engine Baseline Audit Issue Slices](memory-engine-baseline-audit-issue-slices.md)
+- [Memory Engine Baseline Runtime Capability Audit](memory-engine-baseline-runtime-capability-audit.md)
 - [Memory Engine Baseline Audit Issue Drafts](issues/memory-engine-baseline-audit/README.md)
 - [Memory Engine Baseline Issue Publication Approval Request](memory-engine-baseline-issue-publication-approval-request.md)
 - [Memory Engine Baseline Docs Audit Checkpoint](memory-engine-baseline-docs-audit-checkpoint.md)

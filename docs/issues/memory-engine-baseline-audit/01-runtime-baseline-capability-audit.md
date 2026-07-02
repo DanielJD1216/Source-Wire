@@ -1,5 +1,7 @@
 # Runtime Baseline Capability Audit
 
+Local artifact: [Memory Engine Baseline Runtime Capability Audit](../../memory-engine-baseline-runtime-capability-audit.md).
+
 ## Parent
 
 Source-Wire Memory Engine Baseline Audit PRD.

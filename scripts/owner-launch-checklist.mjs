@@ -43,7 +43,8 @@ printRows([
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
   ["Branch governance", "minimal branch protection implemented"],
-  ["Hosted runtime", "blocked, runtime approval missing"],
+  ["Hosted runtime PRD", "approved"],
+  ["Hosted runtime implementation", "blocked"],
   ["Code contributions", "blocked, contribution terms PRD approved; acceptance not open"]
 ]);
 
@@ -67,7 +68,7 @@ printList([
   "7. Run npm run contribution:terms-decision-preflight.",
   "8. Contribution terms PRD work is approved; code contribution acceptance still needs explicit contribution terms implementation.",
   "9. Run npm run runtime:prd-decision-preflight.",
-  "10. Hosted runtime work needs a separate runtime PRD."
+  "10. Hosted runtime PRD work is approved; implementation still needs a separate approved unit."
 ]);
 
 printSection("Recommended Next Owner Choice");
@@ -75,7 +76,7 @@ printList([
   "Keep the published first release at version 0.1.0.",
   "Use a future approved release unit before changing package version, npm dist-tags, or GitHub release assets.",
   "Keep contribution acceptance blocked until a separate implementation unit explicitly opens it.",
-  "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
+  "Keep hosted runtime implementation, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);
 
 printSection("Owner Decision Status");
@@ -83,7 +84,7 @@ printList([
   "Completed #255 First public release path: https://github.com/DanielJD1216/Source-Wire/issues/255",
   "Completed #256 Branch governance path: https://github.com/DanielJD1216/Source-Wire/issues/256",
   "Completed #258 Contribution terms before accepting code: https://github.com/DanielJD1216/Source-Wire/issues/258",
-  "Unresolved #257 Hosted runtime PRD path: https://github.com/DanielJD1216/Source-Wire/issues/257"
+  "Approved #257 Hosted runtime PRD path: https://github.com/DanielJD1216/Source-Wire/issues/257"
 ]);
 
 console.log("");

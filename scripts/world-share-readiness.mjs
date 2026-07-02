@@ -39,8 +39,9 @@ printRows([
   ["Open-source license", "implemented"],
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
-  ["Hosted runtime", "blocked until runtime PRD approval"],
-  ["Code contributions", "blocked until contribution terms approval"]
+  ["Hosted runtime PRD", "approved"],
+  ["Hosted runtime implementation", "blocked"],
+  ["Code contributions", "blocked until contribution terms implementation"]
 ]);
 
 printSection("Current Package Boundary");
@@ -58,7 +59,7 @@ printList([
   "To install the public package, use npm install @source-wire/contracts.",
   "To review the first release snapshot, use the v0.1.0 GitHub release.",
   "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
-  "To add hosted runtime behavior, open a separate runtime PRD after the runtime gate is approved."
+  "Start the approved hosted runtime PRD before any hosted runtime implementation."
 ]);
 
 printSection("Owner Decision Status");
@@ -66,7 +67,7 @@ printList([
   "Completed #255 First public release path: https://github.com/DanielJD1216/Source-Wire/issues/255",
   "Completed #256 Branch governance path: https://github.com/DanielJD1216/Source-Wire/issues/256",
   "Completed #258 Contribution terms before accepting code: https://github.com/DanielJD1216/Source-Wire/issues/258",
-  "Unresolved #257 Hosted runtime PRD path: https://github.com/DanielJD1216/Source-Wire/issues/257"
+  "Approved #257 Hosted runtime PRD path: https://github.com/DanielJD1216/Source-Wire/issues/257"
 ]);
 
 console.log("");

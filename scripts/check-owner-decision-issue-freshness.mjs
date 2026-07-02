@@ -42,7 +42,7 @@ const expectedIssues = [
     markers: [
       "ok hosted runtime PRD decision preflight ready",
       "ok hosted runtime PRD execution packet current",
-      "blocked hosted runtime PRD approval missing"
+      "ok exact hosted runtime PRD approval recorded"
     ]
   },
   {
@@ -72,7 +72,7 @@ const finalPreflightMarkers = [
   "ok owner decision issue boundary current",
   "ok owner decision issue freshness current",
   "blocked production launch channels",
-    "blocked owner approvals missing"
+  "blocked focused implementation units required"
 ];
 
 const failures = [];

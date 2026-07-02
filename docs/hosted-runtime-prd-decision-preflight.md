@@ -42,7 +42,7 @@ ok world share preflight current
 ok owner decision status current
 ok owner open issue boundary current
 ok hosted runtime PRD evidence current
-blocked hosted runtime PRD approval missing
+ok exact hosted runtime PRD approval recorded
 ```
 
 ## Required Approval Before PRD Work
@@ -57,9 +57,9 @@ This check intentionally does not count recommended approval text as approval. A
 
 ## Stop Conditions
 
-Stop before PRD work if:
+Stop before PRD work if approval or source-package evidence regresses:
 
-- issue `#257` does not contain exact owner approval,
+- issue `#257` does not contain exact owner approval before PRD work,
 - `npm run owner:decision-status` cannot read issue `#257`,
 - `npm run owner:open-issues-status` shows unexpected open issues,
 - `npm run world:share-preflight` fails,

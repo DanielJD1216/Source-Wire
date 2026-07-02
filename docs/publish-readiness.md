@@ -120,8 +120,8 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` |
 | License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `ok license implementation complete` |
 | Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` |
-| Hosted runtime PRD preparation | `ok hosted runtime PRD preparation ready`, `ok hosted runtime PRD evidence map ready`, `blocked hosted runtime PRD approval missing` |
-| Hosted runtime PRD execution packet | `ok hosted runtime PRD execution packet ready`, `ok hosted runtime PRD execution scope documented`, `blocked hosted runtime PRD approval missing` |
+| Hosted runtime PRD preparation | `ok hosted runtime PRD preparation ready`, `ok hosted runtime PRD evidence map ready`, `ok exact hosted runtime PRD approval recorded` |
+| Hosted runtime PRD execution packet | `ok hosted runtime PRD execution packet ready`, `ok hosted runtime PRD execution scope documented`, `ok exact hosted runtime PRD approval recorded` |
 | Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
 | Contribution terms PRD execution packet | `ok contribution terms PRD execution packet ready`, `ok contribution terms PRD execution scope documented`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
 | Contribution terms policy | `ok contribution terms PRD defined`, `ok contribution policy boundary current`, `blocked code contribution acceptance` |
@@ -132,7 +132,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `ok owner license decision captured` |
 | World-share boundary | `ok world share open source ready`, `blocked production launch channels` |
 | World-share packet | `ok world share packet ready`, `ok public share copy current`, `blocked production launch channels` |
-| Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0`, `blocked hosted runtime not approved`, `blocked contributions not accepted` |
+| Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0`, `blocked hosted runtime implementation`, `blocked contributions not accepted` |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | README entrypoint smoke | `ok readme entrypoint smoke ready`, `ok readme first reviewer path visible`, `blocked unsafe readme launch claims` |
 | Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |
@@ -230,8 +230,8 @@ ok exact branch governance implementation approval retained
 ok completed owner decision #258 closed
 ok exact contribution terms PRD approval retained
 ok only unresolved owner decision issues open
-blocked #257 hosted runtime PRD approval missing
-blocked owner decisions missing approval records
+ok #257 hosted runtime PRD approval recorded
+ok all tracked owner decision approvals recorded
 blocked unresolved owner decision issues remain open
 ```
 
@@ -412,7 +412,7 @@ Expected markers:
 ```text
 ok hosted runtime PRD execution packet ready
 ok hosted runtime PRD execution scope documented
-blocked hosted runtime PRD approval missing
+ok exact hosted runtime PRD approval recorded
 ```
 
 The execution packet check verifies the exact future hosted runtime PRD scope, required pre-execution checks, verification path, and stop conditions. It does not add runtime code, deployment configuration, infrastructure, live connectors, or real user data.
@@ -516,7 +516,7 @@ ok live npm registry boundary ready
 ok npm package published @source-wire/contracts@0.1.0
 ok npm latest dist-tag 0.1.0
 ok npm package public
-blocked hosted runtime not approved
+blocked hosted runtime implementation
 ```
 
 This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
@@ -545,7 +545,7 @@ ok live release tag boundary ready
 ok local release tag v0.1.0
 ok remote release tag v0.1.0
 ok github release published v0.1.0
-blocked hosted runtime not approved
+blocked hosted runtime implementation
 ```
 
 This command does not create a tag, create a GitHub release, publish npm, deploy services, accept code contributions, or approve production runtime use.

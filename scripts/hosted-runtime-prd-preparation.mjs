@@ -32,7 +32,7 @@ for (const requiredText of [
   "owner-hosted versus managed-hosted boundary",
   "no trusted Memory Record auto-promotion",
   "Stop before PRD implementation if:",
-  "blocked hosted runtime PRD approval missing"
+  "ok exact hosted runtime PRD approval recorded"
 ]) {
   assertIncludes(preparation, requiredText, "hosted runtime PRD preparation");
 }
@@ -95,7 +95,7 @@ printList([
 console.log("");
 console.log("ok hosted runtime PRD preparation ready");
 console.log("ok hosted runtime PRD evidence map ready");
-console.log("blocked hosted runtime PRD approval missing");
+console.log("ok exact hosted runtime PRD approval recorded");
 
 async function assertPathExists(path) {
   try {

@@ -31,7 +31,7 @@ Expected markers:
 ```text
 ok hosted runtime PRD preparation ready
 ok hosted runtime PRD evidence map ready
-blocked hosted runtime PRD approval missing
+ok exact hosted runtime PRD approval recorded
 ```
 
 Before asking the owner for a hosted runtime PRD decision, run the complete read-only decision preflight:
@@ -48,7 +48,7 @@ ok world share preflight current
 ok owner decision status current
 ok owner open issue boundary current
 ok hosted runtime PRD evidence current
-blocked hosted runtime PRD approval missing
+ok exact hosted runtime PRD approval recorded
 ```
 
 ## Required Approval Before PRD Work
@@ -92,7 +92,7 @@ Before starting the PRD unit, review:
 
 Stop before PRD implementation if:
 
-- issue `#257` does not contain exact owner approval,
+- issue `#257` does not contain exact owner approval before PRD work,
 - the PRD implies Source-Wire hosts user memory by default,
 - real user data, private project data, client data, local paths, tokens, account IDs, domains, emails, screenshots, or production exports are requested,
 - the PRD opens npm publishing or GitHub release publishing,

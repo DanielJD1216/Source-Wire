@@ -69,7 +69,7 @@ console.log("ok live npm registry boundary ready");
 console.log("ok npm package published @source-wire/contracts@0.1.0");
 console.log("ok npm latest dist-tag 0.1.0");
 console.log("ok npm package public");
-console.log("blocked hosted runtime not approved");
+console.log("blocked hosted runtime implementation");
 
 function parseNpmError(stdout) {
   try {

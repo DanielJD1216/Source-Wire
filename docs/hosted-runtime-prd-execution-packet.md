@@ -31,14 +31,14 @@ Expected markers:
 ```text
 ok hosted runtime PRD execution packet ready
 ok hosted runtime PRD execution scope documented
-blocked hosted runtime PRD approval missing
+ok exact hosted runtime PRD approval recorded
 ```
 
 This command verifies the packet and docs only. It does not add runtime code, call deployment APIs, or create infrastructure.
 
 ## Required Owner Approval
 
-Do not start hosted runtime PRD work until this exact approval is recorded on issue `#257`:
+Hosted runtime PRD approval is recorded on issue `#257` with this exact text:
 
 ```text
 Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit.

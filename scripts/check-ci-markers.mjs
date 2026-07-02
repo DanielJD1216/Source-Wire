@@ -164,7 +164,7 @@ const markerGroups = [
     markers: [
       "ok hosted runtime PRD preparation ready",
       "ok hosted runtime PRD evidence map ready",
-      "blocked hosted runtime PRD approval missing"
+      "ok exact hosted runtime PRD approval recorded"
     ]
   },
   {
@@ -172,7 +172,7 @@ const markerGroups = [
     markers: [
       "ok hosted runtime PRD execution packet ready",
       "ok hosted runtime PRD execution scope documented",
-      "blocked hosted runtime PRD approval missing"
+      "ok exact hosted runtime PRD approval recorded"
     ]
   },
   {
@@ -272,7 +272,7 @@ const markerGroups = [
     markers: [
       "ok repository metadata boundary ready",
       "ok github about wording current",
-      "blocked hosted runtime not approved"
+      "blocked hosted runtime implementation"
     ]
   },
   {
@@ -315,7 +315,7 @@ const markerGroups = [
       "ok source repo sharing ready",
       "ok npm package published @source-wire/contracts@0.1.0",
       "ok github release published v0.1.0",
-      "blocked hosted runtime not approved",
+      "blocked hosted runtime implementation",
       "blocked contributions not accepted"
     ]
   },

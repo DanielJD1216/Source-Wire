@@ -25,7 +25,7 @@ console.log("ok owner decision status current");
 console.log("ok owner open issue boundary current");
 console.log("ok hosted runtime PRD evidence current");
 console.log("ok hosted runtime PRD execution packet current");
-console.log("blocked hosted runtime PRD approval missing");
+console.log("ok exact hosted runtime PRD approval recorded");
 
 function runNpmScript(scriptName) {
   return new Promise((resolve, reject) => {

@@ -47,7 +47,7 @@ const decisionIssues = [
       "ok owner open issue boundary current",
       "ok hosted runtime PRD evidence current",
       "ok hosted runtime PRD execution packet current",
-      "blocked hosted runtime PRD approval missing"
+      "ok exact hosted runtime PRD approval recorded"
     ]
   },
   {
@@ -79,7 +79,7 @@ const finalPreflightProof = [
   "ok owner decision issue boundary current",
   "ok owner decision issue freshness current",
   "blocked production launch channels",
-  "blocked owner approvals missing"
+  "blocked focused implementation units required"
 ];
 
 printSection("Source-Wire Owner Decision Issue Refresh");
@@ -259,9 +259,10 @@ function currentOwnerDecisionStatusProof() {
     "ok owner decision status readable",
     "ok exact release implementation approval recorded",
     "ok exact branch governance implementation approval recorded",
-    "blocked hosted runtime PRD approval missing",
+    "ok exact hosted runtime PRD approval recorded",
     "ok exact contribution terms PRD approval recorded",
-    "blocked owner decisions missing approval records"
+    "ok all tracked owner decision approvals recorded",
+    "blocked execution still requires focused implementation units"
   ].join("\n");
 }
 

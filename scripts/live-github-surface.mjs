@@ -133,7 +133,7 @@ console.log("ok live github public surface ready");
 console.log("ok live github metadata matches docs");
 console.log("ok live package checks green");
 console.log("ok github release published v0.1.0");
-console.log("blocked hosted runtime not approved");
+console.log("blocked hosted runtime implementation");
 
 function ghJson(args) {
   return run("gh", args).then((stdout) => JSON.parse(stdout));

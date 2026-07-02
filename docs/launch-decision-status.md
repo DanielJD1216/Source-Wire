@@ -36,7 +36,7 @@ ok apache 2 license implemented
 ok source repo sharing ready
 ok npm package published @source-wire/contracts@0.1.0
 ok github release published v0.1.0
-blocked hosted runtime not approved
+blocked hosted runtime implementation
 blocked contributions not accepted
 ```
 

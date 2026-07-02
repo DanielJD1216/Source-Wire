@@ -12,7 +12,7 @@ Source-Wire is Apache-2.0 licensed as a source package.
 
 Source-Wire has an owner-approved public release path, and the first release has been executed.
 
-Source-Wire is not approved for service deployment, hosted runtime behavior, production runtime use, or code contribution acceptance.
+Source-Wire is approved for hosted runtime PRD work, but it is not approved for service deployment, hosted runtime implementation, production runtime use, or code contribution acceptance.
 
 The current repo is a public contract package skeleton. It can define architecture contracts, schemas, synthetic fixtures, validation tools, and package-readiness checks.
 
@@ -27,8 +27,9 @@ It must not be treated as a hosted runtime, deployed service, production backend
 | npm package | Published as `@source-wire/contracts@0.1.0` | First public package release is complete. |
 | GitHub release | Published as `v0.1.0` | Matching GitHub release is complete. |
 | Deployment | Blocked | Source-Wire has no runtime service to deploy. |
-| Runtime backend | Blocked | Runtime belongs to a later explicit unit, not this public skeleton gate. |
-| Code contributions | Blocked | Contribution terms are not approved. |
+| Runtime PRD | Approved | Issue `#257` records exact owner approval for PRD work only. |
+| Runtime backend | Blocked | Runtime implementation belongs to a later explicit unit, not this public skeleton gate. |
+| Code contributions | Blocked | Contribution terms PRD work is approved, but code contribution acceptance needs a separate implementation unit. |
 
 ## What Is Allowed Now
 

@@ -33,7 +33,7 @@ console.log("ok reviewer labels current");
 console.log("ok owner decision issue boundary current");
 console.log("ok owner decision issue freshness current");
 console.log("blocked production launch channels");
-console.log("blocked owner approvals missing");
+console.log("blocked focused implementation units required");
 
 function runNpmScript(scriptName) {
   return new Promise((resolve, reject) => {

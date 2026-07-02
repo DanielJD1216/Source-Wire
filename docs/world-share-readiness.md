@@ -119,7 +119,7 @@ ok reviewer labels current
 ok owner decision issue boundary current
 ok owner decision issue freshness current
 blocked production launch channels
-blocked owner approvals missing
+blocked focused implementation units required
 ```
 
 This command does not publish a new package version, create a new GitHub release, create new tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
@@ -181,9 +181,9 @@ Expected current markers:
 ok owner decision status readable
 ok exact release implementation approval recorded
 ok exact branch governance implementation approval recorded
-blocked hosted runtime PRD approval missing
+ok exact hosted runtime PRD approval recorded
 ok exact contribution terms PRD approval recorded
-blocked owner decisions missing approval records
+ok all tracked owner decision approvals recorded
 ```
 
 This read-only check verifies that issues `#255` through `#258` are readable and that exact approvals are not accidentally inferred from recommended approval text.
@@ -205,8 +205,8 @@ ok exact branch governance implementation approval retained
 ok completed owner decision #258 closed
 ok exact contribution terms PRD approval retained
 ok only unresolved owner decision issues open
-blocked #257 hosted runtime PRD approval missing
-blocked owner decisions missing approval records
+ok #257 hosted runtime PRD approval recorded
+ok all tracked owner decision approvals recorded
 blocked unresolved owner decision issues remain open
 ```
 

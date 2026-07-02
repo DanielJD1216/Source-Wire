@@ -26,7 +26,7 @@ const unsafeClaims = [
   {
     kind: "contribution_open_claim",
     pattern: /\b(?:contributions\s+are\s+open|code\s+contributions\s+are\s+accepted|open\s+for\s+contributions)\b/i,
-    reason: "Code contribution acceptance and contribution license terms are not approved."
+    reason: "Code contribution acceptance is still blocked even though contribution terms PRD work is approved."
   },
   {
     kind: "hosted_runtime_claim",

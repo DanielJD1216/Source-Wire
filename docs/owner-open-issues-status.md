@@ -35,8 +35,8 @@ ok exact branch governance implementation approval retained
 ok completed owner decision #258 closed
 ok exact contribution terms PRD approval retained
 ok only unresolved owner decision issues open
-blocked #257 hosted runtime PRD approval missing
-blocked owner decisions missing approval records
+ok #257 hosted runtime PRD approval recorded
+ok all tracked owner decision approvals recorded
 blocked unresolved owner decision issues remain open
 ```
 

@@ -52,7 +52,7 @@ ok reviewer labels current
 ok owner decision issue boundary current
 ok owner decision issue freshness current
 blocked production launch channels
-blocked owner approvals missing
+blocked focused implementation units required
 ```
 
 ## Why This Is Outside CI

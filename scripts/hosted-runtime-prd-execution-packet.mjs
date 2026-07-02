@@ -36,7 +36,7 @@ for (const requiredText of [
   "no trusted Memory Record auto-promotion",
   "Future Verification",
   "Stop Conditions",
-  "blocked hosted runtime PRD approval missing"
+  "ok exact hosted runtime PRD approval recorded"
 ]) {
   assertIncludes(executionPacket, requiredText, "hosted runtime PRD execution packet");
 }
@@ -44,7 +44,7 @@ for (const requiredText of [
 for (const requiredText of [
   "Status: future PRD preparation only.",
   "Issue `#257` must contain the exact owner approval text",
-  "blocked hosted runtime PRD approval missing"
+  "ok exact hosted runtime PRD approval recorded"
 ]) {
   assertIncludes(preparation, requiredText, "hosted runtime PRD preparation");
 }
@@ -52,7 +52,7 @@ for (const requiredText of [
 for (const requiredText of [
   "Status: hosted runtime PRD decision preflight only.",
   "ok hosted runtime PRD decision preflight ready",
-  "blocked hosted runtime PRD approval missing"
+  "ok exact hosted runtime PRD approval recorded"
 ]) {
   assertIncludes(decisionPreflight, requiredText, "hosted runtime PRD decision preflight");
 }
@@ -82,7 +82,7 @@ printRows([
 
 printSection("Future PRD Boundary");
 printList([
-  "Do not start the hosted runtime PRD unit until issue #257 records exact owner approval.",
+  "Hosted runtime PRD may start because issue #257 records exact owner approval.",
   "Do not add API server runtime, MCP server runtime, database migrations, deployment config, live connectors, or real user data from this packet.",
   "Keep trusted Memory Record auto-promotion, production runtime claims, and contribution acceptance blocked."
 ]);
@@ -90,7 +90,7 @@ printList([
 console.log("");
 console.log("ok hosted runtime PRD execution packet ready");
 console.log("ok hosted runtime PRD execution scope documented");
-console.log("blocked hosted runtime PRD approval missing");
+console.log("ok exact hosted runtime PRD approval recorded");
 
 async function assertPathExists(path) {
   try {

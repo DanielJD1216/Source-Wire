@@ -58,7 +58,7 @@ console.log("ok live release tag boundary ready");
 console.log("ok local release tag v0.1.0");
 console.log("ok remote release tag v0.1.0");
 console.log("ok github release published v0.1.0");
-console.log("blocked hosted runtime not approved");
+console.log("blocked hosted runtime implementation");
 
 function parseLines(text) {
   return text

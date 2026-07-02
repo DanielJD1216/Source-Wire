@@ -101,7 +101,7 @@ printRows([
 console.log("");
 console.log("ok repository metadata boundary ready");
 console.log("ok github about wording current");
-console.log("blocked hosted runtime not approved");
+console.log("blocked hosted runtime implementation");
 
 async function assertPathExists(path) {
   try {

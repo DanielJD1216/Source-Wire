@@ -60,7 +60,7 @@ Expected current markers:
 
 ```text
 ok owner decision status readable
-blocked owner decisions missing approval records
+ok all tracked owner decision approvals recorded
 ```
 
 This command reads issues `#255` through `#258` and checks for separate exact owner approval records or approval comments. The `Approval evidence` row shows whether approval came from an owner approval record section, a separate issue comment, or no approval evidence. It intentionally does not count recommended approval text as approval.

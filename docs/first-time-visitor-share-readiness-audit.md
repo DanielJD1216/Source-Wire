@@ -106,7 +106,7 @@ Product launch channels remain blocked because:
 - npm package `@source-wire/contracts@0.1.0` is published,
 - GitHub release `v0.1.0` is published,
 - package version remains `0.1.0`,
-- contribution license terms are not approved,
+- code contribution acceptance is still blocked,
 - code contributions are not accepted,
 - no hosted runtime exists,
 - no real MCP server runtime exists,

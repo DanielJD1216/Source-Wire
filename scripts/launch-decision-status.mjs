@@ -48,7 +48,8 @@ printRows([
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
   ["Branch protection", "implemented with Source-Wire package checks required"],
-  ["Hosted runtime", "blocked, not approved"],
+  ["Hosted runtime PRD", "approved"],
+  ["Hosted runtime implementation", "blocked"],
   ["Code contributions", "blocked, not accepted"]
 ]);
 
@@ -57,9 +58,9 @@ printList([
   "Use README.md and LICENSE for public source repo sharing.",
   "Use npm install @source-wire/contracts for the public package.",
   "Use the GitHub v0.1.0 release for the first public release snapshot.",
-  "Keep hosted runtime, production runtime claims, repository rulesets, and contribution acceptance blocked unless separate approval opens them.",
+  "Keep hosted runtime implementation, production runtime claims, repository rulesets, and contribution acceptance blocked unless separate approval opens them.",
   "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
-  "Open a separate PRD before hosted runtime work."
+  "Start the approved hosted runtime PRD before any hosted runtime implementation."
 ]);
 
 printSection("Owner Decision Status");
@@ -67,7 +68,7 @@ printList([
   "Completed #255 First public release path: https://github.com/DanielJD1216/Source-Wire/issues/255",
   "Completed #256 Branch governance path: https://github.com/DanielJD1216/Source-Wire/issues/256",
   "Completed #258 Contribution terms before accepting code: https://github.com/DanielJD1216/Source-Wire/issues/258",
-  "Unresolved #257 Hosted runtime PRD path: https://github.com/DanielJD1216/Source-Wire/issues/257"
+  "Approved #257 Hosted runtime PRD path: https://github.com/DanielJD1216/Source-Wire/issues/257"
 ]);
 
 console.log("");
@@ -76,7 +77,8 @@ console.log("ok apache 2 license implemented");
 console.log("ok source repo sharing ready");
 console.log("ok npm package published @source-wire/contracts@0.1.0");
 console.log("ok github release published v0.1.0");
-console.log("blocked hosted runtime not approved");
+console.log("ok hosted runtime PRD approval recorded");
+console.log("blocked hosted runtime implementation");
 console.log("blocked contributions not accepted");
 
 async function assertPathExists(path) {

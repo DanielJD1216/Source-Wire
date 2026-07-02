@@ -34,6 +34,17 @@ const markerGroups = [
     ]
   },
   {
+    name: "release patch execution preflight",
+    markers: [
+      "ok release patch execution preflight ready",
+      "ok patch source export fixed on main",
+      "ok patch npm artifact mismatch disclosed",
+      "ok patch approval recorder target ready",
+      "blocked exact patch release approval missing",
+      "blocked patch release mutation not approved"
+    ]
+  },
+  {
     name: "release auth handoff",
     markers: [
       "ok release auth handoff ready",

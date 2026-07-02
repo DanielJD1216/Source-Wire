@@ -20,6 +20,12 @@ const completeLog = [
   "ok exported version fix on main",
   "blocked patch release approval missing",
   "blocked npm artifact immutable at @source-wire/contracts@0.1.0",
+  "ok release patch execution preflight ready",
+  "ok patch source export fixed on main",
+  "ok patch npm artifact mismatch disclosed",
+  "ok patch approval recorder target ready",
+  "blocked exact patch release approval missing",
+  "blocked patch release mutation not approved",
   "ok release auth handoff ready",
   "ok npm authentication owner steps documented",
   "blocked future release auth owner action required",
@@ -210,7 +216,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 56 groups 190 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 57 groups 196 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

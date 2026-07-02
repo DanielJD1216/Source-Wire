@@ -69,6 +69,7 @@ The readiness gate runs:
 - `npm run release:review`
 - `npm run release:approval-request`
 - `npm run release:patch-approval-request`
+- `npm run release:patch-execution-preflight`
 - `npm run release:auth-handoff`
 - `npm run release:candidate-readiness`
 - `npm run release:artifact-manifest`
@@ -160,6 +161,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `ok release execution completed` | Current release inputs, release notes, and first release evidence are documented after release execution. |
 | Release approval request | `ok release approval request ready`, `ok npm publishing completed @source-wire/contracts@0.1.0`, `ok github release completed v0.1.0`, `ok version release completed 0.1.0` | Exact owner release choices are retained while the first npm package, GitHub release, and version release are complete. |
 | Release patch approval request | `ok release patch approval request ready`, `ok exported version fix on main`, `blocked patch release approval missing`, `blocked npm artifact immutable at @source-wire/contracts@0.1.0` | The future patch release approval path is documented while the immutable npm `0.1.0` artifact mismatch remains disclosed and unmutated. |
+| Release patch execution preflight | `ok release patch execution preflight ready`, `ok patch source export fixed on main`, `ok patch npm artifact mismatch disclosed`, `ok patch approval recorder target ready`, `blocked exact patch release approval missing`, `blocked patch release mutation not approved` | The future patch release execution path is verifiable before mutation while exact owner approval remains missing and no package version changes occur. |
 | Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked future release auth owner action required` | The owner-side npm login handoff and follow-up release preflights are documented for future release mutation while the first release remains published. |
 | Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `ok release execution completed` | Issue `#255` is readable, contains a separate exact owner approval comment, and reports first release execution as complete while future version changes remain blocked. |
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` | The owner-side world-share preflight, owner open-issue boundary, issue `#255` approval status, release-candidate readiness, artifact manifest, approval request, and launch decision status are current after release execution. |

@@ -127,6 +127,11 @@ const completeLog = [
   "ok branch governance execution packet ready",
   "ok minimal branch protection settings documented",
   "ok branch governance implementation approval recorded",
+  "ok repository ruleset governance preflight ready",
+  "ok minimal branch protection current",
+  "ok Package Checks current",
+  "blocked repository ruleset approval missing",
+  "blocked repository ruleset implementation",
   "ok historical license boundary ready",
   "ok unlicensed recommendation superseded",
   "blocked license history launch approval",
@@ -187,7 +192,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 52 groups 167 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 53 groups 172 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

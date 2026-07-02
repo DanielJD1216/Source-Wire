@@ -148,6 +148,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Branch governance approval request | `ok branch governance approval request ready`, `ok branch protection approval recorded`, `blocked repository ruleset approval missing` |
 | Branch governance implementation plan | `ok branch governance implementation plan ready`, `ok branch governance recommended path documented`, `ok branch governance implementation approval recorded` |
 | Branch governance execution packet | `ok branch governance execution packet ready`, `ok minimal branch protection settings documented`, `ok branch governance implementation approval recorded` |
+| Repository ruleset governance preflight | `ok repository ruleset governance preflight ready`, `ok minimal branch protection current`, `ok Package Checks current`, `blocked repository ruleset approval missing`, `blocked repository ruleset implementation` |
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` |
 | Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` |
 | Package required paths | `ok package required paths` |

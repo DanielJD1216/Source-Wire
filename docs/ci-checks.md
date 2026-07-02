@@ -134,6 +134,7 @@ Owner-side live and public-network checks are intentionally outside CI and `publ
 - `npm run repository:live-github`
 - `npm run repository:live-branch`
 - `npm run repository:branch-governance-preflight`
+- `npm run repository:ruleset-governance-preflight`
 - `npm run owner:open-issues-status`
 - `npm run security:live-surface`
 - `npm run registry:live-npm`
@@ -189,6 +190,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Branch governance approval request | `ok branch governance approval request ready`, `ok branch protection approval recorded`, `blocked repository ruleset approval missing` | Minimal branch protection is approved and implemented while repository ruleset decision options remain documented for a future unit. |
 | Branch governance implementation plan | `ok branch governance implementation plan ready`, `ok branch governance recommended path documented`, `ok branch governance implementation approval recorded` | Minimal branch protection implementation order, preflight, post-change verification, and rollback plan are preserved while repository rulesets remain deferred. |
 | Branch governance execution packet | `ok branch governance execution packet ready`, `ok minimal branch protection settings documented`, `ok branch governance implementation approval recorded` | Minimal branch protection settings, required check name, owner emergency access, pre-execution checks, verification, and rollback path are documented after approval. |
+| Repository ruleset governance preflight | `ok repository ruleset governance preflight ready`, `ok minimal branch protection current`, `ok Package Checks current`, `blocked repository ruleset approval missing`, `blocked repository ruleset implementation` | Owner-side live preflight verifies minimal branch protection and latest Package Checks are current while active repository rulesets remain absent until separate exact approval. |
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` | Historical license decision docs preserve old `UNLICENSED` analysis without presenting it as current guidance. |
 | Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` | Pull request template blocks code contribution assumptions and private-data leakage until contribution terms are approved. |
 | Package dry run | `ok package dry-run @source-wire/contracts@0.1.0`, `ok package file count` | The local package can be packed and the shared required package path manifest is present. |

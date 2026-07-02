@@ -313,6 +313,16 @@ const markerGroups = [
     ]
   },
   {
+    name: "repository ruleset governance preflight",
+    markers: [
+      "ok repository ruleset governance preflight ready",
+      "ok minimal branch protection current",
+      "ok Package Checks current",
+      "blocked repository ruleset approval missing",
+      "blocked repository ruleset implementation"
+    ]
+  },
+  {
     name: "historical license boundary",
     markers: [
       "ok historical license boundary ready",

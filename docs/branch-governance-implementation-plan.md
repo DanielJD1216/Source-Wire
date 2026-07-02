@@ -74,6 +74,12 @@ Why this first:
 
 Repository ruleset governance should wait unless the owner wants stronger GitHub-side policy.
 
+Exact future approval text:
+
+```text
+Approved for a future Source-Wire repository ruleset implementation unit: create a repository ruleset for main after current Package Checks are green. Require Package Checks before updates, block force pushes, block branch deletion, document bypass policy, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.
+```
+
 A future ruleset should:
 
 - target `main`,

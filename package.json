@@ -80,6 +80,7 @@
     "repository:branch-governance-dry-run": "node scripts/branch-governance-implementation-dry-run.mjs",
     "repository:branch-governance-apply": "node scripts/branch-governance-apply.mjs",
     "repository:branch-governance-preflight": "node scripts/branch-governance-decision-preflight.mjs",
+    "repository:ruleset-governance-preflight": "node scripts/repository-ruleset-governance-preflight.mjs",
     "security:live-surface": "node scripts/live-security-surface.mjs",
     "registry:live-npm": "node scripts/live-npm-registry-boundary.mjs",
     "release:live-tags": "node scripts/live-release-tag-boundary.mjs",

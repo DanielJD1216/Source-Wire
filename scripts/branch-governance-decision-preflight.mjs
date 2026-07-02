@@ -9,7 +9,8 @@ const steps = [
   ["repository:branch-governance-plan", "branch governance implementation plan"],
   ["repository:branch-governance-execution-packet", "branch governance execution packet"],
   ["repository:branch-governance-dry-run", "branch governance implementation dry run"],
-  ["repository:branch-governance-apply", "branch governance apply guard"]
+  ["repository:branch-governance-apply", "branch governance apply guard"],
+  ["repository:ruleset-governance-preflight", "repository ruleset governance preflight"]
 ];
 
 printSection("Source-Wire Branch Governance Decision Preflight");
@@ -33,6 +34,7 @@ console.log("ok branch governance implementation dry run current");
 console.log("ok branch governance apply guard current");
 console.log("ok branch governance implementation approval recorded");
 console.log("ok minimal branch protection implemented");
+console.log("ok repository ruleset governance preflight current");
 console.log("blocked repository rulesets not enabled");
 
 function runScript(scriptName) {

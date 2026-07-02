@@ -37,6 +37,8 @@ This runs:
 - `npm run contribution:terms-decision-preflight`
 - `npm run owner:decision-status`
 - `npm run owner:open-issues-status`
+- `npm run owner:open-issues-status:smoke`
+- `npm run owner:decision-issues-freshness`
 - `npm run launch:decision-status`
 
 Expected final markers:
@@ -50,6 +52,7 @@ ok hosted runtime PRD decision preflight current
 ok contribution terms PRD decision preflight current
 ok reviewer labels current
 ok owner decision issue boundary current
+ok owner open issue future planning smoke current
 ok owner decision issue freshness current
 blocked production launch channels
 blocked focused implementation units required
@@ -68,6 +71,7 @@ Stop broad public sharing if:
 - this command fails,
 - `Package Checks` is not green on `origin/main`,
 - unexpected public issues are open,
+- the future hosted-runtime planning issue smoke fails,
 - any owner-decision issue accidentally records approval,
 - npm publishing is no longer blocked without a release implementation unit,
 - GitHub releases or tags exist without a release implementation unit,

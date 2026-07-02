@@ -9,6 +9,7 @@ const checks = [
   ["reviewer:labels", "reviewer labels status"],
   ["owner:decision-status", "owner decision issue status"],
   ["owner:open-issues-status", "owner open issue boundary"],
+  ["owner:open-issues-status:smoke", "owner open issue future planning smoke"],
   ["owner:decision-issues-freshness", "owner decision issue freshness"],
   ["launch:decision-status", "launch decision status"]
 ];
@@ -31,6 +32,7 @@ console.log("ok hosted runtime PRD decision preflight current");
 console.log("ok contribution terms PRD decision preflight current");
 console.log("ok reviewer labels current");
 console.log("ok owner decision issue boundary current");
+console.log("ok owner open issue future planning smoke current");
 console.log("ok owner decision issue freshness current");
 console.log("blocked production launch channels");
 console.log("blocked focused implementation units required");

@@ -41,6 +41,7 @@ for (const [label, text, requiredText] of [
   ["share for review", shareForReview, "Owner-only preflight before broad public sharing:"],
   ["world share kit", worldShareKit, "Status: public source-package and package-release share kit only."],
   ["world share kit", worldShareKit, "Source-Wire is an Apache-2.0 package of agent-first memory contracts and examples"],
+  ["world share kit", worldShareKit, "Known package issue: the immutable npm 0.1.0 artifact exports SOURCE_WIRE_PACKAGE_VERSION as 0.0.0; latest main fixes this for a future patch release."],
   ["world share kit", worldShareKit, "Do not say:"],
   ["world share kit", worldShareKit, "Install it as a hosted runtime backend."],
   ["world share kit", worldShareKit, "Contributions are open."],

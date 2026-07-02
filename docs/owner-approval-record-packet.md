@@ -65,7 +65,7 @@ npm run release:approval-status
 | `#256` | Branch governance path | Record approval before a future branch governance implementation unit. |
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
 | `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Record approval before publishing the six PRD/planning child issues. |
-| `#258` | Contribution terms path | Record approval before a future contribution terms PRD unit. |
+| `#258` | Contribution terms path | Completed contribution terms PRD approval; code contribution acceptance still needs a separate future implementation approval. |
 
 ## Exact Approval Texts
 

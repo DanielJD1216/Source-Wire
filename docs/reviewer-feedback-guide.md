@@ -140,6 +140,7 @@ Feedback intake does not approve:
 - live connectors,
 - Mission Control UI,
 - real data examples,
-- contribution license terms.
+- code contribution acceptance,
+- contribution enforcement or maintainer workflow changes.
 
 These require separate owner decisions.

@@ -242,8 +242,8 @@ Apache-2.0 source package licensing does not approve:
 - live connectors,
 - Mission Control UI,
 - real data examples,
-- contribution license terms,
 - code contribution acceptance,
+- contribution enforcement or maintainer workflow changes,
 - production runtime use.
 
 ## Related Docs

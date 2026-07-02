@@ -75,7 +75,7 @@ You may:
 - run synthetic runtime-boundary smokes,
 - open structured feedback issues using the provided templates.
 
-The Apache-2.0 license does not mean Source-Wire is published, released, deployed, hosted, production-ready, or accepting code contributions.
+The Apache-2.0 license alone does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.
 The npm package and GitHub release do not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.
 
 ## Release Snapshot Boundary
@@ -168,8 +168,8 @@ Separate owner approvals are still required before any of these happen:
 - live connectors,
 - Mission Control UI,
 - real data examples,
-- contribution license terms,
-- code contribution acceptance.
+- code contribution acceptance,
+- contribution enforcement or maintainer workflow changes.
 
 Read:
 

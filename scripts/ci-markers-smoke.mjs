@@ -16,6 +16,10 @@ const completeLog = [
   "ok npm publishing completed @source-wire/contracts@0.1.0",
   "ok github release completed v0.1.0",
   "ok version release completed 0.1.0",
+  "ok release patch approval request ready",
+  "ok exported version fix on main",
+  "blocked patch release approval missing",
+  "blocked npm artifact immutable at @source-wire/contracts@0.1.0",
   "ok release auth handoff ready",
   "ok npm authentication owner steps documented",
   "blocked future release auth owner action required",
@@ -206,7 +210,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 55 groups 186 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 56 groups 190 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

@@ -31,6 +31,7 @@ This command runs:
 - `npm run release:implementation-rehearsal`
 - `npm run release:review`
 - `npm run release:approval-request`
+- `npm run release:patch-approval-request`
 - `npm run release:auth-handoff`
 - `npm run release:candidate-readiness`
 - `npm run release:artifact-manifest`
@@ -115,6 +116,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `ok future npm public access rehearsal`, `ok release metadata applied` |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `ok release execution completed` |
 | Release approval request | `ok release approval request ready`, `ok npm publishing completed @source-wire/contracts@0.1.0`, `ok github release completed v0.1.0`, `ok version release completed 0.1.0` |
+| Release patch approval request | `ok release patch approval request ready`, `ok exported version fix on main`, `blocked patch release approval missing`, `blocked npm artifact immutable at @source-wire/contracts@0.1.0` |
 | Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked future release auth owner action required` |
 | Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `ok release execution completed` |
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` |

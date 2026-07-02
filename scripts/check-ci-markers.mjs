@@ -25,6 +25,15 @@ const markerGroups = [
     ]
   },
   {
+    name: "release patch approval request",
+    markers: [
+      "ok release patch approval request ready",
+      "ok exported version fix on main",
+      "blocked patch release approval missing",
+      "blocked npm artifact immutable at @source-wire/contracts@0.1.0"
+    ]
+  },
+  {
     name: "release auth handoff",
     markers: [
       "ok release auth handoff ready",

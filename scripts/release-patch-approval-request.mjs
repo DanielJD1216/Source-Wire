@@ -5,6 +5,7 @@ const request = await readFile("docs/release-patch-approval-request.md", "utf8")
 const readme = await readFile("README.md", "utf8");
 const sourceIndex = await readFile("src/index.ts", "utf8");
 const consumerSmoke = await readFile("scripts/consumer-smoke.mjs", "utf8");
+const ownerApprovalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
@@ -19,7 +20,8 @@ for (const requiredPath of [
   "docs/release-snapshot-boundary.md",
   "README.md",
   "src/index.ts",
-  "scripts/consumer-smoke.mjs"
+  "scripts/consumer-smoke.mjs",
+  "scripts/record-owner-approval.mjs"
 ]) {
   await assertPathExists(requiredPath);
 }
@@ -43,6 +45,8 @@ assertIncludes(sourceIndex, 'export const SOURCE_WIRE_PACKAGE_VERSION = "0.1.0";
 assertIncludes(consumerSmoke, "SOURCE_WIRE_PACKAGE_VERSION", "consumer smoke version guard");
 assertIncludes(consumerSmoke, "parsedRuntime.version !== pack.version", "consumer smoke version guard condition");
 assertIncludes(consumerSmoke, "package root version export", "consumer smoke version guard failure");
+assertIncludes(ownerApprovalRecorder, "patch-release-implementation", "owner approval recorder patch target");
+assertIncludes(ownerApprovalRecorder, "Approved for a future Source-Wire patch release implementation unit", "owner approval recorder patch exact text");
 assertIncludes(readme, "Known `v0.1.0` package issue", "README known package issue disclosure");
 assertIncludes(readme, "Correcting the registry artifact requires a future owner-approved patch release.", "README patch release disclosure");
 

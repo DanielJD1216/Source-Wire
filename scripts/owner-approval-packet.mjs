@@ -13,6 +13,13 @@ const approvalTargets = [
       "Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms."
   },
   {
+    target: "patch-release-implementation",
+    issue: 255,
+    label: "Patch release path",
+    exactText:
+      "Approved for a future Source-Wire patch release implementation unit: publish a patch release that corrects the exported SOURCE_WIRE_PACKAGE_VERSION mismatch in the npm package. Use version 0.1.1 unless the implementation unit finds a blocking reason to choose a different explicit patch version. Create the matching GitHub release and tag only after final release-candidate verification. Keep hosted runtime behavior, hosted-runtime child issue publication, production runtime claims, deployment, real user data, and code contribution acceptance blocked."
+  },
+  {
     target: "branch-governance-implementation",
     issue: 256,
     label: "Branch governance path",

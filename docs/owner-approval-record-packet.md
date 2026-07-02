@@ -41,6 +41,7 @@ For a guarded dry-run or exact-text issue-comment recorder, run:
 ```bash
 npm run owner:record-approval
 npm run owner:record-approval -- --issue 255
+npm run owner:record-approval -- --target patch-release-implementation
 ```
 
 The recorder does not write unless `--write` and a matching `--confirm-exact` value are supplied.
@@ -62,6 +63,7 @@ npm run release:approval-status
 | Issue | Decision | Current execution boundary |
 | --- | --- | --- |
 | `#255` | First public release path | Record approval before a future release implementation unit. |
+| `#255`, target `patch-release-implementation` | Patch release path | Record approval before a future patch release for the immutable npm `0.1.0` exported-version mismatch. |
 | `#256` | Branch governance path | Record approval before a future branch governance implementation unit. |
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
 | `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Record approval before publishing the six PRD/planning child issues. |
@@ -77,6 +79,14 @@ Target: `release-implementation`
 
 ```text
 Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.
+```
+
+### Issue #255: Patch release path
+
+Target: `patch-release-implementation`
+
+```text
+Approved for a future Source-Wire patch release implementation unit: publish a patch release that corrects the exported SOURCE_WIRE_PACKAGE_VERSION mismatch in the npm package. Use version 0.1.1 unless the implementation unit finds a blocking reason to choose a different explicit patch version. Create the matching GitHub release and tag only after final release-candidate verification. Keep hosted runtime behavior, hosted-runtime child issue publication, production runtime claims, deployment, real user data, and code contribution acceptance blocked.
 ```
 
 ### Issue #256: Branch governance path

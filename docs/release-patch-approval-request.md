@@ -40,6 +40,12 @@ blocked patch release approval missing
 blocked npm artifact immutable at @source-wire/contracts@0.1.0
 ```
 
+Dry-run the guarded approval recorder:
+
+```bash
+npm run owner:record-approval -- --target patch-release-implementation
+```
+
 ## Recommended Owner Approval
 
 Use this exact text only when ready to approve a future patch release implementation unit:

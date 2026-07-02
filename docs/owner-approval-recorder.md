@@ -34,6 +34,12 @@ Dry-run status for one issue:
 npm run owner:record-approval -- --issue 255
 ```
 
+Dry-run status for the patch release implementation approval:
+
+```bash
+npm run owner:record-approval -- --target patch-release-implementation
+```
+
 Dry-run status for the hosted-runtime child issue publication approval:
 
 ```bash
@@ -71,6 +77,12 @@ Hosted-runtime child issue publication shape:
 npm run owner:record-approval -- --target hosted-runtime-child-issue-publication --write --confirm-exact "<exact approval text>"
 ```
 
+Patch release implementation shape:
+
+```bash
+npm run owner:record-approval -- --target patch-release-implementation --write --confirm-exact "<exact approval text>"
+```
+
 The command refuses to write when:
 
 - the issue number or target is not known,
@@ -80,7 +92,7 @@ The command refuses to write when:
 - `--confirm-exact` is missing,
 - `--confirm-exact` does not match the known approval text exactly.
 
-The hosted-runtime child issue publication target records on closed issue `#257` because the parent PRD issue is completed history. It still requires `--write` and an exact `--confirm-exact` match.
+The patch release implementation target records on closed issue `#255` because the first release issue is completed history. The hosted-runtime child issue publication target records on closed issue `#257` because the parent PRD issue is completed history. Both still require `--write` and an exact `--confirm-exact` match.
 
 Successful write-mode markers:
 
@@ -95,6 +107,7 @@ blocked execution still requires focused implementation unit
 | Issue | Decision | Current execution boundary |
 | --- | --- | --- |
 | `#255` | First public release path | Record approval before a future release implementation unit. |
+| `#255`, target `patch-release-implementation` | Patch release path | Record approval before a future patch release for the immutable npm `0.1.0` exported-version mismatch. |
 | `#256` | Branch governance path | Record approval before a future branch governance implementation unit. |
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
 | `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Record approval before publishing the six PRD/planning child issues. |
@@ -136,4 +149,5 @@ The recorder does not execute any of these:
 - [Owner Launch Checklist](owner-launch-checklist.md)
 - [Launch Decision Status](launch-decision-status.md)
 - [Release Approval Request Packet](release-approval-request-packet.md)
+- [Patch Release Approval Request](release-patch-approval-request.md)
 - [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md)

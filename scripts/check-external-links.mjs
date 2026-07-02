@@ -123,6 +123,19 @@ async function checkUrl(url) {
     return { ok: true };
   }
 
+  const npmRegistryUrl = npmRegistryUrlForPackagePage(url);
+  if (npmRegistryUrl && (headResult.status === 403 || getResult.status === 403)) {
+    const registryResult = await fetchWithTimeout(npmRegistryUrl, "GET");
+    if (isAcceptableStatus(registryResult.status)) {
+      return { ok: true };
+    }
+
+    return {
+      ok: false,
+      reason: `${getResult.reason}; npm registry fallback failed: ${registryResult.reason}`
+    };
+  }
+
   return { ok: false, reason: getResult.reason };
 }
 
@@ -156,4 +169,30 @@ async function fetchWithTimeout(url, method) {
 
 function isAcceptableStatus(status) {
   return status >= 200 && status < 400;
+}
+
+function npmRegistryUrlForPackagePage(rawUrl) {
+  let parsedUrl;
+
+  try {
+    parsedUrl = new URL(rawUrl);
+  } catch {
+    return null;
+  }
+
+  if (parsedUrl.hostname !== "www.npmjs.com" && parsedUrl.hostname !== "npmjs.com") {
+    return null;
+  }
+
+  const packagePrefix = "/package/";
+  if (!parsedUrl.pathname.startsWith(packagePrefix)) {
+    return null;
+  }
+
+  const packageName = decodeURIComponent(parsedUrl.pathname.slice(packagePrefix.length)).replace(/\/+$/u, "");
+  if (!packageName || packageName.includes("..")) {
+    return null;
+  }
+
+  return `https://registry.npmjs.org/${encodeURIComponent(packageName)}`;
 }

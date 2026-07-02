@@ -2,6 +2,7 @@ import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const hostedRuntimePreparation = await readFile("docs/hosted-runtime-prd-preparation.md", "utf8");
+const hostedRuntimePrd = await readFile("docs/hosted-runtime-prd.md", "utf8");
 const childIssueApprovalRequest = await readFile("docs/hosted-runtime-slice-approval-request.md", "utf8");
 const ownerApprovalRecorder = await readFile("docs/owner-approval-recorder.md", "utf8");
 const failures = [];
@@ -22,6 +23,7 @@ for (const requiredPath of [
   "docs/world-share-final-preflight.md",
   "docs/world-share-post-share-monitor.md",
   "docs/launch-decision-status.md",
+  "docs/hosted-runtime-prd.md",
   "docs/hosted-runtime-prd-preparation.md",
   "docs/hosted-runtime-prd-execution-packet.md",
   "docs/hosted-runtime-child-issue-publication-preflight.md",
@@ -33,6 +35,14 @@ for (const requiredPath of [
 
 if (!hostedRuntimePreparation.includes(hostedRuntimeApprovalText)) {
   failures.push("hosted runtime PRD preparation must retain exact owner approval text");
+}
+
+if (!hostedRuntimePrd.includes("Source-Wire does not host everyone else's memory by default.")) {
+  failures.push("hosted runtime PRD must clarify that Source-Wire is not the default memory host");
+}
+
+if (!hostedRuntimePrd.includes("The owner brings and pays for their own PostgreSQL database or equivalent storage.")) {
+  failures.push("hosted runtime PRD must clarify owner-side database cost responsibility");
 }
 
 if (!childIssueApprovalRequest.includes("Approved for a future Source-Wire hosted runtime child issue publication unit")) {
@@ -60,6 +70,7 @@ printRows([
   ["npm package", "published @source-wire/contracts@0.1.0"],
   ["GitHub release", "published v0.1.0"],
   ["Hosted runtime PRD", "approved and documented"],
+  ["Runtime ownership", "owner-hosted first, not Source-Wire-hosted by default"],
   ["Hosted runtime child issues", "blocked until separate owner approval"],
   ["Hosted runtime implementation", "blocked"],
   ["Production runtime", "blocked"],
@@ -73,6 +84,15 @@ printList([
   "Ask for technical review through the issue templates, without accepting pull requests.",
   "Run npm run world:share-final-preflight before broad sharing.",
   "Run npm run world:post-share-monitor after public sharing starts."
+]);
+
+printSection("Runtime Ownership Plain English");
+printList([
+  "Hosted runtime means the memory backend can run somewhere as software.",
+  "The intended first posture is owner-hosted: each owner runs their own runtime.",
+  "Each owner uses and pays for their own PostgreSQL database or equivalent storage.",
+  "Source-Wire does not host everyone else's memory by default.",
+  "Managed-hosted operation remains a separate later path."
 ]);
 
 printSection("Do Not Open Yet");

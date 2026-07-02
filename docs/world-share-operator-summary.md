@@ -44,6 +44,18 @@ blocked production launch channels
 - Run `npm run world:share-final-preflight` before broad sharing.
 - Run `npm run world:post-share-monitor` after public sharing starts.
 
+## Runtime Ownership Plain English
+
+In Source-Wire, `hosted runtime` does not mean Source-Wire hosts memory for everyone.
+
+The intended first runtime posture is owner-hosted:
+
+- each owner runs their own runtime,
+- each owner uses their own PostgreSQL database or equivalent storage,
+- each owner controls where memory data lives,
+- each owner carries their own infrastructure cost,
+- managed-hosted operation remains a separate later path.
+
 ## Still Blocked
 
 - new npm package publishing,

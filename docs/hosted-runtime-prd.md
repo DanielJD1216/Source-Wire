@@ -16,6 +16,14 @@ The owner needs a PRD that defines those boundaries before any runtime implement
 
 Define a hosted runtime plan that starts owner-hosted first and treats managed-hosted operation as a later, separately approved path.
 
+Plain English ownership rule:
+
+- `hosted runtime` means the memory backend can run somewhere as software.
+- `owner-hosted` means each memory owner runs it on their own device, local network, cloud account, or chosen infrastructure.
+- The owner brings and pays for their own PostgreSQL database or equivalent storage.
+- Source-Wire does not host everyone else's memory by default.
+- Managed-hosted or Source-Wire-operated memory would require a separate future approval, threat model, cost model, and implementation unit.
+
 The runtime will be planned as two cooperating surfaces:
 
 1. An API server boundary that owns authentication, namespaces, policy checks, audit records, source evidence, candidate creation, and trusted-memory approval rules.

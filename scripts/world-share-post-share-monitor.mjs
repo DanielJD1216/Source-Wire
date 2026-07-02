@@ -2,7 +2,13 @@ import { execFile } from "node:child_process";
 import { readFile, stat } from "node:fs/promises";
 
 const repo = "DanielJD1216/Source-Wire";
-const ownerDecisionIssues = new Map();
+const args = parseArgs(process.argv.slice(2));
+const ownerDecisionIssues = new Map([
+  [255, "Owner decision: approve first public release path"],
+  [256, "Owner decision: approve branch governance path"],
+  [257, "Owner decision: open hosted runtime PRD path"],
+  [258, "Owner decision: define contribution terms before accepting code"]
+]);
 const requiredReviewerLabel = "reviewer-feedback";
 const reviewerTopicLabels = new Set(["verification", "docs", "contracts", "boundary", "safety"]);
 const expectedReviewerLabels = new Set([requiredReviewerLabel, ...reviewerTopicLabels]);
@@ -48,16 +54,19 @@ for (const requiredText of [
 assertIncludes(contributing, "code contributions are not accepted until the owner approves contribution terms", "contributing contribution boundary");
 assertIncludes(pullRequestTemplate, "I understand Source-Wire is not accepting public code contributions yet.", "pull request contribution boundary");
 
-const liveLabels = await ghJson([
-  "label",
-  "list",
-  "--repo",
-  repo,
-  "--json",
-  "name",
-  "--limit",
-  "200"
-]);
+const fixtureState = buildFixtureState(args.fixture);
+const liveLabels = fixtureState
+  ? [...expectedReviewerLabels].map((name) => ({ name }))
+  : await ghJson([
+      "label",
+      "list",
+      "--repo",
+      repo,
+      "--json",
+      "name",
+      "--limit",
+      "200"
+    ]);
 const liveLabelNames = new Set(liveLabels.map((label) => label.name));
 for (const expectedLabel of expectedReviewerLabels) {
   if (!liveLabelNames.has(expectedLabel)) {
@@ -65,31 +74,35 @@ for (const expectedLabel of expectedReviewerLabels) {
   }
 }
 
-const openIssues = await ghJson([
-  "issue",
-  "list",
-  "--repo",
-  repo,
-  "--state",
-  "open",
-  "--limit",
-  "200",
-  "--json",
-  "number,title,url,labels,author,createdAt"
-]);
+const openIssues = fixtureState
+  ? fixtureState.openIssues
+  : await ghJson([
+      "issue",
+      "list",
+      "--repo",
+      repo,
+      "--state",
+      "open",
+      "--limit",
+      "200",
+      "--json",
+      "number,title,url,labels,author,createdAt"
+    ]);
 
-const openPullRequests = await ghJson([
-  "pr",
-  "list",
-  "--repo",
-  repo,
-  "--state",
-  "open",
-  "--limit",
-  "100",
-  "--json",
-  "number,title,url,author,createdAt"
-]);
+const openPullRequests = fixtureState
+  ? fixtureState.openPullRequests
+  : await ghJson([
+      "pr",
+      "list",
+      "--repo",
+      repo,
+      "--state",
+      "open",
+      "--limit",
+      "100",
+      "--json",
+      "number,title,url,author,createdAt"
+    ]);
 
 const ownerIssues = [];
 const reviewerIssues = [];
@@ -101,6 +114,7 @@ for (const issue of openIssues) {
     if (issue.title !== expectedTitle) {
       failures.push(`owner decision issue #${issue.number} title mismatch: expected ${JSON.stringify(expectedTitle)}, received ${JSON.stringify(issue.title)}`);
     }
+    failures.push(`owner-decision issue #${issue.number} is open but completed owner-decision issues must stay closed: ${issue.title}`);
     continue;
   }
 
@@ -128,6 +142,9 @@ printSection("Source-Wire Post-Share Monitor");
 console.log("This owner-side monitor is read-only.");
 console.log("It expects owner-decision issues to stay closed and allows structured reviewer feedback issues after public sharing.");
 console.log("It does not close issues, edit issues, publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, implement hosted runtime behavior, or approve production runtime use.");
+if (fixtureState) {
+  console.log(`Fixture mode: ${args.fixture}. No GitHub API calls are made for issues, pull requests, or labels.`);
+}
 
 printRows([
   ["Repository", repo],
@@ -203,6 +220,75 @@ function assertIncludes(text, requiredText, reason) {
   if (!text.includes(requiredText)) {
     failures.push(`${reason}: missing ${JSON.stringify(requiredText)}`);
   }
+}
+
+function parseArgs(argv) {
+  const parsed = { fixture: null };
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === "--fixture") {
+      parsed.fixture = argv[index + 1] ?? null;
+      index += 1;
+    }
+  }
+  return parsed;
+}
+
+function buildFixtureState(fixture) {
+  if (!fixture) return null;
+
+  const fixtures = {
+    "reviewer-feedback-open": {
+      openIssues: [
+        issueFixture(900, "Reviewer feedback: docs wording", [
+          requiredReviewerLabel,
+          "docs"
+        ])
+      ],
+      openPullRequests: []
+    },
+    "owner-decision-open": {
+      openIssues: [
+        issueFixture(255, ownerDecisionIssues.get(255), [])
+      ],
+      openPullRequests: []
+    },
+    "unstructured-open": {
+      openIssues: [
+        issueFixture(901, "Question without template labels", [])
+      ],
+      openPullRequests: []
+    },
+    "pull-request-open": {
+      openIssues: [],
+      openPullRequests: [
+        {
+          number: 12,
+          title: "Add runtime implementation",
+          url: "https://example.invalid/source-wire/pull/12",
+          author: { login: "example-reviewer" },
+          createdAt: "2026-07-02T00:00:00Z"
+        }
+      ]
+    }
+  };
+
+  const fixtureState = fixtures[fixture];
+  if (!fixtureState) {
+    throw new Error(`unknown fixture: ${fixture}`);
+  }
+  return fixtureState;
+}
+
+function issueFixture(number, title, labelNames) {
+  return {
+    number,
+    title,
+    url: `https://example.invalid/source-wire/issues/${number}`,
+    labels: labelNames.map((name) => ({ name })),
+    author: { login: "example-reviewer" },
+    createdAt: "2026-07-02T00:00:00Z"
+  };
 }
 
 function printSection(title) {

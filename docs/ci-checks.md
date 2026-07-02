@@ -99,6 +99,7 @@ The readiness gate runs:
 - `npm run intake:boundary`
 - `npm run reviewer:intake-smoke`
 - `npm run reviewer:smoke`
+- `npm run world:post-share-monitor:smoke`
 - `npm run repository:metadata`
 - `npm run repository:branch-governance-request`
 - `npm run repository:branch-governance-plan`
@@ -128,6 +129,7 @@ Owner-side live and public-network checks are intentionally outside CI and `publ
 - `npm run world:live-status`
 - `npm run world:share-preflight`
 - `npm run world:post-share-monitor`
+- `npm run world:post-share-monitor:smoke`
 - `npm run repository:live-github`
 - `npm run repository:live-branch`
 - `npm run repository:branch-governance-preflight`

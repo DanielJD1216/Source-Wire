@@ -62,6 +62,7 @@ This command runs:
 - `npm run intake:boundary`
 - `npm run reviewer:intake-smoke`
 - `npm run reviewer:smoke`
+- `npm run world:post-share-monitor:smoke`
 - `npm run repository:metadata`
 - `npm run repository:branch-governance-request`
 - `npm run repository:branch-governance-plan`
@@ -216,6 +217,18 @@ blocked code contribution PRs
 ```
 
 This read-only monitor expects owner-decision issues to stay closed and allows structured reviewer feedback issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
+
+The local readiness gate also runs the fixture-only smoke:
+
+```bash
+npm run world:post-share-monitor:smoke
+```
+
+Expected marker:
+
+```text
+ok post-share monitor smoke
+```
 
 To verify the open issue boundary only, run:
 

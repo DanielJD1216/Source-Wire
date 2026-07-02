@@ -39,6 +39,18 @@ ok structured reviewer issue intake current
 blocked code contribution PRs
 ```
 
+To verify the monitor classification rules without creating public GitHub issues or pull requests, run:
+
+```bash
+npm run world:post-share-monitor:smoke
+```
+
+Expected marker:
+
+```text
+ok post-share monitor smoke
+```
+
 ## Allowed Open Issues
 
 The monitor allows:
@@ -46,6 +58,8 @@ The monitor allows:
 - no open owner-decision issues,
 - public reviewer issues with `reviewer-feedback`,
 - reviewer issues with at least one topic label: `verification`, `docs`, `contracts`, `boundary`, or `safety`.
+
+The monitor explicitly tracks completed owner-decision issues `#255`, `#256`, `#257`, and `#258`. If any of those issues reopen, the monitor fails even if the issue has other labels.
 
 ## Failure Conditions
 

@@ -82,6 +82,7 @@ const requiredScripts = [
   "world:share-preflight",
   "world:share-final-preflight",
   "world:post-share-monitor",
+  "world:post-share-monitor:smoke",
   "launch:decision-status",
   "release:implementation-preparation",
   "release:implementation-plan",
@@ -250,6 +251,7 @@ printList([
   "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install",
   "runtime-boundary:diagnostics-smoke validates the synthetic smoke diagnostic failure format",
   "reviewer:intake-smoke validates structured reviewer issue templates, private-data warnings, and blocked code-contribution intake",
+  "world:post-share-monitor:smoke validates post-share issue and pull request classification rules without live GitHub issues",
   "reviewer:labels validates live GitHub reviewer labels used by the issue templates"
 ]);
 

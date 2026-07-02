@@ -1,14 +1,14 @@
 # Source-Wire Contribution Terms PRD Execution Packet
 
-Status: execution packet only.
+Status: historical execution packet and current boundary check.
 
 This packet does not accept code contributions, change contribution policy, add a CLA, add a DCO requirement, publish a new npm version, create a new GitHub release, create tags, deploy services, add hosted runtime behavior, enable branch governance, or approve production runtime use.
 
 ## Purpose
 
-Use this packet after the owner records exact approval for issue `#258`.
+Use this packet to verify the recorded approval, contribution terms evidence, and still-blocked contribution acceptance boundary for issue `#258`.
 
-The goal is to make the future contribution terms PRD unit bounded and boring: define whether and how Source-Wire can accept outside code, how private data stays out, what maintainer review requires, what support expectations exist, what security reports mean, and how Apache-2.0 compatibility is preserved.
+The goal is to keep the defined contribution terms PRD bounded and boring: whether and how Source-Wire can accept outside code, how private data stays out, what maintainer review requires, what support expectations exist, what security reports mean, and how Apache-2.0 compatibility is preserved are documented while code contribution acceptance remains blocked.
 
 ## Command
 
@@ -37,17 +37,17 @@ blocked code contribution acceptance
 
 This command verifies the packet and docs only. It does not accept pull requests, add contribution legal terms, or change GitHub collaboration settings.
 
-## Required Owner Approval
+## Recorded Owner Approval
 
-Do not start contribution terms PRD work until this exact approval is recorded on issue `#258`:
+Contribution terms PRD approval is recorded on issue `#258` with this exact text:
 
 ```text
 Approved for a future Source-Wire contribution terms PRD unit: define whether and how Source-Wire can accept public code contributions, including DCO or CLA posture, maintainer review policy, private-data exclusion rules, support expectations, security-report scope, license compatibility, and PR workflow boundaries. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions in this PRD unit.
 ```
 
-## Pre-Execution Checks
+## Current Evidence Checks
 
-Before starting the future PRD unit:
+Before asking for contribution-acceptance implementation approval:
 
 1. Run `npm run publish:readiness`.
 2. Run `npm run world:share-final-preflight`.
@@ -58,9 +58,9 @@ Before starting the future PRD unit:
 7. Confirm local `main` and `origin/main` point to the same commit.
 8. Confirm no npm package version, GitHub release, tag, deployment, hosted runtime behavior, or branch governance change is being opened in the same unit.
 
-## Future PRD Scope
+## Defined PRD Scope
 
-The future PRD unit should define, but not activate:
+The defined PRD covers, but does not activate:
 
 | Area | Required PRD decision |
 | --- | --- |
@@ -73,9 +73,9 @@ The future PRD unit should define, but not activate:
 | Security reports | meaningful scope while no hosted runtime exists |
 | Public feedback | issue feedback remains separate from code contribution acceptance |
 
-## Future Verification
+## Current Verification
 
-After the future PRD unit lands, run:
+After any contribution terms evidence changes, run:
 
 ```bash
 npm run publish:readiness
@@ -85,7 +85,7 @@ npm run owner:refresh-decision-issues
 npm run owner:decision-issues-freshness
 ```
 
-Expected future result while contribution acceptance remains blocked:
+Expected result while contribution acceptance remains blocked:
 
 ```text
 ok contribution terms PRD decision preflight ready
@@ -96,7 +96,7 @@ blocked code contribution acceptance
 
 ## Stop Conditions
 
-Stop the future PRD unit if:
+Stop any follow-up unit if:
 
 - it accepts code contributions instead of defining terms,
 - it adds CLA or DCO enforcement before the policy is approved,

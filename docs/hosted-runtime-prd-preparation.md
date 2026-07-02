@@ -1,14 +1,14 @@
 # Source-Wire Hosted Runtime PRD Preparation
 
-Status: future PRD preparation only.
+Status: post-approval PRD evidence packet.
 
 This preparation packet does not implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, accept code contributions, or use real data.
 
 ## Purpose
 
-Use this packet before opening a future hosted runtime PRD unit from issue `#257`.
+Use this packet as the post-approval evidence map for hosted runtime PRD issue `#257`.
 
-The goal is to keep runtime work narrow and explicit before Source-Wire moves beyond a contract package skeleton.
+The goal is to keep runtime work narrow and explicit after the PRD is documented, before Source-Wire moves beyond a contract package skeleton.
 
 ## Command
 
@@ -34,7 +34,7 @@ ok hosted runtime PRD evidence map ready
 ok exact hosted runtime PRD approval recorded
 ```
 
-Before asking the owner for a hosted runtime PRD decision, run the complete read-only decision preflight:
+Before asking the owner for the next hosted runtime lane, run the complete read-only decision preflight:
 
 ```bash
 npm run runtime:prd-decision-preflight
@@ -51,17 +51,17 @@ ok hosted runtime PRD evidence current
 ok exact hosted runtime PRD approval recorded
 ```
 
-## Required Approval Before PRD Work
+## Recorded Approval
 
-Issue `#257` must contain the exact owner approval text before a future hosted runtime PRD unit starts:
+Issue `#257` contains the exact owner approval text:
 
 ```text
 Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit.
 ```
 
-## PRD Must Define
+## PRD Defines
 
-The future PRD must define:
+The approved PRD defines:
 
 - owner-hosted versus managed-hosted boundary,
 - no Source-Wire-hosted user memory unless separately approved,
@@ -76,9 +76,9 @@ The future PRD must define:
 - verification gates,
 - rollback and stop conditions.
 
-## Required Inputs
+## Evidence Inputs
 
-Before starting the PRD unit, review:
+For current hosted runtime readiness checks, review:
 
 - [Public Runtime Decision](public-runtime-decision.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
@@ -88,11 +88,10 @@ Before starting the PRD unit, review:
 - [Legal Review Question Packet](legal-review-question-packet.md)
 - [Owner Approval Record Packet](owner-approval-record-packet.md)
 
-## Stop Conditions
+## Stop Conditions Before Implementation
 
-Stop before PRD implementation if:
+Stop before implementation if:
 
-- issue `#257` does not contain exact owner approval before PRD work,
 - the PRD implies Source-Wire hosts user memory by default,
 - real user data, private project data, client data, local paths, tokens, account IDs, domains, emails, screenshots, or production exports are requested,
 - the PRD opens npm publishing or GitHub release publishing,

@@ -35,15 +35,15 @@ const contributing = await readFile("CONTRIBUTING.md", "utf8");
 const pullRequestTemplate = await readFile(".github/pull_request_template.md", "utf8");
 
 for (const requiredText of [
-  "Status: execution packet only.",
+  "Status: historical execution packet and current boundary check.",
   "This packet does not accept code contributions, change contribution policy, add a CLA, add a DCO requirement, publish a new npm version, create a new GitHub release, create tags, deploy services, add hosted runtime behavior, enable branch governance, or approve production runtime use.",
-  "Required Owner Approval",
+  "Recorded Owner Approval",
   "Approved for a future Source-Wire contribution terms PRD unit: define whether and how Source-Wire can accept public code contributions",
-  "Pre-Execution Checks",
-  "Future PRD Scope",
+  "Current Evidence Checks",
+  "Defined PRD Scope",
   "DCO, CLA, or no-external-code policy",
   "Private-data exclusion",
-  "Future Verification",
+  "Current Verification",
   "Stop Conditions",
   "ok exact contribution terms PRD approval recorded",
   "blocked code contribution acceptance"
@@ -52,8 +52,8 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Status: future PRD preparation only.",
-  "Issue `#258` must contain the exact owner approval text",
+  "Status: post-approval PRD evidence packet.",
+  "Issue `#258` contains the exact owner approval text",
   "ok exact contribution terms PRD approval recorded",
   "blocked code contribution acceptance"
 ]) {
@@ -109,9 +109,10 @@ printRows([
   ["Production runtime use", "blocked"]
 ]);
 
-printSection("Future PRD Boundary");
+printSection("Current PRD Boundary");
 printList([
-  "Do not start the contribution terms PRD unit until issue #258 records exact owner approval.",
+  "Contribution terms PRD is defined.",
+  "Code contribution acceptance still needs separate implementation approval.",
   "Do not accept code contributions, add CLA or DCO enforcement, change GitHub collaboration settings, or weaken private-data exclusion from this packet.",
   "Keep hosted runtime behavior, deployment, new releases, and production runtime claims blocked."
 ]);

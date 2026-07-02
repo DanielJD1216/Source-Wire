@@ -1,14 +1,14 @@
 # Source-Wire Contribution Terms PRD Preparation
 
-Status: future PRD preparation only.
+Status: post-approval PRD evidence packet.
 
 This preparation packet does not accept code contributions, change contribution policy, add a CLA, add a DCO requirement, publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or approve production runtime use.
 
 ## Purpose
 
-Use this packet before opening a future contribution terms PRD unit from issue `#258`.
+Use this packet as the post-approval evidence map for contribution terms issue `#258`.
 
-The goal is to decide how public code contributions can be accepted later without mixing that decision into release, runtime, or support work.
+The goal is to keep the contribution terms decision separate from release, runtime, and support work while code contribution acceptance remains blocked.
 
 ## Command
 
@@ -35,7 +35,7 @@ ok exact contribution terms PRD approval recorded
 blocked code contribution acceptance
 ```
 
-Before asking the owner for a contribution terms PRD decision, run the complete read-only decision preflight:
+Before asking the owner for any contribution-acceptance implementation, run the complete read-only decision preflight:
 
 ```bash
 npm run contribution:terms-decision-preflight
@@ -54,17 +54,17 @@ ok exact contribution terms PRD approval recorded
 blocked code contribution acceptance
 ```
 
-## Required Approval Before PRD Work
+## Recorded Approval
 
-Issue `#258` must contain the exact owner approval text before a future contribution terms PRD unit starts:
+Issue `#258` contains the exact owner approval text:
 
 ```text
 Approved for a future Source-Wire contribution terms PRD unit: define whether and how Source-Wire can accept public code contributions, including DCO or CLA posture, maintainer review policy, private-data exclusion rules, support expectations, security-report scope, license compatibility, and PR workflow boundaries. Do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions in this PRD unit.
 ```
 
-## PRD Must Define
+## PRD Defines
 
-The future PRD must define:
+The defined PRD covers:
 
 - whether public code contributions will be accepted,
 - DCO, CLA, or no-external-code posture,
@@ -77,9 +77,9 @@ The future PRD must define:
 - issue feedback versus code contribution boundary,
 - rollback and stop conditions.
 
-## Required Inputs
+## Evidence Inputs
 
-Before starting the PRD unit, review:
+For current contribution terms readiness checks, review:
 
 - [Contributing Boundary](../CONTRIBUTING.md)
 - [Contribution Terms PRD](contribution-terms-prd.md)
@@ -91,11 +91,10 @@ Before starting the PRD unit, review:
 - [Owner Approval Record Packet](owner-approval-record-packet.md)
 - [Pull Request Template](https://github.com/DanielJD1216/Source-Wire/blob/main/.github/pull_request_template.md)
 
-## Stop Conditions
+## Stop Conditions Before Contribution Acceptance
 
-Stop before PRD implementation if:
+Stop before contribution acceptance if:
 
-- issue `#258` does not contain exact owner approval,
 - the PRD accepts code contributions before contribution terms are defined,
 - the PRD asks reviewers to send private data, secrets, local paths, real source payloads, real chat logs, client names, account IDs, screenshots, or production exports,
 - the PRD changes npm publishing, GitHub release, hosted runtime, deployment, or production runtime status,

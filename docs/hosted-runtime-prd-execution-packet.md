@@ -1,14 +1,14 @@
 # Source-Wire Hosted Runtime PRD Execution Packet
 
-Status: execution packet only.
+Status: historical execution packet and current boundary check.
 
 This packet does not implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish a new npm version, create a new GitHub release, create tags, enable branch governance, accept code contributions, add real user data, or approve production runtime use.
 
 ## Purpose
 
-Use this packet after the owner records exact approval for issue `#257`.
+Use this packet to verify the recorded approval, PRD evidence, and still-blocked implementation boundary for issue `#257`.
 
-The goal is to make the future hosted runtime PRD unit bounded and boring: define the runtime product boundary, threat model, owner-hosted versus managed-hosted posture, API and MCP responsibilities, database posture, public-safe fixtures, verification gates, and no-private-data rules before any runtime implementation starts.
+The goal is to keep the completed hosted runtime PRD bounded and boring: the runtime product boundary, threat model, owner-hosted versus managed-hosted posture, API and MCP responsibilities, database posture, public-safe fixtures, verification gates, and no-private-data rules are documented before any runtime implementation starts.
 
 ## Command
 
@@ -36,7 +36,7 @@ ok exact hosted runtime PRD approval recorded
 
 This command verifies the packet and docs only. It does not add runtime code, call deployment APIs, or create infrastructure.
 
-## Required Owner Approval
+## Recorded Owner Approval
 
 Hosted runtime PRD approval is recorded on issue `#257` with this exact text:
 
@@ -44,9 +44,9 @@ Hosted runtime PRD approval is recorded on issue `#257` with this exact text:
 Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit.
 ```
 
-## Pre-Execution Checks
+## Current Evidence Checks
 
-Before starting the future PRD unit:
+Before asking for child issue publication or implementation approval:
 
 1. Run `npm run publish:readiness`.
 2. Run `npm run world:share-final-preflight`.
@@ -57,9 +57,9 @@ Before starting the future PRD unit:
 7. Confirm local `main` and `origin/main` point to the same commit.
 8. Confirm no npm package version, GitHub release, tag, deployment, branch governance change, or contribution acceptance is being opened in the same unit.
 
-## Future PRD Scope
+## Approved PRD Scope
 
-The future PRD unit should define, but not implement:
+The approved PRD defines, but does not implement:
 
 | Area | Required PRD decision |
 | --- | --- |
@@ -72,9 +72,9 @@ The future PRD unit should define, but not implement:
 | Verification | local smokes, package checks, security scans, issue freshness, and docs gates |
 | Runtime limits | no trusted Memory Record auto-promotion, no live connectors, no production claims |
 
-## Future Verification
+## Current Verification
 
-After the future PRD unit lands, run:
+After any hosted-runtime planning evidence changes, run:
 
 ```bash
 npm run publish:readiness
@@ -83,7 +83,7 @@ npm run owner:refresh-decision-issues
 npm run owner:decision-issues-freshness
 ```
 
-Expected future result while implementation remains blocked:
+Expected result while implementation remains blocked:
 
 ```text
 ok hosted runtime PRD decision preflight ready
@@ -93,7 +93,7 @@ blocked hosted runtime implementation not approved
 
 ## Stop Conditions
 
-Stop the future PRD unit if:
+Stop any follow-up unit if:
 
 - it starts adding runtime code,
 - it introduces real user data,

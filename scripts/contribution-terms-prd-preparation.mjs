@@ -34,11 +34,11 @@ const pullRequestTemplate = await readFile(".github/pull_request_template.md", "
 const legalPacket = await readFile("docs/legal-review-question-packet.md", "utf8");
 
 for (const requiredText of [
-  "Status: future PRD preparation only.",
-  "Issue `#258` must contain the exact owner approval text",
+  "Status: post-approval PRD evidence packet.",
+  "Issue `#258` contains the exact owner approval text",
   "DCO, CLA, or no-external-code posture",
   "private-data exclusion rules",
-  "Stop before PRD implementation if:",
+  "Stop before contribution acceptance if:",
   "ok exact contribution terms PRD approval recorded",
   "blocked code contribution acceptance"
 ]) {
@@ -89,7 +89,7 @@ if (failures.length > 0) {
 
 printSection("Source-Wire Contribution Terms PRD Preparation");
 printRows([
-  ["Preparation packet", "ready"],
+  ["Evidence packet", "ready"],
   ["Owner approval issue", "#258"],
   ["Package", packageJson.name],
   ["License", packageJson.license],
@@ -101,9 +101,10 @@ printRows([
   ["npm publishing", "published as @source-wire/contracts@0.1.0, future versions gated"]
 ]);
 
-printSection("Required Evidence Before PRD");
+printSection("Current PRD Evidence");
 printList([
   "Issue #258 contains exact owner approval text.",
+  "Contribution terms PRD is defined.",
   "DCO, CLA, or no-external-code posture is selected.",
   "Private-data exclusion rules are explicit.",
   "Maintainer review policy is explicit.",

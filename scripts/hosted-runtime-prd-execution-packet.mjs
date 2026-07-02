@@ -26,15 +26,15 @@ const preparation = await readFile("docs/hosted-runtime-prd-preparation.md", "ut
 const decisionPreflight = await readFile("docs/hosted-runtime-prd-decision-preflight.md", "utf8");
 
 for (const requiredText of [
-  "Status: execution packet only.",
+  "Status: historical execution packet and current boundary check.",
   "This packet does not implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish a new npm version, create a new GitHub release, create tags, enable branch governance, accept code contributions, add real user data, or approve production runtime use.",
-  "Required Owner Approval",
+  "Recorded Owner Approval",
   "Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary",
-  "Pre-Execution Checks",
-  "Future PRD Scope",
+  "Current Evidence Checks",
+  "Approved PRD Scope",
   "owner-hosted first, managed-hosted deferred unless explicitly approved",
   "no trusted Memory Record auto-promotion",
-  "Future Verification",
+  "Current Verification",
   "Stop Conditions",
   "ok exact hosted runtime PRD approval recorded"
 ]) {
@@ -42,8 +42,8 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Status: future PRD preparation only.",
-  "Issue `#257` must contain the exact owner approval text",
+  "Status: post-approval PRD evidence packet.",
+  "Issue `#257` contains the exact owner approval text",
   "ok exact hosted runtime PRD approval recorded"
 ]) {
   assertIncludes(preparation, requiredText, "hosted runtime PRD preparation");
@@ -80,9 +80,10 @@ printRows([
   ["Contribution acceptance", "blocked"]
 ]);
 
-printSection("Future PRD Boundary");
+printSection("Current PRD Boundary");
 printList([
-  "Hosted runtime PRD may start because issue #257 records exact owner approval.",
+  "Hosted runtime PRD is approved and documented.",
+  "Child issue publication still needs separate owner approval.",
   "Do not add API server runtime, MCP server runtime, database migrations, deployment config, live connectors, or real user data from this packet.",
   "Keep trusted Memory Record auto-promotion, production runtime claims, and contribution acceptance blocked."
 ]);

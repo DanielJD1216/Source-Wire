@@ -27,11 +27,11 @@ const publicRuntimeDecision = await readFile("docs/public-runtime-decision.md", 
 const runtimeGate = await readFile("docs/runtime-implementation-gate.md", "utf8");
 
 for (const requiredText of [
-  "Status: future PRD preparation only.",
-  "Issue `#257` must contain the exact owner approval text",
+  "Status: post-approval PRD evidence packet.",
+  "Issue `#257` contains the exact owner approval text",
   "owner-hosted versus managed-hosted boundary",
   "no trusted Memory Record auto-promotion",
-  "Stop before PRD implementation if:",
+  "Stop before implementation if:",
   "ok exact hosted runtime PRD approval recorded"
 ]) {
   assertIncludes(preparation, requiredText, "hosted runtime PRD preparation");
@@ -71,7 +71,7 @@ if (failures.length > 0) {
 
 printSection("Source-Wire Hosted Runtime PRD Preparation");
 printRows([
-  ["Preparation packet", "ready"],
+  ["Evidence packet", "ready"],
   ["Owner approval issue", "#257"],
   ["Package", packageJson.name],
   ["License", packageJson.license],
@@ -83,12 +83,13 @@ printRows([
   ["Real user data", "blocked"]
 ]);
 
-printSection("Required Evidence Before PRD");
+printSection("Current PRD Evidence");
 printList([
   "Issue #257 contains exact owner approval text.",
+  "Hosted runtime PRD is approved and documented.",
   "Runtime boundary is owner-hosted versus managed-hosted explicit.",
-  "Threat model and namespace isolation are required.",
-  "Public-safe fixtures are required.",
+  "Threat model and namespace isolation are documented.",
+  "Public-safe fixtures are required before implementation.",
   "Trusted memory auto-promotion remains blocked."
 ]);
 

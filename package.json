@@ -118,6 +118,7 @@
     "owner:decision-status": "node scripts/owner-decision-status.mjs",
     "owner:record-approval": "node scripts/record-owner-approval.mjs",
     "owner:open-issues-status": "node scripts/owner-open-issues-status.mjs",
+    "owner:open-issues-status:smoke": "node scripts/owner-open-issues-status.mjs --fixture hosted-runtime-planning",
     "owner:refresh-decision-issues": "node scripts/refresh-owner-decision-issues.mjs",
     "owner:decision-issues-freshness": "node scripts/check-owner-decision-issue-freshness.mjs",
     "world:readiness": "node scripts/world-share-readiness.mjs",

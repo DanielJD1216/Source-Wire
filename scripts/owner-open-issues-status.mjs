@@ -1,6 +1,7 @@
 import { execFile } from "node:child_process";
 
 const repo = "DanielJD1216/Source-Wire";
+const args = parseArgs(process.argv.slice(2));
 
 const completedDecisionIssues = [
   {
@@ -43,57 +44,77 @@ const expectedHostedRuntimePlanningIssueTitles = [
   "Deployment Boundary And Runtime Stop Conditions"
 ];
 
-const issues = await ghJson([
-  "issue",
-  "list",
-  "--repo",
-  repo,
-  "--state",
-  "open",
-  "--limit",
-  "100",
-  "--json",
-  "number,title,state,url"
-]);
+const issues = args.fixture === "hosted-runtime-planning"
+  ? expectedHostedRuntimePlanningIssueTitles.map((title, index) => ({
+      number: 900 + index,
+      title,
+      state: "OPEN",
+      url: `https://example.invalid/source-wire/planning/${index + 1}`
+    }))
+  : await ghJson([
+      "issue",
+      "list",
+      "--repo",
+      repo,
+      "--state",
+      "open",
+      "--limit",
+      "100",
+      "--json",
+      "number,title,state,url"
+    ]);
 
 const expectedByNumber = new Map(expectedOpenIssues.map((issue) => [issue.number, issue]));
-const actualByNumber = new Map(issues.map((issue) => [issue.number, issue]));
 const expectedPlanningTitleSet = new Set(expectedHostedRuntimePlanningIssueTitles);
 const openPlanningIssues = issues.filter((issue) => expectedPlanningTitleSet.has(issue.title));
 const unexpectedOpenIssues = issues.filter((issue) => !expectedPlanningTitleSet.has(issue.title));
 const failures = [];
 const completedIssueStates = [];
 
-for (const completedIssue of completedDecisionIssues) {
-  const issue = await ghJson([
-    "issue",
-    "view",
-    String(completedIssue.number),
-    "--repo",
-    repo,
-    "--json",
-    "body,comments,state,title,url"
-  ]);
-  const comments = Array.isArray(issue.comments) ? issue.comments : [];
-  const approvalComments = comments.filter((comment) => comment.body?.includes(completedIssue.exactApprovalText));
-  const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "", completedIssue.exactApprovalText);
-  const exactApprovalRecorded = approvalRecordPresent || approvalComments.length > 0;
+if (args.fixture === "hosted-runtime-planning") {
+  for (const completedIssue of completedDecisionIssues) {
+    completedIssueStates.push({
+      ...completedIssue,
+      issue: {
+        state: "CLOSED",
+        title: completedIssue.title,
+        url: `https://example.invalid/source-wire/owner-decision/${completedIssue.number}`
+      },
+      exactApprovalRecorded: true
+    });
+  }
+} else {
+  for (const completedIssue of completedDecisionIssues) {
+    const issue = await ghJson([
+      "issue",
+      "view",
+      String(completedIssue.number),
+      "--repo",
+      repo,
+      "--json",
+      "body,comments,state,title,url"
+    ]);
+    const comments = Array.isArray(issue.comments) ? issue.comments : [];
+    const approvalComments = comments.filter((comment) => comment.body?.includes(completedIssue.exactApprovalText));
+    const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "", completedIssue.exactApprovalText);
+    const exactApprovalRecorded = approvalRecordPresent || approvalComments.length > 0;
 
-  if (issue.title !== completedIssue.title) {
-    failures.push(`unexpected title for completed decision #${completedIssue.number}: expected "${completedIssue.title}", received "${issue.title}"`);
-  }
-  if (issue.state !== "CLOSED") {
-    failures.push(`completed owner decision issue #${completedIssue.number} must be closed, received ${issue.state}`);
-  }
-  if (!exactApprovalRecorded) {
-    failures.push(`completed owner decision issue #${completedIssue.number} must retain exact ${completedIssue.approvalName} approval evidence`);
-  }
+    if (issue.title !== completedIssue.title) {
+      failures.push(`unexpected title for completed decision #${completedIssue.number}: expected "${completedIssue.title}", received "${issue.title}"`);
+    }
+    if (issue.state !== "CLOSED") {
+      failures.push(`completed owner decision issue #${completedIssue.number} must be closed, received ${issue.state}`);
+    }
+    if (!exactApprovalRecorded) {
+      failures.push(`completed owner decision issue #${completedIssue.number} must retain exact ${completedIssue.approvalName} approval evidence`);
+    }
 
-  completedIssueStates.push({
-    ...completedIssue,
-    issue,
-    exactApprovalRecorded
-  });
+    completedIssueStates.push({
+      ...completedIssue,
+      issue,
+      exactApprovalRecorded
+    });
+  }
 }
 
 for (const actualIssue of unexpectedOpenIssues) {
@@ -106,6 +127,9 @@ printSection("Source-Wire Owner Open Issues Status");
 console.log("This owner-side status check is read-only.");
 console.log("It verifies that the public open issue surface has no unresolved owner-decision gates.");
 console.log("It does not close issues, create issues, publish npm, create a GitHub release, create tags, change package version, deploy services, enable branch governance, accept code contributions, or approve hosted runtime use.");
+if (args.fixture === "hosted-runtime-planning") {
+  console.log("Fixture mode: hosted-runtime-planning. No GitHub API calls are made.");
+}
 
 printSection("Completed Owner Decisions");
 for (const issue of completedIssueStates.toSorted((left, right) => left.number - right.number)) {
@@ -181,6 +205,41 @@ function hasApprovalRecordSection(body, exactApprovalText) {
   const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
   const section = body.match(sectionPattern)?.[0] ?? "";
   return section.includes(exactApprovalText);
+}
+
+function parseArgs(rawArgs) {
+  const parsed = {
+    fixture: ""
+  };
+
+  for (let index = 0; index < rawArgs.length; index += 1) {
+    const arg = rawArgs[index];
+    if (arg === "--fixture") {
+      parsed.fixture = rawArgs[index + 1] ?? "";
+      index += 1;
+    } else if (arg === "--help" || arg === "-h") {
+      printUsage();
+      process.exit(0);
+    } else {
+      console.error(`Unknown argument: ${arg}`);
+      printUsage();
+      process.exit(1);
+    }
+  }
+
+  if (parsed.fixture && parsed.fixture !== "hosted-runtime-planning") {
+    console.error(`Unknown fixture: ${parsed.fixture}`);
+    printUsage();
+    process.exit(1);
+  }
+
+  return parsed;
+}
+
+function printUsage() {
+  console.log("Usage:");
+  console.log("  npm run owner:open-issues-status");
+  console.log("  npm run owner:open-issues-status -- --fixture hosted-runtime-planning");
 }
 
 function printSection(title) {

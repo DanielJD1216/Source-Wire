@@ -57,6 +57,20 @@ ok expected hosted runtime planning issues open
 blocked hosted runtime implementation
 ```
 
+To verify that future state without creating GitHub issues or calling the GitHub API, run:
+
+```bash
+npm run owner:open-issues-status:smoke
+```
+
+Expected smoke markers:
+
+```text
+ok owner open issue boundary readable
+ok expected hosted runtime planning issues open
+blocked hosted runtime implementation
+```
+
 ## What It Proves
 
 - GitHub issue access is working through `gh`.
@@ -80,5 +94,6 @@ blocked hosted runtime implementation
 ## Related Commands
 
 - `npm run owner:decision-status` checks whether exact owner approvals have been separately recorded on issues `#255` through `#258`.
+- `npm run owner:open-issues-status:smoke` verifies the future hosted-runtime planning issue state without creating or reading GitHub issues.
 - `npm run world:share-preflight` runs this command together with external links, live world-share status, launch decision status, and owner decision status.
 - `npm run launch:decision-status` summarizes blocked launch channels without approving them.

@@ -10,6 +10,8 @@ Source-Wire's next public product step should be an owner-hosted setup package, 
 
 The goal is to define how an adopter will bring their own device or server, PostgreSQL-compatible database, credentials, source packets, and MCP-capable harnesses, then prove that setup path with synthetic fixtures before any real runtime implementation starts.
 
+For the adopter-facing claim boundary, read [Owner-Hosted Setup Claim Boundary](owner-hosted-setup-claim-boundary.md).
+
 ## Problem
 
 Source-Wire is intended to become a BYO owner-hosted memory system, but the public repo is still a contracts-first package with synthetic runtime-boundary proof code.

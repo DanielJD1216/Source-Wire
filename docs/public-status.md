@@ -64,6 +64,10 @@ Source-Wire is not yet:
 - a place for real user data,
 - a project accepting code contributions.
 
+For the current owner-hosted setup boundary, read [Owner-Hosted Setup Claim Boundary](owner-hosted-setup-claim-boundary.md).
+
+That boundary states that Source-Wire is not managed hosting, production runtime remains blocked, database migrations remain blocked until a separate unit, and `Source-Wire-Memory-Engine` remains separate.
+
 ## Allowed Actions
 
 You may:

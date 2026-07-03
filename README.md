@@ -22,6 +22,8 @@ Owner-hosted setup smoke: `npm run owner-hosted-setup:readiness-smoke` checks th
 
 Source update safety smoke: `npm run owner-hosted-setup:source-update-safety-smoke` proves the synthetic update path requires caller-supplied snapshots, blocks folder crawling and broad private import, keeps trusted memory delta `0`, and preserves owner or application-controlled review. Read [Owner-Hosted Setup Source Update Safety Smoke](docs/owner-hosted-setup-source-update-safety-smoke.md).
 
+Owner-hosted setup claim boundary: latest `main` documents a BYO setup direction, not managed hosting or production runtime. Database migrations remain blocked, and `Source-Wire-Memory-Engine` stays separate. Read [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md).
+
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
 Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
@@ -117,6 +119,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Owner-Hosted Setup Readiness Fixture Matrix](docs/owner-hosted-setup-readiness-fixture-matrix.md)
 - [Owner-Hosted Setup Readiness Smoke](docs/owner-hosted-setup-readiness-smoke.md)
 - [Owner-Hosted Setup Source Update Safety Smoke](docs/owner-hosted-setup-source-update-safety-smoke.md)
+- [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md)
 - [Owner-Hosted Setup Issue Drafts](docs/issues/owner-hosted-setup/README.md)
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)

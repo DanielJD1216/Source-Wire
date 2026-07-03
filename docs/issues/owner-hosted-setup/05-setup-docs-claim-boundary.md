@@ -23,4 +23,9 @@ Document the owner-hosted setup path and keep public claims accurate.
 
 ## Implementation Status
 
-Draft.
+Implemented as documentation and claim boundary.
+
+Proof:
+
+- `docs/owner-hosted-setup-claim-boundary.md`
+- `docs/owner-hosted-setup-slice-5-proof.md`

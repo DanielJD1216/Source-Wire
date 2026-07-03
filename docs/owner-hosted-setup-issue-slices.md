@@ -81,6 +81,8 @@ Acceptance criteria:
 
 ## Slice 5: Setup Docs And Claim Boundary
 
+Status: implemented in `docs/owner-hosted-setup-claim-boundary.md`, with proof in `docs/owner-hosted-setup-slice-5-proof.md`.
+
 File: `docs/issues/owner-hosted-setup/05-setup-docs-claim-boundary.md`
 
 Document the setup path for adopters and keep public claims accurate.

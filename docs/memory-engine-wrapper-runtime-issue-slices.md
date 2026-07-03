@@ -138,6 +138,14 @@ Acceptance criteria:
 
 Issue draft: [05 Separate Runtime Adapter Boundary Smoke](issues/memory-engine-wrapper-runtime/05-separate-runtime-adapter-boundary-smoke.md).
 
+Local artifact: [Source-Wire Memory Engine Wrapper Runtime Separate Runtime Adapter Boundary Smoke](memory-engine-wrapper-runtime-separate-runtime-adapter-boundary-smoke.md).
+
+Smoke command:
+
+```bash
+npm run wrapper-runtime:runtime-adapter-smoke
+```
+
 Type: AFK after Slice 3.
 
 Blocked by: Slice 3.

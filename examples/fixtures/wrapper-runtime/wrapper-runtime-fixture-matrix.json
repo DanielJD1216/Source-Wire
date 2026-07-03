@@ -157,7 +157,35 @@
     {
       "runtimeResultId": "runtime_result_demo_search_001",
       "sourceWirePolicyApplied": true,
-      "rawRuntimePayloadReturnedToMcp": false
+      "rawRuntimePayloadReturnedToMcp": false,
+      "fixtureSafety": "synthetic",
+      "runtimeOwnsAuthPolicy": false,
+      "runtimeOwnsNamespacePolicy": false,
+      "runtimeOwnsApprovalPolicy": false,
+      "runtimeOwnsCitationPolicy": false,
+      "runtimeOwnsDeniedResultPolicy": false,
+      "runtimeOwnsAuditPolicy": false,
+      "rawItems": [
+        {
+          "runtimeItemId": "runtime_item_demo_001",
+          "score": 0.91,
+          "text": "Synthetic runtime candidate returned a low-level retrieval item."
+        }
+      ]
+    },
+    {
+      "runtimeResultId": "runtime_result_demo_degraded_001",
+      "sourceWirePolicyApplied": true,
+      "rawRuntimePayloadReturnedToMcp": false,
+      "fixtureSafety": "synthetic",
+      "runtimeOwnsAuthPolicy": false,
+      "runtimeOwnsNamespacePolicy": false,
+      "runtimeOwnsApprovalPolicy": false,
+      "runtimeOwnsCitationPolicy": false,
+      "runtimeOwnsDeniedResultPolicy": false,
+      "runtimeOwnsAuditPolicy": false,
+      "rawItems": [],
+      "runtimeGap": "runtime_degraded"
     }
   ],
   "proofCases": [

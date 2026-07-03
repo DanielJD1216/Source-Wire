@@ -28,10 +28,17 @@ Run the synthetic MCP adapter policy routing smoke:
 npm run wrapper-runtime:mcp-adapter-smoke
 ```
 
+Run the synthetic separate runtime adapter boundary smoke:
+
+```bash
+npm run wrapper-runtime:runtime-adapter-smoke
+```
+
 The smoke scripts live at:
 
 - [owner-hosted-api-policy-wrapper-smoke.mjs](../../wrapper-runtime/owner-hosted-api-policy-wrapper-smoke.mjs)
 - [mcp-adapter-policy-routing-smoke.mjs](../../wrapper-runtime/mcp-adapter-policy-routing-smoke.mjs)
+- [separate-runtime-adapter-boundary-smoke.mjs](../../wrapper-runtime/separate-runtime-adapter-boundary-smoke.mjs)
 
 ## Covered Categories
 

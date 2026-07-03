@@ -1,5 +1,13 @@
 # Separate Runtime Adapter Boundary Smoke
 
+Local artifact: [Source-Wire Memory Engine Wrapper Runtime Separate Runtime Adapter Boundary Smoke](../../memory-engine-wrapper-runtime-separate-runtime-adapter-boundary-smoke.md).
+
+Smoke command:
+
+```bash
+npm run wrapper-runtime:runtime-adapter-smoke
+```
+
 ## Parent
 
 Source-Wire Memory Engine Wrapper Runtime PRD.
@@ -10,12 +18,12 @@ Implement the narrowest adapter boundary proof for accepting a separate runtime 
 
 ## Acceptance criteria
 
-- [ ] Adapter uses synthetic runtime results only.
-- [ ] Source-Wire policy remains outside the runtime candidate.
-- [ ] Runtime result is shaped before reaching MCP.
-- [ ] Adapter cannot own auth, namespace, approval, citation, denied-result, or audit policy.
-- [ ] No AGPLv3 code is copied.
-- [ ] No Docker or installer bundling is added.
+- [x] Adapter uses synthetic runtime results only.
+- [x] Source-Wire policy remains outside the runtime candidate.
+- [x] Runtime result is shaped before reaching MCP.
+- [x] Adapter cannot own auth, namespace, approval, citation, denied-result, or audit policy.
+- [x] No AGPLv3 code is copied.
+- [x] No Docker or installer bundling is added.
 
 ## Blocked by
 

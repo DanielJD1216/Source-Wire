@@ -98,6 +98,8 @@ Acceptance criteria:
 
 ## Slice 6: Proof Docs And Go/No-Go Gate
 
+Status: implemented in `docs/owner-hosted-setup-final-proof.md`, `docs/owner-hosted-setup-docs-audit.md`, and `docs/owner-hosted-setup-go-no-go-gate.md`.
+
 File: `docs/issues/owner-hosted-setup/06-proof-docs-go-no-go-gate.md`
 
 Close the owner-hosted setup package with proof docs, verification output, privacy scan, and the next go/no-go decision.

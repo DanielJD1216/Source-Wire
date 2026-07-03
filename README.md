@@ -24,6 +24,8 @@ Source update safety smoke: `npm run owner-hosted-setup:source-update-safety-smo
 
 Owner-hosted setup claim boundary: latest `main` documents a BYO setup direction, not managed hosting or production runtime. Database migrations remain blocked, and `Source-Wire-Memory-Engine` stays separate. Read [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md).
 
+Owner-hosted setup closeout: the setup package is complete as a synthetic proof, but runtime implementation remains blocked unless separately approved. Read [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md) and [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md).
+
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
 Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
@@ -120,6 +122,9 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Owner-Hosted Setup Readiness Smoke](docs/owner-hosted-setup-readiness-smoke.md)
 - [Owner-Hosted Setup Source Update Safety Smoke](docs/owner-hosted-setup-source-update-safety-smoke.md)
 - [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md)
+- [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md)
+- [Owner-Hosted Setup Docs Audit](docs/owner-hosted-setup-docs-audit.md)
+- [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md)
 - [Owner-Hosted Setup Issue Drafts](docs/issues/owner-hosted-setup/README.md)
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)

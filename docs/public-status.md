@@ -68,6 +68,8 @@ For the current owner-hosted setup boundary, read [Owner-Hosted Setup Claim Boun
 
 That boundary states that Source-Wire is not managed hosting, production runtime remains blocked, database migrations remain blocked until a separate unit, and `Source-Wire-Memory-Engine` remains separate.
 
+The current setup package closeout is recorded in [Owner-Hosted Setup Final Proof](owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Docs Audit](owner-hosted-setup-docs-audit.md), and [Owner-Hosted Setup Go/No-Go Gate](owner-hosted-setup-go-no-go-gate.md).
+
 ## Allowed Actions
 
 You may:

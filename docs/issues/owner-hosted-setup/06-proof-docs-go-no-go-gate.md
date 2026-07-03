@@ -25,4 +25,10 @@ Close the owner-hosted setup package with proof docs, verification output, priva
 
 ## Implementation Status
 
-Draft.
+Implemented as final proof, docs audit, and go/no-go gate.
+
+Proof:
+
+- `docs/owner-hosted-setup-final-proof.md`
+- `docs/owner-hosted-setup-docs-audit.md`
+- `docs/owner-hosted-setup-go-no-go-gate.md`

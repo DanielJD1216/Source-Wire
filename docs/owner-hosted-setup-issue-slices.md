@@ -48,6 +48,8 @@ Acceptance criteria:
 
 ## Slice 3: Setup Readiness Smoke
 
+Status: implemented in `examples/owner-hosted-setup/setup-readiness-smoke.mjs`, with proof in `docs/owner-hosted-setup-slice-3-proof.md`.
+
 File: `docs/issues/owner-hosted-setup/03-setup-readiness-smoke.md`
 
 Add a synthetic local smoke that validates setup readiness fixtures without starting servers, connecting databases, or requiring secrets.

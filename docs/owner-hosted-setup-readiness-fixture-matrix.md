@@ -57,6 +57,8 @@ This is not a Mission Control implementation.
 
 It is an input fixture for later setup smoke and UI work.
 
+The current synthetic smoke is documented in [Owner-Hosted Setup Readiness Smoke](owner-hosted-setup-readiness-smoke.md).
+
 ## Stop Conditions
 
 Any future setup smoke should block when:

@@ -18,6 +18,8 @@ Owner-hosted setup contract: Source-Wire now exports a synthetic owner-brings ch
 
 Owner-hosted setup readiness: Source-Wire also includes a synthetic readiness fixture matrix for database, API, MCP, source update safety, and Mission Control setup health. Read [Owner-Hosted Setup Readiness Fixture Matrix](docs/owner-hosted-setup-readiness-fixture-matrix.md). It does not run real setup checks yet.
 
+Owner-hosted setup smoke: `npm run owner-hosted-setup:readiness-smoke` checks that synthetic setup readiness cases are complete and blocked cases include shaped failure records. Read [Owner-Hosted Setup Readiness Smoke](docs/owner-hosted-setup-readiness-smoke.md). It does not require secrets or external services.
+
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
 Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
@@ -111,6 +113,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Owner-Hosted Setup Issue Slices](docs/owner-hosted-setup-issue-slices.md)
 - [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md)
 - [Owner-Hosted Setup Readiness Fixture Matrix](docs/owner-hosted-setup-readiness-fixture-matrix.md)
+- [Owner-Hosted Setup Readiness Smoke](docs/owner-hosted-setup-readiness-smoke.md)
 - [Owner-Hosted Setup Issue Drafts](docs/issues/owner-hosted-setup/README.md)
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)

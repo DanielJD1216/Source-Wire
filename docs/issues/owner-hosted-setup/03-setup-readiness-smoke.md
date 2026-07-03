@@ -22,4 +22,10 @@ Add a synthetic local smoke that validates setup readiness fixtures.
 
 ## Implementation Status
 
-Draft.
+Implemented as a synthetic local smoke.
+
+Proof:
+
+- `examples/owner-hosted-setup/setup-readiness-smoke.mjs`
+- `docs/owner-hosted-setup-readiness-smoke.md`
+- `docs/owner-hosted-setup-slice-3-proof.md`

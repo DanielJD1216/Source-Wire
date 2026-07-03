@@ -41,6 +41,12 @@ The matrix is fixture data only.
 
 It does not connect to a database, start an API server, start an MCP server, crawl folders, import private source data, or create trusted memory.
 
+Run the synthetic readiness smoke:
+
+```bash
+npm run owner-hosted-setup:readiness-smoke
+```
+
 ## Rules
 
 - Keep all names, IDs, secret references, source labels, and harness names synthetic.
@@ -53,3 +59,4 @@ It does not connect to a database, start an API server, start an MCP server, cra
 
 - [Owner-Hosted Setup PRD](../../../docs/owner-hosted-setup-prd.md)
 - [Owner-Hosted Setup Issue Slices](../../../docs/owner-hosted-setup-issue-slices.md)
+- [Owner-Hosted Setup Readiness Smoke](../../../docs/owner-hosted-setup-readiness-smoke.md)

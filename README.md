@@ -12,6 +12,8 @@ Product direction: Source-Wire is intended to become a public BYO, owner-hosted 
 
 Memory-engine baseline path: `Source-Wire-Memory-Engine` is an AGPLv3 reference runtime candidate. It stays separate while Source-Wire audits the boundary, license path, and owner-hosted setup path. Read [Memory Engine Baseline Audit PRD](docs/memory-engine-baseline-audit-prd.md).
 
+Owner-hosted setup path: the next public planning lane is a synthetic-only owner-hosted setup package for adopters who bring their own device/server, PostgreSQL-compatible database, credentials, source packets, and MCP-capable harnesses. Read [Owner-Hosted Setup PRD](docs/owner-hosted-setup-prd.md) and [Owner-Hosted Setup Issue Slices](docs/owner-hosted-setup-issue-slices.md). This does not approve API server runtime, MCP server runtime, database migrations, managed hosting, deployment, npm publishing, GitHub release creation, real data, AGPLv3 code copying, or private implementation code copying.
+
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
 Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
@@ -100,6 +102,9 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Memory Engine Baseline Audit PRD](docs/memory-engine-baseline-audit-prd.md)
 - [Memory Engine Baseline Audit Issue Slices](docs/memory-engine-baseline-audit-issue-slices.md)
 - [Memory Engine Baseline Audit Issue Drafts](docs/issues/memory-engine-baseline-audit/README.md)
+- [Owner-Hosted Setup PRD](docs/owner-hosted-setup-prd.md)
+- [Owner-Hosted Setup Issue Slices](docs/owner-hosted-setup-issue-slices.md)
+- [Owner-Hosted Setup Issue Drafts](docs/issues/owner-hosted-setup/README.md)
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)
 - [World Share Packet](docs/world-share-packet.md)

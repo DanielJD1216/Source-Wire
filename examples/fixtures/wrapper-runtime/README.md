@@ -14,6 +14,18 @@ It is not currently schema-validated by the CLI.
 | --- | --- | --- |
 | `wrapper-runtime-fixture-matrix.json` | Synthetic fixture categories and proof cases for the wrapper runtime policy boundary. | Not schema-validated by the current CLI. |
 
+## Smoke Proof
+
+Run the synthetic owner-hosted API policy wrapper smoke:
+
+```bash
+npm run wrapper-runtime:api-policy-smoke
+```
+
+The smoke script lives at:
+
+- [owner-hosted-api-policy-wrapper-smoke.mjs](../../wrapper-runtime/owner-hosted-api-policy-wrapper-smoke.mjs)
+
 ## Covered Categories
 
 The fixture covers:

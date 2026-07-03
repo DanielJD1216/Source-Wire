@@ -115,6 +115,7 @@
       "caseId": "authorized_trusted_memory_read",
       "category": "trusted_memory",
       "request": {
+        "tool": "search_memory",
         "caller": "harness_demo_codex",
         "capability": "read_trusted_memory",
         "namespaceId": "ns_demo_wrapper_project"
@@ -145,6 +146,7 @@
       "caseId": "wrong_namespace_denied",
       "category": "denied_access",
       "request": {
+        "tool": "search_sources",
         "caller": "harness_demo_codex",
         "capability": "read_source_evidence",
         "namespaceId": "ns_demo_wrapper_client"
@@ -160,6 +162,7 @@
       "caseId": "source_evidence_with_citation",
       "category": "source_evidence",
       "request": {
+        "tool": "search_sources",
         "caller": "harness_demo_codex",
         "capability": "read_source_evidence",
         "namespaceId": "ns_demo_wrapper_project"
@@ -191,8 +194,9 @@
       "caseId": "mcp_routes_through_api_policy",
       "category": "mcp_call",
       "request": {
-        "tool": "search_memory",
+        "tool": "mcp_route_check",
         "caller": "harness_demo_codex",
+        "capability": "assemble_context",
         "namespaceId": "ns_demo_wrapper_project"
       },
       "expected": {
@@ -205,6 +209,8 @@
       "caseId": "runtime_adapter_result_shaped",
       "category": "runtime_adapter_result",
       "request": {
+        "caller": "harness_demo_codex",
+        "capability": "assemble_context",
         "adapterInput": "runtime_result_demo_search_001",
         "namespaceId": "ns_demo_wrapper_project"
       },
@@ -216,11 +222,29 @@
       }
     },
     {
+      "caseId": "owner_application_approval_path",
+      "category": "trusted_memory",
+      "request": {
+        "caller": "harness_demo_owner_app",
+        "capability": "approve_trusted_memory",
+        "namespaceId": "ns_demo_wrapper_project"
+      },
+      "expected": {
+        "status": "allowed",
+        "approvalPath": "owner_or_application_controlled",
+        "candidateStatus": "approved",
+        "trustedMemoryCreated": true,
+        "noAutoPromotion": false
+      }
+    },
+    {
       "caseId": "stale_source_gap",
       "category": "gap",
       "request": {
+        "tool": "gap_check",
         "caller": "harness_demo_codex",
         "capability": "read_source_evidence",
+        "gapId": "gap_demo_stale_source",
         "namespaceId": "ns_demo_wrapper_project"
       },
       "expected": {

@@ -75,6 +75,14 @@ Acceptance criteria:
 
 Issue draft: [03 Owner-Hosted API Policy Wrapper Smoke](issues/memory-engine-wrapper-runtime/03-owner-hosted-api-policy-wrapper-smoke.md).
 
+Local artifact: [Source-Wire Memory Engine Wrapper Runtime API Policy Wrapper Smoke](memory-engine-wrapper-runtime-api-policy-wrapper-smoke.md).
+
+Smoke command:
+
+```bash
+npm run wrapper-runtime:api-policy-smoke
+```
+
 Type: AFK after Slices 1 and 2.
 
 Blocked by: Slice 1 and Slice 2.

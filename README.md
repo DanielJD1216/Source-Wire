@@ -14,6 +14,8 @@ Memory-engine baseline path: `Source-Wire-Memory-Engine` is an AGPLv3 reference 
 
 Owner-hosted setup path: the next public planning lane is a synthetic-only owner-hosted setup package for adopters who bring their own device/server, PostgreSQL-compatible database, credentials, source packets, and MCP-capable harnesses. Read [Owner-Hosted Setup PRD](docs/owner-hosted-setup-prd.md) and [Owner-Hosted Setup Issue Slices](docs/owner-hosted-setup-issue-slices.md). This does not approve API server runtime, MCP server runtime, database migrations, managed hosting, deployment, npm publishing, GitHub release creation, real data, AGPLv3 code copying, or private implementation code copying.
 
+Owner-hosted setup contract: Source-Wire now exports a synthetic owner-brings checklist contract for future BYO setup work. Read [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md). It does not start a runtime, connect a database, deploy services, import private data, or create trusted memory.
+
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
 Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
@@ -77,6 +79,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - Source Connection Contract.
 - `second-brain.v1` response contract.
 - MCP tool behavior contract.
+- Owner-hosted setup checklist contract.
 - Synthetic fixtures for notes, chat exports, project context, and `/2nd-brain` examples.
 - A public extraction checklist for future safety reviews.
 - A lightweight TypeScript package boundary.
@@ -104,6 +107,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Memory Engine Baseline Audit Issue Drafts](docs/issues/memory-engine-baseline-audit/README.md)
 - [Owner-Hosted Setup PRD](docs/owner-hosted-setup-prd.md)
 - [Owner-Hosted Setup Issue Slices](docs/owner-hosted-setup-issue-slices.md)
+- [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md)
 - [Owner-Hosted Setup Issue Drafts](docs/issues/owner-hosted-setup/README.md)
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)
@@ -131,6 +135,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 
 ## Contracts
 
+- [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md)
 - [Source Graph Adapter Contract](docs/contracts/source-graph-adapter-contract.md)
 - [Source Connection Contract](docs/contracts/source-connection-contract.md)
 - [`second-brain.v1` Contract](docs/contracts/second-brain-v1-contract.md)

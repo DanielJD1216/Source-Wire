@@ -14,6 +14,8 @@ Define and later prove the public-safe setup package for BYO owner-hosted Source
 
 ## Slice 1: Setup Contract And Owner-Brings Checklist
 
+Status: implemented in `src/contracts/owner-hosted-setup.ts`, with proof in `docs/owner-hosted-setup-slice-1-proof.md`.
+
 File: `docs/issues/owner-hosted-setup/01-setup-contract-owner-brings-checklist.md`
 
 Define what the owner brings, what Source-Wire provides later, setup states, required services, and hard stop conditions.

@@ -1,0 +1,61 @@
+{
+  "fixtureType": "source-wire-owner-hosted-setup-checklist",
+  "fixtureSafety": "synthetic",
+  "contractVersion": "source-wire-owner-hosted-setup.v1",
+  "status": "draft_contract",
+  "posture": "owner_hosted_byo",
+  "summary": "A future adopter brings their own device or server, PostgreSQL-compatible database, owner-controlled secrets, selected sources, MCP-capable harness, and review time.",
+  "requirements": [
+    {
+      "id": "owner_device_or_server",
+      "ownerBrings": "Synthetic local workstation or private server",
+      "controlledByOwner": true
+    },
+    {
+      "id": "postgres_compatible_database",
+      "ownerBrings": "Synthetic PostgreSQL-compatible database",
+      "controlledByOwner": true
+    },
+    {
+      "id": "owner_secret_storage",
+      "ownerBrings": "Synthetic local environment secret reference",
+      "controlledByOwner": true
+    },
+    {
+      "id": "owner_selected_sources",
+      "ownerBrings": "Synthetic explicit source packet or source connection",
+      "controlledByOwner": true
+    },
+    {
+      "id": "mcp_capable_harness",
+      "ownerBrings": "Synthetic MCP-capable agent harness",
+      "controlledByOwner": true
+    },
+    {
+      "id": "owner_review_time",
+      "ownerBrings": "Synthetic owner review step for candidate memory",
+      "controlledByOwner": true
+    }
+  ],
+  "boundary": {
+    "sourceWireHostedMemoryDefault": false,
+    "managedHostingIncluded": false,
+    "apiServerRuntimeIncluded": false,
+    "mcpServerRuntimeIncluded": false,
+    "databaseMigrationsIncluded": false,
+    "missionControlIncluded": false,
+    "deploymentIncluded": false,
+    "realUserDataIncluded": false,
+    "automaticTrustedMemoryPromotionIncluded": false,
+    "agplCodeCopiedIntoSourceWire": false,
+    "privateImplementationCodeCopiedIntoSourceWire": false
+  },
+  "stopConditions": [
+    "real_secret_requested",
+    "private_path_or_folder_crawl",
+    "source_wire_hosted_memory_claim",
+    "runtime_or_deployment_started",
+    "trusted_memory_auto_promotion",
+    "agpl_or_private_code_copy"
+  ]
+}

@@ -14,16 +14,19 @@ Import from the package root:
 import {
   SOURCE_WIRE_PACKAGE_VERSION,
   SOURCE_WIRE_MINIMAL_RUNTIME_BOUNDARY,
+  SOURCE_WIRE_OWNER_HOSTED_SETUP_CONTRACT,
   SOURCE_WIRE_RUNTIME_BOUNDARY,
   SOURCE_WIRE_SCHEMA_EXPORTS,
   SOURCE_WIRE_VALIDATION_SCHEMA_NAMES,
   isSourceWireValidationSchemaName,
   runMinimalRuntimeProofCases,
+  summarizeOwnerHostedSetupContract,
   validateSourceWireFile
 } from "@source-wire/contracts";
 
 import type {
   SourceWireMinimalRuntimeProofResult,
+  SourceWireOwnerHostedSetupContract,
   SourceWireRuntimeBoundary,
   SourceWireSourceGraph,
   SourceWireSecondBrainResponse,
@@ -135,6 +138,38 @@ Related docs:
 - [Schema Exports](schema-exports.md)
 - [Validation CLI](validation-cli.md)
 
+## Owner-Hosted Setup Exports
+
+| Export | Kind | Purpose |
+| --- | --- | --- |
+| `SOURCE_WIRE_OWNER_HOSTED_SETUP_CONTRACT` | value | Owner-brings setup contract for future BYO owner-hosted usage. |
+| `SOURCE_WIRE_OWNER_HOSTED_SETUP_REQUIREMENTS` | value | Required owner inputs: device/server, PostgreSQL-compatible database, secrets, sources, MCP harness, and review time. |
+| `SOURCE_WIRE_OWNER_HOSTED_SETUP_BOUNDARY` | value | Explicit false flags for hosted memory, runtime, database migrations, Mission Control, deployment, real data, auto-promotion, and copied AGPL/private code. |
+| `SOURCE_WIRE_OWNER_HOSTED_SETUP_STOP_CONDITIONS` | value | Conditions that stop setup work before unsafe or out-of-scope behavior. |
+| `summarizeOwnerHostedSetupContract` | function | Returns counts and public-safety flags for the setup contract. |
+| `SourceWireOwnerHostedSetupContract` | type | Compile-time setup contract shape. |
+| `SourceWireOwnerHostedSetupRequirement` | type | Compile-time owner-brings checklist item shape. |
+| `SourceWireOwnerHostedSetupBoundary` | type | Compile-time setup boundary shape. |
+| `SourceWireOwnerHostedSetupStopCondition` | type | Compile-time setup stop condition shape. |
+
+Example:
+
+```ts
+import {
+  SOURCE_WIRE_OWNER_HOSTED_SETUP_CONTRACT,
+  summarizeOwnerHostedSetupContract
+} from "@source-wire/contracts";
+
+const summary = summarizeOwnerHostedSetupContract(SOURCE_WIRE_OWNER_HOSTED_SETUP_CONTRACT);
+
+console.log(summary.sourceWireHostsMemoryByDefault);
+```
+
+Related docs:
+
+- [Owner-Hosted Setup Contract](contracts/owner-hosted-setup-contract.md)
+- [Owner-hosted setup fixture](../examples/fixtures/owner-hosted-setup/README.md)
+
 ## Validation Helper Exports
 
 | Export | Kind | Purpose |
@@ -233,6 +268,22 @@ Related doc:
 
 - [MCP Tool Behavior Contract](contracts/mcp-tool-behavior-contract.md)
 
+### Owner-Hosted Setup Types
+
+| Export | Purpose |
+| --- | --- |
+| `SourceWireOwnerHostedSetupStatus` | Current setup contract status. |
+| `SourceWireOwnerHostedSetupRequirementKind` | Required owner input identifiers. |
+| `SourceWireOwnerHostedSetupRequirement` | Owner-brings checklist item. |
+| `SourceWireOwnerHostedSetupBoundary` | Explicit setup non-goals and false runtime flags. |
+| `SourceWireOwnerHostedSetupStopCondition` | Unsafe or out-of-scope setup stop condition. |
+| `SourceWireOwnerHostedSetupContract` | Full owner-hosted setup contract payload. |
+| `SourceWireOwnerHostedSetupReadinessSummary` | Summary returned by `summarizeOwnerHostedSetupContract`. |
+
+Related doc:
+
+- [Owner-Hosted Setup Contract](contracts/owner-hosted-setup-contract.md)
+
 ### Fixture Types
 
 | Export | Purpose |
@@ -242,6 +293,8 @@ Related doc:
 | `SourceWireProjectContextPack` | Synthetic Project Context Pack fixture shape. |
 | `SourceWireSecondBrainFixture` | Synthetic second-brain request and response fixture shape. |
 | `SourceWireChatExportMessage` | Synthetic chat export message shape. |
+| `SourceWireOwnerHostedApiMcpBoundaryFixture` | Synthetic owner-hosted API plus MCP boundary proof-case fixture shape. |
+| `SourceWireOwnerHostedApiMcpProofCase` | Synthetic proof case for owner-hosted API plus MCP policy behavior. |
 
 Related docs:
 

@@ -37,9 +37,17 @@ export {
 } from "./runtime/minimal-boundary.js";
 export type * from "./contracts/fixtures.js";
 export type * from "./contracts/mcp-tools.js";
+export type * from "./contracts/owner-hosted-setup.js";
 export type * from "./contracts/second-brain.js";
 export type * from "./contracts/source-connection.js";
 export type * from "./contracts/source-graph.js";
+export {
+  SOURCE_WIRE_OWNER_HOSTED_SETUP_BOUNDARY,
+  SOURCE_WIRE_OWNER_HOSTED_SETUP_CONTRACT,
+  SOURCE_WIRE_OWNER_HOSTED_SETUP_REQUIREMENTS,
+  SOURCE_WIRE_OWNER_HOSTED_SETUP_STOP_CONDITIONS,
+  summarizeOwnerHostedSetupContract
+} from "./contracts/owner-hosted-setup.js";
 export * from "./schemas.js";
 export type {
   SourceWireValidationResult,

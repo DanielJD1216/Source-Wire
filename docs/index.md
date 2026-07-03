@@ -28,6 +28,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Owner-Hosted Runtime Direction Gate](owner-hosted-runtime-direction-gate.md)
 - [Owner-Hosted Setup PRD](owner-hosted-setup-prd.md)
 - [Owner-Hosted Setup Issue Slices](owner-hosted-setup-issue-slices.md)
+- [Owner-Hosted Setup Contract](contracts/owner-hosted-setup-contract.md)
 - [Owner-Hosted Setup Issue Drafts](issues/owner-hosted-setup/README.md)
 - [Memory Engine Wrapper Runtime Issue Drafts](issues/memory-engine-wrapper-runtime/README.md)
 - [Source-Wire Memory Engine Wrapper Runtime Approval Request](memory-engine-wrapper-runtime-approval-request.md)
@@ -122,6 +123,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 
 ## Contracts
 
+- [Owner-Hosted Setup Contract](contracts/owner-hosted-setup-contract.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Wrapper Runtime Policy Contract](contracts/wrapper-runtime-policy-contract.md)
 - [Source Graph Adapter Contract](contracts/source-graph-adapter-contract.md)

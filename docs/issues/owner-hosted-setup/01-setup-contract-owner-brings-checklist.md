@@ -25,4 +25,12 @@ Define the owner-hosted setup contract and the owner-brings checklist.
 
 ## Implementation Status
 
-Draft.
+Implemented in source and docs.
+
+Proof:
+
+- `src/contracts/owner-hosted-setup.ts`
+- `examples/fixtures/owner-hosted-setup/README.md`
+- `examples/fixtures/owner-hosted-setup/owner-hosted-setup-checklist.json`
+- `docs/contracts/owner-hosted-setup-contract.md`
+- `docs/owner-hosted-setup-slice-1-proof.md`

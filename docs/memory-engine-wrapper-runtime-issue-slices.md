@@ -108,6 +108,14 @@ Acceptance criteria:
 
 Issue draft: [04 MCP Adapter Policy Routing Smoke](issues/memory-engine-wrapper-runtime/04-mcp-adapter-policy-routing-smoke.md).
 
+Local artifact: [Source-Wire Memory Engine Wrapper Runtime MCP Adapter Policy Routing Smoke](memory-engine-wrapper-runtime-mcp-adapter-policy-routing-smoke.md).
+
+Smoke command:
+
+```bash
+npm run wrapper-runtime:mcp-adapter-smoke
+```
+
 Type: AFK after Slice 3.
 
 Blocked by: Slice 3.

@@ -22,6 +22,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Source-Wire Memory Engine Wrapper Runtime Issue Slices](memory-engine-wrapper-runtime-issue-slices.md)
 - [Source-Wire Memory Engine Wrapper Runtime Fixture Matrix](memory-engine-wrapper-runtime-fixture-matrix.md)
 - [Source-Wire Memory Engine Wrapper Runtime API Policy Wrapper Smoke](memory-engine-wrapper-runtime-api-policy-wrapper-smoke.md)
+- [Source-Wire Memory Engine Wrapper Runtime MCP Adapter Policy Routing Smoke](memory-engine-wrapper-runtime-mcp-adapter-policy-routing-smoke.md)
 - [Memory Engine Wrapper Runtime Issue Drafts](issues/memory-engine-wrapper-runtime/README.md)
 - [Source-Wire Memory Engine Wrapper Runtime Approval Request](memory-engine-wrapper-runtime-approval-request.md)
 - [Memory Engine Baseline Audit Issue Drafts](issues/memory-engine-baseline-audit/README.md)

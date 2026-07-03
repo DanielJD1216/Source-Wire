@@ -31,7 +31,7 @@
       "kind": "mcp_tool",
       "tokenRef": "token_demo_codex_read",
       "allowedNamespaceIds": ["ns_demo_wrapper_project"],
-      "capabilities": ["read_trusted_memory", "read_source_evidence", "assemble_context"]
+      "capabilities": ["read_trusted_memory", "read_source_evidence", "prepare_candidates", "assemble_context"]
     },
     {
       "harnessId": "harness_demo_owner_app",
@@ -99,8 +99,58 @@
     {
       "mcpCallId": "mcp_call_demo_search_memory",
       "tool": "search_memory",
+      "caller": "harness_demo_codex",
+      "namespaceId": "ns_demo_wrapper_project",
+      "requiredCapability": "read_trusted_memory",
       "path": "mcp_adapter_to_source_wire_api_policy",
       "runtimeDirectCall": false
+    },
+    {
+      "mcpCallId": "mcp_call_demo_search_sources",
+      "tool": "search_sources",
+      "caller": "harness_demo_codex",
+      "namespaceId": "ns_demo_wrapper_project",
+      "requiredCapability": "read_source_evidence",
+      "path": "mcp_adapter_to_source_wire_api_policy",
+      "runtimeDirectCall": false
+    },
+    {
+      "mcpCallId": "mcp_call_demo_maintain_source",
+      "tool": "maintain_source_connection",
+      "caller": "harness_demo_codex",
+      "namespaceId": "ns_demo_wrapper_project",
+      "requiredCapability": "prepare_candidates",
+      "path": "mcp_adapter_to_source_wire_api_policy",
+      "runtimeDirectCall": false,
+      "noAutoPromotion": true
+    },
+    {
+      "mcpCallId": "mcp_call_demo_approve_trusted_memory_denied",
+      "tool": "approve_trusted_memory",
+      "caller": "harness_demo_codex",
+      "namespaceId": "ns_demo_wrapper_project",
+      "requiredCapability": "approve_trusted_memory",
+      "path": "mcp_adapter_to_source_wire_api_policy",
+      "runtimeDirectCall": false,
+      "expectedStatus": "denied"
+    },
+    {
+      "mcpCallId": "mcp_call_demo_save_memory_forbidden",
+      "tool": "save_memory",
+      "caller": "harness_demo_codex",
+      "namespaceId": "ns_demo_wrapper_project",
+      "path": "blocked_before_runtime",
+      "runtimeDirectCall": false,
+      "expectedStatus": "denied"
+    },
+    {
+      "mcpCallId": "mcp_call_demo_delete_memory_forbidden",
+      "tool": "delete_memory",
+      "caller": "harness_demo_codex",
+      "namespaceId": "ns_demo_wrapper_project",
+      "path": "blocked_before_runtime",
+      "runtimeDirectCall": false,
+      "expectedStatus": "denied"
     }
   ],
   "syntheticRuntimeAdapterResults": [

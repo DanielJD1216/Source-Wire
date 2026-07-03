@@ -22,9 +22,16 @@ Run the synthetic owner-hosted API policy wrapper smoke:
 npm run wrapper-runtime:api-policy-smoke
 ```
 
-The smoke script lives at:
+Run the synthetic MCP adapter policy routing smoke:
+
+```bash
+npm run wrapper-runtime:mcp-adapter-smoke
+```
+
+The smoke scripts live at:
 
 - [owner-hosted-api-policy-wrapper-smoke.mjs](../../wrapper-runtime/owner-hosted-api-policy-wrapper-smoke.mjs)
+- [mcp-adapter-policy-routing-smoke.mjs](../../wrapper-runtime/mcp-adapter-policy-routing-smoke.mjs)
 
 ## Covered Categories
 

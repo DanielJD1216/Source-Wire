@@ -1,6 +1,6 @@
 # Source-Wire Memory Engine Wrapper Runtime PRD
 
-Status: PRD only. Wrapper runtime implementation remains blocked until exact owner approval and issue slicing.
+Status: PRD complete. Synthetic wrapper runtime proof unit implemented after exact owner approval. Production runtime remains blocked.
 
 Date: 2026-07-02
 
@@ -173,19 +173,38 @@ These seams should be verified before lower-level implementation details.
 
 ## Further Notes
 
-This PRD does not publish a GitHub issue.
+This PRD did not publish a GitHub issue.
 
 Public GitHub issue creation is a mutating action and should wait for exact owner approval.
 
-This PRD also does not approve implementation by itself.
+This PRD did not approve implementation by itself.
 
-Before implementation starts:
+Implementation was later approved by the owner for a narrow synthetic wrapper runtime unit with these boundaries:
+
+- keep `Source-Wire-Memory-Engine` separate,
+- do not copy AGPLv3 code into Source-Wire,
+- use synthetic fixtures only,
+- do not add real user data,
+- do not deploy services,
+- do not publish npm,
+- do not create a GitHub release,
+- do not accept code contributions,
+- do not add managed-hosted behavior,
+- keep trusted memory promotion owner or application controlled,
+- prevent MCP from bypassing Source-Wire API policy.
+
+The approved synthetic proof unit is now recorded in:
+
+- [Source-Wire Memory Engine Wrapper Runtime Issue Slices](memory-engine-wrapper-runtime-issue-slices.md),
+- [Source-Wire Memory Engine Wrapper Runtime Proof Docs And Stop Conditions](memory-engine-wrapper-runtime-proof-docs-stop-conditions.md).
+
+Before any production runtime implementation starts:
 
 1. Convert this PRD into implementation slices.
 2. Confirm the slices preserve the no-copy, no-real-data, no-deploy, no-release, no-managed-hosting boundaries.
 3. Record exact owner approval for the implementation unit.
 
-Recommended exact implementation approval text is recorded in [Memory Engine Baseline Runtime Implementation Go/No-Go Gate](memory-engine-baseline-runtime-implementation-go-no-go-gate.md).
+The next required owner decision is not this synthetic wrapper proof. It is the owner-hosted runtime direction decision recorded in [Owner-Hosted Runtime Direction Gate](owner-hosted-runtime-direction-gate.md).
 
 ## Related Documents
 

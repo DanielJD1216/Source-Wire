@@ -1,6 +1,6 @@
 # Memory Engine Wrapper Runtime Issue Drafts
 
-Status: local issue draft packet. Public GitHub issue publication and implementation remain blocked until exact owner approval.
+Status: local issue packet complete for the approved synthetic wrapper runtime proof unit. Public GitHub issue publication remains blocked until exact owner approval.
 
 These files are issue-ready payloads derived from:
 
@@ -24,7 +24,7 @@ Publishing these drafts to GitHub issues requires exact owner approval.
 
 This packet does not approve:
 
-- implementation,
+- additional implementation beyond the completed synthetic proof unit,
 - public GitHub issue publication,
 - direct runtime merge,
 - AGPLv3 code copy,

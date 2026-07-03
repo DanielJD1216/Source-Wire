@@ -1,6 +1,6 @@
 # Source-Wire Memory Engine Wrapper Runtime MCP Adapter Policy Routing Smoke
 
-Status: Slice 4 synthetic smoke complete. Runtime implementation remains blocked for later slices.
+Status: Slice 4 synthetic smoke complete. Production runtime remains blocked.
 
 Date: 2026-07-02
 

@@ -1,6 +1,6 @@
 # Source-Wire Memory Engine Wrapper Runtime Separate Runtime Adapter Boundary Smoke
 
-Status: Slice 5 synthetic smoke complete. Runtime implementation remains blocked for later slices.
+Status: Slice 5 synthetic smoke complete. Production runtime remains blocked.
 
 Date: 2026-07-02
 

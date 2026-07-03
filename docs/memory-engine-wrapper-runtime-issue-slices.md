@@ -1,12 +1,12 @@
 # Source-Wire Memory Engine Wrapper Runtime Issue Slices
 
-Status: draft local issue slices. Implementation and public GitHub issue publication remain blocked until exact owner approval.
+Status: local issue slices complete for the approved synthetic wrapper runtime proof unit. Public GitHub issue publication remains blocked until exact owner approval.
 
 Date: 2026-07-02
 
 This slice map converts the [Source-Wire Memory Engine Wrapper Runtime PRD](memory-engine-wrapper-runtime-prd.md) into independently reviewable units.
 
-It does not approve implementation, deployment, real data, npm publishing, GitHub release publishing, managed hosting, code contribution acceptance, or AGPLv3 code copying.
+The owner later approved a narrow synthetic wrapper runtime implementation unit. That implementation remains synthetic only and does not approve deployment, real data, npm publishing, GitHub release publishing, managed hosting, code contribution acceptance, or AGPLv3 code copying.
 
 Issue-ready local payloads are drafted in [Memory Engine Wrapper Runtime Issue Drafts](issues/memory-engine-wrapper-runtime/README.md).
 
@@ -210,19 +210,34 @@ Acceptance criteria:
 5. Slice 5: Separate Runtime Adapter Boundary Smoke.
 6. Slice 6: Wrapper Runtime Proof, Docs, And Stop Conditions.
 
-## Open Approval Questions
+## Approval Resolution
 
-Before implementation or public issue publication, confirm:
+Resolved for the synthetic implementation unit:
 
-- whether this six-slice granularity is right,
-- whether Slice 1 should remain HITL,
-- whether Slice 5 should happen before Slice 4 or in parallel after Slice 3,
-- whether Slice 2 is allowed to add new synthetic fixtures during the future implementation unit,
-- whether any database migration or Mission Control UI work must remain in a separate later PRD.
+- six-slice granularity was used,
+- Slice 1 stayed as the policy and threat-boundary contract,
+- Slice 2 added synthetic public-safe fixtures,
+- Slice 3 proved the API policy wrapper,
+- Slice 4 proved MCP adapter policy routing,
+- Slice 5 proved the separate runtime adapter boundary,
+- Slice 6 closed proof docs and stop conditions.
+
+Still blocked:
+
+- public GitHub issue publication,
+- production runtime implementation,
+- real data,
+- deployment,
+- managed hosting,
+- npm publishing,
+- GitHub release publishing,
+- code contribution acceptance,
+- AGPLv3 code copying.
+- database migration or Mission Control UI work without a separate later PRD.
 
 ## Still Blocked
 
-- implementation until exact owner approval,
+- additional production runtime implementation until exact owner approval,
 - public GitHub issue publication until exact owner approval,
 - direct runtime merge,
 - AGPLv3 code copy,

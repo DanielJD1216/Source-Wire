@@ -1,5 +1,16 @@
 # Wrapper Runtime Proof Docs And Stop Conditions
 
+Local artifact: [Source-Wire Memory Engine Wrapper Runtime Proof Docs And Stop Conditions](../../memory-engine-wrapper-runtime-proof-docs-stop-conditions.md).
+
+Verification commands:
+
+```bash
+npm run ci:check
+npm run docs:links
+npm run docs:anchors
+npm run readme:entrypoint-smoke
+```
+
 ## Parent
 
 Source-Wire Memory Engine Wrapper Runtime PRD.
@@ -10,14 +21,14 @@ Prove the wrapper runtime unit remains public-safe, owner-hosted, synthetic, no-
 
 ## Acceptance criteria
 
-- [ ] Package checks pass.
-- [ ] Fixture validation and smoke proofs pass.
-- [ ] Docs links and anchors pass.
-- [ ] Public safety scan passes.
-- [ ] Claim-boundary scan passes.
-- [ ] Docs state runtime status accurately.
-- [ ] Implementation stop conditions remain visible.
-- [ ] No npm publish, GitHub release, deployment, real data, managed hosting, or contribution acceptance occurs.
+- [x] Package checks pass.
+- [x] Fixture validation and smoke proofs pass.
+- [x] Docs links and anchors pass.
+- [x] Public safety scan passes.
+- [x] Claim-boundary scan passes.
+- [x] Docs state runtime status accurately.
+- [x] Implementation stop conditions remain visible.
+- [x] No npm publish, GitHub release, deployment, real data, managed hosting, or contribution acceptance occurs.
 
 ## Blocked by
 

@@ -169,6 +169,17 @@ Acceptance criteria:
 
 Issue draft: [06 Wrapper Runtime Proof Docs And Stop Conditions](issues/memory-engine-wrapper-runtime/06-wrapper-runtime-proof-docs-and-stop-conditions.md).
 
+Local artifact: [Source-Wire Memory Engine Wrapper Runtime Proof Docs And Stop Conditions](memory-engine-wrapper-runtime-proof-docs-stop-conditions.md).
+
+Verification commands:
+
+```bash
+npm run ci:check
+npm run docs:links
+npm run docs:anchors
+npm run readme:entrypoint-smoke
+```
+
 Type: AFK after Slices 2, 3, 4, and 5.
 
 Blocked by: Slice 2, Slice 3, Slice 4, and Slice 5.

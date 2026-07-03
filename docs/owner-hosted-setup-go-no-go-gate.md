@@ -75,7 +75,7 @@ Before public runtime implementation starts, record a new owner-approved unit th
 Recommended next safe action:
 
 ```text
-Run a short docs-audit/handoff checkpoint, then decide whether to approve a future runtime implementation decision gate.
+Use the Runtime Implementation Decision Gate before any public runtime code starts.
 ```
 
 If continuing public Source-Wire without runtime approval, the safest work is:
@@ -105,5 +105,6 @@ Stop and require a new owner decision if next work needs:
 
 - [Owner-Hosted Setup Final Proof](owner-hosted-setup-final-proof.md)
 - [Owner-Hosted Setup Docs Audit](owner-hosted-setup-docs-audit.md)
+- [Runtime Implementation Decision Gate](runtime-implementation-decision-gate.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Owner-Hosted Runtime Direction Gate](owner-hosted-runtime-direction-gate.md)

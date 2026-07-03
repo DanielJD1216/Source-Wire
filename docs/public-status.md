@@ -70,6 +70,8 @@ That boundary states that Source-Wire is not managed hosting, production runtime
 
 The current setup package closeout is recorded in [Owner-Hosted Setup Final Proof](owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Docs Audit](owner-hosted-setup-docs-audit.md), and [Owner-Hosted Setup Go/No-Go Gate](owner-hosted-setup-go-no-go-gate.md).
 
+The post-setup runtime decision is recorded in [Runtime Implementation Decision Gate](runtime-implementation-decision-gate.md). Runtime implementation remains blocked; the recommended path is private owner proof first, then clean public extraction later.
+
 ## Allowed Actions
 
 You may:

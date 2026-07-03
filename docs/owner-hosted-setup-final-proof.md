@@ -104,7 +104,7 @@ These remain blocked after this setup package:
 Recommended next safe action:
 
 ```text
-Prepare a separate runtime implementation decision gate before any public runtime code starts.
+Use the Runtime Implementation Decision Gate before any public runtime code starts.
 ```
 
 The likely next decision should choose one path:
@@ -120,6 +120,7 @@ Do not start runtime implementation from this setup package alone.
 
 - [Owner-Hosted Setup Docs Audit](owner-hosted-setup-docs-audit.md)
 - [Owner-Hosted Setup Go/No-Go Gate](owner-hosted-setup-go-no-go-gate.md)
+- [Runtime Implementation Decision Gate](runtime-implementation-decision-gate.md)
 - [Owner-Hosted Setup PRD](owner-hosted-setup-prd.md)
 - [Owner-Hosted Runtime Direction Gate](owner-hosted-runtime-direction-gate.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)

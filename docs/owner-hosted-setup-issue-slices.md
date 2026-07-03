@@ -31,6 +31,8 @@ Acceptance criteria:
 
 ## Slice 2: Synthetic Setup Readiness Fixture Matrix
 
+Status: implemented in `examples/fixtures/owner-hosted-setup/setup-readiness-fixture-matrix.json`, with proof in `docs/owner-hosted-setup-slice-2-proof.md`.
+
 File: `docs/issues/owner-hosted-setup/02-synthetic-setup-readiness-fixture-matrix.md`
 
 Define synthetic fixture cases for database, API, MCP, source update safety, and Mission Control setup health.

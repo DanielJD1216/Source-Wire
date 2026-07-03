@@ -1,0 +1,225 @@
+{
+  "fixtureType": "source-wire-owner-hosted-setup-readiness-fixture-matrix",
+  "fixtureSafety": "synthetic",
+  "schemaValidated": false,
+  "contractVersion": "source-wire-owner-hosted-setup-readiness.v1",
+  "boundary": {
+    "hosting": "owner_hosted_byo",
+    "sourceWireHostsUserMemory": false,
+    "managedHostingIncluded": false,
+    "apiServerStarted": false,
+    "mcpServerStarted": false,
+    "databaseConnectionAttempted": false,
+    "databaseMigrationAttempted": false,
+    "realSourceDataIncluded": false,
+    "localPathCrawlingAllowed": false,
+    "automaticTrustedMemoryPromotionAllowed": false
+  },
+  "syntheticOwner": {
+    "ownerId": "owner_demo_setup_001",
+    "displayName": "Demo Setup Owner"
+  },
+  "readinessCases": [
+    {
+      "caseId": "database_ready",
+      "category": "database",
+      "status": "ready",
+      "ownerBrings": "Synthetic PostgreSQL-compatible database reference",
+      "checks": {
+        "postgresCompatible": true,
+        "connectionStringProvidedByOwner": true,
+        "secretValueStoredInFixture": false,
+        "migrationAttempted": false
+      },
+      "expected": {
+        "setupCanContinue": true,
+        "failureRecords": [],
+        "nextAction": "Continue to API configuration readiness."
+      }
+    },
+    {
+      "caseId": "database_missing_owner_secret_blocked",
+      "category": "database",
+      "status": "blocked",
+      "ownerBrings": "Synthetic missing database secret reference",
+      "checks": {
+        "postgresCompatible": true,
+        "connectionStringProvidedByOwner": false,
+        "secretValueStoredInFixture": false,
+        "migrationAttempted": false
+      },
+      "expected": {
+        "setupCanContinue": false,
+        "failureRecords": [
+          {
+            "failurePoint": "database_readiness",
+            "observedError": "Owner-controlled database connection reference is missing.",
+            "supportedCause": "The setup packet did not include a synthetic owner-provided secret reference.",
+            "impact": "Source-Wire cannot prove database readiness without implying it owns or stores the secret.",
+            "nextAction": "Ask the owner to configure a local secret reference before continuing."
+          }
+        ],
+        "nextAction": "Stop before runtime or migration work."
+      }
+    },
+    {
+      "caseId": "api_policy_ready",
+      "category": "api",
+      "status": "ready",
+      "ownerBrings": "Synthetic owner-hosted API policy configuration",
+      "checks": {
+        "ownerHosted": true,
+        "namespacePolicyConfigured": true,
+        "harnessPolicyConfigured": true,
+        "serverStarted": false
+      },
+      "expected": {
+        "setupCanContinue": true,
+        "failureRecords": [],
+        "nextAction": "Continue to MCP adapter readiness."
+      }
+    },
+    {
+      "caseId": "api_missing_namespace_policy_blocked",
+      "category": "api",
+      "status": "blocked",
+      "ownerBrings": "Synthetic API configuration missing namespace policy",
+      "checks": {
+        "ownerHosted": true,
+        "namespacePolicyConfigured": false,
+        "harnessPolicyConfigured": true,
+        "serverStarted": false
+      },
+      "expected": {
+        "setupCanContinue": false,
+        "failureRecords": [
+          {
+            "failurePoint": "api_policy_readiness",
+            "observedError": "Namespace policy is missing.",
+            "supportedCause": "The synthetic API readiness case lacks an allowlist for owner namespaces.",
+            "impact": "Agents could receive cross-namespace memory or source evidence if runtime work continued.",
+            "nextAction": "Define namespace policy before starting any owner-hosted API runtime."
+          }
+        ],
+        "nextAction": "Stop before API runtime work."
+      }
+    },
+    {
+      "caseId": "mcp_adapter_ready",
+      "category": "mcp",
+      "status": "ready",
+      "ownerBrings": "Synthetic MCP-capable harness configuration",
+      "checks": {
+        "mcpCapableHarnessSelected": true,
+        "routesThroughSourceWireApiPolicy": true,
+        "directRuntimeBypassAllowed": false,
+        "serverStarted": false
+      },
+      "expected": {
+        "setupCanContinue": true,
+        "failureRecords": [],
+        "nextAction": "Continue to source update safety readiness."
+      }
+    },
+    {
+      "caseId": "mcp_policy_bypass_blocked",
+      "category": "mcp",
+      "status": "blocked",
+      "ownerBrings": "Synthetic harness attempting direct runtime bypass",
+      "checks": {
+        "mcpCapableHarnessSelected": true,
+        "routesThroughSourceWireApiPolicy": false,
+        "directRuntimeBypassAllowed": false,
+        "serverStarted": false
+      },
+      "expected": {
+        "setupCanContinue": false,
+        "failureRecords": [
+          {
+            "failurePoint": "mcp_readiness",
+            "observedError": "MCP harness does not route through Source-Wire API policy.",
+            "supportedCause": "The synthetic harness points directly at runtime-shaped behavior.",
+            "impact": "MCP could bypass owner, namespace, citation, audit, and trusted-memory policy.",
+            "nextAction": "Route MCP through the Source-Wire API policy wrapper before continuing."
+          }
+        ],
+        "nextAction": "Stop before MCP runtime work."
+      }
+    },
+    {
+      "caseId": "source_update_snapshot_safe",
+      "category": "source_update",
+      "status": "ready",
+      "ownerBrings": "Synthetic owner-selected source packet",
+      "checks": {
+        "callerSuppliedSnapshot": true,
+        "ownerSelectedSource": true,
+        "localPathCrawlingAllowed": false,
+        "broadImportAllowed": false,
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true
+      },
+      "expected": {
+        "setupCanContinue": true,
+        "failureRecords": [],
+        "nextAction": "Continue to Mission Control setup health readiness."
+      }
+    },
+    {
+      "caseId": "source_update_folder_crawl_blocked",
+      "category": "source_update",
+      "status": "blocked",
+      "ownerBrings": "Synthetic request to crawl a private folder",
+      "checks": {
+        "callerSuppliedSnapshot": false,
+        "ownerSelectedSource": false,
+        "localPathCrawlingAllowed": false,
+        "broadImportAllowed": false,
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true
+      },
+      "expected": {
+        "setupCanContinue": false,
+        "failureRecords": [
+          {
+            "failurePoint": "source_update_readiness",
+            "observedError": "Source update request is a folder crawl or broad import.",
+            "supportedCause": "The setup case does not include one explicit owner-selected snapshot packet.",
+            "impact": "Private source data could be imported too broadly or without owner intent.",
+            "nextAction": "Require an explicit owner-selected source packet before continuing."
+          }
+        ],
+        "nextAction": "Stop before source maintenance work."
+      }
+    },
+    {
+      "caseId": "mission_control_setup_health_ready",
+      "category": "mission_control",
+      "status": "ready",
+      "ownerBrings": "Synthetic setup health state for a nontechnical owner",
+      "checks": {
+        "databaseStatusVisible": true,
+        "apiPolicyStatusVisible": true,
+        "mcpHarnessStatusVisible": true,
+        "sourceUpdateSafetyVisible": true,
+        "reviewQueueStatusVisible": true,
+        "serverStarted": false,
+        "uiImplemented": false
+      },
+      "expected": {
+        "setupCanContinue": true,
+        "failureRecords": [],
+        "nextAction": "Use this fixture as input for a future setup readiness smoke and later Mission Control UI."
+      }
+    }
+  ],
+  "coverage": {
+    "databasePassAndBlocked": true,
+    "apiPassAndBlocked": true,
+    "mcpPassAndBlocked": true,
+    "sourceUpdateSafeAndBlocked": true,
+    "missionControlSetupHealth": true,
+    "noAutoPromotionRepresented": true,
+    "allFixturesSynthetic": true
+  }
+}

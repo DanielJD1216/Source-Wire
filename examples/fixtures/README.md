@@ -13,7 +13,7 @@ They are designed to test public Source-Wire contracts without using real privat
 | `chat-export/agent-session.jsonl` | Fake chat export message lines for the Source Connection Contract. | `chat-export-message` |
 | `markdown-vault/` | Fake Markdown notes for the Source Graph Adapter Contract. | Not schema-validated by the current CLI. |
 | `owner-hosted-api-mcp-boundary/` | Fake proof cases for future owner-hosted API plus MCP runtime boundaries. | `owner-hosted-api-mcp-boundary` |
-| `owner-hosted-setup/` | Fake owner-brings setup checklist for future BYO owner-hosted setup. | Not schema-validated by the current CLI. |
+| `owner-hosted-setup/` | Fake owner-brings setup checklist and readiness matrix for future BYO owner-hosted setup. | Not schema-validated by the current CLI. |
 | `wrapper-runtime/` | Fake fixture matrix for future wrapper runtime policy behavior. | Not schema-validated by the current CLI. |
 
 ## Validate Schema-Backed Fixtures
@@ -76,13 +76,14 @@ Start here:
 
 ## Owner-Hosted Setup Fixture
 
-The owner-hosted setup fixture is a synthetic checklist for the future BYO setup path.
+The owner-hosted setup fixture is a synthetic checklist and readiness matrix for the future BYO setup path.
 
 It does not start a server, connect to a database, deploy services, import private sources, or create trusted memory.
 
 Start here:
 
 - [Owner-hosted setup fixture](owner-hosted-setup/README.md)
+- [Owner-Hosted Setup Readiness Fixture Matrix](../../docs/owner-hosted-setup-readiness-fixture-matrix.md)
 
 ## Wrapper Runtime Fixture Matrix
 

@@ -16,6 +16,8 @@ Owner-hosted setup path: the next public planning lane is a synthetic-only owner
 
 Owner-hosted setup contract: Source-Wire now exports a synthetic owner-brings checklist contract for future BYO setup work. Read [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md). It does not start a runtime, connect a database, deploy services, import private data, or create trusted memory.
 
+Owner-hosted setup readiness: Source-Wire also includes a synthetic readiness fixture matrix for database, API, MCP, source update safety, and Mission Control setup health. Read [Owner-Hosted Setup Readiness Fixture Matrix](docs/owner-hosted-setup-readiness-fixture-matrix.md). It does not run real setup checks yet.
+
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
 Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
@@ -108,6 +110,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Owner-Hosted Setup PRD](docs/owner-hosted-setup-prd.md)
 - [Owner-Hosted Setup Issue Slices](docs/owner-hosted-setup-issue-slices.md)
 - [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md)
+- [Owner-Hosted Setup Readiness Fixture Matrix](docs/owner-hosted-setup-readiness-fixture-matrix.md)
 - [Owner-Hosted Setup Issue Drafts](docs/issues/owner-hosted-setup/README.md)
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)

@@ -23,4 +23,10 @@ Define synthetic setup readiness fixtures for the future owner-hosted setup pack
 
 ## Implementation Status
 
-Draft.
+Implemented as synthetic fixture data.
+
+Proof:
+
+- `examples/fixtures/owner-hosted-setup/setup-readiness-fixture-matrix.json`
+- `docs/owner-hosted-setup-readiness-fixture-matrix.md`
+- `docs/owner-hosted-setup-slice-2-proof.md`

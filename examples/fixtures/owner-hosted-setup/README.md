@@ -13,6 +13,7 @@ It does not connect to a database, start an API server, start an MCP server, dep
 | File | Purpose | CLI schema |
 | --- | --- | --- |
 | `owner-hosted-setup-checklist.json` | Synthetic owner-brings setup checklist and stop conditions. | Not schema-validated by the current CLI. |
+| `setup-readiness-fixture-matrix.json` | Synthetic ready and blocked setup cases for database, API, MCP, source update safety, and Mission Control health. | Not schema-validated by the current CLI. |
 
 ## Covered Requirements
 
@@ -24,6 +25,21 @@ The fixture covers:
 - owner-selected sources,
 - MCP-capable harness,
 - owner review time.
+
+## Readiness Matrix
+
+The readiness matrix covers:
+
+- database ready and blocked,
+- API policy ready and blocked,
+- MCP adapter ready and blocked,
+- source update safe and blocked,
+- Mission Control setup health,
+- no automatic trusted memory promotion.
+
+The matrix is fixture data only.
+
+It does not connect to a database, start an API server, start an MCP server, crawl folders, import private source data, or create trusted memory.
 
 ## Rules
 

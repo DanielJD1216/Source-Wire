@@ -157,7 +157,8 @@
         "localPathCrawlingAllowed": false,
         "broadImportAllowed": false,
         "trustedMemoryRecordDelta": 0,
-        "noAutoPromotion": true
+        "noAutoPromotion": true,
+        "pendingReviewControl": "owner_or_application_controlled"
       },
       "expected": {
         "setupCanContinue": true,
@@ -176,7 +177,8 @@
         "localPathCrawlingAllowed": false,
         "broadImportAllowed": false,
         "trustedMemoryRecordDelta": 0,
-        "noAutoPromotion": true
+        "noAutoPromotion": true,
+        "pendingReviewControl": "owner_or_application_controlled"
       },
       "expected": {
         "setupCanContinue": false,

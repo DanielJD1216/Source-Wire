@@ -37,6 +37,7 @@ The source update cases represent:
 
 - `trustedMemoryRecordDelta: 0`,
 - `noAutoPromotion: true`,
+- `pendingReviewControl: owner_or_application_controlled`,
 - owner-selected source packets,
 - local path crawling blocked,
 - broad import blocked.

@@ -64,6 +64,8 @@ Acceptance criteria:
 
 ## Slice 4: Source Update Safety Smoke
 
+Status: implemented in `examples/owner-hosted-setup/source-update-safety-smoke.mjs`, with proof in `docs/owner-hosted-setup-slice-4-proof.md`.
+
 File: `docs/issues/owner-hosted-setup/04-source-update-safety-smoke.md`
 
 Prove the setup package represents safe source update behavior without local folder crawling or trusted-memory auto-promotion.

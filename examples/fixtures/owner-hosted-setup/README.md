@@ -47,6 +47,12 @@ Run the synthetic readiness smoke:
 npm run owner-hosted-setup:readiness-smoke
 ```
 
+Run the synthetic source update safety smoke:
+
+```bash
+npm run owner-hosted-setup:source-update-safety-smoke
+```
+
 ## Rules
 
 - Keep all names, IDs, secret references, source labels, and harness names synthetic.
@@ -60,3 +66,4 @@ npm run owner-hosted-setup:readiness-smoke
 - [Owner-Hosted Setup PRD](../../../docs/owner-hosted-setup-prd.md)
 - [Owner-Hosted Setup Issue Slices](../../../docs/owner-hosted-setup-issue-slices.md)
 - [Owner-Hosted Setup Readiness Smoke](../../../docs/owner-hosted-setup-readiness-smoke.md)
+- [Owner-Hosted Setup Source Update Safety Smoke](../../../docs/owner-hosted-setup-source-update-safety-smoke.md)

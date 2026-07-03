@@ -98,6 +98,12 @@ function assertReadyCase(readinessCase) {
   if (readinessCase.category === "source_update") {
     assertEqual(readinessCase.checks.trustedMemoryRecordDelta, 0, readinessCase.caseId, "checks.trustedMemoryRecordDelta");
     assertEqual(readinessCase.checks.noAutoPromotion, true, readinessCase.caseId, "checks.noAutoPromotion");
+    assertEqual(
+      readinessCase.checks.pendingReviewControl,
+      "owner_or_application_controlled",
+      readinessCase.caseId,
+      "checks.pendingReviewControl"
+    );
     assertEqual(readinessCase.checks.localPathCrawlingAllowed, false, readinessCase.caseId, "checks.localPathCrawlingAllowed");
     assertEqual(readinessCase.checks.broadImportAllowed, false, readinessCase.caseId, "checks.broadImportAllowed");
   }
@@ -117,6 +123,12 @@ function assertBlockedCase(readinessCase) {
   if (readinessCase.category === "source_update") {
     assertEqual(readinessCase.checks.trustedMemoryRecordDelta, 0, readinessCase.caseId, "checks.trustedMemoryRecordDelta");
     assertEqual(readinessCase.checks.noAutoPromotion, true, readinessCase.caseId, "checks.noAutoPromotion");
+    assertEqual(
+      readinessCase.checks.pendingReviewControl,
+      "owner_or_application_controlled",
+      readinessCase.caseId,
+      "checks.pendingReviewControl"
+    );
     assertEqual(readinessCase.checks.localPathCrawlingAllowed, false, readinessCase.caseId, "checks.localPathCrawlingAllowed");
     assertEqual(readinessCase.checks.broadImportAllowed, false, readinessCase.caseId, "checks.broadImportAllowed");
   }

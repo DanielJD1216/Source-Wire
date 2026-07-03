@@ -22,4 +22,10 @@ Prove safe source update behavior with synthetic fixtures.
 
 ## Implementation Status
 
-Draft.
+Implemented as a synthetic local smoke.
+
+Proof:
+
+- `examples/owner-hosted-setup/source-update-safety-smoke.mjs`
+- `docs/owner-hosted-setup-source-update-safety-smoke.md`
+- `docs/owner-hosted-setup-slice-4-proof.md`

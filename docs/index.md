@@ -31,6 +31,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Owner-Hosted Setup Contract](contracts/owner-hosted-setup-contract.md)
 - [Owner-Hosted Setup Readiness Fixture Matrix](owner-hosted-setup-readiness-fixture-matrix.md)
 - [Owner-Hosted Setup Readiness Smoke](owner-hosted-setup-readiness-smoke.md)
+- [Owner-Hosted Setup Source Update Safety Smoke](owner-hosted-setup-source-update-safety-smoke.md)
 - [Owner-Hosted Setup Issue Drafts](issues/owner-hosted-setup/README.md)
 - [Memory Engine Wrapper Runtime Issue Drafts](issues/memory-engine-wrapper-runtime/README.md)
 - [Source-Wire Memory Engine Wrapper Runtime Approval Request](memory-engine-wrapper-runtime-approval-request.md)

@@ -50,6 +50,10 @@ Acceptance criteria:
 
 Issue draft: [02 Synthetic Wrapper Runtime Fixture Matrix](issues/memory-engine-wrapper-runtime/02-synthetic-wrapper-runtime-fixture-matrix.md).
 
+Local artifact: [Source-Wire Memory Engine Wrapper Runtime Fixture Matrix](memory-engine-wrapper-runtime-fixture-matrix.md).
+
+Fixture artifact: [Wrapper runtime fixture matrix](../examples/fixtures/wrapper-runtime/README.md).
+
 Type: AFK after Slice 1.
 
 Blocked by: Slice 1.

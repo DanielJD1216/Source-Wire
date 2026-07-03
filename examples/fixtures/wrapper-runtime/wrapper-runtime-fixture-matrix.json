@@ -1,0 +1,250 @@
+{
+  "fixtureType": "source-wire-wrapper-runtime-fixture-matrix",
+  "fixtureSafety": "synthetic",
+  "schemaValidated": false,
+  "boundary": {
+    "hosting": "owner_hosted",
+    "sourceWireHostsUserMemory": false,
+    "runtimeIncludedInPackage": false,
+    "mcpBypassAllowed": false,
+    "noAutoPromotion": true,
+    "agplCodeCopied": false,
+    "realDataIncluded": false
+  },
+  "syntheticOwner": {
+    "ownerId": "owner_demo_wrapper_001",
+    "displayName": "Demo Wrapper Owner"
+  },
+  "syntheticNamespaces": [
+    {
+      "namespaceId": "ns_demo_wrapper_project",
+      "label": "Wrapper Project"
+    },
+    {
+      "namespaceId": "ns_demo_wrapper_client",
+      "label": "Wrapper Client"
+    }
+  ],
+  "syntheticHarnesses": [
+    {
+      "harnessId": "harness_demo_codex",
+      "kind": "mcp_tool",
+      "tokenRef": "token_demo_codex_read",
+      "allowedNamespaceIds": ["ns_demo_wrapper_project"],
+      "capabilities": ["read_trusted_memory", "read_source_evidence", "assemble_context"]
+    },
+    {
+      "harnessId": "harness_demo_owner_app",
+      "kind": "owner_controlled_app",
+      "tokenRef": "token_demo_owner_app_review",
+      "allowedNamespaceIds": ["ns_demo_wrapper_project"],
+      "capabilities": ["read_source_evidence", "prepare_candidates", "approve_trusted_memory"]
+    }
+  ],
+  "syntheticSourceEvidence": [
+    {
+      "sourceId": "source_demo_note_001",
+      "segmentId": "segment_demo_note_001_a",
+      "namespaceId": "ns_demo_wrapper_project",
+      "freshness": "fresh",
+      "sensitivity": "internal",
+      "text": "Synthetic onboarding note says wrapper policy must check namespace before returning memory.",
+      "citation": {
+        "evidenceKind": "source_evidence",
+        "publicLocator": "demo-note-001#segment-a"
+      }
+    }
+  ],
+  "syntheticTrustedMemory": [
+    {
+      "memoryId": "memory_demo_trusted_001",
+      "namespaceId": "ns_demo_wrapper_project",
+      "status": "trusted",
+      "text": "Synthetic trusted memory says MCP must call the Source-Wire API policy wrapper.",
+      "citation": {
+        "evidenceKind": "trusted_memory",
+        "publicLocator": "demo-memory-001"
+      }
+    }
+  ],
+  "syntheticCandidates": [
+    {
+      "candidateId": "candidate_demo_pending_001",
+      "namespaceId": "ns_demo_wrapper_project",
+      "status": "pending",
+      "sourceSegmentId": "segment_demo_note_001_a",
+      "proposedText": "Synthetic candidate says source evidence remains separate from trusted memory."
+    }
+  ],
+  "syntheticDeniedAccess": [
+    {
+      "denialId": "denial_missing_capability",
+      "reason": "missing_approve_trusted_memory_capability",
+      "leaksRestrictedContent": false
+    },
+    {
+      "denialId": "denial_namespace_not_allowed",
+      "reason": "namespace_not_allowed",
+      "leaksRestrictedContent": false
+    }
+  ],
+  "syntheticGaps": [
+    {
+      "gapId": "gap_demo_stale_source",
+      "reason": "stale_source_evidence",
+      "answerShouldWarn": true
+    }
+  ],
+  "syntheticMcpCalls": [
+    {
+      "mcpCallId": "mcp_call_demo_search_memory",
+      "tool": "search_memory",
+      "path": "mcp_adapter_to_source_wire_api_policy",
+      "runtimeDirectCall": false
+    }
+  ],
+  "syntheticRuntimeAdapterResults": [
+    {
+      "runtimeResultId": "runtime_result_demo_search_001",
+      "sourceWirePolicyApplied": true,
+      "rawRuntimePayloadReturnedToMcp": false
+    }
+  ],
+  "proofCases": [
+    {
+      "caseId": "authorized_trusted_memory_read",
+      "category": "trusted_memory",
+      "request": {
+        "caller": "harness_demo_codex",
+        "capability": "read_trusted_memory",
+        "namespaceId": "ns_demo_wrapper_project"
+      },
+      "expected": {
+        "status": "allowed",
+        "citationCount": 1,
+        "auditEvent": "audit_demo_allowed_001",
+        "noAutoPromotion": true
+      }
+    },
+    {
+      "caseId": "missing_capability_denied",
+      "category": "denied_access",
+      "request": {
+        "caller": "harness_demo_codex",
+        "capability": "approve_trusted_memory",
+        "namespaceId": "ns_demo_wrapper_project"
+      },
+      "expected": {
+        "status": "denied",
+        "denialReason": "missing_approve_trusted_memory_capability",
+        "omittedCount": 1,
+        "leaksRestrictedContent": false
+      }
+    },
+    {
+      "caseId": "wrong_namespace_denied",
+      "category": "denied_access",
+      "request": {
+        "caller": "harness_demo_codex",
+        "capability": "read_source_evidence",
+        "namespaceId": "ns_demo_wrapper_client"
+      },
+      "expected": {
+        "status": "denied",
+        "denialReason": "namespace_not_allowed",
+        "omittedCount": 1,
+        "leaksRestrictedContent": false
+      }
+    },
+    {
+      "caseId": "source_evidence_with_citation",
+      "category": "source_evidence",
+      "request": {
+        "caller": "harness_demo_codex",
+        "capability": "read_source_evidence",
+        "namespaceId": "ns_demo_wrapper_project"
+      },
+      "expected": {
+        "status": "allowed",
+        "sourceEvidenceReturned": true,
+        "trustedMemoryCreated": false,
+        "citationCount": 1,
+        "noAutoPromotion": true
+      }
+    },
+    {
+      "caseId": "pending_candidate_no_promotion",
+      "category": "candidate",
+      "request": {
+        "caller": "harness_demo_owner_app",
+        "capability": "prepare_candidates",
+        "namespaceId": "ns_demo_wrapper_project"
+      },
+      "expected": {
+        "status": "allowed",
+        "candidateStatus": "pending",
+        "trustedMemoryCreated": false,
+        "noAutoPromotion": true
+      }
+    },
+    {
+      "caseId": "mcp_routes_through_api_policy",
+      "category": "mcp_call",
+      "request": {
+        "tool": "search_memory",
+        "caller": "harness_demo_codex",
+        "namespaceId": "ns_demo_wrapper_project"
+      },
+      "expected": {
+        "path": "mcp_adapter_to_source_wire_api_policy",
+        "runtimeDirectCall": false,
+        "memoryEngineSaveDeleteExposed": false
+      }
+    },
+    {
+      "caseId": "runtime_adapter_result_shaped",
+      "category": "runtime_adapter_result",
+      "request": {
+        "adapterInput": "runtime_result_demo_search_001",
+        "namespaceId": "ns_demo_wrapper_project"
+      },
+      "expected": {
+        "sourceWirePolicyApplied": true,
+        "rawRuntimePayloadReturnedToMcp": false,
+        "citationPolicyApplied": true,
+        "auditPolicyApplied": true
+      }
+    },
+    {
+      "caseId": "stale_source_gap",
+      "category": "gap",
+      "request": {
+        "caller": "harness_demo_codex",
+        "capability": "read_source_evidence",
+        "namespaceId": "ns_demo_wrapper_project"
+      },
+      "expected": {
+        "status": "partial",
+        "gapId": "gap_demo_stale_source",
+        "gapReason": "stale_source_evidence",
+        "answerShouldWarn": true
+      }
+    }
+  ],
+  "syntheticAuditEvents": [
+    {
+      "auditId": "audit_demo_allowed_001",
+      "result": "allowed",
+      "caller": "harness_demo_codex",
+      "namespaceId": "ns_demo_wrapper_project",
+      "traceId": "trace_demo_wrapper_001"
+    },
+    {
+      "auditId": "audit_demo_denied_001",
+      "result": "denied",
+      "caller": "harness_demo_codex",
+      "namespaceId": "ns_demo_wrapper_client",
+      "traceId": "trace_demo_wrapper_002"
+    }
+  ]
+}

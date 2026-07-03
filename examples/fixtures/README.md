@@ -13,6 +13,7 @@ They are designed to test public Source-Wire contracts without using real privat
 | `chat-export/agent-session.jsonl` | Fake chat export message lines for the Source Connection Contract. | `chat-export-message` |
 | `markdown-vault/` | Fake Markdown notes for the Source Graph Adapter Contract. | Not schema-validated by the current CLI. |
 | `owner-hosted-api-mcp-boundary/` | Fake proof cases for future owner-hosted API plus MCP runtime boundaries. | `owner-hosted-api-mcp-boundary` |
+| `wrapper-runtime/` | Fake fixture matrix for future wrapper runtime policy behavior. | Not schema-validated by the current CLI. |
 
 ## Validate Schema-Backed Fixtures
 
@@ -72,15 +73,27 @@ Start here:
 
 - [Owner-hosted API plus MCP boundary fixture](owner-hosted-api-mcp-boundary/README.md)
 
+## Wrapper Runtime Fixture Matrix
+
+The wrapper runtime fixture matrix is a synthetic category and proof-case example for the future Source-Wire API policy wrapper, MCP adapter, and separate runtime adapter boundary.
+
+It is not currently validated by the CLI because the current CLI validates schema-backed JSON and JSONL contract payloads only.
+
+Start here:
+
+- [Wrapper runtime fixture matrix](wrapper-runtime/README.md)
+
 ## Rules
 
 - Do not replace these fixtures with real private notes, chats, emails, screenshots, database rows, or local files.
 - Keep names, projects, IDs, and timestamps fictional.
 - Keep imported source text separate from trusted memory.
 - Preserve citations and review boundaries in examples.
+- Preserve the rule that MCP routes through Source-Wire API policy.
 
 ## Related Docs
 
 - [Quickstart](../../docs/quickstart.md)
 - [Validation CLI](../../docs/validation-cli.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](../../docs/contracts/owner-hosted-api-mcp-boundary-contract.md)
+- [Wrapper Runtime Policy Contract](../../docs/contracts/wrapper-runtime-policy-contract.md)

@@ -20,6 +20,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Memory Engine Baseline Runtime Implementation Go/No-Go Gate](memory-engine-baseline-runtime-implementation-go-no-go-gate.md)
 - [Source-Wire Memory Engine Wrapper Runtime PRD](memory-engine-wrapper-runtime-prd.md)
 - [Source-Wire Memory Engine Wrapper Runtime Issue Slices](memory-engine-wrapper-runtime-issue-slices.md)
+- [Source-Wire Memory Engine Wrapper Runtime Fixture Matrix](memory-engine-wrapper-runtime-fixture-matrix.md)
 - [Memory Engine Wrapper Runtime Issue Drafts](issues/memory-engine-wrapper-runtime/README.md)
 - [Source-Wire Memory Engine Wrapper Runtime Approval Request](memory-engine-wrapper-runtime-approval-request.md)
 - [Memory Engine Baseline Audit Issue Drafts](issues/memory-engine-baseline-audit/README.md)

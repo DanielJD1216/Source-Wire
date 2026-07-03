@@ -149,6 +149,8 @@ That unit should decide whether the next physical implementation is:
 3. a private 2nd Brain Jinni-only implementation first,
 4. or a Mission Control owner setup flow before deeper runtime work.
 
+That decision is recorded in [Owner-Hosted Runtime Direction Gate](owner-hosted-runtime-direction-gate.md).
+
 ## Related Docs
 
 - [Source-Wire Memory Engine Wrapper Runtime PRD](memory-engine-wrapper-runtime-prd.md)
@@ -156,3 +158,4 @@ That unit should decide whether the next physical implementation is:
 - [Wrapper Runtime Policy Contract](contracts/wrapper-runtime-policy-contract.md)
 - [Source-Wire Memory Engine Wrapper Runtime Fixture Matrix](memory-engine-wrapper-runtime-fixture-matrix.md)
 - [Source-Wire Memory Engine Wrapper Runtime Approval Request](memory-engine-wrapper-runtime-approval-request.md)
+- [Owner-Hosted Runtime Direction Gate](owner-hosted-runtime-direction-gate.md)

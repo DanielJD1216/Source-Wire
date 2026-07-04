@@ -40,11 +40,12 @@ The current minimal runtime PRD package is recorded in [Minimal Runtime PRD](min
 
 The hosted-runtime planning gates and existing synthetic wrapper proof are reconciled in [Hosted Runtime Wrapper Proof Reconciliation](hosted-runtime-wrapper-proof-reconciliation.md).
 
-The current runtime-readiness gate is recorded in [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md). The redacted private-proof intake gate is recorded in [Runtime Proof Intake](runtime-proof-intake.md). Both are verified by:
+The current runtime-readiness gate is recorded in [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md). The redacted private-proof intake gate is recorded in [Runtime Proof Intake](runtime-proof-intake.md). The private-proof-to-runtime extraction checkpoint is recorded in [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md). They are verified by:
 
 ```bash
 npm run runtime-readiness:smoke
 npm run runtime-proof-intake:smoke
+npm run runtime:extraction-readiness
 npm run runtime:wrapper-reconciliation
 ```
 
@@ -149,6 +150,7 @@ It must not silently decide that evidence is trusted memory.
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
 - [Runtime Readiness Smoke](runtime-readiness-smoke.md)
 - [Runtime Proof Intake](runtime-proof-intake.md)
+- [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md)
 - [Hosted Runtime Wrapper Proof Reconciliation](hosted-runtime-wrapper-proof-reconciliation.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)

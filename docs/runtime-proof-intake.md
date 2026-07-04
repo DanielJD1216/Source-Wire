@@ -49,9 +49,16 @@ runtime PRD refresh may proceed,
 runtime implementation is still not approved.
 ```
 
+The current private-proof-to-public-runtime bridge is recorded in [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md). It is verified by:
+
+```bash
+npm run runtime:extraction-readiness
+```
+
 ## Related Docs
 
 - [Runtime Proof Intake Contract](contracts/runtime-proof-intake-contract.md)
 - [Runtime Readiness Contract](contracts/runtime-readiness-contract.md)
 - [Runtime Readiness Smoke](runtime-readiness-smoke.md)
 - [Runtime Implementation Decision Gate](runtime-implementation-decision-gate.md)
+- [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md)

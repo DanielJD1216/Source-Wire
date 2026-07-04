@@ -108,6 +108,7 @@ The `ci:check` sub-gate includes:
 - `npm run daily-workflow:smoke`
 - `npm run runtime-readiness:smoke`
 - `npm run runtime-proof-intake:smoke`
+- `npm run runtime:extraction-readiness`
 - `npm run safety:scan`
 - `npm run claims:scan`
 

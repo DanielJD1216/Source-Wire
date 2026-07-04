@@ -123,11 +123,14 @@ This PRD package now has a minimal synthetic implementation.
 
 Before hosted runtime code is added, a later public implementation unit must open exact issue slices, list exact files, run public safety checks, and keep the no-go conditions above intact.
 
+The latest private-proof metadata bridge for that future unit is [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md). It keeps runtime implementation blocked until exact owner approval.
+
 ## Related Docs
 
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Minimal Runtime Issue Slices](minimal-runtime-issue-slices.md)
 - [Minimal Runtime Implementation Scope](minimal-runtime-implementation-scope.md)
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
+- [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Owner-hosted API plus MCP boundary fixture](../examples/fixtures/owner-hosted-api-mcp-boundary/)

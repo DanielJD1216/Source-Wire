@@ -66,6 +66,7 @@ The readiness gate runs:
 - `npm run daily-workflow:smoke`
 - `npm run runtime-readiness:smoke`
 - `npm run runtime-proof-intake:smoke`
+- `npm run runtime:extraction-readiness`
 - `npm run safety:scan`
 - `npm run claims:scan`
 - `npm run release:gate`

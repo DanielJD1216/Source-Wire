@@ -133,3 +133,8 @@ We do not yet have a real owner-run Source-Wire memory service that another pers
 
 The next implementation unit should therefore not be broader research or more generic docs. It should be the narrowest owner-hosted runtime skeleton path that turns the proven policy seams into runnable software while preserving all stop conditions.
 
+The private proof trail and the next public-safe extraction gate are now summarized in [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md). Verify that checkpoint with:
+
+```bash
+npm run runtime:extraction-readiness
+```

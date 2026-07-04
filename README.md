@@ -24,6 +24,8 @@ Source update safety smoke: `npm run owner-hosted-setup:source-update-safety-smo
 
 Daily workflow synthetic path: Source-Wire now exports a synthetic daily owner memory workflow contract and fixture matrix. `npm run daily-workflow:smoke` proves read-only asks, bounded updates, owner review, follow-up evidence separation, Mission Control summary shape, no runtime inclusion, no folder crawling, no MCP approval bypass, and no automatic trusted memory promotion. Read [Daily Workflow Contract](docs/contracts/daily-workflow-contract.md), [Daily Workflow Synthetic Smoke](docs/daily-workflow-synthetic-smoke.md), and [Daily Workflow Claim Boundary](docs/daily-workflow-claim-boundary.md).
 
+Runtime readiness gate: Source-Wire now exports a synthetic runtime-readiness contract and fixture matrix. `npm run runtime-readiness:smoke` proves private-proof, API policy, MCP policy, database posture, source update, memory-engine boundary, and release boundary gates while keeping API runtime, MCP runtime, database migrations, deployment, managed hosting, real data, AGPLv3 code copying, private implementation copying, and automatic trusted memory promotion blocked. Read [Runtime Readiness Contract](docs/contracts/runtime-readiness-contract.md), [Runtime Readiness Fixture Matrix](docs/runtime-readiness-fixture-matrix.md), and [Runtime Readiness Smoke](docs/runtime-readiness-smoke.md).
+
 Owner-hosted setup claim boundary: latest `main` documents a BYO setup direction, not managed hosting or production runtime. Database migrations remain blocked, and `Source-Wire-Memory-Engine` stays separate. Read [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md).
 
 Owner-hosted setup closeout: the setup package is complete as a synthetic proof, but runtime implementation remains blocked unless separately approved. Read [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md) and [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md).
@@ -95,6 +97,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - MCP tool behavior contract.
 - Owner-hosted setup checklist contract.
 - Daily workflow synthetic contract and fixture matrix.
+- Runtime readiness synthetic contract and fixture matrix.
 - Synthetic fixtures for notes, chat exports, project context, and `/2nd-brain` examples.
 - A public extraction checklist for future safety reviews.
 - A lightweight TypeScript package boundary.
@@ -129,6 +132,10 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Daily Workflow Contract](docs/contracts/daily-workflow-contract.md)
 - [Daily Workflow Synthetic Smoke](docs/daily-workflow-synthetic-smoke.md)
 - [Daily Workflow Claim Boundary](docs/daily-workflow-claim-boundary.md)
+- [Runtime Readiness Contract](docs/contracts/runtime-readiness-contract.md)
+- [Runtime Readiness Fixture Matrix](docs/runtime-readiness-fixture-matrix.md)
+- [Runtime Readiness Smoke](docs/runtime-readiness-smoke.md)
+- [Runtime Readiness Implementation Proof](docs/runtime-readiness-implementation-proof.md)
 - [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md)
 - [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md)
 - [Owner-Hosted Setup Docs Audit](docs/owner-hosted-setup-docs-audit.md)
@@ -164,6 +171,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 
 - [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md)
 - [Daily Workflow Contract](docs/contracts/daily-workflow-contract.md)
+- [Runtime Readiness Contract](docs/contracts/runtime-readiness-contract.md)
 - [Source Graph Adapter Contract](docs/contracts/source-graph-adapter-contract.md)
 - [Source Connection Contract](docs/contracts/source-connection-contract.md)
 - [`second-brain.v1` Contract](docs/contracts/second-brain-v1-contract.md)
@@ -263,8 +271,11 @@ All fixtures are fictional and synthetic.
 - [Project context pack fixture](examples/fixtures/project-context-pack/project-context.json)
 - [`/2nd-brain` example fixture](examples/fixtures/second-brain/use-2nd-brain-example.json)
 - [Owner-hosted API plus MCP boundary fixture](examples/fixtures/owner-hosted-api-mcp-boundary/)
+- [Runtime readiness fixture](examples/fixtures/runtime-readiness/)
 
 The owner-hosted API plus MCP boundary fixture contains synthetic proof cases only. It is schema-backed and validated by the current CLI.
+
+The runtime readiness fixture contains synthetic proof cases only. It is smoke-validated by `npm run runtime-readiness:smoke` and does not approve API runtime, MCP runtime, database migrations, deployment, managed hosting, real data, package publishing, or release mutation.
 
 ## Minimal Synthetic Runtime Boundary
 

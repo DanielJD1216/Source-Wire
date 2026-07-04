@@ -1,0 +1,177 @@
+{
+  "fixtureType": "source-wire-runtime-readiness-fixture-matrix",
+  "fixtureSafety": "synthetic",
+  "contractVersion": "source-wire-runtime-readiness.v1",
+  "boundary": {
+    "fixtureSafety": "synthetic",
+    "runtimeImplementationIncluded": false,
+    "apiServerRuntimeIncluded": false,
+    "mcpServerRuntimeIncluded": false,
+    "databaseMigrationsIncluded": false,
+    "databaseConnectionAttempted": false,
+    "liveConnectorsIncluded": false,
+    "deploymentIncluded": false,
+    "managedHostingIncluded": false,
+    "realUserDataIncluded": false,
+    "privateImplementationCodeCopied": false,
+    "agplCodeCopied": false,
+    "automaticTrustedMemoryPromotionAllowed": false,
+    "packageVersionChangeRequired": false
+  },
+  "cases": [
+    {
+      "caseId": "private_daily_workflow_proof_ready",
+      "category": "private_proof",
+      "status": "ready",
+      "plainEnglish": "A private owner workflow proof exists before public runtime work starts.",
+      "checks": {
+        "privateBehaviorProofAvailable": true,
+        "publicExtractionNotesAvailable": true
+      },
+      "expected": {
+        "runtimeWorkCanStart": false,
+        "allowedNextAction": "Use the private proof as input for clean public runtime PRD planning, not implementation.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "private_proof_missing_blocked",
+      "category": "private_proof",
+      "status": "blocked",
+      "plainEnglish": "Public runtime work is blocked when behavior has not been proven privately.",
+      "checks": {
+        "privateBehaviorProofAvailable": false,
+        "publicExtractionNotesAvailable": false
+      },
+      "expected": {
+        "runtimeWorkCanStart": false,
+        "allowedNextAction": "Continue private owner runtime proof or write public-safe extraction notes first.",
+        "failureRecords": [
+          {
+            "failurePoint": "runtime_readiness.private_proof",
+            "observedError": "No private owner workflow proof is available.",
+            "supportedCause": "Public runtime behavior would be designed from assumptions instead of proven owner use.",
+            "impact": "Source-Wire could ship the wrong API, MCP, database, or setup shape.",
+            "nextAction": "Stop public runtime implementation and complete private proof first."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "api_policy_contract_ready",
+      "category": "api_policy",
+      "status": "ready",
+      "plainEnglish": "API policy can be described without starting a public API server.",
+      "checks": {
+        "apiPolicyDefined": true
+      },
+      "expected": {
+        "runtimeWorkCanStart": false,
+        "allowedNextAction": "Keep API behavior as contract and fixture evidence until a runtime implementation unit is approved.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "mcp_policy_bypass_blocked",
+      "category": "mcp_policy",
+      "status": "blocked",
+      "plainEnglish": "MCP must not call a runtime candidate directly and bypass Source-Wire API policy.",
+      "checks": {
+        "mcpRoutesThroughApiPolicy": false,
+        "mcpDirectRuntimeBypassAllowed": false
+      },
+      "expected": {
+        "runtimeWorkCanStart": false,
+        "allowedNextAction": "Route MCP-shaped calls through Source-Wire API policy before runtime implementation.",
+        "failureRecords": [
+          {
+            "failurePoint": "runtime_readiness.mcp_policy",
+            "observedError": "MCP route does not pass through Source-Wire API policy.",
+            "supportedCause": "The synthetic case points directly at runtime-shaped behavior.",
+            "impact": "MCP could bypass owner, namespace, citation, audit, and trusted-memory policy.",
+            "nextAction": "Block runtime implementation until MCP policy routing is explicit."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "database_posture_unapproved_blocked",
+      "category": "database_posture",
+      "status": "blocked",
+      "plainEnglish": "Database schema and migrations need explicit approval before public runtime work.",
+      "checks": {
+        "databasePostureApproved": false,
+        "migrationApproved": false
+      },
+      "expected": {
+        "runtimeWorkCanStart": false,
+        "allowedNextAction": "Write a database posture PRD before adding migrations or connection code.",
+        "failureRecords": [
+          {
+            "failurePoint": "runtime_readiness.database_posture",
+            "observedError": "Database posture is not approved.",
+            "supportedCause": "Source-Wire has setup and fixture contracts, but no public storage contract approval.",
+            "impact": "A premature schema could lock adopters into the wrong storage model.",
+            "nextAction": "Stop before database migrations and decide storage posture separately."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "source_update_safety_ready",
+      "category": "source_update",
+      "status": "ready",
+      "plainEnglish": "Source updates require caller-supplied snapshots and keep trusted memory promotion controlled.",
+      "checks": {
+        "callerSuppliedSnapshotRequired": true,
+        "localPathCrawlingAllowed": false,
+        "broadImportAllowed": false,
+        "noAutoPromotion": true
+      },
+      "expected": {
+        "runtimeWorkCanStart": false,
+        "allowedNextAction": "Use source update safety as a runtime acceptance requirement, not as live connector approval.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "memory_engine_license_boundary_ready",
+      "category": "memory_engine_boundary",
+      "status": "ready",
+      "plainEnglish": "A separate memory-engine candidate can remain separate without copying AGPLv3 code into Source-Wire.",
+      "checks": {
+        "sourceWireMemoryEngineSeparate": true,
+        "agplCodeCopied": false,
+        "privateImplementationCodeCopied": false
+      },
+      "expected": {
+        "runtimeWorkCanStart": false,
+        "allowedNextAction": "Keep using adapter and boundary proof until a clean-room or license path is separately approved.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "release_mutation_blocked",
+      "category": "release_boundary",
+      "status": "blocked",
+      "plainEnglish": "Runtime readiness proof does not approve npm publishing, GitHub releases, deployment, or version changes.",
+      "checks": {
+        "releaseMutationApproved": false,
+        "deploymentApproved": false
+      },
+      "expected": {
+        "runtimeWorkCanStart": false,
+        "allowedNextAction": "Keep runtime readiness local until a separate release or deployment approval exists.",
+        "failureRecords": [
+          {
+            "failurePoint": "runtime_readiness.release_boundary",
+            "observedError": "Release or deployment mutation approval is missing.",
+            "supportedCause": "This slice is a local readiness proof only.",
+            "impact": "Publishing or deploying would imply a runtime product exists before it is approved.",
+            "nextAction": "Do not publish, tag, release, or deploy from this readiness proof."
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -15,18 +15,21 @@ import {
   SOURCE_WIRE_PACKAGE_VERSION,
   SOURCE_WIRE_MINIMAL_RUNTIME_BOUNDARY,
   SOURCE_WIRE_OWNER_HOSTED_SETUP_CONTRACT,
+  SOURCE_WIRE_RUNTIME_READINESS_CONTRACT,
   SOURCE_WIRE_RUNTIME_BOUNDARY,
   SOURCE_WIRE_SCHEMA_EXPORTS,
   SOURCE_WIRE_VALIDATION_SCHEMA_NAMES,
   isSourceWireValidationSchemaName,
   runMinimalRuntimeProofCases,
   summarizeOwnerHostedSetupContract,
+  summarizeRuntimeReadinessContract,
   validateSourceWireFile
 } from "@source-wire/contracts";
 
 import type {
   SourceWireMinimalRuntimeProofResult,
   SourceWireOwnerHostedSetupContract,
+  SourceWireRuntimeReadinessContract,
   SourceWireRuntimeBoundary,
   SourceWireSourceGraph,
   SourceWireSecondBrainResponse,
@@ -169,6 +172,36 @@ Related docs:
 
 - [Owner-Hosted Setup Contract](contracts/owner-hosted-setup-contract.md)
 - [Owner-hosted setup fixture](../examples/fixtures/owner-hosted-setup/README.md)
+
+## Runtime Readiness Exports
+
+| Export | Kind | Purpose |
+| --- | --- | --- |
+| `SOURCE_WIRE_RUNTIME_READINESS_CONTRACT` | value | Synthetic contract for runtime-readiness gates before public owner-hosted runtime implementation. |
+| `SOURCE_WIRE_RUNTIME_READINESS_BOUNDARY` | value | Explicit false flags for runtime implementation, API runtime, MCP runtime, database migrations, deployment, real data, copied code, auto-promotion, and package version changes. |
+| `SOURCE_WIRE_RUNTIME_READINESS_REQUIRED_CASES` | value | Required runtime-readiness fixture case IDs. |
+| `summarizeRuntimeReadinessContract` | function | Returns counts and public-safety flags for the runtime-readiness contract. |
+| `SourceWireRuntimeReadinessContract` | type | Compile-time runtime-readiness contract shape. |
+| `SourceWireRuntimeReadinessCase` | type | Compile-time runtime-readiness fixture case shape. |
+| `SourceWireRuntimeReadinessBoundary` | type | Compile-time runtime-readiness boundary shape. |
+
+Example:
+
+```ts
+import {
+  SOURCE_WIRE_RUNTIME_READINESS_CONTRACT,
+  summarizeRuntimeReadinessContract
+} from "@source-wire/contracts";
+
+const summary = summarizeRuntimeReadinessContract(SOURCE_WIRE_RUNTIME_READINESS_CONTRACT);
+
+console.log(summary.runtimeImplementationIncluded);
+```
+
+Related docs:
+
+- [Runtime Readiness Contract](contracts/runtime-readiness-contract.md)
+- [Runtime readiness fixture](../examples/fixtures/runtime-readiness/README.md)
 
 ## Validation Helper Exports
 

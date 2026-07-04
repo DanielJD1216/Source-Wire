@@ -15,6 +15,7 @@ They are designed to test public Source-Wire contracts without using real privat
 | `owner-hosted-api-mcp-boundary/` | Fake proof cases for future owner-hosted API plus MCP runtime boundaries. | `owner-hosted-api-mcp-boundary` |
 | `owner-hosted-setup/` | Fake owner-brings setup checklist and readiness matrix for future BYO owner-hosted setup. | Not schema-validated by the current CLI. |
 | `daily-workflow/` | Fake daily owner memory workflow matrix for ask, update, review, follow-up, and Mission Control state. | Not schema-validated by the current CLI. |
+| `runtime-readiness/` | Fake runtime-readiness matrix for private proof, API, MCP, database, source update, memory-engine, and release gates. | Not schema-validated by the current CLI. |
 | `wrapper-runtime/` | Fake fixture matrix for future wrapper runtime policy behavior. | Not schema-validated by the current CLI. |
 
 ## Validate Schema-Backed Fixtures
@@ -107,6 +108,17 @@ Start here:
 
 - [Wrapper runtime fixture matrix](wrapper-runtime/README.md)
 
+## Runtime Readiness Fixture Matrix
+
+The runtime readiness fixture matrix is a synthetic proof-case example for the gates that must be clear before public owner-hosted runtime implementation can start.
+
+It is not currently validated by the CLI because the current CLI validates schema-backed JSON and JSONL contract payloads only.
+
+Start here:
+
+- [Runtime readiness fixture matrix](runtime-readiness/README.md)
+- [Runtime Readiness Smoke](../../docs/runtime-readiness-smoke.md)
+
 ## Rules
 
 - Do not replace these fixtures with real private notes, chats, emails, screenshots, database rows, or local files.
@@ -122,4 +134,5 @@ Start here:
 - [Owner-Hosted API Plus MCP Boundary Contract](../../docs/contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Owner-Hosted Setup Contract](../../docs/contracts/owner-hosted-setup-contract.md)
 - [Daily Workflow Contract](../../docs/contracts/daily-workflow-contract.md)
+- [Runtime Readiness Contract](../../docs/contracts/runtime-readiness-contract.md)
 - [Wrapper Runtime Policy Contract](../../docs/contracts/wrapper-runtime-policy-contract.md)

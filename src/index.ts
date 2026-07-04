@@ -44,6 +44,22 @@ export {
   summarizeDailyWorkflowContract
 } from "./contracts/daily-workflow.js";
 export type {
+  SourceWireRuntimeReadinessBoundary,
+  SourceWireRuntimeReadinessCase,
+  SourceWireRuntimeReadinessCategory,
+  SourceWireRuntimeReadinessContract,
+  SourceWireRuntimeReadinessFailureRecord,
+  SourceWireRuntimeReadinessFixtureMatrix,
+  SourceWireRuntimeReadinessStatus,
+  SourceWireRuntimeReadinessSummary
+} from "./contracts/runtime-readiness.js";
+export {
+  SOURCE_WIRE_RUNTIME_READINESS_BOUNDARY,
+  SOURCE_WIRE_RUNTIME_READINESS_CONTRACT,
+  SOURCE_WIRE_RUNTIME_READINESS_REQUIRED_CASES,
+  summarizeRuntimeReadinessContract
+} from "./contracts/runtime-readiness.js";
+export type {
   SourceWireMinimalRuntimeAudit,
   SourceWireMinimalRuntimeCitation,
   SourceWireMinimalRuntimeProofResult,

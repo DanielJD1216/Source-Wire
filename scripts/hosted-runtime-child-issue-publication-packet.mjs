@@ -89,6 +89,9 @@ const issues = [
       "Real user data remains blocked.",
       "Backup and restore risk is documented.",
       "Data lifecycle is tied to namespace and owner control."
+    ],
+    sourceDocs: [
+      "docs/hosted-runtime-database-posture-data-lifecycle.md"
     ]
   },
   {

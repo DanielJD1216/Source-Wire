@@ -116,6 +116,7 @@
     "runtime:threat-model": "node scripts/hosted-runtime-threat-model-trust-boundary.mjs",
     "runtime:api-contract": "node scripts/hosted-runtime-api-server-contract.mjs",
     "runtime:mcp-contract": "node scripts/hosted-runtime-mcp-server-contract.mjs",
+    "runtime:database-posture": "node scripts/hosted-runtime-database-posture-data-lifecycle.mjs",
     "runtime:slice-approval-request": "node scripts/hosted-runtime-slice-approval-request.mjs",
     "runtime:child-issue-publication-packet": "node scripts/hosted-runtime-child-issue-publication-packet.mjs",
     "runtime:child-issue-publication-preflight": "node scripts/hosted-runtime-child-issue-publication-preflight.mjs",

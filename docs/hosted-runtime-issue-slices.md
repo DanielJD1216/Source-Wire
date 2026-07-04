@@ -128,6 +128,16 @@ Acceptance criteria:
 - backup and restore risk is documented,
 - data lifecycle is tied to namespace and owner control.
 
+Planning artifact:
+
+- [Hosted Runtime Database Posture And Data Lifecycle](hosted-runtime-database-posture-data-lifecycle.md)
+
+Verification:
+
+```bash
+npm run runtime:database-posture
+```
+
 ### Slice 5: Public-Safe Fixture And Verification Plan
 
 Type: AFK after Slices 1, 2, and 3.

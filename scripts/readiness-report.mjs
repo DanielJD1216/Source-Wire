@@ -16,6 +16,8 @@ const requiredScripts = [
   "package:content-smoke",
   "examples:installed-smoke",
   "minimal-runtime:smoke",
+  "runtime:skeleton-smoke",
+  "runtime:skeleton-packet",
   "runtime-boundary:smoke",
   "runtime-boundary:installed-smoke",
   "runtime-boundary:diagnostics-smoke",
@@ -207,6 +209,8 @@ for (const requiredPath of [
   "docs/minimal-runtime-prd.md",
   "docs/license-decision-gate.md",
   "docs/runtime-boundary-readiness.md",
+  "docs/runtime-skeleton-implementation-proof.md",
+  "docs/runtime-skeleton-smoke.md",
   "docs/publish-readiness.md",
   "docs/world-share-readiness.md",
   "docs/world-share-kit.md",
@@ -219,6 +223,10 @@ for (const requiredPath of [
   "docs/ci-checks.md",
   "examples/fixtures/README.md",
   "examples/minimal-runtime/README.md",
+  "examples/fixtures/runtime-skeleton/README.md",
+  "examples/fixtures/runtime-skeleton/runtime-skeleton-fixture-matrix.json",
+  "examples/runtime-skeleton/README.md",
+  "examples/runtime-skeleton/runtime-skeleton-smoke.mjs",
   "examples/typescript/README.md"
 ]) {
   await assertPathExists(requiredPath);
@@ -237,7 +245,7 @@ printRows([
   ["Version", packageJson.version],
   ["License", packageJson.license],
   ["Publish boundary", "npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked"],
-  ["Runtime boundary", "synthetic in-memory boundary only, no backend runtime included"]
+  ["Runtime boundary", "synthetic in-memory boundary plus synthetic API/MCP skeleton only, no backend runtime included"]
 ]);
 
 printSection("Package Surfaces");
@@ -257,6 +265,8 @@ printList([
   "package:content-smoke validates installed required paths, README/docs/examples links and anchors, installed runtime readiness summary presence, and installed readiness summary content assertions",
   "examples:installed-smoke validates copied TypeScript examples against installed package declarations",
   "minimal-runtime:smoke validates exported synthetic in-memory runtime boundary code against owner-hosted API plus MCP proof cases",
+  "runtime:skeleton-smoke validates exported synthetic owner-hosted API policy route and MCP adapter code without starting a server, connecting a database, or promoting trusted memory automatically",
+  "runtime:skeleton-packet validates the runtime skeleton implementation packet, approval boundary, safety claims, and production-runtime blockers",
   "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install",
   "runtime-boundary:diagnostics-smoke validates the synthetic smoke diagnostic failure format",
   "reviewer:intake-smoke validates structured reviewer issue templates, private-data warnings, and blocked code-contribution intake",
@@ -328,6 +338,8 @@ printList([
   "docs/minimal-runtime-prd.md records the minimal synthetic runtime boundary while keeping hosted runtime implementation blocked",
   "docs/license-decision-gate.md records the implemented Apache-2.0 path and remaining blocked channels",
   "docs/runtime-boundary-readiness.md summarizes the runtime-boundary proof lane and blocked runtime scope",
+  "docs/runtime-skeleton-implementation-proof.md records the synthetic owner-hosted API policy route and MCP adapter skeleton proof while production runtime remains blocked",
+  "docs/runtime-skeleton-smoke.md records the synthetic runtime skeleton smoke command, expected markers, and blocked side effects",
   "docs/publish-readiness.md summarizes the local readiness gate and marker map",
   "docs/world-share-readiness.md separates Apache-2.0 source sharing from blocked production launch channels",
   "docs/world-share-kit.md provides public copy for YouTube, Substack, social posts, direct review invites, safe claims, unsafe claims, and feedback boundaries",

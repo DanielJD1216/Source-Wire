@@ -17,10 +17,14 @@ import {
   SOURCE_WIRE_OWNER_HOSTED_SETUP_CONTRACT,
   SOURCE_WIRE_RUNTIME_PROOF_INTAKE_CONTRACT,
   SOURCE_WIRE_RUNTIME_READINESS_CONTRACT,
+  SOURCE_WIRE_RUNTIME_SKELETON_BOUNDARY,
   SOURCE_WIRE_RUNTIME_BOUNDARY,
   SOURCE_WIRE_SCHEMA_EXPORTS,
   SOURCE_WIRE_VALIDATION_SCHEMA_NAMES,
+  callRuntimeSkeletonApiPolicy,
+  callRuntimeSkeletonMcpAdapter,
   isSourceWireValidationSchemaName,
+  runRuntimeSkeletonFixtureMatrix,
   runMinimalRuntimeProofCases,
   summarizeOwnerHostedSetupContract,
   summarizeRuntimeProofIntakeManifest,
@@ -33,6 +37,9 @@ import type {
   SourceWireOwnerHostedSetupContract,
   SourceWireRuntimeProofIntakeManifest,
   SourceWireRuntimeReadinessContract,
+  SourceWireRuntimeSkeletonApiRequest,
+  SourceWireRuntimeSkeletonMcpRequest,
+  SourceWireRuntimeSkeletonResponse,
   SourceWireRuntimeBoundary,
   SourceWireSourceGraph,
   SourceWireSecondBrainResponse,
@@ -119,6 +126,53 @@ console.log(runMinimalRuntimeProofCases([]));
 ```
 
 For a fuller consumer-style example, read [minimal-runtime.ts](../examples/typescript/minimal-runtime.ts).
+
+## Runtime Skeleton Exports
+
+| Export | Kind | Purpose |
+| --- | --- | --- |
+| `SOURCE_WIRE_RUNTIME_SKELETON_BOUNDARY` | value | Declares the synthetic owner-hosted API policy route and MCP adapter skeleton boundary. |
+| `callRuntimeSkeletonApiPolicy` | function | Runs one synthetic API-policy request through namespace, capability, and trusted-memory promotion checks. |
+| `callRuntimeSkeletonMcpAdapter` | function | Maps one synthetic MCP request into the API policy route so MCP cannot bypass Source-Wire policy. |
+| `runRuntimeSkeletonFixtureCase` | function | Runs one fixture case through the API or MCP skeleton path. |
+| `runRuntimeSkeletonFixtureMatrix` | function | Runs the synthetic fixture matrix and returns pass/fail case results. |
+| `SourceWireRuntimeSkeletonApiRequest` | type | Compile-time request shape for the synthetic API policy route. |
+| `SourceWireRuntimeSkeletonMcpRequest` | type | Compile-time request shape for the synthetic MCP adapter route. |
+| `SourceWireRuntimeSkeletonResponse` | type | Compile-time response shape for allowed, denied, and review-required cases. |
+
+Example:
+
+```ts
+import {
+  SOURCE_WIRE_RUNTIME_SKELETON_BOUNDARY,
+  callRuntimeSkeletonMcpAdapter
+} from "@source-wire/contracts";
+
+console.log(SOURCE_WIRE_RUNTIME_SKELETON_BOUNDARY.mcpBypassesApiPolicy);
+
+const result = callRuntimeSkeletonMcpAdapter({
+  caller: {
+    id: "synthetic-agent",
+    kind: "mcp_agent",
+    namespace: "demo-owner",
+    capabilities: ["search_sources"],
+    canApproveTrustedMemory: false
+  },
+  toolName: "source_wire.search_sources",
+  ownerNamespace: "demo-owner",
+  sourcePacketId: "synthetic-packet",
+  requestId: "synthetic-request",
+  query: "What source evidence exists?"
+});
+
+console.log(result.status);
+```
+
+Related docs:
+
+- [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
+- [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
+- [Runtime skeleton fixture](../examples/fixtures/runtime-skeleton/README.md)
 
 ## Schema Registry Exports
 

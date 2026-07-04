@@ -1,0 +1,211 @@
+{
+  "fixtureType": "source-wire-runtime-skeleton-fixture-matrix",
+  "fixtureSafety": "synthetic",
+  "boundary": {
+    "hosting": "owner_hosted",
+    "implementationMode": "synthetic_route_and_adapter_skeleton",
+    "sourceWireHostsUserMemory": false,
+    "apiServerIncluded": false,
+    "mcpServerIncluded": false,
+    "databaseIncluded": false,
+    "databaseMigrationsIncluded": false,
+    "realDataIncluded": false,
+    "deploymentIncluded": false,
+    "missionControlIncluded": false,
+    "memoryEngineIncluded": false,
+    "mcpBypassesApiPolicy": false,
+    "trustedMemoryPromotion": "owner_or_application_controlled"
+  },
+  "cases": [
+    {
+      "caseId": "api_authorized_trusted_memory_read",
+      "via": "api",
+      "caller": {
+        "callerId": "caller_demo_api_read",
+        "kind": "owner_hosted_api_client",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["read_trusted_memory"]
+      },
+      "request": {
+        "requestId": "req_demo_001",
+        "route": "POST /synthetic/v1/search/trusted-memory",
+        "namespaceId": "ns_demo_project_alpha",
+        "action": "search_trusted_memory",
+        "query": "What was approved?"
+      },
+      "expected": {
+        "status": "allowed",
+        "trustedMemoryReturned": true,
+        "sourceEvidenceReturned": false,
+        "citationCount": 1,
+        "noAutoPromotion": true
+      }
+    },
+    {
+      "caseId": "mcp_source_evidence_search",
+      "via": "mcp",
+      "caller": {
+        "callerId": "caller_demo_mcp_source_read",
+        "kind": "mcp_tool",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["read_source_evidence"]
+      },
+      "request": {
+        "requestId": "req_demo_002",
+        "tool": "search_source_evidence",
+        "namespaceId": "ns_demo_project_alpha",
+        "query": "Find source evidence."
+      },
+      "expected": {
+        "status": "allowed",
+        "trustedMemoryReturned": false,
+        "sourceEvidenceReturned": true,
+        "citationCount": 2,
+        "noAutoPromotion": true
+      }
+    },
+    {
+      "caseId": "mcp_missing_permission_denied",
+      "via": "mcp",
+      "caller": {
+        "callerId": "caller_demo_mcp_no_permission",
+        "kind": "mcp_tool",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": []
+      },
+      "request": {
+        "requestId": "req_demo_003",
+        "tool": "search_trusted_memory",
+        "namespaceId": "ns_demo_project_alpha",
+        "query": "Show trusted memory."
+      },
+      "expected": {
+        "status": "denied",
+        "trustedMemoryReturned": false,
+        "sourceEvidenceReturned": false,
+        "omittedCount": 1,
+        "denialReason": "missing_read_trusted_memory_capability",
+        "requiredCapability": "read_trusted_memory",
+        "noAutoPromotion": true
+      }
+    },
+    {
+      "caseId": "api_wrong_namespace_denied",
+      "via": "api",
+      "caller": {
+        "callerId": "caller_demo_wrong_namespace",
+        "kind": "owner_hosted_api_client",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["read_source_evidence"]
+      },
+      "request": {
+        "requestId": "req_demo_004",
+        "route": "POST /synthetic/v1/search/source-evidence",
+        "namespaceId": "ns_demo_client_beta",
+        "action": "search_source_evidence",
+        "query": "Find beta evidence."
+      },
+      "expected": {
+        "status": "denied",
+        "trustedMemoryReturned": false,
+        "sourceEvidenceReturned": false,
+        "omittedCount": 1,
+        "denialReason": "namespace_not_allowed",
+        "requiredCapability": "read_source_evidence",
+        "noAutoPromotion": true
+      }
+    },
+    {
+      "caseId": "mcp_source_maintenance_no_auto_promotion",
+      "via": "mcp",
+      "caller": {
+        "callerId": "caller_demo_mcp_maintain",
+        "kind": "mcp_tool",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["import_or_maintain_sources"]
+      },
+      "request": {
+        "requestId": "req_demo_005",
+        "tool": "maintain_source_connection",
+        "namespaceId": "ns_demo_project_alpha",
+        "query": "Maintain the synthetic source."
+      },
+      "expected": {
+        "status": "partial_success",
+        "pendingCandidateCreated": true,
+        "trustedMemoryCreated": false,
+        "requiredCapability": "import_or_maintain_sources",
+        "noAutoPromotion": true
+      }
+    },
+    {
+      "caseId": "api_prepare_candidate_without_trusted_memory",
+      "via": "api",
+      "caller": {
+        "callerId": "caller_demo_prepare_candidate",
+        "kind": "owner_hosted_api_client",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["prepare_candidates"]
+      },
+      "request": {
+        "requestId": "req_demo_006",
+        "route": "POST /synthetic/v1/candidates/prepare",
+        "namespaceId": "ns_demo_project_alpha",
+        "action": "prepare_candidate"
+      },
+      "expected": {
+        "status": "allowed",
+        "pendingCandidateCreated": true,
+        "trustedMemoryCreated": false,
+        "requiredCapability": "prepare_candidates",
+        "noAutoPromotion": true
+      }
+    },
+    {
+      "caseId": "mcp_approval_denied_by_default",
+      "via": "mcp",
+      "caller": {
+        "callerId": "caller_demo_mcp_approval_denied",
+        "kind": "mcp_tool",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["approve_trusted_memory"]
+      },
+      "request": {
+        "requestId": "req_demo_007",
+        "tool": "approve_trusted_memory",
+        "namespaceId": "ns_demo_project_alpha"
+      },
+      "expected": {
+        "status": "denied",
+        "trustedMemoryCreated": false,
+        "omittedCount": 1,
+        "denialReason": "approval_requires_owner_or_application_control",
+        "requiredCapability": "approve_trusted_memory",
+        "noAutoPromotion": true
+      }
+    },
+    {
+      "caseId": "api_owner_application_approval_allowed",
+      "via": "api",
+      "caller": {
+        "callerId": "caller_demo_owner_app",
+        "kind": "owner_controlled_application",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["approve_trusted_memory"]
+      },
+      "request": {
+        "requestId": "req_demo_008",
+        "route": "POST /synthetic/v1/candidates/approve",
+        "namespaceId": "ns_demo_project_alpha",
+        "action": "approve_trusted_memory"
+      },
+      "expected": {
+        "status": "allowed",
+        "trustedMemoryCreated": true,
+        "approvalPath": "owner_or_application_controlled",
+        "requiredCapability": "approve_trusted_memory",
+        "noAutoPromotion": false
+      }
+    }
+  ]
+}

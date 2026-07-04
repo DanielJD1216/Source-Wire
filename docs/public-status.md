@@ -20,6 +20,7 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 | Known `v0.1.0` artifact issue | The immutable npm `0.1.0` package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`. Latest `main` fixes this for a future owner-approved patch release. |
 | Hosted runtime | Not included |
 | MCP server runtime | Not included |
+| Synthetic runtime skeleton | Included on latest `main` only |
 | Database or migrations | Not included |
 | Real user data | Not included |
 | Trusted memory auto-promotion | Not allowed |
@@ -47,6 +48,7 @@ It currently includes:
 - validation CLI,
 - package-readiness checks,
 - minimal synthetic in-memory runtime-boundary proof,
+- synthetic owner-hosted API policy route and MCP adapter skeleton,
 - issue templates for structured public feedback,
 - GitHub-visible support, security, and contribution-boundary files,
 - Apache-2.0 licensing for source package reuse.
@@ -70,7 +72,7 @@ That boundary states that Source-Wire is not managed hosting, production runtime
 
 The current setup package closeout is recorded in [Owner-Hosted Setup Final Proof](owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Docs Audit](owner-hosted-setup-docs-audit.md), and [Owner-Hosted Setup Go/No-Go Gate](owner-hosted-setup-go-no-go-gate.md).
 
-The post-setup runtime decision is recorded in [Runtime Implementation Decision Gate](runtime-implementation-decision-gate.md). Runtime implementation remains blocked; the recommended path is private owner proof first, then clean public extraction later.
+The post-setup runtime decision is recorded in [Runtime Implementation Decision Gate](runtime-implementation-decision-gate.md). The first clean public extraction is now a synthetic owner-hosted API policy route and MCP adapter skeleton on latest `main`; production runtime implementation remains blocked and still needs separate owner approval. Read [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md) and [Runtime Skeleton Smoke](runtime-skeleton-smoke.md).
 
 ## Allowed Actions
 
@@ -82,6 +84,7 @@ You may:
 - inspect public docs, schemas, contracts, fixtures, and examples,
 - run local package dry-run checks,
 - run synthetic runtime-boundary smokes,
+- run synthetic runtime-skeleton smokes,
 - open structured feedback issues using the provided templates.
 
 The Apache-2.0 license alone does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.

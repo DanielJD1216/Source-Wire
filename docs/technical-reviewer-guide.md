@@ -33,6 +33,7 @@ You can review:
 - validation CLI behavior,
 - TypeScript package exports,
 - minimal synthetic runtime-boundary policy proof,
+- synthetic owner-hosted API policy route and MCP adapter skeleton,
 - installed package smoke checks,
 - public-safety boundaries,
 - readiness and release gates.
@@ -123,19 +124,24 @@ Review these files when checking whether the boundary is honest:
 - [Runtime Boundary](runtime-boundary.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
+- [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
+- [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
+- [Synthetic Runtime Skeleton Example](../examples/runtime-skeleton/README.md)
 - [Synthetic Runtime Boundary Example](../examples/runtime-boundary/README.md)
 
 Run:
 
 ```bash
 npm run minimal-runtime:smoke
+npm run runtime:skeleton-smoke
+npm run runtime:skeleton-packet
 npm run runtime-boundary:smoke
 npm run runtime-boundary:installed-smoke
 npm run runtime-boundary:diagnostics-smoke
 ```
 
-These commands prove local synthetic policy behavior. They do not start an API server, MCP server, database, connector, memory engine, or hosted backend.
+These commands prove local synthetic policy behavior. The runtime skeleton also proves MCP calls route through the Source-Wire API policy path. They do not start an API server, MCP server, database, connector, memory engine, or hosted backend.
 
 ## Useful Feedback
 

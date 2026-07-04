@@ -22,6 +22,8 @@ for (const requiredPath of [
   "docs/runtime-proof-intake.md",
   "docs/hosted-runtime-wrapper-proof-reconciliation.md",
   "docs/minimal-runtime-prd.md",
+  "docs/runtime-skeleton-implementation-proof.md",
+  "docs/runtime-skeleton-smoke.md",
   "docs/owner-approval-record-packet.md",
   "scripts/record-owner-approval.mjs"
 ]) {
@@ -29,7 +31,7 @@ for (const requiredPath of [
 }
 
 for (const requiredText of [
-  "Status: approval packet only. Runtime skeleton implementation remains blocked.",
+  "Status: approved and implemented as a synthetic skeleton. Production runtime remains blocked.",
   "The next Source-Wire build unit should be a narrow owner-hosted runtime skeleton, not a full runtime.",
   exactApprovalText,
   "npm run runtime:skeleton-packet",
@@ -41,7 +43,7 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Status: implementation slice map only. Runtime skeleton implementation remains blocked pending exact owner approval.",
+  "Status: implemented as a synthetic owner-hosted runtime skeleton. Production runtime remains blocked.",
   "Slice 1: File Scope And Public Safety Guard",
   "Slice 2: Synthetic Owner-Hosted API Policy Route Skeleton",
   "Slice 3: Synthetic MCP Adapter Skeleton",
@@ -102,7 +104,7 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Implementation", "blocked pending exact owner approval"],
+  ["Implementation", "synthetic skeleton implemented after exact owner approval"],
   ["Runtime shape", "synthetic owner-hosted API policy route plus MCP adapter skeleton"],
   ["Real data", "blocked"],
   ["Deployment", "blocked"]
@@ -111,7 +113,8 @@ printRows([
 console.log("");
 console.log("ok runtime skeleton implementation packet ready");
 console.log("ok runtime skeleton issue slices ready");
-console.log("blocked runtime skeleton implementation pending exact owner approval");
+console.log("ok runtime skeleton synthetic implementation recorded");
+console.log("blocked production runtime implementation");
 
 async function assertPathExists(path) {
   try {

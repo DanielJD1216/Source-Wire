@@ -111,10 +111,10 @@ printRows([
   ["Reconciliation artifact", docPath],
   ["Hosted-runtime issues", "#259 through #264"],
   ["Wrapper proof status", "aligned synthetic proof only"],
-  ["Real owner-hosted runtime", "not implemented"],
+  ["Synthetic owner-hosted runtime skeleton", "implemented"],
   ["Deployment", "blocked"],
   ["Real user data", "blocked"],
-  ["Next gate", "owner-approved narrow runtime skeleton implementation"]
+  ["Next gate", "separate approval for the next production-runtime boundary"]
 ]);
 
 console.log("");

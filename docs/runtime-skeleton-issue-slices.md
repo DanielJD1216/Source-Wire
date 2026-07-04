@@ -1,6 +1,6 @@
 # Source-Wire Runtime Skeleton Issue Slices
 
-Status: implementation slice map only. Runtime skeleton implementation remains blocked pending exact owner approval.
+Status: implemented as a synthetic owner-hosted runtime skeleton. Production runtime remains blocked.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -11,6 +11,11 @@ Future parent unit:
 ```text
 Source-Wire Owner-Hosted Runtime Skeleton Implementation
 ```
+
+Implementation proof:
+
+- [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
+- [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
 
 ## Slice 1: File Scope And Public Safety Guard
 

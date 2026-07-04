@@ -1,6 +1,6 @@
 # Source-Wire Runtime Skeleton Implementation Packet
 
-Status: approval packet only. Runtime skeleton implementation remains blocked.
+Status: approved and implemented as a synthetic skeleton. Production runtime remains blocked.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -35,7 +35,7 @@ The remaining public gap is not more theory. It is a tiny runnable skeleton that
 
 ## Exact Approval Text
 
-Do not start this implementation until the owner approves this exact text and the approval is recorded separately.
+The owner approved this exact text and the approval was recorded separately in issue `#257`.
 
 ```text
 Approved for a future Source-Wire owner-hosted runtime skeleton implementation unit: build a public-safe synthetic owner-hosted API policy route skeleton and MCP adapter skeleton using the private Unit 25 through Unit 30 proof trail as redacted evidence only. Use synthetic fixtures only. Do not copy private implementation code or AGPLv3 code. Do not add real user data, client data, database migrations, real database connections, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, or public contribution acceptance. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled.
@@ -112,6 +112,8 @@ npm run owner:decision-status
 ## Related Docs
 
 - [Runtime Skeleton Issue Slices](runtime-skeleton-issue-slices.md)
+- [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
+- [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
 - [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Runtime Proof Intake](runtime-proof-intake.md)

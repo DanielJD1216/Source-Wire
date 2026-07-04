@@ -13,8 +13,8 @@ This checkpoint records the bridge:
 ```text
 private owner proof exists
   -> public-safe metadata only
-  -> Source-Wire runtime skeleton planning may proceed
-  -> real runtime implementation still needs exact owner approval
+  -> Source-Wire synthetic runtime skeleton implementation is recorded
+  -> production runtime still needs separate approval
 ```
 
 ## Private Proof Metadata
@@ -95,9 +95,9 @@ ok private proof runtime extraction readiness
 
 ## Next Decision
 
-The next decision is whether to approve the narrow runtime skeleton implementation unit.
+The narrow runtime skeleton implementation unit is now approved and recorded in [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md).
 
-That decision packet is now recorded in [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md).
+The next decision is not production runtime yet. The next safe decision should address one later boundary at a time: database posture implementation, API server runtime, MCP server runtime, or setup packaging.
 
 Recommended approval shape:
 

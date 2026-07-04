@@ -30,8 +30,8 @@ for (const requiredPath of [
 for (const requiredText of [
   "Status: public-safe extraction readiness checkpoint. Runtime implementation remains blocked.",
   "private owner proof exists",
-  "Source-Wire runtime skeleton planning may proceed",
-  "real runtime implementation still needs exact owner approval",
+  "Source-Wire synthetic runtime skeleton implementation is recorded",
+  "production runtime still needs separate approval",
   "Private Unit 25 real owner packet smoke",
   "Private Unit 26 owner-hosted runtime boundary",
   "Private Unit 27 owner-hosted setup UX",
@@ -119,16 +119,16 @@ printRows([
   ["License", packageJson.license],
   ["Readiness artifact", docPath],
   ["Private proof handling", "redacted metadata only"],
-  ["Runtime skeleton planning", "allowed after owner approval"],
-  ["Runtime implementation", "blocked until exact approval"],
+  ["Runtime skeleton", "synthetic implementation recorded"],
+  ["Production runtime", "blocked pending separate approval"],
   ["Real data", "blocked"],
   ["Deployment", "blocked"]
 ]);
 
 console.log("");
 console.log("ok private proof metadata only");
-console.log("ok runtime skeleton planning gate recorded");
-console.log("ok runtime implementation remains blocked");
+console.log("ok runtime skeleton synthetic implementation recorded");
+console.log("blocked production runtime implementation");
 console.log("ok private proof runtime extraction readiness");
 
 async function assertPathExists(path) {

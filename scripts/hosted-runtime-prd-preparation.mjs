@@ -59,7 +59,7 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Hosted runtime implementation remains blocked.",
+  "Production runtime remains blocked.",
   "real user data",
   "trusted Memory Record",
   "npm run runtime-proof-intake:smoke"

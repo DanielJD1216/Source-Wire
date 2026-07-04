@@ -86,6 +86,25 @@ export {
   runMinimalRuntimeProofCase,
   runMinimalRuntimeProofCases
 } from "./runtime/minimal-boundary.js";
+export type {
+  SourceWireRuntimeSkeletonApiRequest,
+  SourceWireRuntimeSkeletonCaller,
+  SourceWireRuntimeSkeletonCallerKind,
+  SourceWireRuntimeSkeletonCapability,
+  SourceWireRuntimeSkeletonCitation,
+  SourceWireRuntimeSkeletonFixtureCase,
+  SourceWireRuntimeSkeletonFixtureMatrix,
+  SourceWireRuntimeSkeletonMcpRequest,
+  SourceWireRuntimeSkeletonResponse,
+  SourceWireRuntimeSkeletonStatus
+} from "./runtime-skeleton/index.js";
+export {
+  SOURCE_WIRE_RUNTIME_SKELETON_BOUNDARY,
+  callRuntimeSkeletonApiPolicy,
+  callRuntimeSkeletonMcpAdapter,
+  runRuntimeSkeletonFixtureCase,
+  runRuntimeSkeletonFixtureMatrix
+} from "./runtime-skeleton/index.js";
 export type * from "./contracts/fixtures.js";
 export type * from "./contracts/mcp-tools.js";
 export type * from "./contracts/owner-hosted-setup.js";

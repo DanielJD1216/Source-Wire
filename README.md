@@ -30,7 +30,7 @@ Runtime proof intake gate: Source-Wire now includes a synthetic redacted private
 
 Owner-hosted setup claim boundary: latest `main` documents a BYO setup direction, not managed hosting or production runtime. Database migrations remain blocked, and `Source-Wire-Memory-Engine` stays separate. Read [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md).
 
-Owner-hosted setup closeout: the setup package is complete as a synthetic proof, but runtime implementation remains blocked unless separately approved. Read [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md) and [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md).
+Owner-hosted setup closeout: the setup package is complete as a synthetic proof. Source-Wire now includes a narrow synthetic owner-hosted API policy route and MCP adapter skeleton, but production runtime implementation remains blocked unless separately approved. Read [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md), [Runtime Skeleton Implementation Proof](docs/runtime-skeleton-implementation-proof.md), and [Runtime Skeleton Smoke](docs/runtime-skeleton-smoke.md).
 
 Runtime implementation decision: after setup closeout, the next public runtime decision is no-go for runtime code from setup alone. The recommended path is private owner runtime proof first, then clean Apache-2.0 public extraction later. Read [Runtime Implementation Decision Gate](docs/runtime-implementation-decision-gate.md).
 
@@ -105,6 +105,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - A public extraction checklist for future safety reviews.
 - A lightweight TypeScript package boundary.
 - A minimal synthetic in-memory runtime boundary for owner-hosted API plus MCP policy proof.
+- A narrow synthetic owner-hosted API policy route and MCP adapter skeleton that keeps MCP behind Source-Wire API policy.
 
 ## What Is Intentionally Not Included Yet
 
@@ -281,10 +282,13 @@ All fixtures are fictional and synthetic.
 - [`/2nd-brain` example fixture](examples/fixtures/second-brain/use-2nd-brain-example.json)
 - [Owner-hosted API plus MCP boundary fixture](examples/fixtures/owner-hosted-api-mcp-boundary/)
 - [Runtime readiness fixture](examples/fixtures/runtime-readiness/)
+- [Runtime skeleton fixture](examples/fixtures/runtime-skeleton/)
 
 The owner-hosted API plus MCP boundary fixture contains synthetic proof cases only. It is schema-backed and validated by the current CLI.
 
 The runtime readiness fixture contains synthetic proof cases only. It is smoke-validated by `npm run runtime-readiness:smoke` and does not approve API runtime, MCP runtime, database migrations, deployment, managed hosting, real data, package publishing, or release mutation.
+
+The runtime skeleton fixture contains synthetic owner-hosted API policy and MCP adapter cases only. It is smoke-validated by `npm run runtime:skeleton-smoke` and does not start a server, connect a database, run a real MCP server, import data, or promote trusted memory automatically.
 
 ## Minimal Synthetic Runtime Boundary
 
@@ -305,6 +309,24 @@ npm run minimal-runtime:smoke
 ```
 
 It does not start a server, connect to a database, run a real MCP server, store memory, or imply Source-Wire hosts memory.
+
+## Runtime Skeleton Example
+
+The [synthetic runtime skeleton example](examples/runtime-skeleton/) proves the narrow owner-hosted API policy route and MCP adapter path with synthetic fixtures.
+
+Run it with:
+
+```bash
+npm run runtime:skeleton-smoke
+```
+
+Run the packet proof with:
+
+```bash
+npm run runtime:skeleton-packet
+```
+
+It does not start a server, connect to a database, run a real MCP server, import private data, copy private implementation code, copy AGPLv3 code, or promote trusted memory automatically.
 
 ## Runtime Boundary Example
 

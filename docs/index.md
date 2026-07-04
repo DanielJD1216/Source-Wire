@@ -109,6 +109,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Patch Release Approval Request](release-patch-approval-request.md)
 - [Owner Approval Record Packet](owner-approval-record-packet.md)
 - [Owner Approval Recorder](owner-approval-recorder.md)
+- [Owner Decision Issue Refresh Runtime Gate Fix](owner-decision-issue-refresh-runtime-gate-fix.md)
 - [Release Execution Preflight](release-execution-preflight.md)
 - [Release Auth Handoff](release-auth-handoff.md)
 - [Release Auth Preflight](release-auth-preflight.md)

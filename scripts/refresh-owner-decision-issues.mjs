@@ -47,6 +47,8 @@ const decisionIssues = [
       "ok owner open issue boundary current",
       "ok hosted runtime PRD evidence current",
       "ok hosted runtime PRD execution packet current",
+      "ok runtime readiness gate current",
+      "ok runtime proof intake gate current",
       "ok exact hosted runtime PRD approval recorded"
     ]
   },

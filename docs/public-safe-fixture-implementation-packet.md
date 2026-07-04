@@ -1,14 +1,14 @@
 # Source-Wire Public-Safe Fixture Implementation Packet
 
-Status: approval packet only. Implementation is blocked until exact owner approval is recorded.
+Status: implemented as a synthetic hosted-runtime fixture package after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Direct Answer
 
-The next Source-Wire fixture build unit should be a synthetic hosted-runtime fixture package, not a live runtime.
+The Source-Wire fixture build unit is now a synthetic hosted-runtime fixture package, not a live runtime.
 
-This packet defines the exact unit that can start after owner approval:
+This packet records the exact implemented unit after owner approval:
 
 ```text
 synthetic caller, namespace, source, candidate, trusted-memory, audit, and denied-case fixtures
@@ -18,13 +18,15 @@ synthetic caller, namespace, source, candidate, trusted-memory, audit, and denie
   + no real data
 ```
 
-## Why This Is The Next Unit
+## Why This Was The Next Unit
 
 The runtime skeleton defines the API and MCP policy shape.
 
 The database posture gate defines the future storage-shape decision path.
 
-The next fixture constraint is making the proof cases reusable and public-safe so future runtime work can prove behavior without borrowing private data or production exports.
+The fixture constraint was making the proof cases reusable and public-safe so future runtime work can prove behavior without borrowing private data or production exports.
+
+The approved synthetic hosted-runtime fixture package is recorded in [Public-Safe Fixture Implementation Proof](public-safe-fixture-implementation-proof.md).
 
 ## Exact Approval Text
 
@@ -34,11 +36,11 @@ Copy this only when the owner is ready to approve the future implementation unit
 Approved for a future Source-Wire public-safe fixture implementation unit: build a synthetic hosted-runtime fixture package and validation smoke tests for caller identity, namespaces, source evidence, candidates, trusted memory, denied cases, audit metadata, and no-auto-promotion. Use synthetic fixtures only. Do not add database migrations, real database connections, PostgreSQL or pgvector setup, API server implementation, MCP server runtime implementation, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. Fixtures must not include real local paths, account IDs, emails, domains, tokens, screenshots, client data, production exports, or private proof content. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled.
 ```
 
-## What Approval Would Unlock
+## Implemented Surface
 
-Only this:
+Only this was implemented:
 
-- public-safe fixture contracts or typed fixture helpers,
+- public-safe fixture contracts and typed fixture helpers,
 - synthetic caller and token-permission fixtures,
 - synthetic namespace isolation fixtures,
 - synthetic Source evidence fixtures,
@@ -47,10 +49,10 @@ Only this:
 - denied-result fixtures,
 - audit metadata fixtures,
 - no-auto-promotion proof cases,
-- local smoke tests,
+- local smoke tests through `npm run runtime:fixture-smoke`,
 - docs and readiness gate updates.
 
-## What Approval Would Not Unlock
+## What Approval Did Not Unlock
 
 Still blocked:
 
@@ -83,11 +85,12 @@ Still blocked:
 - private proof content,
 - automatic trusted memory promotion.
 
-## Pre-Implementation Gates
+## Verification
 
-Before implementation starts, run:
+Run:
 
 ```bash
+npm run runtime:fixture-smoke
 npm run runtime:fixture-implementation-packet
 npm run runtime:fixture-plan
 npm run runtime:skeleton-smoke
@@ -98,13 +101,22 @@ npm run safety:scan
 npm run claims:scan
 ```
 
+Expected markers include:
+
+```text
+ok hosted runtime fixture smoke
+ok synthetic public-safe fixture implementation recorded
+ok public-safe fixture implementation slices complete
+blocked hosted runtime implementation
+```
+
 ## Implementation Slice Map
 
-Use [Public-Safe Fixture Implementation Slices](public-safe-fixture-implementation-slices.md) as the implementation slice map after approval.
+Use [Public-Safe Fixture Implementation Slices](public-safe-fixture-implementation-slices.md) as the completed implementation slice map.
 
 ## Owner Approval Recording
 
-After explicit owner approval, record it with:
+Owner approval was recorded with:
 
 ```bash
 npm run owner:record-approval -- --target public-safe-fixture-implementation --write --confirm-exact "<exact approval text>"
@@ -120,6 +132,8 @@ npm run owner:open-issues-status
 ## Related Docs
 
 - [Public-Safe Fixture Implementation Slices](public-safe-fixture-implementation-slices.md)
+- [Public-Safe Fixture Implementation Proof](public-safe-fixture-implementation-proof.md)
+- [Public-Safe Fixture Smoke](public-safe-fixture-smoke.md)
 - [Hosted Runtime Public-Safe Fixture And Verification Plan](hosted-runtime-public-safe-fixture-verification-plan.md)
 - [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)

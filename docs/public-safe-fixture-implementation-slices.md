@@ -1,12 +1,12 @@
 # Source-Wire Public-Safe Fixture Implementation Slices
 
-Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.
+Status: completed synthetic public-safe fixture slice map after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Parent
 
-Future parent unit:
+Completed parent unit:
 
 ```text
 Source-Wire Public-Safe Fixture Implementation
@@ -40,6 +40,16 @@ Acceptance criteria:
 - no live connector or Mission Control code is touched,
 - package version stays `0.1.0`,
 - public safety and claim scans pass.
+
+Implemented files:
+
+- `src/contracts/hosted-runtime-fixtures.ts`
+- `examples/fixtures/hosted-runtime/hosted-runtime-fixture-matrix.json`
+- `examples/fixtures/hosted-runtime/README.md`
+- `examples/hosted-runtime-fixtures/hosted-runtime-fixtures-smoke.mjs`
+- `examples/hosted-runtime-fixtures/README.md`
+- `docs/public-safe-fixture-implementation-proof.md`
+- `docs/public-safe-fixture-smoke.md`
 
 ## Slice 2: Synthetic Fixture Contract
 
@@ -123,6 +133,7 @@ After implementation, run:
 npm run typecheck
 npm run build
 npm test
+npm run runtime:fixture-smoke
 npm run runtime:fixture-implementation-packet
 npm run runtime:fixture-plan
 npm run runtime:skeleton-smoke
@@ -169,5 +180,7 @@ git diff --check
 ## Related Docs
 
 - [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)
+- [Public-Safe Fixture Implementation Proof](public-safe-fixture-implementation-proof.md)
+- [Public-Safe Fixture Smoke](public-safe-fixture-smoke.md)
 - [Hosted Runtime Public-Safe Fixture And Verification Plan](hosted-runtime-public-safe-fixture-verification-plan.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)

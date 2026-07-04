@@ -172,6 +172,22 @@ export {
   evaluateDatabasePostureCase,
   evaluateDatabasePostureFixtureMatrix
 } from "./contracts/database-posture.js";
+export type {
+  SourceWireHostedRuntimeFixtureAction,
+  SourceWireHostedRuntimeFixtureAudit,
+  SourceWireHostedRuntimeFixtureCaller,
+  SourceWireHostedRuntimeFixtureCallerKind,
+  SourceWireHostedRuntimeFixtureCase,
+  SourceWireHostedRuntimeFixtureDataClass,
+  SourceWireHostedRuntimeFixtureMatrix,
+  SourceWireHostedRuntimeFixtureResult,
+  SourceWireHostedRuntimeFixtureStatus
+} from "./contracts/hosted-runtime-fixtures.js";
+export {
+  SOURCE_WIRE_HOSTED_RUNTIME_FIXTURE_BOUNDARY,
+  evaluateHostedRuntimeFixtureCase,
+  evaluateHostedRuntimeFixtureMatrix
+} from "./contracts/hosted-runtime-fixtures.js";
 export type * from "./contracts/fixtures.js";
 export type * from "./contracts/mcp-tools.js";
 export type * from "./contracts/owner-hosted-setup.js";

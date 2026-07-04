@@ -17,34 +17,44 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 for (const requiredPath of [
   packetPath,
   slicesPath,
+  "docs/public-safe-fixture-implementation-proof.md",
+  "docs/public-safe-fixture-smoke.md",
   "docs/hosted-runtime-public-safe-fixture-verification-plan.md",
   "docs/runtime-implementation-gate.md",
   "docs/runtime-skeleton-implementation-proof.md",
   "docs/database-posture-implementation-packet.md",
   "docs/owner-approval-record-packet.md",
-  "scripts/record-owner-approval.mjs"
+  "scripts/record-owner-approval.mjs",
+  "src/contracts/hosted-runtime-fixtures.ts",
+  "examples/fixtures/hosted-runtime/hosted-runtime-fixture-matrix.json",
+  "examples/fixtures/hosted-runtime/README.md",
+  "examples/hosted-runtime-fixtures/hosted-runtime-fixtures-smoke.mjs",
+  "examples/hosted-runtime-fixtures/README.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
 for (const requiredText of [
-  "Status: approval packet only. Implementation is blocked until exact owner approval is recorded.",
-  "The next Source-Wire fixture build unit should be a synthetic hosted-runtime fixture package, not a live runtime.",
+  "Status: implemented as a synthetic hosted-runtime fixture package after exact owner approval.",
+  "The Source-Wire fixture build unit is now a synthetic hosted-runtime fixture package, not a live runtime.",
+  "The approved synthetic hosted-runtime fixture package is recorded in [Public-Safe Fixture Implementation Proof](public-safe-fixture-implementation-proof.md).",
   exactApprovalText,
+  "npm run runtime:fixture-smoke",
   "npm run runtime:fixture-implementation-packet",
   "npm run owner:record-approval -- --target public-safe-fixture-implementation",
-  "What Approval Would Not Unlock"
+  "What Approval Did Not Unlock"
 ]) {
   assertIncludes(packet, requiredText, packetPath);
 }
 
 for (const requiredText of [
-  "Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.",
+  "Status: completed synthetic public-safe fixture slice map after exact owner approval.",
   "Slice 1: File Scope And Safety Guard",
   "Slice 2: Synthetic Fixture Contract",
   "Slice 3: Synthetic Fixture Matrix",
   "Slice 4: Smoke Test And Validation",
   "Slice 5: Docs, Proof, And Readiness",
+  "npm run runtime:fixture-smoke",
   "npm run runtime:fixture-implementation-packet",
   "Still Blocked After These Slices"
 ]) {
@@ -107,7 +117,7 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Implementation", "blocked pending exact owner approval"],
+  ["Implementation", "synthetic hosted-runtime fixture package implemented after exact owner approval"],
   ["Runtime shape", "synthetic hosted-runtime fixtures only"],
   ["Real services", "blocked"],
   ["Real database", "blocked"],
@@ -115,9 +125,8 @@ printRows([
 ]);
 
 console.log("");
-console.log("ok public-safe fixture implementation packet ready");
-console.log("ok public-safe fixture implementation slices ready");
-console.log("blocked public-safe fixture implementation pending owner approval");
+console.log("ok synthetic public-safe fixture implementation recorded");
+console.log("ok public-safe fixture implementation slices complete");
 console.log("blocked hosted runtime implementation");
 
 async function assertPathExists(path) {

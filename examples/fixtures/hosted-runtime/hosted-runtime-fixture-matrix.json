@@ -1,0 +1,385 @@
+{
+  "fixtureType": "source-wire-hosted-runtime-fixture-matrix",
+  "fixtureSafety": "synthetic",
+  "boundary": {
+    "implementationMode": "synthetic_hosted_runtime_fixture_package",
+    "sourceWireHostsUserMemory": false,
+    "databaseMigrationsIncluded": false,
+    "realDatabaseConnectionsIncluded": false,
+    "postgresOrPgvectorSetupIncluded": false,
+    "apiServerIncluded": false,
+    "mcpServerRuntimeIncluded": false,
+    "liveConnectorsIncluded": false,
+    "missionControlIncluded": false,
+    "deploymentIncluded": false,
+    "hostedServicesIncluded": false,
+    "managedHostingIncluded": false,
+    "npmPublishingIncluded": false,
+    "githubReleaseIncluded": false,
+    "packageVersionChangesIncluded": false,
+    "publicContributionAcceptanceIncluded": false,
+    "realDataIncluded": false,
+    "clientDataIncluded": false,
+    "privateImplementationCodeIncluded": false,
+    "agplCodeIncluded": false,
+    "privateProofContentIncluded": false,
+    "mcpMayBypassApiPolicy": false,
+    "sourceEvidenceMayAutoPromoteToTrustedMemory": false,
+    "trustedMemoryPromotion": "owner_or_application_controlled"
+  },
+  "cases": [
+    {
+      "caseId": "authorized_owner_read",
+      "action": "read_trusted_memory",
+      "dataClass": "trusted_memory",
+      "caller": {
+        "callerId": "caller_owner_demo",
+        "kind": "owner",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["trusted_memory:read"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_001"],
+      "trustedMemoryId": "memory_demo_001",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "allowed",
+        "namespaceIsolated": true,
+        "trustedMemoryReturned": true,
+        "auditMetadataPresent": true,
+        "restrictedContentLeaked": false
+      }
+    },
+    {
+      "caseId": "unauthorized_caller_denial",
+      "action": "read_trusted_memory",
+      "dataClass": "denied_result",
+      "caller": {
+        "callerId": "caller_unknown_demo",
+        "kind": "unknown",
+        "ownerId": "owner_unknown",
+        "namespaceId": "ns_unknown",
+        "capabilities": []
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_001"],
+      "trustedMemoryId": "memory_demo_001",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "denied",
+        "denialReason": "caller_owner_or_namespace_not_allowed",
+        "namespaceIsolated": true,
+        "restrictedContentLeaked": false,
+        "trustedMemoryReturned": false
+      }
+    },
+    {
+      "caseId": "wrong_namespace_denial_without_leak",
+      "action": "search_source_evidence",
+      "dataClass": "denied_result",
+      "caller": {
+        "callerId": "caller_owner_demo",
+        "kind": "owner",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_beta",
+        "capabilities": ["source_evidence:search"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_001"],
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "denied",
+        "denialReason": "caller_owner_or_namespace_not_allowed",
+        "namespaceIsolated": true,
+        "restrictedContentLeaked": false,
+        "sourceEvidenceReturned": false
+      }
+    },
+    {
+      "caseId": "source_evidence_citation",
+      "action": "search_source_evidence",
+      "dataClass": "source_evidence",
+      "caller": {
+        "callerId": "caller_owner_agent_demo",
+        "kind": "owner_agent",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["source_evidence:search"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_001", "source_demo_002"],
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "allowed",
+        "sourceEvidenceReturned": true,
+        "auditMetadataPresent": true
+      }
+    },
+    {
+      "caseId": "candidate_prepared_no_promotion",
+      "action": "prepare_candidate",
+      "dataClass": "memory_candidate",
+      "caller": {
+        "callerId": "caller_owner_agent_demo",
+        "kind": "owner_agent",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["memory_candidate:prepare"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_001"],
+      "candidateId": "candidate_demo_001",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "owner_review_required",
+        "candidatePrepared": true,
+        "trustedMemoryAutoPromoted": false
+      }
+    },
+    {
+      "caseId": "trusted_memory_read_after_approval",
+      "action": "read_trusted_memory",
+      "dataClass": "trusted_memory",
+      "caller": {
+        "callerId": "caller_owner_agent_demo",
+        "kind": "owner_agent",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["trusted_memory:read"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_001"],
+      "trustedMemoryId": "memory_demo_approved",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": true,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "allowed",
+        "trustedMemoryReturned": true,
+        "trustedMemoryAutoPromoted": false
+      }
+    },
+    {
+      "caseId": "source_maintenance_no_auto_promotion",
+      "action": "maintain_source",
+      "dataClass": "source_evidence",
+      "caller": {
+        "callerId": "caller_owner_demo",
+        "kind": "owner",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["source_evidence:maintain"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_003"],
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "allowed",
+        "sourceEvidenceReturned": true,
+        "trustedMemoryAutoPromoted": false
+      }
+    },
+    {
+      "caseId": "mcp_policy_route_cannot_bypass_api",
+      "action": "route_mcp_via_api_policy",
+      "dataClass": "audit_event",
+      "caller": {
+        "callerId": "caller_owner_agent_demo",
+        "kind": "owner_agent",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["mcp:route"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": [],
+      "requestedViaMcp": true,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "allowed",
+        "mcpRoutedThroughApiPolicy": true,
+        "mcpBypassedApiPolicy": false
+      }
+    },
+    {
+      "caseId": "mcp_bypass_denied",
+      "action": "route_mcp_via_api_policy",
+      "dataClass": "denied_result",
+      "caller": {
+        "callerId": "caller_external_agent_demo",
+        "kind": "external_agent",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["mcp:route"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": [],
+      "requestedViaMcp": true,
+      "apiPolicyEnvelopePresent": false,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "denied",
+        "denialReason": "mcp_must_route_through_api_policy",
+        "mcpRoutedThroughApiPolicy": false,
+        "mcpBypassedApiPolicy": false
+      }
+    },
+    {
+      "caseId": "audit_metadata_allowed_case",
+      "action": "search_source_evidence",
+      "dataClass": "audit_event",
+      "caller": {
+        "callerId": "caller_owner_agent_demo",
+        "kind": "owner_agent",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["source_evidence:search", "audit_event:read"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_004"],
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "allowed",
+        "auditMetadataPresent": true,
+        "sourceEvidenceReturned": true
+      }
+    },
+    {
+      "caseId": "audit_metadata_denied_case",
+      "action": "read_trusted_memory",
+      "dataClass": "audit_event",
+      "caller": {
+        "callerId": "caller_external_agent_demo",
+        "kind": "external_agent",
+        "ownerId": "owner_external",
+        "namespaceId": "ns_external",
+        "capabilities": ["trusted_memory:read"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_001"],
+      "trustedMemoryId": "memory_demo_001",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "denied",
+        "auditMetadataPresent": true,
+        "restrictedContentLeaked": false
+      }
+    },
+    {
+      "caseId": "stale_or_deleted_evidence_gap",
+      "action": "read_stale_or_deleted_evidence",
+      "dataClass": "source_evidence",
+      "caller": {
+        "callerId": "caller_owner_demo",
+        "kind": "owner",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["source_evidence:read"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_stale"],
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": true,
+      "expected": {
+        "status": "partial_success",
+        "denialReason": "source_evidence_deleted_or_stale",
+        "gapReturned": true,
+        "restrictedContentLeaked": false
+      }
+    },
+    {
+      "caseId": "owner_application_approval_allowed",
+      "action": "approve_trusted_memory",
+      "dataClass": "trusted_memory",
+      "caller": {
+        "callerId": "caller_owner_demo",
+        "kind": "owner",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["trusted_memory:approve"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_001"],
+      "candidateId": "candidate_demo_approved",
+      "trustedMemoryId": "memory_demo_approved",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": true,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "allowed",
+        "trustedMemoryApproved": true,
+        "trustedMemoryAutoPromoted": false
+      }
+    },
+    {
+      "caseId": "agent_approval_requires_owner_control",
+      "action": "approve_trusted_memory",
+      "dataClass": "memory_candidate",
+      "caller": {
+        "callerId": "caller_owner_agent_demo",
+        "kind": "owner_agent",
+        "ownerId": "owner_demo",
+        "namespaceId": "ns_demo_alpha",
+        "capabilities": ["trusted_memory:approve"]
+      },
+      "targetOwnerId": "owner_demo",
+      "targetNamespaceId": "ns_demo_alpha",
+      "sourceEvidenceIds": ["source_demo_001"],
+      "candidateId": "candidate_demo_unapproved",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "explicitOwnerOrApplicationApproval": false,
+      "sourceEvidenceDeletedOrStale": false,
+      "expected": {
+        "status": "owner_review_required",
+        "denialReason": "trusted_memory_approval_requires_owner_or_application_control",
+        "trustedMemoryApproved": false,
+        "trustedMemoryAutoPromoted": false
+      }
+    }
+  ]
+}

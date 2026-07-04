@@ -11,6 +11,8 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 
 for (const requiredPath of [
   docPath,
+  "docs/public-safe-fixture-implementation-proof.md",
+  "docs/public-safe-fixture-smoke.md",
   "docs/hosted-runtime-threat-model-trust-boundary.md",
   "docs/hosted-runtime-api-server-contract.md",
   "docs/hosted-runtime-mcp-server-contract.md",
@@ -22,7 +24,8 @@ for (const requiredPath of [
 }
 
 for (const requiredText of [
-  "Status: PRD/planning only for issue `#263`. Fixture implementation remains blocked.",
+  "Status: accepted PRD/planning artifact for issue `#263`. The approved synthetic hosted-runtime fixture package is implemented.",
+  "The approved synthetic fixture implementation is recorded in [Public-Safe Fixture Implementation Proof](public-safe-fixture-implementation-proof.md).",
   "Runtime behavior must be testable before it touches private memory.",
   "Fixture Safety Rules",
   "Required Fixture Categories",
@@ -91,7 +94,7 @@ for (const forbiddenFixtureText of [
 }
 
 for (const blockedText of [
-  "fixture implementation",
+  "additional fixture implementation beyond the approved synthetic hosted-runtime fixture package",
   "seed data",
   "database schema files",
   "database migrations",
@@ -130,7 +133,7 @@ printRows([
   ["Version", packageJson.version],
   ["License", packageJson.license],
   ["Planning artifact", docPath],
-  ["Fixture implementation", "blocked"],
+  ["Fixture implementation", "approved synthetic hosted-runtime fixture package implemented"],
   ["Fixture data posture", "synthetic only"],
   ["Denied cases", "required"],
   ["Runtime readiness gate", "required"],
@@ -145,7 +148,7 @@ console.log("ok hosted runtime public-safe fixture verification plan ready");
 console.log("ok synthetic fixture categories documented");
 console.log("ok denied access and stale evidence fixture scenarios documented");
 console.log("ok runtime verification gates documented");
-console.log("blocked fixture implementation");
+console.log("ok synthetic fixture implementation proof recorded");
 
 async function assertPathExists(path) {
   try {

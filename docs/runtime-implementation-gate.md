@@ -84,9 +84,10 @@ npm run runtime:database-posture-smoke
 npm run runtime:database-implementation-packet
 ```
 
-The next public-safe fixture approval packet is [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md). It is verified by:
+The public-safe fixture implementation is recorded in [Public-Safe Fixture Implementation Proof](public-safe-fixture-implementation-proof.md). It is verified by:
 
 ```bash
+npm run runtime:fixture-smoke
 npm run runtime:fixture-implementation-packet
 ```
 

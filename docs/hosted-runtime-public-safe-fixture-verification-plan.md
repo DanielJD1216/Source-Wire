@@ -1,8 +1,8 @@
 # Source-Wire Hosted Runtime Public-Safe Fixture And Verification Plan
 
-Status: PRD/planning only for issue `#263`. Fixture implementation remains blocked.
+Status: accepted PRD/planning artifact for issue `#263`. The approved synthetic hosted-runtime fixture package is implemented.
 
-This document defines the synthetic fixture categories and verification gates required before a future owner-hosted Source-Wire runtime implementation can start. It does not add fixture implementation, API server code, MCP server runtime code, database migrations, deployment config, live connectors, real user data, npm publishing, a GitHub release, tags, or code contribution acceptance.
+This document defines the synthetic fixture categories and verification gates required before a future owner-hosted Source-Wire runtime implementation can start. The approved synthetic fixture implementation is recorded in [Public-Safe Fixture Implementation Proof](public-safe-fixture-implementation-proof.md). This plan does not add API server code, MCP server runtime code, database migrations, deployment config, live connectors, real user data, npm publishing, a GitHub release, tags, or code contribution acceptance.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -95,7 +95,7 @@ trace_demo_001
 
 ## Required Fixture Categories
 
-Before implementation starts later, the implementation unit must either add or explicitly reuse synthetic fixture coverage for every category below.
+The implemented synthetic fixture package must add or explicitly reuse synthetic fixture coverage for every category below.
 
 | Fixture category | Purpose | Must prove |
 | --- | --- | --- |
@@ -115,7 +115,7 @@ Before implementation starts later, the implementation unit must either add or e
 
 ## Minimum Fixture Scenarios
 
-The future implementation unit must define scenarios for:
+The implemented synthetic fixture package defines scenarios for:
 
 1. Authorized trusted-memory read within one namespace.
 2. Authorized source-evidence read that returns citations but no trusted promotion.
@@ -160,7 +160,7 @@ Minimum owner-side live gates before implementation approval:
 
 ## Runtime Implementation Entry Packet
 
-A later implementation unit must include a fixture and proof packet that names:
+The approved implementation unit includes a fixture and proof packet that names:
 
 - fixture categories covered,
 - fixture files added or reused,
@@ -204,7 +204,7 @@ Do not start hosted-runtime implementation if:
 
 This issue does not add:
 
-- fixture implementation,
+- additional fixture implementation beyond the approved synthetic hosted-runtime fixture package,
 - seed data,
 - database schema files,
 - database migrations,
@@ -232,4 +232,4 @@ This issue does not add:
 | Fixtures use synthetic callers, namespaces, sources, candidates, trusted memory, and denied cases. | Covered by fixture categories and minimum scenarios. |
 | Fixtures contain no real user data, private owner data, local paths, account IDs, emails, domains, tokens, screenshots, client data, or production exports. | Covered by fixture safety rules and no-go conditions. |
 | Verification includes runtime readiness, runtime proof intake, safety, claim boundary, docs, and owner-side live gates. | Covered by verification gates. |
-| No fixture implementation is added unless a later implementation unit approves it. | Covered by fixture non-goals and status. |
+| No additional fixture implementation is added unless a later implementation unit approves it. | Covered by fixture non-goals and status. |

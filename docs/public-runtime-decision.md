@@ -18,10 +18,11 @@ The boundary is defined in the [Owner-Hosted API Plus MCP Boundary Contract](con
 
 Before adding runtime files, future work must pass the [Runtime Implementation Gate](runtime-implementation-gate.md).
 
-Future runtime work must also pass the runtime-readiness matrix smoke:
+Future runtime work must also pass the runtime-readiness matrix smoke and redacted runtime-proof-intake smoke:
 
 ```bash
 npm run runtime-readiness:smoke
+npm run runtime-proof-intake:smoke
 ```
 
 The proposed first runtime PRD package is recorded in [First Runtime PRD Package](first-runtime-prd.md).
@@ -168,6 +169,7 @@ This decision does not add:
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
 - [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)
 - [First Runtime PRD Package](first-runtime-prd.md)
 - [Minimal Runtime PRD](minimal-runtime-prd.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)

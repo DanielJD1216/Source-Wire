@@ -14,7 +14,7 @@ It does not host user memory.
 
 It does not include an API server, MCP server runtime, database migrations, deployment, Mission Control UI, or live connectors.
 
-It now includes a runtime-readiness matrix and smoke command. That matrix is a gate for future runtime PRD work, not runtime approval.
+It now includes a runtime-readiness matrix, redacted runtime-proof-intake manifest, and smoke commands. Those gates are for future runtime PRD work, not runtime approval.
 
 ## Current Decision
 
@@ -38,10 +38,11 @@ The proposed first runtime PRD package is recorded in [First Runtime PRD Package
 
 The current minimal runtime PRD package is recorded in [Minimal Runtime PRD](minimal-runtime-prd.md).
 
-The current runtime-readiness gate is recorded in [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md) and verified by:
+The current runtime-readiness gate is recorded in [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md). The redacted private-proof intake gate is recorded in [Runtime Proof Intake](runtime-proof-intake.md). Both are verified by:
 
 ```bash
 npm run runtime-readiness:smoke
+npm run runtime-proof-intake:smoke
 ```
 
 ## What A Hosted Runtime PRD May Propose
@@ -80,10 +81,11 @@ A hosted runtime implementation PRD must prove these cases before hosted runtime
 | Audit metadata | Tool or API results include audit-friendly caller, namespace, action, and result metadata. |
 | Public safety | No real paths, tokens, domains, emails, account IDs, client names, private proof history, or production exports. |
 
-The PRD must also pass the runtime-readiness gate before implementation:
+The PRD must also pass the runtime-readiness and runtime-proof-intake gates before implementation:
 
 ```bash
 npm run runtime-readiness:smoke
+npm run runtime-proof-intake:smoke
 ```
 
 ## No-Go Conditions
@@ -143,6 +145,7 @@ It must not silently decide that evidence is trusted memory.
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
 - [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Architecture Map](architecture-map.md)

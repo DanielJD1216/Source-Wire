@@ -48,6 +48,9 @@ ok world share preflight current
 ok owner decision status current
 ok owner open issue boundary current
 ok hosted runtime PRD evidence current
+ok hosted runtime PRD execution packet current
+ok runtime readiness gate current
+ok runtime proof intake gate current
 ok exact hosted runtime PRD approval recorded
 ```
 
@@ -82,6 +85,8 @@ For current hosted runtime readiness checks, review:
 
 - [Public Runtime Decision](public-runtime-decision.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
+- [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Minimal Runtime PRD](minimal-runtime-prd.md)

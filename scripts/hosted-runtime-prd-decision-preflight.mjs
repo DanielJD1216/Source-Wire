@@ -6,6 +6,8 @@ const checks = [
   ["owner:open-issues-status", "owner open issue boundary"],
   ["runtime:prd-preparation", "hosted runtime PRD preparation"],
   ["runtime:prd-execution-packet", "hosted runtime PRD execution packet"],
+  ["runtime-readiness:smoke", "runtime readiness synthetic gate"],
+  ["runtime-proof-intake:smoke", "runtime proof intake gate"],
   ["launch:decision-status", "launch decision status"]
 ];
 
@@ -25,6 +27,8 @@ console.log("ok owner decision status current");
 console.log("ok owner open issue boundary current");
 console.log("ok hosted runtime PRD evidence current");
 console.log("ok hosted runtime PRD execution packet current");
+console.log("ok runtime readiness gate current");
+console.log("ok runtime proof intake gate current");
 console.log("ok exact hosted runtime PRD approval recorded");
 
 function runNpmScript(scriptName) {

@@ -14,6 +14,8 @@ for (const requiredPath of [
   "docs/hosted-runtime-prd-decision-preflight.md",
   "docs/public-runtime-decision.md",
   "docs/runtime-implementation-gate.md",
+  "docs/runtime-readiness-smoke.md",
+  "docs/runtime-proof-intake.md",
   "docs/runtime-boundary.md",
   "docs/minimal-runtime-prd.md",
   "docs/owner-launch-checklist.md"
@@ -33,6 +35,8 @@ for (const requiredText of [
   "Current Evidence Checks",
   "Approved PRD Scope",
   "owner-hosted first, managed-hosted deferred unless explicitly approved",
+  "npm run runtime-readiness:smoke",
+  "npm run runtime-proof-intake:smoke",
   "no trusted Memory Record auto-promotion",
   "Current Verification",
   "Stop Conditions",
@@ -44,6 +48,8 @@ for (const requiredText of [
 for (const requiredText of [
   "Status: post-approval PRD evidence packet.",
   "Issue `#257` contains the exact owner approval text",
+  "ok runtime readiness gate current",
+  "ok runtime proof intake gate current",
   "ok exact hosted runtime PRD approval recorded"
 ]) {
   assertIncludes(preparation, requiredText, "hosted runtime PRD preparation");
@@ -52,6 +58,8 @@ for (const requiredText of [
 for (const requiredText of [
   "Status: hosted runtime PRD decision preflight only.",
   "ok hosted runtime PRD decision preflight ready",
+  "ok runtime readiness gate current",
+  "ok runtime proof intake gate current",
   "ok exact hosted runtime PRD approval recorded"
 ]) {
   assertIncludes(decisionPreflight, requiredText, "hosted runtime PRD decision preflight");
@@ -83,6 +91,7 @@ printRows([
 printSection("Current PRD Boundary");
 printList([
   "Hosted runtime PRD is approved and documented.",
+  "Runtime readiness and runtime proof intake gates must pass before child issue publication or implementation approval.",
   "Child issue publication still needs separate owner approval.",
   "Do not add API server runtime, MCP server runtime, database migrations, deployment config, live connectors, or real user data from this packet.",
   "Keep trusted Memory Record auto-promotion, production runtime claims, and contribution acceptance blocked."

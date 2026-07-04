@@ -120,10 +120,11 @@ The PRD is complete only when it defines:
 - future implementation slice map,
 - checks required before any implementation starts.
 
-The runtime-readiness matrix is now a required companion gate for any future implementation decision. It must stay green before runtime work starts:
+The runtime-readiness matrix and runtime-proof-intake smoke are now required companion gates for any future implementation decision. They must stay green before runtime work starts:
 
 ```bash
 npm run runtime-readiness:smoke
+npm run runtime-proof-intake:smoke
 ```
 
 Before implementation starts later, run:
@@ -135,6 +136,7 @@ npm run publish:readiness
 npm run world:share-final-preflight
 npm run runtime:prd-decision-preflight
 npm run runtime-readiness:smoke
+npm run runtime-proof-intake:smoke
 npm run owner:decision-status
 ```
 
@@ -173,3 +175,4 @@ Related docs:
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
 - [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)

@@ -42,6 +42,8 @@ const expectedIssues = [
     markers: [
       "ok hosted runtime PRD decision preflight ready",
       "ok hosted runtime PRD execution packet current",
+      "ok runtime readiness gate current",
+      "ok runtime proof intake gate current",
       "ok exact hosted runtime PRD approval recorded"
     ]
   },

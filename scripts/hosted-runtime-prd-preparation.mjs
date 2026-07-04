@@ -12,6 +12,8 @@ for (const requiredPath of [
   "docs/hosted-runtime-prd-preparation.md",
   "docs/public-runtime-decision.md",
   "docs/runtime-implementation-gate.md",
+  "docs/runtime-readiness-smoke.md",
+  "docs/runtime-proof-intake.md",
   "docs/runtime-boundary.md",
   "docs/contracts/owner-hosted-api-mcp-boundary-contract.md",
   "docs/minimal-runtime-prd.md",
@@ -32,6 +34,8 @@ for (const requiredText of [
   "owner-hosted versus managed-hosted boundary",
   "no trusted Memory Record auto-promotion",
   "Stop before implementation if:",
+  "ok runtime readiness gate current",
+  "ok runtime proof intake gate current",
   "ok exact hosted runtime PRD approval recorded"
 ]) {
   assertIncludes(preparation, requiredText, "hosted runtime PRD preparation");
@@ -48,7 +52,8 @@ for (const requiredText of [
 for (const requiredText of [
   "Source-Wire should stay a contracts-only public package for now.",
   "Owner-hosted API boundary",
-  "Before Source-Wire adds runtime code"
+  "Before Source-Wire adds runtime code",
+  "npm run runtime-proof-intake:smoke"
 ]) {
   assertIncludes(publicRuntimeDecision, requiredText, "public runtime decision");
 }
@@ -56,7 +61,8 @@ for (const requiredText of [
 for (const requiredText of [
   "Hosted runtime implementation remains blocked.",
   "real user data",
-  "trusted Memory Record"
+  "trusted Memory Record",
+  "npm run runtime-proof-intake:smoke"
 ]) {
   assertIncludes(runtimeGate, requiredText, "runtime implementation gate");
 }
@@ -90,6 +96,7 @@ printList([
   "Runtime boundary is owner-hosted versus managed-hosted explicit.",
   "Threat model and namespace isolation are documented.",
   "Public-safe fixtures are required before implementation.",
+  "Runtime readiness and runtime proof intake gates are required before future runtime work.",
   "Trusted memory auto-promotion remains blocked."
 ]);
 

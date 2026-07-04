@@ -36,8 +36,8 @@ Local repo evidence:
 
 Primary license references:
 
-- GNU Affero General Public License v3.0: `https://www.gnu.org/licenses/agpl-3.0.en.html`
-- Apache License 2.0: `https://www.apache.org/licenses/LICENSE-2.0`
+- [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.en.html)
+- [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 ## First-Principles Constraint
 

@@ -8,7 +8,7 @@ This preflight does not implement hosted runtime behavior, add an API server, ad
 
 Use this before opening a future hosted runtime PRD unit from issue `#257`.
 
-This command proves the public source-package state, owner decision issues, open-issue boundary, hosted runtime PRD preparation packet, and launch decision blockers are current before runtime PRD work starts.
+This command proves the public source-package state, owner decision issues, open-issue boundary, hosted runtime PRD preparation packet, runtime-readiness gate, redacted private-proof intake gate, and launch decision blockers are current before runtime PRD work starts.
 
 ## Command
 
@@ -32,6 +32,9 @@ This runs:
 - `npm run owner:decision-status`
 - `npm run owner:open-issues-status`
 - `npm run runtime:prd-preparation`
+- `npm run runtime:prd-execution-packet`
+- `npm run runtime-readiness:smoke`
+- `npm run runtime-proof-intake:smoke`
 - `npm run launch:decision-status`
 
 Expected final markers:
@@ -42,6 +45,9 @@ ok world share preflight current
 ok owner decision status current
 ok owner open issue boundary current
 ok hosted runtime PRD evidence current
+ok hosted runtime PRD execution packet current
+ok runtime readiness gate current
+ok runtime proof intake gate current
 ok exact hosted runtime PRD approval recorded
 ```
 
@@ -64,6 +70,9 @@ Stop before PRD work if approval or source-package evidence regresses:
 - `npm run owner:open-issues-status` shows unexpected open issues,
 - `npm run world:share-preflight` fails,
 - `npm run runtime:prd-preparation` fails,
+- `npm run runtime:prd-execution-packet` fails,
+- `npm run runtime-readiness:smoke` fails,
+- `npm run runtime-proof-intake:smoke` fails,
 - the planned PRD asks for hosted runtime implementation instead of PRD scope,
 - real user data, client data, local private paths, tokens, screenshots, or production exports are requested.
 
@@ -87,6 +96,9 @@ This preflight keeps these blocked:
 ## Related Docs
 
 - [Hosted Runtime PRD Preparation](hosted-runtime-prd-preparation.md)
+- [Hosted Runtime PRD Execution Packet](hosted-runtime-prd-execution-packet.md)
+- [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)
 - [Owner Approval Record Packet](owner-approval-record-packet.md)
 - [Owner Open Issues Status](owner-open-issues-status.md)
 - [Launch Decision Status](launch-decision-status.md)

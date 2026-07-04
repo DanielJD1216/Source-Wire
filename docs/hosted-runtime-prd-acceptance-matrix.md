@@ -53,7 +53,7 @@ blocked hosted runtime implementation
 | Database posture | [Hosted Runtime PRD](hosted-runtime-prd.md), [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md) | PostgreSQL or pgvector setup, migrations, backups with real data, production retention policies |
 | Deployment boundary | [Hosted Runtime PRD](hosted-runtime-prd.md), [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md), [Runtime Boundary](runtime-boundary.md) | deployment config, cloud resources, production runtime use |
 | Public-safe fixtures | [Hosted Runtime PRD](hosted-runtime-prd.md), [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md), [First-Time Visitor Share-Readiness Audit](first-time-visitor-share-readiness-audit.md) | real user data, client data, local paths, account IDs, emails, domains, tokens, screenshots, production exports |
-| Verification gates | [Hosted Runtime PRD](hosted-runtime-prd.md), [Hosted Runtime PRD Decision Preflight](hosted-runtime-prd-decision-preflight.md), [Hosted Runtime Child Issue Publication Preflight](hosted-runtime-child-issue-publication-preflight.md) | implementation without green Package Checks, owner-side freshness, safety scan, claim scan, and docs gates |
+| Verification gates | [Hosted Runtime PRD](hosted-runtime-prd.md), [Hosted Runtime PRD Decision Preflight](hosted-runtime-prd-decision-preflight.md), [Runtime Readiness Smoke](runtime-readiness-smoke.md), [Runtime Proof Intake](runtime-proof-intake.md), [Hosted Runtime Child Issue Publication Preflight](hosted-runtime-child-issue-publication-preflight.md) | implementation without green Package Checks, owner-side freshness, runtime readiness, redacted proof intake, safety scan, claim scan, and docs gates |
 | No-private-data requirements | [Hosted Runtime PRD](hosted-runtime-prd.md), [Legal Review Question Packet](legal-review-question-packet.md), [Public Status](public-status.md) | private owner context, real user data, client data, secrets, local paths, production exports |
 
 ## Minimum Evidence Before Implementation
@@ -65,10 +65,11 @@ Before any later hosted-runtime implementation unit starts, require:
 3. `npm run runtime:prd-decision-preflight` passes.
 4. `npm run runtime:prd-acceptance-matrix` passes.
 5. `npm run runtime-readiness:smoke` passes.
-6. `npm run owner:decision-status` shows hosted runtime implementation is still blocked unless a later exact implementation approval exists.
-7. GitHub Package Checks are green on the implementation candidate commit.
-8. The implementation unit states exactly which blocked boundary it opens.
-9. Real user data and private owner data remain out of public docs, fixtures, issues, and examples.
+6. `npm run runtime-proof-intake:smoke` passes.
+7. `npm run owner:decision-status` shows hosted runtime implementation is still blocked unless a later exact implementation approval exists.
+8. GitHub Package Checks are green on the implementation candidate commit.
+9. The implementation unit states exactly which blocked boundary it opens.
+10. Real user data and private owner data remain out of public docs, fixtures, issues, and examples.
 
 ## Stop Conditions
 
@@ -96,3 +97,4 @@ Stop if a follow-up unit:
 - [Hosted Runtime Child Issue Publication Preflight](hosted-runtime-child-issue-publication-preflight.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
 - [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)

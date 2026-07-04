@@ -141,6 +141,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Runtime Readiness Implementation Proof](docs/runtime-readiness-implementation-proof.md)
 - [Runtime Proof Intake Contract](docs/contracts/runtime-proof-intake-contract.md)
 - [Runtime Proof Intake](docs/runtime-proof-intake.md)
+- [Hosted Runtime PRD Proof Intake Gate Refresh](docs/hosted-runtime-prd-proof-intake-gate-refresh.md)
 - [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md)
 - [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md)
 - [Owner-Hosted Setup Docs Audit](docs/owner-hosted-setup-docs-audit.md)

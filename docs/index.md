@@ -42,6 +42,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Runtime Readiness Implementation Proof](runtime-readiness-implementation-proof.md)
 - [Runtime Proof Intake Contract](contracts/runtime-proof-intake-contract.md)
 - [Runtime Proof Intake](runtime-proof-intake.md)
+- [Hosted Runtime PRD Proof Intake Gate Refresh](hosted-runtime-prd-proof-intake-gate-refresh.md)
 - [Owner-Hosted Setup Claim Boundary](owner-hosted-setup-claim-boundary.md)
 - [Owner-Hosted Setup Final Proof](owner-hosted-setup-final-proof.md)
 - [Owner-Hosted Setup Docs Audit](owner-hosted-setup-docs-audit.md)

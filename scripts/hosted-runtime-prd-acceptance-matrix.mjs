@@ -14,6 +14,8 @@ for (const requiredPath of [
   "docs/hosted-runtime-prd-decision-preflight.md",
   "docs/hosted-runtime-child-issue-publication-preflight.md",
   "docs/hosted-runtime-issue-slices.md",
+  "docs/runtime-readiness-smoke.md",
+  "docs/runtime-proof-intake.md",
   "docs/runtime-boundary.md",
   "docs/public-runtime-decision.md",
   "docs/first-time-visitor-share-readiness-audit.md",
@@ -44,6 +46,8 @@ for (const requiredText of [
   "| Verification gates |",
   "| No-private-data requirements |",
   "npm run runtime:prd-acceptance-matrix",
+  "npm run runtime-readiness:smoke",
+  "npm run runtime-proof-intake:smoke",
   "blocked hosted runtime implementation",
   "Minimum Evidence Before Implementation",
   "Stop Conditions"
@@ -60,6 +64,7 @@ for (const requiredText of [
   "deployment boundary",
   "public-safe fixtures",
   "Verification Gates",
+  "runtime-proof-intake",
   "no-private-data rules"
 ]) {
   assertIncludes(prd, requiredText, "hosted runtime PRD");
@@ -76,6 +81,8 @@ for (const requiredText of [
 
 for (const requiredText of [
   "ok hosted runtime PRD decision preflight ready",
+  "ok runtime readiness gate current",
+  "ok runtime proof intake gate current",
   "ok exact hosted runtime PRD approval recorded",
   "hosted runtime implementation"
 ]) {

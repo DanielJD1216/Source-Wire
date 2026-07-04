@@ -51,11 +51,13 @@ Before asking for child issue publication or implementation approval:
 1. Run `npm run publish:readiness`.
 2. Run `npm run world:share-final-preflight`.
 3. Run `npm run runtime:prd-decision-preflight`.
-4. Run `npm run owner:decision-status`.
-5. Confirm issue `#257` has exact approval recorded.
-6. Confirm the latest `Package Checks` is green on `origin/main`.
-7. Confirm local `main` and `origin/main` point to the same commit.
-8. Confirm no npm package version, GitHub release, tag, deployment, branch governance change, or contribution acceptance is being opened in the same unit.
+4. Run `npm run runtime-readiness:smoke`.
+5. Run `npm run runtime-proof-intake:smoke`.
+6. Run `npm run owner:decision-status`.
+7. Confirm issue `#257` has exact approval recorded.
+8. Confirm the latest `Package Checks` is green on `origin/main`.
+9. Confirm local `main` and `origin/main` point to the same commit.
+10. Confirm no npm package version, GitHub release, tag, deployment, branch governance change, or contribution acceptance is being opened in the same unit.
 
 ## Approved PRD Scope
 
@@ -79,6 +81,8 @@ After any hosted-runtime planning evidence changes, run:
 ```bash
 npm run publish:readiness
 npm run world:share-final-preflight
+npm run runtime-readiness:smoke
+npm run runtime-proof-intake:smoke
 npm run owner:refresh-decision-issues
 npm run owner:decision-issues-freshness
 ```
@@ -88,6 +92,8 @@ Expected result while implementation remains blocked:
 ```text
 ok hosted runtime PRD decision preflight ready
 ok hosted runtime PRD evidence current
+ok runtime readiness gate current
+ok runtime proof intake gate current
 blocked hosted runtime implementation not approved
 ```
 
@@ -127,5 +133,7 @@ This packet does not approve:
 - [Hosted Runtime PRD Decision Preflight](hosted-runtime-prd-decision-preflight.md)
 - [Public Runtime Decision](public-runtime-decision.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
+- [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Owner Launch Checklist](owner-launch-checklist.md)

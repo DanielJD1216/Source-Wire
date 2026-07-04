@@ -5,6 +5,8 @@ export const requiredPackagePaths = [
   "dist/index.js",
   "docs/adopter-walkthrough.md",
   "docs/apache-2-license-implementation-readiness.md",
+  "docs/api-contract-implementation-packet.md",
+  "docs/api-contract-implementation-slices.md",
   "docs/api-reference.md",
   "docs/architecture-map.md",
   "docs/branch-governance-apply.md",

@@ -49,6 +49,8 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
 - [Threat Model Implementation Packet](threat-model-implementation-packet.md)
 - [Threat Model Implementation Slices](threat-model-implementation-slices.md)
+- [API Contract Implementation Packet](api-contract-implementation-packet.md)
+- [API Contract Implementation Slices](api-contract-implementation-slices.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Database Posture Implementation Slices](database-posture-implementation-slices.md)
 - [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)

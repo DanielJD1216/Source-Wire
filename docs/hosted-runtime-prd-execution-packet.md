@@ -80,6 +80,7 @@ After any hosted-runtime planning evidence changes, run:
 
 ```bash
 npm run runtime:threat-model
+npm run runtime:api-contract
 npm run publish:readiness
 npm run world:share-final-preflight
 npm run runtime-readiness:smoke

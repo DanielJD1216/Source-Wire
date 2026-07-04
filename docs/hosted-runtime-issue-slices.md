@@ -67,6 +67,16 @@ Acceptance criteria:
 - denied behavior fails closed without leaking content,
 - no server code or deployment config is added.
 
+Planning artifact:
+
+- [Hosted Runtime API Server Contract](hosted-runtime-api-server-contract.md)
+
+Verification:
+
+```bash
+npm run runtime:api-contract
+```
+
 ### Slice 3: MCP Server Runtime Contract
 
 Type: AFK after Slice 1.

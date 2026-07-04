@@ -52,6 +52,9 @@ const issues = [
       "Every operation states required caller identity, namespace, action, and permission.",
       "Denied behavior fails closed without leaking content.",
       "No server code or deployment config is added."
+    ],
+    sourceDocs: [
+      "docs/hosted-runtime-api-server-contract.md"
     ]
   },
   {

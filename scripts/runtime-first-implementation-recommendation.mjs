@@ -28,7 +28,9 @@ for (const requiredPath of [
   ownerApprovalPacketPath,
   recorderPath,
   "docs/runtime-implementation-gate.md",
-  "docs/hosted-runtime-threat-model-trust-boundary.md"
+  "docs/hosted-runtime-threat-model-trust-boundary.md",
+  "docs/runtime-threat-boundary-implementation-proof.md",
+  "docs/runtime-threat-boundary-smoke.md"
 ]) {
   await assertPathExists(requiredPath);
 }
@@ -45,7 +47,7 @@ for (const [text, label] of [
 assertIncludes(slices, target, `${slicesPath} target`);
 
 for (const requiredText of [
-  "Status: approval packet only. Implementation is blocked until exact owner approval is recorded.",
+  "Status: implemented as a synthetic trust-boundary package after exact owner approval.",
   "synthetic threat cases",
   "no API server runtime",
   "no MCP server runtime",
@@ -84,19 +86,20 @@ printRows([
   ["Slice map", slicesPath],
   ["Status check", "npm run runtime:implementation-approval-status"],
   ["Approval recorder dry run", `npm run owner:record-approval -- --target ${target}`],
-  ["Implementation", "blocked pending exact owner approval"]
+  ["Implementation", "synthetic trust-boundary package implemented after exact owner approval"]
 ]);
 
 printSection("Exact Approval Text");
 console.log(exactApprovalText);
 
-printSection("Recommended Next Command");
+printSection("Historical Approval Command");
 console.log(`npm run owner:record-approval -- --target ${target} --write --confirm-exact "${exactApprovalText}"`);
 
 printSection("Runtime First Implementation Recommendation Result");
 console.log("ok runtime first implementation recommendation ready");
 console.log("ok recommended first runtime implementation gate #259");
-console.log("blocked exact threat-model-implementation approval missing");
+console.log("ok threat-model-implementation approval path documented");
+console.log("ok synthetic threat-boundary implementation recorded");
 console.log("blocked hosted runtime implementation");
 
 async function assertPathExists(path) {

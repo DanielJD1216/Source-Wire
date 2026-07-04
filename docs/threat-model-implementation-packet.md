@@ -1,14 +1,14 @@
 # Source-Wire Threat Model Implementation Packet
 
-Status: approval packet only. Implementation is blocked until exact owner approval is recorded.
+Status: implemented as a synthetic trust-boundary package after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Direct Answer
 
-The next Source-Wire trust-boundary unit should be a public-safe synthetic threat model package, not a production runtime.
+Source-Wire now has a public-safe synthetic threat model package, not a production runtime.
 
-This packet defines the exact unit that can start after owner approval:
+This packet records the exact unit implemented after owner approval:
 
 ```text
 synthetic threat cases
@@ -27,13 +27,13 @@ The next limiting constraint is trust: the system must prove what happens when c
 
 ## Exact Approval Text
 
-Copy this only when the owner is ready to approve the future implementation unit:
+The owner approved this implementation unit:
 
 ```text
 Approved for a future Source-Wire threat model implementation unit: build a public-safe synthetic trust-boundary package and validation smoke tests for unauthorized callers, cross-namespace access, source-to-memory separation, prompt-injection handling, secrets handling, audit gaps, backup and restore risk, deployment misconfiguration, MCP bypass prevention, and owner/application-controlled trusted memory approval. Use synthetic fixtures only. Do not add API server implementation, MCP server runtime implementation, database migrations, real database connections, PostgreSQL or pgvector setup, live connectors, Mission Control UI, deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled.
 ```
 
-## What Approval Would Unlock
+## What Approval Unlocked
 
 Only this:
 
@@ -86,11 +86,12 @@ Still blocked:
 - private proof content,
 - automatic trusted memory promotion.
 
-## Pre-Implementation Gates
+## Implementation Verification Gates
 
-Before implementation starts, run:
+After implementation, run:
 
 ```bash
+npm run runtime:threat-boundary-smoke
 npm run runtime:threat-implementation-packet
 npm run runtime:threat-model
 npm run runtime:skeleton-smoke
@@ -109,7 +110,7 @@ Use [Threat Model Implementation Slices](threat-model-implementation-slices.md) 
 
 ## Owner Approval Recording
 
-After explicit owner approval, record it with:
+The explicit owner approval was recorded with:
 
 ```bash
 npm run owner:record-approval -- --target threat-model-implementation --write --confirm-exact "<exact approval text>"
@@ -124,6 +125,8 @@ npm run owner:open-issues-status
 
 ## Related Docs
 
+- [Runtime Threat Boundary Implementation Proof](runtime-threat-boundary-implementation-proof.md)
+- [Runtime Threat Boundary Smoke](runtime-threat-boundary-smoke.md)
 - [Threat Model Implementation Slices](threat-model-implementation-slices.md)
 - [Hosted Runtime Threat Model And Trust Boundary](hosted-runtime-threat-model-trust-boundary.md)
 - [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)

@@ -17,6 +17,8 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 for (const requiredPath of [
   packetPath,
   slicesPath,
+  "docs/runtime-threat-boundary-implementation-proof.md",
+  "docs/runtime-threat-boundary-smoke.md",
   "docs/hosted-runtime-threat-model-trust-boundary.md",
   "docs/runtime-implementation-gate.md",
   "docs/runtime-skeleton-implementation-proof.md",
@@ -30,9 +32,10 @@ for (const requiredPath of [
 }
 
 for (const requiredText of [
-  "Status: approval packet only. Implementation is blocked until exact owner approval is recorded.",
-  "The next Source-Wire trust-boundary unit should be a public-safe synthetic threat model package, not a production runtime.",
+  "Status: implemented as a synthetic trust-boundary package after exact owner approval.",
+  "Source-Wire now has a public-safe synthetic threat model package, not a production runtime.",
   exactApprovalText,
+  "npm run runtime:threat-boundary-smoke",
   "npm run runtime:threat-implementation-packet",
   "npm run owner:record-approval -- --target threat-model-implementation",
   "What Approval Would Not Unlock"
@@ -41,12 +44,13 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.",
+  "Status: implementation slice map completed after exact owner approval.",
   "Slice 1: File Scope And Safety Guard",
   "Slice 2: Synthetic Trust-Boundary Contract",
   "Slice 3: Synthetic Threat Matrix Fixtures",
   "Slice 4: Smoke Test And Validation",
   "Slice 5: Docs, Proof, And Readiness",
+  "npm run runtime:threat-boundary-smoke",
   "npm run runtime:threat-implementation-packet",
   "Still Blocked After These Slices"
 ]) {
@@ -112,7 +116,7 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Implementation", "blocked pending exact owner approval"],
+  ["Implementation", "synthetic trust-boundary package implemented after exact owner approval"],
   ["Runtime shape", "synthetic trust-boundary package only"],
   ["API server runtime", "blocked"],
   ["MCP server runtime", "blocked"],
@@ -122,7 +126,7 @@ printRows([
 console.log("");
 console.log("ok threat model implementation packet ready");
 console.log("ok threat model implementation slices ready");
-console.log("blocked threat model implementation pending owner approval");
+console.log("ok synthetic threat-boundary implementation recorded");
 console.log("blocked production runtime implementation");
 
 async function assertPathExists(path) {

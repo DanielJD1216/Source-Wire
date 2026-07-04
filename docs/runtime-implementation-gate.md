@@ -1,6 +1,6 @@
 # Source-Wire Runtime Implementation Gate
 
-Status: implementation gate with minimal synthetic runtime boundary and synthetic runtime skeleton. Production runtime remains blocked.
+Status: implementation gate with minimal synthetic runtime boundary, synthetic runtime skeleton, and synthetic threat-boundary package. Production runtime remains blocked.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -8,7 +8,7 @@ Use Node.js 22 with npm from the repository root. For the complete local setup p
 
 This gate prevents hosted Source-Wire runtime work from starting just because boundary docs, synthetic fixtures, and a minimal synthetic runtime boundary now exist.
 
-Source-Wire is still a public contract package with exported synthetic policy proof code and a synthetic owner-hosted runtime skeleton.
+Source-Wire is still a public contract package with exported synthetic policy proof code, a synthetic owner-hosted runtime skeleton, and a synthetic trust-boundary evaluator.
 
 It does not host user memory.
 
@@ -56,9 +56,10 @@ npm run runtime:skeleton-packet
 npm run runtime:skeleton-smoke
 ```
 
-The next threat-model approval packet is [Threat Model Implementation Packet](threat-model-implementation-packet.md). It is verified by:
+The threat-model implementation is recorded in [Runtime Threat Boundary Implementation Proof](runtime-threat-boundary-implementation-proof.md). It is verified by:
 
 ```bash
+npm run runtime:threat-boundary-smoke
 npm run runtime:threat-implementation-packet
 ```
 
@@ -204,6 +205,8 @@ It must not silently decide that evidence is trusted memory.
 - [Runtime Skeleton Issue Slices](runtime-skeleton-issue-slices.md)
 - [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
 - [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
+- [Runtime Threat Boundary Implementation Proof](runtime-threat-boundary-implementation-proof.md)
+- [Runtime Threat Boundary Smoke](runtime-threat-boundary-smoke.md)
 - [Threat Model Implementation Packet](threat-model-implementation-packet.md)
 - [Threat Model Implementation Slices](threat-model-implementation-slices.md)
 - [API Contract Implementation Packet](api-contract-implementation-packet.md)

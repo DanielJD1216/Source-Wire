@@ -30,11 +30,11 @@ Runtime proof intake gate: Source-Wire now includes a synthetic redacted private
 
 Owner-hosted setup claim boundary: latest `main` documents a BYO setup direction, not managed hosting or production runtime. Database migrations remain blocked, and `Source-Wire-Memory-Engine` stays separate. Read [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md).
 
-Owner-hosted setup closeout: the setup package is complete as a synthetic proof. Source-Wire now includes a narrow synthetic owner-hosted API policy route and MCP adapter skeleton, but production runtime implementation remains blocked unless separately approved. Read [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md), [Runtime Skeleton Implementation Proof](docs/runtime-skeleton-implementation-proof.md), and [Runtime Skeleton Smoke](docs/runtime-skeleton-smoke.md).
+Owner-hosted setup closeout: the setup package is complete as a synthetic proof. Source-Wire now includes a narrow synthetic owner-hosted API policy route, MCP adapter skeleton, and synthetic threat-boundary package, but production runtime implementation remains blocked unless separately approved. Read [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md), [Runtime Skeleton Implementation Proof](docs/runtime-skeleton-implementation-proof.md), [Runtime Skeleton Smoke](docs/runtime-skeleton-smoke.md), [Runtime Threat Boundary Implementation Proof](docs/runtime-threat-boundary-implementation-proof.md), and [Runtime Threat Boundary Smoke](docs/runtime-threat-boundary-smoke.md).
 
 Next runtime gate: the next recommended approval paths are synthetic threat-model, API contract, MCP contract, database posture, public-safe fixture, and deployment-boundary implementation packets, not API runtime, MCP runtime, route handlers, migrations, real database connections, live runtime services, deployment config, or hosted services. Read [Threat Model Implementation Packet](docs/threat-model-implementation-packet.md), [Threat Model Implementation Slices](docs/threat-model-implementation-slices.md), [API Contract Implementation Packet](docs/api-contract-implementation-packet.md), [API Contract Implementation Slices](docs/api-contract-implementation-slices.md), [MCP Contract Implementation Packet](docs/mcp-contract-implementation-packet.md), [MCP Contract Implementation Slices](docs/mcp-contract-implementation-slices.md), [Database Posture Implementation Packet](docs/database-posture-implementation-packet.md), [Database Posture Implementation Slices](docs/database-posture-implementation-slices.md), [Public-Safe Fixture Implementation Packet](docs/public-safe-fixture-implementation-packet.md), [Public-Safe Fixture Implementation Slices](docs/public-safe-fixture-implementation-slices.md), [Deployment Boundary Implementation Packet](docs/deployment-boundary-implementation-packet.md), and [Deployment Boundary Implementation Slices](docs/deployment-boundary-implementation-slices.md).
 
-First implementation recommendation: `npm run runtime:first-implementation-recommendation` verifies that `#259` threat-model implementation is the recommended first focused approval gate while runtime implementation remains blocked until exact owner approval.
+Threat model implementation: `npm run runtime:threat-boundary-smoke` validates the approved synthetic trust-boundary package for unauthorized callers, cross-namespace access, source-memory separation, prompt injection, secrets, audit gaps, backup restore drift, deployment exposure, MCP bypass prevention, and owner/application-controlled trusted memory approval. It does not add a server, database, deployment, connector, real data, private code, AGPLv3 code, or automatic trusted memory promotion.
 
 Runtime implementation decision: after setup closeout, the next public runtime decision is no-go for runtime code from setup alone. The recommended path is private owner runtime proof first, then clean Apache-2.0 public extraction later. Read [Runtime Implementation Decision Gate](docs/runtime-implementation-decision-gate.md).
 
@@ -107,12 +107,14 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - Runtime proof intake synthetic contract and redacted manifest.
 - Synthetic fixtures for notes, chat exports, project context, and `/2nd-brain` examples.
 - Threat model implementation approval packet and slice map.
+- Synthetic threat-boundary package and fixture matrix.
 - API contract implementation approval packet and slice map.
 - Database posture implementation approval packet and slice map.
 - A public extraction checklist for future safety reviews.
 - A lightweight TypeScript package boundary.
 - A minimal synthetic in-memory runtime boundary for owner-hosted API plus MCP policy proof.
 - A narrow synthetic owner-hosted API policy route and MCP adapter skeleton that keeps MCP behind Source-Wire API policy.
+- A synthetic trust-boundary evaluator that keeps source evidence separate from trusted memory and requires owner or application-controlled approval for trusted memory creation.
 
 ## What Is Intentionally Not Included Yet
 
@@ -159,6 +161,8 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md)
 - [Runtime Implementation Decision Gate](docs/runtime-implementation-decision-gate.md)
 - [Runtime Implementation Decision Proof](docs/runtime-implementation-decision-proof.md)
+- [Runtime Threat Boundary Implementation Proof](docs/runtime-threat-boundary-implementation-proof.md)
+- [Runtime Threat Boundary Smoke](docs/runtime-threat-boundary-smoke.md)
 - [Owner-Hosted Setup Issue Drafts](docs/issues/owner-hosted-setup/README.md)
 - [Public Status](docs/public-status.md)
 - [World Share Kit](docs/world-share-kit.md)

@@ -105,6 +105,20 @@ export {
   runRuntimeSkeletonFixtureCase,
   runRuntimeSkeletonFixtureMatrix
 } from "./runtime-skeleton/index.js";
+export type {
+  SourceWireRuntimeThreatActorKind,
+  SourceWireRuntimeThreatBoundaryCase,
+  SourceWireRuntimeThreatBoundaryFixtureMatrix,
+  SourceWireRuntimeThreatBoundaryResult,
+  SourceWireRuntimeThreatControl,
+  SourceWireRuntimeThreatDecision,
+  SourceWireRuntimeThreatKind
+} from "./runtime-threat-boundary/index.js";
+export {
+  SOURCE_WIRE_RUNTIME_THREAT_BOUNDARY,
+  evaluateRuntimeThreatBoundaryCase,
+  evaluateRuntimeThreatBoundaryFixtureMatrix
+} from "./runtime-threat-boundary/index.js";
 export type * from "./contracts/fixtures.js";
 export type * from "./contracts/mcp-tools.js";
 export type * from "./contracts/owner-hosted-setup.js";

@@ -17,6 +17,7 @@ const requiredScripts = [
   "examples:installed-smoke",
   "minimal-runtime:smoke",
   "runtime:skeleton-smoke",
+  "runtime:threat-boundary-smoke",
   "runtime:skeleton-packet",
   "runtime:threat-implementation-packet",
   "runtime:api-implementation-packet",
@@ -221,6 +222,8 @@ for (const requiredPath of [
   "docs/runtime-implementation-approval-status.md",
   "docs/runtime-skeleton-implementation-proof.md",
   "docs/runtime-skeleton-smoke.md",
+  "docs/runtime-threat-boundary-implementation-proof.md",
+  "docs/runtime-threat-boundary-smoke.md",
   "docs/threat-model-implementation-packet.md",
   "docs/threat-model-implementation-slices.md",
   "docs/api-contract-implementation-packet.md",
@@ -247,8 +250,12 @@ for (const requiredPath of [
   "examples/minimal-runtime/README.md",
   "examples/fixtures/runtime-skeleton/README.md",
   "examples/fixtures/runtime-skeleton/runtime-skeleton-fixture-matrix.json",
+  "examples/fixtures/runtime-threat-boundary/README.md",
+  "examples/fixtures/runtime-threat-boundary/runtime-threat-boundary-fixture-matrix.json",
   "examples/runtime-skeleton/README.md",
   "examples/runtime-skeleton/runtime-skeleton-smoke.mjs",
+  "examples/runtime-threat-boundary/README.md",
+  "examples/runtime-threat-boundary/runtime-threat-boundary-smoke.mjs",
   "examples/typescript/README.md"
 ]) {
   await assertPathExists(requiredPath);
@@ -267,7 +274,7 @@ printRows([
   ["Version", packageJson.version],
   ["License", packageJson.license],
   ["Publish boundary", "npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked"],
-  ["Runtime boundary", "synthetic in-memory boundary plus synthetic API/MCP skeleton only, no backend runtime included"]
+  ["Runtime boundary", "synthetic in-memory boundary plus synthetic API/MCP skeleton and threat-boundary package only, no backend runtime included"]
 ]);
 
 printSection("Package Surfaces");
@@ -288,6 +295,7 @@ printList([
   "examples:installed-smoke validates copied TypeScript examples against installed package declarations",
   "minimal-runtime:smoke validates exported synthetic in-memory runtime boundary code against owner-hosted API plus MCP proof cases",
   "runtime:skeleton-smoke validates exported synthetic owner-hosted API policy route and MCP adapter code without starting a server, connecting a database, or promoting trusted memory automatically",
+  "runtime:threat-boundary-smoke validates the synthetic trust-boundary package against unauthorized callers, namespace isolation, source-memory separation, prompt injection, secrets, audit gaps, backup restore drift, deployment exposure, MCP bypass, and owner-controlled approval",
   "runtime:skeleton-packet validates the runtime skeleton implementation packet, approval boundary, safety claims, and production-runtime blockers",
   "runtime:threat-implementation-packet validates the synthetic trust-boundary implementation approval packet while production runtime remains blocked",
   "runtime:api-implementation-packet validates the synthetic API policy contract implementation approval packet while API server runtime remains blocked",
@@ -295,7 +303,7 @@ printList([
   "runtime:database-implementation-packet validates the next synthetic database posture approval packet while migrations and real database connections remain blocked",
   "runtime:fixture-implementation-packet validates the next synthetic public-safe fixture approval packet while hosted runtime implementation remains blocked",
   "runtime:deployment-implementation-packet validates the next synthetic deployment-boundary approval packet while deployment config and hosted services remain blocked",
-  "runtime:first-implementation-recommendation verifies issue #259 threat-model implementation is the recommended first approval gate while implementation remains blocked",
+  "runtime:first-implementation-recommendation verifies issue #259 threat-model implementation was the recommended first approval gate and now points to the synthetic threat-boundary proof",
   "runtime:implementation-approval-status verifies live owner approval status for runtime implementation issues #259 through #264 without recording approval or implementing runtime behavior",
   "runtime-boundary:installed-smoke validates the packaged synthetic runtime-boundary example after install",
   "runtime-boundary:diagnostics-smoke validates the synthetic smoke diagnostic failure format",
@@ -372,6 +380,8 @@ printList([
   "docs/runtime-implementation-approval-status.md records the read-only owner-side status check for the six hosted-runtime implementation approval gates",
   "docs/runtime-skeleton-implementation-proof.md records the synthetic owner-hosted API policy route and MCP adapter skeleton proof while production runtime remains blocked",
   "docs/runtime-skeleton-smoke.md records the synthetic runtime skeleton smoke command, expected markers, and blocked side effects",
+  "docs/runtime-threat-boundary-implementation-proof.md records the synthetic threat-boundary implementation proof while production runtime remains blocked",
+  "docs/runtime-threat-boundary-smoke.md records the synthetic threat-boundary smoke command, expected markers, and blocked side effects",
   "docs/threat-model-implementation-packet.md records the next synthetic trust-boundary implementation approval path while production runtime remains blocked",
   "docs/threat-model-implementation-slices.md records the future threat case, trust-boundary fixture, smoke, docs, and readiness slices",
   "docs/api-contract-implementation-packet.md records the next synthetic API policy contract implementation approval path while API server runtime remains blocked",

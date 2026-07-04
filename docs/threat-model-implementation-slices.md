@@ -1,12 +1,12 @@
 # Source-Wire Threat Model Implementation Slices
 
-Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.
+Status: implementation slice map completed after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Parent
 
-Future parent unit:
+Parent unit:
 
 ```text
 Source-Wire Threat Model Implementation
@@ -27,9 +27,11 @@ Goal:
 Allowed file areas:
 
 - `src/contracts/`
-- `examples/fixtures/threat-model/`
-- `examples/threat-model/`
+- `src/runtime-threat-boundary/`
+- `examples/fixtures/runtime-threat-boundary/`
+- `examples/runtime-threat-boundary/`
 - `docs/threat-model-*`
+- `docs/runtime-threat-boundary-*`
 - package scripts and docs index links.
 
 Acceptance criteria:
@@ -69,7 +71,7 @@ Required cases:
 - unauthorized caller denied,
 - missing capability denied,
 - wrong namespace denied,
-- source-to-memory confusion denied,
+- source-to-memory confusion flagged for owner review without promotion,
 - prompt injection treated as source data, not policy,
 - secrets or private-path fixture blocked,
 - audit durability gap blocks mutation,
@@ -126,6 +128,7 @@ After implementation, run:
 npm run typecheck
 npm run build
 npm test
+npm run runtime:threat-boundary-smoke
 npm run runtime:threat-implementation-packet
 npm run runtime:threat-model
 npm run runtime:skeleton-smoke
@@ -177,5 +180,7 @@ git diff --check
 ## Related Docs
 
 - [Threat Model Implementation Packet](threat-model-implementation-packet.md)
+- [Runtime Threat Boundary Implementation Proof](runtime-threat-boundary-implementation-proof.md)
+- [Runtime Threat Boundary Smoke](runtime-threat-boundary-smoke.md)
 - [Hosted Runtime Threat Model And Trust Boundary](hosted-runtime-threat-model-trust-boundary.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)

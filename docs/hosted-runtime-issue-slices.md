@@ -96,6 +96,16 @@ Acceptance criteria:
 - mutation-like tools require explicit authority,
 - no MCP server runtime code is added.
 
+Planning artifact:
+
+- [Hosted Runtime MCP Server Contract](hosted-runtime-mcp-server-contract.md)
+
+Verification:
+
+```bash
+npm run runtime:mcp-contract
+```
+
 ### Slice 4: Database Posture And Data Lifecycle
 
 Type: HITL.

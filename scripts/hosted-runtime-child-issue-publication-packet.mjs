@@ -70,6 +70,9 @@ const issues = [
       "Tool outputs preserve citations, gaps, denied counts, and audit-friendly metadata.",
       "Mutation-like tools require explicit authority.",
       "No MCP server runtime code is added."
+    ],
+    sourceDocs: [
+      "docs/hosted-runtime-mcp-server-contract.md"
     ]
   },
   {

@@ -22,6 +22,11 @@ for (const requiredPath of [
   "docs/runtime-implementation-gate.md",
   "docs/threat-model-implementation-packet.md",
   "docs/runtime-skeleton-implementation-proof.md",
+  "docs/api-policy-contract-implementation-proof.md",
+  "docs/api-policy-contract-smoke.md",
+  "examples/fixtures/api-contract/api-policy-contract-fixture-matrix.json",
+  "examples/api-contract/api-policy-contract-smoke.mjs",
+  "src/contracts/api-policy.ts",
   "docs/owner-approval-record-packet.md",
   "scripts/record-owner-approval.mjs"
 ]) {
@@ -29,8 +34,10 @@ for (const requiredPath of [
 }
 
 for (const requiredText of [
-  "Status: approval packet only. Implementation is blocked until exact owner approval is recorded.",
+  "Status: implemented as a synthetic API policy contract package after exact owner approval.",
   "The next Source-Wire API-related unit should be a public-safe synthetic API policy contract package, not an API server.",
+  "The approved synthetic API policy contract package is recorded in [API Policy Contract Implementation Proof](api-policy-contract-implementation-proof.md).",
+  "npm run runtime:api-policy-smoke",
   exactApprovalText,
   "npm run runtime:api-implementation-packet",
   "npm run owner:record-approval -- --target api-contract-implementation",
@@ -40,12 +47,13 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.",
+  "Status: completed synthetic API policy contract slice map after exact owner approval.",
   "Slice 1: File Scope And Safety Guard",
   "Slice 2: Synthetic Request Envelope And Endpoint Group Contract",
   "Slice 3: Synthetic API Policy Fixture Matrix",
   "Slice 4: Smoke Test And Validation",
   "Slice 5: Docs, Proof, And Readiness",
+  "npm run runtime:api-policy-smoke",
   "npm run runtime:api-implementation-packet",
   "Still Blocked After These Slices"
 ]) {
@@ -113,7 +121,7 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Implementation", "blocked pending exact owner approval"],
+  ["Implementation", "synthetic API policy contract package implemented after exact owner approval"],
   ["Runtime shape", "synthetic API policy contract only"],
   ["API server runtime", "blocked"],
   ["Route handlers", "blocked"],
@@ -123,7 +131,7 @@ printRows([
 console.log("");
 console.log("ok API contract implementation packet ready");
 console.log("ok API contract implementation slices ready");
-console.log("blocked API contract implementation pending owner approval");
+console.log("ok synthetic API policy contract implementation recorded");
 console.log("blocked API server implementation");
 
 async function assertPathExists(path) {

@@ -119,6 +119,25 @@ export {
   evaluateRuntimeThreatBoundaryCase,
   evaluateRuntimeThreatBoundaryFixtureMatrix
 } from "./runtime-threat-boundary/index.js";
+export type {
+  SourceWireApiContractAction,
+  SourceWireApiContractCaller,
+  SourceWireApiContractCallerKind,
+  SourceWireApiContractCapability,
+  SourceWireApiContractCitation,
+  SourceWireApiContractEndpointGroup,
+  SourceWireApiContractFixtureCase,
+  SourceWireApiContractFixtureMatrix,
+  SourceWireApiContractGap,
+  SourceWireApiContractRequest,
+  SourceWireApiContractResponse,
+  SourceWireApiContractStatus
+} from "./contracts/api-policy.js";
+export {
+  SOURCE_WIRE_API_POLICY_CONTRACT_BOUNDARY,
+  evaluateApiPolicyContractCase,
+  evaluateApiPolicyContractFixtureMatrix
+} from "./contracts/api-policy.js";
 export type * from "./contracts/fixtures.js";
 export type * from "./contracts/mcp-tools.js";
 export type * from "./contracts/owner-hosted-setup.js";

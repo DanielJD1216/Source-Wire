@@ -1,6 +1,6 @@
 # Source-Wire Runtime Implementation Gate
 
-Status: implementation gate with minimal synthetic runtime boundary, synthetic runtime skeleton, and synthetic threat-boundary package. Production runtime remains blocked.
+Status: implementation gate with minimal synthetic runtime boundary, synthetic runtime skeleton, synthetic threat-boundary package, and synthetic API policy contract package. Production runtime remains blocked.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -8,7 +8,7 @@ Use Node.js 22 with npm from the repository root. For the complete local setup p
 
 This gate prevents hosted Source-Wire runtime work from starting just because boundary docs, synthetic fixtures, and a minimal synthetic runtime boundary now exist.
 
-Source-Wire is still a public contract package with exported synthetic policy proof code, a synthetic owner-hosted runtime skeleton, and a synthetic trust-boundary evaluator.
+Source-Wire is still a public contract package with exported synthetic policy proof code, a synthetic owner-hosted runtime skeleton, a synthetic trust-boundary evaluator, and a synthetic API policy contract evaluator.
 
 It does not host user memory.
 
@@ -63,9 +63,10 @@ npm run runtime:threat-boundary-smoke
 npm run runtime:threat-implementation-packet
 ```
 
-The next API contract approval packet is [API Contract Implementation Packet](api-contract-implementation-packet.md). It is verified by:
+The API contract implementation is recorded in [API Policy Contract Implementation Proof](api-policy-contract-implementation-proof.md). It is verified by:
 
 ```bash
+npm run runtime:api-policy-smoke
 npm run runtime:api-implementation-packet
 ```
 
@@ -209,6 +210,8 @@ It must not silently decide that evidence is trusted memory.
 - [Runtime Threat Boundary Smoke](runtime-threat-boundary-smoke.md)
 - [Threat Model Implementation Packet](threat-model-implementation-packet.md)
 - [Threat Model Implementation Slices](threat-model-implementation-slices.md)
+- [API Policy Contract Implementation Proof](api-policy-contract-implementation-proof.md)
+- [API Policy Contract Smoke](api-policy-contract-smoke.md)
 - [API Contract Implementation Packet](api-contract-implementation-packet.md)
 - [API Contract Implementation Slices](api-contract-implementation-slices.md)
 - [MCP Contract Implementation Packet](mcp-contract-implementation-packet.md)

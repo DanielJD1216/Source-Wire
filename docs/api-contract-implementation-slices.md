@@ -1,6 +1,6 @@
 # Source-Wire API Contract Implementation Slices
 
-Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.
+Status: completed synthetic API policy contract slice map after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -126,6 +126,7 @@ After implementation, run:
 npm run typecheck
 npm run build
 npm test
+npm run runtime:api-policy-smoke
 npm run runtime:api-implementation-packet
 npm run runtime:api-contract
 npm run runtime:threat-implementation-packet

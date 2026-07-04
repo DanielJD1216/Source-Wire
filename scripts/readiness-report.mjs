@@ -18,6 +18,7 @@ const requiredScripts = [
   "minimal-runtime:smoke",
   "runtime:skeleton-smoke",
   "runtime:threat-boundary-smoke",
+  "runtime:api-policy-smoke",
   "runtime:skeleton-packet",
   "runtime:threat-implementation-packet",
   "runtime:api-implementation-packet",
@@ -228,6 +229,8 @@ for (const requiredPath of [
   "docs/threat-model-implementation-slices.md",
   "docs/api-contract-implementation-packet.md",
   "docs/api-contract-implementation-slices.md",
+  "docs/api-policy-contract-implementation-proof.md",
+  "docs/api-policy-contract-smoke.md",
   "docs/mcp-contract-implementation-packet.md",
   "docs/mcp-contract-implementation-slices.md",
   "docs/database-posture-implementation-packet.md",
@@ -248,6 +251,8 @@ for (const requiredPath of [
   "docs/ci-checks.md",
   "examples/fixtures/README.md",
   "examples/minimal-runtime/README.md",
+  "examples/fixtures/api-contract/README.md",
+  "examples/fixtures/api-contract/api-policy-contract-fixture-matrix.json",
   "examples/fixtures/runtime-skeleton/README.md",
   "examples/fixtures/runtime-skeleton/runtime-skeleton-fixture-matrix.json",
   "examples/fixtures/runtime-threat-boundary/README.md",
@@ -256,6 +261,8 @@ for (const requiredPath of [
   "examples/runtime-skeleton/runtime-skeleton-smoke.mjs",
   "examples/runtime-threat-boundary/README.md",
   "examples/runtime-threat-boundary/runtime-threat-boundary-smoke.mjs",
+  "examples/api-contract/README.md",
+  "examples/api-contract/api-policy-contract-smoke.mjs",
   "examples/typescript/README.md"
 ]) {
   await assertPathExists(requiredPath);
@@ -274,7 +281,7 @@ printRows([
   ["Version", packageJson.version],
   ["License", packageJson.license],
   ["Publish boundary", "npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked"],
-  ["Runtime boundary", "synthetic in-memory boundary plus synthetic API/MCP skeleton and threat-boundary package only, no backend runtime included"]
+  ["Runtime boundary", "synthetic in-memory boundary plus synthetic API/MCP skeleton, threat-boundary package, and API policy contract package only, no backend runtime included"]
 ]);
 
 printSection("Package Surfaces");
@@ -296,6 +303,7 @@ printList([
   "minimal-runtime:smoke validates exported synthetic in-memory runtime boundary code against owner-hosted API plus MCP proof cases",
   "runtime:skeleton-smoke validates exported synthetic owner-hosted API policy route and MCP adapter code without starting a server, connecting a database, or promoting trusted memory automatically",
   "runtime:threat-boundary-smoke validates the synthetic trust-boundary package against unauthorized callers, namespace isolation, source-memory separation, prompt injection, secrets, audit gaps, backup restore drift, deployment exposure, MCP bypass, and owner-controlled approval",
+  "runtime:api-policy-smoke validates the synthetic API policy contract package against request envelopes, endpoint groups, capability checks, namespace resolution, denied results, citations, gaps, audit metadata, source maintenance, candidate review, trusted-memory approval boundaries, handoff/status evidence, and MCP-through-API routing",
   "runtime:skeleton-packet validates the runtime skeleton implementation packet, approval boundary, safety claims, and production-runtime blockers",
   "runtime:threat-implementation-packet validates the synthetic trust-boundary implementation approval packet while production runtime remains blocked",
   "runtime:api-implementation-packet validates the synthetic API policy contract implementation approval packet while API server runtime remains blocked",
@@ -382,6 +390,8 @@ printList([
   "docs/runtime-skeleton-smoke.md records the synthetic runtime skeleton smoke command, expected markers, and blocked side effects",
   "docs/runtime-threat-boundary-implementation-proof.md records the synthetic threat-boundary implementation proof while production runtime remains blocked",
   "docs/runtime-threat-boundary-smoke.md records the synthetic threat-boundary smoke command, expected markers, and blocked side effects",
+  "docs/api-policy-contract-implementation-proof.md records the synthetic API policy contract implementation proof while API server runtime remains blocked",
+  "docs/api-policy-contract-smoke.md records the synthetic API policy contract smoke command, expected markers, and blocked side effects",
   "docs/threat-model-implementation-packet.md records the next synthetic trust-boundary implementation approval path while production runtime remains blocked",
   "docs/threat-model-implementation-slices.md records the future threat case, trust-boundary fixture, smoke, docs, and readiness slices",
   "docs/api-contract-implementation-packet.md records the next synthetic API policy contract implementation approval path while API server runtime remains blocked",

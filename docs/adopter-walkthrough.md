@@ -37,7 +37,7 @@ Source-Wire Package Readiness Report
 Package: @source-wire/contracts
 Version: 0.1.0
 License: Apache-2.0
-Runtime boundary: synthetic in-memory boundary plus synthetic API/MCP skeleton and threat-boundary package only, no backend runtime included
+Runtime boundary: synthetic in-memory boundary plus synthetic API/MCP skeleton, threat-boundary package, and API policy contract package only, no backend runtime included
 ok readiness report
 ```
 

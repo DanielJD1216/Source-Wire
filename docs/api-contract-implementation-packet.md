@@ -1,6 +1,6 @@
 # Source-Wire API Contract Implementation Packet
 
-Status: approval packet only. Implementation is blocked until exact owner approval is recorded.
+Status: implemented as a synthetic API policy contract package after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -8,7 +8,7 @@ Use Node.js 22 with npm from the repository root. For the complete local setup p
 
 The next Source-Wire API-related unit should be a public-safe synthetic API policy contract package, not an API server.
 
-This packet defines the exact unit that can start after owner approval:
+This packet defines the exact unit that was implemented after owner approval:
 
 ```text
 synthetic request envelopes
@@ -35,7 +35,7 @@ Approved for a future Source-Wire API contract implementation unit: build a publ
 
 ## What Approval Would Unlock
 
-Only this:
+Only this was unlocked:
 
 - public-safe API policy contract types,
 - synthetic request envelope fixtures,
@@ -52,6 +52,17 @@ Only this:
 - synthetic MCP-through-API routing fixtures,
 - local smoke tests,
 - docs and readiness gate updates.
+
+## Implementation Proof
+
+The approved synthetic API policy contract package is recorded in [API Policy Contract Implementation Proof](api-policy-contract-implementation-proof.md).
+
+It is verified by:
+
+```bash
+npm run runtime:api-policy-smoke
+npm run runtime:api-implementation-packet
+```
 
 ## What Approval Would Not Unlock
 
@@ -111,7 +122,7 @@ npm run claims:scan
 
 ## Implementation Slice Map
 
-Use [API Contract Implementation Slices](api-contract-implementation-slices.md) as the implementation slice map after approval.
+Use [API Contract Implementation Slices](api-contract-implementation-slices.md) as the implementation slice map.
 
 ## Owner Approval Recording
 
@@ -131,6 +142,8 @@ npm run owner:open-issues-status
 ## Related Docs
 
 - [API Contract Implementation Slices](api-contract-implementation-slices.md)
+- [API Policy Contract Implementation Proof](api-policy-contract-implementation-proof.md)
+- [API Policy Contract Smoke](api-policy-contract-smoke.md)
 - [Hosted Runtime API Server Contract](hosted-runtime-api-server-contract.md)
 - [Hosted Runtime Threat Model And Trust Boundary](hosted-runtime-threat-model-trust-boundary.md)
 - [Threat Model Implementation Packet](threat-model-implementation-packet.md)

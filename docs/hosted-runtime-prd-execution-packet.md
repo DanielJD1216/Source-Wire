@@ -85,6 +85,7 @@ npm run runtime:mcp-contract
 npm run runtime:database-posture
 npm run runtime:fixture-plan
 npm run runtime:deployment-boundary
+npm run runtime:wrapper-reconciliation
 npm run publish:readiness
 npm run world:share-final-preflight
 npm run runtime-readiness:smoke

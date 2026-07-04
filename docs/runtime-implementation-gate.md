@@ -38,11 +38,14 @@ The proposed first runtime PRD package is recorded in [First Runtime PRD Package
 
 The current minimal runtime PRD package is recorded in [Minimal Runtime PRD](minimal-runtime-prd.md).
 
+The hosted-runtime planning gates and existing synthetic wrapper proof are reconciled in [Hosted Runtime Wrapper Proof Reconciliation](hosted-runtime-wrapper-proof-reconciliation.md).
+
 The current runtime-readiness gate is recorded in [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md). The redacted private-proof intake gate is recorded in [Runtime Proof Intake](runtime-proof-intake.md). Both are verified by:
 
 ```bash
 npm run runtime-readiness:smoke
 npm run runtime-proof-intake:smoke
+npm run runtime:wrapper-reconciliation
 ```
 
 ## What A Hosted Runtime PRD May Propose
@@ -146,6 +149,7 @@ It must not silently decide that evidence is trusted memory.
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
 - [Runtime Readiness Smoke](runtime-readiness-smoke.md)
 - [Runtime Proof Intake](runtime-proof-intake.md)
+- [Hosted Runtime Wrapper Proof Reconciliation](hosted-runtime-wrapper-proof-reconciliation.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Architecture Map](architecture-map.md)

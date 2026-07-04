@@ -23,6 +23,7 @@ Future runtime work must also pass the runtime-readiness matrix smoke and redact
 ```bash
 npm run runtime-readiness:smoke
 npm run runtime-proof-intake:smoke
+npm run runtime:wrapper-reconciliation
 ```
 
 The proposed first runtime PRD package is recorded in [First Runtime PRD Package](first-runtime-prd.md).
@@ -170,6 +171,7 @@ This decision does not add:
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
 - [Runtime Readiness Smoke](runtime-readiness-smoke.md)
 - [Runtime Proof Intake](runtime-proof-intake.md)
+- [Hosted Runtime Wrapper Proof Reconciliation](hosted-runtime-wrapper-proof-reconciliation.md)
 - [First Runtime PRD Package](first-runtime-prd.md)
 - [Minimal Runtime PRD](minimal-runtime-prd.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)

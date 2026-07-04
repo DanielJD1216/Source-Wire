@@ -46,7 +46,7 @@ Public-safe fixture implementation: `npm run runtime:fixture-smoke` validates th
 
 Deployment-boundary implementation: `npm run runtime:deployment-boundary-smoke` validates the approved synthetic deployment-boundary package for local development, owner-hosted runtime review, managed-hosted deferral, stop conditions, rollback evidence, claim boundaries, no-hosted-service proof, MCP-through-API policy routing, and owner-controlled trusted memory promotion. It does not add deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, managed hosting, database migrations, real database connections, PostgreSQL setup, pgvector setup, API server runtime, MCP server runtime, live connectors, Mission Control UI, real data, client data, private code, AGPLv3 code, or automatic trusted memory promotion.
 
-Runtime implementation decision: after setup, daily workflow, and Unit 33 runtime-readiness alignment, the next public runtime decision is still no-go for production runtime code. The recommended path is to refresh the public owner-hosted runtime PRD or wrapper-runtime gate from redacted Unit 33 metadata, then approve one narrow implementation boundary at a time. Read [Runtime Implementation Decision Gate](docs/runtime-implementation-decision-gate.md) and [Private Proof To Runtime Extraction Readiness](docs/private-proof-runtime-extraction-readiness.md).
+Runtime implementation decision: after setup, daily workflow, and Unit 33 runtime-readiness alignment, the next public runtime decision is still no-go for production runtime code. The recommended path is to refresh the public owner-hosted runtime PRD or wrapper-runtime gate from redacted Unit 33 metadata, then approve one narrow implementation boundary at a time. Read [Runtime Implementation Decision Gate](docs/runtime-implementation-decision-gate.md), [Private Proof To Runtime Extraction Readiness](docs/private-proof-runtime-extraction-readiness.md), and [Runtime PRD Refresh Approval Request](docs/runtime-prd-refresh-approval-request.md).
 
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
@@ -171,6 +171,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Runtime Readiness Implementation Proof](docs/runtime-readiness-implementation-proof.md)
 - [Runtime Proof Intake Contract](docs/contracts/runtime-proof-intake-contract.md)
 - [Runtime Proof Intake](docs/runtime-proof-intake.md)
+- [Runtime PRD Refresh Approval Request](docs/runtime-prd-refresh-approval-request.md)
 - [Hosted Runtime PRD Proof Intake Gate Refresh](docs/hosted-runtime-prd-proof-intake-gate-refresh.md)
 - [Hosted Runtime Child Issue Proof Intake Gate Refresh](docs/hosted-runtime-child-issue-proof-intake-gate-refresh.md)
 - [Hosted Runtime Child Issue Publisher Write Gate Refresh](docs/hosted-runtime-child-issue-publisher-write-gate-refresh.md)

@@ -68,6 +68,12 @@ The next public-safe fixture approval packet is [Public-Safe Fixture Implementat
 npm run runtime:fixture-implementation-packet
 ```
 
+The next deployment-boundary approval packet is [Deployment Boundary Implementation Packet](deployment-boundary-implementation-packet.md). It is verified by:
+
+```bash
+npm run runtime:deployment-implementation-packet
+```
+
 ## What A Hosted Runtime PRD May Propose
 
 A hosted runtime implementation PRD may propose public-safe versions of:
@@ -172,6 +178,8 @@ It must not silently decide that evidence is trusted memory.
 - [Database Posture Implementation Slices](database-posture-implementation-slices.md)
 - [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)
 - [Public-Safe Fixture Implementation Slices](public-safe-fixture-implementation-slices.md)
+- [Deployment Boundary Implementation Packet](deployment-boundary-implementation-packet.md)
+- [Deployment Boundary Implementation Slices](deployment-boundary-implementation-slices.md)
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)

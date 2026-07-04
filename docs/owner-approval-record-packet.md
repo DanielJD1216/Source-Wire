@@ -46,6 +46,7 @@ npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
 npm run owner:record-approval -- --target runtime-skeleton-implementation
 npm run owner:record-approval -- --target database-posture-implementation
 npm run owner:record-approval -- --target public-safe-fixture-implementation
+npm run owner:record-approval -- --target deployment-boundary-implementation
 ```
 
 The recorder does not write unless `--write` and a matching `--confirm-exact` value are supplied.
@@ -86,6 +87,7 @@ npm run release:approval-status
 | `#257`, target `runtime-skeleton-implementation` | Runtime skeleton implementation path | Record approval before a future narrow runtime skeleton implementation unit. |
 | `#262`, target `database-posture-implementation` | Database posture implementation path | Record approval before a future synthetic database posture implementation unit. |
 | `#263`, target `public-safe-fixture-implementation` | Public-safe fixture implementation path | Record approval before a future synthetic fixture implementation unit. |
+| `#264`, target `deployment-boundary-implementation` | Deployment boundary implementation path | Record approval before a future synthetic deployment-boundary implementation unit. |
 | `#258` | Contribution terms path | Completed contribution terms PRD approval; code contribution acceptance still needs a separate future implementation approval. |
 
 ## Exact Approval Texts
@@ -156,6 +158,14 @@ Target: `public-safe-fixture-implementation`
 Approved for a future Source-Wire public-safe fixture implementation unit: build a synthetic hosted-runtime fixture package and validation smoke tests for caller identity, namespaces, source evidence, candidates, trusted memory, denied cases, audit metadata, and no-auto-promotion. Use synthetic fixtures only. Do not add database migrations, real database connections, PostgreSQL or pgvector setup, API server implementation, MCP server runtime implementation, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. Fixtures must not include real local paths, account IDs, emails, domains, tokens, screenshots, client data, production exports, or private proof content. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled.
 ```
 
+### Issue #264: Deployment boundary implementation path
+
+Target: `deployment-boundary-implementation`
+
+```text
+Approved for a future Source-Wire deployment boundary implementation unit: build a public-safe synthetic deployment readiness package and validation smoke tests for local development, owner-hosted runtime, managed-hosted deferral, stop conditions, rollback evidence, claim boundaries, and no-hosted-service proof. Use synthetic fixtures only. Do not add deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, database migrations, real database connections, PostgreSQL or pgvector setup, API server implementation, MCP server runtime implementation, live connectors, Mission Control UI, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. Source-Wire must not imply it hosts memory for users. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled.
+```
+
 ### Issue #258: Contribution terms path
 
 Target: `contribution-terms-prd`
@@ -192,6 +202,7 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - runtime skeleton implementation,
 - database posture implementation,
 - public-safe fixture implementation,
+- deployment boundary implementation,
 - code contribution acceptance.
 
 ## Related Docs
@@ -204,4 +215,5 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)
+- [Deployment Boundary Implementation Packet](deployment-boundary-implementation-packet.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)

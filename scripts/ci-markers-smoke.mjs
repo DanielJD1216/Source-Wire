@@ -104,6 +104,7 @@ const completeLog = [
   "ok hosted runtime child issue publisher smoke",
   "blocked child issue publication approval missing",
   "blocked child issue duplicate publication",
+  "blocked child issue publication runtime gate failed",
   "blocked hosted runtime implementation",
   "ok hosted runtime child issue publication preflight ready",
   "ok child issue publication packet current",
@@ -229,7 +230,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 59 groups 209 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 59 groups 210 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

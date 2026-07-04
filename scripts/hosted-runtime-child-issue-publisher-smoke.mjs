@@ -35,6 +35,20 @@ assertIncludes(duplicatePublication.stderr, "failed hosted runtime child issue p
 assertIncludes(duplicatePublication.stderr, "blocked child issue duplicate publication", "duplicate publication fixture");
 assertIncludes(duplicatePublication.stderr, "blocked hosted runtime implementation", "duplicate publication fixture");
 
+const runtimeGateFailure = await runPublisher([
+  "--fixture",
+  "approval-recorded-no-duplicates-with-runtime-gate-failure",
+  "--write",
+  "--confirm-exact",
+  exactApproval
+]);
+assertExitCode(runtimeGateFailure, 1, "runtime gate failure fixture");
+assertIncludes(runtimeGateFailure.stdout, "Fixture mode: approval-recorded-no-duplicates-with-runtime-gate-failure. No GitHub API calls are made for fixture-backed approval or issue state.", "runtime gate failure fixture");
+assertIncludes(runtimeGateFailure.stderr, "failed hosted runtime child issue publisher: runtime readiness gate failed before issue creation", "runtime gate failure fixture");
+assertIncludes(runtimeGateFailure.stderr, "synthetic runtime readiness failure", "runtime gate failure fixture");
+assertIncludes(runtimeGateFailure.stderr, "blocked child issue publication runtime gate failed", "runtime gate failure fixture");
+assertIncludes(runtimeGateFailure.stderr, "blocked hosted runtime implementation", "runtime gate failure fixture");
+
 console.log("ok hosted runtime child issue publisher smoke");
 
 function runPublisher(args) {

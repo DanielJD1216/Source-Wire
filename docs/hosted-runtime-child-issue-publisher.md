@@ -2,7 +2,7 @@
 
 Status: guarded owner-side publisher.
 
-Default mode is read-only. Write mode requires the exact owner approval text, `--write`, `--confirm-exact`, and a separately recorded exact approval on parent issue `#257`.
+Default mode is read-only. Write mode requires the exact owner approval text, `--write`, `--confirm-exact`, a separately recorded exact approval on parent issue `#257`, no duplicate open child issues, and current runtime readiness plus proof-intake gates before any issue is created.
 
 This command does not implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, create tags, accept code contributions, add real user data, or approve production runtime use.
 
@@ -12,7 +12,7 @@ Use this command after the owner separately approves the exact child-issue publi
 
 The command creates the six hosted-runtime PRD/planning issues in dependency order only when the write gate is deliberately opened. Without write flags, it validates the local payloads and prints the exact future command.
 
-Write mode also reads parent issue `#257` and refuses to create issues unless the exact child-issue publication approval is already recorded there in an `Owner Approval Record` section.
+Write mode also reads parent issue `#257` and refuses to create issues unless the exact child-issue publication approval is already recorded there in an `Owner Approval Record` section. After approval and duplicate checks pass, it reruns `runtime-readiness:smoke` and `runtime-proof-intake:smoke` before any GitHub issue creation.
 
 ## Command
 
@@ -74,9 +74,18 @@ blocked child issue duplicate publication
 blocked hosted runtime implementation
 ```
 
+Expected marker if write mode is attempted while a required runtime gate fails:
+
+```text
+blocked child issue publication runtime gate failed
+blocked hosted runtime implementation
+```
+
 Expected write markers:
 
 ```text
+ok runtime readiness gate current
+ok runtime proof intake gate current
 ok hosted runtime child issue publisher ready
 ok hosted runtime child issues published
 blocked hosted runtime implementation
@@ -103,6 +112,8 @@ Write mode must first verify:
 - exact `--confirm-exact` text is provided,
 - exact child-issue publication approval is recorded on issue `#257`,
 - matching open child issue titles do not already exist.
+- `runtime-readiness:smoke` passes at write time,
+- `runtime-proof-intake:smoke` passes at write time.
 
 Write mode must not:
 

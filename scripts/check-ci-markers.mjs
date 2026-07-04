@@ -234,6 +234,7 @@ const markerGroups = [
       "ok hosted runtime child issue publisher smoke",
       "blocked child issue publication approval missing",
       "blocked child issue duplicate publication",
+      "blocked child issue publication runtime gate failed",
       "blocked hosted runtime implementation"
     ]
   },

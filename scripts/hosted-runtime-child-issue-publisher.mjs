@@ -25,6 +25,21 @@ const sharedBlockedList = [
   "tags"
 ];
 
+const defaultRuntimeGateCommands = [
+  {
+    name: "runtime readiness",
+    command: "npm",
+    args: ["run", "runtime-readiness:smoke"],
+    okMarker: "ok runtime readiness gate current"
+  },
+  {
+    name: "runtime proof intake",
+    command: "npm",
+    args: ["run", "runtime-proof-intake:smoke"],
+    okMarker: "ok runtime proof intake gate current"
+  }
+];
+
 const issues = [
   {
     order: 1,
@@ -239,6 +254,8 @@ if (duplicateTitles.length > 0) {
   process.exit(1);
 }
 
+await runRequiredRuntimeGates();
+
 for (const issue of issues) {
   const url = await ghIssueCreate(issue);
   createdIssues.push({ ...issue, url });
@@ -375,7 +392,70 @@ function buildFixtureState(fixture) {
     };
   }
 
+  if (fixture === "approval-recorded-no-duplicates-with-runtime-gate-failure") {
+    return {
+      approvalStatus: {
+        issue: {
+          number: parentIssueNumber,
+          title: "Owner decision: open hosted runtime PRD path",
+          url: "https://example.invalid/source-wire/issues/257"
+        },
+        recorded: true
+      },
+      openIssues: [],
+      runtimeGateCommands: [
+        {
+          name: "runtime readiness",
+          command: process.execPath,
+          args: ["-e", "console.error('synthetic runtime readiness failure'); process.exit(1);"],
+          okMarker: "ok runtime readiness gate current"
+        },
+        ...defaultRuntimeGateCommands.slice(1)
+      ]
+    };
+  }
+
   throw new Error(`unknown fixture: ${fixture}`);
+}
+
+async function runRequiredRuntimeGates() {
+  const commands = fixtureState?.runtimeGateCommands ?? defaultRuntimeGateCommands;
+  for (const gate of commands) {
+    try {
+      const result = await execCommand(gate.command, gate.args);
+      if (result.stdout.trim()) {
+        console.log(result.stdout.trim());
+      }
+      if (result.stderr.trim()) {
+        console.error(result.stderr.trim());
+      }
+      console.log(gate.okMarker);
+    } catch (error) {
+      console.error(`failed hosted runtime child issue publisher: ${gate.name} gate failed before issue creation`);
+      if (error.stdout?.trim()) {
+        console.error(`stdout:\n${error.stdout.trim()}`);
+      }
+      if (error.stderr?.trim()) {
+        console.error(`stderr:\n${error.stderr.trim()}`);
+      }
+      console.error("blocked child issue publication runtime gate failed");
+      console.error("blocked hosted runtime implementation");
+      process.exit(1);
+    }
+  }
+}
+
+function execCommand(command, commandArgs) {
+  return new Promise((resolve, reject) => {
+    execFile(command, commandArgs, { cwd: process.cwd(), maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => {
+      if (error) {
+        reject(Object.assign(error, { stdout, stderr }));
+        return;
+      }
+
+      resolve({ stdout, stderr });
+    });
+  });
 }
 
 function execGh(ghArgs) {
@@ -447,6 +527,7 @@ function printUsage() {
   console.log("  npm run runtime:child-issue-publish -- --write --confirm-exact \"<exact approval text>\"");
   console.log("  npm run runtime:child-issue-publish -- --fixture approval-missing --write --confirm-exact \"<exact approval text>\"");
   console.log("  npm run runtime:child-issue-publish -- --fixture approval-recorded-with-duplicates --write --confirm-exact \"<exact approval text>\"");
+  console.log("  npm run runtime:child-issue-publish -- --fixture approval-recorded-no-duplicates-with-runtime-gate-failure --write --confirm-exact \"<exact approval text>\"");
 }
 
 function printSection(title) {

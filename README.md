@@ -143,6 +143,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Runtime Proof Intake](docs/runtime-proof-intake.md)
 - [Hosted Runtime PRD Proof Intake Gate Refresh](docs/hosted-runtime-prd-proof-intake-gate-refresh.md)
 - [Hosted Runtime Child Issue Proof Intake Gate Refresh](docs/hosted-runtime-child-issue-proof-intake-gate-refresh.md)
+- [Hosted Runtime Child Issue Publisher Write Gate Refresh](docs/hosted-runtime-child-issue-publisher-write-gate-refresh.md)
 - [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md)
 - [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md)
 - [Owner-Hosted Setup Docs Audit](docs/owner-hosted-setup-docs-audit.md)

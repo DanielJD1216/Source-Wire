@@ -2,6 +2,8 @@
 
 Local artifact: [Source-Wire Memory Engine Wrapper Runtime Proof Docs And Stop Conditions](../../memory-engine-wrapper-runtime-proof-docs-stop-conditions.md).
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../quickstart.md).
+
 Verification commands:
 
 ```bash

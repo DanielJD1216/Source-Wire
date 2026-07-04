@@ -4,6 +4,8 @@ Status: Slice 6 proof checkpoint complete. Wrapper runtime remains synthetic-onl
 
 Date: 2026-07-02
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Purpose
 
 This document proves the wrapper runtime unit remains:

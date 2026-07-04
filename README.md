@@ -26,6 +26,8 @@ Daily workflow synthetic path: Source-Wire now exports a synthetic daily owner m
 
 Runtime readiness gate: Source-Wire now exports a synthetic runtime-readiness contract and fixture matrix. `npm run runtime-readiness:smoke` proves private-proof, API policy, MCP policy, database posture, source update, memory-engine boundary, and release boundary gates while keeping API runtime, MCP runtime, database migrations, deployment, managed hosting, real data, AGPLv3 code copying, private implementation copying, and automatic trusted memory promotion blocked. Read [Runtime Readiness Contract](docs/contracts/runtime-readiness-contract.md), [Runtime Readiness Fixture Matrix](docs/runtime-readiness-fixture-matrix.md), and [Runtime Readiness Smoke](docs/runtime-readiness-smoke.md).
 
+Runtime proof intake gate: Source-Wire now includes a synthetic redacted private-proof intake manifest. `npm run runtime-proof-intake:smoke` proves private proof metadata can be acknowledged for PRD refresh without importing private repo paths, raw private content, real data, secrets, AGPLv3 code, private implementation code, runtime implementation, database migrations, or deployment. Read [Runtime Proof Intake Contract](docs/contracts/runtime-proof-intake-contract.md) and [Runtime Proof Intake](docs/runtime-proof-intake.md).
+
 Owner-hosted setup claim boundary: latest `main` documents a BYO setup direction, not managed hosting or production runtime. Database migrations remain blocked, and `Source-Wire-Memory-Engine` stays separate. Read [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md).
 
 Owner-hosted setup closeout: the setup package is complete as a synthetic proof, but runtime implementation remains blocked unless separately approved. Read [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md) and [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md).
@@ -98,6 +100,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - Owner-hosted setup checklist contract.
 - Daily workflow synthetic contract and fixture matrix.
 - Runtime readiness synthetic contract and fixture matrix.
+- Runtime proof intake synthetic contract and redacted manifest.
 - Synthetic fixtures for notes, chat exports, project context, and `/2nd-brain` examples.
 - A public extraction checklist for future safety reviews.
 - A lightweight TypeScript package boundary.
@@ -136,6 +139,8 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Runtime Readiness Fixture Matrix](docs/runtime-readiness-fixture-matrix.md)
 - [Runtime Readiness Smoke](docs/runtime-readiness-smoke.md)
 - [Runtime Readiness Implementation Proof](docs/runtime-readiness-implementation-proof.md)
+- [Runtime Proof Intake Contract](docs/contracts/runtime-proof-intake-contract.md)
+- [Runtime Proof Intake](docs/runtime-proof-intake.md)
 - [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md)
 - [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md)
 - [Owner-Hosted Setup Docs Audit](docs/owner-hosted-setup-docs-audit.md)
@@ -172,6 +177,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md)
 - [Daily Workflow Contract](docs/contracts/daily-workflow-contract.md)
 - [Runtime Readiness Contract](docs/contracts/runtime-readiness-contract.md)
+- [Runtime Proof Intake Contract](docs/contracts/runtime-proof-intake-contract.md)
 - [Source Graph Adapter Contract](docs/contracts/source-graph-adapter-contract.md)
 - [Source Connection Contract](docs/contracts/source-connection-contract.md)
 - [`second-brain.v1` Contract](docs/contracts/second-brain-v1-contract.md)

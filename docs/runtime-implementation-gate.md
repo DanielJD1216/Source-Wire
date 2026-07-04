@@ -2,6 +2,8 @@
 
 Status: implementation gate with one minimal synthetic in-memory runtime boundary. Hosted runtime implementation remains blocked.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Purpose
 
 This gate prevents hosted Source-Wire runtime work from starting just because boundary docs, synthetic fixtures, and a minimal synthetic runtime boundary now exist.

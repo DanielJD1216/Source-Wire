@@ -15,6 +15,7 @@ import {
   SOURCE_WIRE_PACKAGE_VERSION,
   SOURCE_WIRE_MINIMAL_RUNTIME_BOUNDARY,
   SOURCE_WIRE_OWNER_HOSTED_SETUP_CONTRACT,
+  SOURCE_WIRE_RUNTIME_PROOF_INTAKE_CONTRACT,
   SOURCE_WIRE_RUNTIME_READINESS_CONTRACT,
   SOURCE_WIRE_RUNTIME_BOUNDARY,
   SOURCE_WIRE_SCHEMA_EXPORTS,
@@ -22,6 +23,7 @@ import {
   isSourceWireValidationSchemaName,
   runMinimalRuntimeProofCases,
   summarizeOwnerHostedSetupContract,
+  summarizeRuntimeProofIntakeManifest,
   summarizeRuntimeReadinessContract,
   validateSourceWireFile
 } from "@source-wire/contracts";
@@ -29,6 +31,7 @@ import {
 import type {
   SourceWireMinimalRuntimeProofResult,
   SourceWireOwnerHostedSetupContract,
+  SourceWireRuntimeProofIntakeManifest,
   SourceWireRuntimeReadinessContract,
   SourceWireRuntimeBoundary,
   SourceWireSourceGraph,
@@ -202,6 +205,50 @@ Related docs:
 
 - [Runtime Readiness Contract](contracts/runtime-readiness-contract.md)
 - [Runtime readiness fixture](../examples/fixtures/runtime-readiness/README.md)
+
+## Runtime Proof Intake Exports
+
+| Export | Kind | Purpose |
+| --- | --- | --- |
+| `SOURCE_WIRE_RUNTIME_PROOF_INTAKE_CONTRACT` | value | Synthetic contract for redacted private-proof metadata intake before public runtime PRD refresh. |
+| `SOURCE_WIRE_RUNTIME_PROOF_INTAKE_BOUNDARY` | value | Explicit false flags for private paths, raw private content, real data, secrets, copied code, runtime implementation, migrations, and deployment. |
+| `SOURCE_WIRE_RUNTIME_PROOF_INTAKE_REQUIRED_CASES` | value | Required runtime-readiness case IDs covered by proof-intake metadata. |
+| `summarizeRuntimeProofIntakeManifest` | function | Returns counts and public-safety flags for a runtime proof intake manifest. |
+| `SourceWireRuntimeProofIntakeManifest` | type | Compile-time proof-intake manifest shape. |
+| `SourceWireRuntimeProofIntakeProof` | type | Compile-time proof metadata entry shape. |
+| `SourceWireRuntimeProofIntakeBoundary` | type | Compile-time proof-intake boundary shape. |
+
+Example:
+
+```ts
+import {
+  SOURCE_WIRE_RUNTIME_PROOF_INTAKE_CONTRACT,
+  summarizeRuntimeProofIntakeManifest
+} from "@source-wire/contracts";
+
+console.log(SOURCE_WIRE_RUNTIME_PROOF_INTAKE_CONTRACT.status);
+
+const summary = summarizeRuntimeProofIntakeManifest({
+  fixtureType: "source-wire-runtime-proof-intake-manifest",
+  fixtureSafety: "synthetic",
+  contractVersion: "source-wire-runtime-proof-intake.v1",
+  boundary: SOURCE_WIRE_RUNTIME_PROOF_INTAKE_CONTRACT.boundary,
+  proofs: [],
+  decision: {
+    privateProofBaselineAccepted: false,
+    runtimePrdRefreshAllowed: false,
+    runtimeImplementationAllowed: false,
+    allowedNextAction: "Provide redacted private-proof metadata first."
+  }
+});
+
+console.log(summary.runtimeImplementationAllowed);
+```
+
+Related docs:
+
+- [Runtime Proof Intake Contract](contracts/runtime-proof-intake-contract.md)
+- [Runtime proof intake fixture](../examples/fixtures/runtime-proof-intake/README.md)
 
 ## Validation Helper Exports
 

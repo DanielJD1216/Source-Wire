@@ -6,6 +6,8 @@ This matrix records the gates that must be clear before public owner-hosted runt
 
 It does not start runtime work.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Fixture
 
 Fixture path:

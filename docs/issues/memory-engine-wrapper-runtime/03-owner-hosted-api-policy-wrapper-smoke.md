@@ -2,6 +2,8 @@
 
 Local artifact: [Source-Wire Memory Engine Wrapper Runtime API Policy Wrapper Smoke](../../memory-engine-wrapper-runtime-api-policy-wrapper-smoke.md).
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../quickstart.md).
+
 Smoke command:
 
 ```bash

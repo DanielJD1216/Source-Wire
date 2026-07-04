@@ -60,6 +60,21 @@ export {
   summarizeRuntimeReadinessContract
 } from "./contracts/runtime-readiness.js";
 export type {
+  SourceWireRuntimeProofIntakeBoundary,
+  SourceWireRuntimeProofIntakeCategory,
+  SourceWireRuntimeProofIntakeDecision,
+  SourceWireRuntimeProofIntakeEvidenceKind,
+  SourceWireRuntimeProofIntakeManifest,
+  SourceWireRuntimeProofIntakeProof,
+  SourceWireRuntimeProofIntakeSummary
+} from "./contracts/runtime-proof-intake.js";
+export {
+  SOURCE_WIRE_RUNTIME_PROOF_INTAKE_BOUNDARY,
+  SOURCE_WIRE_RUNTIME_PROOF_INTAKE_CONTRACT,
+  SOURCE_WIRE_RUNTIME_PROOF_INTAKE_REQUIRED_CASES,
+  summarizeRuntimeProofIntakeManifest
+} from "./contracts/runtime-proof-intake.js";
+export type {
   SourceWireMinimalRuntimeAudit,
   SourceWireMinimalRuntimeCitation,
   SourceWireMinimalRuntimeProofResult,

@@ -4,6 +4,8 @@ Status: owner-hosted setup package proof complete.
 
 Date: 2026-07-03
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Purpose
 
 This document closes the owner-hosted setup package.

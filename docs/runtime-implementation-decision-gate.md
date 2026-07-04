@@ -4,6 +4,8 @@ Status: decision gate drafted. Runtime implementation remains blocked.
 
 Date: 2026-07-03
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Direct Decision
 
 Do not start public Source-Wire runtime implementation from the owner-hosted setup package alone.
@@ -117,12 +119,14 @@ Public Source-Wire can continue to accept only:
 - public-safe smoke cases,
 - docs corrections,
 - decision packets,
-- extraction notes written without private data.
+- extraction notes written without private data,
+- redacted private-proof intake manifests that contain metadata only.
 
 After the runtime-readiness synthetic gate, future runtime PRD work should use:
 
 ```bash
 npm run runtime-readiness:smoke
+npm run runtime-proof-intake:smoke
 ```
 
 as a required local gate before any claim that public runtime implementation is ready to start.
@@ -135,5 +139,6 @@ as a required local gate before any claim that public runtime implementation is 
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
 - [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)
 - [Memory Engine Baseline License Path Decision Packet](memory-engine-baseline-license-path-decision-packet.md)
 - [Memory Engine Baseline API And MCP Wrapper Boundary](memory-engine-baseline-api-mcp-wrapper-boundary.md)

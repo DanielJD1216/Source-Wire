@@ -8,6 +8,8 @@ It is not a runtime test.
 
 It does not connect to a database, start an API server, start an MCP server, deploy services, import private sources, or create trusted memory.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../../docs/quickstart.md).
+
 ## Files
 
 | File | Purpose | CLI schema |

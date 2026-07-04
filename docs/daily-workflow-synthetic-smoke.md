@@ -4,6 +4,8 @@ This smoke checks the daily workflow cases in the synthetic fixture matrix.
 
 It does not start a server, connect a database, run MCP, crawl the local filesystem, import real sources, or promote trusted memory automatically.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Command
 
 Run from the repository root:

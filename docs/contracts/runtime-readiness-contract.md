@@ -6,6 +6,8 @@ This contract is public and synthetic.
 
 It is not a runtime implementation.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../quickstart.md).
+
 ## Package Exports
 
 The package root exports:

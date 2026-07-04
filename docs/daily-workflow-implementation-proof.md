@@ -4,6 +4,8 @@ Status: complete synthetic contract implementation.
 
 Date: 2026-07-03
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Purpose
 
 This checkpoint proves Source-Wire has a public-safe synthetic contract for the owner daily memory workflow:

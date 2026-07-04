@@ -4,6 +4,8 @@ Status: runtime-readiness synthetic proof complete.
 
 Date: 2026-07-03
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Direct Answer
 
 Source-Wire now has a public synthetic runtime-readiness contract, fixture matrix, and smoke command.
@@ -87,4 +89,12 @@ git diff --check
 
 Use the runtime-readiness matrix as the next public gate before any future runtime PRD or implementation slice.
 
-The likely next step is a clean public runtime PRD that remains owner-hosted and explicitly decides API server, MCP server, database posture, migration boundary, and memory-engine relationship before implementation.
+The next bridge is runtime proof intake:
+
+```bash
+npm run runtime-proof-intake:smoke
+```
+
+That gate records redacted private-proof metadata for PRD refresh while keeping runtime implementation blocked.
+
+The likely next step after that is a clean public runtime PRD that remains owner-hosted and explicitly decides API server, MCP server, database posture, migration boundary, and memory-engine relationship before implementation.

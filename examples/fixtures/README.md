@@ -16,6 +16,7 @@ They are designed to test public Source-Wire contracts without using real privat
 | `owner-hosted-setup/` | Fake owner-brings setup checklist and readiness matrix for future BYO owner-hosted setup. | Not schema-validated by the current CLI. |
 | `daily-workflow/` | Fake daily owner memory workflow matrix for ask, update, review, follow-up, and Mission Control state. | Not schema-validated by the current CLI. |
 | `runtime-readiness/` | Fake runtime-readiness matrix for private proof, API, MCP, database, source update, memory-engine, and release gates. | Not schema-validated by the current CLI. |
+| `runtime-proof-intake/` | Fake redacted private-proof intake manifest for future runtime PRD refresh gates. | Not schema-validated by the current CLI. |
 | `wrapper-runtime/` | Fake fixture matrix for future wrapper runtime policy behavior. | Not schema-validated by the current CLI. |
 
 ## Validate Schema-Backed Fixtures
@@ -119,6 +120,17 @@ Start here:
 - [Runtime readiness fixture matrix](runtime-readiness/README.md)
 - [Runtime Readiness Smoke](../../docs/runtime-readiness-smoke.md)
 
+## Runtime Proof Intake Fixture
+
+The runtime proof intake fixture is a synthetic redacted-proof manifest for acknowledging private proof metadata without moving private data into Source-Wire.
+
+It is not currently validated by the CLI because the current CLI validates schema-backed JSON and JSONL contract payloads only.
+
+Start here:
+
+- [Runtime proof intake fixture](runtime-proof-intake/README.md)
+- [Runtime Proof Intake](../../docs/runtime-proof-intake.md)
+
 ## Rules
 
 - Do not replace these fixtures with real private notes, chats, emails, screenshots, database rows, or local files.
@@ -135,4 +147,5 @@ Start here:
 - [Owner-Hosted Setup Contract](../../docs/contracts/owner-hosted-setup-contract.md)
 - [Daily Workflow Contract](../../docs/contracts/daily-workflow-contract.md)
 - [Runtime Readiness Contract](../../docs/contracts/runtime-readiness-contract.md)
+- [Runtime Proof Intake Contract](../../docs/contracts/runtime-proof-intake-contract.md)
 - [Wrapper Runtime Policy Contract](../../docs/contracts/wrapper-runtime-policy-contract.md)

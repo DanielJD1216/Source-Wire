@@ -4,6 +4,8 @@ This smoke checks the synthetic setup readiness matrix.
 
 It does not start servers, connect databases, run migrations, connect MCP harnesses, crawl private folders, import real source data, deploy services, or create trusted memory.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Command
 
 Run from the repository root:

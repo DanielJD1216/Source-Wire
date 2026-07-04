@@ -4,6 +4,8 @@ This smoke checks the source update safety cases in the synthetic setup readines
 
 It does not run live connectors, import a vault, crawl the local filesystem, start a server, connect a database, or promote trusted memory.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Command
 
 Run from the repository root:

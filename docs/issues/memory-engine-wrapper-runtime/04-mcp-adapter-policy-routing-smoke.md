@@ -2,6 +2,8 @@
 
 Local artifact: [Source-Wire Memory Engine Wrapper Runtime MCP Adapter Policy Routing Smoke](../../memory-engine-wrapper-runtime-mcp-adapter-policy-routing-smoke.md).
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../quickstart.md).
+
 Smoke command:
 
 ```bash

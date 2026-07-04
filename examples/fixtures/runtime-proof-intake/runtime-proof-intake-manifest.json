@@ -1,0 +1,100 @@
+{
+  "fixtureType": "source-wire-runtime-proof-intake-manifest",
+  "fixtureSafety": "synthetic",
+  "contractVersion": "source-wire-runtime-proof-intake.v1",
+  "boundary": {
+    "fixtureSafety": "synthetic",
+    "proofMetadataOnly": true,
+    "redactedProofOnly": true,
+    "privateRepoPathIncluded": false,
+    "rawPrivateContentIncluded": false,
+    "realUserDataIncluded": false,
+    "clientDataIncluded": false,
+    "tokenOrSecretIncluded": false,
+    "privateImplementationCodeCopied": false,
+    "agplCodeCopied": false,
+    "runtimeImplementationIncluded": false,
+    "databaseMigrationIncluded": false,
+    "deploymentIncluded": false
+  },
+  "proofs": [
+    {
+      "proofId": "redacted-private-daily-workflow-proof",
+      "category": "private_proof",
+      "evidenceKind": "private_runtime_proof",
+      "satisfiesReadinessCase": "private_daily_workflow_proof_ready",
+      "redactedEvidenceRef": "private-proof-baseline:redacted-daily-workflow",
+      "status": "available",
+      "noPrivateData": true
+    },
+    {
+      "proofId": "redacted-public-extraction-notes",
+      "category": "private_proof",
+      "evidenceKind": "public_extraction_notes",
+      "satisfiesReadinessCase": "private_daily_workflow_proof_ready",
+      "redactedEvidenceRef": "private-proof-baseline:redacted-extraction-notes",
+      "status": "available",
+      "noPrivateData": true
+    },
+    {
+      "proofId": "redacted-api-policy-proof",
+      "category": "api_policy",
+      "evidenceKind": "policy_contract",
+      "satisfiesReadinessCase": "api_policy_contract_ready",
+      "redactedEvidenceRef": "private-proof-baseline:redacted-api-policy",
+      "status": "available",
+      "noPrivateData": true
+    },
+    {
+      "proofId": "redacted-mcp-policy-proof",
+      "category": "mcp_policy",
+      "evidenceKind": "policy_contract",
+      "satisfiesReadinessCase": "mcp_policy_bypass_blocked",
+      "redactedEvidenceRef": "private-proof-baseline:redacted-mcp-policy",
+      "status": "available",
+      "noPrivateData": true
+    },
+    {
+      "proofId": "redacted-database-posture-proof",
+      "category": "database_posture",
+      "evidenceKind": "setup_readiness",
+      "satisfiesReadinessCase": "database_posture_unapproved_blocked",
+      "redactedEvidenceRef": "private-proof-baseline:redacted-database-posture",
+      "status": "blocked",
+      "noPrivateData": true
+    },
+    {
+      "proofId": "redacted-source-update-safety-proof",
+      "category": "source_update",
+      "evidenceKind": "source_update_safety",
+      "satisfiesReadinessCase": "source_update_safety_ready",
+      "redactedEvidenceRef": "private-proof-baseline:redacted-source-update-safety",
+      "status": "available",
+      "noPrivateData": true
+    },
+    {
+      "proofId": "redacted-memory-engine-boundary-proof",
+      "category": "memory_engine_boundary",
+      "evidenceKind": "license_boundary",
+      "satisfiesReadinessCase": "memory_engine_license_boundary_ready",
+      "redactedEvidenceRef": "private-proof-baseline:redacted-memory-engine-boundary",
+      "status": "available",
+      "noPrivateData": true
+    },
+    {
+      "proofId": "redacted-release-boundary-proof",
+      "category": "release_boundary",
+      "evidenceKind": "release_boundary",
+      "satisfiesReadinessCase": "release_mutation_blocked",
+      "redactedEvidenceRef": "private-proof-baseline:redacted-release-boundary",
+      "status": "blocked",
+      "noPrivateData": true
+    }
+  ],
+  "decision": {
+    "privateProofBaselineAccepted": true,
+    "runtimePrdRefreshAllowed": true,
+    "runtimeImplementationAllowed": false,
+    "allowedNextAction": "Refresh the public owner-hosted runtime PRD or wrapper-runtime gate using redacted proof metadata only."
+  }
+}

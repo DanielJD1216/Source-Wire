@@ -100,6 +100,14 @@ The `ci:check` sub-gate includes:
 - `npm run cli:smoke`
 - `npm run minimal-runtime:smoke`
 - `npm run runtime-boundary:smoke`
+- `npm run wrapper-runtime:api-policy-smoke`
+- `npm run wrapper-runtime:mcp-adapter-smoke`
+- `npm run wrapper-runtime:runtime-adapter-smoke`
+- `npm run owner-hosted-setup:readiness-smoke`
+- `npm run owner-hosted-setup:source-update-safety-smoke`
+- `npm run daily-workflow:smoke`
+- `npm run runtime-readiness:smoke`
+- `npm run runtime-proof-intake:smoke`
 - `npm run safety:scan`
 - `npm run claims:scan`
 

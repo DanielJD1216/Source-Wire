@@ -4,6 +4,8 @@ Status: local issue slices complete for the approved synthetic wrapper runtime p
 
 Date: 2026-07-02
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 This slice map converts the [Source-Wire Memory Engine Wrapper Runtime PRD](memory-engine-wrapper-runtime-prd.md) into independently reviewable units.
 
 The owner later approved a narrow synthetic wrapper runtime implementation unit. That implementation remains synthetic only and does not approve deployment, real data, npm publishing, GitHub release publishing, managed hosting, code contribution acceptance, or AGPLv3 code copying.

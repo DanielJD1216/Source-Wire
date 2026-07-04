@@ -4,6 +4,8 @@ Date: 2026-06-29
 
 Status: decision package only. No runtime implementation is included.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Decision
 
 Source-Wire should stay a contracts-only public package for now.

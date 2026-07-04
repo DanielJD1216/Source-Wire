@@ -6,6 +6,8 @@ The smoke command validates the runtime-readiness fixture matrix.
 
 It does not start an API server, start an MCP server, connect to a database, run migrations, import sources, deploy services, publish npm, create a GitHub release, copy AGPLv3 code, copy private implementation code, or promote trusted memory.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Command
 
 Run from the repository root:

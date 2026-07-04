@@ -4,6 +4,8 @@ Status: Slice 5 local gate packet complete. Runtime implementation remains block
 
 Date: 2026-07-02
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Scope
 
 This document defines the public-safe fixtures and verification gates required before any Source-Wire memory-engine runtime implementation starts.

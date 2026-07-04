@@ -4,6 +4,8 @@ Status: Slice 5 synthetic smoke complete. Production runtime remains blocked.
 
 Date: 2026-07-02
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Purpose
 
 This document records the narrow synthetic separate runtime adapter proof for the wrapper runtime unit.

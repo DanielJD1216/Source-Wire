@@ -8,6 +8,8 @@ It is not a runtime test.
 
 It is not currently schema-validated by the CLI.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../../docs/quickstart.md).
+
 ## Files
 
 | File | Purpose | CLI schema |

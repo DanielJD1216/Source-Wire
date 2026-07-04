@@ -64,10 +64,11 @@ Before any later hosted-runtime implementation unit starts, require:
 2. `npm run world:share-final-preflight` passes.
 3. `npm run runtime:prd-decision-preflight` passes.
 4. `npm run runtime:prd-acceptance-matrix` passes.
-5. `npm run owner:decision-status` shows hosted runtime implementation is still blocked unless a later exact implementation approval exists.
-6. GitHub Package Checks are green on the implementation candidate commit.
-7. The implementation unit states exactly which blocked boundary it opens.
-8. Real user data and private owner data remain out of public docs, fixtures, issues, and examples.
+5. `npm run runtime-readiness:smoke` passes.
+6. `npm run owner:decision-status` shows hosted runtime implementation is still blocked unless a later exact implementation approval exists.
+7. GitHub Package Checks are green on the implementation candidate commit.
+8. The implementation unit states exactly which blocked boundary it opens.
+9. Real user data and private owner data remain out of public docs, fixtures, issues, and examples.
 
 ## Stop Conditions
 
@@ -93,3 +94,5 @@ Stop if a follow-up unit:
 - [Hosted Runtime PRD Decision Preflight](hosted-runtime-prd-decision-preflight.md)
 - [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md)
 - [Hosted Runtime Child Issue Publication Preflight](hosted-runtime-child-issue-publication-preflight.md)
+- [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
+- [Runtime Readiness Smoke](runtime-readiness-smoke.md)

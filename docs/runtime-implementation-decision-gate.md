@@ -119,11 +119,21 @@ Public Source-Wire can continue to accept only:
 - decision packets,
 - extraction notes written without private data.
 
+After the runtime-readiness synthetic gate, future runtime PRD work should use:
+
+```bash
+npm run runtime-readiness:smoke
+```
+
+as a required local gate before any claim that public runtime implementation is ready to start.
+
 ## Related Docs
 
 - [Owner-Hosted Setup Final Proof](owner-hosted-setup-final-proof.md)
 - [Owner-Hosted Setup Go/No-Go Gate](owner-hosted-setup-go-no-go-gate.md)
 - [Owner-Hosted Runtime Direction Gate](owner-hosted-runtime-direction-gate.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
+- [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
+- [Runtime Readiness Smoke](runtime-readiness-smoke.md)
 - [Memory Engine Baseline License Path Decision Packet](memory-engine-baseline-license-path-decision-packet.md)
 - [Memory Engine Baseline API And MCP Wrapper Boundary](memory-engine-baseline-api-mcp-wrapper-boundary.md)

@@ -77,9 +77,10 @@ npm run runtime:mcp-adapter-smoke
 npm run runtime:mcp-implementation-packet
 ```
 
-The next database-posture approval packet is [Database Posture Implementation Packet](database-posture-implementation-packet.md). It is verified by:
+The database posture implementation is recorded in [Database Posture Implementation Proof](database-posture-implementation-proof.md). It is verified by:
 
 ```bash
+npm run runtime:database-posture-smoke
 npm run runtime:database-implementation-packet
 ```
 

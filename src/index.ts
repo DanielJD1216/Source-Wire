@@ -155,6 +155,23 @@ export {
   evaluateMcpAdapterContractCase,
   evaluateMcpAdapterContractFixtureMatrix
 } from "./contracts/mcp-adapter.js";
+export type {
+  SourceWireDatabasePostureCase,
+  SourceWireDatabasePostureDataClass,
+  SourceWireDatabasePostureDataClassDefinition,
+  SourceWireDatabasePostureFixtureMatrix,
+  SourceWireDatabasePostureLifecycleState,
+  SourceWireDatabasePostureOperation,
+  SourceWireDatabasePostureResult,
+  SourceWireDatabasePostureStatus,
+  SourceWireDatabasePostureTrustLevel
+} from "./contracts/database-posture.js";
+export {
+  SOURCE_WIRE_DATABASE_POSTURE_BOUNDARY,
+  SOURCE_WIRE_DATABASE_POSTURE_DATA_CLASSES,
+  evaluateDatabasePostureCase,
+  evaluateDatabasePostureFixtureMatrix
+} from "./contracts/database-posture.js";
 export type * from "./contracts/fixtures.js";
 export type * from "./contracts/mcp-tools.js";
 export type * from "./contracts/owner-hosted-setup.js";

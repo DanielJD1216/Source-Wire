@@ -1,12 +1,12 @@
 # Source-Wire Database Posture Implementation Slices
 
-Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.
+Status: completed synthetic database posture slice map after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Parent
 
-Future parent unit:
+Completed parent unit:
 
 ```text
 Source-Wire Database Posture Implementation
@@ -124,6 +124,7 @@ After implementation, run:
 npm run typecheck
 npm run build
 npm test
+npm run runtime:database-posture-smoke
 npm run runtime:database-implementation-packet
 npm run runtime:database-posture
 npm run runtime:skeleton-smoke
@@ -161,5 +162,7 @@ git diff --check
 ## Related Docs
 
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
+- [Database Posture Implementation Proof](database-posture-implementation-proof.md)
+- [Database Posture Smoke](database-posture-smoke.md)
 - [Hosted Runtime Database Posture And Data Lifecycle](hosted-runtime-database-posture-data-lifecycle.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)

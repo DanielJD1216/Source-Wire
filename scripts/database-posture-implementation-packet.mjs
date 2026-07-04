@@ -17,20 +17,29 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 for (const requiredPath of [
   packetPath,
   slicesPath,
+  "docs/database-posture-implementation-proof.md",
+  "docs/database-posture-smoke.md",
   "docs/hosted-runtime-database-posture-data-lifecycle.md",
   "docs/runtime-implementation-gate.md",
   "docs/runtime-skeleton-implementation-proof.md",
   "docs/owner-approval-record-packet.md",
-  "scripts/record-owner-approval.mjs"
+  "examples/database-posture/database-posture-smoke.mjs",
+  "examples/database-posture/README.md",
+  "examples/fixtures/database-posture/database-posture-fixture-matrix.json",
+  "examples/fixtures/database-posture/README.md",
+  "scripts/record-owner-approval.mjs",
+  "src/contracts/database-posture.ts"
 ]) {
   await assertPathExists(requiredPath);
 }
 
 for (const requiredText of [
-  "Status: approval packet only. Implementation is blocked until exact owner approval is recorded.",
-  "The next Source-Wire build unit should be a synthetic database posture package, not database migrations.",
+  "Status: implemented as a synthetic database posture package after exact owner approval.",
+  "The Source-Wire build unit is now a synthetic database posture package, not database migrations.",
+  "The approved synthetic database posture package is recorded in [Database Posture Implementation Proof](database-posture-implementation-proof.md).",
   exactApprovalText,
   "npm run runtime:database-implementation-packet",
+  "npm run runtime:database-posture-smoke",
   "npm run owner:record-approval -- --target database-posture-implementation",
   "What Approval Would Not Unlock"
 ]) {
@@ -38,13 +47,14 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.",
+  "Status: completed synthetic database posture slice map after exact owner approval.",
   "Slice 1: File Scope And Safety Guard",
   "Slice 2: Synthetic Data-Class And Lifecycle Contract",
   "Slice 3: Namespace, Retention, Deletion, Backup, And Restore Fixtures",
   "Slice 4: Smoke Test And Validation",
   "Slice 5: Docs, Proof, And Readiness",
   "npm run runtime:database-implementation-packet",
+  "npm run runtime:database-posture-smoke",
   "Still Blocked After These Slices"
 ]) {
   assertIncludes(slices, requiredText, slicesPath);
@@ -98,7 +108,7 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Implementation", "blocked pending exact owner approval"],
+  ["Implementation", "synthetic database posture package implemented after exact owner approval"],
   ["Runtime shape", "synthetic data-class and lifecycle posture only"],
   ["Migrations", "blocked"],
   ["Real database connections", "blocked"],
@@ -106,9 +116,8 @@ printRows([
 ]);
 
 console.log("");
-console.log("ok database posture implementation packet ready");
-console.log("ok database posture implementation slices ready");
-console.log("blocked database posture implementation pending owner approval");
+console.log("ok synthetic database posture implementation recorded");
+console.log("ok database posture implementation slices complete");
 console.log("blocked database migrations");
 
 async function assertPathExists(path) {

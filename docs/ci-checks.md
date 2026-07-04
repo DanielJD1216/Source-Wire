@@ -61,6 +61,7 @@ The readiness gate runs:
 - `npm run runtime:threat-boundary-smoke`
 - `npm run runtime:api-policy-smoke`
 - `npm run runtime:mcp-adapter-smoke`
+- `npm run runtime:database-posture-smoke`
 - `npm run runtime-boundary:smoke`
 - `npm run wrapper-runtime:api-policy-smoke`
 - `npm run wrapper-runtime:mcp-adapter-smoke`
@@ -233,6 +234,7 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Minimal runtime smoke | `ok minimal runtime boundary smoke` | Exported synthetic in-memory runtime boundary code matches owner-hosted API plus MCP proof cases. |
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` | Synthetic owner-hosted API plus MCP boundary cases still fail closed and preserve no-auto-promotion. |
 | Runtime proof intake smoke | `ok runtime proof intake manifest`, `ok runtime proof intake redaction boundary`, `ok runtime proof intake readiness alignment`, `ok runtime proof intake keeps implementation blocked`, `ok runtime proof intake smoke` | Redacted private-proof metadata can inform runtime PRD refresh while private data and runtime implementation remain blocked. |
+| Database posture smoke | `ok database posture case authorized_namespace_data_class_read`, `ok database posture case wrong_namespace_denied_without_leak`, `ok database posture smoke` | Synthetic database posture cases validate data classes, lifecycle, namespace isolation, retention, deletion, backup, restore, derived inheritance, and no automatic trusted memory promotion without real database code. |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.1.0`, `ok installed runtime boundary example` | The packaged synthetic runtime-boundary example runs after local tarball installation. |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` | Boundary smoke failures remain useful to diagnose when a synthetic check breaks. |
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok docs anchors`, `ok command docs setup`, `ok readiness command docs match package scripts` | Readiness summary, required readiness docs, local Markdown links, local Markdown anchors, command-doc setup pointers, and documented readiness command lists are current. |

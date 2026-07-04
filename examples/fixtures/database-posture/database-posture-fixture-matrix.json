@@ -1,0 +1,327 @@
+{
+  "fixtureType": "source-wire-database-posture-fixture-matrix",
+  "fixtureSafety": "synthetic",
+  "boundary": {
+    "implementationMode": "synthetic_database_posture_package",
+    "sourceWireHostsUserMemory": false,
+    "databaseMigrationsIncluded": false,
+    "realDatabaseConnectionsIncluded": false,
+    "postgresOrPgvectorSetupIncluded": false,
+    "apiServerIncluded": false,
+    "mcpServerRuntimeIncluded": false,
+    "liveConnectorsIncluded": false,
+    "missionControlIncluded": false,
+    "deploymentIncluded": false,
+    "hostedServicesIncluded": false,
+    "managedHostingIncluded": false,
+    "realDataIncluded": false,
+    "clientDataIncluded": false,
+    "privateImplementationCodeIncluded": false,
+    "agplCodeIncluded": false,
+    "sourceEvidenceMayAutoPromoteToTrustedMemory": false,
+    "trustedMemoryPromotion": "owner_or_application_controlled"
+  },
+  "dataClasses": [
+    {
+      "dataClass": "source_evidence",
+      "trustLevel": "raw_source",
+      "lifecycleController": "owner",
+      "storesRawSourceEvidence": true,
+      "storesTrustedMemory": false,
+      "storesDerivedData": false,
+      "inheritsNamespaceFromParent": false
+    },
+    {
+      "dataClass": "memory_candidate",
+      "trustLevel": "candidate",
+      "lifecycleController": "owner_application",
+      "storesRawSourceEvidence": false,
+      "storesTrustedMemory": false,
+      "storesDerivedData": true,
+      "inheritsNamespaceFromParent": false
+    },
+    {
+      "dataClass": "trusted_memory",
+      "trustLevel": "trusted",
+      "lifecycleController": "owner_application",
+      "storesRawSourceEvidence": false,
+      "storesTrustedMemory": true,
+      "storesDerivedData": false,
+      "inheritsNamespaceFromParent": false
+    },
+    {
+      "dataClass": "audit_event",
+      "trustLevel": "operational",
+      "lifecycleController": "system",
+      "storesRawSourceEvidence": false,
+      "storesTrustedMemory": false,
+      "storesDerivedData": false,
+      "inheritsNamespaceFromParent": false
+    },
+    {
+      "dataClass": "embedding_vector",
+      "trustLevel": "derived",
+      "lifecycleController": "system",
+      "storesRawSourceEvidence": false,
+      "storesTrustedMemory": false,
+      "storesDerivedData": true,
+      "inheritsNamespaceFromParent": true
+    },
+    {
+      "dataClass": "search_cache",
+      "trustLevel": "derived",
+      "lifecycleController": "system",
+      "storesRawSourceEvidence": false,
+      "storesTrustedMemory": false,
+      "storesDerivedData": true,
+      "inheritsNamespaceFromParent": true
+    },
+    {
+      "dataClass": "backup_snapshot",
+      "trustLevel": "backup",
+      "lifecycleController": "owner",
+      "storesRawSourceEvidence": false,
+      "storesTrustedMemory": false,
+      "storesDerivedData": false,
+      "inheritsNamespaceFromParent": false
+    },
+    {
+      "dataClass": "export_bundle",
+      "trustLevel": "export",
+      "lifecycleController": "owner",
+      "storesRawSourceEvidence": false,
+      "storesTrustedMemory": false,
+      "storesDerivedData": false,
+      "inheritsNamespaceFromParent": false
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "authorized_namespace_data_class_read",
+      "operation": "read_data_class",
+      "dataClass": "source_evidence",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": false,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "none",
+      "expected": {
+        "status": "allowed",
+        "namespaceIsolated": true,
+        "contentLeaked": false,
+        "databaseMigrationCreated": false,
+        "realDatabaseConnectionOpened": false
+      }
+    },
+    {
+      "caseId": "wrong_namespace_denied_without_leak",
+      "operation": "read_data_class",
+      "dataClass": "trusted_memory",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_beta",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": false,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "none",
+      "expected": {
+        "status": "denied",
+        "denialReason": "owner_or_namespace_not_allowed",
+        "namespaceIsolated": true,
+        "contentLeaked": false
+      }
+    },
+    {
+      "caseId": "source_evidence_submitted_to_indexed",
+      "operation": "transition_lifecycle",
+      "dataClass": "source_evidence",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "lifecycleFrom": "submitted",
+      "lifecycleTo": "indexed",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": false,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "none",
+      "expected": {
+        "status": "allowed",
+        "sourceEvidencePromoted": false,
+        "trustedMemoryCreated": false
+      }
+    },
+    {
+      "caseId": "candidate_prepared_to_approved",
+      "operation": "transition_lifecycle",
+      "dataClass": "memory_candidate",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "lifecycleFrom": "prepared",
+      "lifecycleTo": "approved",
+      "explicitTrustedMemoryApproval": true,
+      "deletionRequested": false,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "none",
+      "expected": {
+        "status": "allowed",
+        "sourceEvidencePromoted": false,
+        "trustedMemoryCreated": true
+      }
+    },
+    {
+      "caseId": "candidate_prepared_to_rejected",
+      "operation": "transition_lifecycle",
+      "dataClass": "memory_candidate",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "lifecycleFrom": "prepared",
+      "lifecycleTo": "rejected",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": false,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "none",
+      "expected": {
+        "status": "allowed",
+        "trustedMemoryCreated": false
+      }
+    },
+    {
+      "caseId": "trusted_memory_approved_to_revoked",
+      "operation": "transition_lifecycle",
+      "dataClass": "trusted_memory",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "lifecycleFrom": "approved",
+      "lifecycleTo": "revoked",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": false,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "none",
+      "expected": {
+        "status": "partial_success",
+        "dependentCitationsMarkedStale": true
+      }
+    },
+    {
+      "caseId": "trusted_memory_approved_to_deleted",
+      "operation": "transition_lifecycle",
+      "dataClass": "trusted_memory",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "lifecycleFrom": "approved",
+      "lifecycleTo": "deleted",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": true,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "none",
+      "expected": {
+        "status": "partial_success",
+        "dependentCitationsMarkedStale": true
+      }
+    },
+    {
+      "caseId": "retention_policy_summary",
+      "operation": "summarize_retention",
+      "dataClass": "audit_event",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": false,
+      "retentionPolicyPresent": true,
+      "backupRestoreContext": "none",
+      "expected": {
+        "status": "allowed",
+        "retentionPolicySummarized": true
+      }
+    },
+    {
+      "caseId": "deletion_marks_dependent_citations_stale",
+      "operation": "request_deletion",
+      "dataClass": "source_evidence",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": true,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "none",
+      "expected": {
+        "status": "partial_success",
+        "dependentCitationsMarkedStale": true,
+        "sourceEvidencePromoted": false
+      }
+    },
+    {
+      "caseId": "backup_keeps_owner_namespace_boundaries",
+      "operation": "validate_backup",
+      "dataClass": "backup_snapshot",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": false,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "same_owner_namespace",
+      "expected": {
+        "status": "allowed",
+        "backupBoundaryPreserved": true
+      }
+    },
+    {
+      "caseId": "restore_cannot_bypass_candidate_review",
+      "operation": "validate_restore",
+      "dataClass": "backup_snapshot",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": false,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "same_owner_namespace",
+      "expected": {
+        "status": "owner_review_required",
+        "denialReason": "restore_requires_candidate_review",
+        "restoreRequiresCandidateReview": true,
+        "trustedMemoryCreated": false
+      }
+    },
+    {
+      "caseId": "cache_and_embedding_inherit_parent_namespace",
+      "operation": "validate_inheritance",
+      "dataClass": "embedding_vector",
+      "ownerId": "owner_demo",
+      "namespaceId": "ns_demo_alpha",
+      "requestedOwnerId": "owner_demo",
+      "requestedNamespaceId": "ns_demo_alpha",
+      "parentDataClass": "source_evidence",
+      "parentOwnerId": "owner_demo",
+      "parentNamespaceId": "ns_demo_alpha",
+      "explicitTrustedMemoryApproval": false,
+      "deletionRequested": false,
+      "retentionPolicyPresent": false,
+      "backupRestoreContext": "none",
+      "expected": {
+        "status": "allowed",
+        "parentNamespaceInherited": true
+      }
+    }
+  ]
+}

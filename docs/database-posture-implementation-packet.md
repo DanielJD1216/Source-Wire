@@ -1,14 +1,14 @@
 # Source-Wire Database Posture Implementation Packet
 
-Status: approval packet only. Implementation is blocked until exact owner approval is recorded.
+Status: implemented as a synthetic database posture package after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Direct Answer
 
-The next Source-Wire build unit should be a synthetic database posture package, not database migrations.
+The Source-Wire build unit is now a synthetic database posture package, not database migrations.
 
-This packet defines the exact unit that can start after owner approval:
+This packet records the exact unit implemented after owner approval:
 
 ```text
 synthetic data-class contract
@@ -25,9 +25,22 @@ The runtime skeleton now proves the API policy route and MCP adapter shape.
 
 The next limiting constraint is storage shape: what records exist, how they stay separated, how evidence moves through lifecycle states, and what must never become trusted memory automatically.
 
+## Implementation Proof
+
+The approved synthetic database posture package is recorded in [Database Posture Implementation Proof](database-posture-implementation-proof.md).
+
+The smoke proof is recorded in [Database Posture Smoke](database-posture-smoke.md).
+
+Run:
+
+```bash
+npm run runtime:database-posture-smoke
+npm run runtime:database-implementation-packet
+```
+
 ## Exact Approval Text
 
-Copy this only when the owner is ready to approve the future implementation unit:
+This is the exact approval text recorded before implementation:
 
 ```text
 Approved for a future Source-Wire database posture implementation unit: build a public-safe synthetic database posture package that defines data-class contracts, lifecycle state fixtures, namespace isolation fixtures, deletion/retention fixtures, backup/restore risk fixtures, and validation/smoke checks. Use synthetic fixtures only. Do not add database migrations, real database connections, PostgreSQL or pgvector setup, API server implementation, MCP server runtime implementation, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled.
@@ -35,7 +48,7 @@ Approved for a future Source-Wire database posture implementation unit: build a 
 
 ## What Approval Would Unlock
 
-Only this:
+Only this was unlocked:
 
 - public-safe TypeScript contract types for database posture,
 - synthetic data-class definitions,
@@ -70,11 +83,12 @@ Still blocked:
 - client data,
 - automatic trusted memory promotion.
 
-## Pre-Implementation Gates
+## Verification Gates
 
-Before implementation starts, run:
+After implementation, run:
 
 ```bash
+npm run runtime:database-posture-smoke
 npm run runtime:database-implementation-packet
 npm run runtime:database-posture
 npm run runtime:skeleton-smoke
@@ -87,11 +101,11 @@ npm run claims:scan
 
 ## Implementation Slice Map
 
-Use [Database Posture Implementation Slices](database-posture-implementation-slices.md) as the implementation slice map after approval.
+Use [Database Posture Implementation Slices](database-posture-implementation-slices.md) as the completed implementation slice map.
 
 ## Owner Approval Recording
 
-After explicit owner approval, record it with:
+The approval was recorded with:
 
 ```bash
 npm run owner:record-approval -- --target database-posture-implementation --write --confirm-exact "<exact approval text>"
@@ -107,6 +121,8 @@ npm run owner:open-issues-status
 ## Related Docs
 
 - [Database Posture Implementation Slices](database-posture-implementation-slices.md)
+- [Database Posture Implementation Proof](database-posture-implementation-proof.md)
+- [Database Posture Smoke](database-posture-smoke.md)
 - [Hosted Runtime Database Posture And Data Lifecycle](hosted-runtime-database-posture-data-lifecycle.md)
 - [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)

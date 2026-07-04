@@ -103,6 +103,7 @@ The `ci:check` sub-gate includes:
 - `npm run runtime:threat-boundary-smoke`
 - `npm run runtime:api-policy-smoke`
 - `npm run runtime:mcp-adapter-smoke`
+- `npm run runtime:database-posture-smoke`
 - `npm run runtime-boundary:smoke`
 - `npm run wrapper-runtime:api-policy-smoke`
 - `npm run wrapper-runtime:mcp-adapter-smoke`
@@ -188,6 +189,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Package content smoke | `ok package content smoke @source-wire/contracts@0.1.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links`, `ok installed package docs anchors` |
 | Minimal runtime smoke | `ok minimal runtime boundary smoke` |
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
+| Database posture smoke | `ok database posture case authorized_namespace_data_class_read`, `ok database posture case wrong_namespace_denied_without_leak`, `ok database posture smoke` |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.1.0`, `ok installed runtime boundary example` |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok docs anchors`, `ok command docs setup`, `ok readiness command docs match package scripts` |

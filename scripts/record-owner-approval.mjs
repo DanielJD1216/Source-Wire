@@ -174,8 +174,15 @@ console.log(commentUrl.trim());
 console.log("blocked execution still requires focused implementation unit");
 
 function hasApprovalRecordSection(body, exactApprovalText) {
-  const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
-  const section = body.match(sectionPattern)?.[0] ?? "";
+  const marker = "## Owner Approval Record";
+  const markerIndex = body.indexOf(marker);
+  if (markerIndex === -1) {
+    return false;
+  }
+
+  const sectionStart = markerIndex + marker.length;
+  const nextSectionIndex = body.indexOf("\n## ", sectionStart);
+  const section = nextSectionIndex === -1 ? body.slice(markerIndex) : body.slice(markerIndex, nextSectionIndex);
   return section.includes(exactApprovalText);
 }
 

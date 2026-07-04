@@ -38,7 +38,8 @@ ok runtime proof intake gate current
 ok child issue approval status current
 ok owner open issue boundary current
 ok owner open issue future planning smoke current
-blocked hosted runtime child issue publication pending owner approval
+ok hosted runtime child issue publication approval recorded
+ok hosted runtime child planning issues published
 blocked hosted runtime implementation
 ```
 
@@ -59,14 +60,15 @@ blocked hosted runtime implementation
 
 ## Current Expected Result
 
-The current expected result is blocked publication:
+The current expected result is published planning issues and blocked implementation:
 
 ```text
-blocked hosted runtime child issue publication pending owner approval
+ok hosted runtime child issue publication approval recorded
+ok hosted runtime child planning issues published
 blocked hosted runtime implementation
 ```
 
-That is not a failure. It means the future publication path is mechanically ready, but exact owner approval for publishing the six PRD/planning issues has not been recorded.
+That is not a failure. It means the child issue publication path is complete, while hosted runtime implementation still needs a separate approved unit.
 
 Dry-run the guarded approval recorder before any write:
 

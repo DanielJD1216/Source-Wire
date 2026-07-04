@@ -51,7 +51,7 @@ npm run owner:record-approval -- --target patch-release-implementation
 Use this exact text only when ready to approve a future patch release implementation unit:
 
 ```text
-Approved for a future Source-Wire patch release implementation unit: publish a patch release that corrects the exported SOURCE_WIRE_PACKAGE_VERSION mismatch in the npm package. Use version 0.1.1 unless the implementation unit finds a blocking reason to choose a different explicit patch version. Create the matching GitHub release and tag only after final release-candidate verification. Keep hosted runtime behavior, hosted-runtime child issue publication, production runtime claims, deployment, real user data, and code contribution acceptance blocked.
+Approved for a future Source-Wire patch release implementation unit: publish a patch release that corrects the exported SOURCE_WIRE_PACKAGE_VERSION mismatch in the npm package. Use version 0.1.1 unless the implementation unit finds a blocking reason to choose a different explicit patch version. Create the matching GitHub release and tag only after final release-candidate verification. Keep hosted runtime behavior, production runtime claims, deployment, real user data, and code contribution acceptance blocked. Hosted runtime child planning issues are already published as #259 through #264 and must not be republished in this patch unit.
 ```
 
 ## Required Pre-Release Evidence
@@ -75,7 +75,7 @@ This packet keeps these blocked:
 - GitHub release creation,
 - release tag creation,
 - hosted runtime implementation,
-- hosted-runtime child issue publication,
+- hosted-runtime child planning issue republication,
 - API server runtime,
 - MCP server runtime,
 - database migrations,

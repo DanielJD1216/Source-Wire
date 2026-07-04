@@ -40,7 +40,7 @@ printRows([
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
   ["GitHub release", "published as v0.1.0"],
   ["Hosted runtime PRD", "approved and documented"],
-  ["Hosted runtime child issue packet", "ready"],
+  ["Hosted runtime child planning issues", "published as #259 through #264"],
   ["Hosted runtime implementation", "blocked"],
   ["Code contributions", "blocked until contribution terms implementation"]
 ]);
@@ -60,8 +60,8 @@ printList([
   "To install the public package, use npm install @source-wire/contracts.",
   "To review the first release snapshot, use the v0.1.0 GitHub release.",
   "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
-  "Approve hosted runtime child issue publication before publishing the six PRD/planning issues.",
-  "Dry-run that approval path first with npm run owner:record-approval -- --target hosted-runtime-child-issue-publication.",
+  "Hosted runtime child issue publication is approved and the six PRD/planning issues are published as #259 through #264.",
+  "Use hosted runtime PRD/planning issues #259 through #264 for the next runtime planning sequence.",
   "Keep hosted runtime implementation blocked until a separate implementation approval opens it."
 ]);
 

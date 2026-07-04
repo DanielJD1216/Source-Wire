@@ -1,14 +1,14 @@
 # Source-Wire Hosted Runtime Slice Approval Request
 
-Status: approval request only.
+Status: approval request complete.
 
-This request does not publish child issues, implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, create tags, accept code contributions, add real user data, or approve production runtime use.
+This request records the completed child issue publication approval path. It does not implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, create tags, accept code contributions, add real user data, or approve production runtime use.
 
 ## Purpose
 
-Use this request before publishing child issues from the [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md).
+Use this request to verify the approval text that allowed child issues from the [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md) to be published.
 
-The hosted runtime PRD has landed, but child issue publication should still be a separate owner-approved step because it creates public work items that future agents may pick up.
+The hosted runtime PRD has landed, child issue publication was separately approved, and the six PRD/planning issues were published as `#259` through `#264`.
 
 ## Command
 
@@ -31,13 +31,14 @@ Expected markers:
 ```text
 ok hosted runtime slice approval request ready
 ok hosted runtime child issue slice map ready
-blocked child issue publication pending owner approval
+ok hosted runtime child issue publication approval retained
+ok hosted runtime child planning issues published
 blocked hosted runtime implementation
 ```
 
 ## Exact Approval Text
 
-Do not publish child issues until the owner approves the exact approval text.
+Child issue publication approval is recorded.
 
 ```text
 Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.
@@ -78,14 +79,14 @@ Still blocked:
 
 ## Child Issue Publication Order
 
-Publish only after exact approval:
+Published after exact approval:
 
-1. Hosted Runtime Threat Model And Trust Boundary.
-2. API Server Runtime Contract.
-3. MCP Server Runtime Contract.
-4. Database Posture And Data Lifecycle.
-5. Public-Safe Fixture And Verification Plan.
-6. Deployment Boundary And Runtime Stop Conditions.
+1. `#259` Hosted Runtime Threat Model And Trust Boundary.
+2. `#260` API Server Runtime Contract.
+3. `#261` MCP Server Runtime Contract.
+4. `#262` Database Posture And Data Lifecycle.
+5. `#263` Public-Safe Fixture And Verification Plan.
+6. `#264` Deployment Boundary And Runtime Stop Conditions.
 
 ## Verification After Publication
 

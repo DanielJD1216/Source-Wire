@@ -95,9 +95,9 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 7. Run `npm run contribution:terms-decision-preflight`.
 8. Decide whether and how code contributions can be accepted.
 9. Run `npm run runtime:prd-decision-preflight`.
-10. Dry-run `npm run owner:record-approval -- --target hosted-runtime-child-issue-publication`.
-11. Decide whether to record the exact hosted-runtime child issue publication approval.
-12. Keep hosted runtime implementation blocked until child issues exist and a separate implementation approval is recorded.
+10. Use hosted runtime PRD/planning issues `#259` through `#264` for the next runtime planning sequence.
+11. Keep hosted runtime implementation blocked until a separate implementation approval is recorded.
+12. Keep API server runtime, MCP server runtime, database migrations, deployment, production runtime use, real user data, and contribution acceptance blocked.
 
 ## Hosted Runtime Child Issue Approval Path
 

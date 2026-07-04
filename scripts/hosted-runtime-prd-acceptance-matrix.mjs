@@ -117,7 +117,7 @@ printRows([
 printSection("Runtime Boundary");
 printList([
   "This command verifies PRD evidence only.",
-  "It does not publish hosted-runtime child issues.",
+  "It does not republish hosted-runtime child planning issues.",
   "It does not implement hosted runtime behavior.",
   "It does not add API server runtime, MCP server runtime, database migrations, deployment config, or real user data."
 ]);

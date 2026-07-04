@@ -92,7 +92,7 @@ npm run release:approval-status
 | `#255`, target `patch-release-implementation` | Patch release path | Record approval before a future patch release for the immutable npm `0.1.0` exported-version mismatch. |
 | `#256` | Branch governance path | Record approval before a future branch governance implementation unit. |
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
-| `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Record approval before publishing the six PRD/planning child issues. |
+| `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Approval recorded; six PRD/planning child issues are published as `#259` through `#264`; hosted runtime implementation remains blocked. |
 | `#257`, target `runtime-skeleton-implementation` | Runtime skeleton implementation path | Record approval before a future narrow runtime skeleton implementation unit. |
 | `#259`, target `threat-model-implementation` | Threat model implementation path | Record approval before a future synthetic trust-boundary implementation unit. |
 | `#260`, target `api-contract-implementation` | API contract implementation path | Record approval before a future synthetic API policy contract implementation unit. |
@@ -119,7 +119,7 @@ Approved for a future Source-Wire release implementation unit: prepare and publi
 Target: `patch-release-implementation`
 
 ```text
-Approved for a future Source-Wire patch release implementation unit: publish a patch release that corrects the exported SOURCE_WIRE_PACKAGE_VERSION mismatch in the npm package. Use version 0.1.1 unless the implementation unit finds a blocking reason to choose a different explicit patch version. Create the matching GitHub release and tag only after final release-candidate verification. Keep hosted runtime behavior, hosted-runtime child issue publication, production runtime claims, deployment, real user data, and code contribution acceptance blocked.
+Approved for a future Source-Wire patch release implementation unit: publish a patch release that corrects the exported SOURCE_WIRE_PACKAGE_VERSION mismatch in the npm package. Use version 0.1.1 unless the implementation unit finds a blocking reason to choose a different explicit patch version. Create the matching GitHub release and tag only after final release-candidate verification. Keep hosted runtime behavior, production runtime claims, deployment, real user data, and code contribution acceptance blocked. Hosted runtime child planning issues are already published as #259 through #264 and must not be republished in this patch unit.
 ```
 
 ### Issue #256: Branch governance path

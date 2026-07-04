@@ -2,7 +2,7 @@
 
 Status: PRD acceptance matrix only. Hosted runtime implementation remains blocked.
 
-This matrix does not implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, create tags, accept code contributions, add real user data, publish hosted-runtime child issues, or approve production runtime use.
+This matrix does not implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, create tags, accept code contributions, add real user data, republish hosted-runtime child planning issues, or approve production runtime use.
 
 ## Purpose
 
@@ -81,7 +81,7 @@ Stop if a follow-up unit:
 - adds database migrations,
 - provisions cloud services,
 - imports real user data,
-- publishes hosted-runtime child issues without the separate child-issue publication approval,
+- republishes hosted-runtime child planning issues outside the approved child-issue publication path,
 - accepts code contributions,
 - publishes a new npm package version,
 - creates a GitHub release or tag,

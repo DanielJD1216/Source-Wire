@@ -70,16 +70,16 @@ Next action taken: added the standard Node.js 22 plus Quickstart setup sentence 
 
 ## Current Blocked State
 
-Current expected result remains blocked publication:
+Current expected result is completed child issue publication and blocked implementation:
 
 ```text
-blocked hosted runtime child issue publication pending owner approval
+ok hosted runtime child issue publication approval recorded
+ok hosted runtime child planning issues published
 blocked hosted runtime implementation
 ```
 
 Still blocked:
 
-- hosted runtime child issue publication until exact owner approval is recorded,
 - public runtime implementation,
 - API server implementation,
 - MCP server runtime implementation,
@@ -91,4 +91,3 @@ Still blocked:
 - code contribution acceptance,
 - AGPLv3 or private implementation code copying,
 - automatic trusted-memory promotion.
-

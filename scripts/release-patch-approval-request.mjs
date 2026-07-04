@@ -34,7 +34,7 @@ for (const requiredText of [
   "The likely patch version is `0.1.1`.",
   "Approved for a future Source-Wire patch release implementation unit",
   "Use version 0.1.1 unless the implementation unit finds a blocking reason to choose a different explicit patch version.",
-  "Keep hosted runtime behavior, hosted-runtime child issue publication, production runtime claims, deployment, real user data, and code contribution acceptance blocked.",
+  "Keep hosted runtime behavior, production runtime claims, deployment, real user data, and code contribution acceptance blocked. Hosted runtime child planning issues are already published as #259 through #264 and must not be republished in this patch unit.",
   "blocked patch release approval missing",
   "blocked npm artifact immutable at @source-wire/contracts@0.1.0"
 ]) {
@@ -74,7 +74,8 @@ printList([
   "Latest main fixes the exported version mismatch and guards it in consumer smoke.",
   "The npm 0.1.0 artifact is immutable and remains disclosed as mismatched.",
   "Use the exact approval text in docs/release-patch-approval-request.md before any future patch release.",
-  "Keep hosted runtime behavior, child issue publication, deployment, real data, production runtime claims, and contribution acceptance blocked."
+  "Hosted runtime child planning issues are already published as #259 through #264 and must not be republished in this patch unit.",
+  "Keep hosted runtime behavior, deployment, real data, production runtime claims, and contribution acceptance blocked."
 ]);
 
 console.log("");

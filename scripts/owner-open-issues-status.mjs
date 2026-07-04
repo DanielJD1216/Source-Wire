@@ -43,6 +43,12 @@ const expectedHostedRuntimePlanningIssueTitles = [
   "Public-Safe Fixture And Verification Plan",
   "Deployment Boundary And Runtime Stop Conditions"
 ];
+const expectedHostedRuntimePlanningIssues = expectedHostedRuntimePlanningIssueTitles.map((title, index) => ({
+  number: 259 + index,
+  title
+}));
+const hostedRuntimeChildIssueApprovalText =
+  "Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.";
 
 const issues = args.fixture === "hosted-runtime-planning"
   ? expectedHostedRuntimePlanningIssueTitles.map((title, index) => ({
@@ -70,6 +76,8 @@ const openPlanningIssues = issues.filter((issue) => expectedPlanningTitleSet.has
 const unexpectedOpenIssues = issues.filter((issue) => !expectedPlanningTitleSet.has(issue.title));
 const failures = [];
 const completedIssueStates = [];
+const hostedRuntimePlanningIssueStates = [];
+let hostedRuntimeChildIssueApprovalRecorded = false;
 
 if (args.fixture === "hosted-runtime-planning") {
   for (const completedIssue of completedDecisionIssues) {
@@ -81,6 +89,17 @@ if (args.fixture === "hosted-runtime-planning") {
         url: `https://example.invalid/source-wire/owner-decision/${completedIssue.number}`
       },
       exactApprovalRecorded: true
+    });
+  }
+  hostedRuntimeChildIssueApprovalRecorded = true;
+  for (const planningIssue of expectedHostedRuntimePlanningIssues) {
+    hostedRuntimePlanningIssueStates.push({
+      ...planningIssue,
+      issue: {
+        state: "OPEN",
+        title: planningIssue.title,
+        url: `https://example.invalid/source-wire/planning/${planningIssue.number}`
+      }
     });
   }
 } else {
@@ -113,6 +132,33 @@ if (args.fixture === "hosted-runtime-planning") {
       ...completedIssue,
       issue,
       exactApprovalRecorded
+    });
+  }
+
+  const hostedRuntimeParentIssue = completedIssueStates.find((issue) => issue.number === 257)?.issue;
+  const hostedRuntimeParentComments = Array.isArray(hostedRuntimeParentIssue?.comments) ? hostedRuntimeParentIssue.comments : [];
+  hostedRuntimeChildIssueApprovalRecorded =
+    hasApprovalRecordSection(hostedRuntimeParentIssue?.body ?? "", hostedRuntimeChildIssueApprovalText) ||
+    hostedRuntimeParentComments.some((comment) => hasApprovalRecordSection(comment.body ?? "", hostedRuntimeChildIssueApprovalText));
+
+  for (const planningIssue of expectedHostedRuntimePlanningIssues) {
+    const issue = await ghJson([
+      "issue",
+      "view",
+      String(planningIssue.number),
+      "--repo",
+      repo,
+      "--json",
+      "number,title,state,url"
+    ]);
+
+    if (issue.title !== planningIssue.title) {
+      failures.push(`unexpected title for hosted runtime planning issue #${planningIssue.number}: expected "${planningIssue.title}", received "${issue.title}"`);
+    }
+
+    hostedRuntimePlanningIssueStates.push({
+      ...planningIssue,
+      issue
     });
   }
 }
@@ -156,6 +202,15 @@ if (openPlanningIssues.length > 0) {
   }
 }
 
+if (hostedRuntimePlanningIssueStates.length > 0) {
+  printSection("Published Hosted Runtime Planning Issues");
+  for (const issue of hostedRuntimePlanningIssueStates.toSorted((left, right) => left.number - right.number)) {
+    console.log(`#${issue.number} ${issue.title}`);
+    console.log(`State: ${issue.issue.state}`);
+    console.log(`URL: ${issue.issue.url}`);
+  }
+}
+
 printSection("Owner Open Issues Result");
 console.log("ok owner open issue boundary readable");
 
@@ -178,7 +233,11 @@ if (openPlanningIssues.length > 0) {
 }
 
 console.log("ok all completed owner decision approvals retained");
-if (openPlanningIssues.length === 0) {
+if (hostedRuntimeChildIssueApprovalRecorded) {
+  console.log("ok hosted runtime child issue publication approval retained");
+  console.log("ok hosted runtime child planning issues published");
+}
+if (!hostedRuntimeChildIssueApprovalRecorded) {
   console.log("blocked hosted runtime child issue publication pending owner approval");
 } else {
   console.log("blocked hosted runtime implementation");
@@ -202,8 +261,15 @@ function ghJson(args) {
 }
 
 function hasApprovalRecordSection(body, exactApprovalText) {
-  const sectionPattern = /^## Owner Approval Record\s*$[\s\S]*?(?=^## |\s*$)/mu;
-  const section = body.match(sectionPattern)?.[0] ?? "";
+  const marker = "## Owner Approval Record";
+  const markerIndex = body.indexOf(marker);
+  if (markerIndex === -1) {
+    return false;
+  }
+
+  const sectionStart = markerIndex + marker.length;
+  const nextSectionIndex = body.indexOf("\n## ", sectionStart);
+  const section = nextSectionIndex === -1 ? body.slice(markerIndex) : body.slice(markerIndex, nextSectionIndex);
   return section.includes(exactApprovalText);
 }
 

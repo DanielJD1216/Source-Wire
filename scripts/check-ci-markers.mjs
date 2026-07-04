@@ -221,7 +221,7 @@ const markerGroups = [
     markers: [
       "ok hosted runtime child issue publication packet ready",
       "ok hosted runtime issue payloads validated",
-      "blocked child issue publication pending owner approval",
+      "ok child issue publication approval text documented",
       "blocked hosted runtime implementation"
     ]
   },
@@ -250,7 +250,8 @@ const markerGroups = [
       "ok child issue approval status current",
       "ok owner open issue boundary current",
       "ok owner open issue future planning smoke current",
-      "blocked hosted runtime child issue publication pending owner approval",
+      "ok hosted runtime child issue publication approval recorded",
+      "ok hosted runtime child planning issues published",
       "blocked hosted runtime implementation"
     ]
   },
@@ -316,7 +317,7 @@ const markerGroups = [
       "ok world share operator summary ready",
       "ok current share actions summarized",
       "ok hosted runtime PRD approval retained",
-      "blocked hosted runtime child issue publication pending owner approval",
+      "ok hosted runtime child planning issues published",
       "blocked production launch channels"
     ]
   },

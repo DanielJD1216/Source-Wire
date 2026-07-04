@@ -4,7 +4,7 @@ import { readFile, stat } from "node:fs/promises";
 const repo = "DanielJD1216/Source-Wire";
 const issueNumber = 255;
 const exactPatchApprovalText =
-  "Approved for a future Source-Wire patch release implementation unit: publish a patch release that corrects the exported SOURCE_WIRE_PACKAGE_VERSION mismatch in the npm package. Use version 0.1.1 unless the implementation unit finds a blocking reason to choose a different explicit patch version. Create the matching GitHub release and tag only after final release-candidate verification. Keep hosted runtime behavior, hosted-runtime child issue publication, production runtime claims, deployment, real user data, and code contribution acceptance blocked.";
+  "Approved for a future Source-Wire patch release implementation unit: publish a patch release that corrects the exported SOURCE_WIRE_PACKAGE_VERSION mismatch in the npm package. Use version 0.1.1 unless the implementation unit finds a blocking reason to choose a different explicit patch version. Create the matching GitHub release and tag only after final release-candidate verification. Keep hosted runtime behavior, production runtime claims, deployment, real user data, and code contribution acceptance blocked. Hosted runtime child planning issues are already published as #259 through #264 and must not be republished in this patch unit.";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
@@ -36,7 +36,7 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 for (const requiredText of [
   "Status: owner-side patch release execution preflight only.",
   "This command is read-only.",
-  "It does not publish npm, create a GitHub release, create tags, change package version, deploy services, implement hosted runtime behavior, publish hosted-runtime child issues, accept code contributions, add real user data, or approve production runtime use.",
+  "It does not publish npm, create a GitHub release, create tags, change package version, deploy services, implement hosted runtime behavior, republish hosted-runtime child planning issues, accept code contributions, add real user data, or approve production runtime use.",
   "npm run release:patch-execution-preflight",
   "blocked exact patch release approval missing",
   "blocked patch release mutation not approved"
@@ -64,7 +64,7 @@ const patchApprovalRecorded = await hasPatchApproval();
 
 printSection("Source-Wire Patch Release Execution Preflight");
 console.log("This owner-side preflight is read-only.");
-console.log("It does not publish npm, create a GitHub release, create tags, change package version, deploy services, implement hosted runtime behavior, publish hosted-runtime child issues, accept code contributions, add real user data, or approve production runtime use.");
+console.log("It does not publish npm, create a GitHub release, create tags, change package version, deploy services, implement hosted runtime behavior, republish hosted-runtime child planning issues, accept code contributions, add real user data, or approve production runtime use.");
 printRows([
   ["Package", packageJson.name],
   ["Current version", packageJson.version],
@@ -86,8 +86,8 @@ if (patchApprovalRecorded) {
 } else {
   console.log("blocked exact patch release approval missing");
 }
+console.log("ok hosted runtime child planning issues already published");
 console.log("blocked patch release mutation not approved");
-console.log("blocked hosted runtime child issue publication");
 console.log("blocked hosted runtime implementation");
 
 async function hasPatchApproval() {

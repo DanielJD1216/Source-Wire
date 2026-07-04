@@ -36,7 +36,7 @@ console.log("ok child issue approval status current");
 console.log("ok owner open issue boundary current");
 console.log("ok owner open issue future planning smoke current");
 console.log("ok hosted runtime child issue publication approval recorded");
-console.log("ok hosted runtime child planning issues open");
+console.log("ok hosted runtime child planning issues published");
 console.log("blocked hosted runtime implementation");
 
 function runNpmScript(scriptName) {

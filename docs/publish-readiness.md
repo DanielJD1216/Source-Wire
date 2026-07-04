@@ -162,7 +162,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Hosted runtime PRD execution packet | `ok hosted runtime PRD execution packet ready`, `ok hosted runtime PRD execution scope documented`, `ok exact hosted runtime PRD approval recorded` |
 | Hosted runtime PRD acceptance matrix | `ok hosted runtime PRD acceptance matrix ready`, `ok hosted runtime PRD clauses mapped`, `ok hosted runtime PRD stop conditions retained`, `blocked hosted runtime implementation` |
 | Runtime PRD refresh approval request | `ok runtime PRD refresh approval request ready`, `ok unit 33 redacted metadata boundary recorded`, `blocked production runtime implementation` |
-| Hosted runtime child issue publication preflight | `ok hosted runtime child issue publication preflight ready`, `ok child issue publication packet current`, `ok child issue publisher dry run current`, `ok child issue publisher guard smoke current`, `ok child issue approval status current`, `ok owner open issue boundary current`, `ok owner open issue future planning smoke current`, `blocked hosted runtime child issue publication pending owner approval`, `blocked hosted runtime implementation` |
+| Hosted runtime child issue publication preflight | `ok hosted runtime child issue publication preflight ready`, `ok child issue publication packet current`, `ok child issue publisher dry run current`, `ok child issue publisher guard smoke current`, `ok child issue approval status current`, `ok owner open issue boundary current`, `ok owner open issue future planning smoke current`, `ok hosted runtime child issue publication approval recorded`, `ok hosted runtime child planning issues published`, `blocked hosted runtime implementation` |
 | Hosted runtime child issue publisher | `ok hosted runtime child issue publisher ready`, `ok hosted runtime issue payloads validated`, `blocked child issue publication requires --write`, `ok hosted runtime child issue publisher smoke`, `blocked child issue publication approval missing`, `blocked child issue duplicate publication`, `blocked hosted runtime implementation` |
 | Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
 | Contribution terms PRD execution packet | `ok contribution terms PRD execution packet ready`, `ok contribution terms PRD execution scope documented`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
@@ -174,7 +174,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `ok owner license decision captured` |
 | World-share boundary | `ok world share open source ready`, `blocked production launch channels` |
 | World-share packet | `ok world share packet ready`, `ok public share copy current`, `blocked production launch channels` |
-| World-share operator summary | `ok world share operator summary ready`, `ok current share actions summarized`, `ok hosted runtime PRD approval retained`, `blocked hosted runtime child issue publication pending owner approval`, `blocked production launch channels` |
+| World-share operator summary | `ok world share operator summary ready`, `ok current share actions summarized`, `ok hosted runtime PRD approval retained`, `ok hosted runtime child planning issues published`, `blocked production launch channels` |
 | Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0`, `blocked hosted runtime implementation`, `blocked contributions not accepted` |
 | First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
 | README entrypoint smoke | `ok readme entrypoint smoke ready`, `ok readme first reviewer path visible`, `blocked unsafe readme launch claims` |
@@ -292,10 +292,12 @@ ok completed owner decision #258 closed
 ok exact contribution terms PRD approval retained
 ok no unresolved owner decision issues open
 ok all completed owner decision approvals retained
-blocked hosted runtime child issue publication pending owner approval
+ok hosted runtime child issue publication approval retained
+ok hosted runtime child planning issues published
+blocked hosted runtime implementation
 ```
 
-Before publishing any future hosted-runtime child issues, run:
+To verify the hosted-runtime child issue publication boundary, run:
 
 ```bash
 npm run runtime:child-issue-publication-preflight
@@ -311,11 +313,12 @@ ok child issue publisher guard smoke current
 ok child issue approval status current
 ok owner open issue boundary current
 ok owner open issue future planning smoke current
-blocked hosted runtime child issue publication pending owner approval
+ok hosted runtime child issue publication approval recorded
+ok hosted runtime child planning issues published
 blocked hosted runtime implementation
 ```
 
-This owner-side preflight is intentionally outside CI and `publish:readiness` because it depends on live GitHub issue state. It does not publish child issues or approve hosted runtime implementation.
+This owner-side preflight depends on live GitHub issue state. It does not approve hosted runtime implementation.
 
 For the live status portion only, run:
 

@@ -68,8 +68,8 @@ printList([
   "7. Run npm run contribution:terms-decision-preflight.",
   "8. Contribution terms PRD work is approved; code contribution acceptance still needs explicit contribution terms implementation.",
   "9. Run npm run runtime:child-issue-publication-packet.",
-  "10. Dry-run npm run owner:record-approval -- --target hosted-runtime-child-issue-publication.",
-  "11. Hosted runtime child issue publication needs exact owner approval before six PRD/planning issues are published.",
+  "10. Hosted runtime child issue publication is approved and the six PRD/planning issues are published as #259 through #264.",
+  "11. Use hosted runtime PRD/planning issues #259 through #264 for the next runtime planning sequence.",
   "12. Hosted runtime implementation still needs a separate approved unit."
 ]);
 
@@ -78,8 +78,7 @@ printList([
   "Keep the published first release at version 0.1.0.",
   "Use a future approved release unit before changing package version, npm dist-tags, or GitHub release assets.",
   "Keep contribution acceptance blocked until a separate implementation unit explicitly opens it.",
-  "Approve hosted runtime child issue publication before publishing the six PRD/planning issues.",
-  "Dry-run the child issue approval recorder before any write.",
+  "Use hosted runtime PRD/planning issues #259 through #264 for the next runtime planning sequence.",
   "Keep hosted runtime implementation, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);
 

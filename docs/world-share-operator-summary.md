@@ -32,7 +32,7 @@ Expected markers:
 ok world share operator summary ready
 ok current share actions summarized
 ok hosted runtime PRD approval retained
-blocked hosted runtime child issue publication pending owner approval
+ok hosted runtime child planning issues published
 blocked production launch channels
 ```
 
@@ -68,7 +68,6 @@ The product direction is bigger than the current package:
 - new npm package publishing,
 - new GitHub releases or tags,
 - deployments,
-- hosted runtime child issue publication,
 - hosted runtime implementation,
 - API server runtime,
 - MCP server runtime,

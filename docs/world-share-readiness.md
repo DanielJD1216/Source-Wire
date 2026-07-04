@@ -99,13 +99,13 @@ Before broad public sharing, the owner can run the complete read-only owner pref
 npm run world:share-final-preflight
 ```
 
-This runs the live source-package preflight plus the release, branch governance, hosted runtime PRD, and contribution terms PRD decision preflights.
+This runs the live source-package preflight plus the release, branch governance, hosted runtime PRD, hosted runtime child planning issue, and contribution terms PRD decision preflights.
 
 Recommended next owner decision:
 
-1. Dry-run `npm run owner:record-approval -- --target hosted-runtime-child-issue-publication`.
-2. Decide whether to record the exact hosted-runtime child issue publication approval from [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md).
-3. Keep hosted runtime implementation blocked until child issues exist and a separate implementation approval is recorded.
+1. Use hosted runtime PRD/planning issues `#259` through `#264` for the next runtime planning sequence.
+2. Keep hosted runtime implementation blocked until a separate implementation approval is recorded.
+3. Keep API server runtime, MCP server runtime, database migrations, deployment, production runtime use, real user data, and contribution acceptance blocked.
 
 Expected final markers:
 
@@ -213,10 +213,12 @@ ok completed owner decision #258 closed
 ok exact contribution terms PRD approval retained
 ok no unresolved owner decision issues open
 ok all completed owner decision approvals retained
-blocked hosted runtime child issue publication pending owner approval
+ok hosted runtime child issue publication approval retained
+ok hosted runtime child planning issues published
+blocked hosted runtime implementation
 ```
 
-This read-only check verifies that no owner-decision issue remains open, and distinguishes completed release, branch-governance, hosted-runtime PRD, and contribution-terms history on `#255`, `#256`, `#257`, and `#258` from the still-blocked hosted runtime child issue publication step.
+This read-only check verifies that no owner-decision issue remains open, and distinguishes completed release, branch-governance, hosted-runtime PRD, contribution-terms history, and hosted-runtime child planning issue publication from the still-blocked hosted runtime implementation step.
 
 For the live repo and live launch channels only, run:
 

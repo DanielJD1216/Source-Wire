@@ -2,7 +2,7 @@
 
 Status: read-only patch candidate rehearsal.
 
-This command does not change real package files, publish npm, create a GitHub release, create tags, deploy services, implement hosted runtime behavior, publish hosted-runtime child issues, accept code contributions, add real user data, or approve production runtime use.
+This command does not change real package files, publish npm, create a GitHub release, create tags, deploy services, implement hosted runtime behavior, republish hosted-runtime child planning issues, accept code contributions, add real user data, or approve production runtime use.
 
 ## Purpose
 
@@ -56,7 +56,7 @@ Stop before any real package mutation if:
 - exact patch release approval is not recorded,
 - npm publish credentials are not owner-controlled and ready,
 - public Package Checks are not green on the patch candidate commit,
-- the patch would include hosted-runtime child issue publication,
+- the patch would republish hosted-runtime child planning issues,
 - the patch would include deployment, API server runtime, MCP server runtime, database migrations, code contribution acceptance, or real user data.
 
 ## Still Blocked
@@ -69,7 +69,7 @@ Until a future patch release implementation unit is approved and its preflights 
 - release tag creation remains blocked,
 - deployment remains blocked,
 - hosted runtime behavior remains blocked,
-- hosted-runtime child issue publication remains blocked,
+- hosted-runtime child planning issues remain published as `#259` through `#264` and must not be republished in this patch unit,
 - production runtime use remains blocked,
 - code contribution acceptance remains blocked,
 - real user data remains blocked.

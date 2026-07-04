@@ -50,7 +50,7 @@ Source-Wire is Apache-2.0 licensed as a source package. Its `0.1.0` package and 
 
 ## Current Owner-Decision Status
 
-These public issues track completed release, branch-governance, hosted-runtime PRD, and contribution-terms history. They do not approve the blocked work or the next hosted-runtime child issue publication step.
+These public issues track completed release, branch-governance, hosted-runtime PRD, and contribution-terms history. Hosted runtime PRD/planning issues `#259` through `#264` are published as planning work only. They do not approve hosted runtime implementation or production runtime use.
 
 - Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
 - Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)

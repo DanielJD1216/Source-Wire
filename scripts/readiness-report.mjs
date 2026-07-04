@@ -352,7 +352,7 @@ printList([
   "reviewer:intake-smoke validates structured reviewer issue templates, private-data warnings, and blocked code-contribution intake",
   "runtime:child-issue-publish:smoke validates the hosted-runtime child issue publisher dry run and missing-approval write guard without GitHub mutations",
   "world:post-share-monitor:smoke validates post-share issue and pull request classification rules without live GitHub issues",
-  "world:share-operator-summary validates the local owner next-action summary while keeping hosted runtime child issue publication blocked",
+  "world:share-operator-summary validates the local owner next-action summary while hosted runtime child planning issues remain published and runtime implementation remains blocked",
   "reviewer:labels validates live GitHub reviewer labels used by the issue templates"
 ]);
 
@@ -370,8 +370,8 @@ printList([
   "docs/hosted-runtime-prd-preparation.md records the hosted runtime PRD evidence map and stop conditions while implementation remains blocked",
   "docs/hosted-runtime-prd-execution-packet.md records the hosted runtime PRD scope, evidence checks, verification path, and stop conditions while runtime implementation remains blocked",
   "docs/hosted-runtime-prd-acceptance-matrix.md maps each approved hosted-runtime PRD clause to evidence and stop conditions while runtime implementation remains blocked",
-  "docs/hosted-runtime-prd-decision-preflight.md records the live owner-side hosted runtime PRD preflight while child issue publication remains blocked",
-  "docs/hosted-runtime-child-issue-publication-preflight.md records the owner-side child issue publication preflight while child issue publication and runtime implementation remain blocked",
+  "docs/hosted-runtime-prd-decision-preflight.md records the live owner-side hosted runtime PRD preflight with child issue publication already approved and published",
+  "docs/hosted-runtime-child-issue-publication-preflight.md records the owner-side child issue publication preflight while runtime implementation remains blocked",
   "npm run runtime:child-issue-approval-status verifies whether the exact hosted-runtime child issue publication approval has been separately recorded without mutating GitHub state",
   "docs/contribution-terms-prd-preparation.md records the contribution terms PRD evidence map and stop conditions while code contribution acceptance remains blocked",
   "docs/contribution-terms-prd-execution-packet.md records the contribution terms PRD scope, evidence checks, verification path, and stop conditions while code contribution acceptance remains blocked",
@@ -385,7 +385,7 @@ printList([
   "docs/owner-decision-issue-refresh.md records the owner-side live GitHub issue refresh command for keeping public owner-decision issues current",
   "npm run owner:decision-issues-freshness verifies public owner-decision issue bodies match the current Source-Wire commit and latest green Package Checks without mutating GitHub state",
   "npm run owner:decision-status verifies whether public owner-decision issues #255 through #258 have separate exact approval records or approval comments without mutating GitHub state",
-  "docs/owner-open-issues-status.md records the live open-issue boundary, npm run owner:open-issues-status verifies issues #255, #256, #257, and #258 are closed as completed history while hosted runtime child issue publication remains blocked, and npm run owner:open-issues-status:smoke verifies the future hosted-runtime planning issue state without creating or reading GitHub issues",
+  "docs/owner-open-issues-status.md records the live open-issue boundary, npm run owner:open-issues-status verifies issues #255 through #258 are closed as completed history while hosted runtime child issue publication approval is retained and issues #259 through #264 are published, and npm run owner:open-issues-status:smoke verifies the future hosted-runtime planning issue state without creating or reading GitHub issues",
   "docs/launch-decision-status.md records the one-command launch status view without approving any blocked launch path",
   "docs/release-implementation-rehearsal.md records historical release rehearsal evidence for the 0.1.0 package",
   "docs/release-implementation-runbook.md records the release execution order and stop conditions for future package versions",

@@ -15,7 +15,8 @@ for (const requiredPath of [
   "docs/hosted-runtime-issue-slices.md",
   "docs/hosted-runtime-slice-approval-request.md",
   "docs/hosted-runtime-prd-decision-preflight.md",
-  "docs/owner-open-issues-status.md"
+  "docs/owner-open-issues-status.md",
+  "docs/runtime-implementation-approval-status.md"
 ]) {
   await assertPathExists(requiredPath);
 }
@@ -39,9 +40,9 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Status: approval request only.",
+  "Status: approval request complete.",
   exactApproval,
-  "Do not publish child issues until the owner approves the exact approval text.",
+  "Child issue publication approval is recorded.",
   "npm run runtime-readiness:smoke",
   "npm run runtime-proof-intake:smoke",
   "Implementation remains blocked after child issues are published."
@@ -59,13 +60,14 @@ if (failures.length > 0) {
 
 printSection("Source-Wire Hosted Runtime Slice Approval Request");
 printRows([
-  ["Approval request", "ready"],
+  ["Approval request", "complete"],
   ["Package", packageJson.name],
   ["License", packageJson.license],
   ["Version", packageJson.version],
   ["Parent PRD", "docs/hosted-runtime-prd.md"],
   ["Slice map", "docs/hosted-runtime-issue-slices.md"],
   ["Child issue count", "6"],
+  ["Child issue publication", "approved and published as #259 through #264"],
   ["Implementation", "blocked"],
   ["Deployment", "blocked"],
   ["Real user data", "blocked"]
@@ -77,7 +79,8 @@ console.log(exactApproval);
 console.log("");
 console.log("ok hosted runtime slice approval request ready");
 console.log("ok hosted runtime child issue slice map ready");
-console.log("blocked child issue publication pending owner approval");
+console.log("ok hosted runtime child issue publication approval retained");
+console.log("ok hosted runtime child planning issues published");
 console.log("blocked hosted runtime implementation");
 
 async function assertPathExists(path) {

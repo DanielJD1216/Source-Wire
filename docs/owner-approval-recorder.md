@@ -110,7 +110,7 @@ blocked execution still requires focused implementation unit
 | `#255`, target `patch-release-implementation` | Patch release path | Record approval before a future patch release for the immutable npm `0.1.0` exported-version mismatch. |
 | `#256` | Branch governance path | Record approval before a future branch governance implementation unit. |
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
-| `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Record approval before publishing the six PRD/planning child issues. |
+| `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Approval recorded; six PRD/planning child issues are published as `#259` through `#264`; hosted runtime implementation remains blocked. |
 | `#258` | Contribution terms path | Completed contribution terms PRD approval; code contribution acceptance still needs a separate future implementation approval. |
 
 ## After Recording

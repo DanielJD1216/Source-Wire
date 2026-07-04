@@ -12,7 +12,7 @@ The current expected open issue list is empty.
 
 Issues `#255`, `#256`, `#257`, and `#258` are expected to be closed because the first public release path, minimal branch governance path, hosted runtime PRD path, and contribution terms PRD path are complete. Any open issue is treated as a failure unless it is structured reviewer feedback with the expected reviewer labels in the post-share monitor.
 
-After the owner separately approves hosted-runtime child issue publication, the six exact hosted-runtime PRD/planning issue titles are allowed as expected planning work:
+After the owner separately approved hosted-runtime child issue publication, the six exact hosted-runtime PRD/planning issue titles became allowed as expected planning work:
 
 - `Hosted Runtime Threat Model And Trust Boundary`
 - `API Server Runtime Contract`
@@ -47,13 +47,17 @@ ok completed owner decision #258 closed
 ok exact contribution terms PRD approval retained
 ok no unresolved owner decision issues open
 ok all completed owner decision approvals retained
-blocked hosted runtime child issue publication pending owner approval
+ok hosted runtime child issue publication approval retained
+ok hosted runtime child planning issues published
+blocked hosted runtime implementation
 ```
 
-After the separately approved child publication unit creates the six planning issues, the command may also print:
+When the fixture mode simulates open planning issues, the command may also print:
 
 ```text
 ok expected hosted runtime planning issues open
+ok hosted runtime child issue publication approval retained
+ok hosted runtime child planning issues published
 blocked hosted runtime implementation
 ```
 

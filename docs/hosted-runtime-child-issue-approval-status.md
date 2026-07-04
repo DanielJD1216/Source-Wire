@@ -6,10 +6,10 @@ This command checks whether the exact hosted-runtime child issue publication app
 
 ## Purpose
 
-Use this command before any future child issue publication unit to separate two questions:
+Use this command to separate two questions:
 
 - Is the hosted runtime PRD approved? That is tracked by issue `#257`.
-- Is child issue publication approved? That needs the separate exact approval text below.
+- Is child issue publication approved? That needs the separate exact approval text below. Current `main` expects that approval to be recorded and the planning issues to be published as `#259` through `#264`.
 
 ## Command
 
@@ -29,7 +29,7 @@ npm run runtime:child-issue-approval-status
 
 This command uses live GitHub issue state and owner-side `gh` access, so it is intentionally covered by `npm run world:share-final-preflight` instead of the public reviewer `npm run publish:readiness` gate.
 
-Current expected markers before approval:
+Historical markers before approval:
 
 ```text
 ok hosted runtime child issue approval status readable
@@ -37,7 +37,7 @@ blocked hosted runtime child issue publication approval missing
 blocked hosted runtime implementation
 ```
 
-Expected markers after exact approval is separately recorded:
+Current expected markers after exact approval is separately recorded:
 
 ```text
 ok hosted runtime child issue approval status readable
@@ -47,7 +47,7 @@ blocked hosted runtime implementation
 
 ## Exact Approval Text
 
-Do not publish child issues until the owner approves this exact approval text:
+The exact approval text that allowed publishing child planning issues `#259` through `#264` was:
 
 ```text
 Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.

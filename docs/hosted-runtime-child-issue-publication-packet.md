@@ -38,7 +38,7 @@ ok runtime readiness smoke
 ok runtime proof intake smoke
 ok hosted runtime child issue publication packet ready
 ok hosted runtime issue payloads validated
-blocked child issue publication pending owner approval
+ok child issue publication approval text documented
 blocked hosted runtime implementation
 ok hosted runtime child issue publisher ready
 blocked child issue publication requires --write

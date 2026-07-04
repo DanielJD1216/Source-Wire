@@ -118,6 +118,7 @@
     "runtime:mcp-contract": "node scripts/hosted-runtime-mcp-server-contract.mjs",
     "runtime:database-posture": "node scripts/hosted-runtime-database-posture-data-lifecycle.mjs",
     "runtime:fixture-plan": "node scripts/hosted-runtime-public-safe-fixture-verification-plan.mjs",
+    "runtime:deployment-boundary": "node scripts/hosted-runtime-deployment-boundary-stop-conditions.mjs",
     "runtime:slice-approval-request": "node scripts/hosted-runtime-slice-approval-request.mjs",
     "runtime:child-issue-publication-packet": "node scripts/hosted-runtime-child-issue-publication-packet.mjs",
     "runtime:child-issue-publication-preflight": "node scripts/hosted-runtime-child-issue-publication-preflight.mjs",

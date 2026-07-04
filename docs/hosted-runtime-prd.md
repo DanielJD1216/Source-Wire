@@ -175,6 +175,7 @@ Related docs:
 - [Hosted Runtime MCP Server Contract](hosted-runtime-mcp-server-contract.md)
 - [Hosted Runtime Database Posture And Data Lifecycle](hosted-runtime-database-posture-data-lifecycle.md)
 - [Hosted Runtime Public-Safe Fixture And Verification Plan](hosted-runtime-public-safe-fixture-verification-plan.md)
+- [Hosted Runtime Deployment Boundary And Runtime Stop Conditions](hosted-runtime-deployment-boundary-stop-conditions.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)

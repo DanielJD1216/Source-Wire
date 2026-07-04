@@ -126,6 +126,9 @@ const issues = [
       "Deployment config remains blocked.",
       "Rollback and stop conditions are explicit.",
       "No hosted service is created."
+    ],
+    sourceDocs: [
+      "docs/hosted-runtime-deployment-boundary-stop-conditions.md"
     ]
   }
 ];

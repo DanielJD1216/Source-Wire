@@ -187,6 +187,16 @@ Acceptance criteria:
 - rollback and stop conditions are explicit,
 - no hosted service is created.
 
+Planning artifact:
+
+- [Hosted Runtime Deployment Boundary And Runtime Stop Conditions](hosted-runtime-deployment-boundary-stop-conditions.md)
+
+Verification:
+
+```bash
+npm run runtime:deployment-boundary
+```
+
 ## Recommended Dependency Order
 
 1. Slice 1: Hosted Runtime Threat Model And Trust Boundary.

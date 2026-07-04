@@ -84,6 +84,16 @@ const approvalTargets = [
       "Approved for a future Source-Wire API contract implementation unit: build a public-safe synthetic API policy contract package and validation smoke tests for request envelopes, endpoint groups, capability checks, namespace resolution, denied results, citations and gaps, audit metadata, source maintenance, candidate review, trusted-memory approval boundaries, handoff and status evidence, and MCP-through-API policy routing. Use synthetic fixtures only. Do not add API server implementation, route handlers, MCP server runtime implementation, database migrations, real database connections, PostgreSQL or pgvector setup, runtime adapter implementation, live connectors, Mission Control UI, deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled."
   },
   {
+    target: "mcp-contract-implementation",
+    issue: 261,
+    label: "MCP contract implementation path",
+    approvalName: "MCP contract implementation",
+    allowClosedIssue: false,
+    requiresApprovalRecordSection: true,
+    exactApprovalText:
+      "Approved for a future Source-Wire MCP contract implementation unit: build a public-safe synthetic MCP adapter contract package and validation smoke tests for tool declarations, input validation, MCP-to-API envelopes, capability mapping, namespace forwarding, denied results, citation and gap preservation, audit metadata, source evidence search, trusted memory search, context assembly, candidate review, source maintenance, handoff and status evidence, and trusted-memory approval boundaries. Use synthetic fixtures only. Do not add MCP server runtime implementation, API server implementation, route handlers, database migrations, real database connections, PostgreSQL or pgvector setup, runtime adapter implementation, live connectors, Mission Control UI, deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled."
+  },
+  {
     target: "database-posture-implementation",
     issue: 262,
     label: "Database posture implementation path",

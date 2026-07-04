@@ -46,6 +46,8 @@ export const requiredPackagePaths = [
   "docs/license-decision-gate.md",
   "docs/license-decision-implementation-plan.md",
   "docs/license-version-policy.md",
+  "docs/mcp-contract-implementation-packet.md",
+  "docs/mcp-contract-implementation-slices.md",
   "docs/minimal-runtime-implementation-scope.md",
   "docs/minimal-runtime-issue-slices.md",
   "docs/minimal-runtime-prd.md",

@@ -68,6 +68,12 @@ The next API contract approval packet is [API Contract Implementation Packet](ap
 npm run runtime:api-implementation-packet
 ```
 
+The next MCP contract approval packet is [MCP Contract Implementation Packet](mcp-contract-implementation-packet.md). It is verified by:
+
+```bash
+npm run runtime:mcp-implementation-packet
+```
+
 The next database-posture approval packet is [Database Posture Implementation Packet](database-posture-implementation-packet.md). It is verified by:
 
 ```bash
@@ -190,6 +196,8 @@ It must not silently decide that evidence is trusted memory.
 - [Threat Model Implementation Slices](threat-model-implementation-slices.md)
 - [API Contract Implementation Packet](api-contract-implementation-packet.md)
 - [API Contract Implementation Slices](api-contract-implementation-slices.md)
+- [MCP Contract Implementation Packet](mcp-contract-implementation-packet.md)
+- [MCP Contract Implementation Slices](mcp-contract-implementation-slices.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Database Posture Implementation Slices](database-posture-implementation-slices.md)
 - [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)

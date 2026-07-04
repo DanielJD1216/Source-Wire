@@ -125,11 +125,15 @@ Before hosted runtime code is added, a later public implementation unit must ope
 
 The latest private-proof metadata bridge for that future unit is [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md). It keeps runtime implementation blocked until exact owner approval.
 
+The exact future implementation packet is [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md).
+
 ## Related Docs
 
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Minimal Runtime Issue Slices](minimal-runtime-issue-slices.md)
 - [Minimal Runtime Implementation Scope](minimal-runtime-implementation-scope.md)
+- [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md)
+- [Runtime Skeleton Issue Slices](runtime-skeleton-issue-slices.md)
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)

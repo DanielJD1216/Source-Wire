@@ -97,6 +97,8 @@ ok private proof runtime extraction readiness
 
 The next decision is whether to approve the narrow runtime skeleton implementation unit.
 
+That decision packet is now recorded in [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md).
+
 Recommended approval shape:
 
 ```text

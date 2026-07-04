@@ -49,6 +49,12 @@ npm run runtime:extraction-readiness
 npm run runtime:wrapper-reconciliation
 ```
 
+The current implementation approval packet is [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md). It is verified by:
+
+```bash
+npm run runtime:skeleton-packet
+```
+
 ## What A Hosted Runtime PRD May Propose
 
 A hosted runtime implementation PRD may propose public-safe versions of:
@@ -145,6 +151,8 @@ It must not silently decide that evidence is trusted memory.
 - [Minimal Runtime PRD](minimal-runtime-prd.md)
 - [Minimal Runtime Issue Slices](minimal-runtime-issue-slices.md)
 - [Minimal Runtime Implementation Scope](minimal-runtime-implementation-scope.md)
+- [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md)
+- [Runtime Skeleton Issue Slices](runtime-skeleton-issue-slices.md)
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)

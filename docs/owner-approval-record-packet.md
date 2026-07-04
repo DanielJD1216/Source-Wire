@@ -43,6 +43,7 @@ npm run owner:record-approval
 npm run owner:record-approval -- --issue 255
 npm run owner:record-approval -- --target patch-release-implementation
 npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
+npm run owner:record-approval -- --target runtime-skeleton-implementation
 ```
 
 The recorder does not write unless `--write` and a matching `--confirm-exact` value are supplied.
@@ -80,6 +81,7 @@ npm run release:approval-status
 | `#256` | Branch governance path | Record approval before a future branch governance implementation unit. |
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
 | `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Record approval before publishing the six PRD/planning child issues. |
+| `#257`, target `runtime-skeleton-implementation` | Runtime skeleton implementation path | Record approval before a future narrow runtime skeleton implementation unit. |
 | `#258` | Contribution terms path | Completed contribution terms PRD approval; code contribution acceptance still needs a separate future implementation approval. |
 
 ## Exact Approval Texts
@@ -126,6 +128,14 @@ Target: `hosted-runtime-child-issue-publication`
 Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.
 ```
 
+### Issue #257: Runtime skeleton implementation path
+
+Target: `runtime-skeleton-implementation`
+
+```text
+Approved for a future Source-Wire owner-hosted runtime skeleton implementation unit: build a public-safe synthetic owner-hosted API policy route skeleton and MCP adapter skeleton using the private Unit 25 through Unit 30 proof trail as redacted evidence only. Use synthetic fixtures only. Do not copy private implementation code or AGPLv3 code. Do not add real user data, client data, database migrations, real database connections, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, or public contribution acceptance. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled.
+```
+
 ### Issue #258: Contribution terms path
 
 Target: `contribution-terms-prd`
@@ -159,6 +169,7 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - repository ruleset governance,
 - hosted runtime,
 - production runtime use,
+- runtime skeleton implementation,
 - code contribution acceptance.
 
 ## Related Docs
@@ -168,4 +179,5 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - [Launch Decision Status](launch-decision-status.md)
 - [Release Approval Request Packet](release-approval-request-packet.md)
 - [Branch Governance Approval Request](branch-governance-approval-request.md)
+- [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)

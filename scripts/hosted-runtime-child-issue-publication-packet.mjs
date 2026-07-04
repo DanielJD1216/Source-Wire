@@ -107,6 +107,9 @@ const issues = [
       "Fixtures contain no real user data, private owner data, local paths, account IDs, emails, domains, tokens, screenshots, client data, or production exports.",
       "Verification includes runtime readiness, runtime proof intake, safety, claim boundary, docs, and owner-side live gates.",
       "No fixture implementation is added unless a later implementation unit approves it."
+    ],
+    sourceDocs: [
+      "docs/hosted-runtime-public-safe-fixture-verification-plan.md"
     ]
   },
   {

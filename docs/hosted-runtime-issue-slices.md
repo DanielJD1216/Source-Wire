@@ -157,6 +157,16 @@ Acceptance criteria:
 - verification includes readiness, safety, claim boundary, docs, and owner-side live gates,
 - no fixture implementation is added unless a later implementation unit approves it.
 
+Planning artifact:
+
+- [Hosted Runtime Public-Safe Fixture And Verification Plan](hosted-runtime-public-safe-fixture-verification-plan.md)
+
+Verification:
+
+```bash
+npm run runtime:fixture-plan
+```
+
 ### Slice 6: Deployment Boundary And Runtime Stop Conditions
 
 Type: HITL.

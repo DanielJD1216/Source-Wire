@@ -70,9 +70,10 @@ npm run runtime:api-policy-smoke
 npm run runtime:api-implementation-packet
 ```
 
-The next MCP contract approval packet is [MCP Contract Implementation Packet](mcp-contract-implementation-packet.md). It is verified by:
+The MCP contract implementation is recorded in [MCP Adapter Contract Implementation Proof](mcp-adapter-contract-implementation-proof.md). It is verified by:
 
 ```bash
+npm run runtime:mcp-adapter-smoke
 npm run runtime:mcp-implementation-packet
 ```
 

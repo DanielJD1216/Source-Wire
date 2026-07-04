@@ -1,14 +1,14 @@
 # Source-Wire MCP Contract Implementation Packet
 
-Status: approval packet only. Implementation is blocked until exact owner approval is recorded.
+Status: implemented as a synthetic MCP adapter contract package after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Direct Answer
 
-The next Source-Wire MCP-related unit should be a public-safe synthetic MCP adapter contract package, not an MCP server runtime.
+The Source-Wire MCP-related unit is now a public-safe synthetic MCP adapter contract package, not an MCP server runtime.
 
-This packet defines the exact unit that can start after owner approval:
+This packet records the exact unit implemented after owner approval:
 
 ```text
 synthetic tool declarations
@@ -34,9 +34,9 @@ Copy this only when the owner is ready to approve the future implementation unit
 Approved for a future Source-Wire MCP contract implementation unit: build a public-safe synthetic MCP adapter contract package and validation smoke tests for tool declarations, input validation, MCP-to-API envelopes, capability mapping, namespace forwarding, denied results, citation and gap preservation, audit metadata, source evidence search, trusted memory search, context assembly, candidate review, source maintenance, handoff and status evidence, and trusted-memory approval boundaries. Use synthetic fixtures only. Do not add MCP server runtime implementation, API server implementation, route handlers, database migrations, real database connections, PostgreSQL or pgvector setup, runtime adapter implementation, live connectors, Mission Control UI, deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled.
 ```
 
-## What Approval Would Unlock
+## What Approval Unlocked
 
-Only this:
+Only this was unlocked:
 
 - public-safe MCP adapter contract types,
 - synthetic tool declaration fixtures,
@@ -56,6 +56,8 @@ Only this:
 - synthetic trusted-memory approval boundary fixtures,
 - local smoke tests,
 - docs and readiness gate updates.
+
+The approved synthetic MCP adapter contract package is recorded in [MCP Adapter Contract Implementation Proof](mcp-adapter-contract-implementation-proof.md).
 
 ## What Approval Would Not Unlock
 
@@ -97,7 +99,7 @@ Still blocked:
 
 ## Pre-Implementation Gates
 
-Before implementation starts, run:
+The implementation was allowed only after these gates passed:
 
 ```bash
 npm run runtime:mcp-implementation-packet
@@ -113,6 +115,15 @@ npm run runtime-proof-intake:smoke
 npm run runtime-readiness:smoke
 npm run safety:scan
 npm run claims:scan
+```
+
+## Implementation Verification
+
+After implementation, run:
+
+```bash
+npm run runtime:mcp-adapter-smoke
+npm run runtime:mcp-implementation-packet
 ```
 
 ## Implementation Slice Map
@@ -137,6 +148,8 @@ npm run owner:open-issues-status
 ## Related Docs
 
 - [MCP Contract Implementation Slices](mcp-contract-implementation-slices.md)
+- [MCP Adapter Contract Implementation Proof](mcp-adapter-contract-implementation-proof.md)
+- [MCP Adapter Contract Smoke](mcp-adapter-contract-smoke.md)
 - [Hosted Runtime MCP Server Contract](hosted-runtime-mcp-server-contract.md)
 - [Hosted Runtime API Server Contract](hosted-runtime-api-server-contract.md)
 - [Hosted Runtime Threat Model And Trust Boundary](hosted-runtime-threat-model-trust-boundary.md)

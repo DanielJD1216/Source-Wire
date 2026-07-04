@@ -24,6 +24,13 @@ for (const requiredPath of [
   "docs/api-contract-implementation-packet.md",
   "docs/threat-model-implementation-packet.md",
   "docs/runtime-skeleton-implementation-proof.md",
+  "docs/mcp-adapter-contract-implementation-proof.md",
+  "docs/mcp-adapter-contract-smoke.md",
+  "examples/fixtures/mcp-contract/mcp-adapter-contract-fixture-matrix.json",
+  "examples/fixtures/mcp-contract/README.md",
+  "examples/mcp-contract/mcp-adapter-contract-smoke.mjs",
+  "examples/mcp-contract/README.md",
+  "src/contracts/mcp-adapter.ts",
   "docs/owner-approval-record-packet.md",
   "scripts/record-owner-approval.mjs"
 ]) {
@@ -31,9 +38,11 @@ for (const requiredPath of [
 }
 
 for (const requiredText of [
-  "Status: approval packet only. Implementation is blocked until exact owner approval is recorded.",
-  "The next Source-Wire MCP-related unit should be a public-safe synthetic MCP adapter contract package, not an MCP server runtime.",
+  "Status: implemented as a synthetic MCP adapter contract package after exact owner approval.",
+  "The Source-Wire MCP-related unit is now a public-safe synthetic MCP adapter contract package, not an MCP server runtime.",
+  "The approved synthetic MCP adapter contract package is recorded in [MCP Adapter Contract Implementation Proof](mcp-adapter-contract-implementation-proof.md).",
   exactApprovalText,
+  "npm run runtime:mcp-adapter-smoke",
   "npm run runtime:mcp-implementation-packet",
   "npm run owner:record-approval -- --target mcp-contract-implementation",
   "What Approval Would Not Unlock"
@@ -42,12 +51,13 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.",
+  "Status: completed synthetic MCP adapter contract slice map after exact owner approval.",
   "Slice 1: File Scope And Safety Guard",
   "Slice 2: Synthetic Tool Declaration And Input Contract",
   "Slice 3: Synthetic MCP-To-API Policy Fixture Matrix",
   "Slice 4: Smoke Test And Validation",
   "Slice 5: Docs, Proof, And Readiness",
+  "npm run runtime:mcp-adapter-smoke",
   "npm run runtime:mcp-implementation-packet",
   "Still Blocked After These Slices"
 ]) {
@@ -115,7 +125,7 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Implementation", "blocked pending exact owner approval"],
+  ["Implementation", "synthetic MCP adapter contract package implemented after exact owner approval"],
   ["Runtime shape", "synthetic MCP adapter contract only"],
   ["MCP server runtime", "blocked"],
   ["API bypass", "blocked"],
@@ -125,7 +135,7 @@ printRows([
 console.log("");
 console.log("ok MCP contract implementation packet ready");
 console.log("ok MCP contract implementation slices ready");
-console.log("blocked MCP contract implementation pending owner approval");
+console.log("ok synthetic MCP adapter contract implementation recorded");
 console.log("blocked MCP server runtime implementation");
 
 async function assertPathExists(path) {

@@ -138,6 +138,23 @@ export {
   evaluateApiPolicyContractCase,
   evaluateApiPolicyContractFixtureMatrix
 } from "./contracts/api-policy.js";
+export type {
+  SourceWireMcpContractCaller,
+  SourceWireMcpContractFixtureCase,
+  SourceWireMcpContractFixtureMatrix,
+  SourceWireMcpContractInput,
+  SourceWireMcpContractRequest,
+  SourceWireMcpContractResponse,
+  SourceWireMcpContractStatus,
+  SourceWireMcpContractToolDeclaration,
+  SourceWireMcpContractToolName
+} from "./contracts/mcp-adapter.js";
+export {
+  SOURCE_WIRE_MCP_ADAPTER_CONTRACT_BOUNDARY,
+  SOURCE_WIRE_MCP_ADAPTER_TOOL_DECLARATIONS,
+  evaluateMcpAdapterContractCase,
+  evaluateMcpAdapterContractFixtureMatrix
+} from "./contracts/mcp-adapter.js";
 export type * from "./contracts/fixtures.js";
 export type * from "./contracts/mcp-tools.js";
 export type * from "./contracts/owner-hosted-setup.js";

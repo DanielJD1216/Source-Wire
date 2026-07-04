@@ -60,6 +60,7 @@ The readiness gate runs:
 - `npm run runtime:skeleton-smoke`
 - `npm run runtime:threat-boundary-smoke`
 - `npm run runtime:api-policy-smoke`
+- `npm run runtime:mcp-adapter-smoke`
 - `npm run runtime-boundary:smoke`
 - `npm run wrapper-runtime:api-policy-smoke`
 - `npm run wrapper-runtime:mcp-adapter-smoke`

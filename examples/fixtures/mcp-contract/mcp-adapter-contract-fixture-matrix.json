@@ -1,0 +1,599 @@
+{
+  "fixtureType": "source-wire-mcp-adapter-contract-fixture-matrix",
+  "fixtureSafety": "synthetic",
+  "boundary": {
+    "implementationMode": "synthetic_mcp_adapter_contract",
+    "sourceWireHostsUserMemory": false,
+    "mcpServerRuntimeIncluded": false,
+    "apiServerIncluded": false,
+    "routeHandlersIncluded": false,
+    "databaseIncluded": false,
+    "databaseMigrationsIncluded": false,
+    "realDatabaseConnectionsIncluded": false,
+    "postgresOrPgvectorSetupIncluded": false,
+    "runtimeAdapterIncluded": false,
+    "liveConnectorsIncluded": false,
+    "missionControlIncluded": false,
+    "deploymentIncluded": false,
+    "hostedServicesIncluded": false,
+    "managedHostingIncluded": false,
+    "realDataIncluded": false,
+    "clientDataIncluded": false,
+    "privateImplementationCodeIncluded": false,
+    "agplCodeIncluded": false,
+    "mcpMustRouteThroughApiPolicy": true,
+    "mcpMayBypassApiPolicy": false,
+    "sourceEvidenceMayAutoPromoteToTrustedMemory": false,
+    "trustedMemoryPromotion": "owner_or_application_controlled"
+  },
+  "toolDeclarations": [
+    {
+      "toolName": "search_trusted_memory",
+      "requiredCapability": "read_trusted_memory",
+      "endpointGroup": "trusted_memory_read",
+      "action": "read_trusted_memory",
+      "mutationAuthority": "read_only"
+    },
+    {
+      "toolName": "search_source_evidence",
+      "requiredCapability": "read_source_evidence",
+      "endpointGroup": "source_evidence_search",
+      "action": "search_source_evidence",
+      "mutationAuthority": "read_only"
+    },
+    {
+      "toolName": "assemble_context",
+      "requiredCapability": "assemble_context",
+      "endpointGroup": "context_assembly",
+      "action": "assemble_context",
+      "mutationAuthority": "read_only"
+    },
+    {
+      "toolName": "review_candidates",
+      "requiredCapability": "review_candidates",
+      "endpointGroup": "candidate_review",
+      "action": "review_candidate",
+      "mutationAuthority": "candidate_review"
+    },
+    {
+      "toolName": "maintain_sources",
+      "requiredCapability": "maintain_sources",
+      "endpointGroup": "source_maintenance",
+      "action": "maintain_source",
+      "mutationAuthority": "source_maintenance"
+    },
+    {
+      "toolName": "read_handoff_status",
+      "requiredCapability": "read_handoff_status",
+      "endpointGroup": "handoff_status_evidence",
+      "action": "read_handoff_status",
+      "mutationAuthority": "read_only"
+    },
+    {
+      "toolName": "approve_trusted_memory",
+      "requiredCapability": "approve_trusted_memory",
+      "endpointGroup": "trusted_memory_approval",
+      "action": "approve_trusted_memory",
+      "mutationAuthority": "owner_or_application_controlled"
+    },
+    {
+      "toolName": "direct_database_access",
+      "requiredCapability": "read_source_evidence",
+      "endpointGroup": "source_evidence_search",
+      "action": "search_source_evidence",
+      "mutationAuthority": "read_only"
+    },
+    {
+      "toolName": "direct_runtime_adapter_access",
+      "requiredCapability": "read_source_evidence",
+      "endpointGroup": "source_evidence_search",
+      "action": "search_source_evidence",
+      "mutationAuthority": "read_only"
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "search_trusted_memory_forwards_to_api_policy",
+      "request": {
+        "requestId": "mcp_req_demo_trusted_memory",
+        "toolName": "search_trusted_memory",
+        "caller": {
+          "callerId": "caller_demo_mcp_trusted_reader",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["read_trusted_memory"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_trusted_memory",
+          "traceId": "trace_demo_mcp_trusted_memory",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "query": "synthetic trusted memory lookup",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_trusted_reader",
+            "reason": "synthetic MCP trusted memory search"
+          }
+        }
+      },
+      "expected": {
+        "status": "allowed",
+        "toolDeclarationFound": true,
+        "inputValidated": true,
+        "capabilityMapped": true,
+        "namespaceForwarded": true,
+        "apiPolicyRouted": true,
+        "apiPolicyBypassed": false,
+        "trustedMemoryReturned": true,
+        "citationsPreserved": true,
+        "citationCount": 1,
+        "sourceEvidencePromoted": false,
+        "automaticTrustedMemoryPromotion": false
+      }
+    },
+    {
+      "caseId": "search_source_evidence_preserves_citation_and_gap",
+      "request": {
+        "requestId": "mcp_req_demo_source_evidence",
+        "toolName": "search_source_evidence",
+        "caller": {
+          "callerId": "caller_demo_mcp_source_reader",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["read_source_evidence"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_source_evidence",
+          "traceId": "trace_demo_mcp_source_evidence",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "query": "synthetic source evidence lookup",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_source_reader",
+            "reason": "synthetic MCP source evidence search"
+          }
+        }
+      },
+      "expected": {
+        "status": "allowed",
+        "inputValidated": true,
+        "capabilityMapped": true,
+        "namespaceForwarded": true,
+        "apiPolicyRouted": true,
+        "sourceEvidenceReturned": true,
+        "citationsPreserved": true,
+        "gapsPreserved": true,
+        "citationCount": 1,
+        "gapCount": 1
+      }
+    },
+    {
+      "caseId": "assemble_context_preserves_citations_and_gap",
+      "request": {
+        "requestId": "mcp_req_demo_context",
+        "toolName": "assemble_context",
+        "caller": {
+          "callerId": "caller_demo_mcp_context",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["assemble_context"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_context",
+          "traceId": "trace_demo_mcp_context",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "query": "synthetic context assembly",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_context",
+            "reason": "synthetic MCP context assembly"
+          }
+        }
+      },
+      "expected": {
+        "status": "partial_success",
+        "inputValidated": true,
+        "capabilityMapped": true,
+        "namespaceForwarded": true,
+        "apiPolicyRouted": true,
+        "contextAssembled": true,
+        "citationsPreserved": true,
+        "gapsPreserved": true,
+        "citationCount": 2,
+        "gapCount": 1
+      }
+    },
+    {
+      "caseId": "review_candidates_no_trusted_memory_approval",
+      "request": {
+        "requestId": "mcp_req_demo_review_candidate",
+        "toolName": "review_candidates",
+        "caller": {
+          "callerId": "caller_demo_owner_app_reviewer",
+          "callerKind": "owner_controlled_application",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["review_candidates"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_review_candidate",
+          "traceId": "trace_demo_mcp_review_candidate",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "candidateId": "candidate_demo_alpha_001",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_owner_app_reviewer",
+            "reason": "synthetic candidate review without approval"
+          }
+        }
+      },
+      "expected": {
+        "status": "allowed",
+        "inputValidated": true,
+        "apiPolicyRouted": true,
+        "candidateReviewed": true,
+        "trustedMemoryCreated": false,
+        "gapsPreserved": true,
+        "gapCount": 1
+      }
+    },
+    {
+      "caseId": "maintain_sources_creates_no_trusted_memory",
+      "request": {
+        "requestId": "mcp_req_demo_maintain_sources",
+        "toolName": "maintain_sources",
+        "caller": {
+          "callerId": "caller_demo_mcp_maintainer",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["maintain_sources"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_maintain_sources",
+          "traceId": "trace_demo_mcp_maintain_sources",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "query": "synthetic source maintenance",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_maintainer",
+            "reason": "synthetic source maintenance through MCP"
+          }
+        }
+      },
+      "expected": {
+        "status": "partial_success",
+        "inputValidated": true,
+        "apiPolicyRouted": true,
+        "sourceMaintenanceAccepted": true,
+        "trustedMemoryCreated": false,
+        "gapsPreserved": true,
+        "gapCount": 2
+      }
+    },
+    {
+      "caseId": "read_handoff_status_preserves_audit_metadata",
+      "request": {
+        "requestId": "mcp_req_demo_handoff_status",
+        "toolName": "read_handoff_status",
+        "caller": {
+          "callerId": "caller_demo_mcp_handoff",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["read_handoff_status"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_handoff_status",
+          "traceId": "trace_demo_mcp_handoff_status",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "query": "synthetic handoff status",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_handoff",
+            "reason": "synthetic handoff status read through MCP"
+          }
+        }
+      },
+      "expected": {
+        "status": "allowed",
+        "inputValidated": true,
+        "apiPolicyRouted": true,
+        "citationsPreserved": true,
+        "citationCount": 1
+      }
+    },
+    {
+      "caseId": "missing_caller_denied",
+      "request": {
+        "requestId": "mcp_req_demo_missing_caller",
+        "toolName": "search_trusted_memory",
+        "caller": {
+          "callerKind": "unknown",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": []
+        },
+        "input": {
+          "requestId": "req_demo_mcp_missing_caller",
+          "traceId": "trace_demo_mcp_missing_caller",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "query": "synthetic missing caller",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "reason": "synthetic missing caller denial"
+          }
+        }
+      },
+      "expected": {
+        "status": "denied",
+        "denialReason": "caller_identity_required",
+        "apiPolicyRouted": false,
+        "trustedMemoryCreated": false
+      }
+    },
+    {
+      "caseId": "missing_owner_denied",
+      "request": {
+        "requestId": "mcp_req_demo_missing_owner",
+        "toolName": "search_trusted_memory",
+        "caller": {
+          "callerId": "caller_demo_mcp_missing_owner",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["read_trusted_memory"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_missing_owner",
+          "traceId": "trace_demo_mcp_missing_owner",
+          "namespaceId": "ns_demo_alpha",
+          "query": "synthetic missing owner",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_missing_owner",
+            "reason": "synthetic missing owner denial"
+          }
+        }
+      },
+      "expected": {
+        "status": "denied",
+        "denialReason": "owner_required",
+        "apiPolicyRouted": false
+      }
+    },
+    {
+      "caseId": "missing_namespace_denied",
+      "request": {
+        "requestId": "mcp_req_demo_missing_namespace",
+        "toolName": "search_trusted_memory",
+        "caller": {
+          "callerId": "caller_demo_mcp_missing_namespace",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["read_trusted_memory"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_missing_namespace",
+          "traceId": "trace_demo_mcp_missing_namespace",
+          "ownerId": "owner_demo",
+          "query": "synthetic missing namespace",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_missing_namespace",
+            "reason": "synthetic missing namespace denial"
+          }
+        }
+      },
+      "expected": {
+        "status": "denied",
+        "denialReason": "namespace_required",
+        "apiPolicyRouted": false
+      }
+    },
+    {
+      "caseId": "missing_capability_denied",
+      "request": {
+        "requestId": "mcp_req_demo_missing_capability",
+        "toolName": "search_source_evidence",
+        "caller": {
+          "callerId": "caller_demo_mcp_missing_capability",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["read_trusted_memory"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_missing_capability",
+          "traceId": "trace_demo_mcp_missing_capability",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "query": "synthetic missing capability",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_missing_capability",
+            "reason": "synthetic missing capability denial"
+          }
+        }
+      },
+      "expected": {
+        "status": "denied",
+        "denialReason": "missing_read_source_evidence_capability",
+        "apiPolicyRouted": true,
+        "trustedMemoryCreated": false
+      }
+    },
+    {
+      "caseId": "wrong_namespace_denied",
+      "request": {
+        "requestId": "mcp_req_demo_wrong_namespace",
+        "toolName": "search_trusted_memory",
+        "caller": {
+          "callerId": "caller_demo_mcp_wrong_namespace",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["read_trusted_memory"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_wrong_namespace",
+          "traceId": "trace_demo_mcp_wrong_namespace",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_beta",
+          "query": "synthetic wrong namespace",
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_wrong_namespace",
+            "reason": "synthetic wrong namespace denial"
+          }
+        }
+      },
+      "expected": {
+        "status": "denied",
+        "denialReason": "namespace_not_allowed",
+        "apiPolicyRouted": true,
+        "trustedMemoryCreated": false
+      }
+    },
+    {
+      "caseId": "mcp_direct_database_access_denied",
+      "request": {
+        "requestId": "mcp_req_demo_direct_database",
+        "toolName": "direct_database_access",
+        "caller": {
+          "callerId": "caller_demo_mcp_direct_database",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["read_source_evidence"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_direct_database",
+          "traceId": "trace_demo_mcp_direct_database",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "query": "synthetic forbidden database access",
+          "mcpRoutesThroughApiPolicy": false,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_direct_database",
+            "reason": "synthetic direct database denial"
+          }
+        }
+      },
+      "expected": {
+        "status": "denied",
+        "denialReason": "mcp_direct_database_access_blocked",
+        "apiPolicyRouted": false,
+        "directDatabaseAccessAttempted": true
+      }
+    },
+    {
+      "caseId": "mcp_direct_runtime_adapter_access_denied",
+      "request": {
+        "requestId": "mcp_req_demo_direct_runtime_adapter",
+        "toolName": "direct_runtime_adapter_access",
+        "caller": {
+          "callerId": "caller_demo_mcp_direct_runtime_adapter",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["read_source_evidence"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_direct_runtime_adapter",
+          "traceId": "trace_demo_mcp_direct_runtime_adapter",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "query": "synthetic forbidden runtime adapter access",
+          "mcpRoutesThroughApiPolicy": false,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_direct_runtime_adapter",
+            "reason": "synthetic direct runtime adapter denial"
+          }
+        }
+      },
+      "expected": {
+        "status": "denied",
+        "denialReason": "mcp_direct_runtime_adapter_access_blocked",
+        "apiPolicyRouted": false,
+        "directRuntimeAdapterAccessAttempted": true
+      }
+    },
+    {
+      "caseId": "agent_trusted_memory_approval_denied",
+      "request": {
+        "requestId": "mcp_req_demo_agent_approval",
+        "toolName": "approve_trusted_memory",
+        "caller": {
+          "callerId": "caller_demo_mcp_agent_approval",
+          "callerKind": "mcp_tool",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["approve_trusted_memory"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_agent_approval",
+          "traceId": "trace_demo_mcp_agent_approval",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "candidateId": "candidate_demo_alpha_approval_001",
+          "explicitTrustedMemoryApproval": true,
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_mcp_agent_approval",
+            "reason": "synthetic agent approval denial"
+          }
+        }
+      },
+      "expected": {
+        "status": "denied",
+        "denialReason": "trusted_memory_approval_requires_owner_or_application",
+        "apiPolicyRouted": true,
+        "trustedMemoryCreated": false
+      }
+    },
+    {
+      "caseId": "owner_application_trusted_memory_approval_allowed",
+      "request": {
+        "requestId": "mcp_req_demo_owner_application_approval",
+        "toolName": "approve_trusted_memory",
+        "caller": {
+          "callerId": "caller_demo_owner_application_approval",
+          "callerKind": "owner_controlled_application",
+          "ownerId": "owner_demo",
+          "allowedNamespaceIds": ["ns_demo_alpha"],
+          "capabilities": ["approve_trusted_memory"]
+        },
+        "input": {
+          "requestId": "req_demo_mcp_owner_application_approval",
+          "traceId": "trace_demo_mcp_owner_application_approval",
+          "ownerId": "owner_demo",
+          "namespaceId": "ns_demo_alpha",
+          "candidateId": "candidate_demo_alpha_approval_002",
+          "explicitTrustedMemoryApproval": true,
+          "mcpRoutesThroughApiPolicy": true,
+          "auditMetadata": {
+            "actorId": "caller_demo_owner_application_approval",
+            "reason": "synthetic owner application approval"
+          }
+        }
+      },
+      "expected": {
+        "status": "allowed",
+        "apiPolicyRouted": true,
+        "trustedMemoryCreated": true,
+        "automaticTrustedMemoryPromotion": false
+      }
+    }
+  ]
+}

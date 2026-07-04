@@ -1,12 +1,12 @@
 # Source-Wire MCP Contract Implementation Slices
 
-Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.
+Status: completed synthetic MCP adapter contract slice map after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Parent
 
-Future parent unit:
+Parent unit:
 
 ```text
 Source-Wire MCP Contract Implementation
@@ -131,6 +131,7 @@ After implementation, run:
 npm run typecheck
 npm run build
 npm test
+npm run runtime:mcp-adapter-smoke
 npm run runtime:mcp-implementation-packet
 npm run runtime:mcp-contract
 npm run runtime:api-implementation-packet

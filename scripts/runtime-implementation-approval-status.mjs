@@ -165,7 +165,7 @@ if (missing.length > 0) {
   console.log("blocked hosted runtime implementation");
 } else {
   console.log("ok all runtime implementation approvals recorded");
-  console.log("blocked implementation still requires focused implementation unit execution");
+  console.log("blocked hosted runtime implementation");
 }
 
 function hasApprovalRecordSection(body, exactApprovalTextToFind) {

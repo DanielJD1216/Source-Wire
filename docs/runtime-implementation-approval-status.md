@@ -1,12 +1,12 @@
 # Source-Wire Runtime Implementation Approval Status
 
-Status: owner-side read-only status check. Runtime implementation remains blocked until exact owner approval is recorded for a focused implementation unit.
+Status: owner-side read-only status check. The six synthetic implementation gates are approved and implemented; hosted runtime implementation remains blocked.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Direct Answer
 
-Run this when you need to know which hosted-runtime implementation gates are prepared and which exact owner approvals are still missing.
+Run this when you need to know whether hosted-runtime implementation gates are prepared, approved, and still bounded away from real hosted runtime behavior.
 
 ```bash
 npm run runtime:implementation-approval-status
@@ -31,7 +31,8 @@ The command verifies:
 - `docs/owner-approval-record-packet.md` contains the exact approval text,
 - `scripts/record-owner-approval.mjs` contains the exact approval target and text,
 - the matching GitHub issue is readable,
-- the matching GitHub issue has, or does not have, exact owner approval evidence.
+- the matching GitHub issue has, or does not have, exact owner approval evidence,
+- the matching GitHub issue state is readable.
 
 ## What It Does Not Do
 
@@ -56,12 +57,12 @@ It does not:
 
 ## Expected Current Result
 
-Until the owner records exact approval on one of the implementation issues, the command should report:
+Now that issues `#259` through `#264` are approved and implemented as synthetic packages, the command should report:
 
 ```text
 ok runtime implementation approval status readable
 ok runtime implementation gates prepared 6
-blocked runtime implementation approvals missing
+ok all runtime implementation approvals recorded
 blocked hosted runtime implementation
 ```
 

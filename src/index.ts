@@ -24,6 +24,26 @@ export const SOURCE_WIRE_RUNTIME_BOUNDARY: SourceWireRuntimeBoundary = {
 };
 
 export type {
+  SourceWireDailyWorkflowBoundary,
+  SourceWireDailyWorkflowCase,
+  SourceWireDailyWorkflowCaseStatus,
+  SourceWireDailyWorkflowContract,
+  SourceWireDailyWorkflowEvidenceLabel,
+  SourceWireDailyWorkflowFailureRecord,
+  SourceWireDailyWorkflowFixtureMatrix,
+  SourceWireDailyWorkflowGapKind,
+  SourceWireDailyWorkflowPhase,
+  SourceWireDailyWorkflowStatus,
+  SourceWireDailyWorkflowSummary
+} from "./contracts/daily-workflow.js";
+export {
+  SOURCE_WIRE_DAILY_WORKFLOW_BOUNDARY,
+  SOURCE_WIRE_DAILY_WORKFLOW_CONTRACT,
+  SOURCE_WIRE_DAILY_WORKFLOW_PHASES,
+  SOURCE_WIRE_DAILY_WORKFLOW_REQUIRED_CASES,
+  summarizeDailyWorkflowContract
+} from "./contracts/daily-workflow.js";
+export type {
   SourceWireMinimalRuntimeAudit,
   SourceWireMinimalRuntimeCitation,
   SourceWireMinimalRuntimeProofResult,

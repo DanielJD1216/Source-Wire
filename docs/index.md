@@ -32,6 +32,10 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Owner-Hosted Setup Readiness Fixture Matrix](owner-hosted-setup-readiness-fixture-matrix.md)
 - [Owner-Hosted Setup Readiness Smoke](owner-hosted-setup-readiness-smoke.md)
 - [Owner-Hosted Setup Source Update Safety Smoke](owner-hosted-setup-source-update-safety-smoke.md)
+- [Daily Workflow Contract](contracts/daily-workflow-contract.md)
+- [Daily Workflow Synthetic Smoke](daily-workflow-synthetic-smoke.md)
+- [Daily Workflow Claim Boundary](daily-workflow-claim-boundary.md)
+- [Daily Workflow Implementation Proof](daily-workflow-implementation-proof.md)
 - [Owner-Hosted Setup Claim Boundary](owner-hosted-setup-claim-boundary.md)
 - [Owner-Hosted Setup Final Proof](owner-hosted-setup-final-proof.md)
 - [Owner-Hosted Setup Docs Audit](owner-hosted-setup-docs-audit.md)
@@ -134,6 +138,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 ## Contracts
 
 - [Owner-Hosted Setup Contract](contracts/owner-hosted-setup-contract.md)
+- [Daily Workflow Contract](contracts/daily-workflow-contract.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Wrapper Runtime Policy Contract](contracts/wrapper-runtime-policy-contract.md)
 - [Source Graph Adapter Contract](contracts/source-graph-adapter-contract.md)

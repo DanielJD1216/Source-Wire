@@ -1,0 +1,269 @@
+{
+  "fixtureType": "source-wire-daily-workflow-fixture-matrix",
+  "fixtureSafety": "synthetic",
+  "contractVersion": "source-wire-daily-workflow.v1",
+  "boundary": {
+    "fixtureSafety": "synthetic",
+    "runtimeIncluded": false,
+    "apiServerRuntimeIncluded": false,
+    "mcpServerRuntimeIncluded": false,
+    "databaseMigrationsIncluded": false,
+    "realDatabaseConnectionIncluded": false,
+    "liveConnectorsIncluded": false,
+    "localPathCrawlingAllowed": false,
+    "realUserDataIncluded": false,
+    "privateImplementationCodeCopied": false,
+    "agplCodeCopied": false,
+    "automaticTrustedMemoryPromotionAllowed": false,
+    "mcpCanApproveTrustedMemory": false,
+    "packageVersionChangeRequired": false
+  },
+  "cases": [
+    {
+      "caseId": "daily_ask_trusted_citation",
+      "phase": "ask",
+      "status": "ready",
+      "ownerFacingSummary": "A normal owner question returns one trusted synthetic memory citation without changing trusted memory.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "approvedTrustedCitationCount": 1,
+        "evidenceLabels": ["trusted_memory"]
+      },
+      "expected": {
+        "canContinue": true,
+        "ownerNextAction": "Use the answer or ask a follow-up.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "daily_ask_missing_evidence_gap",
+      "phase": "ask",
+      "status": "ready",
+      "ownerFacingSummary": "A normal owner question can return a missing-evidence gap without changing trusted memory.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "approvedTrustedCitationCount": 0,
+        "evidenceLabels": ["gap"],
+        "gapKinds": ["missing_evidence"]
+      },
+      "expected": {
+        "canContinue": true,
+        "ownerNextAction": "Provide a bounded source packet if the owner wants this remembered.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "bounded_update_pending_review",
+      "phase": "bounded_update",
+      "status": "ready",
+      "ownerFacingSummary": "A caller-supplied snapshot update creates pending review work without trusted memory promotion.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "callerSuppliedSnapshotRequired": true,
+        "callerSuppliedSnapshotProvided": true,
+        "folderCrawlingRequested": false,
+        "folderCrawlingAllowed": false,
+        "ownerReviewRequired": true,
+        "evidenceLabels": ["source_only", "pending_candidate"]
+      },
+      "expected": {
+        "canContinue": true,
+        "ownerNextAction": "Review the pending synthetic memory suggestion.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "bounded_update_missing_snapshot_blocked",
+      "phase": "bounded_update",
+      "status": "blocked",
+      "ownerFacingSummary": "An update request without a caller-supplied snapshot is blocked.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "callerSuppliedSnapshotRequired": true,
+        "callerSuppliedSnapshotProvided": false,
+        "folderCrawlingAllowed": false,
+        "evidenceLabels": ["gap"]
+      },
+      "expected": {
+        "canContinue": false,
+        "ownerNextAction": "Attach an explicit synthetic snapshot packet.",
+        "failureRecords": [
+          {
+            "failurePoint": "bounded_update",
+            "observedError": "No caller-supplied snapshot was provided.",
+            "supportedCause": "Source-Wire synthetic update proof does not crawl folders or infer files from chat text.",
+            "impact": "No source update runs and trusted memory remains unchanged.",
+            "nextAction": "Provide explicit snapshot files or hold the update."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "bounded_update_folder_crawl_blocked",
+      "phase": "bounded_update",
+      "status": "blocked",
+      "ownerFacingSummary": "A folder-crawl update request is blocked by default.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "callerSuppliedSnapshotRequired": true,
+        "callerSuppliedSnapshotProvided": false,
+        "folderCrawlingRequested": true,
+        "folderCrawlingAllowed": false,
+        "evidenceLabels": ["gap"]
+      },
+      "expected": {
+        "canContinue": false,
+        "ownerNextAction": "Use an explicit source packet instead of folder crawling.",
+        "failureRecords": [
+          {
+            "failurePoint": "bounded_update",
+            "observedError": "Folder crawling was requested.",
+            "supportedCause": "Public Source-Wire fixtures must not crawl local folders or broad private exports.",
+            "impact": "No source update runs and trusted memory remains unchanged.",
+            "nextAction": "Create a bounded synthetic source packet."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "owner_review_approval",
+      "phase": "owner_review",
+      "status": "ready",
+      "ownerFacingSummary": "Owner approval promotes exactly one synthetic pending suggestion to trusted memory in the fixture model.",
+      "checks": {
+        "trustedMemoryRecordDelta": 1,
+        "noAutoPromotion": true,
+        "ownerReviewRequired": true,
+        "ownerApprovalCreatesTrustedMemoryRecords": 1,
+        "evidenceLabels": ["pending_candidate", "trusted_memory"]
+      },
+      "expected": {
+        "canContinue": true,
+        "ownerNextAction": "Ask a follow-up that can cite the approved trusted memory.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "owner_review_rejection",
+      "phase": "owner_review",
+      "status": "ready",
+      "ownerFacingSummary": "Owner rejection creates zero trusted memory records.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "ownerReviewRequired": true,
+        "ownerRejectionCreatesTrustedMemoryRecords": 0,
+        "evidenceLabels": ["pending_candidate", "rejected_candidate"]
+      },
+      "expected": {
+        "canContinue": true,
+        "ownerNextAction": "Keep rejected candidate out of trusted answers.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "owner_review_mcp_bypass_denied",
+      "phase": "owner_review",
+      "status": "blocked",
+      "ownerFacingSummary": "MCP cannot approve trusted memory directly.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "ownerReviewRequired": true,
+        "mcpApprovalAllowed": false,
+        "evidenceLabels": ["gap"]
+      },
+      "expected": {
+        "canContinue": false,
+        "ownerNextAction": "Approve or reject through owner or approved application control.",
+        "failureRecords": [
+          {
+            "failurePoint": "owner_review",
+            "observedError": "MCP approval bypass attempted.",
+            "supportedCause": "Source-Wire policy requires owner or approved application control for trusted memory promotion.",
+            "impact": "No trusted memory is created.",
+            "nextAction": "Route review through the approved owner-controlled path."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "follow_up_uses_approved_memory",
+      "phase": "follow_up_answer",
+      "status": "ready",
+      "ownerFacingSummary": "A follow-up answer cites approved trusted memory.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "approvedTrustedCitationCount": 1,
+        "pendingCandidateTrustedCitationCount": 0,
+        "rejectedCandidateTrustedCitationCount": 0,
+        "evidenceLabels": ["trusted_memory", "source_only"]
+      },
+      "expected": {
+        "canContinue": true,
+        "ownerNextAction": "Use the cited answer.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "follow_up_excludes_pending_candidate",
+      "phase": "follow_up_answer",
+      "status": "ready",
+      "ownerFacingSummary": "Pending candidates are excluded from trusted answer evidence.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "approvedTrustedCitationCount": 0,
+        "pendingCandidateTrustedCitationCount": 0,
+        "evidenceLabels": ["pending_candidate", "gap"],
+        "gapKinds": ["weak_evidence"]
+      },
+      "expected": {
+        "canContinue": true,
+        "ownerNextAction": "Review the pending suggestion before trusting it.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "follow_up_excludes_rejected_candidate",
+      "phase": "follow_up_answer",
+      "status": "ready",
+      "ownerFacingSummary": "Rejected candidates are excluded from trusted answer evidence.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "approvedTrustedCitationCount": 0,
+        "rejectedCandidateTrustedCitationCount": 0,
+        "evidenceLabels": ["rejected_candidate", "gap"],
+        "gapKinds": ["restricted_evidence"]
+      },
+      "expected": {
+        "canContinue": true,
+        "ownerNextAction": "Use approved memory or source-only evidence instead.",
+        "failureRecords": []
+      }
+    },
+    {
+      "caseId": "mission_control_daily_summary",
+      "phase": "mission_control_state",
+      "status": "ready",
+      "ownerFacingSummary": "Mission Control can summarize ask, update, review, follow-up, gaps, and no-auto-promotion status.",
+      "checks": {
+        "trustedMemoryRecordDelta": 0,
+        "noAutoPromotion": true,
+        "evidenceLabels": ["trusted_memory", "source_only", "gap"]
+      },
+      "expected": {
+        "canContinue": true,
+        "ownerNextAction": "Review the visible next action before changing memory.",
+        "failureRecords": []
+      }
+    }
+  ]
+}

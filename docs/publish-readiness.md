@@ -117,6 +117,7 @@ The `ci:check` sub-gate includes:
 - `npm run runtime:database-implementation-packet`
 - `npm run runtime:fixture-implementation-packet`
 - `npm run runtime:deployment-implementation-packet`
+- `npm run runtime:first-implementation-recommendation`
 - `npm run safety:scan`
 - `npm run claims:scan`
 

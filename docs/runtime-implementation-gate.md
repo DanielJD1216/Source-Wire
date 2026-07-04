@@ -98,6 +98,12 @@ To check all six implementation approval gates and their live GitHub issue appro
 npm run runtime:implementation-approval-status
 ```
 
+To see the recommended first implementation approval gate, run:
+
+```bash
+npm run runtime:first-implementation-recommendation
+```
+
 ## What A Hosted Runtime PRD May Propose
 
 A hosted runtime implementation PRD may propose public-safe versions of:
@@ -204,6 +210,7 @@ It must not silently decide that evidence is trusted memory.
 - [API Contract Implementation Slices](api-contract-implementation-slices.md)
 - [MCP Contract Implementation Packet](mcp-contract-implementation-packet.md)
 - [MCP Contract Implementation Slices](mcp-contract-implementation-slices.md)
+- [Runtime First Implementation Recommendation](runtime-first-implementation-recommendation.md)
 - [Runtime Implementation Approval Status](runtime-implementation-approval-status.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Database Posture Implementation Slices](database-posture-implementation-slices.md)

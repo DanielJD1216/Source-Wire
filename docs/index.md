@@ -53,6 +53,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [API Contract Implementation Slices](api-contract-implementation-slices.md)
 - [MCP Contract Implementation Packet](mcp-contract-implementation-packet.md)
 - [MCP Contract Implementation Slices](mcp-contract-implementation-slices.md)
+- [Runtime First Implementation Recommendation](runtime-first-implementation-recommendation.md)
 - [Runtime Implementation Approval Status](runtime-implementation-approval-status.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Database Posture Implementation Slices](database-posture-implementation-slices.md)

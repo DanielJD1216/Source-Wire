@@ -44,6 +44,7 @@ npm run owner:record-approval -- --issue 255
 npm run owner:record-approval -- --target patch-release-implementation
 npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
 npm run owner:record-approval -- --target runtime-skeleton-implementation
+npm run owner:record-approval -- --target threat-model-implementation
 npm run owner:record-approval -- --target database-posture-implementation
 npm run owner:record-approval -- --target public-safe-fixture-implementation
 npm run owner:record-approval -- --target deployment-boundary-implementation
@@ -85,6 +86,7 @@ npm run release:approval-status
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
 | `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Record approval before publishing the six PRD/planning child issues. |
 | `#257`, target `runtime-skeleton-implementation` | Runtime skeleton implementation path | Record approval before a future narrow runtime skeleton implementation unit. |
+| `#259`, target `threat-model-implementation` | Threat model implementation path | Record approval before a future synthetic trust-boundary implementation unit. |
 | `#262`, target `database-posture-implementation` | Database posture implementation path | Record approval before a future synthetic database posture implementation unit. |
 | `#263`, target `public-safe-fixture-implementation` | Public-safe fixture implementation path | Record approval before a future synthetic fixture implementation unit. |
 | `#264`, target `deployment-boundary-implementation` | Deployment boundary implementation path | Record approval before a future synthetic deployment-boundary implementation unit. |
@@ -140,6 +142,14 @@ Target: `runtime-skeleton-implementation`
 
 ```text
 Approved for a future Source-Wire owner-hosted runtime skeleton implementation unit: build a public-safe synthetic owner-hosted API policy route skeleton and MCP adapter skeleton using the private Unit 25 through Unit 30 proof trail as redacted evidence only. Use synthetic fixtures only. Do not copy private implementation code or AGPLv3 code. Do not add real user data, client data, database migrations, real database connections, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, or public contribution acceptance. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled.
+```
+
+### Issue #259: Threat model implementation path
+
+Target: `threat-model-implementation`
+
+```text
+Approved for a future Source-Wire threat model implementation unit: build a public-safe synthetic trust-boundary package and validation smoke tests for unauthorized callers, cross-namespace access, source-to-memory separation, prompt-injection handling, secrets handling, audit gaps, backup and restore risk, deployment misconfiguration, MCP bypass prevention, and owner/application-controlled trusted memory approval. Use synthetic fixtures only. Do not add API server implementation, MCP server runtime implementation, database migrations, real database connections, PostgreSQL or pgvector setup, live connectors, Mission Control UI, deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled.
 ```
 
 ### Issue #262: Database posture implementation path
@@ -200,6 +210,7 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - hosted runtime,
 - production runtime use,
 - runtime skeleton implementation,
+- threat model implementation,
 - database posture implementation,
 - public-safe fixture implementation,
 - deployment boundary implementation,
@@ -213,6 +224,7 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - [Release Approval Request Packet](release-approval-request-packet.md)
 - [Branch Governance Approval Request](branch-governance-approval-request.md)
 - [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md)
+- [Threat Model Implementation Packet](threat-model-implementation-packet.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)
 - [Deployment Boundary Implementation Packet](deployment-boundary-implementation-packet.md)

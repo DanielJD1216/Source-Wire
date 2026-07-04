@@ -111,6 +111,7 @@ The `ci:check` sub-gate includes:
 - `npm run runtime-proof-intake:smoke`
 - `npm run runtime:extraction-readiness`
 - `npm run runtime:skeleton-packet`
+- `npm run runtime:threat-implementation-packet`
 - `npm run runtime:database-implementation-packet`
 - `npm run runtime:fixture-implementation-packet`
 - `npm run runtime:deployment-implementation-packet`

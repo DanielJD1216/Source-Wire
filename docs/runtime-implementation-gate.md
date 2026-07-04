@@ -56,6 +56,12 @@ npm run runtime:skeleton-packet
 npm run runtime:skeleton-smoke
 ```
 
+The next threat-model approval packet is [Threat Model Implementation Packet](threat-model-implementation-packet.md). It is verified by:
+
+```bash
+npm run runtime:threat-implementation-packet
+```
+
 The next database-posture approval packet is [Database Posture Implementation Packet](database-posture-implementation-packet.md). It is verified by:
 
 ```bash
@@ -174,6 +180,8 @@ It must not silently decide that evidence is trusted memory.
 - [Runtime Skeleton Issue Slices](runtime-skeleton-issue-slices.md)
 - [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
 - [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
+- [Threat Model Implementation Packet](threat-model-implementation-packet.md)
+- [Threat Model Implementation Slices](threat-model-implementation-slices.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Database Posture Implementation Slices](database-posture-implementation-slices.md)
 - [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)

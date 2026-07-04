@@ -89,6 +89,8 @@ export const requiredPackagePaths = [
   "docs/schema-exports.md",
   "docs/share-for-review.md",
   "docs/technical-reviewer-guide.md",
+  "docs/threat-model-implementation-packet.md",
+  "docs/threat-model-implementation-slices.md",
   "docs/validation-cli.md",
   "docs/world-share-final-preflight.md",
   "docs/world-share-kit.md",

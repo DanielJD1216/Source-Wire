@@ -113,6 +113,7 @@
     "runtime:prd-execution-packet": "node scripts/hosted-runtime-prd-execution-packet.mjs",
     "runtime:prd-acceptance-matrix": "node scripts/hosted-runtime-prd-acceptance-matrix.mjs",
     "runtime:prd-decision-preflight": "node scripts/hosted-runtime-prd-decision-preflight.mjs",
+    "runtime:threat-model": "node scripts/hosted-runtime-threat-model-trust-boundary.mjs",
     "runtime:slice-approval-request": "node scripts/hosted-runtime-slice-approval-request.mjs",
     "runtime:child-issue-publication-packet": "node scripts/hosted-runtime-child-issue-publication-packet.mjs",
     "runtime:child-issue-publication-preflight": "node scripts/hosted-runtime-child-issue-publication-preflight.mjs",

@@ -79,6 +79,7 @@ The approved PRD defines, but does not implement:
 After any hosted-runtime planning evidence changes, run:
 
 ```bash
+npm run runtime:threat-model
 npm run publish:readiness
 npm run world:share-final-preflight
 npm run runtime-readiness:smoke

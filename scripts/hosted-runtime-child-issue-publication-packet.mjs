@@ -34,6 +34,9 @@ const issues = [
       "Owner-hosted first posture is explicit.",
       "Managed-hosted remains deferred.",
       "No implementation is added."
+    ],
+    sourceDocs: [
+      "docs/hosted-runtime-threat-model-trust-boundary.md"
     ]
   },
   {
@@ -149,6 +152,9 @@ for (const issue of issues) {
   const body = buildIssueBody(issue);
   assertIncludes(body, "Status: PRD/planning issue only.", `${issue.title} generated body`);
   assertIncludes(body, "No implementation is approved by this issue.", `${issue.title} generated body`);
+  for (const sourceDoc of issue.sourceDocs ?? []) {
+    assertIncludes(body, sourceDoc, `${issue.title} generated body source doc`);
+  }
   for (const blockedItem of sharedBlockedList) {
     assertIncludes(body, blockedItem, `${issue.title} generated body blocked boundary`);
   }
@@ -212,7 +218,7 @@ ${issue.goal}
 
 ${issue.acceptance.map((item) => `- ${item}`).join("\n")}
 
-## Still Blocked
+${issue.sourceDocs ? `## Planning Artifacts\n\n${issue.sourceDocs.map((item) => `- ${item}`).join("\n")}\n\n` : ""}## Still Blocked
 
 No implementation is approved by this issue.
 

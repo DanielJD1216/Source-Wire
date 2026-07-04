@@ -38,6 +38,16 @@ Acceptance criteria:
 - managed-hosted remains deferred,
 - no implementation is added.
 
+Planning artifact:
+
+- [Hosted Runtime Threat Model And Trust Boundary](hosted-runtime-threat-model-trust-boundary.md)
+
+Verification:
+
+```bash
+npm run runtime:threat-model
+```
+
 ### Slice 2: API Server Runtime Contract
 
 Type: AFK after Slice 1.

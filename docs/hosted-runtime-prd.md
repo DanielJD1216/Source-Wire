@@ -170,6 +170,7 @@ Related docs:
 - [Hosted Runtime PRD Preparation](hosted-runtime-prd-preparation.md)
 - [Hosted Runtime PRD Execution Packet](hosted-runtime-prd-execution-packet.md)
 - [Hosted Runtime PRD Decision Preflight](hosted-runtime-prd-decision-preflight.md)
+- [Hosted Runtime Threat Model And Trust Boundary](hosted-runtime-threat-model-trust-boundary.md)
 - [Runtime Boundary](runtime-boundary.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](contracts/owner-hosted-api-mcp-boundary-contract.md)

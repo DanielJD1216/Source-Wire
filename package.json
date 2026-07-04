@@ -126,6 +126,7 @@
     "runtime:fixture-implementation-packet": "node scripts/public-safe-fixture-implementation-packet.mjs",
     "runtime:deployment-boundary": "node scripts/hosted-runtime-deployment-boundary-stop-conditions.mjs",
     "runtime:deployment-implementation-packet": "node scripts/deployment-boundary-implementation-packet.mjs",
+    "runtime:implementation-approval-status": "node scripts/runtime-implementation-approval-status.mjs",
     "runtime:wrapper-reconciliation": "node scripts/hosted-runtime-wrapper-proof-reconciliation.mjs",
     "runtime:extraction-readiness": "node scripts/private-proof-runtime-extraction-readiness.mjs",
     "runtime:skeleton-packet": "node scripts/runtime-skeleton-implementation-packet.mjs",

@@ -66,6 +66,12 @@ For hosted-runtime child issue publication approval only, also run:
 npm run runtime:child-issue-approval-status
 ```
 
+For hosted-runtime implementation gate approval status, run:
+
+```bash
+npm run runtime:implementation-approval-status
+```
+
 For patch release approval only, also run:
 
 ```bash
@@ -248,6 +254,7 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - [Threat Model Implementation Packet](threat-model-implementation-packet.md)
 - [API Contract Implementation Packet](api-contract-implementation-packet.md)
 - [MCP Contract Implementation Packet](mcp-contract-implementation-packet.md)
+- [Runtime Implementation Approval Status](runtime-implementation-approval-status.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)
 - [Deployment Boundary Implementation Packet](deployment-boundary-implementation-packet.md)

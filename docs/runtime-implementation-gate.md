@@ -92,6 +92,12 @@ The next deployment-boundary approval packet is [Deployment Boundary Implementat
 npm run runtime:deployment-implementation-packet
 ```
 
+To check all six implementation approval gates and their live GitHub issue approval status, run:
+
+```bash
+npm run runtime:implementation-approval-status
+```
+
 ## What A Hosted Runtime PRD May Propose
 
 A hosted runtime implementation PRD may propose public-safe versions of:
@@ -198,6 +204,7 @@ It must not silently decide that evidence is trusted memory.
 - [API Contract Implementation Slices](api-contract-implementation-slices.md)
 - [MCP Contract Implementation Packet](mcp-contract-implementation-packet.md)
 - [MCP Contract Implementation Slices](mcp-contract-implementation-slices.md)
+- [Runtime Implementation Approval Status](runtime-implementation-approval-status.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Database Posture Implementation Slices](database-posture-implementation-slices.md)
 - [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)

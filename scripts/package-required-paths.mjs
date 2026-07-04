@@ -87,6 +87,7 @@ export const requiredPackagePaths = [
   "docs/reviewer-labels.md",
   "docs/runtime-boundary-readiness.md",
   "docs/runtime-boundary.md",
+  "docs/runtime-implementation-approval-status.md",
   "docs/runtime-implementation-gate.md",
   "docs/runtime-skeleton-implementation-proof.md",
   "docs/runtime-skeleton-smoke.md",

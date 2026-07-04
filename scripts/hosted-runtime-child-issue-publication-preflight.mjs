@@ -4,6 +4,8 @@ const checks = [
   ["world:share-preflight", "world-share preflight"],
   ["runtime:prd-preparation", "hosted runtime PRD preparation"],
   ["runtime:prd-execution-packet", "hosted runtime PRD execution packet"],
+  ["runtime-readiness:smoke", "runtime readiness synthetic gate"],
+  ["runtime-proof-intake:smoke", "runtime proof intake gate"],
   ["runtime:child-issue-publication-packet", "hosted runtime child issue publication packet"],
   ["runtime:child-issue-publish", "hosted runtime child issue publisher dry run"],
   ["runtime:child-issue-publish:smoke", "hosted runtime child issue publisher guard smoke"],
@@ -28,6 +30,8 @@ console.log("ok hosted runtime child issue publication preflight ready");
 console.log("ok child issue publication packet current");
 console.log("ok child issue publisher dry run current");
 console.log("ok child issue publisher guard smoke current");
+console.log("ok runtime readiness gate current");
+console.log("ok runtime proof intake gate current");
 console.log("ok child issue approval status current");
 console.log("ok owner open issue boundary current");
 console.log("ok owner open issue future planning smoke current");

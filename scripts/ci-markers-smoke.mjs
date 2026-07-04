@@ -109,6 +109,8 @@ const completeLog = [
   "ok child issue publication packet current",
   "ok child issue publisher dry run current",
   "ok child issue publisher guard smoke current",
+  "ok runtime readiness gate current",
+  "ok runtime proof intake gate current",
   "ok child issue approval status current",
   "ok owner open issue boundary current",
   "ok owner open issue future planning smoke current",
@@ -227,7 +229,7 @@ if (completeResult.exitCode !== 0) {
   process.exit(1);
 }
 
-if (!completeResult.stdout.includes("ok ci markers 59 groups 207 markers")) {
+if (!completeResult.stdout.includes("ok ci markers 59 groups 209 markers")) {
   console.error("failed ci markers smoke complete log did not report expected marker count");
   printResult(completeResult);
   process.exit(1);

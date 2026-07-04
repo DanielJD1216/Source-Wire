@@ -25,6 +25,8 @@ npm install
 Then run:
 
 ```bash
+npm run runtime-readiness:smoke
+npm run runtime-proof-intake:smoke
 npm run runtime:child-issue-publication-packet
 npm run runtime:child-issue-publish
 ```
@@ -32,6 +34,8 @@ npm run runtime:child-issue-publish
 Expected markers:
 
 ```text
+ok runtime readiness smoke
+ok runtime proof intake smoke
 ok hosted runtime child issue publication packet ready
 ok hosted runtime issue payloads validated
 blocked child issue publication pending owner approval
@@ -199,7 +203,7 @@ Acceptance criteria:
 
 - Fixtures use synthetic callers, namespaces, sources, candidates, trusted memory, and denied cases.
 - Fixtures contain no real user data, private owner data, local paths, account IDs, emails, domains, tokens, screenshots, client data, or production exports.
-- Verification includes readiness, safety, claim boundary, docs, and owner-side live gates.
+- Verification includes runtime readiness, runtime proof intake, safety, claim boundary, docs, and owner-side live gates.
 - No fixture implementation is added unless a later implementation unit approves it.
 
 ### Issue 6: Deployment Boundary And Runtime Stop Conditions
@@ -245,4 +249,6 @@ If the open-issue boundary changes because the six planning issues now exist, up
 - [Hosted Runtime PRD](hosted-runtime-prd.md)
 - [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md)
 - [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md)
+- [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)
 - [Owner Open Issues Status](owner-open-issues-status.md)

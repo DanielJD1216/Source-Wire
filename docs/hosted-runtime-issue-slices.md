@@ -4,6 +4,8 @@ Status: draft issue slices. Implementation remains blocked.
 
 This slice map converts the hosted runtime PRD into independently reviewable units. It does not approve implementation, deploy services, add real data, publish npm, create a GitHub release, or accept code contributions.
 
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
+
 ## Parent
 
 Parent PRD:
@@ -148,6 +150,8 @@ Acceptance criteria:
 
 Before publishing child issues, confirm:
 
+- `npm run runtime-readiness:smoke` passes,
+- `npm run runtime-proof-intake:smoke` passes,
 - whether Slice 4 should stay HITL because database posture affects long-term architecture,
 - whether Slice 6 should stay HITL because deployment posture affects public claims,
 - whether Slice 2 and Slice 3 should be separate issues or merged into one runtime interface issue.

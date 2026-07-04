@@ -244,6 +244,8 @@ const markerGroups = [
       "ok child issue publication packet current",
       "ok child issue publisher dry run current",
       "ok child issue publisher guard smoke current",
+      "ok runtime readiness gate current",
+      "ok runtime proof intake gate current",
       "ok child issue approval status current",
       "ok owner open issue boundary current",
       "ok owner open issue future planning smoke current",

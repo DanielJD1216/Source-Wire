@@ -92,6 +92,8 @@ Publish only after exact approval:
 After publishing child issues, run:
 
 ```bash
+npm run runtime-readiness:smoke
+npm run runtime-proof-intake:smoke
 npm run owner:open-issues-status
 npm run owner:decision-issues-freshness
 npm run world:share-final-preflight
@@ -105,4 +107,6 @@ If the open-issue boundary changes because child issues are now expected, update
 - [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md)
 - [Hosted Runtime Child Issue Publication Packet](hosted-runtime-child-issue-publication-packet.md)
 - [Hosted Runtime PRD Decision Preflight](hosted-runtime-prd-decision-preflight.md)
+- [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)
 - [Owner Open Issues Status](owner-open-issues-status.md)

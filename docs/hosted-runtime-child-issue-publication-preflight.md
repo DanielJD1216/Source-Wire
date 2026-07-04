@@ -8,7 +8,7 @@ This preflight does not publish child issues, implement hosted runtime behavior,
 
 Use this command before any future hosted-runtime child issue publication unit.
 
-It proves the publication packet, guarded publisher, missing-approval status, duplicate-publication guard, open-issue boundary, and launch blockers are current before any GitHub issue mutation is attempted.
+It proves the publication packet, runtime-readiness gate, runtime-proof-intake gate, guarded publisher, missing-approval status, duplicate-publication guard, open-issue boundary, and launch blockers are current before any GitHub issue mutation is attempted.
 
 ## Command
 
@@ -33,6 +33,8 @@ ok hosted runtime child issue publication preflight ready
 ok child issue publication packet current
 ok child issue publisher dry run current
 ok child issue publisher guard smoke current
+ok runtime readiness gate current
+ok runtime proof intake gate current
 ok child issue approval status current
 ok owner open issue boundary current
 ok owner open issue future planning smoke current
@@ -45,6 +47,8 @@ blocked hosted runtime implementation
 - The world-share preflight is current.
 - Hosted runtime PRD approval remains recorded on issue `#257`.
 - Hosted runtime PRD preparation and execution evidence are current without nesting the full PRD decision preflight.
+- The runtime-readiness smoke passes.
+- The runtime-proof-intake smoke passes.
 - The child issue publication packet is current.
 - The child issue publisher dry run validates payloads without writing.
 - The publisher smoke proves missing-approval and duplicate-publication guards.
@@ -82,6 +86,8 @@ Approved for a future Source-Wire hosted runtime child issue publication unit: p
 
 - [Hosted Runtime PRD](hosted-runtime-prd.md)
 - [Hosted Runtime PRD Decision Preflight](hosted-runtime-prd-decision-preflight.md)
+- [Runtime Readiness Smoke](runtime-readiness-smoke.md)
+- [Runtime Proof Intake](runtime-proof-intake.md)
 - [Hosted Runtime PRD Slice Map](hosted-runtime-issue-slices.md)
 - [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md)
 - [Hosted Runtime Child Issue Publication Packet](hosted-runtime-child-issue-publication-packet.md)

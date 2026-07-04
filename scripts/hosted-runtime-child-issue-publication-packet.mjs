@@ -93,7 +93,7 @@ const issues = [
     acceptance: [
       "Fixtures use synthetic callers, namespaces, sources, candidates, trusted memory, and denied cases.",
       "Fixtures contain no real user data, private owner data, local paths, account IDs, emails, domains, tokens, screenshots, client data, or production exports.",
-      "Verification includes readiness, safety, claim boundary, docs, and owner-side live gates.",
+      "Verification includes runtime readiness, runtime proof intake, safety, claim boundary, docs, and owner-side live gates.",
       "No fixture implementation is added unless a later implementation unit approves it."
     ]
   },
@@ -123,7 +123,9 @@ for (const requiredPath of [
   "docs/hosted-runtime-prd.md",
   "docs/hosted-runtime-issue-slices.md",
   "docs/hosted-runtime-slice-approval-request.md",
-  "docs/hosted-runtime-child-issue-publication-packet.md"
+  "docs/hosted-runtime-child-issue-publication-packet.md",
+  "docs/runtime-readiness-smoke.md",
+  "docs/runtime-proof-intake.md"
 ]) {
   await assertPathExists(requiredPath);
 }
@@ -134,6 +136,12 @@ const publicationPacket = await readFile("docs/hosted-runtime-child-issue-public
 
 assertIncludes(approvalRequest, exactApproval, "hosted runtime slice approval request");
 assertIncludes(publicationPacket, exactApproval, "hosted runtime child issue publication packet");
+assertIncludes(sliceMap, "npm run runtime-readiness:smoke", "hosted runtime issue slices");
+assertIncludes(sliceMap, "npm run runtime-proof-intake:smoke", "hosted runtime issue slices");
+assertIncludes(approvalRequest, "npm run runtime-readiness:smoke", "hosted runtime slice approval request");
+assertIncludes(approvalRequest, "npm run runtime-proof-intake:smoke", "hosted runtime slice approval request");
+assertIncludes(publicationPacket, "npm run runtime-readiness:smoke", "hosted runtime child issue publication packet");
+assertIncludes(publicationPacket, "npm run runtime-proof-intake:smoke", "hosted runtime child issue publication packet");
 
 for (const issue of issues) {
   assertIncludes(sliceMap, `Slice ${issue.order}: ${issue.title}`, "hosted runtime issue slices");

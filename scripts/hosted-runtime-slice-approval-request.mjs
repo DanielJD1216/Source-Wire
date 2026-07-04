@@ -31,6 +31,8 @@ for (const requiredText of [
   "Slice 4: Database Posture And Data Lifecycle",
   "Slice 5: Public-Safe Fixture And Verification Plan",
   "Slice 6: Deployment Boundary And Runtime Stop Conditions",
+  "npm run runtime-readiness:smoke",
+  "npm run runtime-proof-intake:smoke",
   "Still Blocked"
 ]) {
   assertIncludes(sliceMap, requiredText, "hosted runtime issue slices");
@@ -40,6 +42,8 @@ for (const requiredText of [
   "Status: approval request only.",
   exactApproval,
   "Do not publish child issues until the owner approves the exact approval text.",
+  "npm run runtime-readiness:smoke",
+  "npm run runtime-proof-intake:smoke",
   "Implementation remains blocked after child issues are published."
 ]) {
   assertIncludes(approvalRequest, requiredText, "hosted runtime slice approval request");

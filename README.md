@@ -32,6 +32,8 @@ Owner-hosted setup claim boundary: latest `main` documents a BYO setup direction
 
 Owner-hosted setup closeout: the setup package is complete as a synthetic proof. Source-Wire now includes a narrow synthetic owner-hosted API policy route and MCP adapter skeleton, but production runtime implementation remains blocked unless separately approved. Read [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md), [Runtime Skeleton Implementation Proof](docs/runtime-skeleton-implementation-proof.md), and [Runtime Skeleton Smoke](docs/runtime-skeleton-smoke.md).
 
+Next runtime gate: the next recommended approval path is a synthetic database posture implementation packet, not migrations or real database connections. Read [Database Posture Implementation Packet](docs/database-posture-implementation-packet.md) and [Database Posture Implementation Slices](docs/database-posture-implementation-slices.md).
+
 Runtime implementation decision: after setup closeout, the next public runtime decision is no-go for runtime code from setup alone. The recommended path is private owner runtime proof first, then clean Apache-2.0 public extraction later. Read [Runtime Implementation Decision Gate](docs/runtime-implementation-decision-gate.md).
 
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
@@ -102,6 +104,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - Runtime readiness synthetic contract and fixture matrix.
 - Runtime proof intake synthetic contract and redacted manifest.
 - Synthetic fixtures for notes, chat exports, project context, and `/2nd-brain` examples.
+- Database posture implementation approval packet and slice map.
 - A public extraction checklist for future safety reviews.
 - A lightweight TypeScript package boundary.
 - A minimal synthetic in-memory runtime boundary for owner-hosted API plus MCP policy proof.
@@ -110,6 +113,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 ## What Is Intentionally Not Included Yet
 
 - Hosted runtime backend code.
+- Database migrations or database connection code.
 - Mission Control UI.
 - Real user data.
 - Real Memory Records or Sources.

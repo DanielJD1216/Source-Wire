@@ -20,6 +20,8 @@ export const requiredPackagePaths = [
   "docs/contracts/source-graph-adapter-contract.md",
   "docs/contribution-terms-prd-decision-preflight.md",
   "docs/contribution-terms-prd-preparation.md",
+  "docs/database-posture-implementation-packet.md",
+  "docs/database-posture-implementation-slices.md",
   "docs/decision-prototypes/license-evidence.md",
   "docs/decision-prototypes/license-options.md",
   "docs/decision-prototypes/license-recommendation.md",

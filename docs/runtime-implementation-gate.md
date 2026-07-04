@@ -56,6 +56,12 @@ npm run runtime:skeleton-packet
 npm run runtime:skeleton-smoke
 ```
 
+The next database-posture approval packet is [Database Posture Implementation Packet](database-posture-implementation-packet.md). It is verified by:
+
+```bash
+npm run runtime:database-implementation-packet
+```
+
 ## What A Hosted Runtime PRD May Propose
 
 A hosted runtime implementation PRD may propose public-safe versions of:
@@ -156,6 +162,8 @@ It must not silently decide that evidence is trusted memory.
 - [Runtime Skeleton Issue Slices](runtime-skeleton-issue-slices.md)
 - [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
 - [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
+- [Database Posture Implementation Packet](database-posture-implementation-packet.md)
+- [Database Posture Implementation Slices](database-posture-implementation-slices.md)
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)

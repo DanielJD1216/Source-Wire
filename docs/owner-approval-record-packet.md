@@ -44,6 +44,7 @@ npm run owner:record-approval -- --issue 255
 npm run owner:record-approval -- --target patch-release-implementation
 npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
 npm run owner:record-approval -- --target runtime-skeleton-implementation
+npm run owner:record-approval -- --target database-posture-implementation
 ```
 
 The recorder does not write unless `--write` and a matching `--confirm-exact` value are supplied.
@@ -82,6 +83,7 @@ npm run release:approval-status
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
 | `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Record approval before publishing the six PRD/planning child issues. |
 | `#257`, target `runtime-skeleton-implementation` | Runtime skeleton implementation path | Record approval before a future narrow runtime skeleton implementation unit. |
+| `#262`, target `database-posture-implementation` | Database posture implementation path | Record approval before a future synthetic database posture implementation unit. |
 | `#258` | Contribution terms path | Completed contribution terms PRD approval; code contribution acceptance still needs a separate future implementation approval. |
 
 ## Exact Approval Texts
@@ -136,6 +138,14 @@ Target: `runtime-skeleton-implementation`
 Approved for a future Source-Wire owner-hosted runtime skeleton implementation unit: build a public-safe synthetic owner-hosted API policy route skeleton and MCP adapter skeleton using the private Unit 25 through Unit 30 proof trail as redacted evidence only. Use synthetic fixtures only. Do not copy private implementation code or AGPLv3 code. Do not add real user data, client data, database migrations, real database connections, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, or public contribution acceptance. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled.
 ```
 
+### Issue #262: Database posture implementation path
+
+Target: `database-posture-implementation`
+
+```text
+Approved for a future Source-Wire database posture implementation unit: build a public-safe synthetic database posture package that defines data-class contracts, lifecycle state fixtures, namespace isolation fixtures, deletion/retention fixtures, backup/restore risk fixtures, and validation/smoke checks. Use synthetic fixtures only. Do not add database migrations, real database connections, PostgreSQL or pgvector setup, API server implementation, MCP server runtime implementation, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled.
+```
+
 ### Issue #258: Contribution terms path
 
 Target: `contribution-terms-prd`
@@ -170,6 +180,7 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - hosted runtime,
 - production runtime use,
 - runtime skeleton implementation,
+- database posture implementation,
 - code contribution acceptance.
 
 ## Related Docs
@@ -180,4 +191,5 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - [Release Approval Request Packet](release-approval-request-packet.md)
 - [Branch Governance Approval Request](branch-governance-approval-request.md)
 - [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md)
+- [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Legal Review Question Packet](legal-review-question-packet.md)

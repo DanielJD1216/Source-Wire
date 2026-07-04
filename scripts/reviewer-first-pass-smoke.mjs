@@ -12,7 +12,7 @@ const requiredMarkers = [
   "Version: 0.1.0",
   "License: Apache-2.0",
   "Publish boundary: npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked",
-  "Runtime boundary: synthetic in-memory boundary plus synthetic API/MCP skeleton, threat-boundary package, API policy contract package, MCP adapter contract package, database posture package, and hosted-runtime fixture package only, no backend runtime included",
+  "Runtime boundary: synthetic in-memory boundary plus synthetic API/MCP skeleton, threat-boundary package, API policy contract package, MCP adapter contract package, database posture package, hosted-runtime fixture package, and deployment-boundary package only, no backend runtime included",
   "ok readiness report"
 ];
 

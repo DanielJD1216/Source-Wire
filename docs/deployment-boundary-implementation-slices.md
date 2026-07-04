@@ -1,12 +1,12 @@
 # Source-Wire Deployment Boundary Implementation Slices
 
-Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.
+Status: completed synthetic deployment-boundary slice map after exact owner approval.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Parent
 
-Future parent unit:
+Completed parent unit:
 
 ```text
 Source-Wire Deployment Boundary Implementation
@@ -44,6 +44,16 @@ Acceptance criteria:
 - package version stays `0.1.0`,
 - public safety and claim scans pass.
 
+Implemented files:
+
+- `src/contracts/deployment-boundary.ts`
+- `examples/fixtures/deployment-boundary/deployment-boundary-fixture-matrix.json`
+- `examples/fixtures/deployment-boundary/README.md`
+- `examples/deployment-boundary/deployment-boundary-smoke.mjs`
+- `examples/deployment-boundary/README.md`
+- `docs/deployment-boundary-implementation-proof.md`
+- `docs/deployment-boundary-smoke.md`
+
 ## Slice 2: Synthetic Deployment Readiness Contract
 
 Goal:
@@ -68,21 +78,21 @@ Goal:
 Required cases:
 
 - local synthetic development allowed,
-- owner-hosted runtime eligible only after implementation approval,
+- owner-hosted runtime requires owner review and owner-selected infrastructure,
 - managed-hosted deferred,
-- cloud config blocked,
-- container deployment config blocked,
-- public network exposure blocked,
-- real secrets blocked,
-- real database connection blocked,
-- real user data blocked,
-- Source-Wire-hosted-memory claim blocked,
+- stop condition blocks runtime readiness,
+- rollback evidence present,
+- missing rollback evidence requires owner review,
+- unsafe hosting claim blocked,
+- no-hosted-service proof passes,
+- MCP bypass blocked,
+- trusted-memory promotion remains owner or application controlled,
 - rollback evidence required before deployment approval.
 
 Acceptance criteria:
 
 - all cases are deterministic,
-- blocked cases include failure point, observed error, supported cause, impact, and next action,
+- blocked cases expose stable reasons,
 - no real hostnames, emails, domains, local paths, account IDs, screenshots, tokens, credentials, or production exports.
 
 ## Slice 4: Smoke Test And Validation
@@ -125,9 +135,10 @@ After implementation, run:
 npm run typecheck
 npm run build
 npm test
+npm run runtime:deployment-boundary-smoke
 npm run runtime:deployment-implementation-packet
-npm run runtime:deployment-boundary
 npm run runtime:fixture-implementation-packet
+npm run runtime:fixture-plan
 npm run runtime:database-implementation-packet
 npm run runtime:skeleton-smoke
 npm run runtime-proof-intake:smoke
@@ -176,5 +187,7 @@ git diff --check
 ## Related Docs
 
 - [Deployment Boundary Implementation Packet](deployment-boundary-implementation-packet.md)
+- [Deployment Boundary Implementation Proof](deployment-boundary-implementation-proof.md)
+- [Deployment Boundary Smoke](deployment-boundary-smoke.md)
 - [Hosted Runtime Deployment Boundary And Runtime Stop Conditions](hosted-runtime-deployment-boundary-stop-conditions.md)
 - [Runtime Implementation Gate](runtime-implementation-gate.md)

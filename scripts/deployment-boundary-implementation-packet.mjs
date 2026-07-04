@@ -17,34 +17,44 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 for (const requiredPath of [
   packetPath,
   slicesPath,
+  "docs/deployment-boundary-implementation-proof.md",
+  "docs/deployment-boundary-smoke.md",
   "docs/hosted-runtime-deployment-boundary-stop-conditions.md",
   "docs/runtime-implementation-gate.md",
   "docs/public-safe-fixture-implementation-packet.md",
   "docs/database-posture-implementation-packet.md",
   "docs/owner-approval-record-packet.md",
-  "scripts/record-owner-approval.mjs"
+  "scripts/record-owner-approval.mjs",
+  "src/contracts/deployment-boundary.ts",
+  "examples/fixtures/deployment-boundary/deployment-boundary-fixture-matrix.json",
+  "examples/fixtures/deployment-boundary/README.md",
+  "examples/deployment-boundary/deployment-boundary-smoke.mjs",
+  "examples/deployment-boundary/README.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
 for (const requiredText of [
-  "Status: approval packet only. Implementation is blocked until exact owner approval is recorded.",
-  "The next Source-Wire deployment-related unit should be a synthetic deployment readiness boundary package, not deployment config.",
+  "Status: implemented as a synthetic deployment-boundary package after exact owner approval.",
+  "The Source-Wire deployment-boundary build unit is now a synthetic deployment readiness package, not deployment config.",
+  "The approved synthetic deployment-boundary package is recorded in [Deployment Boundary Implementation Proof](deployment-boundary-implementation-proof.md).",
   exactApprovalText,
+  "npm run runtime:deployment-boundary-smoke",
   "npm run runtime:deployment-implementation-packet",
   "npm run owner:record-approval -- --target deployment-boundary-implementation",
-  "What Approval Would Not Unlock"
+  "What Approval Did Not Unlock"
 ]) {
   assertIncludes(packet, requiredText, packetPath);
 }
 
 for (const requiredText of [
-  "Status: implementation slice map only. Implementation is blocked until exact owner approval is recorded.",
+  "Status: completed synthetic deployment-boundary slice map after exact owner approval.",
   "Slice 1: File Scope And Safety Guard",
   "Slice 2: Synthetic Deployment Readiness Contract",
   "Slice 3: Synthetic Deployment Boundary Matrix",
   "Slice 4: Smoke Test And Validation",
   "Slice 5: Docs, Proof, And Readiness",
+  "npm run runtime:deployment-boundary-smoke",
   "npm run runtime:deployment-implementation-packet",
   "Still Blocked After These Slices"
 ]) {
@@ -111,7 +121,7 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Implementation", "blocked pending exact owner approval"],
+  ["Implementation", "synthetic deployment-boundary package implemented after exact owner approval"],
   ["Runtime shape", "synthetic deployment readiness boundary only"],
   ["Deployment config", "blocked"],
   ["Hosted service", "blocked"],
@@ -119,10 +129,10 @@ printRows([
 ]);
 
 console.log("");
-console.log("ok deployment boundary implementation packet ready");
-console.log("ok deployment boundary implementation slices ready");
-console.log("blocked deployment boundary implementation pending owner approval");
+console.log("ok synthetic deployment-boundary implementation recorded");
+console.log("ok deployment boundary implementation slices complete");
 console.log("blocked deployment config");
+console.log("blocked hosted runtime implementation");
 
 async function assertPathExists(path) {
   try {

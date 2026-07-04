@@ -1,6 +1,6 @@
 # Source-Wire Runtime Implementation Gate
 
-Status: implementation gate with minimal synthetic runtime boundary, synthetic runtime skeleton, synthetic threat-boundary package, and synthetic API policy contract package. Production runtime remains blocked.
+Status: implementation gate with minimal synthetic runtime boundary, synthetic runtime skeleton, synthetic threat-boundary package, synthetic API policy contract package, synthetic MCP adapter contract package, synthetic database posture package, synthetic hosted-runtime fixture package, and synthetic deployment-boundary package. Production runtime remains blocked.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -8,7 +8,7 @@ Use Node.js 22 with npm from the repository root. For the complete local setup p
 
 This gate prevents hosted Source-Wire runtime work from starting just because boundary docs, synthetic fixtures, and a minimal synthetic runtime boundary now exist.
 
-Source-Wire is still a public contract package with exported synthetic policy proof code, a synthetic owner-hosted runtime skeleton, a synthetic trust-boundary evaluator, and a synthetic API policy contract evaluator.
+Source-Wire is still a public contract package with exported synthetic policy proof code, a synthetic owner-hosted runtime skeleton, a synthetic trust-boundary evaluator, a synthetic API policy contract evaluator, a synthetic MCP adapter contract evaluator, a synthetic database posture evaluator, a synthetic hosted-runtime fixture evaluator, and a synthetic deployment-boundary evaluator.
 
 It does not host user memory.
 
@@ -91,9 +91,10 @@ npm run runtime:fixture-smoke
 npm run runtime:fixture-implementation-packet
 ```
 
-The next deployment-boundary approval packet is [Deployment Boundary Implementation Packet](deployment-boundary-implementation-packet.md). It is verified by:
+The deployment-boundary implementation is recorded in [Deployment Boundary Implementation Proof](deployment-boundary-implementation-proof.md). It is verified by:
 
 ```bash
+npm run runtime:deployment-boundary-smoke
 npm run runtime:deployment-implementation-packet
 ```
 
@@ -227,6 +228,8 @@ It must not silently decide that evidence is trusted memory.
 - [Public-Safe Fixture Implementation Slices](public-safe-fixture-implementation-slices.md)
 - [Deployment Boundary Implementation Packet](deployment-boundary-implementation-packet.md)
 - [Deployment Boundary Implementation Slices](deployment-boundary-implementation-slices.md)
+- [Deployment Boundary Implementation Proof](deployment-boundary-implementation-proof.md)
+- [Deployment Boundary Smoke](deployment-boundary-smoke.md)
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)

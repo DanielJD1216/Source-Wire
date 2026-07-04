@@ -105,6 +105,7 @@ The `ci:check` sub-gate includes:
 - `npm run runtime:mcp-adapter-smoke`
 - `npm run runtime:database-posture-smoke`
 - `npm run runtime:fixture-smoke`
+- `npm run runtime:deployment-boundary-smoke`
 - `npm run runtime-boundary:smoke`
 - `npm run wrapper-runtime:api-policy-smoke`
 - `npm run wrapper-runtime:mcp-adapter-smoke`
@@ -192,6 +193,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
 | Database posture smoke | `ok database posture case authorized_namespace_data_class_read`, `ok database posture case wrong_namespace_denied_without_leak`, `ok database posture smoke` |
 | Public-safe fixture smoke | `ok hosted runtime fixture case authorized_owner_read`, `ok hosted runtime fixture case wrong_namespace_denial_without_leak`, `ok hosted runtime fixture smoke` |
+| Deployment boundary smoke | `ok deployment boundary case local_development_ready`, `ok deployment boundary case no_hosted_service_proof`, `ok deployment boundary smoke` |
 | Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.1.0`, `ok installed runtime boundary example` |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok docs anchors`, `ok command docs setup`, `ok readiness command docs match package scripts` |

@@ -188,6 +188,19 @@ export {
   evaluateHostedRuntimeFixtureCase,
   evaluateHostedRuntimeFixtureMatrix
 } from "./contracts/hosted-runtime-fixtures.js";
+export type {
+  SourceWireDeploymentBoundaryArea,
+  SourceWireDeploymentBoundaryCase,
+  SourceWireDeploymentBoundaryCheck,
+  SourceWireDeploymentBoundaryFixtureMatrix,
+  SourceWireDeploymentBoundaryResult,
+  SourceWireDeploymentBoundaryStatus
+} from "./contracts/deployment-boundary.js";
+export {
+  SOURCE_WIRE_DEPLOYMENT_BOUNDARY,
+  evaluateDeploymentBoundaryCase,
+  evaluateDeploymentBoundaryFixtureMatrix
+} from "./contracts/deployment-boundary.js";
 export type * from "./contracts/fixtures.js";
 export type * from "./contracts/mcp-tools.js";
 export type * from "./contracts/owner-hosted-setup.js";

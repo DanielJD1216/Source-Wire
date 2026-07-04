@@ -1,0 +1,241 @@
+{
+  "fixtureType": "source-wire-deployment-boundary-fixture-matrix",
+  "fixtureSafety": "synthetic",
+  "boundary": {
+    "implementationMode": "synthetic_deployment_boundary_package",
+    "sourceWireHostsUserMemory": false,
+    "deploymentConfigIncluded": false,
+    "cloudProviderConfigIncluded": false,
+    "dockerOrContainerRuntimeConfigIncluded": false,
+    "hostedServicesIncluded": false,
+    "managedHostingIncluded": false,
+    "databaseMigrationsIncluded": false,
+    "realDatabaseConnectionsIncluded": false,
+    "postgresOrPgvectorSetupIncluded": false,
+    "apiServerIncluded": false,
+    "mcpServerRuntimeIncluded": false,
+    "liveConnectorsIncluded": false,
+    "missionControlIncluded": false,
+    "npmPublishingIncluded": false,
+    "githubReleaseIncluded": false,
+    "packageVersionChangesIncluded": false,
+    "publicContributionAcceptanceIncluded": false,
+    "realDataIncluded": false,
+    "clientDataIncluded": false,
+    "privateImplementationCodeIncluded": false,
+    "agplCodeIncluded": false,
+    "privateProofContentIncluded": false,
+    "mcpMayBypassApiPolicy": false,
+    "sourceEvidenceMayAutoPromoteToTrustedMemory": false,
+    "trustedMemoryPromotion": "owner_or_application_controlled"
+  },
+  "cases": [
+    {
+      "caseId": "local_development_ready",
+      "area": "local_development",
+      "check": "verify_local_development",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "ownerInfrastructureSelected": false,
+      "managedHostedRequested": false,
+      "stopConditionTriggered": false,
+      "rollbackEvidencePresent": false,
+      "claimBoundaryPreserved": true,
+      "hostedServiceCreated": false,
+      "deploymentConfigCreated": false,
+      "trustedMemoryPromotionOwnerControlled": true,
+      "expected": {
+        "status": "allowed",
+        "reason": "local_development_ready",
+        "localDevelopmentReady": true,
+        "sourceWireHostsUserMemory": false,
+        "trustedMemoryAutoPromoted": false
+      }
+    },
+    {
+      "caseId": "owner_hosted_runtime_requires_owner_infra",
+      "area": "owner_hosted_runtime",
+      "check": "verify_owner_hosted_runtime",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "ownerInfrastructureSelected": true,
+      "managedHostedRequested": false,
+      "stopConditionTriggered": false,
+      "rollbackEvidencePresent": false,
+      "claimBoundaryPreserved": true,
+      "hostedServiceCreated": false,
+      "deploymentConfigCreated": false,
+      "trustedMemoryPromotionOwnerControlled": true,
+      "expected": {
+        "status": "owner_review_required",
+        "reason": "owner_hosted_runtime_requires_owner_review",
+        "ownerHostedRuntimeAllowed": true,
+        "sourceWireHostsUserMemory": false
+      }
+    },
+    {
+      "caseId": "managed_hosted_deferred",
+      "area": "managed_hosted_deferral",
+      "check": "defer_managed_hosting",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "ownerInfrastructureSelected": false,
+      "managedHostedRequested": true,
+      "stopConditionTriggered": false,
+      "rollbackEvidencePresent": false,
+      "claimBoundaryPreserved": true,
+      "hostedServiceCreated": false,
+      "deploymentConfigCreated": false,
+      "trustedMemoryPromotionOwnerControlled": true,
+      "expected": {
+        "status": "deferred",
+        "reason": "managed_hosting_deferred",
+        "managedHostedDeferred": true,
+        "sourceWireHostsUserMemory": false
+      }
+    },
+    {
+      "caseId": "stop_condition_blocks_runtime",
+      "area": "stop_condition",
+      "check": "evaluate_stop_condition",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "ownerInfrastructureSelected": true,
+      "managedHostedRequested": false,
+      "stopConditionTriggered": true,
+      "rollbackEvidencePresent": false,
+      "claimBoundaryPreserved": true,
+      "hostedServiceCreated": false,
+      "deploymentConfigCreated": false,
+      "trustedMemoryPromotionOwnerControlled": true,
+      "expected": {
+        "status": "blocked",
+        "reason": "stop_condition_triggered",
+        "stopConditionBlocked": true
+      }
+    },
+    {
+      "caseId": "rollback_evidence_present",
+      "area": "rollback_evidence",
+      "check": "verify_rollback_evidence",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "ownerInfrastructureSelected": false,
+      "managedHostedRequested": false,
+      "stopConditionTriggered": false,
+      "rollbackEvidencePresent": true,
+      "claimBoundaryPreserved": true,
+      "hostedServiceCreated": false,
+      "deploymentConfigCreated": false,
+      "trustedMemoryPromotionOwnerControlled": true,
+      "expected": {
+        "status": "allowed",
+        "reason": "rollback_evidence_present",
+        "rollbackEvidenceVerified": true
+      }
+    },
+    {
+      "caseId": "rollback_evidence_missing_requires_review",
+      "area": "rollback_evidence",
+      "check": "verify_rollback_evidence",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "ownerInfrastructureSelected": false,
+      "managedHostedRequested": false,
+      "stopConditionTriggered": false,
+      "rollbackEvidencePresent": false,
+      "claimBoundaryPreserved": true,
+      "hostedServiceCreated": false,
+      "deploymentConfigCreated": false,
+      "trustedMemoryPromotionOwnerControlled": true,
+      "expected": {
+        "status": "owner_review_required",
+        "reason": "rollback_evidence_missing_requires_owner_review",
+        "rollbackEvidenceVerified": false
+      }
+    },
+    {
+      "caseId": "unsafe_hosting_claim_blocked",
+      "area": "claim_boundary",
+      "check": "validate_claim_boundary",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "ownerInfrastructureSelected": false,
+      "managedHostedRequested": false,
+      "stopConditionTriggered": false,
+      "rollbackEvidencePresent": false,
+      "claimBoundaryPreserved": false,
+      "hostedServiceCreated": false,
+      "deploymentConfigCreated": false,
+      "trustedMemoryPromotionOwnerControlled": true,
+      "expected": {
+        "status": "blocked",
+        "reason": "unsafe_hosting_or_runtime_claim",
+        "claimBoundaryPreserved": false,
+        "sourceWireHostsUserMemory": false
+      }
+    },
+    {
+      "caseId": "no_hosted_service_proof",
+      "area": "no_hosted_service_proof",
+      "check": "prove_no_hosted_service",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "ownerInfrastructureSelected": false,
+      "managedHostedRequested": false,
+      "stopConditionTriggered": false,
+      "rollbackEvidencePresent": false,
+      "claimBoundaryPreserved": true,
+      "hostedServiceCreated": false,
+      "deploymentConfigCreated": false,
+      "trustedMemoryPromotionOwnerControlled": true,
+      "expected": {
+        "status": "allowed",
+        "reason": "no_hosted_service_created",
+        "noHostedServiceProved": true,
+        "sourceWireHostsUserMemory": false
+      }
+    },
+    {
+      "caseId": "mcp_bypass_blocked",
+      "area": "claim_boundary",
+      "check": "validate_claim_boundary",
+      "requestedViaMcp": true,
+      "apiPolicyEnvelopePresent": false,
+      "ownerInfrastructureSelected": false,
+      "managedHostedRequested": false,
+      "stopConditionTriggered": false,
+      "rollbackEvidencePresent": false,
+      "claimBoundaryPreserved": true,
+      "hostedServiceCreated": false,
+      "deploymentConfigCreated": false,
+      "trustedMemoryPromotionOwnerControlled": true,
+      "expected": {
+        "status": "blocked",
+        "reason": "mcp_must_route_through_api_policy",
+        "mcpRoutedThroughApiPolicy": false,
+        "mcpBypassedApiPolicy": false
+      }
+    },
+    {
+      "caseId": "trusted_memory_promotion_boundary",
+      "area": "claim_boundary",
+      "check": "validate_claim_boundary",
+      "requestedViaMcp": false,
+      "apiPolicyEnvelopePresent": true,
+      "ownerInfrastructureSelected": false,
+      "managedHostedRequested": false,
+      "stopConditionTriggered": false,
+      "rollbackEvidencePresent": false,
+      "claimBoundaryPreserved": true,
+      "hostedServiceCreated": false,
+      "deploymentConfigCreated": false,
+      "trustedMemoryPromotionOwnerControlled": false,
+      "expected": {
+        "status": "blocked",
+        "reason": "trusted_memory_promotion_must_remain_owner_or_application_controlled",
+        "trustedMemoryAutoPromoted": false
+      }
+    }
+  ]
+}

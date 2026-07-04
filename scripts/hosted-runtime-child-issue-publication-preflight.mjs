@@ -17,7 +17,7 @@ const checks = [
 
 printSection("Source-Wire Hosted Runtime Child Issue Publication Preflight");
 console.log("This owner-side preflight is read-only.");
-console.log("It verifies the hosted-runtime child issue packet, publisher dry run, approval status, duplicate guard, open-issue boundary, and final launch blockers before any future child issue publication.");
+console.log("It verifies the hosted-runtime child issue packet, publisher dry run, approval status, duplicate guard, open-issue boundary, and final launch blockers.");
 console.log("It does not publish child issues, implement hosted runtime behavior, add an API server, add an MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, create tags, accept code contributions, add real user data, or approve production runtime use.");
 
 for (const [scriptName, label] of checks) {
@@ -35,7 +35,8 @@ console.log("ok runtime proof intake gate current");
 console.log("ok child issue approval status current");
 console.log("ok owner open issue boundary current");
 console.log("ok owner open issue future planning smoke current");
-console.log("blocked hosted runtime child issue publication pending owner approval");
+console.log("ok hosted runtime child issue publication approval recorded");
+console.log("ok hosted runtime child planning issues open");
 console.log("blocked hosted runtime implementation");
 
 function runNpmScript(scriptName) {

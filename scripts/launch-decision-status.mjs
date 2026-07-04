@@ -49,7 +49,7 @@ printRows([
   ["GitHub release", "published as v0.1.0"],
   ["Branch protection", "implemented with Source-Wire package checks required"],
   ["Hosted runtime PRD", "approved and documented"],
-  ["Hosted runtime child issue packet", "ready"],
+  ["Hosted runtime child planning issues", "published as #259 through #264"],
   ["Hosted runtime implementation", "blocked"],
   ["Code contributions", "blocked, not accepted"]
 ]);
@@ -61,8 +61,7 @@ printList([
   "Use the GitHub v0.1.0 release for the first public release snapshot.",
   "Keep hosted runtime implementation, production runtime claims, repository rulesets, and contribution acceptance blocked unless separate approval opens them.",
   "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
-  "Approve hosted runtime child issue publication before publishing the six PRD/planning issues.",
-  "Dry-run that approval path first with npm run owner:record-approval -- --target hosted-runtime-child-issue-publication.",
+  "Use hosted runtime PRD/planning issues #259 through #264 for the next runtime planning sequence.",
   "Keep hosted runtime implementation blocked until a separate implementation approval opens it."
 ]);
 
@@ -81,6 +80,7 @@ console.log("ok source repo sharing ready");
 console.log("ok npm package published @source-wire/contracts@0.1.0");
 console.log("ok github release published v0.1.0");
 console.log("ok hosted runtime PRD approval recorded");
+console.log("ok hosted runtime child planning issues published");
 console.log("blocked hosted runtime implementation");
 console.log("blocked contributions not accepted");
 

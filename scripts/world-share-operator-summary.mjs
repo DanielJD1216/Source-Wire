@@ -71,7 +71,7 @@ printRows([
   ["GitHub release", "published v0.1.0"],
   ["Hosted runtime PRD", "approved and documented"],
   ["Runtime ownership", "owner-hosted first, not Source-Wire-hosted by default"],
-  ["Hosted runtime child issues", "blocked until separate owner approval"],
+  ["Hosted runtime child issues", "published as PRD/planning issues #259 through #264"],
   ["Hosted runtime implementation", "blocked"],
   ["Production runtime", "blocked"],
   ["Code contributions", "blocked"]
@@ -100,7 +100,6 @@ printList([
   "Do not publish a new npm package version.",
   "Do not create a new GitHub release or tag.",
   "Do not deploy services.",
-  "Do not publish hosted runtime child issues without exact separate owner approval.",
   "Do not implement an API server, MCP server runtime, database migrations, live connectors, Mission Control UI, or hosted runtime behavior.",
   "Do not accept code contributions or pull requests.",
   "Do not add real user data, private memory, client data, local paths, account IDs, emails, domains, tokens, screenshots, or production exports."
@@ -108,9 +107,8 @@ printList([
 
 printSection("Next Approval Path");
 printList([
-  "If you want the hosted runtime PRD child issues published, use the exact approval text in docs/hosted-runtime-slice-approval-request.md.",
-  "Dry-run the guarded recorder with npm run owner:record-approval -- --target hosted-runtime-child-issue-publication.",
-  "If you want hosted runtime implementation later, open a separate implementation unit after child issues exist and the PRD gates are green.",
+  "Use hosted runtime PRD/planning issues #259 through #264 for the next runtime planning sequence.",
+  "If you want hosted runtime implementation later, open a separate implementation unit after the child issues are reconciled and the PRD gates are green.",
   "If you want code contributions later, open a separate contribution-acceptance implementation unit."
 ]);
 
@@ -118,7 +116,7 @@ console.log("");
 console.log("ok world share operator summary ready");
 console.log("ok current share actions summarized");
 console.log("ok hosted runtime PRD approval retained");
-console.log("blocked hosted runtime child issue publication pending owner approval");
+console.log("ok hosted runtime child planning issues published");
 console.log("blocked production launch channels");
 
 async function assertPathExists(path) {

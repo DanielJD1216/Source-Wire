@@ -190,7 +190,7 @@ for (const issue of issues) {
 console.log("");
 console.log("ok hosted runtime child issue publication packet ready");
 console.log("ok hosted runtime issue payloads validated");
-console.log("blocked child issue publication pending owner approval");
+console.log("ok child issue publication approval text documented");
 console.log("blocked hosted runtime implementation");
 
 function buildIssueBody(issue) {

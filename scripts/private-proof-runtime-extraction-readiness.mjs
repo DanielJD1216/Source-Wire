@@ -17,25 +17,30 @@ for (const requiredPath of [
   docPath,
   intakePath,
   readinessPath,
+  "docs/daily-workflow-implementation-proof.md",
+  "docs/daily-workflow-synthetic-smoke.md",
   "docs/runtime-proof-intake.md",
   "docs/runtime-readiness-fixture-matrix.md",
   "docs/hosted-runtime-wrapper-proof-reconciliation.md",
   "docs/runtime-implementation-gate.md",
-  "docs/minimal-runtime-prd.md",
-  "docs/daily-workflow-implementation-proof.md"
+  "docs/minimal-runtime-prd.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
 for (const requiredText of [
   "Status: public-safe extraction readiness checkpoint. Runtime implementation remains blocked.",
-  "private owner proof exists",
-  "Source-Wire synthetic runtime skeleton implementation is recorded",
+  "private owner proof exists through Unit 33",
+  "Source-Wire daily workflow and runtime-readiness synthetic contracts are recorded",
   "production runtime still needs separate approval",
   "Private Unit 25 real owner packet smoke",
   "Private Unit 26 owner-hosted runtime boundary",
   "Private Unit 27 owner-hosted setup UX",
-  "Private Unit 30 decision packet",
+  "Private Unit 28 daily workflow proof",
+  "Private Unit 29 extraction PRD",
+  "Private Unit 31 daily workflow alignment",
+  "Private Unit 32 dependency posture",
+  "Private Unit 33 runtime-readiness alignment",
   "metadata only",
   "Future extraction must follow this order",
   "private behavior observed",
@@ -44,9 +49,22 @@ for (const requiredText of [
   "public smoke added",
   "clean Apache-2.0 implementation written",
   "npm run runtime:extraction-readiness",
+  "npm run daily-workflow:smoke",
+  "npm run runtime-readiness:smoke",
+  "npm run runtime-proof-intake:smoke",
   "Approved for a future Source-Wire owner-hosted runtime skeleton implementation unit"
 ]) {
   assertIncludes(doc, requiredText, docPath);
+}
+
+for (const requiredText of [
+  "Approved for a future Source-Wire owner-hosted runtime PRD refresh unit",
+  "Unit 33 runtime-readiness alignment baseline",
+  "Keep Source-Wire synthetic-only",
+  "Keep Source-Wire-Memory-Engine separate",
+  "MCP must not bypass Source-Wire API policy"
+]) {
+  assertIncludes(doc, requiredText, `${docPath} PRD refresh approval shape`);
 }
 
 for (const blockedText of [
@@ -119,7 +137,9 @@ printRows([
   ["License", packageJson.license],
   ["Readiness artifact", docPath],
   ["Private proof handling", "redacted metadata only"],
-  ["Runtime skeleton", "synthetic implementation recorded"],
+  ["Private proof baseline", "Unit 33 alignment metadata"],
+  ["Daily workflow", "synthetic implementation recorded"],
+  ["Runtime readiness", "synthetic implementation recorded"],
   ["Production runtime", "blocked pending separate approval"],
   ["Real data", "blocked"],
   ["Deployment", "blocked"]
@@ -127,7 +147,9 @@ printRows([
 
 console.log("");
 console.log("ok private proof metadata only");
-console.log("ok runtime skeleton synthetic implementation recorded");
+console.log("ok unit 33 runtime readiness baseline recorded");
+console.log("ok daily workflow synthetic implementation recorded");
+console.log("ok runtime readiness synthetic implementation recorded");
 console.log("blocked production runtime implementation");
 console.log("ok private proof runtime extraction readiness");
 

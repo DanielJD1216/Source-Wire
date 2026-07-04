@@ -120,12 +120,16 @@ The PRD is complete only when it defines:
 - future implementation slice map,
 - checks required before any implementation starts.
 
-The runtime-readiness matrix and runtime-proof-intake smoke are now required companion gates for any future implementation decision. They must stay green before runtime work starts:
+The runtime-readiness matrix, daily workflow matrix, runtime-proof-intake smoke, and extraction-readiness gate are now required companion gates for any future implementation decision. They must stay green before runtime work starts:
 
 ```bash
+npm run daily-workflow:smoke
 npm run runtime-readiness:smoke
 npm run runtime-proof-intake:smoke
+npm run runtime:extraction-readiness
 ```
+
+Unit 33 private runtime-readiness alignment is treated as redacted metadata only. It can refresh this PRD and later implementation gates, but it does not approve production API runtime, MCP runtime, database migrations, real database connections, live connectors, deployment, managed hosting, private implementation code copying, AGPLv3 code copying, or automatic trusted memory promotion.
 
 Before implementation starts later, run:
 
@@ -135,8 +139,10 @@ Use Node.js 22 with npm from the repository root. For the complete local setup p
 npm run publish:readiness
 npm run world:share-final-preflight
 npm run runtime:prd-decision-preflight
+npm run daily-workflow:smoke
 npm run runtime-readiness:smoke
 npm run runtime-proof-intake:smoke
+npm run runtime:extraction-readiness
 npm run owner:decision-status
 ```
 
@@ -183,3 +189,5 @@ Related docs:
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
 - [Runtime Readiness Smoke](runtime-readiness-smoke.md)
 - [Runtime Proof Intake](runtime-proof-intake.md)
+- [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md)
+- [Daily Workflow Implementation Proof](daily-workflow-implementation-proof.md)

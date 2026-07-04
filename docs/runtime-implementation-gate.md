@@ -62,6 +62,12 @@ The next database-posture approval packet is [Database Posture Implementation Pa
 npm run runtime:database-implementation-packet
 ```
 
+The next public-safe fixture approval packet is [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md). It is verified by:
+
+```bash
+npm run runtime:fixture-implementation-packet
+```
+
 ## What A Hosted Runtime PRD May Propose
 
 A hosted runtime implementation PRD may propose public-safe versions of:
@@ -164,6 +170,8 @@ It must not silently decide that evidence is trusted memory.
 - [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Database Posture Implementation Slices](database-posture-implementation-slices.md)
+- [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)
+- [Public-Safe Fixture Implementation Slices](public-safe-fixture-implementation-slices.md)
 - [Minimal Synthetic Runtime Boundary](../examples/minimal-runtime/README.md)
 - [Runtime Boundary Readiness](runtime-boundary-readiness.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)

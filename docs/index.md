@@ -49,6 +49,8 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
 - [Database Posture Implementation Packet](database-posture-implementation-packet.md)
 - [Database Posture Implementation Slices](database-posture-implementation-slices.md)
+- [Public-Safe Fixture Implementation Packet](public-safe-fixture-implementation-packet.md)
+- [Public-Safe Fixture Implementation Slices](public-safe-fixture-implementation-slices.md)
 - [Hosted Runtime PRD Proof Intake Gate Refresh](hosted-runtime-prd-proof-intake-gate-refresh.md)
 - [Hosted Runtime Child Issue Proof Intake Gate Refresh](hosted-runtime-child-issue-proof-intake-gate-refresh.md)
 - [Hosted Runtime Child Issue Publisher Write Gate Refresh](hosted-runtime-child-issue-publisher-write-gate-refresh.md)

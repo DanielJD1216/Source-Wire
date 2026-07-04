@@ -56,6 +56,8 @@ export const requiredPackagePaths = [
   "docs/owner-open-issues-status.md",
   "docs/proof/public-extraction-checklist.md",
   "docs/public-runtime-decision.md",
+  "docs/public-safe-fixture-implementation-packet.md",
+  "docs/public-safe-fixture-implementation-slices.md",
   "docs/public-status.md",
   "docs/publish-readiness.md",
   "docs/quickstart.md",

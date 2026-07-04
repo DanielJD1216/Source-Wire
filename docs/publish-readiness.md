@@ -112,6 +112,7 @@ The `ci:check` sub-gate includes:
 - `npm run runtime:extraction-readiness`
 - `npm run runtime:skeleton-packet`
 - `npm run runtime:database-implementation-packet`
+- `npm run runtime:fixture-implementation-packet`
 - `npm run safety:scan`
 - `npm run claims:scan`
 

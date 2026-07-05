@@ -103,7 +103,7 @@ This runs the live source-package preflight plus the release, branch governance,
 
 Recommended next owner decision:
 
-1. Use hosted runtime PRD/planning issues `#259` through `#264` for the next runtime planning sequence.
+1. Record or defer the runtime PRD refresh approval.
 2. Keep hosted runtime implementation blocked until a separate implementation approval is recorded.
 3. Keep API server runtime, MCP server runtime, database migrations, deployment, production runtime use, real user data, and contribution acceptance blocked.
 

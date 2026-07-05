@@ -61,7 +61,10 @@ printList([
   "Use the GitHub v0.1.0 release for the first public release snapshot.",
   "Keep hosted runtime implementation, production runtime claims, repository rulesets, and contribution acceptance blocked unless separate approval opens them.",
   "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
-  "Use hosted runtime PRD/planning issues #259 through #264 for the next runtime planning sequence.",
+  "Hosted runtime PRD/planning issues #259 through #264 are already published.",
+  "The current runtime approval gap is runtime PRD refresh approval.",
+  "Dry-run npm run owner:record-approval -- --target runtime-prd-refresh before recording that approval.",
+  "Run npm run runtime:prd-refresh-approval-status to verify whether the exact approval is recorded.",
   "Keep hosted runtime implementation blocked until a separate implementation approval opens it."
 ]);
 

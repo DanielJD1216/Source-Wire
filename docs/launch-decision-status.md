@@ -78,12 +78,13 @@ npm run launch:decision-status
 npm run owner:decision-status
 ```
 
-The first public release path, minimal branch-governance path, contribution terms PRD path, and hosted runtime PRD path have been approved or executed as applicable. The remaining runtime lane is child issue publication and later hosted runtime implementation. This status command does not create new release artifacts, deploy services, enable hosted runtime, enable repository rulesets, or accept contributions.
+The first public release path, minimal branch-governance path, contribution terms PRD path, hosted runtime PRD path, and hosted runtime child issue publication path have been approved or executed as applicable. The remaining runtime lane is runtime PRD refresh approval and later hosted runtime implementation. This status command does not create new release artifacts, deploy services, enable hosted runtime, enable repository rulesets, or accept contributions.
 
-Before recording the next child issue publication approval, dry-run the guarded recorder:
+Before recording the runtime PRD refresh approval, dry-run the guarded recorder and read-only status check:
 
 ```bash
-npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
+npm run owner:record-approval -- --target runtime-prd-refresh
+npm run runtime:prd-refresh-approval-status
 ```
 
 ## Owner Decision Status

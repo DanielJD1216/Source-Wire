@@ -107,8 +107,11 @@ printList([
 
 printSection("Next Approval Path");
 printList([
-  "Use hosted runtime PRD/planning issues #259 through #264 for the next runtime planning sequence.",
-  "If you want hosted runtime implementation later, open a separate implementation unit after the child issues are reconciled and the PRD gates are green.",
+  "Hosted runtime PRD/planning issues #259 through #264 are already published.",
+  "The current runtime approval gap is runtime PRD refresh approval.",
+  "Dry-run npm run owner:record-approval -- --target runtime-prd-refresh before recording that approval.",
+  "Run npm run runtime:prd-refresh-approval-status to verify whether the exact approval is recorded.",
+  "If you want hosted runtime implementation later, open a separate implementation unit after the refreshed PRD or wrapper-runtime gate is approved and green.",
   "If you want code contributions later, open a separate contribution-acceptance implementation unit."
 ]);
 

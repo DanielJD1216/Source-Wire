@@ -80,8 +80,9 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 | GitHub release | Published as `v0.1.0` | First public release is complete. |
 | Minimal branch protection | Implemented | Use [Branch Governance Apply Guard](branch-governance-apply.md) and [Repository Metadata](repository-metadata.md) for live proof. |
 | Repository rulesets | Deferred | Separate future governance approval if stronger repository-side policy is needed. |
-| Hosted runtime child issue publication | Blocked | Use the guarded owner approval recorder target before publishing six PRD/planning issues. |
-| Hosted runtime implementation | Blocked | Separate runtime implementation approval after child issues exist and gates are green. |
+| Hosted runtime child issue publication | Complete | Six PRD/planning issues are published as `#259` through `#264`. |
+| Runtime PRD refresh approval | Missing | Use the guarded owner approval recorder target before refreshing the runtime PRD or wrapper-runtime gate. |
+| Hosted runtime implementation | Blocked | Separate runtime implementation approval after the refreshed PRD or wrapper-runtime gate is approved and green. |
 | Code contribution acceptance | Blocked | Explicit contribution terms implementation approval. |
 
 ## Approval Order
@@ -95,19 +96,22 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 7. Run `npm run contribution:terms-decision-preflight`.
 8. Decide whether and how code contributions can be accepted.
 9. Run `npm run runtime:prd-decision-preflight`.
-10. Use hosted runtime PRD/planning issues `#259` through `#264` for the next runtime planning sequence.
-11. Keep hosted runtime implementation blocked until a separate implementation approval is recorded.
-12. Keep API server runtime, MCP server runtime, database migrations, deployment, production runtime use, real user data, and contribution acceptance blocked.
+10. Hosted runtime PRD/planning issues `#259` through `#264` are already published.
+11. The current runtime approval gap is runtime PRD refresh approval.
+12. Run `npm run runtime:prd-refresh-approval-status` before runtime PRD refresh work.
+13. Keep hosted runtime implementation blocked until a separate implementation approval is recorded.
+14. Keep API server runtime, MCP server runtime, database migrations, deployment, production runtime use, real user data, and contribution acceptance blocked.
 
-## Hosted Runtime Child Issue Approval Path
+## Runtime PRD Refresh Approval Path
 
 Before recording the next approval, dry-run:
 
 ```bash
-npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
+npm run owner:record-approval -- --target runtime-prd-refresh
+npm run runtime:prd-refresh-approval-status
 ```
 
-Then use the exact approval text from [Hosted Runtime Slice Approval Request](hosted-runtime-slice-approval-request.md). Recording that approval only opens publication of six PRD/planning issues. It does not open hosted runtime implementation.
+Then use the exact approval text from [Runtime PRD Refresh Approval Request](runtime-prd-refresh-approval-request.md). Recording that approval only opens a public owner-hosted runtime PRD and wrapper-runtime gate refresh from Unit 33 redacted metadata. It does not open hosted runtime implementation.
 
 ## Future Release Mutation Path
 

@@ -121,6 +121,7 @@
     "runtime:prd-acceptance-matrix": "node scripts/hosted-runtime-prd-acceptance-matrix.mjs",
     "runtime:prd-decision-preflight": "node scripts/hosted-runtime-prd-decision-preflight.mjs",
     "runtime:prd-refresh-approval-request": "node scripts/runtime-prd-refresh-approval-request.mjs",
+    "runtime:prd-refresh-approval-status": "node scripts/runtime-prd-refresh-approval-status.mjs",
     "runtime:threat-model": "node scripts/hosted-runtime-threat-model-trust-boundary.mjs",
     "runtime:threat-implementation-packet": "node scripts/threat-model-implementation-packet.mjs",
     "runtime:api-contract": "node scripts/hosted-runtime-api-server-contract.mjs",

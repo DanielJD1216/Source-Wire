@@ -43,6 +43,7 @@ npm run owner:record-approval
 npm run owner:record-approval -- --issue 255
 npm run owner:record-approval -- --target patch-release-implementation
 npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
+npm run owner:record-approval -- --target runtime-prd-refresh
 npm run owner:record-approval -- --target runtime-skeleton-implementation
 npm run owner:record-approval -- --target threat-model-implementation
 npm run owner:record-approval -- --target api-contract-implementation
@@ -64,6 +65,12 @@ For hosted-runtime child issue publication approval only, also run:
 
 ```bash
 npm run runtime:child-issue-approval-status
+```
+
+For runtime PRD refresh approval only, also run:
+
+```bash
+npm run runtime:prd-refresh-approval-status
 ```
 
 For hosted-runtime implementation gate approval status, run:
@@ -93,6 +100,7 @@ npm run release:approval-status
 | `#256` | Branch governance path | Record approval before a future branch governance implementation unit. |
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
 | `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Approval recorded; six PRD/planning child issues are published as `#259` through `#264`; hosted runtime implementation remains blocked. |
+| `#257`, target `runtime-prd-refresh` | Runtime PRD refresh path | Record approval before refreshing the public owner-hosted runtime PRD and wrapper-runtime gate from Unit 33 redacted metadata. |
 | `#257`, target `runtime-skeleton-implementation` | Runtime skeleton implementation path | Record approval before a future narrow runtime skeleton implementation unit. |
 | `#259`, target `threat-model-implementation` | Threat model implementation path | Record approval before a future synthetic trust-boundary implementation unit. |
 | `#260`, target `api-contract-implementation` | API contract implementation path | Record approval before a future synthetic API policy contract implementation unit. |
@@ -144,6 +152,14 @@ Target: `hosted-runtime-child-issue-publication`
 
 ```text
 Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.
+```
+
+### Issue #257: Runtime PRD refresh path
+
+Target: `runtime-prd-refresh`
+
+```text
+Approved for a future Source-Wire owner-hosted runtime PRD refresh unit: refresh the public owner-hosted runtime PRD and wrapper-runtime gate using the Unit 33 runtime-readiness alignment baseline as redacted metadata only. Keep Source-Wire synthetic-only. Do not add production API runtime, MCP runtime, database migrations, real database connections, live connectors, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, private data, private implementation code, AGPLv3 code copying, or automatic trusted memory promotion. Keep Source-Wire-Memory-Engine separate. MCP must not bypass Source-Wire API policy.
 ```
 
 ### Issue #257: Runtime skeleton implementation path

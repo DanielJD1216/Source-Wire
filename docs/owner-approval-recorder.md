@@ -46,6 +46,12 @@ Dry-run status for the hosted-runtime child issue publication approval:
 npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
 ```
 
+Dry-run status for the runtime PRD refresh approval:
+
+```bash
+npm run owner:record-approval -- --target runtime-prd-refresh
+```
+
 Expected no-issue markers:
 
 ```text
@@ -77,6 +83,12 @@ Hosted-runtime child issue publication shape:
 npm run owner:record-approval -- --target hosted-runtime-child-issue-publication --write --confirm-exact "<exact approval text>"
 ```
 
+Runtime PRD refresh shape:
+
+```bash
+npm run owner:record-approval -- --target runtime-prd-refresh --write --confirm-exact "<exact approval text>"
+```
+
 Patch release implementation shape:
 
 ```bash
@@ -92,7 +104,7 @@ The command refuses to write when:
 - `--confirm-exact` is missing,
 - `--confirm-exact` does not match the known approval text exactly.
 
-The patch release implementation target records on closed issue `#255` because the first release issue is completed history. The hosted-runtime child issue publication target records on closed issue `#257` because the parent PRD issue is completed history. Both still require `--write` and an exact `--confirm-exact` match.
+The patch release implementation target records on closed issue `#255` because the first release issue is completed history. The hosted-runtime child issue publication and runtime PRD refresh targets record on closed issue `#257` because the parent PRD issue is completed history. They still require `--write` and an exact `--confirm-exact` match.
 
 Successful write-mode markers:
 
@@ -111,6 +123,7 @@ blocked execution still requires focused implementation unit
 | `#256` | Branch governance path | Record approval before a future branch governance implementation unit. |
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
 | `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Approval recorded; six PRD/planning child issues are published as `#259` through `#264`; hosted runtime implementation remains blocked. |
+| `#257`, target `runtime-prd-refresh` | Runtime PRD refresh path | Record approval before refreshing the public owner-hosted runtime PRD and wrapper-runtime gate from Unit 33 redacted metadata. |
 | `#258` | Contribution terms path | Completed contribution terms PRD approval; code contribution acceptance still needs a separate future implementation approval. |
 
 ## After Recording
@@ -119,6 +132,12 @@ After recording an approval, run:
 
 ```bash
 npm run owner:decision-status
+```
+
+For runtime PRD refresh approval only, also run:
+
+```bash
+npm run runtime:prd-refresh-approval-status
 ```
 
 For release approval only, also run:

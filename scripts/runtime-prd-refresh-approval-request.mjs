@@ -12,6 +12,9 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 
 for (const requiredPath of [
   "docs/runtime-prd-refresh-approval-request.md",
+  "docs/runtime-prd-refresh-approval-status.md",
+  "docs/owner-approval-record-packet.md",
+  "scripts/record-owner-approval.mjs",
   "docs/private-proof-runtime-extraction-readiness.md",
   "docs/runtime-implementation-decision-gate.md",
   "docs/runtime-implementation-decision-proof.md",
@@ -26,6 +29,9 @@ for (const requiredPath of [
 }
 
 const approvalRequest = await readFile("docs/runtime-prd-refresh-approval-request.md", "utf8");
+const approvalStatus = await readFile("docs/runtime-prd-refresh-approval-status.md", "utf8");
+const ownerApprovalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const ownerApprovalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
 const extractionReadiness = await readFile("docs/private-proof-runtime-extraction-readiness.md", "utf8");
 const decisionGate = await readFile("docs/runtime-implementation-decision-gate.md", "utf8");
 const decisionProof = await readFile("docs/runtime-implementation-decision-proof.md", "utf8");
@@ -39,9 +45,35 @@ for (const requiredText of [
   "What Approval Would Unlock",
   "What Approval Would Not Unlock",
   "npm run runtime:prd-refresh-approval-request",
+  "npm run runtime:prd-refresh-approval-status",
   "blocked production runtime implementation"
 ]) {
   assertIncludes(approvalRequest, requiredText, "runtime PRD refresh approval request");
+}
+
+for (const requiredText of [
+  "Status: owner-side read-only approval status.",
+  exactApproval,
+  "ok runtime PRD refresh approval status readable",
+  "blocked runtime PRD refresh approval missing",
+  "blocked hosted runtime implementation"
+]) {
+  assertIncludes(approvalStatus, requiredText, "runtime PRD refresh approval status");
+}
+
+for (const requiredText of [
+  "runtime-prd-refresh",
+  exactApproval,
+  "npm run runtime:prd-refresh-approval-status"
+]) {
+  assertIncludes(ownerApprovalPacket, requiredText, "owner approval packet runtime PRD refresh target");
+}
+
+for (const requiredText of [
+  "runtime-prd-refresh",
+  exactApproval
+]) {
+  assertIncludes(ownerApprovalRecorder, requiredText, "owner approval recorder runtime PRD refresh target");
 }
 
 for (const requiredText of [

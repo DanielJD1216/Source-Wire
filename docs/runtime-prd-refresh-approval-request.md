@@ -32,6 +32,12 @@ Then run:
 npm run runtime:prd-refresh-approval-request
 ```
 
+To check whether the exact approval has already been recorded on the owner issue, run:
+
+```bash
+npm run runtime:prd-refresh-approval-status
+```
+
 Expected markers:
 
 ```text
@@ -95,6 +101,7 @@ npm run runtime-readiness:smoke
 npm run runtime-proof-intake:smoke
 npm run runtime:extraction-readiness
 npm run runtime:prd-refresh-approval-request
+npm run runtime:prd-refresh-approval-status
 npm run owner:open-issues-status
 ```
 
@@ -122,3 +129,4 @@ Stop and require a separate owner decision if the PRD refresh needs:
 - [Runtime Proof Intake](runtime-proof-intake.md)
 - [Runtime Readiness Fixture Matrix](runtime-readiness-fixture-matrix.md)
 - [Daily Workflow Implementation Proof](daily-workflow-implementation-proof.md)
+- [Runtime PRD Refresh Approval Status](runtime-prd-refresh-approval-status.md)

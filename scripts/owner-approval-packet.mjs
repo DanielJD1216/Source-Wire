@@ -41,6 +41,13 @@ const approvalTargets = [
       "Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked."
   },
   {
+    target: "runtime-prd-refresh",
+    issue: 257,
+    label: "Runtime PRD refresh path",
+    exactText:
+      "Approved for a future Source-Wire owner-hosted runtime PRD refresh unit: refresh the public owner-hosted runtime PRD and wrapper-runtime gate using the Unit 33 runtime-readiness alignment baseline as redacted metadata only. Keep Source-Wire synthetic-only. Do not add production API runtime, MCP runtime, database migrations, real database connections, live connectors, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, private data, private implementation code, AGPLv3 code copying, or automatic trusted memory promotion. Keep Source-Wire-Memory-Engine separate. MCP must not bypass Source-Wire API policy."
+  },
+  {
     target: "runtime-skeleton-implementation",
     issue: 257,
     label: "Runtime skeleton implementation path",
@@ -165,6 +172,7 @@ for (const target of approvalTargets) {
 printSection("Next Checks After Manual Approval");
 console.log("npm run owner:decision-status");
 console.log("npm run runtime:child-issue-approval-status");
+console.log("npm run runtime:prd-refresh-approval-status");
 console.log("npm run release:patch-execution-preflight");
 console.log("npm run release:approval-status");
 

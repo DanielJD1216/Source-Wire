@@ -103,7 +103,7 @@ This runs the live source-package preflight plus the release, branch governance,
 
 Recommended next owner decision:
 
-1. Record or defer the runtime PRD refresh approval.
+1. Use the recorded runtime PRD refresh proof as the current runtime planning baseline.
 2. Keep hosted runtime implementation blocked until a separate implementation approval is recorded.
 3. Keep API server runtime, MCP server runtime, database migrations, deployment, production runtime use, real user data, and contribution acceptance blocked.
 

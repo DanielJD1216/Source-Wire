@@ -84,11 +84,11 @@ The hosted runtime PRD is approved and documented on issue `#257`.
 
 Hosted runtime child planning issues `#259` through `#264` are already published as PRD/planning issues.
 
-The current runtime approval gap is narrower: the runtime PRD refresh approval is not recorded yet. Before recording that approval, dry-run the guarded recorder:
+The runtime PRD refresh approval is recorded and the refreshed PRD/gate proof is available. Verify before any hosted runtime implementation planning:
 
 ```bash
-npm run owner:record-approval -- --target runtime-prd-refresh
 npm run runtime:prd-refresh-approval-status
+npm run runtime:prd-refresh-proof
 ```
 
 Hosted runtime implementation still needs another later implementation approval after the refreshed PRD or wrapper-runtime gate is approved and green.

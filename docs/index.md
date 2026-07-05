@@ -45,6 +45,7 @@ Its intended product direction is a public BYO, owner-hosted memory system that 
 - [Private Proof To Runtime Extraction Readiness](private-proof-runtime-extraction-readiness.md)
 - [Runtime PRD Refresh Approval Request](runtime-prd-refresh-approval-request.md)
 - [Runtime PRD Refresh Approval Status](runtime-prd-refresh-approval-status.md)
+- [Runtime PRD Refresh Proof](runtime-prd-refresh-proof.md)
 - [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md)
 - [Runtime Skeleton Issue Slices](runtime-skeleton-issue-slices.md)
 - [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)

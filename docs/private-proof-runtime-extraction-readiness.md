@@ -1,12 +1,12 @@
 # Private Proof To Runtime Extraction Readiness
 
-Status: public-safe extraction readiness checkpoint. Runtime implementation remains blocked.
+Status: public-safe extraction readiness checkpoint. Runtime PRD refresh is approved and recorded; runtime implementation remains blocked.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Direct Answer
 
-The private owner proof is strong enough to refresh Source-Wire runtime planning from the Unit 33 baseline, but not enough to start unapproved production runtime work.
+The private owner proof was strong enough to refresh Source-Wire runtime planning from the Unit 33 baseline, and that refresh approval is now recorded. It is still not enough to start unapproved production runtime work.
 
 This checkpoint records the bridge:
 
@@ -105,7 +105,9 @@ ok private proof runtime extraction readiness
 
 The narrow runtime skeleton implementation unit is already recorded in [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md), and the daily workflow plus runtime-readiness synthetic lanes are now available as current baseline evidence.
 
-The next decision is not production runtime yet. The next safe decision should refresh the public owner-hosted runtime PRD or wrapper-runtime gate using the Unit 33 baseline, then address one later boundary at a time: database posture, API server runtime, MCP server runtime, setup packaging, or runtime adapter packaging.
+The runtime PRD refresh decision is now recorded on issue `#257`: https://github.com/DanielJD1216/Source-Wire/issues/257#issuecomment-4884301286
+
+The next decision is not production runtime yet. The next safe decision should address one later implementation boundary at a time: database posture, API server runtime, MCP server runtime, setup packaging, or runtime adapter packaging.
 
 Recommended approval shape:
 

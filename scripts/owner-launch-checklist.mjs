@@ -69,9 +69,9 @@ printList([
   "8. Contribution terms PRD work is approved; code contribution acceptance still needs explicit contribution terms implementation.",
   "9. Run npm run runtime:child-issue-publication-packet.",
   "10. Hosted runtime child issue publication is approved and the six PRD/planning issues are published as #259 through #264.",
-  "11. The current runtime approval gap is runtime PRD refresh approval.",
-  "12. Dry-run npm run owner:record-approval -- --target runtime-prd-refresh before recording that approval.",
-  "13. Run npm run runtime:prd-refresh-approval-status to verify whether the exact approval is recorded.",
+  "11. Runtime PRD refresh approval is recorded.",
+  "12. Run npm run runtime:prd-refresh-proof to verify the refreshed PRD and wrapper-runtime gate.",
+  "13. Run npm run runtime:prd-refresh-approval-status to verify the exact approval remains recorded.",
   "14. Hosted runtime implementation still needs a separate approved unit."
 ]);
 
@@ -81,8 +81,8 @@ printList([
   "Use a future approved release unit before changing package version, npm dist-tags, or GitHub release assets.",
   "Keep contribution acceptance blocked until a separate implementation unit explicitly opens it.",
   "Hosted runtime PRD/planning issues #259 through #264 are already published.",
-  "The current runtime approval gap is runtime PRD refresh approval.",
-  "Use npm run runtime:prd-refresh-approval-status before any runtime PRD refresh work.",
+  "Runtime PRD refresh approval is recorded and the refreshed public PRD/gate proof is available.",
+  "Use npm run runtime:prd-refresh-proof before any hosted runtime implementation planning.",
   "Keep hosted runtime implementation, production runtime claims, and contribution acceptance blocked unless separate approval opens them."
 ]);
 

@@ -1,12 +1,14 @@
 # Source-Wire Runtime PRD Refresh Approval Request
 
-Status: approval request only. Runtime implementation remains blocked.
+Status: approval request recorded. Runtime implementation remains blocked.
 
 This packet does not refresh the PRD by itself, implement production API runtime, add MCP runtime, add database migrations, connect to a real database, add live connectors, deploy services, publish npm, create a GitHub release, change package version, accept public code contributions, copy private implementation code, copy AGPLv3 code, add real data, or approve automatic trusted memory promotion.
 
 ## Purpose
 
-Use this packet when the owner is ready to refresh the public owner-hosted runtime PRD and wrapper-runtime gate from the Unit 33 runtime-readiness alignment baseline.
+Use this packet as the historical approval request for refreshing the public owner-hosted runtime PRD and wrapper-runtime gate from the Unit 33 runtime-readiness alignment baseline.
+
+Recorded approval: https://github.com/DanielJD1216/Source-Wire/issues/257#issuecomment-4884301286
 
 The current public state is:
 
@@ -48,7 +50,7 @@ blocked production runtime implementation
 
 ## Exact Approval Text
 
-Do not refresh the public owner-hosted runtime PRD or wrapper-runtime gate as an implementation unit until the owner approves this exact text or an equivalent narrower instruction.
+This exact approval is now recorded. Do not treat it as approval for hosted runtime implementation.
 
 ```text
 Approved for a future Source-Wire owner-hosted runtime PRD refresh unit: refresh the public owner-hosted runtime PRD and wrapper-runtime gate using the Unit 33 runtime-readiness alignment baseline as redacted metadata only. Keep Source-Wire synthetic-only. Do not add production API runtime, MCP runtime, database migrations, real database connections, live connectors, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, private data, private implementation code, AGPLv3 code copying, or automatic trusted memory promotion. Keep Source-Wire-Memory-Engine separate. MCP must not bypass Source-Wire API policy.
@@ -93,7 +95,7 @@ Still blocked:
 
 ## Required Preflight
 
-Before this future PRD refresh unit starts, run:
+For this PRD refresh lane, run:
 
 ```bash
 npm run daily-workflow:smoke

@@ -61,9 +61,8 @@ printList([
   "To review the first release snapshot, use the v0.1.0 GitHub release.",
   "Contribution terms are defined; keep code contribution acceptance blocked until a separate implementation unit opens it.",
   "Hosted runtime child issue publication is approved and the six PRD/planning issues are published as #259 through #264.",
-  "The current runtime approval gap is runtime PRD refresh approval.",
-  "Dry-run npm run owner:record-approval -- --target runtime-prd-refresh before recording that approval.",
-  "Run npm run runtime:prd-refresh-approval-status to verify whether the exact approval is recorded.",
+  "Runtime PRD refresh approval is recorded and the refreshed public PRD/gate proof is available.",
+  "Run npm run runtime:prd-refresh-proof to verify the refreshed PRD and wrapper-runtime gate.",
   "Keep hosted runtime implementation blocked until a separate implementation approval opens it."
 ]);
 

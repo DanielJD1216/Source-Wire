@@ -68,13 +68,14 @@ npm run release:execution-preflight
 Remaining owner choices are separate:
 
 - keep code contribution acceptance blocked until a separate contribution-acceptance implementation unit opens it,
-- record or defer the runtime PRD refresh approval,
+- keep runtime PRD refresh approval recorded as completed planning history,
 - keep hosted runtime implementation blocked until a separate implementation approval opens it.
 
 Current runtime approval check:
 
 ```bash
 npm run runtime:prd-refresh-approval-status
+npm run runtime:prd-refresh-proof
 ```
 
 For the step-by-step owner path, read [Owner License Decision Workflow](owner-license-decision-workflow.md) or run:

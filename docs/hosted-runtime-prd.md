@@ -1,6 +1,13 @@
 # Source-Wire Hosted Runtime PRD
 
-Status: PRD only. Hosted runtime implementation remains blocked.
+Status: PRD refreshed after exact runtime PRD refresh approval. Hosted runtime implementation remains blocked.
+
+Refresh record:
+
+- Exact runtime PRD refresh approval recorded on issue `#257`: https://github.com/DanielJD1216/Source-Wire/issues/257#issuecomment-4884301286
+- Refresh source: Unit 33 runtime-readiness alignment baseline as redacted metadata only.
+- Refresh boundary: public PRD and wrapper-runtime gate only.
+- Still blocked: production API runtime, MCP runtime, database migrations, real database connections, live connectors, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, private data, private implementation code, AGPLv3 code copying, and automatic trusted memory promotion.
 
 This PRD defines the future hosted runtime boundary for Source-Wire. It does not add an API server, MCP server runtime, database migrations, deployment config, live connectors, real user data, new npm publishing, a GitHub release, or public code contribution acceptance.
 
@@ -167,9 +174,9 @@ npm run owner:decision-status
 
 ## Further Notes
 
-Issue `#257` records exact owner approval for this PRD path only.
+Issue `#257` records exact owner approval for this PRD path and the later exact runtime PRD refresh approval.
 
-The next step after this PRD is to approve the implementation slice map. Creating implementation issues does not approve implementation by itself. Each later implementation unit must keep the same no-private-data and no-deployment boundary unless the owner explicitly opens a narrower path.
+The next step after this refreshed PRD is not production runtime. The next step is a separate owner-approved implementation unit for one narrow boundary at a time. Creating or refreshing PRD, gate, or planning docs does not approve implementation by itself. Each later implementation unit must keep the same no-private-data and no-deployment boundary unless the owner explicitly opens a narrower path.
 
 Related docs:
 

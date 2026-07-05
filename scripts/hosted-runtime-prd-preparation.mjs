@@ -93,6 +93,8 @@ printSection("Current PRD Evidence");
 printList([
   "Issue #257 contains exact owner approval text.",
   "Hosted runtime PRD is approved and documented.",
+  "Runtime PRD refresh approval is recorded and the refreshed PRD/gate proof is available.",
+  "Hosted runtime child planning issues #259 through #264 are published.",
   "Runtime boundary is owner-hosted versus managed-hosted explicit.",
   "Threat model and namespace isolation are documented.",
   "Public-safe fixtures are required before implementation.",

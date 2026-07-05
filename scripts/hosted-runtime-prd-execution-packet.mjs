@@ -91,8 +91,9 @@ printRows([
 printSection("Current PRD Boundary");
 printList([
   "Hosted runtime PRD is approved and documented.",
-  "Runtime readiness and runtime proof intake gates must pass before child issue publication or implementation approval.",
-  "Child issue publication still needs separate owner approval.",
+  "Runtime readiness, runtime proof intake, and runtime PRD refresh gates must pass before implementation approval.",
+  "Child issue publication is approved and the six PRD/planning issues are published as #259 through #264.",
+  "Runtime PRD refresh approval is recorded and the refreshed PRD/gate proof is available.",
   "Do not add API server runtime, MCP server runtime, database migrations, deployment config, live connectors, or real user data from this packet.",
   "Keep trusted Memory Record auto-promotion, production runtime claims, and contribution acceptance blocked."
 ]);

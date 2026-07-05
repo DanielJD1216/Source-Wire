@@ -81,7 +81,7 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 | Minimal branch protection | Implemented | Use [Branch Governance Apply Guard](branch-governance-apply.md) and [Repository Metadata](repository-metadata.md) for live proof. |
 | Repository rulesets | Deferred | Separate future governance approval if stronger repository-side policy is needed. |
 | Hosted runtime child issue publication | Complete | Six PRD/planning issues are published as `#259` through `#264`. |
-| Runtime PRD refresh approval | Missing | Use the guarded owner approval recorder target before refreshing the runtime PRD or wrapper-runtime gate. |
+| Runtime PRD refresh approval | Recorded | The public owner-hosted runtime PRD and wrapper-runtime gate refresh is recorded in [Runtime PRD Refresh Proof](runtime-prd-refresh-proof.md). |
 | Hosted runtime implementation | Blocked | Separate runtime implementation approval after the refreshed PRD or wrapper-runtime gate is approved and green. |
 | Code contribution acceptance | Blocked | Explicit contribution terms implementation approval. |
 
@@ -97,21 +97,21 @@ This command reads issues `#255` through `#258` and checks for separate exact ow
 8. Decide whether and how code contributions can be accepted.
 9. Run `npm run runtime:prd-decision-preflight`.
 10. Hosted runtime PRD/planning issues `#259` through `#264` are already published.
-11. The current runtime approval gap is runtime PRD refresh approval.
-12. Run `npm run runtime:prd-refresh-approval-status` before runtime PRD refresh work.
+11. Runtime PRD refresh approval is recorded.
+12. Run `npm run runtime:prd-refresh-proof` before any hosted runtime implementation planning.
 13. Keep hosted runtime implementation blocked until a separate implementation approval is recorded.
 14. Keep API server runtime, MCP server runtime, database migrations, deployment, production runtime use, real user data, and contribution acceptance blocked.
 
 ## Runtime PRD Refresh Approval Path
 
-Before recording the next approval, dry-run:
+Runtime PRD refresh approval has been recorded. Verify it with:
 
 ```bash
-npm run owner:record-approval -- --target runtime-prd-refresh
 npm run runtime:prd-refresh-approval-status
+npm run runtime:prd-refresh-proof
 ```
 
-Then use the exact approval text from [Runtime PRD Refresh Approval Request](runtime-prd-refresh-approval-request.md). Recording that approval only opens a public owner-hosted runtime PRD and wrapper-runtime gate refresh from Unit 33 redacted metadata. It does not open hosted runtime implementation.
+The exact approval text is retained in [Runtime PRD Refresh Approval Request](runtime-prd-refresh-approval-request.md). Recording that approval only opened a public owner-hosted runtime PRD and wrapper-runtime gate refresh from Unit 33 redacted metadata. It did not open hosted runtime implementation.
 
 ## Future Release Mutation Path
 

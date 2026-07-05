@@ -39,7 +39,7 @@ const hostedRuntimePrd = await readFile("docs/hosted-runtime-prd.md", "utf8");
 const intake = JSON.parse(await readFile("examples/fixtures/runtime-proof-intake/runtime-proof-intake-manifest.json", "utf8"));
 
 for (const requiredText of [
-  "Status: approval request only. Runtime implementation remains blocked.",
+  "Status: approval request recorded. Runtime implementation remains blocked.",
   exactApproval,
   "Unit 33 alignment may be used as redacted metadata only.",
   "What Approval Would Unlock",
@@ -52,10 +52,10 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Status: owner-side read-only approval status.",
+  "Status: owner-side read-only approval status. Exact runtime PRD refresh approval is recorded; hosted runtime implementation remains blocked.",
   exactApproval,
   "ok runtime PRD refresh approval status readable",
-  "blocked runtime PRD refresh approval missing",
+  "ok exact runtime PRD refresh approval recorded",
   "blocked hosted runtime implementation"
 ]) {
   assertIncludes(approvalStatus, requiredText, "runtime PRD refresh approval status");
@@ -87,8 +87,8 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Do not start public Source-Wire runtime implementation from the owner-hosted setup package, daily workflow fixtures, or Unit 33 runtime-readiness alignment alone.",
-  "Refresh the public owner-hosted runtime PRD or wrapper-runtime gate using the Unit 33 baseline as redacted metadata only.",
+  "Do not start public Source-Wire runtime implementation from the owner-hosted setup package, daily workflow fixtures, Unit 33 runtime-readiness alignment, or runtime PRD refresh alone.",
+  "Prepare a separate owner approval packet for one narrow implementation boundary",
   "npm run runtime:extraction-readiness"
 ]) {
   assertIncludes(decisionGate, requiredText, "runtime implementation decision gate");

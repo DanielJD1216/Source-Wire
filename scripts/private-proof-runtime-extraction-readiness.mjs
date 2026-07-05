@@ -29,7 +29,7 @@ for (const requiredPath of [
 }
 
 for (const requiredText of [
-  "Status: public-safe extraction readiness checkpoint. Runtime implementation remains blocked.",
+  "Status: public-safe extraction readiness checkpoint. Runtime PRD refresh is approved and recorded; runtime implementation remains blocked.",
   "private owner proof exists through Unit 33",
   "Source-Wire daily workflow and runtime-readiness synthetic contracts are recorded",
   "production runtime still needs separate approval",

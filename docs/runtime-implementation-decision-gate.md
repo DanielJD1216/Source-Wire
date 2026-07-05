@@ -1,20 +1,21 @@
 # Runtime Implementation Decision Gate
 
-Status: decision gate refreshed. Runtime implementation remains blocked.
+Status: decision gate refreshed after exact runtime PRD refresh approval. Runtime implementation remains blocked.
 
 Date: 2026-07-04
+
+Runtime PRD refresh approval: https://github.com/DanielJD1216/Source-Wire/issues/257#issuecomment-4884301286
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
 ## Direct Decision
 
-Do not start public Source-Wire runtime implementation from the owner-hosted setup package, daily workflow fixtures, or Unit 33 runtime-readiness alignment alone.
+Do not start public Source-Wire runtime implementation from the owner-hosted setup package, daily workflow fixtures, Unit 33 runtime-readiness alignment, or runtime PRD refresh alone.
 
 Recommended next path:
 
 ```text
-Refresh the public owner-hosted runtime PRD and wrapper-runtime gate from Unit 33 metadata,
-then approve one narrow implementation boundary at a time.
+Approve one narrow implementation boundary at a time after the refreshed public owner-hosted runtime PRD and wrapper-runtime gate stay green.
 ```
 
 ## Why
@@ -40,13 +41,13 @@ They do not prove:
 - the correct production Mission Control setup UX,
 - the real public owner-hosted runtime lifecycle.
 
-Private owner behavior has now been proven through the redacted Unit 33 alignment baseline, but that still must be translated into a clean public PRD or narrow implementation gate before runtime code becomes safe.
+Private owner behavior has now been proven through the redacted Unit 33 alignment baseline and translated into a refreshed public PRD/gate. Runtime code is still not safe until a separate owner-approved implementation unit opens one narrow boundary.
 
 ## Decision Matrix
 
 | Path | Decision | Why |
 | --- | --- | --- |
-| Refresh public owner-hosted runtime PRD or wrapper gate from Unit 33 | Go | Uses proven private behavior as redacted metadata while keeping public code synthetic. |
+| Refresh public owner-hosted runtime PRD or wrapper gate from Unit 33 | Done | Exact approval is recorded and the public docs stay synthetic-only. |
 | Clean Apache-2.0 public runtime skeleton now | No-go for now | Still needs a focused owner approval for the exact API, MCP, database, and adapter boundary. |
 | Optional adapter to separate runtime candidate | No-go for now | Needs stronger legal/setup boundary around the separate AGPLv3 candidate and setup packaging. |
 | Public database migrations now | No-go | Storage shape is not approved for public Source-Wire. |
@@ -112,7 +113,7 @@ Stop and require a new owner decision if next work asks for:
 Recommended next safe action:
 
 ```text
-Refresh the public owner-hosted runtime PRD or wrapper-runtime gate using the Unit 33 baseline as redacted metadata only.
+Prepare a separate owner approval packet for one narrow implementation boundary, while keeping hosted runtime implementation blocked until that approval is recorded.
 ```
 
 Public Source-Wire can continue to accept only:

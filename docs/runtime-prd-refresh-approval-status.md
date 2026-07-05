@@ -1,6 +1,6 @@
 # Source-Wire Runtime PRD Refresh Approval Status
 
-Status: owner-side read-only approval status.
+Status: owner-side read-only approval status. Exact runtime PRD refresh approval is recorded; hosted runtime implementation remains blocked.
 
 This command checks whether the exact runtime PRD refresh approval has been separately recorded. It does not refresh the PRD, implement hosted runtime behavior, add API server runtime, add MCP server runtime, add database migrations, deploy services, publish npm, create a GitHub release, create tags, accept code contributions, add real user data, copy private implementation code, copy AGPLv3 code, or approve production runtime use.
 
@@ -9,7 +9,7 @@ This command checks whether the exact runtime PRD refresh approval has been sepa
 Use this command to separate three questions:
 
 - Is the hosted runtime PRD approved? That is tracked by issue `#257`.
-- Is the later runtime PRD refresh approved? That needs the separate exact approval text below.
+- Is the later runtime PRD refresh approved? Yes, recorded on issue `#257`: https://github.com/DanielJD1216/Source-Wire/issues/257#issuecomment-4884301286
 - Is hosted runtime implementation approved? No. Hosted runtime implementation remains blocked.
 
 ## Command
@@ -48,7 +48,7 @@ blocked hosted runtime implementation
 
 ## Exact Approval Text
 
-Do not refresh the public owner-hosted runtime PRD or wrapper-runtime gate as an implementation unit until the owner approves this exact text or an equivalent narrower instruction:
+This exact approval has been recorded. Keep it here as the canonical text and audit trail for the refresh:
 
 ```text
 Approved for a future Source-Wire owner-hosted runtime PRD refresh unit: refresh the public owner-hosted runtime PRD and wrapper-runtime gate using the Unit 33 runtime-readiness alignment baseline as redacted metadata only. Keep Source-Wire synthetic-only. Do not add production API runtime, MCP runtime, database migrations, real database connections, live connectors, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, private data, private implementation code, AGPLv3 code copying, or automatic trusted memory promotion. Keep Source-Wire-Memory-Engine separate. MCP must not bypass Source-Wire API policy.

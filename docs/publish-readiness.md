@@ -47,6 +47,7 @@ This command runs:
 - `npm run runtime:prd-preparation`
 - `npm run runtime:prd-execution-packet`
 - `npm run runtime:prd-acceptance-matrix`
+- `npm run runtime:prd-refresh-proof`
 - `npm run runtime:slice-approval-request`
 - `npm run runtime:child-issue-publication-packet`
 - `npm run runtime:child-issue-publish`
@@ -162,6 +163,7 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Hosted runtime PRD execution packet | `ok hosted runtime PRD execution packet ready`, `ok hosted runtime PRD execution scope documented`, `ok exact hosted runtime PRD approval recorded` |
 | Hosted runtime PRD acceptance matrix | `ok hosted runtime PRD acceptance matrix ready`, `ok hosted runtime PRD clauses mapped`, `ok hosted runtime PRD stop conditions retained`, `blocked hosted runtime implementation` |
 | Runtime PRD refresh approval request | `ok runtime PRD refresh approval request ready`, `ok unit 33 redacted metadata boundary recorded`, `blocked production runtime implementation` |
+| Runtime PRD refresh proof | `ok runtime PRD refresh proof ready`, `ok exact runtime PRD refresh approval recorded`, `blocked hosted runtime implementation` |
 | Hosted runtime child issue publication preflight | `ok hosted runtime child issue publication preflight ready`, `ok child issue publication packet current`, `ok child issue publisher dry run current`, `ok child issue publisher guard smoke current`, `ok child issue approval status current`, `ok owner open issue boundary current`, `ok owner open issue future planning smoke current`, `ok hosted runtime child issue publication approval recorded`, `ok hosted runtime child planning issues published`, `blocked hosted runtime implementation` |
 | Hosted runtime child issue publisher | `ok hosted runtime child issue publisher ready`, `ok hosted runtime issue payloads validated`, `blocked child issue publication requires --write`, `ok hosted runtime child issue publisher smoke`, `blocked child issue publication approval missing`, `blocked child issue duplicate publication`, `blocked hosted runtime implementation` |
 | Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |

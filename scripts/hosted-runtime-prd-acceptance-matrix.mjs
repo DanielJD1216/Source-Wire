@@ -56,7 +56,8 @@ for (const requiredText of [
 }
 
 for (const requiredText of [
-  "Status: PRD only. Hosted runtime implementation remains blocked.",
+  "Status: PRD refreshed after exact runtime PRD refresh approval. Hosted runtime implementation remains blocked.",
+  "Exact runtime PRD refresh approval recorded on issue `#257`",
   "owner-hosted versus managed-hosted boundary",
   "API server boundary",
   "MCP server runtime",

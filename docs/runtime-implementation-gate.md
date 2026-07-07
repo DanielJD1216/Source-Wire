@@ -1,6 +1,6 @@
 # Source-Wire Runtime Implementation Gate
 
-Status: implementation gate with minimal synthetic runtime boundary, synthetic runtime skeleton, synthetic threat-boundary package, synthetic API policy contract package, synthetic MCP adapter contract package, synthetic database posture package, synthetic hosted-runtime fixture package, and synthetic deployment-boundary package. Production runtime remains blocked.
+Status: implementation gate with minimal synthetic runtime boundary, synthetic runtime skeleton, synthetic owner-hosted API and MCP runtime skeleton, synthetic threat-boundary package, synthetic API policy contract package, synthetic MCP adapter contract package, synthetic database posture package, synthetic hosted-runtime fixture package, and synthetic deployment-boundary package. Production runtime remains blocked.
 
 Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](quickstart.md).
 
@@ -8,11 +8,11 @@ Use Node.js 22 with npm from the repository root. For the complete local setup p
 
 This gate prevents hosted Source-Wire runtime work from starting just because boundary docs, synthetic fixtures, and a minimal synthetic runtime boundary now exist.
 
-Source-Wire is still a public contract package with exported synthetic policy proof code, a synthetic owner-hosted runtime skeleton, a synthetic trust-boundary evaluator, a synthetic API policy contract evaluator, a synthetic MCP adapter contract evaluator, a synthetic database posture evaluator, a synthetic hosted-runtime fixture evaluator, and a synthetic deployment-boundary evaluator.
+Source-Wire is still a public contract package with exported synthetic policy proof code, a synthetic owner-hosted API and MCP runtime skeleton, a synthetic trust-boundary evaluator, a synthetic API policy contract evaluator, a synthetic MCP adapter contract evaluator, a synthetic database posture evaluator, a synthetic hosted-runtime fixture evaluator, and a synthetic deployment-boundary evaluator.
 
 It does not host user memory.
 
-It does not include a production API server, MCP server runtime, database migrations, deployment, Mission Control UI, or live connectors.
+It does not include a production API server, production MCP server runtime, database migrations, deployment, Mission Control UI, or live connectors.
 
 It now includes a runtime-readiness matrix, redacted runtime-proof-intake manifest, and smoke commands. Those gates are for future runtime PRD work, not runtime approval.
 
@@ -54,6 +54,14 @@ The current implementation approval packet is [Runtime Skeleton Implementation P
 ```bash
 npm run runtime:skeleton-packet
 npm run runtime:skeleton-smoke
+```
+
+The owner-hosted runtime implementation boundary is recorded in [Owner-Hosted Runtime Implementation Packet](owner-hosted-runtime-implementation-packet.md), sliced in [Owner-Hosted Runtime Implementation Slices](owner-hosted-runtime-implementation-slices.md), and implemented as a synthetic in-process skeleton in [Owner-Hosted Runtime Implementation Proof](owner-hosted-runtime-implementation-proof.md). Production runtime remains blocked.
+
+It is verified by:
+
+```bash
+npm run runtime:owner-hosted-smoke
 ```
 
 The threat-model implementation is recorded in [Runtime Threat Boundary Implementation Proof](runtime-threat-boundary-implementation-proof.md). It is verified by:
@@ -171,9 +179,9 @@ Hosted runtime implementation must not start if any of these are true:
 
 This gate does not add or approve:
 
-- API server runtime,
-- MCP server runtime,
-- runtime scaffolding,
+- production API server runtime,
+- production MCP server runtime,
+- network service runtime,
 - database migrations,
 - PostgreSQL or pgvector setup,
 - memory-engine integration,
@@ -208,6 +216,10 @@ It must not silently decide that evidence is trusted memory.
 - [Minimal Runtime Implementation Scope](minimal-runtime-implementation-scope.md)
 - [Runtime Skeleton Implementation Packet](runtime-skeleton-implementation-packet.md)
 - [Runtime Skeleton Issue Slices](runtime-skeleton-issue-slices.md)
+- [Owner-Hosted Runtime Implementation Packet](owner-hosted-runtime-implementation-packet.md)
+- [Owner-Hosted Runtime Implementation Slices](owner-hosted-runtime-implementation-slices.md)
+- [Owner-Hosted Runtime Implementation Proof](owner-hosted-runtime-implementation-proof.md)
+- [Owner-Hosted Runtime Smoke](owner-hosted-runtime-smoke.md)
 - [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
 - [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
 - [Runtime Threat Boundary Implementation Proof](runtime-threat-boundary-implementation-proof.md)

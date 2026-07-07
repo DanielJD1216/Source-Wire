@@ -106,6 +106,23 @@ export {
   runRuntimeSkeletonFixtureMatrix
 } from "./runtime-skeleton/index.js";
 export type {
+  SourceWireOwnerHostedApiServerRuntimeRequest,
+  SourceWireOwnerHostedMcpServerRuntimeRequest,
+  SourceWireOwnerHostedRuntimeBoundary,
+  SourceWireOwnerHostedRuntimeFixtureCase,
+  SourceWireOwnerHostedRuntimeFixtureMatrix,
+  SourceWireOwnerHostedRuntimeResponse,
+  SourceWireOwnerHostedRuntimeStatus
+} from "./owner-hosted-runtime/index.js";
+export {
+  SOURCE_WIRE_OWNER_HOSTED_RUNTIME_BOUNDARY,
+  evaluateOwnerHostedRuntimeFixtureCase,
+  evaluateOwnerHostedRuntimeFixtureMatrix,
+  getOwnerHostedMcpServerRuntimeToolDeclarations,
+  handleOwnerHostedApiServerRuntimeRequest,
+  handleOwnerHostedMcpServerRuntimeRequest
+} from "./owner-hosted-runtime/index.js";
+export type {
   SourceWireRuntimeThreatActorKind,
   SourceWireRuntimeThreatBoundaryCase,
   SourceWireRuntimeThreatBoundaryFixtureMatrix,

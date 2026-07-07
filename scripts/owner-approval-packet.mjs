@@ -55,6 +55,13 @@ const approvalTargets = [
       "Approved for a future Source-Wire owner-hosted runtime skeleton implementation unit: build a public-safe synthetic owner-hosted API policy route skeleton and MCP adapter skeleton using the private Unit 25 through Unit 30 proof trail as redacted evidence only. Use synthetic fixtures only. Do not copy private implementation code or AGPLv3 code. Do not add real user data, client data, database migrations, real database connections, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, or public contribution acceptance. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled."
   },
   {
+    target: "owner-hosted-runtime-implementation",
+    issue: 257,
+    label: "Owner-hosted runtime implementation path",
+    exactText:
+      "Approved for a future Source-Wire owner-hosted runtime implementation unit: build a narrow public-safe owner-hosted API server runtime skeleton and MCP server runtime skeleton around the existing Source-Wire policy contracts and synthetic fixtures. Use synthetic fixtures only. Do not add database migrations, real database connections, PostgreSQL or pgvector setup, live connectors, local folder crawling, whole-vault import, Mission Control UI, deployment config, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, AGPLv3 code copying, or Source-Wire-Memory-Engine code merge. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled. Automatic trusted memory promotion remains blocked."
+  },
+  {
     target: "threat-model-implementation",
     issue: 259,
     label: "Threat model implementation path",

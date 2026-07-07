@@ -48,6 +48,8 @@ Deployment-boundary implementation: `npm run runtime:deployment-boundary-smoke` 
 
 Runtime implementation decision: after setup, daily workflow, Unit 33 runtime-readiness alignment, and the owner-approved runtime PRD refresh, the next public runtime decision is still no-go for production runtime code. The refreshed path is to approve one narrow implementation boundary at a time after the public owner-hosted runtime PRD and wrapper-runtime gate stay green. Read [Runtime Implementation Decision Gate](docs/runtime-implementation-decision-gate.md), [Private Proof To Runtime Extraction Readiness](docs/private-proof-runtime-extraction-readiness.md), and [Runtime PRD Refresh Approval Status](docs/runtime-prd-refresh-approval-status.md).
 
+Owner-hosted runtime skeleton: exact approval is recorded and implemented for one narrow public-safe API server runtime skeleton and MCP server runtime skeleton unit. `npm run runtime:owner-hosted-smoke` proves API policy routing, MCP-through-API routing, citation and gap preservation, denied results, audit metadata, source evidence separation, and owner or application-controlled trusted-memory approval. This does not approve production runtime, database migrations, real database connections, live connectors, Mission Control UI, deployment, managed hosting, real data, public contribution acceptance, or automatic trusted memory promotion. Read [Owner-Hosted Runtime Implementation Proof](docs/owner-hosted-runtime-implementation-proof.md), [Owner-Hosted Runtime Smoke](docs/owner-hosted-runtime-smoke.md), [Owner-Hosted Runtime Implementation Packet](docs/owner-hosted-runtime-implementation-packet.md), and [Owner-Hosted Runtime Implementation Slices](docs/owner-hosted-runtime-implementation-slices.md).
+
 Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
 
 Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
@@ -116,6 +118,7 @@ Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Revie
 - Runtime readiness synthetic contract and fixture matrix.
 - Runtime proof intake synthetic contract and redacted manifest.
 - Synthetic fixtures for notes, chat exports, project context, and `/2nd-brain` examples.
+- Synthetic owner-hosted API and MCP runtime skeleton with policy-routed fixture smoke.
 - Threat model implementation approval packet and slice map.
 - Synthetic threat-boundary package and fixture matrix.
 - API contract implementation approval packet and slice map.
@@ -289,6 +292,10 @@ Source-Wire can run a full local readiness gate with package dry-run, installed 
 - [Hosted Runtime PRD Slice Map](docs/hosted-runtime-issue-slices.md)
 - [Hosted Runtime Slice Approval Request](docs/hosted-runtime-slice-approval-request.md)
 - [Hosted Runtime Child Issue Publication Packet](docs/hosted-runtime-child-issue-publication-packet.md)
+- [Owner-Hosted Runtime Implementation Packet](docs/owner-hosted-runtime-implementation-packet.md)
+- [Owner-Hosted Runtime Implementation Proof](docs/owner-hosted-runtime-implementation-proof.md)
+- [Owner-Hosted Runtime Implementation Slices](docs/owner-hosted-runtime-implementation-slices.md)
+- [Owner-Hosted Runtime Smoke](docs/owner-hosted-runtime-smoke.md)
 - [Hosted Runtime PRD Preparation](docs/hosted-runtime-prd-preparation.md)
 - [Contribution Terms PRD Preparation](docs/contribution-terms-prd-preparation.md)
 - [Contribution Terms PRD](docs/contribution-terms-prd.md)

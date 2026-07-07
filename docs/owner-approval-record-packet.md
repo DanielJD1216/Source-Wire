@@ -45,6 +45,7 @@ npm run owner:record-approval -- --target patch-release-implementation
 npm run owner:record-approval -- --target hosted-runtime-child-issue-publication
 npm run owner:record-approval -- --target runtime-prd-refresh
 npm run owner:record-approval -- --target runtime-skeleton-implementation
+npm run owner:record-approval -- --target owner-hosted-runtime-implementation
 npm run owner:record-approval -- --target threat-model-implementation
 npm run owner:record-approval -- --target api-contract-implementation
 npm run owner:record-approval -- --target mcp-contract-implementation
@@ -102,6 +103,7 @@ npm run release:approval-status
 | `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Approval recorded; six PRD/planning child issues are published as `#259` through `#264`; hosted runtime implementation remains blocked. |
 | `#257`, target `runtime-prd-refresh` | Runtime PRD refresh path | Record approval before refreshing the public owner-hosted runtime PRD and wrapper-runtime gate from Unit 33 redacted metadata. |
 | `#257`, target `runtime-skeleton-implementation` | Runtime skeleton implementation path | Record approval before a future narrow runtime skeleton implementation unit. |
+| `#257`, target `owner-hosted-runtime-implementation` | Owner-hosted runtime implementation path | Approval recorded for a future narrow API server runtime skeleton and MCP server runtime skeleton implementation unit. |
 | `#259`, target `threat-model-implementation` | Threat model implementation path | Record approval before a future synthetic trust-boundary implementation unit. |
 | `#260`, target `api-contract-implementation` | API contract implementation path | Record approval before a future synthetic API policy contract implementation unit. |
 | `#261`, target `mcp-contract-implementation` | MCP contract implementation path | Record approval before a future synthetic MCP adapter contract implementation unit. |
@@ -168,6 +170,14 @@ Target: `runtime-skeleton-implementation`
 
 ```text
 Approved for a future Source-Wire owner-hosted runtime skeleton implementation unit: build a public-safe synthetic owner-hosted API policy route skeleton and MCP adapter skeleton using the private Unit 25 through Unit 30 proof trail as redacted evidence only. Use synthetic fixtures only. Do not copy private implementation code or AGPLv3 code. Do not add real user data, client data, database migrations, real database connections, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, or public contribution acceptance. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled.
+```
+
+### Issue #257: Owner-hosted runtime implementation path
+
+Target: `owner-hosted-runtime-implementation`
+
+```text
+Approved for a future Source-Wire owner-hosted runtime implementation unit: build a narrow public-safe owner-hosted API server runtime skeleton and MCP server runtime skeleton around the existing Source-Wire policy contracts and synthetic fixtures. Use synthetic fixtures only. Do not add database migrations, real database connections, PostgreSQL or pgvector setup, live connectors, local folder crawling, whole-vault import, Mission Control UI, deployment config, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, AGPLv3 code copying, or Source-Wire-Memory-Engine code merge. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled. Automatic trusted memory promotion remains blocked.
 ```
 
 ### Issue #259: Threat model implementation path
@@ -252,6 +262,7 @@ Until a matching exact approval is recorded and a focused implementation unit ru
 - hosted runtime,
 - production runtime use,
 - runtime skeleton implementation,
+- owner-hosted runtime implementation,
 - threat model implementation,
 - API contract implementation,
 - database posture implementation,

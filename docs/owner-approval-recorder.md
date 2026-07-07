@@ -52,6 +52,12 @@ Dry-run status for the runtime PRD refresh approval:
 npm run owner:record-approval -- --target runtime-prd-refresh
 ```
 
+Dry-run status for the owner-hosted runtime implementation approval:
+
+```bash
+npm run owner:record-approval -- --target owner-hosted-runtime-implementation
+```
+
 Expected no-issue markers:
 
 ```text
@@ -89,6 +95,12 @@ Runtime PRD refresh shape:
 npm run owner:record-approval -- --target runtime-prd-refresh --write --confirm-exact "<exact approval text>"
 ```
 
+Owner-hosted runtime implementation shape:
+
+```bash
+npm run owner:record-approval -- --target owner-hosted-runtime-implementation --write --confirm-exact "<exact approval text>"
+```
+
 Patch release implementation shape:
 
 ```bash
@@ -104,7 +116,7 @@ The command refuses to write when:
 - `--confirm-exact` is missing,
 - `--confirm-exact` does not match the known approval text exactly.
 
-The patch release implementation target records on closed issue `#255` because the first release issue is completed history. The hosted-runtime child issue publication and runtime PRD refresh targets record on closed issue `#257` because the parent PRD issue is completed history. They still require `--write` and an exact `--confirm-exact` match.
+The patch release implementation target records on closed issue `#255` because the first release issue is completed history. The hosted-runtime child issue publication, runtime PRD refresh, and owner-hosted runtime implementation targets record on closed issue `#257` because the parent PRD issue is completed history. They still require `--write` and an exact `--confirm-exact` match.
 
 Successful write-mode markers:
 
@@ -124,6 +136,7 @@ blocked execution still requires focused implementation unit
 | `#257` | Hosted runtime PRD path | Record approval before a future hosted runtime PRD unit. |
 | `#257`, target `hosted-runtime-child-issue-publication` | Hosted runtime child issue publication path | Approval recorded; six PRD/planning child issues are published as `#259` through `#264`; hosted runtime implementation remains blocked. |
 | `#257`, target `runtime-prd-refresh` | Runtime PRD refresh path | Record approval before refreshing the public owner-hosted runtime PRD and wrapper-runtime gate from Unit 33 redacted metadata. |
+| `#257`, target `owner-hosted-runtime-implementation` | Owner-hosted runtime implementation path | Approval recorded for a future narrow API server runtime skeleton and MCP server runtime skeleton implementation unit. |
 | `#258` | Contribution terms path | Completed contribution terms PRD approval; code contribution acceptance still needs a separate future implementation approval. |
 
 ## After Recording

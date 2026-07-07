@@ -2,9 +2,9 @@
 
 Source-Wire exports contract types, schema metadata, validation helpers, and runtime-boundary constants.
 
-It also exports minimal synthetic in-memory runtime boundary helpers for proof cases.
+It also exports minimal synthetic in-memory runtime boundary helpers and owner-hosted runtime skeleton helpers for proof cases.
 
-It does not export a hosted runtime backend, database client, connector sync engine, MCP server, memory engine, or Mission Control UI.
+It does not export a hosted runtime backend, production API server, production MCP server, database client, connector sync engine, memory engine, or Mission Control UI.
 
 ## Package Entry Point
 
@@ -15,6 +15,7 @@ import {
   SOURCE_WIRE_PACKAGE_VERSION,
   SOURCE_WIRE_MINIMAL_RUNTIME_BOUNDARY,
   SOURCE_WIRE_OWNER_HOSTED_SETUP_CONTRACT,
+  SOURCE_WIRE_OWNER_HOSTED_RUNTIME_BOUNDARY,
   SOURCE_WIRE_RUNTIME_PROOF_INTAKE_CONTRACT,
   SOURCE_WIRE_RUNTIME_READINESS_CONTRACT,
   SOURCE_WIRE_RUNTIME_SKELETON_BOUNDARY,
@@ -23,6 +24,10 @@ import {
   SOURCE_WIRE_VALIDATION_SCHEMA_NAMES,
   callRuntimeSkeletonApiPolicy,
   callRuntimeSkeletonMcpAdapter,
+  evaluateOwnerHostedRuntimeFixtureMatrix,
+  getOwnerHostedMcpServerRuntimeToolDeclarations,
+  handleOwnerHostedApiServerRuntimeRequest,
+  handleOwnerHostedMcpServerRuntimeRequest,
   isSourceWireValidationSchemaName,
   runRuntimeSkeletonFixtureMatrix,
   runMinimalRuntimeProofCases,
@@ -34,6 +39,7 @@ import {
 
 import type {
   SourceWireMinimalRuntimeProofResult,
+  SourceWireOwnerHostedRuntimeResponse,
   SourceWireOwnerHostedSetupContract,
   SourceWireRuntimeProofIntakeManifest,
   SourceWireRuntimeReadinessContract,
@@ -173,6 +179,36 @@ Related docs:
 - [Runtime Skeleton Implementation Proof](runtime-skeleton-implementation-proof.md)
 - [Runtime Skeleton Smoke](runtime-skeleton-smoke.md)
 - [Runtime skeleton fixture](../examples/fixtures/runtime-skeleton/README.md)
+
+## Owner-Hosted Runtime Skeleton Exports
+
+| Export | Kind | Purpose |
+| --- | --- | --- |
+| `SOURCE_WIRE_OWNER_HOSTED_RUNTIME_BOUNDARY` | value | Declares the approved synthetic owner-hosted API and MCP runtime skeleton boundary. |
+| `handleOwnerHostedApiServerRuntimeRequest` | function | Routes one in-process API skeleton request through the Source-Wire API policy contract. |
+| `handleOwnerHostedMcpServerRuntimeRequest` | function | Routes one in-process MCP skeleton request through the MCP adapter and API policy contract. |
+| `evaluateOwnerHostedRuntimeFixtureCase` | function | Runs one owner-hosted runtime fixture case through the API or MCP skeleton path. |
+| `evaluateOwnerHostedRuntimeFixtureMatrix` | function | Runs the full owner-hosted runtime fixture matrix. |
+| `getOwnerHostedMcpServerRuntimeToolDeclarations` | function | Returns exposed MCP tool declarations while excluding direct database and direct runtime-adapter tools. |
+| `SourceWireOwnerHostedRuntimeResponse` | type | Compile-time response shape for the owner-hosted runtime skeleton. |
+
+Example:
+
+```ts
+import {
+  SOURCE_WIRE_OWNER_HOSTED_RUNTIME_BOUNDARY,
+  getOwnerHostedMcpServerRuntimeToolDeclarations
+} from "@source-wire/contracts";
+
+console.log(SOURCE_WIRE_OWNER_HOSTED_RUNTIME_BOUNDARY.productionRuntimeIncluded);
+console.log(getOwnerHostedMcpServerRuntimeToolDeclarations().map((tool) => tool.toolName));
+```
+
+Related docs:
+
+- [Owner-Hosted Runtime Implementation Proof](owner-hosted-runtime-implementation-proof.md)
+- [Owner-Hosted Runtime Smoke](owner-hosted-runtime-smoke.md)
+- [Owner-hosted runtime fixture](../examples/fixtures/owner-hosted-runtime/README.md)
 
 ## Schema Registry Exports
 

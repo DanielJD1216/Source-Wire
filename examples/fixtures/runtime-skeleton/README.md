@@ -21,7 +21,7 @@ It proves the future owner-hosted runtime skeleton shape without adding:
 
 ## Smoke
 
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../../docs/quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../../docs/getting-started/quickstart.md).
 
 Run:
 

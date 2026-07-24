@@ -1,4 +1,4 @@
-import { readFile, readdir } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import { join, relative } from "node:path";
 
 const root = process.cwd();
@@ -109,6 +109,16 @@ function normalizeUrl(rawUrl) {
 }
 
 async function checkUrl(url) {
+  const localRepositoryPath = localRepositoryPathForUrl(url);
+  if (localRepositoryPath) {
+    try {
+      await stat(join(root, localRepositoryPath));
+      return { ok: true };
+    } catch {
+      return { ok: false, reason: `local repository path missing: ${localRepositoryPath}` };
+    }
+  }
+
   const headResult = await fetchWithTimeout(url, "HEAD");
   if (isAcceptableStatus(headResult.status)) {
     return { ok: true };
@@ -137,6 +147,32 @@ async function checkUrl(url) {
   }
 
   return { ok: false, reason: getResult.reason };
+}
+
+function localRepositoryPathForUrl(rawUrl) {
+  let parsedUrl;
+
+  try {
+    parsedUrl = new URL(rawUrl);
+  } catch {
+    return null;
+  }
+
+  if (parsedUrl.hostname !== "github.com") {
+    return null;
+  }
+
+  const prefix = "/DanielJD1216/Source-Wire/blob/main/";
+  if (!parsedUrl.pathname.startsWith(prefix)) {
+    return null;
+  }
+
+  const repositoryPath = decodeURIComponent(parsedUrl.pathname.slice(prefix.length));
+  if (!repositoryPath || repositoryPath.split("/").includes("..")) {
+    return null;
+  }
+
+  return repositoryPath;
 }
 
 async function fetchWithTimeout(url, method) {

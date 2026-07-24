@@ -6,7 +6,7 @@ This contract is public and synthetic.
 
 It is not a runtime implementation.
 
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../getting-started/quickstart.md).
 
 ## Package Exports
 
@@ -75,7 +75,7 @@ npm run runtime-readiness:smoke
 
 ## Related Docs
 
-- [Runtime Readiness Fixture Matrix](../runtime-readiness-fixture-matrix.md)
-- [Runtime Readiness Smoke](../runtime-readiness-smoke.md)
-- [Runtime Implementation Decision Gate](../runtime-implementation-decision-gate.md)
-- [Owner-Hosted Setup Go/No-Go Gate](../owner-hosted-setup-go-no-go-gate.md)
+- [Runtime Readiness Fixture Matrix](../internal/runtime-readiness-fixture-matrix.md)
+- [Runtime Readiness Smoke](../internal/runtime-readiness-smoke.md)
+- [Runtime Implementation Decision Gate](../internal/runtime-implementation-decision-gate.md)
+- [Owner-Hosted Setup Go/No-Go Gate](../internal/owner-hosted-setup-go-no-go-gate.md)

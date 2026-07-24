@@ -19,11 +19,11 @@ for (const requiredPath of [
   ".github/ISSUE_TEMPLATE/verification-failure.yml",
   ".github/ISSUE_TEMPLATE/config.yml",
   ".github/pull_request_template.md",
-  "docs/public-status.md",
-  "docs/repository-metadata.md",
-  "docs/reviewer-feedback-guide.md",
-  "docs/technical-reviewer-guide.md",
-  "docs/publish-readiness.md"
+  "docs/status/public-status.md",
+  "docs/reference/repository-metadata.md",
+  "docs/guides/reviewer-feedback-guide.md",
+  "docs/guides/technical-reviewer-guide.md",
+  "docs/guides/publish-readiness.md"
 ]) {
   await assertPathExists(requiredPath);
 }
@@ -32,8 +32,8 @@ const securityPolicy = await readFile("SECURITY.md", "utf8");
 const supportPolicy = await readFile("SUPPORT.md", "utf8");
 const contributingPolicy = await readFile("CONTRIBUTING.md", "utf8");
 const boundaryTemplate = await readFile(".github/ISSUE_TEMPLATE/boundary-safety-concern.yml", "utf8");
-const reviewerGuide = await readFile("docs/reviewer-feedback-guide.md", "utf8");
-const publicStatus = await readFile("docs/public-status.md", "utf8");
+const reviewerGuide = await readFile("docs/guides/reviewer-feedback-guide.md", "utf8");
+const publicStatus = await readFile("docs/status/public-status.md", "utf8");
 
 assertIncludes(securityPolicy, "It is Apache-2.0 licensed as a source package, published to npm, released on GitHub, and not a hosted runtime.", "SECURITY.md current source-package boundary");
 assertIncludes(securityPolicy, "Security reporting does not approve:", "SECURITY.md blocked security approval list");

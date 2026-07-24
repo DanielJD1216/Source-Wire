@@ -189,6 +189,32 @@ export {
   evaluateDatabasePostureCase,
   evaluateDatabasePostureFixtureMatrix
 } from "./contracts/database-posture.js";
+export type * from "./contracts/knowledge-provider.js";
+export {
+  SOURCE_WIRE_KNOWLEDGE_PROVIDER_BOUNDARY,
+  SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_ID,
+  SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
+  SOURCE_WIRE_MAX_SAFE_RETRY_AFTER_MS,
+  SOURCE_WIRE_SYNTHETIC_DOCUMENT_INDEX_PROFILE,
+  SOURCE_WIRE_SYNTHETIC_RELATIONAL_VIEW_PROFILE,
+  createSourceWireSafeErrorV1,
+  evaluateKnowledgeProviderConformanceCase,
+  evaluateKnowledgeProviderConformanceFixtureMatrix
+} from "./contracts/knowledge-provider.js";
+export type * from "./contracts/memory-store.js";
+export {
+  SOURCE_WIRE_MEMORY_STORE_BOUNDARY,
+  SOURCE_WIRE_MEMORY_STORE_CONTRACT_ID,
+  SOURCE_WIRE_MEMORY_STORE_CONTRACT_VERSION,
+  SOURCE_WIRE_MEMORY_STORE_SCHEMA_NAME,
+  SOURCE_WIRE_POSTGRES_MEMORY_STORE_PROFILE,
+  SOURCE_WIRE_POSTGRES_QUERY_SAFETY_POSTURE,
+  SOURCE_WIRE_POSTGRES_ROLE_POSTURE,
+  SOURCE_WIRE_SYNTHETIC_POSTGRES_MEMORY_STORE_POSTURE,
+  evaluateMemoryStoreConformanceCase,
+  evaluateMemoryStoreConformanceFixtureMatrix,
+  validateSourceWireReadAuditReceiptV1
+} from "./contracts/memory-store.js";
 export type {
   SourceWireHostedRuntimeFixtureAction,
   SourceWireHostedRuntimeFixtureAudit,

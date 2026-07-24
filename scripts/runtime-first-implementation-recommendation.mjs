@@ -1,10 +1,10 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const packetPath = "docs/threat-model-implementation-packet.md";
-const slicesPath = "docs/threat-model-implementation-slices.md";
-const statusPath = "docs/runtime-implementation-approval-status.md";
-const ownerApprovalPacketPath = "docs/owner-approval-record-packet.md";
+const packetPath = "docs/internal/threat-model-implementation-packet.md";
+const slicesPath = "docs/internal/threat-model-implementation-slices.md";
+const statusPath = "docs/internal/runtime-implementation-approval-status.md";
+const ownerApprovalPacketPath = "docs/internal/owner-approval-record-packet.md";
 const recorderPath = "scripts/record-owner-approval.mjs";
 const packet = await readFile(packetPath, "utf8");
 const slices = await readFile(slicesPath, "utf8");
@@ -27,10 +27,10 @@ for (const requiredPath of [
   statusPath,
   ownerApprovalPacketPath,
   recorderPath,
-  "docs/runtime-implementation-gate.md",
-  "docs/hosted-runtime-threat-model-trust-boundary.md",
-  "docs/runtime-threat-boundary-implementation-proof.md",
-  "docs/runtime-threat-boundary-smoke.md"
+  "docs/internal/runtime-implementation-gate.md",
+  "docs/internal/hosted-runtime-threat-model-trust-boundary.md",
+  "docs/internal/runtime-threat-boundary-implementation-proof.md",
+  "docs/internal/runtime-threat-boundary-smoke.md"
 ]) {
   await assertPathExists(requiredPath);
 }

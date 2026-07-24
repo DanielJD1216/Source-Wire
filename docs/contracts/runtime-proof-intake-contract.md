@@ -56,7 +56,7 @@ Runtime implementation still requires a separate explicit owner-approved unit.
 
 ## Related Files
 
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../getting-started/quickstart.md).
 
 - Fixture: `examples/fixtures/runtime-proof-intake/runtime-proof-intake-manifest.json`
 - Smoke: `examples/runtime-proof-intake/runtime-proof-intake-smoke.mjs`

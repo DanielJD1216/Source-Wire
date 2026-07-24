@@ -1,81 +1,119 @@
 # Source-Wire
 
 [![Package Checks](https://github.com/DanielJD1216/Source-Wire/actions/workflows/package-checks.yml/badge.svg)](https://github.com/DanielJD1216/Source-Wire/actions/workflows/package-checks.yml)
+[![npm](https://img.shields.io/npm/v/@source-wire/contracts.svg?label=npm)](https://www.npmjs.com/package/@source-wire/contracts)
+[![License](https://img.shields.io/badge/license-Apache--2.0-c56f37.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-22-3c873a.svg)](https://nodejs.org/)
 
-Source-Wire is an agent-first memory architecture skeleton.
+![Source-Wire connects source evidence to governed memory and AI agents](docs/assets/source-wire-hero.jpg)
 
-It is designed for systems where AI agents need to search, cite, update, and reason over source-backed context without turning every imported note or chat message into trusted memory automatically.
+**Contracts and safety boundaries for agent-first memory systems.**
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. It is published to npm, released on GitHub, undeployed, and not a hosted runtime. Read [Public Status](docs/public-status.md) before deployment, hosted-runtime, production-use, or contribution assumptions.
+Source-Wire defines how AI agents can retrieve source evidence, preserve provenance, propose durable memories, and use trusted context without silently turning every document, message, or model output into truth.
 
-Product direction: Source-Wire is intended to become a public BYO, owner-hosted memory system that adopters can run with their own device/server, PostgreSQL-compatible database, API keys, data sources, and MCP-capable agent harnesses. The current repo is the contracts-first public package, not that full runtime yet. Read [Product Direction](docs/product-direction.md).
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. It is published to npm, released on GitHub, undeployed, and not a hosted runtime.
 
-Memory-engine baseline path: `Source-Wire-Memory-Engine` is an AGPLv3 reference runtime candidate. It stays separate while Source-Wire audits the boundary, license path, and owner-hosted setup path. Read [Memory Engine Baseline Audit PRD](docs/memory-engine-baseline-audit-prd.md).
+> Source-Wire is the governed memory layer. Your knowledge base, data sources, PostgreSQL infrastructure, and agent harnesses remain replaceable components around it.
 
-Owner-hosted setup path: the synthetic owner-hosted setup package is complete as public proof for adopters who bring their own device/server, PostgreSQL-compatible database, credentials, source packets, and MCP-capable harnesses. Read [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md), [Owner-Hosted Setup PRD](docs/owner-hosted-setup-prd.md), and [Owner-Hosted Setup Issue Slices](docs/owner-hosted-setup-issue-slices.md). This does not approve API server runtime, MCP server runtime, database migrations, managed hosting, deployment, npm publishing, GitHub release creation, real data, AGPLv3 code copying, or private implementation code copying.
+## Why Source-Wire Exists
 
-Owner-hosted setup contract: Source-Wire now exports a synthetic owner-brings checklist contract for future BYO setup work. Read [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md). It does not start a runtime, connect a database, deploy services, import private data, or create trusted memory.
+Most retrieval systems answer, “What information can I find?”
 
-Owner-hosted setup readiness: Source-Wire also includes a synthetic readiness fixture matrix for database, API, MCP, source update safety, and Mission Control setup health. Read [Owner-Hosted Setup Readiness Fixture Matrix](docs/owner-hosted-setup-readiness-fixture-matrix.md). It does not run real setup checks yet.
+An agent memory system must answer harder questions:
 
-Owner-hosted setup smoke: `npm run owner-hosted-setup:readiness-smoke` checks that synthetic setup readiness cases are complete and blocked cases include shaped failure records. Read [Owner-Hosted Setup Readiness Smoke](docs/owner-hosted-setup-readiness-smoke.md). It does not require secrets or external services.
+- Where did this claim come from?
+- Is the caller allowed to see it?
+- Is it merely source evidence, or has the owner approved it as trusted memory?
+- What changed, what was corrected, and what was revoked?
+- Can another agent retrieve the same context with the same policy and audit trail?
 
-Source update safety smoke: `npm run owner-hosted-setup:source-update-safety-smoke` proves the synthetic update path requires caller-supplied snapshots, blocks folder crawling and broad private import, keeps trusted memory delta `0`, and preserves owner or application-controlled review. Read [Owner-Hosted Setup Source Update Safety Smoke](docs/owner-hosted-setup-source-update-safety-smoke.md).
+Source-Wire makes those distinctions explicit through contracts, schemas, synthetic fixtures, and conformance checks.
 
-Daily workflow synthetic path: Source-Wire now exports a synthetic daily owner memory workflow contract and fixture matrix. `npm run daily-workflow:smoke` proves read-only asks, bounded updates, owner review, follow-up evidence separation, Mission Control summary shape, no runtime inclusion, no folder crawling, no MCP approval bypass, and no automatic trusted memory promotion. Read [Daily Workflow Contract](docs/contracts/daily-workflow-contract.md), [Daily Workflow Synthetic Smoke](docs/daily-workflow-synthetic-smoke.md), and [Daily Workflow Claim Boundary](docs/daily-workflow-claim-boundary.md).
+## The Mental Model
 
-Runtime readiness gate: Source-Wire now exports a synthetic runtime-readiness contract and fixture matrix. `npm run runtime-readiness:smoke` proves private-proof, API policy, MCP policy, database posture, source update, memory-engine boundary, and release boundary gates while keeping API runtime, MCP runtime, database migrations, deployment, managed hosting, real data, AGPLv3 code copying, private implementation copying, and automatic trusted memory promotion blocked. Read [Runtime Readiness Contract](docs/contracts/runtime-readiness-contract.md), [Runtime Readiness Fixture Matrix](docs/runtime-readiness-fixture-matrix.md), and [Runtime Readiness Smoke](docs/runtime-readiness-smoke.md).
+```mermaid
+flowchart LR
+    subgraph Sources["Owner-selected knowledge"]
+        Docs["Documents and wikis"]
+        Chat["Chats and transcripts"]
+        Code["Code and project systems"]
+        KB["External knowledge base"]
+    end
 
-Runtime proof intake gate: Source-Wire now includes a synthetic redacted private-proof intake manifest. `npm run runtime-proof-intake:smoke` proves private proof metadata can be acknowledged for PRD refresh without importing private repo paths, raw private content, real data, secrets, AGPLv3 code, private implementation code, runtime implementation, database migrations, or deployment. Read [Runtime Proof Intake Contract](docs/contracts/runtime-proof-intake-contract.md) and [Runtime Proof Intake](docs/runtime-proof-intake.md).
+    subgraph SourceWire["Source-Wire policy boundary"]
+        Provider["KnowledgeProvider v1<br/>optional, read-only"]
+        Policy["API policy<br/>identity, capability, namespace"]
+        Candidate["Pending memory candidate"]
+        Review{"Owner approval"}
+        Memory["MemoryStore v1<br/>trusted memory and audit"]
+    end
 
-Owner-hosted setup claim boundary: latest `main` documents a BYO setup direction, not managed hosting or production runtime. Database migrations remain blocked, and `Source-Wire-Memory-Engine` stays separate. Read [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md).
+    subgraph Harnesses["Agent harnesses"]
+        MCP["MCP adapter"]
+        Agents["AI agents"]
+    end
 
-Owner-hosted setup closeout: the setup package is complete as a synthetic proof. Source-Wire now includes a narrow synthetic owner-hosted API policy route, MCP adapter skeleton, synthetic threat-boundary package, synthetic API policy contract package, synthetic MCP adapter contract package, synthetic database posture package, synthetic hosted-runtime fixture package, and synthetic deployment-boundary package, but production runtime implementation remains blocked unless separately approved. Read [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md), [Runtime Skeleton Implementation Proof](docs/runtime-skeleton-implementation-proof.md), [Runtime Skeleton Smoke](docs/runtime-skeleton-smoke.md), [Runtime Threat Boundary Implementation Proof](docs/runtime-threat-boundary-implementation-proof.md), [Runtime Threat Boundary Smoke](docs/runtime-threat-boundary-smoke.md), [API Policy Contract Implementation Proof](docs/api-policy-contract-implementation-proof.md), [API Policy Contract Smoke](docs/api-policy-contract-smoke.md), [MCP Adapter Contract Implementation Proof](docs/mcp-adapter-contract-implementation-proof.md), [MCP Adapter Contract Smoke](docs/mcp-adapter-contract-smoke.md), [Database Posture Implementation Proof](docs/database-posture-implementation-proof.md), [Database Posture Smoke](docs/database-posture-smoke.md), [Public-Safe Fixture Implementation Proof](docs/public-safe-fixture-implementation-proof.md), [Public-Safe Fixture Smoke](docs/public-safe-fixture-smoke.md), [Deployment Boundary Implementation Proof](docs/deployment-boundary-implementation-proof.md), and [Deployment Boundary Smoke](docs/deployment-boundary-smoke.md).
+    Docs --> Provider
+    Chat --> Provider
+    Code --> Provider
+    KB --> Provider
+    Provider --> Policy
+    Agents --> MCP --> Policy
+    Policy --> Candidate --> Review
+    Review -->|approve| Memory
+    Review -->|reject| Candidate
+    Memory --> Policy
 
-Runtime implementation gate: all six current runtime implementation gates are implemented as synthetic packages only. Threat-model, API contract, MCP contract, database posture, public-safe fixture, and deployment-boundary implementations exist, but API runtime, MCP runtime, route handlers, migrations, real database connections, live runtime services, deployment config, and hosted services remain blocked. Read [Runtime Implementation Gate](docs/runtime-implementation-gate.md), [Deployment Boundary Implementation Packet](docs/deployment-boundary-implementation-packet.md), [Deployment Boundary Implementation Proof](docs/deployment-boundary-implementation-proof.md), [Deployment Boundary Implementation Slices](docs/deployment-boundary-implementation-slices.md), and [Deployment Boundary Smoke](docs/deployment-boundary-smoke.md).
+    classDef source fill:#2a2f3a,stroke:#c97943,color:#ffffff;
+    classDef policy fill:#10283f,stroke:#39a8ff,color:#ffffff;
+    classDef trust fill:#33271f,stroke:#f0a15f,color:#ffffff;
+    class Docs,Chat,Code,KB source;
+    class Provider,Policy,MCP,Agents policy;
+    class Candidate,Review,Memory trust;
+```
 
-Threat model implementation: `npm run runtime:threat-boundary-smoke` validates the approved synthetic trust-boundary package for unauthorized callers, cross-namespace access, source-memory separation, prompt injection, secrets, audit gaps, backup restore drift, deployment exposure, MCP bypass prevention, and owner/application-controlled trusted memory approval. It does not add a server, database, deployment, connector, real data, private code, AGPLv3 code, or automatic trusted memory promotion.
+The central rule is simple:
 
-API contract implementation: `npm run runtime:api-policy-smoke` validates the approved synthetic API policy contract package for request envelopes, endpoint groups, capability checks, namespace resolution, denied results, citations and gaps, audit metadata, source maintenance, candidate review, trusted-memory approval boundaries, handoff/status evidence, and MCP-through-API policy routing. It does not add an API server, route handlers, MCP server runtime, database, deployment, connector, real data, private code, AGPLv3 code, or automatic trusted memory promotion.
+```text
+Source evidence is not trusted memory.
+Trusted memory requires explicit owner or owner-application approval.
+```
 
-MCP contract implementation: `npm run runtime:mcp-adapter-smoke` validates the approved synthetic MCP adapter contract package for tool declarations, input validation, MCP-to-API envelopes, capability mapping, namespace forwarding, denied results, citations and gaps, audit metadata, source evidence search, trusted memory search, context assembly, candidate review, source maintenance, handoff/status evidence, and trusted-memory approval boundaries. It does not add an MCP server runtime, API server, route handlers, database, deployment, connector, real data, private code, AGPLv3 code, or automatic trusted memory promotion.
+## Memory System Versus Knowledge Base
 
-Database posture implementation: `npm run runtime:database-posture-smoke` validates the approved synthetic database posture package for data classes, lifecycle states, namespace isolation, deletion and retention behavior, backup and restore risk, derived data inheritance, and owner or application-controlled trusted memory approval. It does not add database migrations, real database connections, PostgreSQL setup, pgvector setup, API server runtime, MCP server runtime, live connectors, Mission Control UI, deployment, managed hosting, real data, private code, AGPLv3 code, or automatic trusted memory promotion.
+| Layer | Its job | Source-Wire posture |
+| --- | --- | --- |
+| Knowledge base | Finds current information across documents, chats, code, databases, or search indexes. | Optional, external, read-only through `KnowledgeProvider v1`. |
+| Memory system | Preserves reviewed context, decisions, corrections, project state, provenance, and lifecycle history. | Governed through `MemoryStore v1`. |
+| Agent harness | Chooses tools and uses retrieved context to answer or act. | Routes through MCP and Source-Wire API policy. |
+| PostgreSQL | Stores adopter-owned memory data in a future real implementation. | PostgreSQL is the only `MemoryStore v1` backend posture. The current package contains contracts, not migrations or a live connection. |
 
-Public-safe fixture implementation: `npm run runtime:fixture-smoke` validates the approved synthetic hosted-runtime fixture package for caller identity, namespaces, source evidence, candidates, trusted memory, denied cases, audit metadata, MCP-through-API policy routing, and no automatic trusted memory promotion. It does not add database migrations, real database connections, PostgreSQL setup, pgvector setup, API server runtime, MCP server runtime, live connectors, Mission Control UI, deployment, managed hosting, real data, client data, private code, AGPLv3 code, or automatic trusted memory promotion.
+Source-Wire can operate without a knowledge base. Owner assertions and prior-memory references can create pending candidates. When a knowledge provider is present, its evidence can support a candidate, but it cannot approve or promote memory.
 
-Deployment-boundary implementation: `npm run runtime:deployment-boundary-smoke` validates the approved synthetic deployment-boundary package for local development, owner-hosted runtime review, managed-hosted deferral, stop conditions, rollback evidence, claim boundaries, no-hosted-service proof, MCP-through-API policy routing, and owner-controlled trusted memory promotion. It does not add deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, managed hosting, database migrations, real database connections, PostgreSQL setup, pgvector setup, API server runtime, MCP server runtime, live connectors, Mission Control UI, real data, client data, private code, AGPLv3 code, or automatic trusted memory promotion.
+Read the full [Knowledge Provider And Memory Store Boundary](docs/concepts/knowledge-provider-memory-store-boundary.md).
 
-Runtime implementation decision: after setup, daily workflow, Unit 33 runtime-readiness alignment, and the owner-approved runtime PRD refresh, the next public runtime decision is still no-go for production runtime code. The refreshed path is to approve one narrow implementation boundary at a time after the public owner-hosted runtime PRD and wrapper-runtime gate stay green. Read [Runtime Implementation Decision Gate](docs/runtime-implementation-decision-gate.md), [Private Proof To Runtime Extraction Readiness](docs/private-proof-runtime-extraction-readiness.md), and [Runtime PRD Refresh Approval Status](docs/runtime-prd-refresh-approval-status.md).
+## What Source-Wire Is Today
 
-Owner-hosted runtime skeleton: exact approval is recorded and implemented for one narrow public-safe API server runtime skeleton and MCP server runtime skeleton unit. `npm run runtime:owner-hosted-smoke` proves API policy routing, MCP-through-API routing, citation and gap preservation, denied results, audit metadata, source evidence separation, and owner or application-controlled trusted-memory approval. This does not approve production runtime, database migrations, real database connections, live connectors, Mission Control UI, deployment, managed hosting, real data, public contribution acceptance, or automatic trusted memory promotion. Read [Owner-Hosted Runtime Implementation Proof](docs/owner-hosted-runtime-implementation-proof.md), [Owner-Hosted Runtime Smoke](docs/owner-hosted-runtime-smoke.md), [Owner-Hosted Runtime Implementation Packet](docs/owner-hosted-runtime-implementation-packet.md), and [Owner-Hosted Runtime Implementation Slices](docs/owner-hosted-runtime-implementation-slices.md).
+Source-Wire is a contracts-first TypeScript package for reviewing and testing an agent-memory architecture before production runtime work begins.
 
-Share for review: use [Share For Technical Review](docs/share-for-review.md) for safe invite copy, first commands, feedback routing, and review-only boundaries.
+| Surface | Current state |
+| --- | --- |
+| Package | `@source-wire/contracts@0.1.0` |
+| License | Apache-2.0 |
+| GitHub release | `v0.1.0` |
+| Contract types and JSON schemas | Included |
+| Synthetic fixtures and conformance smokes | Included |
+| Minimal in-memory policy proofs | Included |
+| Hosted API or MCP service | Not included |
+| Live PostgreSQL memory store | Not included |
+| Live knowledge connectors | Not included |
+| Automatic trusted-memory promotion | Forbidden |
 
-Public share kit: use [World Share Kit](docs/world-share-kit.md) for YouTube, Substack, social, Discord, and direct-review copy that preserves release, runtime, data, and contribution boundaries.
-
-World share packet: use [World Share Packet](docs/world-share-packet.md) or `npm run world:share-packet` for the exact safe copy, first reviewer commands, owner preflight, feedback route, and blocked launch channels in one place.
-
-Operator summary: use [World Share Operator Summary](docs/world-share-operator-summary.md) or `npm run world:share-operator-summary` for the short current-state answer before deciding what to share or approve next.
-
-Post-share monitor: after public sharing, use [World Share Post-Share Monitor](docs/world-share-post-share-monitor.md) or `npm run world:post-share-monitor` to verify open reviewer feedback stays structured while pull requests remain blocked.
-
-Share-readiness audit: Source-Wire is ready for technical review, npm package installation, GitHub release review, and source package reuse under Apache-2.0, but not deployment, hosted runtime use, production runtime use, or code contribution acceptance. Read the [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md).
-
-Snapshot boundary: npm `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` may contain post-release documentation and readiness hardening. Read [Release Snapshot Boundary](docs/release-snapshot-boundary.md).
-
-Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though package metadata is `0.1.0`. Latest `main` fixes this source export and adds a consumer-smoke guard. Correcting the registry artifact requires a future owner-approved patch release.
-
-Current owner-decision status:
-
-- Completed: [#255 First public release path](https://github.com/DanielJD1216/Source-Wire/issues/255)
-- Completed: [#256 Branch governance path](https://github.com/DanielJD1216/Source-Wire/issues/256)
-- Completed: [#257 Hosted runtime PRD path](https://github.com/DanielJD1216/Source-Wire/issues/257)
-- Completed: [#258 Contribution terms before accepting code](https://github.com/DanielJD1216/Source-Wire/issues/258)
+For the exact public boundary, read [Public Status](docs/status/public-status.md) and [Product Direction](docs/concepts/product-direction.md).
 
 ## First Reviewer Quickstart
 
-Use Node.js 22 with npm. For complete setup details, read [Quickstart](docs/quickstart.md).
+Use Node.js 22 with npm.
 
 ```bash
 git clone https://github.com/DanielJD1216/Source-Wire.git
@@ -84,337 +122,250 @@ npm install
 npm run readiness:report
 ```
 
-To prove the same first-reviewer path from a temporary clean checkout-style copy:
+`readiness:report` prints a fast, read-only summary of the package, exported surfaces, validation schemas, and intentionally blocked runtime scope.
+
+Run the isolated first-reviewer path:
 
 ```bash
 npm run reviewer:smoke
 ```
 
-For the full local verification gate:
+Run the complete local verification gate:
 
 ```bash
 npm run publish:readiness
 ```
 
-Despite the command name, `publish:readiness` is now a local readiness and boundary gate. It does not publish a new package version.
+Despite its name, `publish:readiness` does not publish a package, create a release, deploy a service, connect a database, or use real data.
 
-Use [World Share Packet](docs/world-share-packet.md), [Share For Technical Review](docs/share-for-review.md), and [Reviewer Feedback Guide](docs/reviewer-feedback-guide.md) when sharing the repo or sending feedback.
+For setup details, expected output, and individual commands, read the [Quickstart](docs/getting-started/quickstart.md).
+
+Use [Share For Technical Review](docs/guides/share-for-review.md) and [Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md) when sharing the repository or reporting findings.
 
 ## Still Blocked
 
 - repository ruleset governance,
 - hosted runtime,
 - production runtime use,
+- live database migrations and connections,
+- live knowledge connectors,
+- real user or client data,
 - code contribution acceptance.
+
+The package and release are available for technical review and Apache-2.0 source reuse. They do not imply that a hosted or production memory system exists.
 
 ## What This Public Skeleton Includes
 
-- Source Graph Adapter Contract.
-- Source Connection Contract.
-- `second-brain.v1` response contract.
-- MCP tool behavior contract.
-- Owner-hosted setup checklist contract.
-- Daily workflow synthetic contract and fixture matrix.
-- Runtime readiness synthetic contract and fixture matrix.
-- Runtime proof intake synthetic contract and redacted manifest.
-- Synthetic fixtures for notes, chat exports, project context, and `/2nd-brain` examples.
-- Synthetic owner-hosted API and MCP runtime skeleton with policy-routed fixture smoke.
-- Threat model implementation approval packet and slice map.
-- Synthetic threat-boundary package and fixture matrix.
-- API contract implementation approval packet and slice map.
-- Synthetic API policy contract package and fixture matrix.
-- Synthetic database posture package and fixture matrix.
-- Database posture implementation proof, smoke, packet, and slice map.
-- Synthetic hosted-runtime fixture package and fixture matrix.
-- Public-safe fixture implementation proof, smoke, packet, and slice map.
-- Synthetic deployment-boundary package and fixture matrix.
-- Deployment-boundary implementation proof, smoke, packet, and slice map.
-- A public extraction checklist for future safety reviews.
-- A lightweight TypeScript package boundary.
-- A minimal synthetic in-memory runtime boundary for owner-hosted API plus MCP policy proof.
-- A narrow synthetic owner-hosted API policy route and MCP adapter skeleton that keeps MCP behind Source-Wire API policy.
-- A synthetic trust-boundary evaluator that keeps source evidence separate from trusted memory and requires owner or application-controlled approval for trusted memory creation.
-- A synthetic database posture evaluator that keeps source evidence, candidates, trusted memory, audit, embeddings, caches, backups, and exports in separate classes before any real database exists.
-- A synthetic hosted-runtime fixture evaluator that proves caller identity, namespace isolation, source evidence, candidates, trusted memory, denied cases, audit metadata, MCP-through-API routing, and no automatic trusted memory promotion.
-- A synthetic deployment-boundary evaluator that proves local development readiness, owner-hosted review, managed-hosted deferral, stop conditions, rollback evidence, claim boundaries, no-hosted-service proof, MCP-through-API routing, and owner-controlled trusted memory promotion.
+### Core contracts
 
-## What Is Intentionally Not Included Yet
+- [KnowledgeProvider v1](docs/contracts/knowledge-provider-v1-contract.md), optional read-only source evidence.
+- [MemoryStore v1](docs/contracts/memory-store-v1-contract.md), candidates, trusted memory, provenance, lifecycle, and audit posture.
+- [Owner-Hosted API Plus MCP Boundary](docs/contracts/owner-hosted-api-mcp-boundary-contract.md), identity, capability, namespace, denial, and policy routing.
+- [MCP Tool Behavior](docs/contracts/mcp-tool-behavior-contract.md), agent-facing tool boundaries.
+- [Source Graph Adapter](docs/contracts/source-graph-adapter-contract.md), source-backed graph evidence.
+- [`second-brain.v1`](docs/contracts/second-brain-v1-contract.md), cited response shape.
 
-- Hosted runtime backend code.
-- Database migrations or database connection code.
-- Mission Control UI.
-- Real user data.
-- Real Memory Records or Sources.
-- Private proof history.
-- Screenshots.
-- Database values or migrations.
-- Memory-engine fork code.
-- Live connectors.
-- Tokens, local paths, domains, emails, account IDs, client names, or private project history.
+### Proof and developer surfaces
 
-## Documentation
+- TypeScript exports and JSON schemas.
+- A validation CLI for public synthetic fixtures.
+- Synthetic API, MCP, database, provider, memory-store, threat, and deployment-boundary evaluators.
+- Minimal in-memory runtime and owner-hosted runtime skeleton proofs.
+- Installed-package, consumer, documentation, safety, and claim-boundary checks.
+- Architecture, decision, release, security, and reviewer documentation.
 
-- [Docs Index](docs/index.md)
-- [Product Direction](docs/product-direction.md)
-- [Memory Engine Baseline Audit PRD](docs/memory-engine-baseline-audit-prd.md)
-- [Memory Engine Baseline Audit Issue Slices](docs/memory-engine-baseline-audit-issue-slices.md)
-- [Memory Engine Baseline Audit Issue Drafts](docs/issues/memory-engine-baseline-audit/README.md)
-- [Owner-Hosted Setup PRD](docs/owner-hosted-setup-prd.md)
-- [Owner-Hosted Setup Issue Slices](docs/owner-hosted-setup-issue-slices.md)
-- [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md)
-- [Owner-Hosted Setup Readiness Fixture Matrix](docs/owner-hosted-setup-readiness-fixture-matrix.md)
-- [Owner-Hosted Setup Readiness Smoke](docs/owner-hosted-setup-readiness-smoke.md)
-- [Owner-Hosted Setup Source Update Safety Smoke](docs/owner-hosted-setup-source-update-safety-smoke.md)
-- [Daily Workflow Contract](docs/contracts/daily-workflow-contract.md)
-- [Daily Workflow Synthetic Smoke](docs/daily-workflow-synthetic-smoke.md)
-- [Daily Workflow Claim Boundary](docs/daily-workflow-claim-boundary.md)
-- [Runtime Readiness Contract](docs/contracts/runtime-readiness-contract.md)
-- [Runtime Readiness Fixture Matrix](docs/runtime-readiness-fixture-matrix.md)
-- [Runtime Readiness Smoke](docs/runtime-readiness-smoke.md)
-- [Runtime Readiness Implementation Proof](docs/runtime-readiness-implementation-proof.md)
-- [Runtime Proof Intake Contract](docs/contracts/runtime-proof-intake-contract.md)
-- [Runtime Proof Intake](docs/runtime-proof-intake.md)
-- [Runtime PRD Refresh Approval Request](docs/runtime-prd-refresh-approval-request.md)
-- [Hosted Runtime PRD Proof Intake Gate Refresh](docs/hosted-runtime-prd-proof-intake-gate-refresh.md)
-- [Hosted Runtime Child Issue Proof Intake Gate Refresh](docs/hosted-runtime-child-issue-proof-intake-gate-refresh.md)
-- [Hosted Runtime Child Issue Publisher Write Gate Refresh](docs/hosted-runtime-child-issue-publisher-write-gate-refresh.md)
-- [Owner-Hosted Setup Claim Boundary](docs/owner-hosted-setup-claim-boundary.md)
-- [Owner-Hosted Setup Final Proof](docs/owner-hosted-setup-final-proof.md)
-- [Owner-Hosted Setup Docs Audit](docs/owner-hosted-setup-docs-audit.md)
-- [Owner-Hosted Setup Go/No-Go Gate](docs/owner-hosted-setup-go-no-go-gate.md)
-- [Runtime Implementation Decision Gate](docs/runtime-implementation-decision-gate.md)
-- [Runtime Implementation Decision Proof](docs/runtime-implementation-decision-proof.md)
-- [Runtime Threat Boundary Implementation Proof](docs/runtime-threat-boundary-implementation-proof.md)
-- [Runtime Threat Boundary Smoke](docs/runtime-threat-boundary-smoke.md)
-- [API Policy Contract Implementation Proof](docs/api-policy-contract-implementation-proof.md)
-- [API Policy Contract Smoke](docs/api-policy-contract-smoke.md)
-- [Database Posture Implementation Proof](docs/database-posture-implementation-proof.md)
-- [Database Posture Smoke](docs/database-posture-smoke.md)
-- [Public-Safe Fixture Implementation Proof](docs/public-safe-fixture-implementation-proof.md)
-- [Public-Safe Fixture Smoke](docs/public-safe-fixture-smoke.md)
-- [Deployment Boundary Implementation Proof](docs/deployment-boundary-implementation-proof.md)
-- [Deployment Boundary Smoke](docs/deployment-boundary-smoke.md)
-- [Owner-Hosted Setup Issue Drafts](docs/issues/owner-hosted-setup/README.md)
-- [Public Status](docs/public-status.md)
-- [World Share Kit](docs/world-share-kit.md)
-- [World Share Packet](docs/world-share-packet.md)
-- [World Share Operator Summary](docs/world-share-operator-summary.md)
-- [World Share Post-Share Monitor](docs/world-share-post-share-monitor.md)
-- [Share For Technical Review](docs/share-for-review.md)
-- [First-Time Visitor Share-Readiness Audit](docs/first-time-visitor-share-readiness-audit.md)
-- [Repository Metadata](docs/repository-metadata.md)
-- [Technical Reviewer Guide](docs/technical-reviewer-guide.md)
-- [Reviewer Feedback Guide](docs/reviewer-feedback-guide.md)
-- [Contributing Boundary](CONTRIBUTING.md)
-- [Support Boundary](SUPPORT.md)
-- [Security Policy](SECURITY.md)
-- [Public Adopter Walkthrough](docs/adopter-walkthrough.md)
-- [Architecture Map](docs/architecture-map.md)
-- [Quickstart](docs/quickstart.md)
-- [API Reference](docs/api-reference.md)
-- [TypeScript Examples](examples/typescript/README.md)
-- [Minimal Runtime TypeScript Example](examples/typescript/minimal-runtime.ts)
-- [Runtime Implementation Gate](docs/runtime-implementation-gate.md)
-- [Runtime Boundary Readiness](docs/runtime-boundary-readiness.md)
-- [Minimal Synthetic Runtime Boundary](examples/minimal-runtime/)
-- [Synthetic Runtime Boundary Example](examples/runtime-boundary/)
+Every runtime-like example is synthetic. It proves contract behavior, not production availability.
 
-## Contracts
+## For AI Agents
 
-- [Owner-Hosted Setup Contract](docs/contracts/owner-hosted-setup-contract.md)
-- [Daily Workflow Contract](docs/contracts/daily-workflow-contract.md)
-- [Runtime Readiness Contract](docs/contracts/runtime-readiness-contract.md)
-- [Runtime Proof Intake Contract](docs/contracts/runtime-proof-intake-contract.md)
-- [Source Graph Adapter Contract](docs/contracts/source-graph-adapter-contract.md)
-- [Source Connection Contract](docs/contracts/source-connection-contract.md)
-- [`second-brain.v1` Contract](docs/contracts/second-brain-v1-contract.md)
-- [MCP Tool Behavior Contract](docs/contracts/mcp-tool-behavior-contract.md)
-- [Runtime Boundary](docs/runtime-boundary.md)
-- [Runtime Implementation Gate](docs/runtime-implementation-gate.md)
+If you are an AI agent entering this repository, use this order:
 
-## Decision Prototypes
+1. Read this README for the product and trust boundaries.
+2. Read the [Documentation Index](docs/README.md) for task-specific routing.
+3. Read the relevant contract before proposing code.
+4. Inspect its synthetic fixture matrix and smoke test.
+5. Run `npm run readiness:report` before making status claims.
+6. Run the narrowest relevant smoke, then the full local gate when warranted.
 
-- [Runtime-Adjacent Options Decision Matrix](docs/decision-prototypes/runtime-adjacent-options.md)
-- [Runtime-Adjacent Evidence And Scoring](docs/decision-prototypes/runtime-adjacent-evidence.md)
-- [Runtime-Adjacent Recommendation](docs/decision-prototypes/runtime-adjacent-recommendation.md)
-- [License Options Decision Matrix](docs/decision-prototypes/license-options.md)
-- [License Evidence And Scoring](docs/decision-prototypes/license-evidence.md)
-- [License Recommendation](docs/decision-prototypes/license-recommendation.md)
+### Agent operating rules
+
+- Treat source evidence, memory candidates, and trusted memory as different states.
+- Preserve owner, namespace, ACL, provenance, citation, version, freshness, and sensitivity fields.
+- Never let MCP bypass Source-Wire API policy.
+- Never infer a live service from a synthetic smoke test.
+- Never auto-promote provider evidence or model output into trusted memory.
+- Use synthetic public-safe data only.
+- Report gaps and denied results explicitly.
+
+### Fast contract checks
+
+```bash
+npm run runtime:knowledge-provider-smoke
+npm run runtime:memory-store-smoke
+npm run runtime:mcp-adapter-smoke
+npm run runtime:api-policy-smoke
+```
+
+For public imports and examples, read the [API Reference](docs/reference/api-reference.md) and [TypeScript Examples](examples/typescript/README.md).
+
+## Architecture
+
+```mermaid
+flowchart TB
+    Agent["AI agent"]
+    MCP["MCP adapter"]
+    API["Source-Wire API policy"]
+    Coordinator["Coordinator"]
+    Memory["MemoryStore v1"]
+    Provider["KnowledgeProvider v1<br/>optional"]
+    Postgres[("Adopter-owned PostgreSQL<br/>source_wire_memory")]
+    External["Owner-selected knowledge system"]
+
+    Agent --> MCP
+    MCP --> API
+    API --> Coordinator
+    Coordinator --> Memory
+    Coordinator --> Provider
+    Memory --> Postgres
+    Provider --> External
+
+    MCP -. "no direct database access" .-> Postgres
+    MCP -. "no provider bypass" .-> External
+
+    classDef boundary fill:#10283f,stroke:#39a8ff,color:#ffffff;
+    classDef external fill:#2a2f3a,stroke:#c97943,color:#ffffff;
+    class Agent,MCP,API,Coordinator,Memory,Provider boundary;
+    class Postgres,External external;
+```
+
+Key boundaries:
+
+- MCP routes through API policy.
+- Knowledge providers are optional and read-only.
+- Memory remains valid without an external provider.
+- The adopter owns infrastructure, credentials, deployed data, backups, and migration execution.
+- Source-Wire owns its logical schema contract and memory lifecycle invariants.
+- Provider or source content has no instruction authority.
+
+Read [Architecture Map](docs/concepts/architecture-map.md) and [ADR 0001](docs/adr/0001-memory-store-and-knowledge-provider-boundary.md).
+
+## Trusted Memory Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Evidence
+    Evidence --> PendingCandidate: propose with provenance
+    PendingCandidate --> Rejected: owner rejects
+    PendingCandidate --> TrustedActive: owner approves
+    TrustedActive --> TrustedSuperseded: approved correction
+    TrustedActive --> TrustedRevoked: owner revokes
+    TrustedSuperseded --> [*]
+    TrustedRevoked --> [*]
+    Rejected --> [*]
+```
+
+Important invariants:
+
+- Evidence cannot become trusted memory directly.
+- An agent harness cannot approve or revoke trusted memory.
+- Corrections create a new immutable revision and supersede the prior revision.
+- Revoked and superseded memories are excluded from active reads.
+- Protected reads and successful mutations require durable audit receipts.
+
+## Repository Map
+
+| Path | Purpose |
+| --- | --- |
+| [`src/contracts/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/contracts) | TypeScript contracts and synthetic evaluators. |
+| [`src/runtime-skeleton/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/runtime-skeleton) | Synthetic API-policy and MCP-routing proof. |
+| [`src/owner-hosted-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/owner-hosted-runtime) | Narrow in-process owner-hosted runtime skeleton proof. |
+| [`schemas/`](schemas) | Public JSON schemas. |
+| [`examples/`](examples) | Synthetic fixtures, conformance matrices, and smoke tests. |
+| [`docs/`](docs) | Architecture, contract, reviewer, release, and safety documentation. |
+| [`scripts/`](https://github.com/DanielJD1216/Source-Wire/tree/main/scripts) | Verification, readiness, claim, and release-boundary checks. |
 
 ## Package Boundary
 
-This repo is currently a contract package skeleton with a minimal synthetic runtime boundary.
+The package exports contract types, schema metadata, validation helpers, boundary constants, and synthetic evaluators.
 
-It can define public shapes, validate public fixtures, and execute synthetic in-memory policy proof cases. It does not run a memory backend, database, MCP server, Mission Control UI, memory-engine integration, or live connector.
+```ts
+import {
+  SOURCE_WIRE_RUNTIME_BOUNDARY,
+  SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
+  SOURCE_WIRE_MEMORY_STORE_CONTRACT_VERSION
+} from "@source-wire/contracts";
 
-- [Architecture Map](docs/architecture-map.md)
-- [API Reference](docs/api-reference.md)
-- [TypeScript Examples](examples/typescript/README.md)
-
-## Schema Exports
-
-Source-Wire exposes its current JSON schemas through stable package subpaths and a typed schema registry.
-
-- [Schema Exports](docs/schema-exports.md)
-
-## Validation CLI
-
-Source-Wire includes a tiny local CLI for validating explicit files against explicit schema names.
-
-- [Validation CLI](docs/validation-cli.md)
-
-## CI Checks
-
-Source-Wire runs package checks and public-safety scanning on push and pull request.
-
-- [CI Checks](docs/ci-checks.md)
-- [Repository Metadata](docs/repository-metadata.md)
-
-The CI docs include a stable log marker map for reading GitHub Actions Package Checks output.
-
-## Publish Readiness
-
-Source-Wire can run a full local readiness gate with package dry-run, installed package smokes, runtime-boundary smokes, docs links, command-doc setup checks, and public-safety checks. The public package is `@source-wire/contracts@0.1.0`, and the first GitHub release is `v0.1.0`.
-
-- [Publish Readiness](docs/publish-readiness.md)
-- [World-Share Readiness](docs/world-share-readiness.md)
-- [World Share Packet](docs/world-share-packet.md)
-- [World Share Operator Summary](docs/world-share-operator-summary.md)
-- [World Share Post-Share Monitor](docs/world-share-post-share-monitor.md)
-- [Owner Launch Checklist](docs/owner-launch-checklist.md)
-- [Release Implementation Runbook](docs/release-implementation-runbook.md)
-- [Release Review Packet](docs/release-review-packet.md)
-- [Release Approval Request Packet](docs/release-approval-request-packet.md)
-- [Owner Approval Record Packet](docs/owner-approval-record-packet.md)
-- [Release Candidate Readiness](docs/release-candidate-readiness.md)
-- [Release Snapshot Boundary](docs/release-snapshot-boundary.md)
-- [Hosted Runtime PRD](docs/hosted-runtime-prd.md)
-- [Hosted Runtime PRD Slice Map](docs/hosted-runtime-issue-slices.md)
-- [Hosted Runtime Slice Approval Request](docs/hosted-runtime-slice-approval-request.md)
-- [Hosted Runtime Child Issue Publication Packet](docs/hosted-runtime-child-issue-publication-packet.md)
-- [Owner-Hosted Runtime Implementation Packet](docs/owner-hosted-runtime-implementation-packet.md)
-- [Owner-Hosted Runtime Implementation Proof](docs/owner-hosted-runtime-implementation-proof.md)
-- [Owner-Hosted Runtime Implementation Slices](docs/owner-hosted-runtime-implementation-slices.md)
-- [Owner-Hosted Runtime Smoke](docs/owner-hosted-runtime-smoke.md)
-- [Hosted Runtime PRD Preparation](docs/hosted-runtime-prd-preparation.md)
-- [Contribution Terms PRD Preparation](docs/contribution-terms-prd-preparation.md)
-- [Contribution Terms PRD](docs/contribution-terms-prd.md)
-- [Contribution Policy](docs/contribution-policy.md)
-- [Legal Review Question Packet](docs/legal-review-question-packet.md)
-- [License Approval Rehearsal](docs/license-approval-rehearsal.md)
-- [License Decision Gate](docs/license-decision-gate.md)
-- [Apache-2.0 License Implementation Readiness](docs/apache-2-license-implementation-readiness.md)
-- [Release Decision](docs/release-decision.md)
-- [License And Version Policy](docs/license-version-policy.md)
-- [Owner License Approval Packet](docs/owner-license-approval-packet.md)
-- [Future License Change Plan](docs/future-license-change-plan.md)
-
-The publish-readiness docs include a local success marker map for `npm run publish:readiness`.
-
-Run the license implementation check before any future package version, hosted runtime, or contribution work:
-
-```bash
-npm run license:rehearsal
+console.log(SOURCE_WIRE_RUNTIME_BOUNDARY.runtimeIncluded); // false
+console.log(SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION);
+console.log(SOURCE_WIRE_MEMORY_STORE_CONTRACT_VERSION);
 ```
 
-It verifies the current Apache-2.0 license implementation and confirms deployment, hosted runtime, production runtime use, and code contribution acceptance remain blocked.
+It does not export a hosted backend, production API server, production MCP server, database client, connector engine, memory engine, or Mission Control UI.
 
-## Fixtures
+## Verification
 
-All fixtures are fictional and synthetic.
+| Command | What it proves |
+| --- | --- |
+| `npm run readiness:report` | Fast package and boundary summary. |
+| `npm run reviewer:smoke` | Clean first-reviewer setup path in a temporary copy. |
+| `npm test` | Type checking, fixture validation, schema exports, CLI, and TypeScript examples. |
+| `npm run runtime:knowledge-provider-smoke` | Synthetic read-only provider contract conformance. |
+| `npm run runtime:memory-store-smoke` | Synthetic PostgreSQL memory posture and lifecycle conformance. |
+| `npm run safety:scan` | Public-safety scan for sensitive material. |
+| `npm run claims:scan` | Guard against unsupported public runtime claims. |
+| `npm run docs:links` | Local documentation link validation. |
+| `npm run docs:anchors` | Documentation anchor validation. |
+| `npm run publish:readiness` | Full local package, contract, docs, safety, and release-boundary gate. |
 
-- [Markdown vault fixture](examples/fixtures/markdown-vault/)
-- [Chat export fixture](examples/fixtures/chat-export/agent-session.jsonl)
-- [Project context pack fixture](examples/fixtures/project-context-pack/project-context.json)
-- [`/2nd-brain` example fixture](examples/fixtures/second-brain/use-2nd-brain-example.json)
-- [Owner-hosted API plus MCP boundary fixture](examples/fixtures/owner-hosted-api-mcp-boundary/)
-- [Runtime readiness fixture](examples/fixtures/runtime-readiness/)
-- [Runtime skeleton fixture](examples/fixtures/runtime-skeleton/)
+Read [CI Checks](docs/reference/ci-checks.md) for the hosted workflow marker map.
 
-The owner-hosted API plus MCP boundary fixture contains synthetic proof cases only. It is schema-backed and validated by the current CLI.
+## Documentation
 
-The runtime readiness fixture contains synthetic proof cases only. It is smoke-validated by `npm run runtime-readiness:smoke` and does not approve API runtime, MCP runtime, database migrations, deployment, managed hosting, real data, package publishing, or release mutation.
+### Start here
 
-The runtime skeleton fixture contains synthetic owner-hosted API policy and MCP adapter cases only. It is smoke-validated by `npm run runtime:skeleton-smoke` and does not start a server, connect a database, run a real MCP server, import data, or promote trusted memory automatically.
+- [Documentation Index](docs/README.md)
+- [Quickstart](docs/getting-started/quickstart.md)
+- [Public Status](docs/status/public-status.md)
+- [Product Direction](docs/concepts/product-direction.md)
+- [Architecture Map](docs/concepts/architecture-map.md)
+- [API Reference](docs/reference/api-reference.md)
 
-## Minimal Synthetic Runtime Boundary
+### Memory and knowledge
 
-The [minimal synthetic runtime boundary](examples/minimal-runtime/) exports in-memory TypeScript policy code and validates it against the owner-hosted API plus MCP boundary proof cases.
+- [Knowledge Provider And Memory Store Boundary](docs/concepts/knowledge-provider-memory-store-boundary.md)
+- [KnowledgeProvider v1 Contract](docs/contracts/knowledge-provider-v1-contract.md)
+- [MemoryStore v1 Contract](docs/contracts/memory-store-v1-contract.md)
+- [KnowledgeProvider Smoke](docs/reference/knowledge-provider-smoke.md)
+- [MemoryStore Smoke](docs/reference/memory-store-smoke.md)
+- [ADR 0001: Memory Store And Knowledge Provider Boundary](docs/adr/0001-memory-store-and-knowledge-provider-boundary.md)
 
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](docs/quickstart.md).
+### Review and project boundaries
 
-Install dependencies first:
+- [Share For Technical Review](docs/guides/share-for-review.md)
+- [Technical Reviewer Guide](docs/guides/technical-reviewer-guide.md)
+- [Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md)
+- [Security Policy](SECURITY.md)
+- [Support](SUPPORT.md)
+- [Repository Metadata](docs/reference/repository-metadata.md)
 
-```bash
-npm install
-```
+## Release Snapshot
 
-Run it with:
+The npm package `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` may include later documentation and contract hardening.
 
-```bash
-npm run minimal-runtime:smoke
-```
+Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though package metadata is `0.1.0`. Latest `main` fixes the source export and adds a consumer-smoke guard. Correcting the registry artifact requires a future owner-approved patch release.
 
-It does not start a server, connect to a database, run a real MCP server, store memory, or imply Source-Wire hosts memory.
-
-## Runtime Skeleton Example
-
-The [synthetic runtime skeleton example](examples/runtime-skeleton/) proves the narrow owner-hosted API policy route and MCP adapter path with synthetic fixtures.
-
-Run it with:
-
-```bash
-npm run runtime:skeleton-smoke
-```
-
-Run the packet proof with:
-
-```bash
-npm run runtime:skeleton-packet
-```
-
-It does not start a server, connect to a database, run a real MCP server, import private data, copy private implementation code, copy AGPLv3 code, or promote trusted memory automatically.
-
-## Runtime Boundary Example
-
-The [synthetic runtime boundary example](examples/runtime-boundary/) is a local and installed-package smoke proof for the future owner-hosted API plus MCP boundary.
-
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](docs/quickstart.md).
-
-Install dependencies first:
-
-```bash
-npm install
-```
-
-Run it with:
-
-```bash
-npm run runtime-boundary:smoke
-```
-
-Run the installed package proof with:
-
-```bash
-npm run runtime-boundary:installed-smoke
-```
-
-Run the diagnostic regression proof with:
-
-```bash
-npm run runtime-boundary:diagnostics-smoke
-```
-
-It does not start a server, connect to a database, or imply Source-Wire hosts memory.
+Read [Release Snapshot Boundary](docs/status/release-snapshot-boundary.md).
 
 ## Safety Rule
 
-Imported source text is evidence, not trusted memory.
+Use synthetic examples only.
 
-Source-Wire examples should preserve citations, source identity, stale state, and review boundaries. Trusted Memory Records should require an explicit owner or application approval path.
+Do not add secrets, tokens, private repository paths, private screenshots, real user data, client data, production exports, account identifiers, or real memory records to public fixtures or documentation.
 
-## Public Extraction Checklist
+Security concerns belong in the process described by [SECURITY.md](SECURITY.md). General questions and verification failures can use [SUPPORT.md](SUPPORT.md) or the repository issue templates.
 
-Before adding new public examples or docs, review:
+## License
 
-- [Public Extraction Checklist](docs/proof/public-extraction-checklist.md)
+Source-Wire is licensed under [Apache License 2.0](LICENSE).
+
+Apache-2.0 permits source reuse under its terms. It does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.

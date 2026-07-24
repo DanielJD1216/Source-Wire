@@ -40,6 +40,7 @@
     "./schemas/owner-hosted-api-mcp-boundary": "./schemas/owner-hosted-api-mcp-boundary.schema.json"
   },
   "files": [
+    "CHANGELOG.md",
     "CONTRIBUTING.md",
     "dist",
     "docs",
@@ -66,6 +67,8 @@
     "runtime:api-policy-smoke": "npm run build && node examples/api-contract/api-policy-contract-smoke.mjs",
     "runtime:mcp-adapter-smoke": "npm run build && node examples/mcp-contract/mcp-adapter-contract-smoke.mjs",
     "runtime:database-posture-smoke": "npm run build && node examples/database-posture/database-posture-smoke.mjs",
+    "runtime:knowledge-provider-smoke": "npm run build && node examples/knowledge-provider/knowledge-provider-conformance-smoke.mjs",
+    "runtime:memory-store-smoke": "npm run build && node examples/memory-store/memory-store-conformance-smoke.mjs",
     "runtime:fixture-smoke": "npm run build && node examples/hosted-runtime-fixtures/hosted-runtime-fixtures-smoke.mjs",
     "runtime:deployment-boundary-smoke": "npm run build && node examples/deployment-boundary/deployment-boundary-smoke.mjs",
     "runtime-boundary:smoke": "node examples/runtime-boundary/synthetic-boundary-smoke.mjs",
@@ -190,7 +193,7 @@
     "release:artifact-manifest": "npm run build && node scripts/release-artifact-manifest.mjs",
     "release:snapshot-boundary": "node scripts/release-snapshot-boundary.mjs",
     "release-command-guard:smoke": "node scripts/blocked-release-commands-smoke.mjs",
-    "ci:check": "npm run typecheck && npm run build && npm test && npm run validate:fixtures && npm run verify:schema-exports && npm run cli:smoke && npm run minimal-runtime:smoke && npm run runtime:skeleton-smoke && npm run runtime:owner-hosted-smoke && npm run runtime:threat-boundary-smoke && npm run runtime:api-policy-smoke && npm run runtime:mcp-adapter-smoke && npm run runtime:database-posture-smoke && npm run runtime:fixture-smoke && npm run runtime:deployment-boundary-smoke && npm run runtime-boundary:smoke && npm run wrapper-runtime:api-policy-smoke && npm run wrapper-runtime:mcp-adapter-smoke && npm run wrapper-runtime:runtime-adapter-smoke && npm run owner-hosted-setup:readiness-smoke && npm run owner-hosted-setup:source-update-safety-smoke && npm run daily-workflow:smoke && npm run runtime-readiness:smoke && npm run runtime-proof-intake:smoke && npm run runtime:extraction-readiness && npm run runtime:prd-refresh-approval-request && npm run runtime:skeleton-packet && npm run runtime:threat-implementation-packet && npm run runtime:api-implementation-packet && npm run runtime:mcp-implementation-packet && npm run runtime:database-implementation-packet && npm run runtime:fixture-implementation-packet && npm run runtime:deployment-implementation-packet && npm run runtime:first-implementation-recommendation && npm run safety:scan && npm run claims:scan",
+    "ci:check": "npm run typecheck && npm run build && npm test && npm run validate:fixtures && npm run verify:schema-exports && npm run cli:smoke && npm run minimal-runtime:smoke && npm run runtime:skeleton-smoke && npm run runtime:owner-hosted-smoke && npm run runtime:threat-boundary-smoke && npm run runtime:api-policy-smoke && npm run runtime:mcp-adapter-smoke && npm run runtime:database-posture-smoke && npm run runtime:knowledge-provider-smoke && npm run runtime:memory-store-smoke && npm run runtime:fixture-smoke && npm run runtime:deployment-boundary-smoke && npm run runtime-boundary:smoke && npm run wrapper-runtime:api-policy-smoke && npm run wrapper-runtime:mcp-adapter-smoke && npm run wrapper-runtime:runtime-adapter-smoke && npm run owner-hosted-setup:readiness-smoke && npm run owner-hosted-setup:source-update-safety-smoke && npm run daily-workflow:smoke && npm run runtime-readiness:smoke && npm run runtime-proof-intake:smoke && npm run runtime:extraction-readiness && npm run runtime:prd-refresh-approval-request && npm run runtime:skeleton-packet && npm run runtime:threat-implementation-packet && npm run runtime:api-implementation-packet && npm run runtime:mcp-implementation-packet && npm run runtime:database-implementation-packet && npm run runtime:fixture-implementation-packet && npm run runtime:deployment-implementation-packet && npm run runtime:first-implementation-recommendation && npm run safety:scan && npm run claims:scan",
     "release:gate": "node scripts/release-gate.mjs",
     "package:dry-run": "npm run build && node scripts/package-dry-run.mjs",
     "package:content-smoke": "node scripts/package-content-smoke.mjs",

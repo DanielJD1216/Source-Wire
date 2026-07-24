@@ -14,19 +14,19 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public");
 
 for (const requiredPath of [
-  "docs/repository-ruleset-governance-preflight.md",
-  "docs/branch-governance-approval-request.md",
-  "docs/branch-governance-implementation-plan.md",
-  "docs/branch-governance-execution-packet.md",
-  "docs/repository-metadata.md",
-  "docs/owner-launch-checklist.md"
+  "docs/internal/repository-ruleset-governance-preflight.md",
+  "docs/internal/branch-governance-approval-request.md",
+  "docs/internal/branch-governance-implementation-plan.md",
+  "docs/internal/branch-governance-execution-packet.md",
+  "docs/reference/repository-metadata.md",
+  "docs/internal/owner-launch-checklist.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const preflightDoc = await readFile("docs/repository-ruleset-governance-preflight.md", "utf8");
-const approvalRequest = await readFile("docs/branch-governance-approval-request.md", "utf8");
-const implementationPlan = await readFile("docs/branch-governance-implementation-plan.md", "utf8");
+const preflightDoc = await readFile("docs/internal/repository-ruleset-governance-preflight.md", "utf8");
+const approvalRequest = await readFile("docs/internal/branch-governance-approval-request.md", "utf8");
+const implementationPlan = await readFile("docs/internal/branch-governance-implementation-plan.md", "utf8");
 
 for (const [documentName, text] of [
   ["repository ruleset governance preflight", preflightDoc],

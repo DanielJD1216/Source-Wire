@@ -38,4 +38,4 @@ The fixture covers:
 ## Related Docs
 
 - [Owner-Hosted API Plus MCP Boundary Contract](../../../docs/contracts/owner-hosted-api-mcp-boundary-contract.md)
-- [Public Runtime Decision](../../../docs/public-runtime-decision.md)
+- [Public Runtime Decision](../../../docs/internal/public-runtime-decision.md)

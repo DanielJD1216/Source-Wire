@@ -2,7 +2,7 @@
 
 This example runs the public-safe owner-hosted API server skeleton and MCP server skeleton in process against synthetic fixtures.
 
-Use Node.js 22 with npm from the repository root. For complete setup details, read [Quickstart](../../docs/quickstart.md).
+Use Node.js 22 with npm from the repository root. For complete setup details, read [Quickstart](../../docs/getting-started/quickstart.md).
 
 It proves:
 

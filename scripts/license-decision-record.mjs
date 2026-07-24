@@ -1,7 +1,7 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const decisionRecord = await readFile("docs/license-approval-decision-record.md", "utf8");
+const decisionRecord = await readFile("docs/internal/license-approval-decision-record.md", "utf8");
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
@@ -12,13 +12,13 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 await assertPathExists("LICENSE");
 
 for (const requiredPath of [
-  "docs/license-approval-decision-record.md",
-  "docs/license-decision-gate.md",
-  "docs/owner-license-approval-packet.md",
-  "docs/legal-review-question-packet.md",
-  "docs/license-approval-rehearsal.md",
-  "docs/apache-2-license-implementation-readiness.md",
-  "docs/launch-decision-status.md"
+  "docs/internal/license-approval-decision-record.md",
+  "docs/internal/license-decision-gate.md",
+  "docs/internal/owner-license-approval-packet.md",
+  "docs/internal/legal-review-question-packet.md",
+  "docs/internal/license-approval-rehearsal.md",
+  "docs/internal/apache-2-license-implementation-readiness.md",
+  "docs/internal/launch-decision-status.md"
 ]) {
   await assertPathExists(requiredPath);
 }

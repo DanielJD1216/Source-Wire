@@ -9,23 +9,23 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after first release");
 
 for (const requiredPath of [
-  "docs/hosted-runtime-prd-execution-packet.md",
-  "docs/hosted-runtime-prd-preparation.md",
-  "docs/hosted-runtime-prd-decision-preflight.md",
-  "docs/public-runtime-decision.md",
-  "docs/runtime-implementation-gate.md",
-  "docs/runtime-readiness-smoke.md",
-  "docs/runtime-proof-intake.md",
-  "docs/runtime-boundary.md",
-  "docs/minimal-runtime-prd.md",
-  "docs/owner-launch-checklist.md"
+  "docs/internal/hosted-runtime-prd-execution-packet.md",
+  "docs/internal/hosted-runtime-prd-preparation.md",
+  "docs/internal/hosted-runtime-prd-decision-preflight.md",
+  "docs/internal/public-runtime-decision.md",
+  "docs/internal/runtime-implementation-gate.md",
+  "docs/internal/runtime-readiness-smoke.md",
+  "docs/internal/runtime-proof-intake.md",
+  "docs/concepts/runtime-boundary.md",
+  "docs/internal/minimal-runtime-prd.md",
+  "docs/internal/owner-launch-checklist.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const executionPacket = await readFile("docs/hosted-runtime-prd-execution-packet.md", "utf8");
-const preparation = await readFile("docs/hosted-runtime-prd-preparation.md", "utf8");
-const decisionPreflight = await readFile("docs/hosted-runtime-prd-decision-preflight.md", "utf8");
+const executionPacket = await readFile("docs/internal/hosted-runtime-prd-execution-packet.md", "utf8");
+const preparation = await readFile("docs/internal/hosted-runtime-prd-preparation.md", "utf8");
+const decisionPreflight = await readFile("docs/internal/hosted-runtime-prd-decision-preflight.md", "utf8");
 
 for (const requiredText of [
   "Status: historical execution packet and current boundary check.",

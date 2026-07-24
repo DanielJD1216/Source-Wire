@@ -1,7 +1,7 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const docPath = "docs/private-proof-runtime-extraction-readiness.md";
+const docPath = "docs/internal/private-proof-runtime-extraction-readiness.md";
 const intakePath = "examples/fixtures/runtime-proof-intake/runtime-proof-intake-manifest.json";
 const readinessPath = "examples/fixtures/runtime-readiness/runtime-readiness-fixture-matrix.json";
 const doc = await readFile(docPath, "utf8");
@@ -17,13 +17,13 @@ for (const requiredPath of [
   docPath,
   intakePath,
   readinessPath,
-  "docs/daily-workflow-implementation-proof.md",
-  "docs/daily-workflow-synthetic-smoke.md",
-  "docs/runtime-proof-intake.md",
-  "docs/runtime-readiness-fixture-matrix.md",
-  "docs/hosted-runtime-wrapper-proof-reconciliation.md",
-  "docs/runtime-implementation-gate.md",
-  "docs/minimal-runtime-prd.md"
+  "docs/internal/daily-workflow-implementation-proof.md",
+  "docs/internal/daily-workflow-synthetic-smoke.md",
+  "docs/internal/runtime-proof-intake.md",
+  "docs/internal/runtime-readiness-fixture-matrix.md",
+  "docs/internal/hosted-runtime-wrapper-proof-reconciliation.md",
+  "docs/internal/runtime-implementation-gate.md",
+  "docs/internal/minimal-runtime-prd.md"
 ]) {
   await assertPathExists(requiredPath);
 }

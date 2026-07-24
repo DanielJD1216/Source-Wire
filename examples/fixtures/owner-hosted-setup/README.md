@@ -8,7 +8,7 @@ It is not a runtime test.
 
 It does not connect to a database, start an API server, start an MCP server, deploy services, import private sources, or create trusted memory.
 
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../../docs/quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../../docs/getting-started/quickstart.md).
 
 ## Files
 
@@ -65,7 +65,7 @@ npm run owner-hosted-setup:source-update-safety-smoke
 
 ## Related Docs
 
-- [Owner-Hosted Setup PRD](../../../docs/owner-hosted-setup-prd.md)
-- [Owner-Hosted Setup Issue Slices](../../../docs/owner-hosted-setup-issue-slices.md)
-- [Owner-Hosted Setup Readiness Smoke](../../../docs/owner-hosted-setup-readiness-smoke.md)
-- [Owner-Hosted Setup Source Update Safety Smoke](../../../docs/owner-hosted-setup-source-update-safety-smoke.md)
+- [Owner-Hosted Setup PRD](../../../docs/internal/owner-hosted-setup-prd.md)
+- [Owner-Hosted Setup Issue Slices](../../../docs/internal/owner-hosted-setup-issue-slices.md)
+- [Owner-Hosted Setup Readiness Smoke](../../../docs/internal/owner-hosted-setup-readiness-smoke.md)
+- [Owner-Hosted Setup Source Update Safety Smoke](../../../docs/internal/owner-hosted-setup-source-update-safety-smoke.md)

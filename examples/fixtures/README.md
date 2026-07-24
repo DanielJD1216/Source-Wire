@@ -18,12 +18,14 @@ They are designed to test public Source-Wire contracts without using real privat
 | `runtime-readiness/` | Fake runtime-readiness matrix for private proof, API, MCP, database, source update, memory-engine, and release gates. | Not schema-validated by the current CLI. |
 | `runtime-proof-intake/` | Fake redacted private-proof intake manifest for future runtime PRD refresh gates. | Not schema-validated by the current CLI. |
 | `wrapper-runtime/` | Fake fixture matrix for future wrapper runtime policy behavior. | Not schema-validated by the current CLI. |
+| `knowledge-provider/` | Fake two-profile matrix for the read-only KnowledgeProvider v1 contract. | Evaluated by its focused smoke. |
+| `memory-store/` | Fake PostgreSQL-only posture and lifecycle matrix for MemoryStore v1. | Evaluated by its focused smoke. |
 
 ## Validate Schema-Backed Fixtures
 
 Use Node.js 22 with npm from the repository root.
 
-For the complete local setup path, read the [Quickstart](../../docs/quickstart.md).
+For the complete local setup path, read the [Quickstart](../../docs/getting-started/quickstart.md).
 
 Install dependencies first:
 
@@ -86,7 +88,7 @@ It does not start a server, connect to a database, deploy services, import priva
 Start here:
 
 - [Owner-hosted setup fixture](owner-hosted-setup/README.md)
-- [Owner-Hosted Setup Readiness Fixture Matrix](../../docs/owner-hosted-setup-readiness-fixture-matrix.md)
+- [Owner-Hosted Setup Readiness Fixture Matrix](../../docs/internal/owner-hosted-setup-readiness-fixture-matrix.md)
 
 ## Daily Workflow Fixture Matrix
 
@@ -97,7 +99,7 @@ It is not currently validated by the CLI because the current CLI validates schem
 Start here:
 
 - [Daily workflow fixture matrix](daily-workflow/README.md)
-- [Daily Workflow Synthetic Smoke](../../docs/daily-workflow-synthetic-smoke.md)
+- [Daily Workflow Synthetic Smoke](../../docs/internal/daily-workflow-synthetic-smoke.md)
 
 ## Wrapper Runtime Fixture Matrix
 
@@ -118,7 +120,7 @@ It is not currently validated by the CLI because the current CLI validates schem
 Start here:
 
 - [Runtime readiness fixture matrix](runtime-readiness/README.md)
-- [Runtime Readiness Smoke](../../docs/runtime-readiness-smoke.md)
+- [Runtime Readiness Smoke](../../docs/internal/runtime-readiness-smoke.md)
 
 ## Runtime Proof Intake Fixture
 
@@ -129,7 +131,27 @@ It is not currently validated by the CLI because the current CLI validates schem
 Start here:
 
 - [Runtime proof intake fixture](runtime-proof-intake/README.md)
-- [Runtime Proof Intake](../../docs/runtime-proof-intake.md)
+- [Runtime Proof Intake](../../docs/internal/runtime-proof-intake.md)
+
+## KnowledgeProvider Fixture Matrix
+
+The KnowledgeProvider matrix runs document-index and relational-view profiles through one read-only evaluator. It proves exact version and capability handling, scoped provenance, safe degradation, and no automatic promotion without connecting to a knowledge base.
+
+Start here:
+
+- [KnowledgeProvider fixture matrix](knowledge-provider/README.md)
+- [KnowledgeProvider Smoke](../../docs/reference/knowledge-provider-smoke.md)
+
+## MemoryStore Fixture Matrix
+
+The MemoryStore matrix proves the adopter-owned PostgreSQL and Source-Wire logical schema boundary, memory-only provenance, explicit lifecycle transitions, atomic audit, protected-read receipts, and structured role posture.
+
+It contains no SQL, migration, database driver, connection, credential, provisioning, managed hosting, or real data.
+
+Start here:
+
+- [MemoryStore fixture matrix](memory-store/README.md)
+- [MemoryStore Smoke](../../docs/reference/memory-store-smoke.md)
 
 ## Rules
 
@@ -141,11 +163,13 @@ Start here:
 
 ## Related Docs
 
-- [Quickstart](../../docs/quickstart.md)
-- [Validation CLI](../../docs/validation-cli.md)
+- [Quickstart](../../docs/getting-started/quickstart.md)
+- [Validation CLI](../../docs/reference/validation-cli.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](../../docs/contracts/owner-hosted-api-mcp-boundary-contract.md)
 - [Owner-Hosted Setup Contract](../../docs/contracts/owner-hosted-setup-contract.md)
 - [Daily Workflow Contract](../../docs/contracts/daily-workflow-contract.md)
 - [Runtime Readiness Contract](../../docs/contracts/runtime-readiness-contract.md)
 - [Runtime Proof Intake Contract](../../docs/contracts/runtime-proof-intake-contract.md)
 - [Wrapper Runtime Policy Contract](../../docs/contracts/wrapper-runtime-policy-contract.md)
+- [KnowledgeProvider v1 Contract](../../docs/contracts/knowledge-provider-v1-contract.md)
+- [MemoryStore v1 Contract](../../docs/contracts/memory-store-v1-contract.md)

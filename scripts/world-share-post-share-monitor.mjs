@@ -22,11 +22,11 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 for (const requiredPath of [
-  "docs/world-share-post-share-monitor.md",
-  "docs/world-share-final-preflight.md",
-  "docs/world-share-packet.md",
-  "docs/reviewer-feedback-guide.md",
-  "docs/reviewer-labels.md",
+  "docs/internal/world-share-post-share-monitor.md",
+  "docs/internal/world-share-final-preflight.md",
+  "docs/internal/world-share-packet.md",
+  "docs/guides/reviewer-feedback-guide.md",
+  "docs/internal/reviewer-labels.md",
   "CONTRIBUTING.md",
   ".github/ISSUE_TEMPLATE/docs-contract-feedback.yml",
   ".github/ISSUE_TEMPLATE/verification-failure.yml",
@@ -36,7 +36,7 @@ for (const requiredPath of [
   await assertPathExists(requiredPath);
 }
 
-const monitorDoc = await readFile("docs/world-share-post-share-monitor.md", "utf8");
+const monitorDoc = await readFile("docs/internal/world-share-post-share-monitor.md", "utf8");
 const contributing = await readFile("CONTRIBUTING.md", "utf8");
 const pullRequestTemplate = await readFile(".github/pull_request_template.md", "utf8");
 

@@ -1,7 +1,7 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const docPath = "docs/hosted-runtime-api-server-contract.md";
+const docPath = "docs/internal/hosted-runtime-api-server-contract.md";
 const doc = await readFile(docPath, "utf8");
 const failures = [];
 
@@ -10,7 +10,7 @@ assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 
 await assertPathExists(docPath);
-await assertPathExists("docs/hosted-runtime-threat-model-trust-boundary.md");
+await assertPathExists("docs/internal/hosted-runtime-threat-model-trust-boundary.md");
 
 for (const requiredText of [
   "Status: PRD/planning only for issue `#260`. API server implementation remains blocked.",

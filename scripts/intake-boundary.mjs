@@ -14,9 +14,9 @@ const intakeFiles = [
   ".github/ISSUE_TEMPLATE/docs-contract-feedback.yml",
   ".github/ISSUE_TEMPLATE/verification-failure.yml",
   ".github/ISSUE_TEMPLATE/boundary-safety-concern.yml",
-  "docs/reviewer-feedback-guide.md",
-  "docs/repository-metadata.md",
-  "docs/public-status.md"
+  "docs/guides/reviewer-feedback-guide.md",
+  "docs/reference/repository-metadata.md",
+  "docs/status/public-status.md"
 ];
 
 for (const file of intakeFiles) {

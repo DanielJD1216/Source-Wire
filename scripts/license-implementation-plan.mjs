@@ -11,23 +11,23 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 await assertPathExists("LICENSE");
 
 for (const requiredPath of [
-  "docs/license-decision-implementation-plan.md",
-  "docs/owner-license-decision-workflow.md",
-  "docs/owner-license-approval-preflight.md",
-  "docs/license-approval-request-packet.md",
-  "docs/license-approval-decision-record.md",
-  "docs/license-decision-gate.md",
-  "docs/apache-2-license-implementation-readiness.md",
-  "docs/legal-review-question-packet.md",
-  "docs/owner-launch-checklist.md",
-  "docs/launch-decision-status.md",
-  "docs/publish-readiness.md"
+  "docs/internal/license-decision-implementation-plan.md",
+  "docs/internal/owner-license-decision-workflow.md",
+  "docs/internal/owner-license-approval-preflight.md",
+  "docs/internal/license-approval-request-packet.md",
+  "docs/internal/license-approval-decision-record.md",
+  "docs/internal/license-decision-gate.md",
+  "docs/internal/apache-2-license-implementation-readiness.md",
+  "docs/internal/legal-review-question-packet.md",
+  "docs/internal/owner-launch-checklist.md",
+  "docs/internal/launch-decision-status.md",
+  "docs/guides/publish-readiness.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const plan = await readFile("docs/license-decision-implementation-plan.md", "utf8");
-const decisionRecord = await readFile("docs/license-approval-decision-record.md", "utf8");
+const plan = await readFile("docs/internal/license-decision-implementation-plan.md", "utf8");
+const decisionRecord = await readFile("docs/internal/license-approval-decision-record.md", "utf8");
 
 for (const requiredText of [
   "Path 1: Apache-2.0 Implementation",

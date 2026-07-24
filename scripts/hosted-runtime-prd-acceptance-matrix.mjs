@@ -8,28 +8,28 @@ assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 
 for (const requiredPath of [
-  "docs/hosted-runtime-prd-acceptance-matrix.md",
-  "docs/hosted-runtime-prd.md",
-  "docs/hosted-runtime-prd-execution-packet.md",
-  "docs/hosted-runtime-prd-decision-preflight.md",
-  "docs/hosted-runtime-child-issue-publication-preflight.md",
-  "docs/hosted-runtime-issue-slices.md",
-  "docs/runtime-readiness-smoke.md",
-  "docs/runtime-proof-intake.md",
-  "docs/runtime-boundary.md",
-  "docs/public-runtime-decision.md",
-  "docs/first-time-visitor-share-readiness-audit.md",
-  "docs/legal-review-question-packet.md",
-  "docs/public-status.md",
+  "docs/internal/hosted-runtime-prd-acceptance-matrix.md",
+  "docs/internal/hosted-runtime-prd.md",
+  "docs/internal/hosted-runtime-prd-execution-packet.md",
+  "docs/internal/hosted-runtime-prd-decision-preflight.md",
+  "docs/internal/hosted-runtime-child-issue-publication-preflight.md",
+  "docs/internal/hosted-runtime-issue-slices.md",
+  "docs/internal/runtime-readiness-smoke.md",
+  "docs/internal/runtime-proof-intake.md",
+  "docs/concepts/runtime-boundary.md",
+  "docs/internal/public-runtime-decision.md",
+  "docs/internal/first-time-visitor-share-readiness-audit.md",
+  "docs/internal/legal-review-question-packet.md",
+  "docs/status/public-status.md",
   "docs/contracts/owner-hosted-api-mcp-boundary-contract.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const matrix = await readFile("docs/hosted-runtime-prd-acceptance-matrix.md", "utf8");
-const prd = await readFile("docs/hosted-runtime-prd.md", "utf8");
-const executionPacket = await readFile("docs/hosted-runtime-prd-execution-packet.md", "utf8");
-const decisionPreflight = await readFile("docs/hosted-runtime-prd-decision-preflight.md", "utf8");
+const matrix = await readFile("docs/internal/hosted-runtime-prd-acceptance-matrix.md", "utf8");
+const prd = await readFile("docs/internal/hosted-runtime-prd.md", "utf8");
+const executionPacket = await readFile("docs/internal/hosted-runtime-prd-execution-packet.md", "utf8");
+const decisionPreflight = await readFile("docs/internal/hosted-runtime-prd-decision-preflight.md", "utf8");
 
 for (const requiredText of [
   "Status: PRD acceptance matrix only. Hosted runtime implementation remains blocked.",

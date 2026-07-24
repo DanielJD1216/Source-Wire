@@ -11,24 +11,24 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 await assertPathExists("LICENSE");
 
 for (const requiredPath of [
-  "docs/public-status.md",
-  "docs/share-for-review.md",
-  "docs/world-share-kit.md",
-  "docs/first-time-visitor-share-readiness-audit.md",
-  "docs/world-share-readiness.md",
-  "docs/technical-reviewer-guide.md",
-  "docs/reviewer-feedback-guide.md",
-  "docs/publish-readiness.md"
+  "docs/status/public-status.md",
+  "docs/guides/share-for-review.md",
+  "docs/internal/world-share-kit.md",
+  "docs/internal/first-time-visitor-share-readiness-audit.md",
+  "docs/internal/world-share-readiness.md",
+  "docs/guides/technical-reviewer-guide.md",
+  "docs/guides/reviewer-feedback-guide.md",
+  "docs/guides/publish-readiness.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const publicStatus = await readFile("docs/public-status.md", "utf8");
-const shareForReview = await readFile("docs/share-for-review.md", "utf8");
-const worldShareKit = await readFile("docs/world-share-kit.md", "utf8");
-const firstVisitorAudit = await readFile("docs/first-time-visitor-share-readiness-audit.md", "utf8");
-const worldReadiness = await readFile("docs/world-share-readiness.md", "utf8");
-const technicalReviewerGuide = await readFile("docs/technical-reviewer-guide.md", "utf8");
+const publicStatus = await readFile("docs/status/public-status.md", "utf8");
+const shareForReview = await readFile("docs/guides/share-for-review.md", "utf8");
+const worldShareKit = await readFile("docs/internal/world-share-kit.md", "utf8");
+const firstVisitorAudit = await readFile("docs/internal/first-time-visitor-share-readiness-audit.md", "utf8");
+const worldReadiness = await readFile("docs/internal/world-share-readiness.md", "utf8");
+const technicalReviewerGuide = await readFile("docs/guides/technical-reviewer-guide.md", "utf8");
 const safeInviteCopy = extractSectionCodeBlock(shareForReview, "Safe Invite Copy");
 
 for (const [label, text, requiredText] of [

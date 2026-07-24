@@ -1,7 +1,7 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const docPath = "docs/hosted-runtime-threat-model-trust-boundary.md";
+const docPath = "docs/internal/hosted-runtime-threat-model-trust-boundary.md";
 const doc = await readFile(docPath, "utf8");
 const failures = [];
 

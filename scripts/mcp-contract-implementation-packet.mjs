@@ -1,8 +1,8 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const packetPath = "docs/mcp-contract-implementation-packet.md";
-const slicesPath = "docs/mcp-contract-implementation-slices.md";
+const packetPath = "docs/internal/mcp-contract-implementation-packet.md";
+const slicesPath = "docs/internal/mcp-contract-implementation-slices.md";
 const packet = await readFile(packetPath, "utf8");
 const slices = await readFile(slicesPath, "utf8");
 const failures = [];
@@ -17,21 +17,21 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 for (const requiredPath of [
   packetPath,
   slicesPath,
-  "docs/hosted-runtime-mcp-server-contract.md",
-  "docs/hosted-runtime-api-server-contract.md",
-  "docs/hosted-runtime-threat-model-trust-boundary.md",
-  "docs/runtime-implementation-gate.md",
-  "docs/api-contract-implementation-packet.md",
-  "docs/threat-model-implementation-packet.md",
-  "docs/runtime-skeleton-implementation-proof.md",
-  "docs/mcp-adapter-contract-implementation-proof.md",
-  "docs/mcp-adapter-contract-smoke.md",
+  "docs/internal/hosted-runtime-mcp-server-contract.md",
+  "docs/internal/hosted-runtime-api-server-contract.md",
+  "docs/internal/hosted-runtime-threat-model-trust-boundary.md",
+  "docs/internal/runtime-implementation-gate.md",
+  "docs/internal/api-contract-implementation-packet.md",
+  "docs/internal/threat-model-implementation-packet.md",
+  "docs/internal/runtime-skeleton-implementation-proof.md",
+  "docs/internal/mcp-adapter-contract-implementation-proof.md",
+  "docs/internal/mcp-adapter-contract-smoke.md",
   "examples/fixtures/mcp-contract/mcp-adapter-contract-fixture-matrix.json",
   "examples/fixtures/mcp-contract/README.md",
   "examples/mcp-contract/mcp-adapter-contract-smoke.mjs",
   "examples/mcp-contract/README.md",
   "src/contracts/mcp-adapter.ts",
-  "docs/owner-approval-record-packet.md",
+  "docs/internal/owner-approval-record-packet.md",
   "scripts/record-owner-approval.mjs"
 ]) {
   await assertPathExists(requiredPath);
@@ -103,7 +103,7 @@ for (const blockedText of [
   assertIncludes(slices, blockedText, `${slicesPath} blocked boundary`);
 }
 
-const ownerApprovalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const ownerApprovalPacket = await readFile("docs/internal/owner-approval-record-packet.md", "utf8");
 const ownerApprovalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
 assertIncludes(ownerApprovalPacket, "mcp-contract-implementation", "owner approval packet target");
 assertIncludes(ownerApprovalPacket, exactApprovalText, "owner approval packet exact approval");

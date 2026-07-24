@@ -1,0 +1,1325 @@
+# Source-Wire Publish Readiness
+
+Source-Wire has package readiness checks and is published as `@source-wire/contracts@0.1.0` with GitHub release `v0.1.0`.
+
+Future package versions, deployment, hosted runtime behavior, production runtime use, and code contribution acceptance still require later explicit owner decisions.
+
+## Local Readiness Command
+
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../getting-started/quickstart.md).
+
+Install dependencies first:
+
+```bash
+npm install
+```
+
+Then run:
+
+```bash
+npm run publish:readiness
+```
+
+This command runs:
+
+- `npm run ci:check`
+- `npm run release:gate`
+- `npm run release-command-guard:smoke`
+- `npm run release:implementation-preparation`
+- `npm run release:implementation-plan`
+- `npm run release:publish-config-plan`
+- `npm run release:implementation-rehearsal`
+- `npm run release:review`
+- `npm run release:approval-request`
+- `npm run release:patch-approval-request`
+- `npm run release:patch-execution-preflight`
+- `npm run release:patch-candidate-rehearsal`
+- `npm run release:auth-handoff`
+- `npm run release:candidate-readiness`
+- `npm run release:artifact-manifest`
+- `npm run release:snapshot-boundary`
+- `npm run license:rehearsal`
+- `npm run license:decision-record`
+- `npm run license:approval-request`
+- `npm run license:implementation-plan`
+- `npm run license:history-boundary`
+- `npm run legal:packet`
+- `npm run runtime:prd-preparation`
+- `npm run runtime:prd-execution-packet`
+- `npm run runtime:prd-acceptance-matrix`
+- `npm run runtime:prd-refresh-proof`
+- `npm run runtime:slice-approval-request`
+- `npm run runtime:child-issue-publication-packet`
+- `npm run runtime:child-issue-publish`
+- `npm run runtime:child-issue-publish:smoke`
+- `npm run contribution:terms-preparation`
+- `npm run contribution:terms-execution-packet`
+- `npm run contribution:terms-policy`
+- `npm run owner:approval-packet`
+- `npm run owner:launch-checklist`
+- `npm run owner:license-preflight`
+- `npm run owner:decision-intake`
+- `npm run owner:decision-workflow`
+- `npm run world:readiness`
+- `npm run world:share-packet`
+- `npm run world:share-operator-summary`
+- `npm run launch:decision-status`
+- `npm run share:audit`
+- `npm run readme:entrypoint-smoke`
+- `npm run intake:boundary`
+- `npm run reviewer:intake-smoke`
+- `npm run reviewer:smoke`
+- `npm run world:post-share-monitor:smoke`
+- `npm run repository:metadata`
+- `npm run repository:branch-governance-request`
+- `npm run repository:branch-governance-plan`
+- `npm run repository:branch-governance-execution-packet`
+- `npm run pull-request:boundary`
+- `npm run package:required-paths`
+- `npm run package:dry-run`
+- `npm run consumer:smoke`
+- `npm run package:content-smoke`
+- `npm run examples:installed-smoke`
+- `npm run runtime-boundary:installed-smoke`
+- `npm run runtime-boundary:diagnostics-smoke`
+- `npm run readiness:report`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run docs:command-setup`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `npm run release:current-wording`
+- `npm run ci:markers:smoke`
+
+The `ci:check` sub-gate includes:
+
+- `npm run typecheck`
+- `npm run build`
+- `npm test`
+- `npm run validate:fixtures`
+- `npm run verify:schema-exports`
+- `npm run cli:smoke`
+- `npm run minimal-runtime:smoke`
+- `npm run runtime:skeleton-smoke`
+- `npm run runtime:owner-hosted-smoke`
+- `npm run runtime:threat-boundary-smoke`
+- `npm run runtime:api-policy-smoke`
+- `npm run runtime:mcp-adapter-smoke`
+- `npm run runtime:database-posture-smoke`
+- `npm run runtime:knowledge-provider-smoke`
+- `npm run runtime:memory-store-smoke`
+- `npm run runtime:fixture-smoke`
+- `npm run runtime:deployment-boundary-smoke`
+- `npm run runtime-boundary:smoke`
+- `npm run wrapper-runtime:api-policy-smoke`
+- `npm run wrapper-runtime:mcp-adapter-smoke`
+- `npm run wrapper-runtime:runtime-adapter-smoke`
+- `npm run owner-hosted-setup:readiness-smoke`
+- `npm run owner-hosted-setup:source-update-safety-smoke`
+- `npm run daily-workflow:smoke`
+- `npm run runtime-readiness:smoke`
+- `npm run runtime-proof-intake:smoke`
+- `npm run runtime:extraction-readiness`
+- `npm run runtime:prd-refresh-approval-request`
+- `npm run runtime:skeleton-packet`
+- `npm run runtime:threat-implementation-packet`
+- `npm run runtime:api-implementation-packet`
+- `npm run runtime:mcp-implementation-packet`
+- `npm run runtime:database-implementation-packet`
+- `npm run runtime:fixture-implementation-packet`
+- `npm run runtime:deployment-implementation-packet`
+- `npm run runtime:first-implementation-recommendation`
+- `npm run safety:scan`
+- `npm run claims:scan`
+
+## Local Success Marker Map
+
+When `npm run publish:readiness` passes, scan the output for these stable markers.
+
+They prove the current package skeleton, installed package behavior, docs, safety scan, and synthetic runtime-boundary lane. They do not prove runtime deployment, database setup, connector sync, real memory storage, MCP server runtime, or npm publication.
+
+| Area | Markers to look for |
+| --- | --- |
+| Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.1.0`, `ok npm public access ready` |
+| Release command guard smoke | `ok blocked release commands smoke` |
+| Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `ok release execution completed` |
+| Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `ok release execution completed` |
+| Release publish config plan | `ok release publish config plan ready`, `ok current npm public access documented`, `blocked future publish config mutation not performed` |
+| Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `ok future npm public access rehearsal`, `ok release metadata applied` |
+| Release review | `ok release review packet ready`, `ok release decision inputs documented`, `ok release execution completed` |
+| Release approval request | `ok release approval request ready`, `ok npm publishing completed @source-wire/contracts@0.1.0`, `ok github release completed v0.1.0`, `ok version release completed 0.1.0` |
+| Release patch approval request | `ok release patch approval request ready`, `ok exported version fix on main`, `blocked patch release approval missing`, `blocked npm artifact immutable at @source-wire/contracts@0.1.0` |
+| Release patch execution preflight | `ok release patch execution preflight ready`, `ok patch source export fixed on main`, `ok patch npm artifact mismatch disclosed`, `ok patch approval recorder target ready`, `blocked exact patch release approval missing`, `blocked patch release mutation not approved` |
+| Release patch candidate rehearsal | `ok release patch candidate rehearsal ready`, `ok patch candidate version 0.1.1`, `ok patch candidate export matches package version`, `ok patch candidate consumer smoke`, `blocked real package version unchanged`, `blocked npm publish not performed`, `blocked github release not created` |
+| Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked future release auth owner action required` |
+| Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `ok release execution completed` |
+| Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` |
+| Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `ok release execution completed` |
+| Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.1.0`, `ok release artifact integrity recorded`, `ok release artifact publication recorded`, `ok published npm artifact metadata recorded` |
+| Release snapshot boundary | `ok release snapshot boundary ready`, `ok latest main can differ from v0.1.0 release snapshot`, `ok npm artifact immutable at @source-wire/contracts@0.1.0`, `blocked future release mutation approval missing` |
+| License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
+| License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` |
+| License approval request | `ok license approval request ready`, `ok owner license approval captured`, `ok license implementation complete` |
+| License implementation plan | `ok license implementation plan ready`, `ok license decision paths mapped`, `ok license implementation complete` |
+| Legal-review packet | `ok legal review packet ready`, `ok owner license approval recorded` |
+| Hosted runtime PRD preparation | `ok hosted runtime PRD preparation ready`, `ok hosted runtime PRD evidence map ready`, `ok exact hosted runtime PRD approval recorded` |
+| Hosted runtime PRD execution packet | `ok hosted runtime PRD execution packet ready`, `ok hosted runtime PRD execution scope documented`, `ok exact hosted runtime PRD approval recorded` |
+| Hosted runtime PRD acceptance matrix | `ok hosted runtime PRD acceptance matrix ready`, `ok hosted runtime PRD clauses mapped`, `ok hosted runtime PRD stop conditions retained`, `blocked hosted runtime implementation` |
+| Runtime PRD refresh approval request | `ok runtime PRD refresh approval request ready`, `ok unit 33 redacted metadata boundary recorded`, `blocked production runtime implementation` |
+| Runtime PRD refresh proof | `ok runtime PRD refresh proof ready`, `ok exact runtime PRD refresh approval recorded`, `blocked hosted runtime implementation` |
+| Hosted runtime child issue publication preflight | `ok hosted runtime child issue publication preflight ready`, `ok child issue publication packet current`, `ok child issue publisher dry run current`, `ok child issue publisher guard smoke current`, `ok child issue approval status current`, `ok owner open issue boundary current`, `ok owner open issue future planning smoke current`, `ok hosted runtime child issue publication approval recorded`, `ok hosted runtime child planning issues published`, `blocked hosted runtime implementation` |
+| Hosted runtime child issue publisher | `ok hosted runtime child issue publisher ready`, `ok hosted runtime issue payloads validated`, `blocked child issue publication requires --write`, `ok hosted runtime child issue publisher smoke`, `blocked child issue publication approval missing`, `blocked child issue duplicate publication`, `blocked hosted runtime implementation` |
+| Contribution terms PRD preparation | `ok contribution terms PRD preparation ready`, `ok contribution terms evidence map ready`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
+| Contribution terms PRD execution packet | `ok contribution terms PRD execution packet ready`, `ok contribution terms PRD execution scope documented`, `ok exact contribution terms PRD approval recorded`, `blocked code contribution acceptance` |
+| Contribution terms policy | `ok contribution terms PRD defined`, `ok contribution policy boundary current`, `blocked code contribution acceptance` |
+| Owner approval packet | `ok owner approval packet ready`, `ok exact owner approval texts available`, `blocked approval recording is manual owner action` |
+| Owner launch checklist | `ok owner launch checklist ready`, `blocked launch channels missing` |
+| Owner license approval preflight | `ok owner license approval preflight ready`, `ok owner approval package complete`, `ok owner license approval captured` |
+| Owner decision intake | `ok owner decision intake ready`, `ok owner decision options available`, `ok owner decision captured` |
+| Owner decision workflow | `ok owner decision workflow ready`, `ok owner decision options available`, `ok owner license decision captured` |
+| World-share boundary | `ok world share open source ready`, `blocked production launch channels` |
+| World-share packet | `ok world share packet ready`, `ok public share copy current`, `blocked production launch channels` |
+| World-share operator summary | `ok world share operator summary ready`, `ok current share actions summarized`, `ok hosted runtime PRD approval retained`, `ok hosted runtime child planning issues published`, `blocked production launch channels` |
+| Launch decision status | `ok launch decision status ready`, `ok apache 2 license implemented`, `ok source repo sharing ready`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0`, `blocked hosted runtime implementation`, `blocked contributions not accepted` |
+| First visitor share audit | `ok first visitor share audit ready`, `ok apache 2 reuse ready`, `blocked production launch channels` |
+| README entrypoint smoke | `ok readme entrypoint smoke ready`, `ok readme first reviewer path visible`, `blocked unsafe readme launch claims` |
+| Public intake boundary | `ok public intake boundary ready`, `ok apache 2 intake wording current`, `blocked code contribution acceptance` |
+| Reviewer intake smoke | `ok reviewer intake smoke ready`, `ok reviewer issue templates structured`, `blocked unsafe reviewer data intake` |
+| Reviewer first-pass smoke | `ok reviewer first-pass smoke` |
+| Repository metadata boundary | `ok repository metadata boundary ready`, `ok github about wording current`, `blocked metadata launch approval` |
+| Branch governance approval request | `ok branch governance approval request ready`, `ok branch protection approval recorded`, `blocked repository ruleset approval missing` |
+| Branch governance implementation plan | `ok branch governance implementation plan ready`, `ok branch governance recommended path documented`, `ok branch governance implementation approval recorded` |
+| Branch governance execution packet | `ok branch governance execution packet ready`, `ok minimal branch protection settings documented`, `ok branch governance implementation approval recorded` |
+| Repository ruleset governance preflight | `ok repository ruleset governance preflight ready`, `ok minimal branch protection current`, `ok Package Checks current`, `blocked repository ruleset approval missing`, `blocked repository ruleset implementation` |
+| Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` |
+| Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` |
+| Package required paths | `ok package required paths` |
+| Package dry run | `ok package dry-run @source-wire/contracts@0.1.0`, `ok package file count` |
+| Package content smoke | `ok package content smoke @source-wire/contracts@0.1.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links`, `ok installed package docs anchors` |
+| Minimal runtime smoke | `ok minimal runtime boundary smoke` |
+| Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
+| Database posture smoke | `ok database posture case authorized_namespace_data_class_read`, `ok database posture case wrong_namespace_denied_without_leak`, `ok database posture smoke` |
+| Public-safe fixture smoke | `ok hosted runtime fixture case authorized_owner_read`, `ok hosted runtime fixture case wrong_namespace_denial_without_leak`, `ok hosted runtime fixture smoke` |
+| Deployment boundary smoke | `ok deployment boundary case local_development_ready`, `ok deployment boundary case no_hosted_service_proof`, `ok deployment boundary smoke` |
+| Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.1.0`, `ok installed runtime boundary example` |
+| Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
+| Docs and readiness | `ok readiness report`, `ok docs links`, `ok docs anchors`, `ok command docs setup`, `ok readiness command docs match package scripts` |
+| Public safety | `Findings: 0 high=0 medium=0 low=0` |
+| Public claim boundary | `ok public claim boundary scan` |
+| CI marker self-smoke | `ok ci markers smoke` |
+
+The Docs and readiness row proves the readiness summary, required readiness docs, local Markdown links, local Markdown anchors, command-doc setup pointers, and documented readiness command lists are current.
+
+Use [CI Checks](../reference/ci-checks.md) for the same marker map from the GitHub Actions perspective.
+
+## Owner Live GitHub Surface
+
+The local package gate is intentionally portable and does not call GitHub.
+
+Before broad public sharing, the owner can verify public-facing external URLs with:
+
+```bash
+npm run docs:external-links
+```
+
+Expected marker:
+
+```text
+ok external links
+```
+
+This network check verifies public URLs in README, docs, examples, `.github` templates, and package metadata. It is intentionally outside CI and `publish:readiness` so transient network failures do not break local package verification.
+
+For a single live owner-facing share status, run:
+
+```bash
+npm run world:share-preflight
+```
+
+Expected markers:
+
+```text
+ok world share preflight ready
+ok external reviewer links reachable
+ok live source-package boundary current
+ok owner decision issues current
+ok owner open issue boundary current
+blocked production launch channels
+```
+
+This read-only preflight runs public external-link checks, live world-share status, launch decision status, owner-decision issue status, and owner open-issue boundary status. It is intentionally outside CI and `publish:readiness` because it depends on public network availability and owner-side live GitHub access.
+
+After public sharing starts, run the post-share monitor:
+
+```bash
+npm run world:post-share-monitor
+```
+
+Expected markers:
+
+```text
+ok post-share monitor ready
+ok structured reviewer issue intake current
+blocked code contribution PRs
+```
+
+This read-only monitor expects owner-decision issues to stay closed and allows structured reviewer feedback issues, but fails on unstructured issues or open pull requests while code contribution acceptance remains blocked.
+
+The local readiness gate also runs the fixture-only smoke:
+
+```bash
+npm run world:post-share-monitor:smoke
+```
+
+Expected marker:
+
+```text
+ok post-share monitor smoke
+```
+
+To verify the open issue boundary only, run:
+
+```bash
+npm run owner:open-issues-status
+```
+
+Expected markers:
+
+```text
+ok owner open issue boundary readable
+ok completed owner decision #255 closed
+ok exact release implementation approval retained
+ok completed owner decision #256 closed
+ok exact branch governance implementation approval retained
+ok completed owner decision #257 closed
+ok exact hosted runtime PRD approval retained
+ok completed owner decision #258 closed
+ok exact contribution terms PRD approval retained
+ok no unresolved owner decision issues open
+ok all completed owner decision approvals retained
+ok hosted runtime child issue publication approval retained
+ok hosted runtime child planning issues published
+blocked hosted runtime implementation
+```
+
+To verify the hosted-runtime child issue publication boundary, run:
+
+```bash
+npm run runtime:child-issue-publication-preflight
+```
+
+Expected markers:
+
+```text
+ok hosted runtime child issue publication preflight ready
+ok child issue publication packet current
+ok child issue publisher dry run current
+ok child issue publisher guard smoke current
+ok child issue approval status current
+ok owner open issue boundary current
+ok owner open issue future planning smoke current
+ok hosted runtime child issue publication approval recorded
+ok hosted runtime child planning issues published
+blocked hosted runtime implementation
+```
+
+This owner-side preflight depends on live GitHub issue state. It does not approve hosted runtime implementation.
+
+For the live status portion only, run:
+
+```bash
+npm run world:live-status
+```
+
+This read-only check combines the live GitHub public surface, package metadata and package-lock metadata boundary, latest `Package Checks`, npm registry boundary, release and tag boundary, security surface, and branch governance visibility into one status view.
+
+Expected markers:
+
+```text
+ok live world share status ready
+ok source repo sharing ready
+ok live public surface green
+ok live package lock Apache-2.0
+ok npm package published @source-wire/contracts@0.1.0
+ok release channels published v0.1.0
+blocked production launch channels
+ok minimal branch protection implemented
+blocked repository rulesets not enabled
+```
+
+This command does not publish npm, create a GitHub release, create tags, deploy services, enable branch protection, create repository rulesets, accept code contributions, start runtime services, connect to a database, or approve production runtime use.
+
+Before broad public sharing, the owner can verify the live GitHub repo with:
+
+```bash
+npm run repository:live-github
+```
+
+This read-only check verifies:
+
+- the live GitHub About description, homepage, topics, visibility, default branch, license, issues, projects, and wiki settings,
+- the GitHub release list includes `v0.1.0`,
+- the latest `Package Checks` run is green for `origin/main`,
+- version remains `0.1.0`,
+- npm package publication is complete,
+- hosted runtime and contribution acceptance remain blocked.
+
+Expected markers:
+
+```text
+ok live github public surface ready
+ok live github metadata matches docs
+ok live package checks green
+ok github release published v0.1.0
+```
+
+This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+## Owner Live Branch Governance
+
+Before broad public sharing, the owner can verify the live default branch and branch governance state with:
+
+```bash
+npm run repository:live-branch
+```
+
+This read-only check verifies:
+
+- live GitHub default branch remains `main`,
+- live GitHub `main` matches local `origin/main`,
+- forking remains enabled for source-package reuse,
+- branch protection state is visible,
+- required branch-protection check context is visible when branch protection is enabled,
+- repository ruleset state is visible,
+- package version remains `0.1.0`,
+- npm package publication and GitHub release publication are complete,
+- hosted runtime and contribution acceptance remain blocked.
+
+Expected markers in the current owner-direct-maintenance state:
+
+```text
+ok live branch governance readable
+ok main branch matches origin
+ok branch protection enabled
+ok branch protection requires Source-Wire package checks
+blocked repository rulesets not enabled
+```
+
+The remaining blocked marker means repository rulesets are not currently configured. This command does not enable branch protection, create a ruleset, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+Repository rulesets remain deferred because minimal branch protection is enough for the current source-package sharing state.
+
+For exact future owner decision options, run:
+
+```bash
+npm run repository:branch-governance-request
+```
+
+Expected markers:
+
+```text
+ok branch governance approval request ready
+ok branch protection approval recorded
+blocked repository ruleset approval missing
+```
+
+This local packet check does not call GitHub or change repository settings.
+
+Run only the branch governance implementation plan check:
+
+```bash
+npm run repository:branch-governance-plan
+```
+
+Expected markers:
+
+```text
+ok branch governance implementation plan ready
+ok branch governance recommended path documented
+ok branch governance implementation approval recorded
+```
+
+The plan check verifies the future branch governance implementation order, required preflight, post-change verification, and rollback plan. It does not call GitHub, enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+Run only the branch governance execution packet check:
+
+```bash
+npm run repository:branch-governance-execution-packet
+```
+
+Expected markers:
+
+```text
+ok branch governance execution packet ready
+ok minimal branch protection settings documented
+ok branch governance implementation approval recorded
+```
+
+The execution packet check verifies the exact future minimal branch protection settings, required check name, owner emergency access, pre-execution checks, post-change verification, and rollback path. It does not call GitHub, enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+Run only the branch governance implementation dry run:
+
+```bash
+npm run repository:branch-governance-dry-run
+```
+
+Expected markers:
+
+```text
+ok branch governance implementation dry run ready
+ok branch protection payload documented
+ok required status check resolved Source-Wire package checks
+blocked branch governance implementation approval missing
+```
+
+The dry run resolves the exact live GitHub Actions check context and prints the future branch-protection payload. It does not enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+Run only the branch governance apply guard:
+
+```bash
+npm run repository:branch-governance-apply
+```
+
+Expected markers before approval:
+
+```text
+ok branch governance apply guard ready
+ok branch protection payload documented
+ok required status check resolved Source-Wire package checks
+blocked branch governance implementation approval missing
+```
+
+The apply guard verifies the future write path and branch-protection payload. Default mode does not enable branch protection, create repository rulesets, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use. Future write mode still requires exact issue `#256` approval, `--write`, and `--confirm-exact`.
+
+Run only the hosted runtime PRD execution packet check:
+
+```bash
+npm run runtime:prd-execution-packet
+```
+
+Expected markers:
+
+```text
+ok hosted runtime PRD execution packet ready
+ok hosted runtime PRD execution scope documented
+ok exact hosted runtime PRD approval recorded
+```
+
+The execution packet check verifies the exact future hosted runtime PRD scope, required pre-execution checks, verification path, and stop conditions. It does not add runtime code, deployment configuration, infrastructure, live connectors, or real user data.
+
+Run only the contribution terms PRD execution packet check:
+
+```bash
+npm run contribution:terms-execution-packet
+```
+
+Expected markers:
+
+```text
+ok contribution terms PRD execution packet ready
+ok contribution terms PRD execution scope documented
+ok exact contribution terms PRD approval recorded
+blocked code contribution acceptance
+```
+
+The execution packet check verifies the exact future contribution terms PRD scope, required pre-execution checks, verification path, and stop conditions. It does not accept code contributions, add CLA or DCO enforcement, or change GitHub collaboration settings.
+
+Before a future branch governance implementation unit changes live GitHub settings, run:
+
+```bash
+npm run repository:branch-governance-preflight
+```
+
+Expected markers:
+
+```text
+ok branch governance decision preflight ready
+ok world share preflight current
+ok owner decision status current
+ok owner open issue boundary current
+ok live branch governance current
+ok branch governance execution plan current
+ok branch governance execution packet current
+ok branch governance implementation dry run current
+ok branch governance apply guard current
+ok branch governance implementation approval recorded
+ok minimal branch protection implemented
+blocked repository rulesets not enabled
+```
+
+This read-only preflight verifies live branch state, owner decision issue state, owner open-issue boundary, approval request, implementation plan, and world-share boundary. It stays outside CI and `publish:readiness` because it depends on live GitHub state and owner-side access.
+
+## Owner Live Security Surface
+
+Before broad public sharing, the owner can verify the live GitHub security and intake boundary with:
+
+```bash
+npm run security:live-surface
+```
+
+This read-only check verifies:
+
+- `SECURITY.md`, `SUPPORT.md`, `CONTRIBUTING.md`, issue templates, and reviewer guides exist,
+- public intake warns against secrets, private data, local paths, client names, real source payloads, real chat logs, and real memory records,
+- live GitHub issues are enabled for structured feedback,
+- live GitHub projects, wiki, and discussions are disabled,
+- live GitHub secret scanning and push protection are enabled,
+- GitHub security advisories are empty,
+- package version remains `0.1.0`,
+- npm package publication and GitHub release publication are complete,
+- hosted runtime, production security scope, and contribution acceptance remain blocked.
+
+Expected markers:
+
+```text
+ok live security surface ready
+ok security intake boundary current
+ok github secret scanning enabled
+blocked production security scope
+```
+
+This command does not publish npm, create a GitHub release, deploy services, accept code contributions, disclose private data, open a security advisory, or approve production runtime use.
+
+## Owner Live npm Registry Boundary
+
+Before broad public sharing, the owner can verify the live npm registry boundary with:
+
+```bash
+npm run registry:live-npm
+```
+
+This read-only check verifies:
+
+- local package name remains `@source-wire/contracts`,
+- local package version remains `0.1.0`,
+- local package license remains `Apache-2.0`,
+- local `publishConfig.access` remains `public`,
+- `npm view @source-wire/contracts` returns published package data,
+- npm latest dist-tag is `0.1.0`,
+- npm access status is public,
+- hosted runtime and contribution acceptance remain blocked.
+
+Expected markers:
+
+```text
+ok live npm registry boundary ready
+ok npm package published @source-wire/contracts@0.1.0
+ok npm latest dist-tag 0.1.0
+ok npm package public
+blocked hosted runtime implementation
+```
+
+This command does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+## Owner Live Release Tag Boundary
+
+Before broad public sharing, the owner can verify the first release tag is published and future release mutation remains blocked with:
+
+```bash
+npm run release:live-tags
+```
+
+This read-only check verifies:
+
+- local git tags include `v0.1.0`,
+- remote git tags include `v0.1.0`,
+- GitHub release `v0.1.0` exists,
+- local package version remains `0.1.0`,
+- npm package publication and GitHub release publication are complete,
+- hosted runtime and contribution acceptance remain blocked.
+
+Expected markers:
+
+```text
+ok live release tag boundary ready
+ok local release tag v0.1.0
+ok remote release tag v0.1.0
+ok github release published v0.1.0
+blocked hosted runtime implementation
+```
+
+This command does not create a tag, create a GitHub release, publish npm, deploy services, accept code contributions, or approve production runtime use.
+
+## Marker Helper
+
+Save the local readiness output, then run the marker helper:
+
+```bash
+npm run publish:readiness > /tmp/source-wire-readiness.log 2>&1
+npm run ci:markers -- /tmp/source-wire-readiness.log
+```
+
+The marker helper reads a log file or stdin, checks the stable marker groups above, and exits non-zero when required marker evidence is missing.
+
+It does not run readiness, call GitHub, publish, deploy, start runtime services, connect to databases, or use real data.
+
+Run only the marker helper self-smoke:
+
+```bash
+npm run ci:markers:smoke
+```
+
+The self-smoke checks that a synthetic complete log passes `ci:markers` and a synthetic incomplete log fails.
+
+## Public Intake Boundary
+
+Run only the public intake boundary check:
+
+```bash
+npm run intake:boundary
+```
+
+The check verifies `CONTRIBUTING.md`, `SUPPORT.md`, `SECURITY.md`, issue templates, and public feedback docs match the Apache-2.0 source-package state while code contribution acceptance remains blocked.
+
+It does not publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+## Repository Metadata Boundary
+
+Run only the repository metadata boundary check:
+
+```bash
+npm run repository:metadata
+```
+
+The check verifies the expected GitHub About description, homepage, topics, and feature flags are documented for first visitors.
+
+It does not call GitHub, publish npm, create a GitHub release, deploy services, accept code contributions, or approve production runtime use.
+
+## Pull Request Boundary
+
+Run only the pull request boundary check:
+
+```bash
+npm run pull-request:boundary
+```
+
+The check verifies that the pull request template blocks public code contribution assumptions, routes public feedback to issues, and warns against secrets, private data, local paths, real source payloads, and real memory records.
+
+It does not accept code contributions, publish npm, create a GitHub release, deploy services, or approve production runtime use.
+
+## Package Required Paths
+
+Run only the package required path manifest check:
+
+```bash
+npm run package:required-paths
+```
+
+The manifest check verifies the shared required package path list is sorted and duplicate-free.
+
+It does not build, pack, install, publish, or run runtime behavior.
+
+## Release Implementation Plan
+
+Run only the release implementation preparation packet:
+
+```bash
+npm run release:implementation-preparation
+```
+
+The preparation packet records the future release execution evidence map, issue `#255` approval requirement, owner open-issue boundary requirement, exact stop conditions, and future publish/release commands without executing them.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
+
+Run the owner-side npm authentication handoff:
+
+```bash
+npm run release:auth-handoff
+```
+
+The auth handoff documents the exact `npm login` and follow-up preflight sequence required when the owner machine is not authenticated to npm.
+
+It does not authenticate npm, publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
+
+Run only the release implementation runbook check:
+
+```bash
+npm run release:implementation-plan
+```
+
+The runbook check verifies the future release execution order, target version, stop conditions, and blocked release execution boundary.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
+
+## Release Implementation Rehearsal
+
+Run only the non-mutating release implementation rehearsal:
+
+```bash
+npm run release:implementation-rehearsal
+```
+
+The rehearsal checks that the approved `0.1.0` release metadata remains applied. It verifies that real package metadata and package-lock metadata stay at `0.1.0`, the simulated manifest uses `0.1.0`, required release docs exist, and package scripts still block direct publish, release, tag, version, and deploy commands.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, change package-lock metadata, deploy services, start a runtime, accept contributions, or approve production runtime use.
+
+## Release Review
+
+Run only the release review packet check:
+
+```bash
+npm run release:review
+```
+
+The review packet records current release inputs, the recommended future first release version, draft release notes, and known blocked release paths.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
+
+## Release Approval Request
+
+Run only the release approval request:
+
+```bash
+npm run release:approval-request
+```
+
+The request packet shows exact future owner decision options for npm publishing and GitHub release publishing.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
+
+## Release Candidate Readiness
+
+Run only the release-candidate readiness check:
+
+```bash
+npm run release:candidate-readiness
+```
+
+The check verifies the package is locally ready for approved release execution preflight while release execution remains unperformed.
+
+It does not publish npm, create a GitHub release, create a tag, change package version, deploy services, start a runtime, accept contributions, or approve production runtime use.
+
+## Readiness Report
+
+Run only the package readiness report:
+
+```bash
+npm run readiness:report
+```
+
+The readiness report is a fast read-only summary of current package posture.
+
+It prints package metadata, publish boundary, runtime boundary, package exports, validation schemas, readiness commands, installed package smokes, required readiness docs, and intentionally blocked scope.
+
+The report includes the minimal runtime PRD package as a required readiness doc. That PRD package does not add runtime implementation.
+
+It fails if required posture fields are missing or inconsistent.
+
+It does not run the full readiness gate. Use `npm run publish:readiness` for verification before committing or releasing.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Reviewer First-Pass Smoke
+
+Run only the reviewer first-pass smoke:
+
+```bash
+npm run reviewer:smoke
+```
+
+The smoke creates a temporary clean checkout-style copy from git-visible files, runs `npm install`, runs `npm run readiness:report`, checks expected review-only markers, and removes the temporary copy.
+
+It does not publish npm, create a GitHub release, deploy services, start a backend, connect to a database, accept contributions, or use real data.
+
+## Public Claim Boundary Scan
+
+Run only the public claim-boundary guard:
+
+```bash
+npm run claims:scan
+```
+
+The guard scans public README, docs, and examples for unsafe production, contribution, npm publishing, GitHub release, and hosted-runtime claims while the package remains not hosted.
+
+It skips fenced code blocks so docs can include unsafe wording examples as examples.
+
+It does not change files, change the implemented Apache-2.0 license, publish npm, create a release, deploy services, start a runtime, or accept contributions.
+
+## License Approval Rehearsal
+
+Run only the read-only license approval rehearsal:
+
+```bash
+npm run license:rehearsal
+```
+
+The rehearsal verifies the current Apache-2.0 implementation boundary, confirms the `LICENSE` file exists, checks publish and release scripts remain blocked, and confirms the implementation checklist is complete.
+
+It does not publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, accept contributions, or approve production runtime use.
+
+## License Approval Decision Record
+
+Run only the license approval decision record check:
+
+```bash
+npm run license:decision-record
+```
+
+The command verifies that the owner license decision record exists, says implemented, and matches the Apache-2.0 source-package state.
+
+It does not change the implemented Apache-2.0 license, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, or accept contributions.
+
+## License Approval Request Packet
+
+Run only the owner license approval request packet check:
+
+```bash
+npm run license:approval-request
+```
+
+The command verifies that the already captured owner decision options are present and that Apache-2.0 implementation is complete.
+
+It does not change the implemented Apache-2.0 license, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, or accept contributions.
+
+## License Decision Implementation Plan
+
+Run only the license decision implementation plan:
+
+```bash
+npm run license:implementation-plan
+```
+
+The command verifies that all four historical owner decision paths are mapped, stop conditions are present, and Apache-2.0 implementation is complete.
+
+It does not change the implemented Apache-2.0 license, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, or accept contributions.
+
+## Historical License Boundary
+
+Run only the historical license boundary check:
+
+```bash
+npm run license:history-boundary
+```
+
+The check verifies that old `UNLICENSED` license recommendation docs are clearly marked as superseded historical decision records and cannot be mistaken for current guidance.
+
+It does not change the implemented Apache-2.0 license, change package metadata, publish npm, create a GitHub release, deploy services, start a runtime, connect to a database, or accept contributions.
+
+## Legal Review Packet
+
+Run only the legal-review question packet check:
+
+```bash
+npm run legal:packet
+```
+
+The command verifies the current blocked boundary and prints the legal or owner review topics for licensing, commercial reuse, contribution terms, support, security, name and trademark, hosted runtime, and private-data boundaries.
+
+It does not provide legal advice, change the implemented Apache-2.0 license, change package metadata, publish npm, create a GitHub release, deploy services, or accept contributions.
+
+## Owner Launch Checklist
+
+Run only the owner launch decision checklist:
+
+```bash
+npm run owner:launch-checklist
+```
+
+The checklist reports that Apache-2.0 source package sharing is ready, the first npm and GitHub release are complete, and the remaining launch channels stay blocked until explicit owner approvals are recorded for hosted runtime work, branch governance, and contribution terms.
+
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
+
+## Owner License Approval Preflight
+
+Run only the final owner license approval preflight:
+
+```bash
+npm run owner:license-preflight
+```
+
+The preflight verifies the approval package is complete, the license decision record is implemented, and owner license approval is captured.
+
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
+
+## Owner License Decision Workflow
+
+Run only the owner decision intake:
+
+```bash
+npm run owner:decision-intake
+```
+
+The intake verifies the exact owner decision capture point, the available options, and the captured Apache-2.0 decision.
+
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
+
+Run only the owner license decision workflow:
+
+```bash
+npm run owner:decision-workflow
+```
+
+The workflow verifies the decision docs are present, the exact owner options are available, and the owner license decision is captured.
+
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
+
+## World-Share Readiness
+
+Run only the world-share readiness boundary report:
+
+```bash
+npm run world:readiness
+```
+
+The report separates Apache-2.0 source package sharing from blocked production launch channels. It exits successfully only when the current boundary is intact: Apache-2.0, version `0.1.0`, `LICENSE` file present, npm package published, GitHub release published, hosted runtime blocked, and code contributions blocked.
+
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
+
+## First Visitor Share Audit
+
+Run only the first visitor share audit:
+
+```bash
+npm run share:audit
+```
+
+The audit verifies public review docs, safe share wording, unsafe wording guardrails, and production launch blockers.
+
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
+
+## Launch Decision Status
+
+Run only the one-command launch decision status report:
+
+```bash
+npm run launch:decision-status
+```
+
+The report summarizes what is ready and blocked across Apache-2.0 source package sharing, the first npm and GitHub release, hosted runtime work, branch governance, and contribution acceptance.
+
+It does not publish npm, create a GitHub release, deploy services, accept contributions, or approve production runtime use.
+
+## Package Dry Run
+
+Run only the package dry-run check:
+
+```bash
+npm run package:dry-run
+```
+
+The dry-run check builds the package, runs `npm pack --dry-run --json`, and verifies the shared required package path manifest.
+
+It checks the same required package path manifest that `npm run package:content-smoke` verifies after local tarball install.
+
+It does not publish.
+
+## Release Artifact Manifest
+
+Run only the release artifact manifest check:
+
+```bash
+npm run release:artifact-manifest
+```
+
+The release artifact manifest check builds the package, runs `npm pack --dry-run --json`, verifies required and forbidden package paths, reads the live npm registry metadata, and prints both the current source dry-run artifact identity and the immutable published npm artifact identity.
+
+The current source dry-run artifact can differ from the already-published npm artifact after post-release docs or source changes. That difference is expected and does not publish a new version.
+
+It does not publish, create a GitHub release, create a tag, change package version, deploy services, start hosted runtime behavior, or accept code contributions.
+
+## Release Snapshot Boundary
+
+Run only the release snapshot boundary check:
+
+```bash
+npm run release:snapshot-boundary
+```
+
+The release snapshot boundary check reads the public remote release tag and live npm registry metadata to distinguish latest `main`, the immutable npm package `@source-wire/contracts@0.1.0`, and the immutable `v0.1.0` release snapshot.
+
+It does not publish a new npm version, create a GitHub release, create a tag, change package version, deploy services, start hosted runtime behavior, or accept code contributions.
+
+## Consumer Smoke
+
+Run only the consumer smoke check:
+
+```bash
+npm run consumer:smoke
+```
+
+The consumer smoke check builds and packs Source-Wire locally, creates a temporary external TypeScript project, installs the local tarball, typechecks package-root imports from `@source-wire/contracts`, runs a tiny compiled import check, runs the installed `source-wire` CLI against every schema-backed synthetic fixture shipped inside the installed package, and removes the temporary project.
+
+Installed fixture matrix:
+
+| Installed fixture | CLI schema |
+| --- | --- |
+| `examples/fixtures/project-context-pack/project-context.json` | `project-context-pack` |
+| `examples/fixtures/second-brain/use-2nd-brain-example.json` | `second-brain-v1` |
+| `examples/fixtures/chat-export/agent-session.jsonl` | `chat-export-message` |
+| `examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json` | `owner-hosted-api-mcp-boundary` |
+
+Markdown vault fixtures are package contents, but they are not part of this validation matrix until a Markdown vault schema exists.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Package Content Smoke
+
+Run only the package content smoke check:
+
+```bash
+npm run package:content-smoke
+```
+
+The package content smoke check builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, checks the shared required package path manifest in the installed package, asserts that the installed runtime-boundary readiness summary still contains the key runtime-boundary claims, and runs the Markdown link checker from the installed package root.
+
+It checks installed `README.md`, `docs`, and `examples` local links from `node_modules/@source-wire/contracts`.
+
+The installed readiness summary content assertions protect:
+
+- only a minimal synthetic in-memory runtime boundary is included,
+- Source-Wire-hosted memory remains blocked,
+- Source-Wire does not host memory,
+- trusted memory requires owner or application approval.
+
+Expected markers include `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links`, and `ok installed package docs anchors`.
+
+This is different from `npm run docs:links`, which checks links in the repository checkout.
+
+Installed TypeScript example typechecking is handled by `npm run examples:installed-smoke`.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Installed TypeScript Examples Smoke
+
+Run only the installed TypeScript examples smoke:
+
+```bash
+npm run examples:installed-smoke
+```
+
+The installed examples smoke builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, copies the public TypeScript example files into that project, and typechecks them against the installed package declarations.
+
+This is different from `npm run examples:typecheck`, which checks examples in the repository checkout through repo-local TypeScript path mapping.
+
+The installed smoke proves package-root imports from `@source-wire/contracts` work for consumer TypeScript examples.
+
+It does not execute compiled example JavaScript.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Minimal Runtime Smoke
+
+Run only the minimal synthetic runtime smoke:
+
+```bash
+npm run minimal-runtime:smoke
+```
+
+The minimal runtime smoke builds the package and runs `examples/minimal-runtime/minimal-runtime-smoke.mjs`.
+
+It validates exported synthetic in-memory runtime boundary code against the owner-hosted API plus MCP boundary proof cases.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Runtime Boundary Smoke
+
+For the full runtime-boundary proof lane, see [Runtime Boundary Readiness](../internal/runtime-boundary-readiness.md).
+
+Run only the synthetic runtime boundary smoke:
+
+```bash
+npm run runtime-boundary:smoke
+```
+
+The runtime boundary smoke runs `examples/runtime-boundary/synthetic-boundary-smoke.mjs`.
+
+It checks the synthetic owner-hosted API plus MCP boundary cases without starting a server.
+
+The smoke output includes `ok runtime boundary check ...` markers before `ok synthetic runtime boundary smoke`.
+
+If the smoke fails, the error names the failed check, expected value, received value, and next action.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Installed Runtime Boundary Smoke
+
+Run only the installed synthetic runtime boundary smoke:
+
+```bash
+npm run runtime-boundary:installed-smoke
+```
+
+The installed runtime boundary smoke builds and packs Source-Wire locally, creates a temporary external project, installs the local tarball, and runs `examples/runtime-boundary/synthetic-boundary-smoke.mjs` from `node_modules/@source-wire/contracts`.
+
+It proves the packaged runtime-boundary example can execute after package installation.
+
+The installed smoke surfaces the same diagnostic markers from the packaged example.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Runtime Boundary Diagnostics Smoke
+
+Run only the diagnostic regression smoke:
+
+```bash
+npm run runtime-boundary:diagnostics-smoke
+```
+
+The diagnostics smoke intentionally forces one synthetic runtime-boundary check to fail through `SOURCE_WIRE_RUNTIME_BOUNDARY_SMOKE_FORCE_FAILURE`.
+
+It passes only when the failure output includes the failed check name, assertion, expected value, received value, and next action.
+
+It does not publish npm.
+
+It does not run a backend, database, MCP server, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+
+## Docs Link Check
+
+Run only the docs link check:
+
+```bash
+npm run docs:links
+```
+
+The docs link check validates local Markdown links in README, docs, and examples.
+
+It ignores external URLs, mailto links, and pure page anchors.
+
+It strips optional anchor fragments before checking local file or directory targets.
+
+It does not validate external URL availability or anchor existence.
+
+## Command Docs Setup Check
+
+Run only the command-doc setup check:
+
+```bash
+npm run docs:command-setup
+```
+
+The command-doc setup check scans README, docs, and examples Markdown files.
+
+It verifies command-bearing files include setup context or a Quickstart pointer before readers copy local commands.
+
+Expected marker:
+
+```text
+ok command docs setup
+ok readiness command docs match package scripts
+```
+
+It does not validate shell behavior or external services.
+
+## Expected Package Contents
+
+The package should include:
+
+- `README.md`
+- `package.json`
+- built `dist` files
+- docs index
+- adopter walkthrough
+- architecture map
+- quickstart
+- API reference
+- public contract docs
+- public extraction checklist
+- runtime boundary docs
+- runtime boundary readiness summary
+- runtime implementation gate
+- runtime decision docs
+- runtime and license decision prototypes
+- schema docs
+- validation CLI docs
+- CI docs
+- publish-readiness docs
+- release and license planning docs
+- synthetic examples
+- runtime-boundary example files
+- owner-hosted API plus MCP boundary fixtures
+- TypeScript examples
+- Markdown vault fixtures
+- JSON schemas
+
+The package should not include:
+
+- `.git`
+- `.github`
+- `node_modules`
+- `src`
+- `scripts`
+- `.env` files
+- `package-lock.json`
+- `tsconfig.json`
+- private files
+- build junk outside the intentional `dist` output
+
+## Current Publish Boundary
+
+The first npm publication and matching GitHub release are complete.
+
+Do not run:
+
+```bash
+npm publish
+```
+
+for a future package version until a later release unit explicitly opens that version and records owner approval.
+
+## Release Gate
+
+Run:
+
+```bash
+npm run release:gate
+```
+
+The release gate verifies that current package metadata still matches the release decision:
+
+- license is `Apache-2.0`,
+- package-lock root license is `Apache-2.0`,
+- version is `0.1.0`,
+- npm public access is explicit through `publishConfig.access: public`,
+- package scripts do not include publish, release, tag, version-change, or deployment commands.
+
+Release decision docs:
+
+- [Release Decision](../internal/release-decision.md)
+- [License Decision Gate](../internal/license-decision-gate.md)
+- [License And Version Policy](../internal/license-version-policy.md)
+
+## What Is Still Blocked
+
+This readiness work does not include:
+
+- npm publishing,
+- GitHub release publishing,
+- deployment,
+- API server runtime,
+- MCP server runtime,
+- database migrations,
+- PostgreSQL or pgvector setup,
+- memory-engine integration,
+- live connectors,
+- Mission Control UI,
+- real user data,
+- trusted Memory Record promotion,
+- private implementation code,
+- secret-dependent checks,
+- private repo checkout.
+
+## Future Release Gate
+
+A future publish unit should decide:
+
+- package name and scope finality,
+- license posture,
+- versioning policy,
+- npm access policy,
+- release notes,
+- owner approval,
+- post-publish verification.

@@ -69,4 +69,4 @@ Security reporting does not approve:
 - code contribution acceptance,
 - contribution enforcement or maintainer workflow changes.
 
-Read [Public Status](docs/public-status.md) for the current repo state.
+Read [Public Status](docs/status/public-status.md) for the current repo state.

@@ -184,6 +184,6 @@ This contract does not add:
 ## Related Docs
 
 - [MCP Tool Behavior Contract](mcp-tool-behavior-contract.md)
-- [Public Runtime Decision](../public-runtime-decision.md)
-- [Runtime Boundary](../runtime-boundary.md)
-- [Architecture Map](../architecture-map.md)
+- [Public Runtime Decision](../internal/public-runtime-decision.md)
+- [Runtime Boundary](../concepts/runtime-boundary.md)
+- [Architecture Map](../concepts/architecture-map.md)

@@ -8,7 +8,7 @@ It is not a runtime test.
 
 It is not currently schema-validated by the CLI.
 
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../../docs/quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../../docs/getting-started/quickstart.md).
 
 ## Files
 
@@ -71,4 +71,4 @@ The fixture covers:
 ## Related Docs
 
 - [Wrapper Runtime Policy Contract](../../../docs/contracts/wrapper-runtime-policy-contract.md)
-- [Wrapper Runtime Fixture Matrix](../../../docs/memory-engine-wrapper-runtime-fixture-matrix.md)
+- [Wrapper Runtime Fixture Matrix](../../../docs/internal/memory-engine-wrapper-runtime-fixture-matrix.md)

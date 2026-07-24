@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Technical reviewer guide
-    url: https://github.com/DanielJD1216/Source-Wire/blob/main/docs/technical-reviewer-guide.md
+    url: https://github.com/DanielJD1216/Source-Wire/blob/main/docs/guides/technical-reviewer-guide.md
     about: Start here before filing review feedback.
   - name: Reviewer feedback guide
-    url: https://github.com/DanielJD1216/Source-Wire/blob/main/docs/reviewer-feedback-guide.md
+    url: https://github.com/DanielJD1216/Source-Wire/blob/main/docs/guides/reviewer-feedback-guide.md
     about: Use this to choose the right issue template and avoid unsafe data.

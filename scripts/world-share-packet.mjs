@@ -11,14 +11,14 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 for (const requiredPath of [
   "LICENSE",
   "README.md",
-  "docs/public-status.md",
-  "docs/share-for-review.md",
-  "docs/world-share-final-preflight.md",
-  "docs/world-share-kit.md",
-  "docs/world-share-packet.md",
-  "docs/world-share-readiness.md",
-  "docs/owner-launch-checklist.md",
-  "docs/reviewer-feedback-guide.md"
+  "docs/status/public-status.md",
+  "docs/guides/share-for-review.md",
+  "docs/internal/world-share-final-preflight.md",
+  "docs/internal/world-share-kit.md",
+  "docs/internal/world-share-packet.md",
+  "docs/internal/world-share-readiness.md",
+  "docs/internal/owner-launch-checklist.md",
+  "docs/guides/reviewer-feedback-guide.md"
 ]) {
   await assertPathExists(requiredPath);
 }
@@ -60,7 +60,7 @@ console.log("");
 console.log("Repo: https://github.com/DanielJD1216/Source-Wire");
 console.log("npm: https://www.npmjs.com/package/@source-wire/contracts");
 console.log("Release: https://github.com/DanielJD1216/Source-Wire/releases/tag/v0.1.0");
-console.log("Start here: docs/public-status.md");
+console.log("Start here: docs/status/public-status.md");
 
 printSection("First Reviewer Commands");
 printList([

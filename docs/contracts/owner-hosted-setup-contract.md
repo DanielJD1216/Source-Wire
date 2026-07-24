@@ -61,11 +61,11 @@ Stop the setup path if any artifact asks for real secrets, crawls private folder
 Synthetic fixtures:
 
 - [Owner-hosted setup checklist](../../examples/fixtures/owner-hosted-setup/README.md)
-- [Owner-hosted setup readiness matrix](../owner-hosted-setup-readiness-fixture-matrix.md)
+- [Owner-hosted setup readiness matrix](../internal/owner-hosted-setup-readiness-fixture-matrix.md)
 
 These fixtures are not schema-validated by the current CLI.
 
 ## Related Docs
 
-- [Owner-Hosted Setup PRD](../owner-hosted-setup-prd.md)
-- [Owner-Hosted Setup Issue Slices](../owner-hosted-setup-issue-slices.md)
+- [Owner-Hosted Setup PRD](../internal/owner-hosted-setup-prd.md)
+- [Owner-Hosted Setup Issue Slices](../internal/owner-hosted-setup-issue-slices.md)

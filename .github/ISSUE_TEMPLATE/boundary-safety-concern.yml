@@ -36,7 +36,7 @@ body:
     attributes:
       label: Location
       description: Link or name the file, command output, README section, or issue template.
-      placeholder: README.md, docs/runtime-boundary.md, npm run readiness:report
+      placeholder: README.md, docs/concepts/runtime-boundary.md, npm run readiness:report
     validations:
       required: true
   - type: textarea

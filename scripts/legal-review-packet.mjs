@@ -10,12 +10,12 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 await assertPathExists("LICENSE");
 
 for (const requiredPath of [
-  "docs/legal-review-question-packet.md",
-  "docs/license-decision-gate.md",
-  "docs/owner-license-approval-packet.md",
-  "docs/owner-launch-checklist.md",
-  "docs/future-license-change-plan.md",
-  "docs/world-share-readiness.md",
+  "docs/internal/legal-review-question-packet.md",
+  "docs/internal/license-decision-gate.md",
+  "docs/internal/owner-license-approval-packet.md",
+  "docs/internal/owner-launch-checklist.md",
+  "docs/internal/future-license-change-plan.md",
+  "docs/internal/world-share-readiness.md",
   "CONTRIBUTING.md",
   "SUPPORT.md",
   "SECURITY.md"
@@ -58,7 +58,7 @@ printList([
 
 printSection("Next Action");
 printList([
-  "Read docs/legal-review-question-packet.md.",
+  "Read docs/internal/legal-review-question-packet.md.",
   "Use Apache-2.0 for public source-package reuse.",
   "Route remaining contributor, support, hosted runtime, brand, and private-data questions before those channels open."
 ]);

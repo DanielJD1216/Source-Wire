@@ -1,7 +1,7 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const request = await readFile("docs/release-patch-approval-request.md", "utf8");
+const request = await readFile("docs/internal/release-patch-approval-request.md", "utf8");
 const readme = await readFile("README.md", "utf8");
 const sourceIndex = await readFile("src/index.ts", "utf8");
 const consumerSmoke = await readFile("scripts/consumer-smoke.mjs", "utf8");
@@ -14,10 +14,10 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must remain public");
 
 for (const requiredPath of [
-  "docs/release-patch-approval-request.md",
-  "docs/release-approval-request-packet.md",
-  "docs/release-execution-preflight.md",
-  "docs/release-snapshot-boundary.md",
+  "docs/internal/release-patch-approval-request.md",
+  "docs/internal/release-approval-request-packet.md",
+  "docs/internal/release-execution-preflight.md",
+  "docs/status/release-snapshot-boundary.md",
   "README.md",
   "src/index.ts",
   "scripts/consumer-smoke.mjs",
@@ -73,7 +73,7 @@ printSection("Patch Release Boundary");
 printList([
   "Latest main fixes the exported version mismatch and guards it in consumer smoke.",
   "The npm 0.1.0 artifact is immutable and remains disclosed as mismatched.",
-  "Use the exact approval text in docs/release-patch-approval-request.md before any future patch release.",
+  "Use the exact approval text in docs/internal/release-patch-approval-request.md before any future patch release.",
   "Hosted runtime child planning issues are already published as #259 through #264 and must not be republished in this patch unit.",
   "Keep hosted runtime behavior, deployment, real data, production runtime claims, and contribution acceptance blocked."
 ]);

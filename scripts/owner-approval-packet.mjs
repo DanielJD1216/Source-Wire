@@ -1,7 +1,7 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const approvalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const approvalPacket = await readFile("docs/internal/owner-approval-record-packet.md", "utf8");
 const failures = [];
 
 const approvalTargets = [
@@ -38,7 +38,7 @@ const approvalTargets = [
     issue: 257,
     label: "Hosted runtime child issue publication path",
     exactText:
-      "Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked."
+      "Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/internal/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked."
   },
   {
     target: "runtime-prd-refresh",
@@ -118,12 +118,12 @@ assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 aft
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 for (const requiredPath of [
-  "docs/owner-approval-record-packet.md",
-  "docs/owner-launch-checklist.md",
-  "docs/launch-decision-status.md",
-  "docs/release-approval-request-packet.md",
-  "docs/branch-governance-approval-request.md",
-  "docs/legal-review-question-packet.md"
+  "docs/internal/owner-approval-record-packet.md",
+  "docs/internal/owner-launch-checklist.md",
+  "docs/internal/launch-decision-status.md",
+  "docs/internal/release-approval-request-packet.md",
+  "docs/internal/branch-governance-approval-request.md",
+  "docs/internal/legal-review-question-packet.md"
 ]) {
   await assertPathExists(requiredPath);
 }

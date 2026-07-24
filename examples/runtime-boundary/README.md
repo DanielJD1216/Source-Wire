@@ -12,7 +12,7 @@ It is not schema-validated by the current CLI.
 
 ## Local Setup
 
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../docs/quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../docs/getting-started/quickstart.md).
 
 Install dependencies first:
 
@@ -74,7 +74,7 @@ ok diagnostic failure includes received value
 ok diagnostic failure includes next action
 ```
 
-For the full local readiness marker map, read [Publish Readiness](../../docs/publish-readiness.md). For the GitHub Actions Package Checks marker map, read [CI Checks](../../docs/ci-checks.md).
+For the full local readiness marker map, read [Publish Readiness](../../docs/guides/publish-readiness.md). For the GitHub Actions Package Checks marker map, read [CI Checks](../../docs/reference/ci-checks.md).
 
 ## What It Proves
 
@@ -140,6 +140,6 @@ This example does not add:
 
 ## Related Docs
 
-- [First Runtime PRD Package](../../docs/first-runtime-prd.md)
-- [Runtime Implementation Gate](../../docs/runtime-implementation-gate.md)
+- [First Runtime PRD Package](../../docs/internal/first-runtime-prd.md)
+- [Runtime Implementation Gate](../../docs/internal/runtime-implementation-gate.md)
 - [Owner-Hosted API Plus MCP Boundary Contract](../../docs/contracts/owner-hosted-api-mcp-boundary-contract.md)

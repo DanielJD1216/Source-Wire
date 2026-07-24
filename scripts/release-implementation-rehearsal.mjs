@@ -19,22 +19,22 @@ assertEqual(packageLock.packages?.[""]?.license, packageJson.license, "package-l
 
 for (const requiredPath of [
   "LICENSE",
-  "docs/release-implementation-rehearsal.md",
-  "docs/release-implementation-runbook.md",
-  "docs/release-publish-config-plan.md",
-  "docs/release-version-recommendation.md",
-  "docs/release-candidate-readiness.md",
-  "docs/release-approval-request-packet.md",
-  "docs/release-notes-draft.md",
-  "docs/public-status.md"
+  "docs/internal/release-implementation-rehearsal.md",
+  "docs/internal/release-implementation-runbook.md",
+  "docs/internal/release-publish-config-plan.md",
+  "docs/internal/release-version-recommendation.md",
+  "docs/internal/release-candidate-readiness.md",
+  "docs/internal/release-approval-request-packet.md",
+  "docs/internal/release-notes-draft.md",
+  "docs/status/public-status.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const runbook = await readFile("docs/release-implementation-runbook.md", "utf8");
-const recommendation = await readFile("docs/release-version-recommendation.md", "utf8");
-const rehearsalDoc = await readFile("docs/release-implementation-rehearsal.md", "utf8");
-const releaseNotesDraft = await readFile("docs/release-notes-draft.md", "utf8");
+const runbook = await readFile("docs/internal/release-implementation-runbook.md", "utf8");
+const recommendation = await readFile("docs/internal/release-version-recommendation.md", "utf8");
+const rehearsalDoc = await readFile("docs/internal/release-implementation-rehearsal.md", "utf8");
+const releaseNotesDraft = await readFile("docs/internal/release-notes-draft.md", "utf8");
 
 for (const [label, text, requiredText] of [
   ["release implementation runbook", runbook, "Use version 0.1.0 for the first public release"],
@@ -77,10 +77,10 @@ for (const requiredPath of [
   "package.json",
   "README.md",
   "LICENSE",
-  "docs/release-implementation-runbook.md",
-  "docs/release-publish-config-plan.md",
-  "docs/release-version-recommendation.md",
-  "docs/release-notes-draft.md"
+  "docs/internal/release-implementation-runbook.md",
+  "docs/internal/release-publish-config-plan.md",
+  "docs/internal/release-version-recommendation.md",
+  "docs/internal/release-notes-draft.md"
 ]) {
   if (!requiredPackagePaths.includes(requiredPath)) {
     failures.push(`release rehearsal required package path missing from package manifest: ${requiredPath}`);

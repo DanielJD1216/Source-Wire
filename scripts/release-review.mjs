@@ -10,23 +10,23 @@ assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 aft
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after first release");
 
 const requiredDocs = [
-  "docs/release-review-packet.md",
-  "docs/release-version-recommendation.md",
-  "docs/release-notes-draft.md",
-  "docs/release-approval-request-packet.md",
-  "docs/release-candidate-readiness.md",
-  "docs/release-decision.md",
-  "docs/public-status.md",
-  "docs/ci-checks.md"
+  "docs/internal/release-review-packet.md",
+  "docs/internal/release-version-recommendation.md",
+  "docs/internal/release-notes-draft.md",
+  "docs/internal/release-approval-request-packet.md",
+  "docs/internal/release-candidate-readiness.md",
+  "docs/internal/release-decision.md",
+  "docs/status/public-status.md",
+  "docs/reference/ci-checks.md"
 ];
 
 for (const requiredPath of ["LICENSE", ...requiredDocs]) {
   await assertPathExists(requiredPath);
 }
 
-const reviewPacket = await readFile("docs/release-review-packet.md", "utf8");
-const versionRecommendation = await readFile("docs/release-version-recommendation.md", "utf8");
-const releaseNotesDraft = await readFile("docs/release-notes-draft.md", "utf8");
+const reviewPacket = await readFile("docs/internal/release-review-packet.md", "utf8");
+const versionRecommendation = await readFile("docs/internal/release-version-recommendation.md", "utf8");
+const releaseNotesDraft = await readFile("docs/internal/release-notes-draft.md", "utf8");
 
 for (const [label, text, requiredText] of [
   ["release review packet", reviewPacket, "Status: release review only."],

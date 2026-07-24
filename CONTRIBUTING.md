@@ -14,9 +14,9 @@ Structured review feedback is welcome through GitHub issues:
 
 Use:
 
-- [Technical Reviewer Guide](docs/technical-reviewer-guide.md)
-- [Reviewer Feedback Guide](docs/reviewer-feedback-guide.md)
-- [Public Status](docs/public-status.md)
+- [Technical Reviewer Guide](docs/guides/technical-reviewer-guide.md)
+- [Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md)
+- [Public Status](docs/status/public-status.md)
 
 Pull requests are not the public feedback path yet. The pull request template exists only to restate the current boundary for owner-approved maintenance or verification branches.
 

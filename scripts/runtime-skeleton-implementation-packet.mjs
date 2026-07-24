@@ -1,8 +1,8 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const packetPath = "docs/runtime-skeleton-implementation-packet.md";
-const slicesPath = "docs/runtime-skeleton-issue-slices.md";
+const packetPath = "docs/internal/runtime-skeleton-implementation-packet.md";
+const slicesPath = "docs/internal/runtime-skeleton-issue-slices.md";
 const packet = await readFile(packetPath, "utf8");
 const slices = await readFile(slicesPath, "utf8");
 const failures = [];
@@ -17,14 +17,14 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 for (const requiredPath of [
   packetPath,
   slicesPath,
-  "docs/private-proof-runtime-extraction-readiness.md",
-  "docs/runtime-implementation-gate.md",
-  "docs/runtime-proof-intake.md",
-  "docs/hosted-runtime-wrapper-proof-reconciliation.md",
-  "docs/minimal-runtime-prd.md",
-  "docs/runtime-skeleton-implementation-proof.md",
-  "docs/runtime-skeleton-smoke.md",
-  "docs/owner-approval-record-packet.md",
+  "docs/internal/private-proof-runtime-extraction-readiness.md",
+  "docs/internal/runtime-implementation-gate.md",
+  "docs/internal/runtime-proof-intake.md",
+  "docs/internal/hosted-runtime-wrapper-proof-reconciliation.md",
+  "docs/internal/minimal-runtime-prd.md",
+  "docs/internal/runtime-skeleton-implementation-proof.md",
+  "docs/internal/runtime-skeleton-smoke.md",
+  "docs/internal/owner-approval-record-packet.md",
   "scripts/record-owner-approval.mjs"
 ]) {
   await assertPathExists(requiredPath);
@@ -82,7 +82,7 @@ for (const blockedText of [
   assertIncludes(slices, blockedText, `${slicesPath} blocked boundary`);
 }
 
-const ownerApprovalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const ownerApprovalPacket = await readFile("docs/internal/owner-approval-record-packet.md", "utf8");
 const ownerApprovalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
 assertIncludes(ownerApprovalPacket, "runtime-skeleton-implementation", "owner approval packet target");
 assertIncludes(ownerApprovalPacket, exactApprovalText, "owner approval packet exact approval");

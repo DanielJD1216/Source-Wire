@@ -373,6 +373,6 @@ This contract does not add:
 
 - [Owner-Hosted API Plus MCP Boundary Contract](owner-hosted-api-mcp-boundary-contract.md)
 - [MCP Tool Behavior Contract](mcp-tool-behavior-contract.md)
-- [Memory Engine Baseline API And MCP Wrapper Boundary](../memory-engine-baseline-api-mcp-wrapper-boundary.md)
-- [Source-Wire Memory Engine Wrapper Runtime PRD](../memory-engine-wrapper-runtime-prd.md)
-- [Source-Wire Memory Engine Wrapper Runtime Issue Slices](../memory-engine-wrapper-runtime-issue-slices.md)
+- [Memory Engine Baseline API And MCP Wrapper Boundary](../internal/memory-engine-baseline-api-mcp-wrapper-boundary.md)
+- [Source-Wire Memory Engine Wrapper Runtime PRD](../internal/memory-engine-wrapper-runtime-prd.md)
+- [Source-Wire Memory Engine Wrapper Runtime Issue Slices](../internal/memory-engine-wrapper-runtime-issue-slices.md)

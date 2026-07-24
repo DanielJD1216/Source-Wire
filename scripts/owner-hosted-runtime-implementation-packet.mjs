@@ -1,11 +1,11 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const packetPath = "docs/owner-hosted-runtime-implementation-packet.md";
-const slicesPath = "docs/owner-hosted-runtime-implementation-slices.md";
+const packetPath = "docs/internal/owner-hosted-runtime-implementation-packet.md";
+const slicesPath = "docs/internal/owner-hosted-runtime-implementation-slices.md";
 const packet = await readFile(packetPath, "utf8");
 const slices = await readFile(slicesPath, "utf8");
-const ownerApprovalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const ownerApprovalPacket = await readFile("docs/internal/owner-approval-record-packet.md", "utf8");
 const ownerApprovalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
 const failures = [];
 
@@ -19,18 +19,18 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 for (const requiredPath of [
   packetPath,
   slicesPath,
-  "docs/owner-hosted-runtime-implementation-proof.md",
-  "docs/owner-hosted-runtime-smoke.md",
-  "docs/runtime-implementation-gate.md",
+  "docs/internal/owner-hosted-runtime-implementation-proof.md",
+  "docs/internal/owner-hosted-runtime-smoke.md",
+  "docs/internal/runtime-implementation-gate.md",
   "src/owner-hosted-runtime/index.ts",
   "examples/owner-hosted-runtime/owner-hosted-runtime-smoke.mjs",
   "examples/fixtures/owner-hosted-runtime/owner-hosted-runtime-fixture-matrix.json",
-  "docs/runtime-skeleton-implementation-proof.md",
-  "docs/api-contract-implementation-packet.md",
-  "docs/mcp-contract-implementation-packet.md",
-  "docs/public-safe-fixture-implementation-packet.md",
-  "docs/runtime-prd-refresh-proof.md",
-  "docs/owner-approval-record-packet.md",
+  "docs/internal/runtime-skeleton-implementation-proof.md",
+  "docs/internal/api-contract-implementation-packet.md",
+  "docs/internal/mcp-contract-implementation-packet.md",
+  "docs/internal/public-safe-fixture-implementation-packet.md",
+  "docs/internal/runtime-prd-refresh-proof.md",
+  "docs/internal/owner-approval-record-packet.md",
   "scripts/record-owner-approval.mjs",
   "scripts/owner-approval-packet.mjs"
 ]) {

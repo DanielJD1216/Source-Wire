@@ -4,7 +4,7 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 const expectedDescription = "Apache-2.0 agent-memory contracts. npm v0.1.0, GitHub release v0.1.0, not hosted.";
-const expectedHomepage = "https://github.com/DanielJD1216/Source-Wire/blob/main/docs/share-for-review.md";
+const expectedHomepage = "https://github.com/DanielJD1216/Source-Wire/blob/main/docs/guides/share-for-review.md";
 const expectedTopics = [
   "agent-memory",
   "apache-2-0",
@@ -22,14 +22,14 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 for (const requiredPath of [
   "README.md",
   "LICENSE",
-  "docs/repository-metadata.md",
-  "docs/share-for-review.md",
-  "docs/public-status.md"
+  "docs/reference/repository-metadata.md",
+  "docs/guides/share-for-review.md",
+  "docs/status/public-status.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const repositoryMetadata = await readFile("docs/repository-metadata.md", "utf8");
+const repositoryMetadata = await readFile("docs/reference/repository-metadata.md", "utf8");
 const readme = await readFile("README.md", "utf8");
 
 for (const [label, text, requiredText] of [
@@ -45,7 +45,7 @@ for (const [label, text, requiredText] of [
   ["repository metadata", repositoryMetadata, "published to npm as `@source-wire/contracts@0.1.0`"],
   ["repository metadata", repositoryMetadata, "released on GitHub as `v0.1.0`"],
   ["repository metadata", repositoryMetadata, "hosted runtime backend"],
-  ["README", readme, "[Repository Metadata](docs/repository-metadata.md)"]
+  ["README", readme, "[Repository Metadata](docs/reference/repository-metadata.md)"]
 ]) {
   if (!text.includes(requiredText)) {
     failures.push(`${label} missing required metadata boundary text: ${requiredText}`);

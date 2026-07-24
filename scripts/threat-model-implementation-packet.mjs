@@ -1,8 +1,8 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const packetPath = "docs/threat-model-implementation-packet.md";
-const slicesPath = "docs/threat-model-implementation-slices.md";
+const packetPath = "docs/internal/threat-model-implementation-packet.md";
+const slicesPath = "docs/internal/threat-model-implementation-slices.md";
 const packet = await readFile(packetPath, "utf8");
 const slices = await readFile(slicesPath, "utf8");
 const failures = [];
@@ -17,15 +17,15 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 for (const requiredPath of [
   packetPath,
   slicesPath,
-  "docs/runtime-threat-boundary-implementation-proof.md",
-  "docs/runtime-threat-boundary-smoke.md",
-  "docs/hosted-runtime-threat-model-trust-boundary.md",
-  "docs/runtime-implementation-gate.md",
-  "docs/runtime-skeleton-implementation-proof.md",
-  "docs/database-posture-implementation-packet.md",
-  "docs/public-safe-fixture-implementation-packet.md",
-  "docs/deployment-boundary-implementation-packet.md",
-  "docs/owner-approval-record-packet.md",
+  "docs/internal/runtime-threat-boundary-implementation-proof.md",
+  "docs/internal/runtime-threat-boundary-smoke.md",
+  "docs/internal/hosted-runtime-threat-model-trust-boundary.md",
+  "docs/internal/runtime-implementation-gate.md",
+  "docs/internal/runtime-skeleton-implementation-proof.md",
+  "docs/internal/database-posture-implementation-packet.md",
+  "docs/internal/public-safe-fixture-implementation-packet.md",
+  "docs/internal/deployment-boundary-implementation-packet.md",
+  "docs/internal/owner-approval-record-packet.md",
   "scripts/record-owner-approval.mjs"
 ]) {
   await assertPathExists(requiredPath);
@@ -94,7 +94,7 @@ for (const blockedText of [
   assertIncludes(slices, blockedText, `${slicesPath} blocked boundary`);
 }
 
-const ownerApprovalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const ownerApprovalPacket = await readFile("docs/internal/owner-approval-record-packet.md", "utf8");
 const ownerApprovalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
 assertIncludes(ownerApprovalPacket, "threat-model-implementation", "owner approval packet target");
 assertIncludes(ownerApprovalPacket, exactApprovalText, "owner approval packet exact approval");

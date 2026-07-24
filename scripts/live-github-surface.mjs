@@ -7,7 +7,7 @@ const failures = [];
 
 const expectedDescription = "Apache-2.0 agent-memory contracts. npm v0.1.0, GitHub release v0.1.0, not hosted.";
 const expectedReleaseTag = "v0.1.0";
-const expectedHomepage = "https://github.com/DanielJD1216/Source-Wire/blob/main/docs/share-for-review.md";
+const expectedHomepage = "https://github.com/DanielJD1216/Source-Wire/blob/main/docs/guides/share-for-review.md";
 const expectedTopics = [
   "agent-memory",
   "apache-2-0",

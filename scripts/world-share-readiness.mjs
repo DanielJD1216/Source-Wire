@@ -11,15 +11,15 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 await assertPathExists("LICENSE");
 
 for (const requiredPath of [
-  "docs/public-status.md",
-  "docs/share-for-review.md",
-  "docs/world-share-kit.md",
-  "docs/license-decision-gate.md",
-  "docs/owner-license-approval-packet.md",
-  "docs/apache-2-license-implementation-readiness.md",
-  "docs/legal-review-question-packet.md",
-  "docs/owner-launch-checklist.md",
-  "docs/world-share-readiness.md"
+  "docs/status/public-status.md",
+  "docs/guides/share-for-review.md",
+  "docs/internal/world-share-kit.md",
+  "docs/internal/license-decision-gate.md",
+  "docs/internal/owner-license-approval-packet.md",
+  "docs/internal/apache-2-license-implementation-readiness.md",
+  "docs/internal/legal-review-question-packet.md",
+  "docs/internal/owner-launch-checklist.md",
+  "docs/internal/world-share-readiness.md"
 ]) {
   await assertPathExists(requiredPath);
 }

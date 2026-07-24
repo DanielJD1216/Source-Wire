@@ -11,20 +11,20 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 await assertPathExists("LICENSE");
 
 for (const requiredPath of [
-  "docs/owner-license-approval-preflight.md",
-  "docs/license-approval-request-packet.md",
-  "docs/license-approval-decision-record.md",
-  "docs/license-decision-gate.md",
-  "docs/legal-review-question-packet.md",
-  "docs/owner-launch-checklist.md",
-  "docs/launch-decision-status.md",
-  "docs/publish-readiness.md"
+  "docs/internal/owner-license-approval-preflight.md",
+  "docs/internal/license-approval-request-packet.md",
+  "docs/internal/license-approval-decision-record.md",
+  "docs/internal/license-decision-gate.md",
+  "docs/internal/legal-review-question-packet.md",
+  "docs/internal/owner-launch-checklist.md",
+  "docs/internal/launch-decision-status.md",
+  "docs/guides/publish-readiness.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const decisionRecord = await readFile("docs/license-approval-decision-record.md", "utf8");
-const approvalRequest = await readFile("docs/license-approval-request-packet.md", "utf8");
+const decisionRecord = await readFile("docs/internal/license-approval-decision-record.md", "utf8");
+const approvalRequest = await readFile("docs/internal/license-approval-request-packet.md", "utf8");
 
 for (const requiredText of [
   "license_decision_status: implemented",

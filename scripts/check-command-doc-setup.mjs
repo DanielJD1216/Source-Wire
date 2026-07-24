@@ -81,8 +81,8 @@ async function collectPath(path) {
 }
 
 async function verifyReadinessCommandLists() {
-  const publishReadiness = await readFile(join(root, "docs/publish-readiness.md"), "utf8");
-  const ciChecks = await readFile(join(root, "docs/ci-checks.md"), "utf8");
+  const publishReadiness = await readFile(join(root, "docs/guides/publish-readiness.md"), "utf8");
+  const ciChecks = await readFile(join(root, "docs/reference/ci-checks.md"), "utf8");
   const publishCommands = getScriptCommandList("publish:readiness");
   const ciCheckCommands = getScriptCommandList("ci:check");
   const expandedReadinessCommands = publishCommands.flatMap((command) => {
@@ -100,7 +100,7 @@ async function verifyReadinessCommandLists() {
       "The `ci:check` sub-gate includes:"
     ),
     publishCommands,
-    "docs/publish-readiness.md command list"
+    "docs/guides/publish-readiness.md command list"
   );
 
   assertCommandList(
@@ -110,7 +110,7 @@ async function verifyReadinessCommandLists() {
       "## Local Success Marker Map"
     ),
     ciCheckCommands,
-    "docs/publish-readiness.md ci:check sub-gate list"
+    "docs/guides/publish-readiness.md ci:check sub-gate list"
   );
 
   assertCommandList(
@@ -120,7 +120,7 @@ async function verifyReadinessCommandLists() {
       "`npm run ci:check` remains as a sub-gate inside `npm run publish:readiness`."
     ),
     expandedReadinessCommands,
-    "docs/ci-checks.md readiness gate list"
+    "docs/reference/ci-checks.md readiness gate list"
   );
 }
 

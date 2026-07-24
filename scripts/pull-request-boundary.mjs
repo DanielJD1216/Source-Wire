@@ -10,8 +10,8 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 const requiredPaths = [
   ".github/pull_request_template.md",
   "CONTRIBUTING.md",
-  "docs/repository-metadata.md",
-  "docs/public-status.md"
+  "docs/reference/repository-metadata.md",
+  "docs/status/public-status.md"
 ];
 
 for (const file of requiredPaths) {
@@ -20,7 +20,7 @@ for (const file of requiredPaths) {
 
 const template = await readFile(".github/pull_request_template.md", "utf8");
 const contributing = await readFile("CONTRIBUTING.md", "utf8");
-const repositoryMetadata = await readFile("docs/repository-metadata.md", "utf8");
+const repositoryMetadata = await readFile("docs/reference/repository-metadata.md", "utf8");
 
 for (const [label, text, requiredText] of [
   ["pull request template", template, "code contributions are not accepted yet"],

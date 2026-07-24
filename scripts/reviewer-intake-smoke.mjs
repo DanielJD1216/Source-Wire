@@ -18,10 +18,10 @@ const supportPaths = [
   ".github/ISSUE_TEMPLATE/config.yml",
   ".github/pull_request_template.md",
   "CONTRIBUTING.md",
-  "docs/reviewer-feedback-guide.md",
-  "docs/share-for-review.md",
-  "docs/world-share-packet.md",
-  "docs/technical-reviewer-guide.md"
+  "docs/guides/reviewer-feedback-guide.md",
+  "docs/guides/share-for-review.md",
+  "docs/internal/world-share-packet.md",
+  "docs/guides/technical-reviewer-guide.md"
 ];
 
 for (const path of [...templatePaths, ...supportPaths]) {
@@ -34,8 +34,8 @@ for (const path of [...templatePaths, ...supportPaths]) {
 }
 
 assertIncludes(files.get(".github/ISSUE_TEMPLATE/config.yml"), "blank_issues_enabled: false", "issue template config disables blank issues");
-assertIncludes(files.get(".github/ISSUE_TEMPLATE/config.yml"), "docs/technical-reviewer-guide.md", "issue template config links technical reviewer guide");
-assertIncludes(files.get(".github/ISSUE_TEMPLATE/config.yml"), "docs/reviewer-feedback-guide.md", "issue template config links reviewer feedback guide");
+assertIncludes(files.get(".github/ISSUE_TEMPLATE/config.yml"), "docs/guides/technical-reviewer-guide.md", "issue template config links technical reviewer guide");
+assertIncludes(files.get(".github/ISSUE_TEMPLATE/config.yml"), "docs/guides/reviewer-feedback-guide.md", "issue template config links reviewer feedback guide");
 
 verifyTemplate(".github/ISSUE_TEMPLATE/verification-failure.yml", {
   name: "Verification failure",
@@ -66,10 +66,10 @@ for (const path of templatePaths) {
 
 const docsToCheck = [
   "CONTRIBUTING.md",
-  "docs/reviewer-feedback-guide.md",
-  "docs/share-for-review.md",
-  "docs/world-share-packet.md",
-  "docs/technical-reviewer-guide.md"
+  "docs/guides/reviewer-feedback-guide.md",
+  "docs/guides/share-for-review.md",
+  "docs/internal/world-share-packet.md",
+  "docs/guides/technical-reviewer-guide.md"
 ];
 
 for (const path of docsToCheck) {
@@ -79,7 +79,7 @@ for (const path of docsToCheck) {
   assertIncludes(text, "boundary or safety concern", `${path} points to boundary or safety concern intake`);
 }
 
-for (const path of ["CONTRIBUTING.md", ".github/pull_request_template.md", "docs/reviewer-feedback-guide.md"]) {
+for (const path of ["CONTRIBUTING.md", ".github/pull_request_template.md", "docs/guides/reviewer-feedback-guide.md"]) {
   assertIncludes(files.get(path), "code contributions are not accepted", `${path} blocks code contribution assumptions`);
 }
 

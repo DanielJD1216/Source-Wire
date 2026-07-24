@@ -12,7 +12,7 @@ It proves:
 
 Run it from the repository root:
 
-Use Node.js 22 with npm. For complete setup details, read [Quickstart](../../docs/quickstart.md).
+Use Node.js 22 with npm. For complete setup details, read [Quickstart](../../docs/getting-started/quickstart.md).
 
 Install dependencies first:
 

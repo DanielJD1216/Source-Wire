@@ -11,31 +11,31 @@ assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 
 for (const requiredPath of [
-  "docs/runtime-prd-refresh-approval-request.md",
-  "docs/runtime-prd-refresh-approval-status.md",
-  "docs/owner-approval-record-packet.md",
+  "docs/internal/runtime-prd-refresh-approval-request.md",
+  "docs/internal/runtime-prd-refresh-approval-status.md",
+  "docs/internal/owner-approval-record-packet.md",
   "scripts/record-owner-approval.mjs",
-  "docs/private-proof-runtime-extraction-readiness.md",
-  "docs/runtime-implementation-decision-gate.md",
-  "docs/runtime-implementation-decision-proof.md",
-  "docs/hosted-runtime-prd.md",
-  "docs/runtime-proof-intake.md",
-  "docs/runtime-readiness-fixture-matrix.md",
-  "docs/daily-workflow-implementation-proof.md",
+  "docs/internal/private-proof-runtime-extraction-readiness.md",
+  "docs/internal/runtime-implementation-decision-gate.md",
+  "docs/internal/runtime-implementation-decision-proof.md",
+  "docs/internal/hosted-runtime-prd.md",
+  "docs/internal/runtime-proof-intake.md",
+  "docs/internal/runtime-readiness-fixture-matrix.md",
+  "docs/internal/daily-workflow-implementation-proof.md",
   "examples/fixtures/runtime-proof-intake/runtime-proof-intake-manifest.json",
   "examples/fixtures/runtime-readiness/runtime-readiness-fixture-matrix.json"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const approvalRequest = await readFile("docs/runtime-prd-refresh-approval-request.md", "utf8");
-const approvalStatus = await readFile("docs/runtime-prd-refresh-approval-status.md", "utf8");
-const ownerApprovalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const approvalRequest = await readFile("docs/internal/runtime-prd-refresh-approval-request.md", "utf8");
+const approvalStatus = await readFile("docs/internal/runtime-prd-refresh-approval-status.md", "utf8");
+const ownerApprovalPacket = await readFile("docs/internal/owner-approval-record-packet.md", "utf8");
 const ownerApprovalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
-const extractionReadiness = await readFile("docs/private-proof-runtime-extraction-readiness.md", "utf8");
-const decisionGate = await readFile("docs/runtime-implementation-decision-gate.md", "utf8");
-const decisionProof = await readFile("docs/runtime-implementation-decision-proof.md", "utf8");
-const hostedRuntimePrd = await readFile("docs/hosted-runtime-prd.md", "utf8");
+const extractionReadiness = await readFile("docs/internal/private-proof-runtime-extraction-readiness.md", "utf8");
+const decisionGate = await readFile("docs/internal/runtime-implementation-decision-gate.md", "utf8");
+const decisionProof = await readFile("docs/internal/runtime-implementation-decision-proof.md", "utf8");
+const hostedRuntimePrd = await readFile("docs/internal/hosted-runtime-prd.md", "utf8");
 const intake = JSON.parse(await readFile("examples/fixtures/runtime-proof-intake/runtime-proof-intake-manifest.json", "utf8"));
 
 for (const requiredText of [

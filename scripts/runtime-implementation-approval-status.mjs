@@ -8,8 +8,8 @@ const gates = [
     issue: 259,
     target: "threat-model-implementation",
     label: "Threat model implementation",
-    packet: "docs/threat-model-implementation-packet.md",
-    slices: "docs/threat-model-implementation-slices.md",
+    packet: "docs/internal/threat-model-implementation-packet.md",
+    slices: "docs/internal/threat-model-implementation-slices.md",
     command: "runtime:threat-implementation-packet",
     exactApprovalText:
       "Approved for a future Source-Wire threat model implementation unit: build a public-safe synthetic trust-boundary package and validation smoke tests for unauthorized callers, cross-namespace access, source-to-memory separation, prompt-injection handling, secrets handling, audit gaps, backup and restore risk, deployment misconfiguration, MCP bypass prevention, and owner/application-controlled trusted memory approval. Use synthetic fixtures only. Do not add API server implementation, MCP server runtime implementation, database migrations, real database connections, PostgreSQL or pgvector setup, live connectors, Mission Control UI, deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled."
@@ -18,8 +18,8 @@ const gates = [
     issue: 260,
     target: "api-contract-implementation",
     label: "API contract implementation",
-    packet: "docs/api-contract-implementation-packet.md",
-    slices: "docs/api-contract-implementation-slices.md",
+    packet: "docs/internal/api-contract-implementation-packet.md",
+    slices: "docs/internal/api-contract-implementation-slices.md",
     command: "runtime:api-implementation-packet",
     exactApprovalText:
       "Approved for a future Source-Wire API contract implementation unit: build a public-safe synthetic API policy contract package and validation smoke tests for request envelopes, endpoint groups, capability checks, namespace resolution, denied results, citations and gaps, audit metadata, source maintenance, candidate review, trusted-memory approval boundaries, handoff and status evidence, and MCP-through-API policy routing. Use synthetic fixtures only. Do not add API server implementation, route handlers, MCP server runtime implementation, database migrations, real database connections, PostgreSQL or pgvector setup, runtime adapter implementation, live connectors, Mission Control UI, deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled."
@@ -28,8 +28,8 @@ const gates = [
     issue: 261,
     target: "mcp-contract-implementation",
     label: "MCP contract implementation",
-    packet: "docs/mcp-contract-implementation-packet.md",
-    slices: "docs/mcp-contract-implementation-slices.md",
+    packet: "docs/internal/mcp-contract-implementation-packet.md",
+    slices: "docs/internal/mcp-contract-implementation-slices.md",
     command: "runtime:mcp-implementation-packet",
     exactApprovalText:
       "Approved for a future Source-Wire MCP contract implementation unit: build a public-safe synthetic MCP adapter contract package and validation smoke tests for tool declarations, input validation, MCP-to-API envelopes, capability mapping, namespace forwarding, denied results, citation and gap preservation, audit metadata, source evidence search, trusted memory search, context assembly, candidate review, source maintenance, handoff and status evidence, and trusted-memory approval boundaries. Use synthetic fixtures only. Do not add MCP server runtime implementation, API server implementation, route handlers, database migrations, real database connections, PostgreSQL or pgvector setup, runtime adapter implementation, live connectors, Mission Control UI, deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled."
@@ -38,8 +38,8 @@ const gates = [
     issue: 262,
     target: "database-posture-implementation",
     label: "Database posture implementation",
-    packet: "docs/database-posture-implementation-packet.md",
-    slices: "docs/database-posture-implementation-slices.md",
+    packet: "docs/internal/database-posture-implementation-packet.md",
+    slices: "docs/internal/database-posture-implementation-slices.md",
     command: "runtime:database-implementation-packet",
     exactApprovalText:
       "Approved for a future Source-Wire database posture implementation unit: build a public-safe synthetic database posture package that defines data-class contracts, lifecycle state fixtures, namespace isolation fixtures, deletion/retention fixtures, backup/restore risk fixtures, and validation/smoke checks. Use synthetic fixtures only. Do not add database migrations, real database connections, PostgreSQL or pgvector setup, API server implementation, MCP server runtime implementation, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled."
@@ -48,8 +48,8 @@ const gates = [
     issue: 263,
     target: "public-safe-fixture-implementation",
     label: "Public-safe fixture implementation",
-    packet: "docs/public-safe-fixture-implementation-packet.md",
-    slices: "docs/public-safe-fixture-implementation-slices.md",
+    packet: "docs/internal/public-safe-fixture-implementation-packet.md",
+    slices: "docs/internal/public-safe-fixture-implementation-slices.md",
     command: "runtime:fixture-implementation-packet",
     exactApprovalText:
       "Approved for a future Source-Wire public-safe fixture implementation unit: build a synthetic hosted-runtime fixture package and validation smoke tests for caller identity, namespaces, source evidence, candidates, trusted memory, denied cases, audit metadata, and no-auto-promotion. Use synthetic fixtures only. Do not add database migrations, real database connections, PostgreSQL or pgvector setup, API server implementation, MCP server runtime implementation, live connectors, Mission Control UI, deployment, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. Fixtures must not include real local paths, account IDs, emails, domains, tokens, screenshots, client data, production exports, or private proof content. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled."
@@ -58,8 +58,8 @@ const gates = [
     issue: 264,
     target: "deployment-boundary-implementation",
     label: "Deployment boundary implementation",
-    packet: "docs/deployment-boundary-implementation-packet.md",
-    slices: "docs/deployment-boundary-implementation-slices.md",
+    packet: "docs/internal/deployment-boundary-implementation-packet.md",
+    slices: "docs/internal/deployment-boundary-implementation-slices.md",
     command: "runtime:deployment-implementation-packet",
     exactApprovalText:
       "Approved for a future Source-Wire deployment boundary implementation unit: build a public-safe synthetic deployment readiness package and validation smoke tests for local development, owner-hosted runtime, managed-hosted deferral, stop conditions, rollback evidence, claim boundaries, and no-hosted-service proof. Use synthetic fixtures only. Do not add deployment config, cloud provider config, Docker or container deployment config for runtime services, hosted services, database migrations, real database connections, PostgreSQL or pgvector setup, API server implementation, MCP server runtime implementation, live connectors, Mission Control UI, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, or AGPLv3 code. Source-Wire must not imply it hosts memory for users. MCP must not bypass Source-Wire API policy. Trusted memory promotion must remain owner or application controlled."
@@ -67,7 +67,7 @@ const gates = [
 ];
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const ownerApprovalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const ownerApprovalPacket = await readFile("docs/internal/owner-approval-record-packet.md", "utf8");
 const approvalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
 const failures = [];
 const results = [];

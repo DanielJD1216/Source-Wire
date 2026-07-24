@@ -11,15 +11,15 @@ assertEqual(packageLock.version, "0.1.0", "package-lock version must remain 0.1.
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after first release");
 
 for (const requiredPath of [
-  "docs/release-publish-config-plan.md",
-  "docs/release-implementation-runbook.md",
-  "docs/release-implementation-preparation.md",
-  "docs/release-version-recommendation.md"
+  "docs/internal/release-publish-config-plan.md",
+  "docs/internal/release-implementation-runbook.md",
+  "docs/internal/release-implementation-preparation.md",
+  "docs/internal/release-version-recommendation.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const planDoc = await readFile("docs/release-publish-config-plan.md", "utf8");
+const planDoc = await readFile("docs/internal/release-publish-config-plan.md", "utf8");
 for (const requiredText of [
   "Status: publish-config transition plan only.",
   "Current `publishConfig.access`: `public`",

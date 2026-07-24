@@ -4,7 +4,7 @@ This smoke validates the synthetic MCP adapter contract package and fixture matr
 
 It does not start an MCP server, add an API server, add route handlers, connect to a database, run migrations, deploy services, call live connectors, import real user data, or promote trusted memory automatically.
 
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../docs/quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../docs/getting-started/quickstart.md).
 
 Run:
 

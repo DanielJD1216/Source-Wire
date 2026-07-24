@@ -67,6 +67,6 @@ The fixture is smoke-validated, not schema-validated.
 
 ## Related Docs
 
-- [Daily Workflow Synthetic Smoke](../daily-workflow-synthetic-smoke.md)
-- [Daily Workflow Claim Boundary](../daily-workflow-claim-boundary.md)
+- [Daily Workflow Synthetic Smoke](../internal/daily-workflow-synthetic-smoke.md)
+- [Daily Workflow Claim Boundary](../internal/daily-workflow-claim-boundary.md)
 - [`second-brain.v1` Contract](second-brain-v1-contract.md)

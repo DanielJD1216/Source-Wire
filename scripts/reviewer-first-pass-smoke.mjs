@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, cp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, cp, lstat, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { spawn } from "node:child_process";
@@ -42,7 +42,23 @@ try {
 async function listGitVisibleFiles() {
   const result = await run("git", ["ls-files", "--cached", "--others", "--exclude-standard"], root);
   const files = result.stdout.split(/\r?\n/u).filter(Boolean);
-  return files.filter((file) => !file.startsWith("node_modules/") && !file.startsWith("dist/"));
+  const candidates = files.filter(
+    (file) => !file.startsWith("node_modules/") && !file.startsWith("dist/")
+  );
+  const existingFiles = [];
+
+  for (const file of candidates) {
+    try {
+      await lstat(join(root, file));
+      existingFiles.push(file);
+    } catch (error) {
+      if (error?.code !== "ENOENT") {
+        throw error;
+      }
+    }
+  }
+
+  return existingFiles;
 }
 
 function run(command, args, cwd) {

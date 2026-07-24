@@ -15,23 +15,23 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after first release");
 
 for (const requiredPath of [
-  "docs/contribution-terms-prd-preparation.md",
+  "docs/internal/contribution-terms-prd-preparation.md",
   "CONTRIBUTING.md",
   "SUPPORT.md",
   "SECURITY.md",
-  "docs/reviewer-feedback-guide.md",
-  "docs/legal-review-question-packet.md",
-  "docs/owner-approval-record-packet.md",
+  "docs/guides/reviewer-feedback-guide.md",
+  "docs/internal/legal-review-question-packet.md",
+  "docs/internal/owner-approval-record-packet.md",
   ".github/pull_request_template.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const preparation = await readFile("docs/contribution-terms-prd-preparation.md", "utf8");
-const approvalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const preparation = await readFile("docs/internal/contribution-terms-prd-preparation.md", "utf8");
+const approvalPacket = await readFile("docs/internal/owner-approval-record-packet.md", "utf8");
 const contributing = await readFile("CONTRIBUTING.md", "utf8");
 const pullRequestTemplate = await readFile(".github/pull_request_template.md", "utf8");
-const legalPacket = await readFile("docs/legal-review-question-packet.md", "utf8");
+const legalPacket = await readFile("docs/internal/legal-review-question-packet.md", "utf8");
 
 for (const requiredText of [
   "Status: post-approval PRD evidence packet.",

@@ -22,9 +22,9 @@ for (const requiredText of [
   "hosted runtime",
   "production runtime use",
   "code contribution acceptance",
-  "[World Share Packet](docs/world-share-packet.md)",
-  "[Share For Technical Review](docs/share-for-review.md)",
-  "[Reviewer Feedback Guide](docs/reviewer-feedback-guide.md)",
+  "[Documentation Index](docs/README.md)",
+  "[Share For Technical Review](docs/guides/share-for-review.md)",
+  "[Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md)",
   "Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`"
 ]) {
   assertIncludes(readme, requiredText, `README public entrypoint includes ${requiredText}`);
@@ -58,7 +58,7 @@ printRows([
   ["Version", packageJson.version],
   ["License", packageJson.license],
   ["First reviewer path", "present"],
-  ["Public share packet", "linked"],
+  ["Public documentation", "linked"],
   ["Blocked launch channels", "visible before package details"],
   ["Unsafe live claims", "absent"]
 ]);

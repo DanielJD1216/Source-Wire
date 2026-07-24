@@ -8,9 +8,9 @@ assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 aft
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
-const handoffDoc = await readFile("docs/release-auth-handoff.md", "utf8");
-const authPreflightDoc = await readFile("docs/release-auth-preflight.md", "utf8");
-const executionPreflightDoc = await readFile("docs/release-execution-preflight.md", "utf8");
+const handoffDoc = await readFile("docs/internal/release-auth-handoff.md", "utf8");
+const authPreflightDoc = await readFile("docs/internal/release-auth-preflight.md", "utf8");
+const executionPreflightDoc = await readFile("docs/internal/release-execution-preflight.md", "utf8");
 
 for (const requiredText of [
   "Status: owner-side future-release npm authentication handoff only.",

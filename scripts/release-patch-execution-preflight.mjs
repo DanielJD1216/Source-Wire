@@ -10,10 +10,10 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 for (const requiredPath of [
-  "docs/release-patch-execution-preflight.md",
-  "docs/release-patch-approval-request.md",
-  "docs/release-snapshot-boundary.md",
-  "docs/owner-approval-recorder.md",
+  "docs/internal/release-patch-execution-preflight.md",
+  "docs/internal/release-patch-approval-request.md",
+  "docs/status/release-snapshot-boundary.md",
+  "docs/internal/owner-approval-recorder.md",
   "src/index.ts",
   "scripts/consumer-smoke.mjs",
   "scripts/record-owner-approval.mjs"
@@ -21,9 +21,9 @@ for (const requiredPath of [
   await assertPathExists(requiredPath);
 }
 
-const patchPreflightDoc = await readFile("docs/release-patch-execution-preflight.md", "utf8");
-const patchApprovalRequest = await readFile("docs/release-patch-approval-request.md", "utf8");
-const snapshotBoundary = await readFile("docs/release-snapshot-boundary.md", "utf8");
+const patchPreflightDoc = await readFile("docs/internal/release-patch-execution-preflight.md", "utf8");
+const patchApprovalRequest = await readFile("docs/internal/release-patch-approval-request.md", "utf8");
+const snapshotBoundary = await readFile("docs/status/release-snapshot-boundary.md", "utf8");
 const sourceIndex = await readFile("src/index.ts", "utf8");
 const consumerSmoke = await readFile("scripts/consumer-smoke.mjs", "utf8");
 const approvalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");

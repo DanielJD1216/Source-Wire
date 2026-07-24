@@ -4,7 +4,7 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 const exactApproval =
-  "Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.";
+  "Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/internal/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.";
 
 const sharedBlockedList = [
   "hosted runtime implementation",
@@ -36,7 +36,7 @@ const issues = [
       "No implementation is added."
     ],
     sourceDocs: [
-      "docs/hosted-runtime-threat-model-trust-boundary.md"
+      "docs/internal/hosted-runtime-threat-model-trust-boundary.md"
     ]
   },
   {
@@ -54,7 +54,7 @@ const issues = [
       "No server code or deployment config is added."
     ],
     sourceDocs: [
-      "docs/hosted-runtime-api-server-contract.md"
+      "docs/internal/hosted-runtime-api-server-contract.md"
     ]
   },
   {
@@ -72,7 +72,7 @@ const issues = [
       "No MCP server runtime code is added."
     ],
     sourceDocs: [
-      "docs/hosted-runtime-mcp-server-contract.md"
+      "docs/internal/hosted-runtime-mcp-server-contract.md"
     ]
   },
   {
@@ -91,7 +91,7 @@ const issues = [
       "Data lifecycle is tied to namespace and owner control."
     ],
     sourceDocs: [
-      "docs/hosted-runtime-database-posture-data-lifecycle.md"
+      "docs/internal/hosted-runtime-database-posture-data-lifecycle.md"
     ]
   },
   {
@@ -109,7 +109,7 @@ const issues = [
       "No fixture implementation is added unless a later implementation unit approves it."
     ],
     sourceDocs: [
-      "docs/hosted-runtime-public-safe-fixture-verification-plan.md"
+      "docs/internal/hosted-runtime-public-safe-fixture-verification-plan.md"
     ]
   },
   {
@@ -128,7 +128,7 @@ const issues = [
       "No hosted service is created."
     ],
     sourceDocs: [
-      "docs/hosted-runtime-deployment-boundary-stop-conditions.md"
+      "docs/internal/hosted-runtime-deployment-boundary-stop-conditions.md"
     ]
   }
 ];
@@ -138,19 +138,19 @@ assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 
 for (const requiredPath of [
-  "docs/hosted-runtime-prd.md",
-  "docs/hosted-runtime-issue-slices.md",
-  "docs/hosted-runtime-slice-approval-request.md",
-  "docs/hosted-runtime-child-issue-publication-packet.md",
-  "docs/runtime-readiness-smoke.md",
-  "docs/runtime-proof-intake.md"
+  "docs/internal/hosted-runtime-prd.md",
+  "docs/internal/hosted-runtime-issue-slices.md",
+  "docs/internal/hosted-runtime-slice-approval-request.md",
+  "docs/internal/hosted-runtime-child-issue-publication-packet.md",
+  "docs/internal/runtime-readiness-smoke.md",
+  "docs/internal/runtime-proof-intake.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const sliceMap = await readFile("docs/hosted-runtime-issue-slices.md", "utf8");
-const approvalRequest = await readFile("docs/hosted-runtime-slice-approval-request.md", "utf8");
-const publicationPacket = await readFile("docs/hosted-runtime-child-issue-publication-packet.md", "utf8");
+const sliceMap = await readFile("docs/internal/hosted-runtime-issue-slices.md", "utf8");
+const approvalRequest = await readFile("docs/internal/hosted-runtime-slice-approval-request.md", "utf8");
+const publicationPacket = await readFile("docs/internal/hosted-runtime-child-issue-publication-packet.md", "utf8");
 
 assertIncludes(approvalRequest, exactApproval, "hosted runtime slice approval request");
 assertIncludes(publicationPacket, exactApproval, "hosted runtime child issue publication packet");

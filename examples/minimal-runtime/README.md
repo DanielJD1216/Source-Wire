@@ -14,7 +14,7 @@ For a consumer-style TypeScript import from the package root, see [minimal-runti
 
 ## Command
 
-Use Node.js 22 with npm from the repository root. For the complete setup path, read the [Quickstart](../../docs/quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete setup path, read the [Quickstart](../../docs/getting-started/quickstart.md).
 
 Install dependencies first:
 

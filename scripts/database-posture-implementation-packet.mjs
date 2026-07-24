@@ -1,8 +1,8 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const packetPath = "docs/database-posture-implementation-packet.md";
-const slicesPath = "docs/database-posture-implementation-slices.md";
+const packetPath = "docs/internal/database-posture-implementation-packet.md";
+const slicesPath = "docs/internal/database-posture-implementation-slices.md";
 const packet = await readFile(packetPath, "utf8");
 const slices = await readFile(slicesPath, "utf8");
 const failures = [];
@@ -17,12 +17,12 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 for (const requiredPath of [
   packetPath,
   slicesPath,
-  "docs/database-posture-implementation-proof.md",
-  "docs/database-posture-smoke.md",
-  "docs/hosted-runtime-database-posture-data-lifecycle.md",
-  "docs/runtime-implementation-gate.md",
-  "docs/runtime-skeleton-implementation-proof.md",
-  "docs/owner-approval-record-packet.md",
+  "docs/internal/database-posture-implementation-proof.md",
+  "docs/internal/database-posture-smoke.md",
+  "docs/internal/hosted-runtime-database-posture-data-lifecycle.md",
+  "docs/internal/runtime-implementation-gate.md",
+  "docs/internal/runtime-skeleton-implementation-proof.md",
+  "docs/internal/owner-approval-record-packet.md",
   "examples/database-posture/database-posture-smoke.mjs",
   "examples/database-posture/README.md",
   "examples/fixtures/database-posture/database-posture-fixture-matrix.json",
@@ -86,7 +86,7 @@ for (const blockedText of [
   assertIncludes(slices, blockedText, `${slicesPath} blocked boundary`);
 }
 
-const ownerApprovalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const ownerApprovalPacket = await readFile("docs/internal/owner-approval-record-packet.md", "utf8");
 const ownerApprovalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
 assertIncludes(ownerApprovalPacket, "database-posture-implementation", "owner approval packet target");
 assertIncludes(ownerApprovalPacket, exactApprovalText, "owner approval packet exact approval");

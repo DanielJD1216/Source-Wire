@@ -4,25 +4,25 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
 const exactApproval =
-  "Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.";
+  "Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/internal/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 
 for (const requiredPath of [
-  "docs/hosted-runtime-prd.md",
-  "docs/hosted-runtime-issue-slices.md",
-  "docs/hosted-runtime-slice-approval-request.md",
-  "docs/hosted-runtime-prd-decision-preflight.md",
-  "docs/owner-open-issues-status.md",
-  "docs/runtime-implementation-approval-status.md"
+  "docs/internal/hosted-runtime-prd.md",
+  "docs/internal/hosted-runtime-issue-slices.md",
+  "docs/internal/hosted-runtime-slice-approval-request.md",
+  "docs/internal/hosted-runtime-prd-decision-preflight.md",
+  "docs/internal/owner-open-issues-status.md",
+  "docs/internal/runtime-implementation-approval-status.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const sliceMap = await readFile("docs/hosted-runtime-issue-slices.md", "utf8");
-const approvalRequest = await readFile("docs/hosted-runtime-slice-approval-request.md", "utf8");
+const sliceMap = await readFile("docs/internal/hosted-runtime-issue-slices.md", "utf8");
+const approvalRequest = await readFile("docs/internal/hosted-runtime-slice-approval-request.md", "utf8");
 
 for (const requiredText of [
   "Status: draft issue slices. Implementation remains blocked.",
@@ -64,8 +64,8 @@ printRows([
   ["Package", packageJson.name],
   ["License", packageJson.license],
   ["Version", packageJson.version],
-  ["Parent PRD", "docs/hosted-runtime-prd.md"],
-  ["Slice map", "docs/hosted-runtime-issue-slices.md"],
+  ["Parent PRD", "docs/internal/hosted-runtime-prd.md"],
+  ["Slice map", "docs/internal/hosted-runtime-issue-slices.md"],
   ["Child issue count", "6"],
   ["Child issue publication", "approved and published as #259 through #264"],
   ["Implementation", "blocked"],

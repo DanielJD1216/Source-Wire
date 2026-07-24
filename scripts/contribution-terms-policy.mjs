@@ -7,11 +7,11 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
 
 const requiredPaths = [
-  "docs/contribution-terms-prd.md",
-  "docs/contribution-policy.md",
-  "docs/contribution-terms-prd-preparation.md",
-  "docs/contribution-terms-prd-execution-packet.md",
-  "docs/contribution-terms-prd-decision-preflight.md",
+  "docs/internal/contribution-terms-prd.md",
+  "docs/status/contribution-policy.md",
+  "docs/internal/contribution-terms-prd-preparation.md",
+  "docs/internal/contribution-terms-prd-execution-packet.md",
+  "docs/internal/contribution-terms-prd-decision-preflight.md",
   "CONTRIBUTING.md",
   "SUPPORT.md",
   "SECURITY.md",
@@ -27,8 +27,8 @@ for (const path of requiredPaths) {
   texts.set(path, await readFile(path, "utf8"));
 }
 
-const prd = texts.get("docs/contribution-terms-prd.md") ?? "";
-const policy = texts.get("docs/contribution-policy.md") ?? "";
+const prd = texts.get("docs/internal/contribution-terms-prd.md") ?? "";
+const policy = texts.get("docs/status/contribution-policy.md") ?? "";
 const contributing = texts.get("CONTRIBUTING.md") ?? "";
 const pullRequestTemplate = texts.get(".github/pull_request_template.md") ?? "";
 

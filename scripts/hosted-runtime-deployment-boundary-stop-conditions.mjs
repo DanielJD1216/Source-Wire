@@ -1,7 +1,7 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const docPath = "docs/hosted-runtime-deployment-boundary-stop-conditions.md";
+const docPath = "docs/internal/hosted-runtime-deployment-boundary-stop-conditions.md";
 const doc = await readFile(docPath, "utf8");
 const failures = [];
 
@@ -11,13 +11,13 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 
 for (const requiredPath of [
   docPath,
-  "docs/hosted-runtime-threat-model-trust-boundary.md",
-  "docs/hosted-runtime-api-server-contract.md",
-  "docs/hosted-runtime-mcp-server-contract.md",
-  "docs/hosted-runtime-database-posture-data-lifecycle.md",
-  "docs/hosted-runtime-public-safe-fixture-verification-plan.md",
-  "docs/runtime-readiness-smoke.md",
-  "docs/runtime-proof-intake.md"
+  "docs/internal/hosted-runtime-threat-model-trust-boundary.md",
+  "docs/internal/hosted-runtime-api-server-contract.md",
+  "docs/internal/hosted-runtime-mcp-server-contract.md",
+  "docs/internal/hosted-runtime-database-posture-data-lifecycle.md",
+  "docs/internal/hosted-runtime-public-safe-fixture-verification-plan.md",
+  "docs/internal/runtime-readiness-smoke.md",
+  "docs/internal/runtime-proof-intake.md"
 ]) {
   await assertPathExists(requiredPath);
 }

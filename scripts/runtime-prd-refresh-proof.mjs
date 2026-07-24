@@ -9,12 +9,12 @@ const blockedMarker = "blocked hosted runtime implementation";
 const failures = [];
 
 const requiredDocs = [
-  "docs/hosted-runtime-prd.md",
-  "docs/runtime-implementation-decision-gate.md",
-  "docs/private-proof-runtime-extraction-readiness.md",
-  "docs/runtime-prd-refresh-approval-status.md",
-  "docs/runtime-prd-refresh-approval-request.md",
-  "docs/runtime-prd-refresh-proof.md"
+  "docs/internal/hosted-runtime-prd.md",
+  "docs/internal/runtime-implementation-decision-gate.md",
+  "docs/internal/private-proof-runtime-extraction-readiness.md",
+  "docs/internal/runtime-prd-refresh-approval-status.md",
+  "docs/internal/runtime-prd-refresh-approval-request.md",
+  "docs/internal/runtime-prd-refresh-proof.md"
 ];
 
 for (const path of requiredDocs) {

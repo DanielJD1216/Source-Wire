@@ -22,7 +22,7 @@ The installed examples smoke copies these same `.ts` files into a temporary exte
 
 ## Local Setup
 
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../docs/quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../docs/getting-started/quickstart.md).
 
 Install dependencies first:
 
@@ -60,6 +60,6 @@ It does not use repo-local TypeScript path mapping.
 
 Related docs:
 
-- [API Reference](../../docs/api-reference.md)
-- [Quickstart](../../docs/quickstart.md)
-- [Runtime Boundary](../../docs/runtime-boundary.md)
+- [API Reference](../../docs/reference/api-reference.md)
+- [Quickstart](../../docs/getting-started/quickstart.md)
+- [Runtime Boundary](../../docs/concepts/runtime-boundary.md)

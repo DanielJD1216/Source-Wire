@@ -14,9 +14,9 @@ Use GitHub issues for:
 
 Start with:
 
-- [Public Status](docs/public-status.md)
-- [Technical Reviewer Guide](docs/technical-reviewer-guide.md)
-- [Reviewer Feedback Guide](docs/reviewer-feedback-guide.md)
+- [Public Status](docs/status/public-status.md)
+- [Technical Reviewer Guide](docs/guides/technical-reviewer-guide.md)
+- [Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md)
 
 ## Not Supported Yet
 

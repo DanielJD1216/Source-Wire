@@ -8,18 +8,18 @@ assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 aft
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 const historicalLicenseDocs = [
-  "docs/decision-prototypes/license-options.md",
-  "docs/decision-prototypes/license-evidence.md",
-  "docs/decision-prototypes/license-recommendation.md"
+  "docs/internal/decision-prototypes/license-options.md",
+  "docs/internal/decision-prototypes/license-evidence.md",
+  "docs/internal/decision-prototypes/license-recommendation.md"
 ];
 
 for (const file of [
   ...historicalLicenseDocs,
-  "docs/license-approval-request-packet.md",
-  "docs/license-decision-implementation-plan.md",
-  "docs/owner-license-decision-workflow.md",
-  "docs/owner-license-decision-intake.md",
-  "docs/publish-readiness.md"
+  "docs/internal/license-approval-request-packet.md",
+  "docs/internal/license-decision-implementation-plan.md",
+  "docs/internal/owner-license-decision-workflow.md",
+  "docs/internal/owner-license-decision-intake.md",
+  "docs/guides/publish-readiness.md"
 ]) {
   await assertPathExists(file);
 }
@@ -37,7 +37,7 @@ for (const file of historicalLicenseDocs) {
   }
 }
 
-const recommendation = await readFile("docs/decision-prototypes/license-recommendation.md", "utf8");
+const recommendation = await readFile("docs/internal/decision-prototypes/license-recommendation.md", "utf8");
 for (const requiredText of [
   "Current implemented license: Apache-2.0.",
   "The old recommendation below is not current guidance.",
@@ -48,7 +48,7 @@ for (const requiredText of [
   }
 }
 
-const implementationPlan = await readFile("docs/license-decision-implementation-plan.md", "utf8");
+const implementationPlan = await readFile("docs/internal/license-decision-implementation-plan.md", "utf8");
 for (const requiredText of [
   "Path 2: Stay Unlicensed",
   "Status: historical option, not selected.",
@@ -59,7 +59,7 @@ for (const requiredText of [
   }
 }
 
-const publishReadiness = await readFile("docs/publish-readiness.md", "utf8");
+const publishReadiness = await readFile("docs/guides/publish-readiness.md", "utf8");
 for (const requiredText of [
   "The command verifies that the owner license decision record exists, says implemented, and matches the Apache-2.0 source-package state.",
   "The command verifies that the already captured owner decision options are present and that Apache-2.0 implementation is complete.",
@@ -73,10 +73,10 @@ for (const requiredText of [
 
 const currentGuidanceTexts = [
   ["README.md", await readFile("README.md", "utf8")],
-  ["docs/public-status.md", await readFile("docs/public-status.md", "utf8")],
-  ["docs/share-for-review.md", await readFile("docs/share-for-review.md", "utf8")],
-  ["docs/world-share-readiness.md", await readFile("docs/world-share-readiness.md", "utf8")],
-  ["docs/technical-reviewer-guide.md", await readFile("docs/technical-reviewer-guide.md", "utf8")]
+  ["docs/status/public-status.md", await readFile("docs/status/public-status.md", "utf8")],
+  ["docs/guides/share-for-review.md", await readFile("docs/guides/share-for-review.md", "utf8")],
+  ["docs/internal/world-share-readiness.md", await readFile("docs/internal/world-share-readiness.md", "utf8")],
+  ["docs/guides/technical-reviewer-guide.md", await readFile("docs/guides/technical-reviewer-guide.md", "utf8")]
 ];
 
 for (const [file, text] of currentGuidanceTexts) {

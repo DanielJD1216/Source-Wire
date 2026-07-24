@@ -1,10 +1,10 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const hostedRuntimePreparation = await readFile("docs/hosted-runtime-prd-preparation.md", "utf8");
-const hostedRuntimePrd = await readFile("docs/hosted-runtime-prd.md", "utf8");
-const childIssueApprovalRequest = await readFile("docs/hosted-runtime-slice-approval-request.md", "utf8");
-const ownerApprovalRecorder = await readFile("docs/owner-approval-recorder.md", "utf8");
+const hostedRuntimePreparation = await readFile("docs/internal/hosted-runtime-prd-preparation.md", "utf8");
+const hostedRuntimePrd = await readFile("docs/internal/hosted-runtime-prd.md", "utf8");
+const childIssueApprovalRequest = await readFile("docs/internal/hosted-runtime-slice-approval-request.md", "utf8");
+const ownerApprovalRecorder = await readFile("docs/internal/owner-approval-recorder.md", "utf8");
 const failures = [];
 
 const hostedRuntimeApprovalText = "Approved for a future Source-Wire hosted runtime PRD unit: define the scope, threat model, owner-hosted versus managed-hosted boundary, API server runtime, MCP server runtime, database posture, deployment boundary, public-safe fixtures, verification gates, and no-private-data requirements before any hosted runtime implementation starts. Do not publish npm, create a GitHub release, deploy services, accept code contributions, or add real user data in this PRD unit.";
@@ -18,17 +18,17 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 for (const requiredPath of [
   "LICENSE",
   "README.md",
-  "docs/public-status.md",
-  "docs/world-share-packet.md",
-  "docs/world-share-final-preflight.md",
-  "docs/world-share-post-share-monitor.md",
-  "docs/launch-decision-status.md",
-  "docs/hosted-runtime-prd.md",
-  "docs/hosted-runtime-prd-preparation.md",
-  "docs/hosted-runtime-prd-execution-packet.md",
-  "docs/hosted-runtime-child-issue-publication-preflight.md",
-  "docs/hosted-runtime-slice-approval-request.md",
-  "docs/owner-approval-recorder.md"
+  "docs/status/public-status.md",
+  "docs/internal/world-share-packet.md",
+  "docs/internal/world-share-final-preflight.md",
+  "docs/internal/world-share-post-share-monitor.md",
+  "docs/internal/launch-decision-status.md",
+  "docs/internal/hosted-runtime-prd.md",
+  "docs/internal/hosted-runtime-prd-preparation.md",
+  "docs/internal/hosted-runtime-prd-execution-packet.md",
+  "docs/internal/hosted-runtime-child-issue-publication-preflight.md",
+  "docs/internal/hosted-runtime-slice-approval-request.md",
+  "docs/internal/owner-approval-recorder.md"
 ]) {
   await assertPathExists(requiredPath);
 }
@@ -79,7 +79,7 @@ printRows([
 
 printSection("What You Can Safely Do Now");
 printList([
-  "Share the repo README, LICENSE, docs/public-status.md, and docs/world-share-packet.md.",
+  "Share the repo README, LICENSE, docs/status/public-status.md, and docs/internal/world-share-packet.md.",
   "Tell reviewers to install @source-wire/contracts@0.1.0 or inspect GitHub release v0.1.0.",
   "Ask for technical review through the issue templates, without accepting pull requests.",
   "Run npm run world:share-final-preflight before broad sharing.",

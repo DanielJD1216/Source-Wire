@@ -2,7 +2,7 @@
 
 Status: synthetic fixture matrix only.
 
-Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../../docs/quickstart.md).
+Use Node.js 22 with npm from the repository root. For the complete local setup path, read the [Quickstart](../../../docs/getting-started/quickstart.md).
 
 ## Direct Answer
 

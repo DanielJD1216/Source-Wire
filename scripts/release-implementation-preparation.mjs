@@ -8,16 +8,16 @@ const approvedReleaseText =
   "Approved for a future Source-Wire release implementation unit: prepare and publish the npm package and create the matching GitHub release after final release-candidate verification. Use version 0.1.0 for the first public release unless the implementation unit finds a blocking reason to choose a different explicit version. Keep hosted runtime behavior blocked, keep production runtime claims blocked, and do not accept code contributions without separate contribution terms.";
 
 const requiredDocs = [
-  "docs/release-implementation-preparation.md",
-  "docs/release-implementation-runbook.md",
-  "docs/release-approval-request-packet.md",
-  "docs/release-candidate-readiness.md",
-  "docs/release-artifact-manifest.md",
-  "docs/release-notes-draft.md",
-  "docs/release-version-recommendation.md",
-  "docs/launch-decision-status.md",
-  "docs/world-share-readiness.md",
-  "docs/legal-review-question-packet.md"
+  "docs/internal/release-implementation-preparation.md",
+  "docs/internal/release-implementation-runbook.md",
+  "docs/internal/release-approval-request-packet.md",
+  "docs/internal/release-candidate-readiness.md",
+  "docs/internal/release-artifact-manifest.md",
+  "docs/internal/release-notes-draft.md",
+  "docs/internal/release-version-recommendation.md",
+  "docs/internal/launch-decision-status.md",
+  "docs/internal/world-share-readiness.md",
+  "docs/internal/legal-review-question-packet.md"
 ];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name");
@@ -29,7 +29,7 @@ for (const requiredDoc of requiredDocs) {
   await assertPathExists(requiredDoc);
 }
 
-const preparationDoc = await readFile("docs/release-implementation-preparation.md", "utf8");
+const preparationDoc = await readFile("docs/internal/release-implementation-preparation.md", "utf8");
 for (const requiredText of [
   "Status: historical first-release preparation.",
   approvedReleaseText,
@@ -88,7 +88,7 @@ printList([
 
 printSection("Next Action");
 printList([
-  "Use docs/release-implementation-preparation.md as historical evidence for the first release path.",
+  "Use docs/internal/release-implementation-preparation.md as historical evidence for the first release path.",
   "Do not publish a new npm version, create a new GitHub release, create a new tag, change package version, deploy services, or accept code contributions from this check."
 ]);
 

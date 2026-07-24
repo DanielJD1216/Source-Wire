@@ -10,22 +10,22 @@ assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 aft
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 const requiredDocs = [
-  "docs/release-implementation-runbook.md",
-  "docs/release-publish-config-plan.md",
-  "docs/release-review-packet.md",
-  "docs/release-version-recommendation.md",
-  "docs/release-notes-draft.md",
-  "docs/release-approval-request-packet.md",
-  "docs/release-candidate-readiness.md",
-  "docs/publish-readiness.md",
-  "docs/public-status.md"
+  "docs/internal/release-implementation-runbook.md",
+  "docs/internal/release-publish-config-plan.md",
+  "docs/internal/release-review-packet.md",
+  "docs/internal/release-version-recommendation.md",
+  "docs/internal/release-notes-draft.md",
+  "docs/internal/release-approval-request-packet.md",
+  "docs/internal/release-candidate-readiness.md",
+  "docs/guides/publish-readiness.md",
+  "docs/status/public-status.md"
 ];
 
 for (const requiredPath of ["LICENSE", ...requiredDocs]) {
   await assertPathExists(requiredPath);
 }
 
-const runbook = await readFile("docs/release-implementation-runbook.md", "utf8");
+const runbook = await readFile("docs/internal/release-implementation-runbook.md", "utf8");
 
 for (const requiredText of [
   "Status: historical first-release runbook.",
@@ -64,7 +64,7 @@ printRows([
 
 printSection("Next Action");
 printList([
-  "Treat docs/release-implementation-runbook.md as historical evidence for the first release.",
+  "Treat docs/internal/release-implementation-runbook.md as historical evidence for the first release.",
   "Use a future approved release unit before publishing a new npm version or matching GitHub release.",
   "Run npm run release:auth-preflight and npm run release:execution-preflight only before future release mutation.",
   "Do not publish a new npm version, create a new GitHub release, create a new tag, change package version, deploy services, or accept code contributions from this check."

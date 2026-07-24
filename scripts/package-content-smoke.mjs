@@ -38,7 +38,7 @@ try {
     await assertInstalledPath(installedPackageRoot, requiredPath);
   }
 
-  await assertInstalledFileIncludes(installedPackageRoot, "docs/runtime-boundary-readiness.md", [
+  await assertInstalledFileIncludes(installedPackageRoot, "docs/internal/runtime-boundary-readiness.md", [
     "Status: readiness summary with one minimal synthetic in-memory runtime boundary. No hosted runtime implementation is included.",
     "Source-Wire-hosted memory.",
     "Source-Wire does not host memory.",

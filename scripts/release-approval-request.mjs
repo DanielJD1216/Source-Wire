@@ -1,7 +1,7 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const approvalPacket = await readFile("docs/release-approval-request-packet.md", "utf8");
+const approvalPacket = await readFile("docs/internal/release-approval-request-packet.md", "utf8");
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
@@ -11,11 +11,11 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 
 for (const requiredPath of [
   "LICENSE",
-  "docs/release-approval-request-packet.md",
-  "docs/release-candidate-readiness.md",
-  "docs/release-decision.md",
-  "docs/launch-decision-status.md",
-  "docs/owner-launch-checklist.md"
+  "docs/internal/release-approval-request-packet.md",
+  "docs/internal/release-candidate-readiness.md",
+  "docs/internal/release-decision.md",
+  "docs/internal/launch-decision-status.md",
+  "docs/internal/owner-launch-checklist.md"
 ]) {
   await assertPathExists(requiredPath);
 }

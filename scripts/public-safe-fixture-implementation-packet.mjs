@@ -1,8 +1,8 @@
 import { readFile, stat } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const packetPath = "docs/public-safe-fixture-implementation-packet.md";
-const slicesPath = "docs/public-safe-fixture-implementation-slices.md";
+const packetPath = "docs/internal/public-safe-fixture-implementation-packet.md";
+const slicesPath = "docs/internal/public-safe-fixture-implementation-slices.md";
 const packet = await readFile(packetPath, "utf8");
 const slices = await readFile(slicesPath, "utf8");
 const failures = [];
@@ -17,13 +17,13 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 for (const requiredPath of [
   packetPath,
   slicesPath,
-  "docs/public-safe-fixture-implementation-proof.md",
-  "docs/public-safe-fixture-smoke.md",
-  "docs/hosted-runtime-public-safe-fixture-verification-plan.md",
-  "docs/runtime-implementation-gate.md",
-  "docs/runtime-skeleton-implementation-proof.md",
-  "docs/database-posture-implementation-packet.md",
-  "docs/owner-approval-record-packet.md",
+  "docs/internal/public-safe-fixture-implementation-proof.md",
+  "docs/internal/public-safe-fixture-smoke.md",
+  "docs/internal/hosted-runtime-public-safe-fixture-verification-plan.md",
+  "docs/internal/runtime-implementation-gate.md",
+  "docs/internal/runtime-skeleton-implementation-proof.md",
+  "docs/internal/database-posture-implementation-packet.md",
+  "docs/internal/owner-approval-record-packet.md",
   "scripts/record-owner-approval.mjs",
   "src/contracts/hosted-runtime-fixtures.ts",
   "examples/fixtures/hosted-runtime/hosted-runtime-fixture-matrix.json",
@@ -95,7 +95,7 @@ for (const blockedText of [
   assertIncludes(slices, blockedText, `${slicesPath} blocked boundary`);
 }
 
-const ownerApprovalPacket = await readFile("docs/owner-approval-record-packet.md", "utf8");
+const ownerApprovalPacket = await readFile("docs/internal/owner-approval-record-packet.md", "utf8");
 const ownerApprovalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
 assertIncludes(ownerApprovalPacket, "public-safe-fixture-implementation", "owner approval packet target");
 assertIncludes(ownerApprovalPacket, exactApprovalText, "owner approval packet exact approval");

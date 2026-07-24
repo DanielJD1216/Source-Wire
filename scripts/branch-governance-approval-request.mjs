@@ -9,18 +9,18 @@ assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apac
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after first release");
 
 for (const requiredPath of [
-  "docs/branch-governance-approval-request.md",
-  "docs/repository-metadata.md",
-  "docs/publish-readiness.md",
-  "docs/ci-checks.md",
-  "docs/owner-launch-checklist.md"
+  "docs/internal/branch-governance-approval-request.md",
+  "docs/reference/repository-metadata.md",
+  "docs/guides/publish-readiness.md",
+  "docs/reference/ci-checks.md",
+  "docs/internal/owner-launch-checklist.md"
 ]) {
   await assertPathExists(requiredPath);
 }
 
-const approvalPacket = await readFile("docs/branch-governance-approval-request.md", "utf8");
-const repositoryMetadata = await readFile("docs/repository-metadata.md", "utf8");
-const publishReadiness = await readFile("docs/publish-readiness.md", "utf8");
+const approvalPacket = await readFile("docs/internal/branch-governance-approval-request.md", "utf8");
+const repositoryMetadata = await readFile("docs/reference/repository-metadata.md", "utf8");
+const publishReadiness = await readFile("docs/guides/publish-readiness.md", "utf8");
 
 for (const requiredText of [
   "Status: branch governance approval request only.",

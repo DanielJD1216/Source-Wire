@@ -36,13 +36,16 @@ export function createRuntimeDatabase(databaseUrl: string): Story1Database {
   };
 }
 
-export function createOperatorPool(databaseUrl: string): pg.Pool {
+export function createOperatorPool(
+  databaseUrl: string,
+  timeoutMs = 10_000
+): pg.Pool {
   const pool = new Pool({
     connectionString: databaseUrl,
     max: 1,
     connectionTimeoutMillis: 2_000,
-    query_timeout: 10_000,
-    statement_timeout: 10_000,
+    query_timeout: timeoutMs,
+    statement_timeout: timeoutMs,
     application_name: "source_wire_alpha1_operator"
   });
   pool.on("error", () => {

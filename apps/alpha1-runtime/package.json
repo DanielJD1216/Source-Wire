@@ -15,6 +15,7 @@
     "conformance:story1": "node dist/conformance/story1.js",
     "conformance:story2": "node dist/conformance/story2.js",
     "conformance:story3": "node dist/conformance/story3.js",
+    "conformance:story4": "node dist/conformance/story4.js",
     "mcp": "node dist/src/mcp/server.js",
     "operator": "node dist/src/cli/operator.js",
     "owner": "node dist/src/cli/owner.js",

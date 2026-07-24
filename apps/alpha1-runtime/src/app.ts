@@ -35,10 +35,18 @@ import {
 import { stdoutSafeLogger, type SafeLogger } from "./safe-log.js";
 import { parseStrictJsonObject } from "./strict-json.js";
 import {
-  createTrustedMemorySearchResponse,
+  exportPortableState,
+  parsePortableExportRequest
+} from "./portable-state.js";
+import {
+  correctTrustedMemory,
+  parseTrustedMemoryCorrection,
+  parseTrustedMemoryRevocation,
+  revokeTrustedMemory
+} from "./trusted-memory-lifecycle.js";
+import {
   executeTrustedMemorySearch,
   parseTrustedMemorySearch,
-  serializeTrustedMemorySearchResponse,
   type ProtectedReadStageHook
 } from "./trusted-memory-search.js";
 
@@ -225,16 +233,7 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
       }
     );
     try {
-      options.onProtectedReadStage?.("before_response_serialization");
-      const serialized = serializeTrustedMemorySearchResponse(
-        createTrustedMemorySearchResponse({
-          traceId: context.get("traceId"),
-          results: execution.results,
-          auditEventId: execution.auditEventId,
-          releaseStatus: execution.releaseStatus
-        }),
-        options.onProtectedReadStage
-      );
+      const serialized = Uint8Array.from(execution.serializedResponse).buffer;
       context.set("safeResult", "allowed");
       return context.body(serialized, 200, {
         "Content-Type": "application/json; charset=UTF-8"
@@ -309,6 +308,120 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
         eventId: result.auditEventId,
         releaseStatus: "not_applicable"
       }
+    });
+  });
+
+  app.post(
+    "/v1alpha1/admin/trusted-memories/:memoryId/corrections",
+    async (context) => {
+      const body = await readStrictJson(context, [
+        "namespaceId",
+        "expectedRevisionId",
+        "content",
+        "reason",
+        "idempotencyKey"
+      ]);
+      const actor = await authenticateForContext(context, options);
+      const input = parseTrustedMemoryCorrection(
+        context.req.param("memoryId"),
+        body
+      );
+      context.set("namespaceId", input.namespaceId);
+      const result = await correctTrustedMemory(
+        options.database.pool,
+        actor,
+        input,
+        context.get("traceId")
+      );
+      context.set("safeResult", "allowed");
+      return context.json({
+        schema: STORY1_API_SCHEMA,
+        traceId: context.get("traceId"),
+        data: {
+          memoryId: result.memoryId,
+          previousRevisionId: result.previousRevisionId,
+          revisionId: result.revisionId,
+          revisionNumber: result.revisionNumber,
+          state: result.state,
+          correctedAt: result.correctedAt
+        },
+        audit: {
+          eventId: result.auditEventId,
+          releaseStatus: "not_applicable"
+        }
+      });
+    }
+  );
+
+  app.post(
+    "/v1alpha1/admin/trusted-memories/:memoryId/revocations",
+    async (context) => {
+      const body = await readStrictJson(context, [
+        "namespaceId",
+        "expectedRevisionId",
+        "reason",
+        "idempotencyKey"
+      ]);
+      const actor = await authenticateForContext(context, options);
+      const input = parseTrustedMemoryRevocation(
+        context.req.param("memoryId"),
+        body
+      );
+      context.set("namespaceId", input.namespaceId);
+      const result = await revokeTrustedMemory(
+        options.database.pool,
+        actor,
+        input,
+        context.get("traceId")
+      );
+      context.set("safeResult", "allowed");
+      return context.json({
+        schema: STORY1_API_SCHEMA,
+        traceId: context.get("traceId"),
+        data: {
+          memoryId: result.memoryId,
+          revisionId: result.revisionId,
+          state: result.state,
+          revokedAt: result.revokedAt
+        },
+        audit: {
+          eventId: result.auditEventId,
+          releaseStatus: "not_applicable"
+        }
+      });
+    }
+  );
+
+  app.post("/v1alpha1/admin/exports", async (context) => {
+    const body = await readStrictJson(context, ["namespaceIds"]);
+    const actor = await authenticateForContext(context, options);
+    const request = parsePortableExportRequest(body);
+    const bundle = await exportPortableState(
+      options.database.pool,
+      actor,
+      request
+    );
+    const auditEventId = await recordAudit(options.database.pool, {
+      traceId: context.get("traceId"),
+      operation: "export_portable_state",
+      result: "allowed",
+      actor,
+      metadata: {
+        namespaceCount: request.namespaceIds.length,
+        governedRecordCount: bundle.governedRecordCount,
+        logicalStateSha256: bundle.logicalStateSha256
+      }
+    });
+    context.set("safeResult", "allowed");
+    return context.body(Uint8Array.from(bundle.bytes).buffer, 200, {
+      "Cache-Control": "no-store",
+      "Content-Type": "application/x-ndjson; charset=UTF-8",
+      "X-Source-Wire-Audit-Event-Id": auditEventId,
+      "X-Source-Wire-File-Sha256": bundle.fileSha256,
+      "X-Source-Wire-Governed-Record-Count": String(
+        bundle.governedRecordCount
+      ),
+      "X-Source-Wire-Logical-State-Sha256": bundle.logicalStateSha256
     });
   });
 
@@ -542,6 +655,21 @@ function operationFor(method: string, path: string): string {
     /^\/v1alpha1\/admin\/memory-candidates\/[^/]+\/decision$/u.test(path)
   ) {
     return "decide_memory_candidate";
+  }
+  if (
+    method === "POST" &&
+    /^\/v1alpha1\/admin\/trusted-memories\/[^/]+\/corrections$/u.test(path)
+  ) {
+    return "correct_trusted_memory";
+  }
+  if (
+    method === "POST" &&
+    /^\/v1alpha1\/admin\/trusted-memories\/[^/]+\/revocations$/u.test(path)
+  ) {
+    return "revoke_trusted_memory";
+  }
+  if (method === "POST" && path === "/v1alpha1/admin/exports") {
+    return "export_portable_state";
   }
   if (method === "POST" && path === "/v1alpha1/admin/harness-credentials") {
     return "issue_harness_credential";

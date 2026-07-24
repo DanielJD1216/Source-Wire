@@ -1,4 +1,9 @@
-import { createHmac, randomBytes, randomUUID } from "node:crypto";
+import {
+  createHash,
+  createHmac,
+  randomBytes,
+  randomUUID
+} from "node:crypto";
 
 import type pg from "pg";
 
@@ -71,6 +76,8 @@ export type ProtectedReadReceiptBinding = {
   releaseBinding: string;
   requestDigest: string;
   resultDigest: string;
+  targetOrderDigest: string;
+  responseByteCount: number;
   coveredResultCount: number;
   issuedAt: string;
   expiresAt: string;
@@ -84,7 +91,8 @@ export type ProtectedReadStage =
   | "before_receipt_consumption"
   | "after_receipt_consumption"
   | "before_response_serialization"
-  | "during_response_serialization";
+  | "during_response_serialization"
+  | "before_response_write";
 
 export type ProtectedReadStageHook = (stage: ProtectedReadStage) => void;
 
@@ -93,6 +101,7 @@ export type TrustedMemorySearchExecution = {
   auditEventId: string;
   releaseStatus: "release_attempted";
   receipt: ProtectedReadReceiptBinding;
+  serializedResponse: Buffer;
   clear(): void;
 };
 
@@ -194,6 +203,25 @@ export function canonicalTrustedMemoryResultDigest(
   });
 }
 
+export function canonicalTrustedMemoryTargetOrderDigest(
+  results: readonly TrustedMemorySearchResult[]
+): string {
+  return canonicalRequestDigest({
+    domain: "source-wire.alpha1.story4.protected-read-target-order.v1",
+    targets: results.map((result, targetOrdinal) => ({
+      targetOrdinal: targetOrdinal + 1,
+      memoryId: result.memoryId,
+      revisionId: result.revisionId
+    }))
+  });
+}
+
+export function canonicalTrustedMemoryResponseDigest(
+  serializedResponse: Uint8Array
+): string {
+  return createHash("sha256").update(serializedResponse).digest("hex");
+}
+
 export function createProcessReleaseSecret(): Buffer {
   return randomBytes(32);
 }
@@ -244,6 +272,7 @@ export async function executeTrustedMemorySearch(
     }
     options.onStage?.("after_receipt_consumption");
     assertReadStillLive(options);
+    options.onStage?.("before_response_write");
 
     return {
       ...prepared,
@@ -283,6 +312,7 @@ export async function prepareTrustedMemorySearch(
   const auditEventId = randomUUID();
   const client = await pool.connect();
   const results: TrustedMemorySearchResult[] = [];
+  let serializedResponse: Buffer | undefined;
   let committed = false;
 
   try {
@@ -309,11 +339,20 @@ export async function prepareTrustedMemorySearch(
            ON memory.memory_id = revision.memory_id
           AND memory.owner_id = revision.owner_id
           AND memory.namespace_id = revision.namespace_id
-         JOIN source_wire_memory.trusted_memory_provenance AS provenance
-           ON provenance.revision_id = revision.revision_id
-          AND provenance.memory_id = revision.memory_id
-          AND provenance.owner_id = revision.owner_id
-          AND provenance.namespace_id = revision.namespace_id
+         JOIN LATERAL (
+           SELECT provenance_row.provenance_kind
+             FROM source_wire_memory.trusted_memory_provenance AS provenance_row
+            WHERE provenance_row.revision_id = revision.revision_id
+              AND provenance_row.memory_id = revision.memory_id
+              AND provenance_row.owner_id = revision.owner_id
+              AND provenance_row.namespace_id = revision.namespace_id
+              AND provenance_row.provenance_kind IN (
+                'owner_assertion',
+                'prior_memory'
+              )
+            ORDER BY provenance_row.provenance_key
+            LIMIT 1
+         ) AS provenance ON true
         WHERE revision.owner_id = $1
           AND revision.namespace_id = $2
           AND revision.status = 'active'
@@ -360,7 +399,20 @@ export async function prepareTrustedMemorySearch(
     assertReadStillLive(options);
     options.onStage?.("after_query");
 
-    const resultDigest = canonicalTrustedMemoryResultDigest(results);
+    options.onStage?.("before_response_serialization");
+    serializedResponse = serializeTrustedMemorySearchResponse(
+      createTrustedMemorySearchResponse({
+        traceId,
+        results,
+        auditEventId,
+        releaseStatus: "release_attempted"
+      }),
+      options.onStage
+    );
+    const resultDigest =
+      canonicalTrustedMemoryResponseDigest(serializedResponse);
+    const targetOrderDigest =
+      canonicalTrustedMemoryTargetOrderDigest(results);
     const issuedAt = new Date();
     const absoluteDeadline = options.startedAtMs + STORY1_REQUEST_TIMEOUT_MS;
     const requestedTtl = options.receiptTtlMs ?? PROTECTED_READ_RECEIPT_TTL_MS;
@@ -392,6 +444,8 @@ export async function prepareTrustedMemorySearch(
       releaseBinding,
       requestDigest,
       resultDigest,
+      targetOrderDigest,
+      responseByteCount: serializedResponse.byteLength,
       coveredResultCount: results.length,
       issuedAt: issuedAt.toISOString(),
       expiresAt: new Date(expiryTime).toISOString()
@@ -417,11 +471,15 @@ export async function prepareTrustedMemorySearch(
          $11::varchar,
          $12::varchar,
          $13::varchar,
-         $14::smallint,
-         $15::timestamptz,
-         $16::timestamptz,
-         $17::varchar,
-         $18::uuid
+         $14::varchar,
+         $15::integer,
+         $16::smallint,
+         $17::timestamptz,
+         $18::timestamptz,
+         $19::varchar,
+         $20::uuid,
+         $21::uuid[],
+         $22::uuid[]
        ) AS audit_event_id`,
       [
         binding.receiptId,
@@ -437,11 +495,15 @@ export async function prepareTrustedMemorySearch(
         binding.releaseBinding,
         binding.requestDigest,
         binding.resultDigest,
+        binding.targetOrderDigest,
+        binding.responseByteCount,
         binding.coveredResultCount,
         binding.issuedAt,
         binding.expiresAt,
         originProcessVerifier,
-        auditEventId
+        auditEventId,
+        results.map((result) => result.memoryId),
+        results.map((result) => result.revisionId)
       ]
     );
     if (issued.rows[0]?.audit_event_id !== auditEventId) {
@@ -457,8 +519,10 @@ export async function prepareTrustedMemorySearch(
       auditEventId,
       releaseStatus: "release_authorized",
       receipt: binding,
+      serializedResponse,
       clear() {
         results.length = 0;
+        serializedResponse?.fill(0);
       }
     };
   } catch (error) {
@@ -466,6 +530,7 @@ export async function prepareTrustedMemorySearch(
       await client.query("ROLLBACK").catch(() => undefined);
     }
     results.length = 0;
+    serializedResponse?.fill(0);
     throw error;
   } finally {
     client.release();
@@ -496,10 +561,12 @@ export async function consumeProtectedReadReceipt(
        $11::varchar,
        $12::varchar,
        $13::varchar,
-       $14::smallint,
-       $15::timestamptz,
-       $16::timestamptz,
-       $17::varchar
+       $14::varchar,
+       $15::integer,
+       $16::smallint,
+       $17::timestamptz,
+       $18::timestamptz,
+       $19::varchar
      ) AS consumed`,
     [
       binding.receiptId,
@@ -515,6 +582,8 @@ export async function consumeProtectedReadReceipt(
       binding.releaseBinding,
       binding.requestDigest,
       binding.resultDigest,
+      binding.targetOrderDigest,
+      binding.responseByteCount,
       binding.coveredResultCount,
       binding.issuedAt,
       binding.expiresAt,
@@ -546,7 +615,7 @@ export function createTrustedMemorySearchResponse(input: {
 export function serializeTrustedMemorySearchResponse(
   response: ReturnType<typeof createTrustedMemorySearchResponse>,
   onStage?: ProtectedReadStageHook
-): string {
+): Buffer {
   let serializationStageObserved = false;
   const serialized = JSON.stringify(response, (key, value) => {
     if (!serializationStageObserved && key === "content") {
@@ -558,7 +627,7 @@ export function serializeTrustedMemorySearchResponse(
   if (Buffer.byteLength(serialized, "utf8") > MAX_PROTECTED_READ_RESPONSE_BYTES) {
     throw new SafeError("operation_unavailable", 503, true);
   }
-  return serialized;
+  return Buffer.from(serialized, "utf8");
 }
 
 function appendBoundedResults(
@@ -657,6 +726,10 @@ function validateReceiptBinding(binding: ProtectedReadReceiptBinding): void {
     !RELEASE_BINDING.test(binding.releaseBinding) ||
     !DIGEST.test(binding.requestDigest) ||
     !DIGEST.test(binding.resultDigest) ||
+    !DIGEST.test(binding.targetOrderDigest) ||
+    !Number.isInteger(binding.responseByteCount) ||
+    binding.responseByteCount < 1 ||
+    binding.responseByteCount > MAX_PROTECTED_READ_RESPONSE_BYTES ||
     !Number.isInteger(binding.coveredResultCount) ||
     binding.coveredResultCount < 0 ||
     binding.coveredResultCount > MAX_TRUSTED_MEMORY_SEARCH_RESULTS

@@ -253,8 +253,8 @@ async function migrateAndInitialize(): Promise<void> {
   assert.equal(first.code, 0, first.stderr);
   const firstBody = parseJsonLine(first.stdout);
   assert.equal(firstBody.status, "applied");
-  assert.equal(firstBody.version, 3);
-  assert.equal((firstBody.migrations as unknown[]).length, 3);
+  assert.equal(firstBody.version, 4);
+  assert.equal((firstBody.migrations as unknown[]).length, 4);
   const replay = await runProcess(operatorCli, ["migrate"], operatorEnvironment());
   assert.equal(replay.code, 0);
   assert.equal(parseJsonLine(replay.stdout).status, "already_applied");
@@ -268,11 +268,12 @@ async function migrateAndInitialize(): Promise<void> {
   assert.deepEqual(migrationRows.rows, [
     { version: 1, state: "completed" },
     { version: 2, state: "completed" },
-    { version: 3, state: "completed" }
+    { version: 3, state: "completed" },
+    { version: 4, state: "completed" }
   ]);
   pass(
     "S2-MIG-01",
-    "forward-only migrations 0001 through 0003 applied once and replayed without mutation"
+    "forward-only migrations 0001 through 0004 applied once and replayed without mutation"
   );
 
   assert(adminPool);
@@ -296,7 +297,7 @@ async function migrateAndInitialize(): Promise<void> {
   );
   assert.equal(initialized.code, 0, initialized.stderr);
   const body = parseJsonLine(initialized.stdout);
-  assert.equal(body.schemaVersion, 3);
+  assert.equal(body.schemaVersion, 4);
   const owner = body.ownerAdminCredential as Record<string, unknown>;
   ownerToken = String(owner.secret);
   ownerCredentialId = String(owner.credentialId);
@@ -314,12 +315,15 @@ async function migrateAndInitialize(): Promise<void> {
       "credential.manage",
       "memory_candidate.decide",
       "memory_candidate.review",
-      "runtime.health"
+      "memory.export",
+      "runtime.health",
+      "trusted_memory.correct",
+      "trusted_memory.revoke"
     ]
   );
   pass(
     "S2-INIT-01",
-    "fresh synthetic owner received explicit review and decision capabilities without upgrading old credentials"
+    "fresh synthetic owner received explicit review, decision, lifecycle, and export capabilities without upgrading old credentials"
   );
 }
 
@@ -1143,7 +1147,7 @@ async function provenanceAndInputProbes(): Promise<void> {
     }
   );
   const candidateCountBeforeInvalid = await candidateCount();
-  for (const reference of invalidReferences) {
+  for (const [index, reference] of invalidReferences.entries()) {
     const result = await postJson(
       `${baseUrl}/v1alpha1/memory-candidates`,
       harnessToken,
@@ -1159,8 +1163,12 @@ async function provenanceAndInputProbes(): Promise<void> {
       }
     );
     assertError(result, "validation_failed");
+    assert.equal(
+      await candidateCount(),
+      candidateCountBeforeInvalid,
+      `invalid prior-memory reference ${index} mutated candidate count`
+    );
   }
-  assert.equal(await candidateCount(), candidateCountBeforeInvalid);
   pass(
     "S2-PROV-01",
     "valid prior memory succeeded while unknown, cross-namespace, cross-owner, revoked, superseded, and mismatched references failed"
@@ -1566,8 +1574,8 @@ async function migrationCompatibilityProbes(): Promise<void> {
     name: string;
     checksumSha256: string;
   }>;
-  const third = expected[2];
-  assert(third);
+  const fourth = expected[3];
+  assert(fourth);
   const mutations = [
     {
       apply:
@@ -1579,27 +1587,27 @@ async function migrationCompatibilityProbes(): Promise<void> {
     {
       apply: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${"f".repeat(
         64
-      )}' WHERE version = 3`,
-      restore: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${third.checksumSha256}' WHERE version = 3`,
+      )}' WHERE version = 4`,
+      restore: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${fourth.checksumSha256}' WHERE version = 4`,
       code: "schema_incompatible"
     },
     {
       apply:
-        "UPDATE source_wire_memory.schema_migrations SET state = 'applying' WHERE version = 3",
+        "UPDATE source_wire_memory.schema_migrations SET state = 'applying' WHERE version = 4",
       restore:
-        "UPDATE source_wire_memory.schema_migrations SET state = 'completed' WHERE version = 3",
+        "UPDATE source_wire_memory.schema_migrations SET state = 'completed' WHERE version = 4",
       code: "schema_incompatible"
     },
     {
-      apply: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 3",
-      restore: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (3, '${third.name}', '${third.checksumSha256}', 'completed')`,
+      apply: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 4",
+      restore: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (4, '${fourth.name}', '${fourth.checksumSha256}', 'completed')`,
       code: "schema_too_old"
     },
     {
-      apply: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (4, 'future', '${"e".repeat(
+      apply: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (5, 'future', '${"e".repeat(
         64
       )}', 'completed')`,
-      restore: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 4",
+      restore: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 5",
       code: "schema_too_new"
     }
   ];
@@ -1756,7 +1764,7 @@ async function decideThroughCli(
     ],
     { SOURCE_WIRE_OWNER_TOKEN: ownerToken }
   );
-  assert.equal(result.code, 0, result.stderr);
+  assert.equal(result.code, 0, result.stderr || result.stdout);
   safeOutputs.push(result.stdout, result.stderr);
   return parseJsonLine(result.stdout);
 }
@@ -1796,33 +1804,48 @@ async function createArtificialPriorMemoryFixtures(): Promise<{
   await targetAdminPool.query(
     "INSERT INTO source_wire_memory.namespaces (namespace_id, owner_id) VALUES ('ns_story2_other', 'owner_story2_other')"
   );
+  const otherActorId = randomUUID();
+  await targetAdminPool.query(
+    `INSERT INTO source_wire_memory.actor_identities (
+       actor_identity_id,
+       owner_id,
+       actor_class,
+       created_at
+     ) VALUES ($1, 'owner_story2_other', 'owner_admin', clock_timestamp())`,
+    [otherActorId]
+  );
   const crossOwner = await insertArtificialMemory(
     "owner_story2_other",
     "ns_story2_other",
+    otherActorId,
     "active",
     "active"
   );
   const revoked = await insertArtificialMemory(
     "owner_story2",
     "ns_story2_alpha",
+    ownerCredentialId,
     "revoked",
     "active"
   );
   const superseded = await insertArtificialMemory(
     "owner_story2",
     "ns_story2_alpha",
+    ownerCredentialId,
     "active",
     "superseded"
   );
   const mismatch = await insertArtificialMemory(
     "owner_story2",
     "ns_story2_alpha",
+    ownerCredentialId,
     "active",
     "active"
   );
   const other = await insertArtificialMemory(
     "owner_story2",
     "ns_story2_alpha",
+    ownerCredentialId,
     "active",
     "active"
   );
@@ -1840,6 +1863,7 @@ async function createArtificialPriorMemoryFixtures(): Promise<{
 async function insertArtificialMemory(
   ownerId: string,
   namespaceId: string,
+  actorIdentityId: string,
   memoryState: "active" | "revoked",
   revisionStatus: "active" | "superseded"
 ): Promise<{ memoryId: string; revisionId: string }> {
@@ -1849,10 +1873,20 @@ async function insertArtificialMemory(
   const revisionId = randomUUID();
   await targetAdminPool.query(
     `INSERT INTO source_wire_memory.memory_candidates (
-       candidate_id, owner_id, namespace_id, proposed_by_credential_id, state,
-       content, content_byte_count, decided_at, decided_by_credential_id
-     ) VALUES ($1, $2, $3, $4, 'approved', 'Synthetic artificial memory.', 28, clock_timestamp(), $4)`,
-    [candidateId, ownerId, namespaceId, ownerCredentialId]
+       candidate_id, owner_id, namespace_id, proposed_by_credential_id,
+       proposed_by_actor_id, state, content, content_byte_count, decided_at,
+       decided_by_credential_id, decided_by_actor_id
+     ) VALUES (
+       $1, $2, $3, $4, $5, 'approved', 'Synthetic artificial memory.', 28,
+       clock_timestamp(), $4, $5
+     )`,
+    [
+      candidateId,
+      ownerId,
+      namespaceId,
+      ownerId === "owner_story2" ? ownerCredentialId : null,
+      actorIdentityId
+    ]
   );
   await targetAdminPool.query(
     `INSERT INTO source_wire_memory.candidate_provenance (
@@ -1869,8 +1903,11 @@ async function insertArtificialMemory(
   await targetAdminPool.query(
     `INSERT INTO source_wire_memory.trusted_memory_revisions (
        revision_id, memory_id, owner_id, namespace_id, revision_number, status,
-       content, content_byte_count, origin_candidate_id, created_by_credential_id
-     ) VALUES ($1, $2, $3, $4, 1, $5, 'Synthetic artificial memory.', 28, $6, $7)`,
+       content, content_byte_count, origin_candidate_id,
+       created_by_credential_id, created_by_actor_id
+     ) VALUES (
+       $1, $2, $3, $4, 1, $5, 'Synthetic artificial memory.', 28, $6, $7, $8
+     )`,
     [
       revisionId,
       memoryId,
@@ -1878,7 +1915,8 @@ async function insertArtificialMemory(
       namespaceId,
       revisionStatus,
       candidateId,
-      ownerCredentialId
+      ownerId === "owner_story2" ? ownerCredentialId : null,
+      actorIdentityId
     ]
   );
   return { memoryId, revisionId };
@@ -2378,7 +2416,8 @@ async function writeReport(): Promise<void> {
     [
       "migrations/0001_story1_bootstrap.sql",
       "migrations/0002_story2_candidate_lifecycle.sql",
-      "migrations/0003_story3_audited_search.sql"
+      "migrations/0003_story3_audited_search.sql",
+      "migrations/0004_story4_lifecycle_portability.sql"
     ].map(async (path) => ({
       path,
       sha256: createHash("sha256")

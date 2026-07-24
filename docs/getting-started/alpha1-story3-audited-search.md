@@ -215,6 +215,8 @@ The MCP SDK currently has two moderate advisories in an unused HTTP-server path.
 
 ## Still Outside Story 3
 
+Latest source implements bounded owner correction, revocation, export, and recovery separately in [Alpha 1 Story 4 Governed Lifecycle And Portability](alpha1-story4-governed-lifecycle-portability.md). They remain outside this Story 3 read unit.
+
 - correction and supersession operations,
 - trusted-memory revocation operations,
 - source-evidence search and context assembly,

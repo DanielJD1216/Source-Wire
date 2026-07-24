@@ -14,6 +14,7 @@ import {
 export const STORY1_MIGRATION_NAME = "0001_story1_bootstrap.sql";
 export const STORY2_MIGRATION_NAME = "0002_story2_candidate_lifecycle.sql";
 export const STORY3_MIGRATION_NAME = "0003_story3_audited_search.sql";
+export const STORY4_MIGRATION_NAME = "0004_story4_lifecycle_portability.sql";
 const MIGRATION_ADVISORY_LOCK = 1_913_770_101;
 
 export type MigrationDefinition = {
@@ -46,7 +47,8 @@ export async function readAlpha1Migrations(): Promise<MigrationDefinition[]> {
   const definitions = [
     { version: STORY1_SCHEMA_VERSION, name: STORY1_MIGRATION_NAME },
     { version: 2, name: STORY2_MIGRATION_NAME },
-    { version: ALPHA1_SCHEMA_VERSION, name: STORY3_MIGRATION_NAME }
+    { version: 3, name: STORY3_MIGRATION_NAME },
+    { version: ALPHA1_SCHEMA_VERSION, name: STORY4_MIGRATION_NAME }
   ] as const;
 
   return Promise.all(

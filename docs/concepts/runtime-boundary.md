@@ -1,6 +1,6 @@
 # Source-Wire Runtime Boundary
 
-The published Source-Wire package is a public contracts package. Latest source also contains one unpublished local Alpha 1 Stories 1 through 3 runtime workspace.
+The published Source-Wire package is a public contracts package. Latest source also contains one unpublished local Alpha 1 Stories 1 through 4 runtime workspace.
 
 It is not a full memory backend, hosted service, or production runtime.
 
@@ -21,11 +21,11 @@ It is not a full memory backend, hosted service, or production runtime.
 - Package metadata.
 - A TypeScript package boundary.
 
-## Not Included Yet
+## Not Included In The Published Package
 
 - Hosted or production API server.
 - Hosted or production MCP service.
-- Trusted-memory correction, supersession, or revocation.
+- Local trusted-memory correction, revocation, export, or recovery runtime.
 - Production PostgreSQL setup or pgvector.
 - Memory-engine fork code.
 - Mission Control UI.
@@ -36,7 +36,7 @@ It is not a full memory backend, hosted service, or production runtime.
 
 ## Included In Latest Source Only
 
-`apps/alpha1-runtime/` adds local developer-alpha Stories 1 through 3 that are not part of `@source-wire/contracts@0.1.0`:
+`apps/alpha1-runtime/` adds local developer-alpha Stories 1 through 4 that are not part of `@source-wire/contracts@0.1.0`:
 
 - Hono API bound only to literal loopback addresses.
 - Exact forward-only PostgreSQL 16 migration chain.
@@ -52,10 +52,16 @@ It is not a full memory backend, hosted service, or production runtime.
 - Durable lifecycle idempotency, atomic audit, and one-winner decision concurrency.
 - Active-only PostgreSQL full-text search with owner and namespace filtering before rank.
 - Durable protected-read audit, short-lived origin-process receipt, single-use compare-and-set consumption, and fail-closed response release.
+- Owner-only fix-forward correction with immutable revision and lineage history.
+- Owner-only revocation that preserves history and removes the memory from active search.
+- Durable lifecycle idempotency and shared protected-read mutation locking.
+- Canonical bounded governed-state export with secret-bearing classes structurally excluded.
+- Exact-empty fresh portable initialization with one new owner-admin and no imported credentials or grants.
+- Isolated physical-recovery invalidation with a new authentication epoch, restored-credential revocation, receipt invalidation, and an independent runtime verification gate.
 - Real crash, outage, timeout, cancellation, result-bound, privilege, and protected-content leak proof.
 - Generated disposable real-process conformance with explicit child, connection, session, role, and database cleanup proof.
 
-Read [Alpha 1 Story 1 Local Runtime](../getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](../getting-started/alpha1-story2-candidate-approval.md), and [Alpha 1 Story 3 Audited Search](../getting-started/alpha1-story3-audited-search.md) before running it. It is synthetic-data-only and does not authorize deployment, hosting, production use, real data, correction, or revocation.
+Read [Alpha 1 Story 1 Local Runtime](../getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](../getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](../getting-started/alpha1-story3-audited-search.md), and [Alpha 1 Story 4 Governed Lifecycle And Portability](../getting-started/alpha1-story4-governed-lifecycle-portability.md) before running it. It is synthetic-data-only and does not authorize deployment, hosting, production use, production backup guarantees, or real data.
 
 For the whole package shape, read the [Architecture Map](architecture-map.md).
 
@@ -97,7 +103,7 @@ The published contracts package should not:
 
 ## Next Safe Expansion
 
-Story 3 stops after audited full-text search over active trusted memory. Correction, revocation, provider transport, export, deployment, and release work require their own approved stories and evidence gates.
+Story 4 stops after bounded local correction, revocation, canonical export, fresh portable initialization, and isolated physical-recovery verification. Provider transport, production database and backup support, deployment, hosting, and release work require their own approved stories and evidence gates.
 
 The current runtime decision is recorded in [Public Runtime Decision](../internal/public-runtime-decision.md).
 

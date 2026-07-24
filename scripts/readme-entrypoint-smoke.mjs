@@ -12,7 +12,7 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 for (const requiredText of [
   "Current public status: Source-Wire is Apache-2.0 licensed as a source package.",
   "The contracts package is published to npm and released on GitHub.",
-  "Latest source also contains unpublished, loopback-only Alpha 1 Stories 1 through 3 for disposable local PostgreSQL, MCP candidate proposal, owner approval, and audited trusted-memory search proof.",
+  "Latest source also contains unpublished, loopback-only Alpha 1 Stories 1 through 4 for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, and bounded portability proof.",
   "Nothing is deployed or hosted.",
   "## First Reviewer Quickstart",
   "Use Node.js 22 with npm.",
@@ -27,6 +27,7 @@ for (const requiredText of [
   "[Documentation Index](docs/README.md)",
   "[Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md)",
   "[Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md)",
+  "[Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md)",
   "[Share For Technical Review](docs/guides/share-for-review.md)",
   "[Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md)",
   "Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`"

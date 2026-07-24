@@ -1,7 +1,19 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { parseArgs } from "node:util";
 
-import { assertLoopbackHost, requireEnvironment } from "../config.js";
+import {
+  assertLoopbackHost,
+  MAX_JSON_BODY_BYTES,
+  MAX_PORTABLE_EXPORT_BYTES,
+  MAX_PORTABLE_EXPORT_LINE_BYTES,
+  PORTABLE_EXPORT_TIMEOUT_MS,
+  requireEnvironment
+} from "../config.js";
+import {
+  readBoundedRegularFile,
+  writeSensitiveStreamAtomically
+} from "../safe-local-file.js";
+import { parseStrictJsonObject } from "../strict-json.js";
 
 async function main(): Promise<void> {
   const command = process.argv[2];
@@ -14,7 +26,11 @@ async function main(): Promise<void> {
       "expires-at": { type: "string" },
       "credential-id": { type: "string" },
       "candidate-id": { type: "string" },
+      "memory-id": { type: "string" },
+      "expected-revision-id": { type: "string" },
       "idempotency-key": { type: "string" },
+      "input-file": { type: "string" },
+      destination: { type: "string" },
       reason: { type: "string" },
       state: { type: "string" },
       cursor: { type: "string" },
@@ -34,6 +50,16 @@ async function main(): Promise<void> {
   }
 
   const ownerToken = requireEnvironment("SOURCE_WIRE_OWNER_TOKEN");
+  if (command === "export") {
+    const destination = parsed.values.destination;
+    const namespaceIds = parsed.values["namespace-id"] ?? [];
+    if (!destination || namespaceIds.length < 1) {
+      throw new Error("validation_failed");
+    }
+    await exportToLocalFile(baseUrl, ownerToken, namespaceIds, destination);
+    return;
+  }
+
   if (command === "list-candidates") {
     const namespaceId = parsed.values["namespace-id"]?.[0];
     if (!namespaceId) {
@@ -68,6 +94,42 @@ async function main(): Promise<void> {
         decision: command === "approve-candidate" ? "approve" : "reject",
         expectedState: "pending",
         reason,
+        idempotencyKey
+      }
+    );
+    return;
+  }
+
+  if (command === "correct-memory" || command === "revoke-memory") {
+    const namespaceId = parsed.values["namespace-id"]?.[0];
+    const memoryId = parsed.values["memory-id"];
+    const expectedRevisionId = parsed.values["expected-revision-id"];
+    const inputFile = parsed.values["input-file"];
+    if (!namespaceId || !memoryId || !expectedRevisionId || !inputFile) {
+      throw new Error("validation_failed");
+    }
+    const input = await readBoundedInputFile(inputFile);
+    const allowed =
+      command === "correct-memory"
+        ? new Set(["content", "reason"])
+        : new Set(["reason"]);
+    if (
+      Object.keys(input).length !== allowed.size ||
+      Object.keys(input).some((key) => !allowed.has(key))
+    ) {
+      throw new Error("validation_failed");
+    }
+    await executeRequest(
+      baseUrl,
+      `/v1alpha1/admin/trusted-memories/${encodeURIComponent(memoryId)}/${
+        command === "correct-memory" ? "corrections" : "revocations"
+      }`,
+      ownerToken,
+      {
+        namespaceId,
+        expectedRevisionId,
+        ...(command === "correct-memory" ? { content: input.content } : {}),
+        reason: input.reason,
         idempotencyKey
       }
     );
@@ -121,6 +183,100 @@ async function main(): Promise<void> {
   }
 
   throw new Error("validation_failed");
+}
+
+async function exportToLocalFile(
+  baseUrl: string,
+  token: string,
+  namespaceIds: string[],
+  destination: string
+): Promise<void> {
+  let response: Response;
+  try {
+    response = await fetch(`${baseUrl}/v1alpha1/admin/exports`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ namespaceIds }),
+      signal: AbortSignal.timeout(PORTABLE_EXPORT_TIMEOUT_MS)
+    });
+  } catch {
+    writeUnavailable();
+    return;
+  }
+  if (!response.ok) {
+    await writeResponse(response);
+    return;
+  }
+  const logicalStateSha256 = response.headers.get(
+    "x-source-wire-logical-state-sha256"
+  );
+  const expectedFileSha256 = response.headers.get(
+    "x-source-wire-file-sha256"
+  );
+  const governedRecordCount = response.headers.get(
+    "x-source-wire-governed-record-count"
+  );
+  const auditEventId = response.headers.get(
+    "x-source-wire-audit-event-id"
+  );
+  if (
+    !response.body ||
+    !logicalStateSha256 ||
+    !expectedFileSha256 ||
+    !/^[0-9a-f]{64}$/u.test(logicalStateSha256) ||
+    !/^[0-9a-f]{64}$/u.test(expectedFileSha256) ||
+    !governedRecordCount ||
+    !/^(?:0|[1-9][0-9]{0,5})$/u.test(governedRecordCount) ||
+    !auditEventId ||
+    !/^[0-9a-f-]{36}$/u.test(auditEventId)
+  ) {
+    throw new Error("validation_failed");
+  }
+
+  const fileHash = createHash("sha256");
+  let currentLineBytes = 0;
+  const result = await writeSensitiveStreamAtomically(
+    destination,
+    response.body as unknown as AsyncIterable<Uint8Array>,
+    MAX_PORTABLE_EXPORT_BYTES,
+    (chunk) => {
+      fileHash.update(chunk);
+      for (const byte of chunk) {
+        if (byte === 0 || byte === 13) throw new Error("validation_failed");
+        if (byte === 10) {
+          if (currentLineBytes === 0) throw new Error("validation_failed");
+          currentLineBytes = 0;
+        } else {
+          currentLineBytes += 1;
+          if (currentLineBytes > MAX_PORTABLE_EXPORT_LINE_BYTES) {
+            throw new Error("validation_failed");
+          }
+        }
+      }
+    },
+    () => {
+      if (
+        currentLineBytes !== 0 ||
+        fileHash.digest("hex") !== expectedFileSha256
+      ) {
+        throw new Error("validation_failed");
+      }
+    }
+  );
+  process.stdout.write(
+    `${JSON.stringify({
+      schema: "source-wire.owner-export.v1",
+      status: "exported",
+      logicalStateSha256,
+      fileSha256: expectedFileSha256,
+      governedRecordCount: Number(governedRecordCount),
+      byteCount: result.byteCount,
+      auditEventId
+    })}\n`
+  );
 }
 
 async function executeGetRequest(
@@ -209,6 +365,13 @@ function validateBaseUrl(value: string): string {
   }
   assertLoopbackHost(url.hostname.replace(/^\[|\]$/gu, ""));
   return url.origin;
+}
+
+async function readBoundedInputFile(
+  path: string
+): Promise<Record<string, unknown>> {
+  const bytes = await readBoundedRegularFile(path, MAX_JSON_BODY_BYTES);
+  return parseStrictJsonObject(bytes);
 }
 
 void main().catch(() => {

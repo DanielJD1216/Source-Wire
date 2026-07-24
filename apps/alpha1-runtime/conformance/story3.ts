@@ -64,7 +64,8 @@ const crashStages: ProtectedReadStage[] = [
   "before_receipt_consumption",
   "after_receipt_consumption",
   "before_response_serialization",
-  "during_response_serialization"
+  "during_response_serialization",
+  "before_response_write"
 ];
 
 type CaseResult = {
@@ -324,8 +325,8 @@ async function migrateAndInitialize(): Promise<void> {
   assert.equal(migration.code, 0, migration.stderr);
   const migrationBody = parseJsonLine(migration.stdout);
   assert.equal(migrationBody.status, "applied");
-  assert.equal(migrationBody.version, 3);
-  assert.equal((migrationBody.migrations as unknown[]).length, 3);
+  assert.equal(migrationBody.version, 4);
+  assert.equal((migrationBody.migrations as unknown[]).length, 4);
   const replay = await runProcess(
     operatorCli,
     ["migrate"],
@@ -335,7 +336,7 @@ async function migrateAndInitialize(): Promise<void> {
   assert.equal(parseJsonLine(replay.stdout).status, "already_applied");
   pass(
     "S3-MIG-01",
-    "forward-only migrations through 0003 applied once and replayed without mutation"
+    "forward-only migrations through 0004 applied once and replayed without mutation"
   );
 
   assert(adminPool);
@@ -359,7 +360,7 @@ async function migrateAndInitialize(): Promise<void> {
   );
   assert.equal(initialized.code, 0, initialized.stderr);
   const body = parseJsonLine(initialized.stdout);
-  assert.equal(body.schemaVersion, 3);
+  assert.equal(body.schemaVersion, 4);
   const owner = body.ownerAdminCredential as Record<string, unknown>;
   ownerToken = String(owner.secret);
   ownerCredentialId = String(owner.credentialId);
@@ -849,7 +850,20 @@ async function canonicalizationAndReceiptProbes(): Promise<void> {
   });
   assert.equal(second.status, 200, second.text);
   const secondDigests = await receiptDigestsForAudit(readAuditEventId(second));
-  assert.deepEqual(secondDigests, firstDigests);
+  assert.equal(secondDigests.request_digest, firstDigests.request_digest);
+  assert.equal(
+    secondDigests.covered_result_count,
+    firstDigests.covered_result_count
+  );
+  assert.equal(
+    firstDigests.result_digest,
+    createHash("sha256").update(first.text, "utf8").digest("hex")
+  );
+  assert.equal(
+    secondDigests.result_digest,
+    createHash("sha256").update(second.text, "utf8").digest("hex")
+  );
+  assert.notEqual(secondDigests.result_digest, firstDigests.result_digest);
 
   const cleanProbeOne = await runProcess(
     digestProbeEntry,
@@ -1058,7 +1072,7 @@ async function outageTimeoutCancellationAndBoundsProbes(): Promise<void> {
   );
 
   const consumeSignature =
-    "source_wire_memory.consume_protected_read_receipt(uuid, smallint, uuid, uuid, varchar, uuid, varchar, varchar, varchar, varchar, varchar, varchar, varchar, smallint, timestamptz, timestamptz, varchar)";
+    "source_wire_memory.consume_protected_read_receipt(uuid, smallint, uuid, uuid, varchar, uuid, varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, integer, smallint, timestamptz, timestamptz, varchar)";
   await targetAdminPool.query(
     `REVOKE EXECUTE ON FUNCTION ${consumeSignature} FROM ${roleNames.runtime}`
   );
@@ -1314,7 +1328,9 @@ async function crashMatrixProbes(): Promise<void> {
     const preCommit =
       stage === "before_query" ||
       stage === "after_query" ||
-      stage === "before_receipt_and_audit_commit";
+      stage === "before_receipt_and_audit_commit" ||
+      stage === "before_response_serialization" ||
+      stage === "during_response_serialization";
     const committedBeforeConsume =
       stage === "after_durable_commit" ||
       stage === "before_receipt_consumption";
@@ -1342,10 +1358,10 @@ async function crashMatrixProbes(): Promise<void> {
       durableState
     });
   }
-  assert.equal(crashMatrix.length, 8);
+  assert.equal(crashMatrix.length, 9);
   pass(
     "S3-CRASH-01",
-    "all eight real process crashes matched pre-commit, authorized, or attempted durable state with zero content release"
+    "all nine real process crashes matched pre-commit, authorized, or attempted durable state with zero content release"
   );
 }
 
@@ -1426,6 +1442,8 @@ function mainHarnessActor(): AuthenticatedCredential {
     credentialClass: "harness",
     status: "active",
     ownerId: "owner_story3",
+    actorIdentityId: mainHarness.credentialId,
+    authenticationEpochId: "00000000-0000-4000-8000-000000000004",
     namespaceIds: [...mainHarness.namespaceIds],
     capabilities: [
       "memory_candidate.propose",
@@ -1469,16 +1487,43 @@ async function insertArtificialMemory(input: {
   const client = await targetAdminPool.connect();
   try {
     await client.query("BEGIN");
+    const actorResult = await client.query<{ actor_identity_id: string }>(
+      `SELECT actor_identity_id
+         FROM source_wire_memory.actor_identities
+        WHERE owner_id = $1
+        ORDER BY actor_identity_id
+        LIMIT 1`,
+      [input.ownerId]
+    );
+    const actorIdentityId =
+      actorResult.rows[0]?.actor_identity_id ?? randomUUID();
+    if (actorResult.rowCount === 0) {
+      await client.query(
+        `INSERT INTO source_wire_memory.actor_identities (
+           actor_identity_id,
+           owner_id,
+           actor_class,
+           created_at
+         ) VALUES ($1, $2, 'owner_admin', clock_timestamp())`,
+        [actorIdentityId, input.ownerId]
+      );
+    }
+    const credentialId =
+      input.ownerId === "owner_story3" ? ownerCredentialId : null;
     await client.query(
       `INSERT INTO source_wire_memory.memory_candidates (
-         candidate_id, owner_id, namespace_id, proposed_by_credential_id, state,
-         content, content_byte_count, decided_at, decided_by_credential_id
-       ) VALUES ($1, $2, $3, $4, 'approved', $5, $6, clock_timestamp(), $4)`,
+         candidate_id, owner_id, namespace_id, proposed_by_credential_id,
+         proposed_by_actor_id, state, content, content_byte_count, decided_at,
+         decided_by_credential_id, decided_by_actor_id
+       ) VALUES (
+         $1, $2, $3, $4, $5, 'approved', $6, $7, clock_timestamp(), $4, $5
+       )`,
       [
         candidateId,
         input.ownerId,
         input.namespaceId,
-        ownerCredentialId,
+        credentialId,
+        actorIdentityId,
         input.content,
         contentByteCount
       ]
@@ -1504,8 +1549,9 @@ async function insertArtificialMemory(input: {
     await client.query(
       `INSERT INTO source_wire_memory.trusted_memory_revisions (
          revision_id, memory_id, owner_id, namespace_id, revision_number, status,
-         content, content_byte_count, origin_candidate_id, created_by_credential_id
-       ) VALUES ($1, $2, $3, $4, 1, $5, $6, $7, $8, $9)`,
+         content, content_byte_count, origin_candidate_id,
+         created_by_credential_id, created_by_actor_id
+       ) VALUES ($1, $2, $3, $4, 1, $5, $6, $7, $8, $9, $10)`,
       [
         revisionId,
         memoryId,
@@ -1515,7 +1561,8 @@ async function insertArtificialMemory(input: {
         input.content,
         contentByteCount,
         candidateId,
-        ownerCredentialId
+        credentialId,
+        actorIdentityId
       ]
     );
     await client.query(
@@ -2071,7 +2118,8 @@ async function writeReport(): Promise<void> {
     [
       "migrations/0001_story1_bootstrap.sql",
       "migrations/0002_story2_candidate_lifecycle.sql",
-      "migrations/0003_story3_audited_search.sql"
+      "migrations/0003_story3_audited_search.sql",
+      "migrations/0004_story4_lifecycle_portability.sql"
     ].map(async (path) => ({
       path,
       sha256: createHash("sha256")

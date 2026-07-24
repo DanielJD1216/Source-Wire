@@ -259,17 +259,19 @@ export async function proposeMemoryCandidate(
            owner_id,
            namespace_id,
            proposed_by_credential_id,
+           proposed_by_actor_id,
            state,
            content,
            content_byte_count,
            created_at,
            updated_at
-         ) VALUES ($1, $2, $3, $4, 'pending', $5, $6, $7, $7)`,
+         ) VALUES ($1, $2, $3, $4, $5, 'pending', $6, $7, $8, $8)`,
         [
           candidateId,
           actor.ownerId,
           proposal.namespaceId,
           actor.credentialId,
+          actor.actorIdentityId,
           proposal.content,
           proposal.contentByteCount,
           createdAt
@@ -403,8 +405,11 @@ export async function decideMemoryCandidate(
              content_byte_count,
              origin_candidate_id,
              created_by_credential_id,
+             created_by_actor_id,
              created_at
-           ) VALUES ($1, $2, $3, $4, 1, 'active', $5, $6, $7, $8, $9)`,
+           ) VALUES (
+             $1, $2, $3, $4, 1, 'active', $5, $6, $7, $8, $9, $10
+           )`,
           [
             revisionId,
             memoryId,
@@ -414,6 +419,7 @@ export async function decideMemoryCandidate(
             candidate.content_byte_count,
             input.candidateId,
             actor.credentialId,
+            actor.actorIdentityId,
             decidedAt
           ]
         );
@@ -451,15 +457,17 @@ export async function decideMemoryCandidate(
             SET state = $1,
                 decided_at = $2,
                 decided_by_credential_id = $3,
+                decided_by_actor_id = $4,
                 updated_at = $2
-          WHERE candidate_id = $4
-            AND owner_id = $5
-            AND namespace_id = $6
+          WHERE candidate_id = $5
+            AND owner_id = $6
+            AND namespace_id = $7
             AND state = 'pending'`,
         [
           state,
           decidedAt,
           actor.credentialId,
+          actor.actorIdentityId,
           input.candidateId,
           actor.ownerId,
           input.namespaceId
@@ -477,10 +485,13 @@ export async function decideMemoryCandidate(
            expected_state,
            reason,
            decided_by_credential_id,
+           decided_by_actor_id,
            trusted_memory_id,
            trusted_revision_id,
            decided_at
-         ) VALUES ($1, $2, $3, $4, 'pending', $5, $6, $7, $8, $9)`,
+         ) VALUES (
+           $1, $2, $3, $4, 'pending', $5, $6, $7, $8, $9, $10
+         )`,
         [
           input.candidateId,
           actor.ownerId,
@@ -488,6 +499,7 @@ export async function decideMemoryCandidate(
           input.decision,
           input.reason,
           actor.credentialId,
+          actor.actorIdentityId,
           memoryId,
           revisionId,
           decidedAt
@@ -946,16 +958,18 @@ async function insertAudit(
        operation,
        result,
        actor_credential_id,
+       actor_identity_id,
        actor_reference,
        owner_id,
        namespace_id,
        metadata
-     ) VALUES ($1, $2, $3, 'allowed', $4, $5, $6, $7, $8)`,
+     ) VALUES ($1, $2, $3, 'allowed', $4, $5, $6, $7, $8, $9)`,
     [
       eventId,
       input.traceId,
       input.operation,
       input.actor.credentialId,
+      input.actor.actorIdentityId,
       input.actor.actorReference,
       input.actor.ownerId,
       input.namespaceId,

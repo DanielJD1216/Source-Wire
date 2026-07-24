@@ -97,6 +97,19 @@ export async function initializeFreshTarget(
     const verifier = computeCredentialVerifier(input.verifierKey, createdSecret.token);
     const auditEventId = randomUUID();
     const traceId = randomUUID();
+    const epochResult = await client.query<{
+      current_authentication_epoch_id: string;
+    }>(
+      `SELECT current_authentication_epoch_id
+         FROM source_wire_memory.installation_state
+        WHERE singleton = true
+        FOR UPDATE`
+    );
+    const authenticationEpochId =
+      epochResult.rows[0]?.current_authentication_epoch_id;
+    if (!authenticationEpochId) {
+      throw new Error("schema_incompatible");
+    }
 
     await client.query(
       "INSERT INTO source_wire_memory.owners (owner_id) VALUES ($1)",
@@ -110,22 +123,37 @@ export async function initializeFreshTarget(
       );
     }
     await client.query(
+      `INSERT INTO source_wire_memory.actor_identities (
+         actor_identity_id,
+         owner_id,
+         actor_class,
+         created_at
+       ) VALUES ($1, $2, 'owner_admin', $3)`,
+      [createdSecret.credentialId, ownerId, issuedAt]
+    );
+    await client.query(
       `INSERT INTO source_wire_memory.credentials (
          credential_id,
          display_prefix,
          credential_class,
          owner_id,
+         actor_identity_id,
+         authentication_epoch_id,
          status,
          issued_at,
          expires_at,
          verifier_algorithm,
          verifier_key_id,
          verifier
-       ) VALUES ($1, $2, 'owner_admin', $3, 'active', $4, $5, $6, $7, $8)`,
+       ) VALUES (
+         $1, $2, 'owner_admin', $3, $4, $5, 'active', $6, $7, $8, $9, $10
+       )`,
       [
         createdSecret.credentialId,
         createdSecret.displayPrefix,
         ownerId,
+        createdSecret.credentialId,
+        authenticationEpochId,
         issuedAt,
         expiresAt,
         CREDENTIAL_VERIFIER_ALGORITHM,
@@ -145,7 +173,10 @@ export async function initializeFreshTarget(
       "runtime.health",
       "credential.manage",
       "memory_candidate.review",
-      "memory_candidate.decide"
+      "memory_candidate.decide",
+      "trusted_memory.correct",
+      "trusted_memory.revoke",
+      "memory.export"
     ]) {
       await client.query(
         `INSERT INTO source_wire_memory.credential_capability_grants
@@ -161,10 +192,13 @@ export async function initializeFreshTarget(
          operation,
          result,
          actor_credential_id,
+         actor_identity_id,
          actor_reference,
          owner_id,
          metadata
-       ) VALUES ($1, $2, 'initialize_fresh_target', 'allowed', NULL, 'operator', $3, $4)`,
+       ) VALUES (
+         $1, $2, 'initialize_fresh_target', 'allowed', NULL, NULL, 'operator', $3, $4
+       )`,
       [auditEventId, traceId, ownerId, JSON.stringify({ namespaceCount: namespaceIds.length })]
     );
     await client.query("COMMIT");

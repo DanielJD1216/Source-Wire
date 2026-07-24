@@ -12,9 +12,9 @@ AI harness
   -> approve into one trusted-memory identity and revision 1, or reject
 ```
 
-The Story 2 agent path can propose but cannot approve, reject, connect to PostgreSQL, or choose owner authority. Latest source now adds a separately bounded search tool through [Alpha 1 Story 3 Audited Search](alpha1-story3-audited-search.md).
+The Story 2 agent path can propose but cannot approve, reject, connect to PostgreSQL, or choose owner authority. Latest source adds a separately bounded search tool through [Alpha 1 Story 3 Audited Search](alpha1-story3-audited-search.md), then keeps correction, revocation, export, and recovery outside MCP through [Alpha 1 Story 4 Governed Lifecycle And Portability](alpha1-story4-governed-lifecycle-portability.md).
 
-This workspace is not part of `@source-wire/contracts@0.1.0`. It remains unpublished, loopback-only, unhosted, undeployed, unsupported for real data, and not production ready. Story 3 search is now implemented as a separate local proof. Correction, revocation, provider transport, export, restore, and UI behavior remain outside this unit.
+This workspace is not part of `@source-wire/contracts@0.1.0`. It remains unpublished, loopback-only, unhosted, undeployed, unsupported for real data, and not production ready. Story 3 search and Story 4 governed lifecycle and portability are implemented as separate local proofs. Correction, revocation, provider transport, export, restore, and UI behavior remain outside this Story 2 unit.
 
 ## Requirements
 

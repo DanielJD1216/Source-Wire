@@ -4,6 +4,50 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Alpha 1 Story 4 governed lifecycle and portability proof
+
+Summary:
+
+- Added owner-admin fix-forward correction and revocation through bounded loopback API policy and owner CLI paths, with no new MCP tool.
+- Added forward-only migration `0004` for inert historical actors, immutable lifecycle evidence, exact protected-read targets, authentication epochs, recovery state, and narrow security-definer functions.
+- Added expected-revision one-winner lifecycle transactions, durable exact replay, provenance carry-forward, correction lineage, and atomic audit.
+- Closed the protected-read lifecycle race by revalidating exact memory and revision targets at receipt consumption.
+- Added canonical bounded governed-state export, atomic owner-only local file handling, fresh empty-target portable initialization, isolated physical recovery, and independent runtime verification.
+- Preserved the published `@source-wire/contracts@0.1.0` package boundary and every provider, remote MCP, deployment, hosting, production, real-data, backup-guarantee, and release block.
+
+Validation:
+
+- `npm run alpha1:test`
+- `npm run alpha1:conformance`
+- `npm run ci:check`
+- `npm run reviewer:smoke`
+- `npm run package:dry-run`
+- `npm run package:content-smoke`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run docs:command-setup`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `npm audit --omit=dev`
+- `git diff --check`
+
+Primary files:
+
+- `apps/alpha1-runtime/src/trusted-memory-lifecycle.ts`
+- `apps/alpha1-runtime/src/portable-format.ts`
+- `apps/alpha1-runtime/src/portable-recovery.ts`
+- `apps/alpha1-runtime/src/safe-local-file.ts`
+- `apps/alpha1-runtime/migrations/0004_story4_lifecycle_portability.sql`
+- `apps/alpha1-runtime/conformance/story4.ts`
+- `docs/getting-started/alpha1-story4-governed-lifecycle-portability.md`
+
+Risks and follow-ups:
+
+- Portable exports and physical backups remain sensitive owner-controlled artifacts. Source-Wire does not provide encryption, key custody, storage, retention, transfer, or production backup guarantees.
+- The MCP SDK still carries two moderate advisories in an unused HTTP-server path. Alpha 1 remains local stdio only, with zero high or critical production advisories.
+- Same-user process compromise, PostgreSQL superuser access, operating-system root, and compromise of owner-controlled encryption keys remain outside the Alpha 1 application boundary.
+- This remains generated-disposable, loopback-only developer proof. Providers, remote MCP, deployment, hosting, public exposure, real data, and release mutation remain excluded.
+
 ### 2026-07-24 - Alpha 1 Story 3 audited trusted-memory search proof
 
 Summary:

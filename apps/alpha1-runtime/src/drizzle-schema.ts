@@ -3,6 +3,7 @@ import {
   jsonb,
   pgSchema,
   primaryKey,
+  boolean,
   smallint,
   timestamp,
   unique,
@@ -51,6 +52,8 @@ export const credentials = sourceWireMemory.table("credentials", {
   ownerId: varchar("owner_id", { length: 64 })
     .notNull()
     .references(() => owners.ownerId),
+  actorIdentityId: uuid("actor_identity_id").notNull(),
+  authenticationEpochId: uuid("authentication_epoch_id").notNull(),
   status: varchar("status", { length: 16 }).notNull(),
   issuedAt: timestamp("issued_at", { withTimezone: true, mode: "date" }).notNull(),
   expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }).notNull(),
@@ -60,6 +63,12 @@ export const credentials = sourceWireMemory.table("credentials", {
   verifierAlgorithm: varchar("verifier_algorithm", { length: 32 }).notNull(),
   verifierKeyId: varchar("verifier_key_id", { length: 64 }).notNull(),
   verifier: bytea("verifier").notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull()
+});
+
+export const installationState = sourceWireMemory.table("installation_state", {
+  singleton: boolean("singleton").primaryKey(),
+  currentAuthenticationEpochId: uuid("current_authentication_epoch_id").notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull()
 });
 
@@ -167,6 +176,7 @@ export const story1DrizzleSchema = {
   owners,
   namespaces,
   credentials,
+  installationState,
   credentialNamespaceGrants,
   credentialCapabilityGrants,
   auditEvents,

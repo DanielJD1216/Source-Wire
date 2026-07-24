@@ -106,6 +106,8 @@ test("origin process verifier binds every receipt field to one process secret", 
     releaseBinding: randomBytes(32).toString("base64url"),
     requestDigest: "a".repeat(64),
     resultDigest: "b".repeat(64),
+    targetOrderDigest: "c".repeat(64),
+    responseByteCount: 512,
     coveredResultCount: 1,
     issuedAt: "2026-07-24T00:00:00.000Z",
     expiresAt: "2026-07-24T00:00:05.000Z"

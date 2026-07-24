@@ -11,6 +11,8 @@ import { fileURLToPath } from "node:url";
 
 import pg from "pg";
 
+import { RUNTIME_RECOVERY_GUARD_APPLICATION_NAME } from "../src/config.js";
+
 const { Client, Pool } = pg;
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const repoRoot = resolve(appRoot, "../..");
@@ -1209,8 +1211,16 @@ async function databaseUnavailableLivenessProbe(
     [databaseName]
   );
   await adminPool.query(
-    "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = $1 AND usename = $2",
-    [databaseName, roleNames.runtime]
+    `SELECT pg_terminate_backend(pid)
+       FROM pg_stat_activity
+      WHERE datname = $1
+        AND usename = $2
+        AND application_name <> $3`,
+    [
+      databaseName,
+      roleNames.runtime,
+      RUNTIME_RECOVERY_GUARD_APPLICATION_NAME
+    ]
   );
   const live = await getJson(`${baseUrl}/health/live`);
   assert.deepEqual(live.body, { status: "live" });
@@ -1393,9 +1403,9 @@ async function schemaAndBindingProbes(): Promise<void> {
     name: string;
     checksumSha256: string;
   }>;
-  assert.equal(expectedMigrations.length, 3);
-  const story3 = expectedMigrations[2];
-  assert(story3);
+  assert.equal(expectedMigrations.length, 4);
+  const story4 = expectedMigrations[3];
+  assert(story4);
   const mutations: Array<{
     id: string;
     apply: string;
@@ -1410,26 +1420,26 @@ async function schemaAndBindingProbes(): Promise<void> {
     },
     {
       id: "malformed",
-      apply: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${"c".repeat(64)}' WHERE version = 3`,
-      restore: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${story3.checksumSha256}' WHERE version = 3`,
+      apply: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${"c".repeat(64)}' WHERE version = 4`,
+      restore: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${story4.checksumSha256}' WHERE version = 4`,
       expected: "schema_incompatible"
     },
     {
       id: "incomplete",
-      apply: "UPDATE source_wire_memory.schema_migrations SET state = 'applying' WHERE version = 3",
-      restore: "UPDATE source_wire_memory.schema_migrations SET state = 'completed' WHERE version = 3",
+      apply: "UPDATE source_wire_memory.schema_migrations SET state = 'applying' WHERE version = 4",
+      restore: "UPDATE source_wire_memory.schema_migrations SET state = 'completed' WHERE version = 4",
       expected: "schema_incompatible"
     },
     {
       id: "old",
-      apply: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 3",
-      restore: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (3, '${story3.name}', '${story3.checksumSha256}', 'completed')`,
+      apply: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 4",
+      restore: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (4, '${story4.name}', '${story4.checksumSha256}', 'completed')`,
       expected: "schema_too_old"
     },
     {
       id: "new",
-      apply: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (4, 'future', '${"d".repeat(64)}', 'completed')`,
-      restore: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 4",
+      apply: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (5, 'future', '${"d".repeat(64)}', 'completed')`,
+      restore: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 5",
       expected: "schema_too_new"
     }
   ];

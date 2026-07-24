@@ -22,7 +22,8 @@ import type { Story1Database } from "./database.js";
 import {
   credentialCapabilityGrants,
   credentialNamespaceGrants,
-  credentials
+  credentials,
+  installationState
 } from "./drizzle-schema.js";
 import { SafeError } from "./errors.js";
 import {
@@ -43,6 +44,8 @@ export type AuthenticatedCredential = {
   credentialClass: "owner_admin" | "harness";
   status: "active" | "rotated";
   ownerId: string;
+  actorIdentityId: string;
+  authenticationEpochId: string;
   namespaceIds: string[];
   capabilities: Story1Capability[];
   issuedAt: Date;
@@ -102,6 +105,8 @@ export async function authenticateCredential(
       credentialId: credentials.credentialId,
       credentialClass: credentials.credentialClass,
       ownerId: credentials.ownerId,
+      actorIdentityId: credentials.actorIdentityId,
+      authenticationEpochId: credentials.authenticationEpochId,
       status: credentials.status,
       issuedAt: credentials.issuedAt,
       expiresAt: credentials.expiresAt,
@@ -124,6 +129,19 @@ export async function authenticateCredential(
     !verifierMatches(verifierKey, exactToken, row.verifier)
   ) {
     throw new SafeError("credential_invalid", 401);
+  }
+  const [state] = await database.drizzle
+    .select({
+      currentAuthenticationEpochId:
+        installationState.currentAuthenticationEpochId
+    })
+    .from(installationState)
+    .limit(1);
+  if (
+    !state ||
+    row.authenticationEpochId !== state.currentAuthenticationEpochId
+  ) {
+    throw new SafeError("credential_revoked", 401);
   }
   if (row.status === "revoked") {
     throw new SafeError("credential_revoked", 401);
@@ -159,6 +177,8 @@ export async function authenticateCredential(
     credentialClass: row.credentialClass,
     status: row.status,
     ownerId: row.ownerId,
+    actorIdentityId: row.actorIdentityId,
+    authenticationEpochId: row.authenticationEpochId,
     namespaceIds: namespaceRows.map((grant) => grant.namespaceId),
     capabilities,
     issuedAt: row.issuedAt,
@@ -224,18 +244,20 @@ export async function recordAudit(
        operation,
        result,
        actor_credential_id,
+       actor_identity_id,
        actor_reference,
        owner_id,
        namespace_id,
        denial_code,
        metadata
-     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
     [
       eventId,
       input.traceId,
       input.operation,
       input.result,
       input.actor?.credentialId ?? null,
+      input.actor?.actorIdentityId ?? null,
       input.actor?.actorReference ?? "unknown",
       input.actor?.ownerId ?? null,
       input.namespaceId ?? null,
@@ -345,12 +367,35 @@ export async function issueHarnessCredential(
       const issuedAt = new Date();
       const secret = createCredentialSecret();
       const verifier = computeCredentialVerifier(verifierKey, secret.token);
+      const epoch = await client.query<{
+        current_authentication_epoch_id: string;
+      }>(
+        `SELECT current_authentication_epoch_id
+           FROM source_wire_memory.installation_state
+          WHERE singleton = true`
+      );
+      const authenticationEpochId =
+        epoch.rows[0]?.current_authentication_epoch_id;
+      if (!authenticationEpochId) {
+        throw new SafeError("operation_unavailable", 503, true);
+      }
+      await client.query(
+        `INSERT INTO source_wire_memory.actor_identities (
+           actor_identity_id,
+           owner_id,
+           actor_class,
+           created_at
+         ) VALUES ($1, $2, 'harness', $3)`,
+        [secret.credentialId, actor.ownerId, issuedAt]
+      );
       await client.query(
         `INSERT INTO source_wire_memory.credentials (
            credential_id,
            display_prefix,
            credential_class,
            owner_id,
+           actor_identity_id,
+           authentication_epoch_id,
            status,
            issued_at,
            expires_at,
@@ -358,11 +403,15 @@ export async function issueHarnessCredential(
            verifier_algorithm,
            verifier_key_id,
            verifier
-         ) VALUES ($1, $2, 'harness', $3, 'active', $4, $5, $6, $7, $8, $9)`,
+         ) VALUES (
+           $1, $2, 'harness', $3, $4, $5, 'active', $6, $7, $8, $9, $10, $11
+         )`,
         [
           secret.credentialId,
           secret.displayPrefix,
           actor.ownerId,
+          secret.credentialId,
+          authenticationEpochId,
           issuedAt,
           expiresAt,
           actor.credentialId,
@@ -464,17 +513,31 @@ export async function rotateCredential(
     replayKey: deriveIdempotencyReplayKey(verifierKey),
     traceId,
     mutate: async (client) => {
+      await lockCredentialForMutation(client, targetCredentialId);
       const target = await client.query<{
         credential_id: string;
         owner_id: string;
         credential_class: string;
         status: string;
         expires_at: Date;
+        actor_identity_id: string;
+        authentication_epoch_id: string;
+        current_authentication_epoch_id: string;
       }>(
-        `SELECT credential_id, owner_id, credential_class, status, expires_at
-           FROM source_wire_memory.credentials
-          WHERE credential_id = $1
-          FOR UPDATE`,
+        `SELECT
+           credential.credential_id,
+           credential.owner_id,
+           credential.credential_class,
+           credential.status,
+           credential.expires_at,
+           credential.actor_identity_id,
+           credential.authentication_epoch_id,
+           installation.current_authentication_epoch_id
+           FROM source_wire_memory.credentials AS credential
+           CROSS JOIN source_wire_memory.installation_state AS installation
+          WHERE credential.credential_id = $1
+            AND installation.singleton = true
+          FOR UPDATE OF credential`,
         [targetCredentialId]
       );
       const row = target.rows[0];
@@ -484,6 +547,7 @@ export async function rotateCredential(
         (row.credential_class !== "harness" && row.credential_class !== "owner_admin") ||
         (requiredClass !== undefined && row.credential_class !== requiredClass) ||
         row.status !== "active" ||
+        row.authentication_epoch_id !== row.current_authentication_epoch_id ||
         row.expires_at.getTime() <= Date.now()
       ) {
         throw new SafeError("state_conflict", 409);
@@ -517,6 +581,8 @@ export async function rotateCredential(
            display_prefix,
            credential_class,
            owner_id,
+           actor_identity_id,
+           authentication_epoch_id,
            status,
            issued_at,
            expires_at,
@@ -525,12 +591,16 @@ export async function rotateCredential(
            verifier_algorithm,
            verifier_key_id,
            verifier
-         ) VALUES ($1, $2, $3, $4, 'active', $5, $6, $7, $8, $9, $10, $11)`,
+         ) VALUES (
+           $1, $2, $3, $4, $5, $6, 'active', $7, $8, $9, $10, $11, $12, $13
+         )`,
         [
           secret.credentialId,
           secret.displayPrefix,
           row.credential_class,
           actor.ownerId,
+          row.actor_identity_id,
+          row.current_authentication_epoch_id,
           issuedAt,
           row.expires_at,
           targetCredentialId,
@@ -618,6 +688,7 @@ export async function revokeCredential(
     replayKey: deriveIdempotencyReplayKey(verifierKey),
     traceId,
     mutate: async (client) => {
+      await lockCredentialForMutation(client, targetCredentialId);
       const update = await client.query<{ credential_id: string }>(
         `UPDATE source_wire_memory.credentials
             SET status = 'revoked', updated_at = clock_timestamp()
@@ -671,6 +742,15 @@ async function executeCredentialMutationIdempotently(input: {
 
   try {
     await client.query("BEGIN");
+    await client.query(
+      `SELECT pg_catalog.pg_advisory_xact_lock_shared(
+         pg_catalog.hashtextextended(
+           'source_wire_story4_authentication_epoch',
+           1913770104
+         )
+       )`
+    );
+    await lockCredentialForMutation(client, input.actor.credentialId);
     await client.query(
       "SELECT pg_advisory_xact_lock(hashtextextended($1, 1913770104))",
       [`${input.actor.credentialId}|${input.operation}|${input.idempotencyKey}`]
@@ -775,6 +855,18 @@ async function executeCredentialMutationIdempotently(input: {
   } finally {
     client.release();
   }
+}
+
+async function lockCredentialForMutation(
+  client: pg.PoolClient,
+  credentialId: string
+): Promise<void> {
+  await client.query(
+    `SELECT pg_catalog.pg_advisory_xact_lock(
+       pg_catalog.hashtextextended($1, 1913770104)
+     )`,
+    [`source_wire_story4_credential:${credentialId}`]
+  );
 }
 
 function replayStoredMutation(
@@ -922,18 +1014,20 @@ async function insertAuditWithClient(
        operation,
        result,
        actor_credential_id,
+       actor_identity_id,
        actor_reference,
        owner_id,
        namespace_id,
        denial_code,
        metadata
-     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
     [
       eventId,
       input.traceId,
       input.operation,
       input.result,
       input.actor?.credentialId ?? null,
+      input.actor?.actorIdentityId ?? null,
       input.actor?.actorReference ?? "unknown",
       input.actor?.ownerId ?? null,
       input.namespaceId ?? null,

@@ -2,7 +2,7 @@ const SOURCE_WIRE_IDENTIFIER = /^[A-Za-z][A-Za-z0-9_-]{0,63}$/;
 const BASE64URL = /^[A-Za-z0-9_-]+$/;
 
 export const STORY1_SCHEMA_VERSION = 1;
-export const ALPHA1_SCHEMA_VERSION = 3;
+export const ALPHA1_SCHEMA_VERSION = 4;
 export const STORY1_SCHEMA_NAME = "source_wire_memory";
 export const STORY1_API_SCHEMA = "source-wire.api.v1alpha1";
 export const MAX_AUTHORIZATION_BYTES = 512;
@@ -12,6 +12,8 @@ export const MAX_PROTECTED_REQUESTS_PER_MINUTE = 120;
 export const STORY1_REQUEST_TIMEOUT_MS = 5_000;
 export const STORY1_HEADERS_TIMEOUT_MS = 5_000;
 export const STORY1_CONNECTION_CHECK_INTERVAL_MS = 250;
+export const RUNTIME_RECOVERY_GUARD_APPLICATION_NAME =
+  "source_wire_alpha1_runtime_guard";
 export const RUNTIME_POOL_MAX = 5;
 export const RUNTIME_QUERY_TIMEOUT_MS = 2_000;
 export const RUNTIME_CONNECTION_TIMEOUT_MS = 2_000;
@@ -25,6 +27,11 @@ export const MAX_TRUSTED_MEMORY_SEARCH_RESULTS = 10;
 export const MAX_TRUSTED_MEMORY_RESULT_CONTENT_BYTES = 65_536;
 export const MAX_PROTECTED_READ_RESPONSE_BYTES = 98_304;
 export const PROTECTED_READ_RECEIPT_TTL_MS = 5_000;
+export const MAX_PORTABLE_EXPORT_BYTES = 64 * 1_024 * 1_024;
+export const MAX_PORTABLE_EXPORT_LINE_BYTES = 64 * 1_024;
+export const MAX_PORTABLE_EXPORT_RECORDS = 100_000;
+export const PORTABLE_EXPORT_TIMEOUT_MS = 60_000;
+export const PORTABLE_RESTORE_TIMEOUT_MS = 120_000;
 
 export const STORY1_CAPABILITIES = [
   "runtime.health",

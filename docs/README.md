@@ -12,6 +12,7 @@ Start with the [project README](../README.md) if this is your first visit.
 | Install and verify the repository | [Quickstart](getting-started/quickstart.md) |
 | Run the local bootstrap and credential foundation | [Alpha 1 Story 1 Local Runtime](getting-started/alpha1-story1-local-runtime.md) |
 | Prove MCP candidate proposal and owner approval | [Alpha 1 Story 2 Candidate Approval](getting-started/alpha1-story2-candidate-approval.md) |
+| Prove audited trusted-memory search | [Alpha 1 Story 3 Audited Search](getting-started/alpha1-story3-audited-search.md) |
 | Evaluate Source-Wire as an adopter | [Adopter Walkthrough](getting-started/adopter-walkthrough.md) |
 | Understand the architecture | [Architecture Map](concepts/architecture-map.md) |
 | Compare memory with a knowledge base | [Knowledge Provider And Memory Store Boundary](concepts/knowledge-provider-memory-store-boundary.md) |
@@ -25,6 +26,7 @@ Start with the [project README](../README.md) if this is your first visit.
 - [Quickstart](getting-started/quickstart.md)
 - [Alpha 1 Story 1 Local Runtime](getting-started/alpha1-story1-local-runtime.md)
 - [Alpha 1 Story 2 Candidate Approval](getting-started/alpha1-story2-candidate-approval.md)
+- [Alpha 1 Story 3 Audited Search](getting-started/alpha1-story3-audited-search.md)
 - [Adopter Walkthrough](getting-started/adopter-walkthrough.md)
 
 ## Concepts

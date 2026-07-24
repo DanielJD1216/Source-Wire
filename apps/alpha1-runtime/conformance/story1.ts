@@ -1393,9 +1393,9 @@ async function schemaAndBindingProbes(): Promise<void> {
     name: string;
     checksumSha256: string;
   }>;
-  assert.equal(expectedMigrations.length, 2);
-  const story2 = expectedMigrations[1];
-  assert(story2);
+  assert.equal(expectedMigrations.length, 3);
+  const story3 = expectedMigrations[2];
+  assert(story3);
   const mutations: Array<{
     id: string;
     apply: string;
@@ -1410,26 +1410,26 @@ async function schemaAndBindingProbes(): Promise<void> {
     },
     {
       id: "malformed",
-      apply: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${"c".repeat(64)}' WHERE version = 2`,
-      restore: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${story2.checksumSha256}' WHERE version = 2`,
+      apply: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${"c".repeat(64)}' WHERE version = 3`,
+      restore: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${story3.checksumSha256}' WHERE version = 3`,
       expected: "schema_incompatible"
     },
     {
       id: "incomplete",
-      apply: "UPDATE source_wire_memory.schema_migrations SET state = 'applying' WHERE version = 2",
-      restore: "UPDATE source_wire_memory.schema_migrations SET state = 'completed' WHERE version = 2",
+      apply: "UPDATE source_wire_memory.schema_migrations SET state = 'applying' WHERE version = 3",
+      restore: "UPDATE source_wire_memory.schema_migrations SET state = 'completed' WHERE version = 3",
       expected: "schema_incompatible"
     },
     {
       id: "old",
-      apply: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 2",
-      restore: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (2, '${story2.name}', '${story2.checksumSha256}', 'completed')`,
+      apply: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 3",
+      restore: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (3, '${story3.name}', '${story3.checksumSha256}', 'completed')`,
       expected: "schema_too_old"
     },
     {
       id: "new",
-      apply: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (3, 'future', '${"d".repeat(64)}', 'completed')`,
-      restore: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 3",
+      apply: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (4, 'future', '${"d".repeat(64)}', 'completed')`,
+      restore: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 4",
       expected: "schema_too_new"
     }
   ];

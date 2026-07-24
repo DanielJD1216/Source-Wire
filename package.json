@@ -58,6 +58,7 @@
     "alpha1:test": "npm run test --workspace @source-wire/alpha1-runtime",
     "alpha1:conformance:story1": "npm run alpha1:build && npm run conformance:story1 --workspace @source-wire/alpha1-runtime",
     "alpha1:conformance:story2": "npm run alpha1:build && npm run conformance:story2 --workspace @source-wire/alpha1-runtime",
+    "alpha1:conformance:story3": "npm run alpha1:build && npm run conformance:story3 --workspace @source-wire/alpha1-runtime",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "examples:typecheck": "tsc -p examples/typescript/tsconfig.json --noEmit",
     "build": "tsc -p tsconfig.json",

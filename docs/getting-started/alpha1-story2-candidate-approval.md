@@ -12,9 +12,9 @@ AI harness
   -> approve into one trusted-memory identity and revision 1, or reject
 ```
 
-The agent can propose. It cannot approve, reject, search trusted memory, connect to PostgreSQL, or choose owner authority.
+The Story 2 agent path can propose but cannot approve, reject, connect to PostgreSQL, or choose owner authority. Latest source now adds a separately bounded search tool through [Alpha 1 Story 3 Audited Search](alpha1-story3-audited-search.md).
 
-This workspace is not part of `@source-wire/contracts@0.1.0`. It remains unpublished, loopback-only, unhosted, undeployed, unsupported for real data, and not production ready. Story 3 search, correction, revocation, provider transport, export, restore, and UI behavior remain outside this unit.
+This workspace is not part of `@source-wire/contracts@0.1.0`. It remains unpublished, loopback-only, unhosted, undeployed, unsupported for real data, and not production ready. Story 3 search is now implemented as a separate local proof. Correction, revocation, provider transport, export, restore, and UI behavior remain outside this unit.
 
 ## Requirements
 
@@ -50,7 +50,7 @@ The runner uses the official MCP TypeScript SDK and:
 
 1. creates only generated disposable roles, credentials, namespaces, database state, and synthetic content,
 2. applies the exact migrations `0001` and `0002`,
-3. discovers exactly `propose_memory_candidate`,
+3. discovers the final Alpha 1 surface of exactly `propose_memory_candidate` and `search_trusted_memory`, while exercising only proposal in the Story 2 lifecycle,
 4. proves owner-assertion and prior-memory proposal paths,
 5. proves malformed, oversized, unsupported, inaccessible, and cross-boundary provenance is denied before mutation,
 6. proves proposal and decision idempotency, including proposal replay after an API restart,
@@ -70,7 +70,7 @@ The MCP process receives only:
 
 It refuses owner tokens, database URLs, non-loopback API addresses, unknown tool fields, invalid Unicode, and stdio frames over the configured bound. It imports no PostgreSQL module. Its stdout is reserved for MCP protocol traffic.
 
-The one tool accepts:
+The Story 2 proposal tool accepts:
 
 ```json
 {
@@ -137,7 +137,8 @@ Trace IDs remain request-specific and are not part of the canonical digest.
 
 ## Still Outside Story 2
 
-- trusted-memory search or context assembly,
+- trusted-memory search is outside Story 2 and is documented separately as Story 3,
+- context assembly,
 - correction, supersession, or revocation operations,
 - external knowledge-provider transport,
 - live connectors or source ingestion,

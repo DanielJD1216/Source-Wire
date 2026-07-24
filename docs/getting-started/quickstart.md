@@ -239,7 +239,7 @@ More detail:
 - real user data,
 - trusted Memory Record promotion.
 
-Latest source contains an unpublished local Alpha 1 Stories 1 and 2 runtime workspace. It proves one loopback API, one stdio MCP proposal tool, pending candidates, and owner-controlled approval or rejection with disposable synthetic PostgreSQL state. It does not change the published package or authorize hosting, deployment, production use, real data, trusted-memory search, correction, or revocation.
+Latest source contains an unpublished local Alpha 1 Stories 1 through 3 runtime workspace. It proves one loopback API, a two-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, and audited active trusted-memory search with disposable synthetic PostgreSQL state. It does not change the published package or authorize hosting, deployment, production use, real data, correction, or revocation.
 
 Current release posture:
 

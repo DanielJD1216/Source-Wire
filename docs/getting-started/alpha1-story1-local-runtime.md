@@ -13,7 +13,7 @@ operator migration and fresh initialization
   -> adopter-controlled PostgreSQL 16
 ```
 
-This is not part of `@source-wire/contracts@0.1.0`. It is not hosted, deployed, production ready, or approved for real data. Story 1 does not implement memory behavior by itself. Latest source extends this foundation with the bounded Story 2 MCP candidate and owner-approval path described in [Alpha 1 Story 2 Candidate Approval](alpha1-story2-candidate-approval.md). Trusted-memory search, correction, revocation, external knowledge providers, and a UI remain unimplemented.
+This is not part of `@source-wire/contracts@0.1.0`. It is not hosted, deployed, production ready, or approved for real data. Story 1 does not implement memory behavior by itself. Latest source extends this foundation with the bounded Story 2 candidate and owner-approval path described in [Alpha 1 Story 2 Candidate Approval](alpha1-story2-candidate-approval.md), plus the protected Story 3 read described in [Alpha 1 Story 3 Audited Search](alpha1-story3-audited-search.md). Correction, revocation, external knowledge providers, and a UI remain unimplemented.
 
 ## Requirements
 
@@ -84,7 +84,7 @@ Authenticated health requires:
 
 Owner-only credential routes require an owner-admin credential plus `credential.manage`. Harness credentials cannot gain owner authority by presenting a capability string.
 
-Story 1 routes define no protected query parameters. Story 2 adds only the bounded candidate-list query described in its guide. Other non-empty query strings on `/v1alpha1/*` are rejected before authentication or operation execution. The protected-request concurrency gate wraps streaming body consumption, then JSON request bodies are limited to 16 KiB before route code buffers or parses them. Held partial protected bodies therefore consume active request slots and cannot bypass the loopback request gate.
+Story 1 routes define no protected query parameters. Story 2 adds only the bounded candidate-list query described in its guide. Story 3 search uses a strict JSON body and still accepts no URL query parameters. Other non-empty query strings on `/v1alpha1/*` are rejected before authentication or operation execution. The protected-request concurrency gate wraps streaming body consumption, then JSON request bodies are limited to 16 KiB before route code buffers or parses them. Held partial protected bodies therefore consume active request slots and cannot bypass the loopback request gate.
 
 The Node server applies an explicit five-second request and header deadline, checked every 250 milliseconds. A client cannot retain a protected slot indefinitely with a small stalled body. Deadline expiry returns a content-free HTTP `408`, closes the stalled request, releases the slot, and leaves liveness and authenticated health available for subsequent requests. The conformance suite also rejects any API process output that is not a six-field structured safe-log record, so timeout handling cannot silently introduce free-form stack traces or request content.
 

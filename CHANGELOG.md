@@ -4,6 +4,45 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Alpha 1 Story 3 audited trusted-memory search proof
+
+Summary:
+
+- Added `search_trusted_memory` to the final two-tool local stdio MCP surface while keeping owner review and approval out of MCP.
+- Added forward-only migration `0003` for active-only PostgreSQL full-text indexing and append-only protected-read receipts.
+- Added explicit owner, namespace, credential-class, capability, query, result, aggregate-content, response, database-timeout, and receipt-lifetime bounds.
+- Added deterministic request and ordered-result digests, a fresh release binding, an ephemeral process secret, persisted HMAC origin-process verification, and exact single-use PostgreSQL receipt consumption.
+- Added fail-closed audit, receipt-consumption, query-timeout, cancellation, serialization, and eight-point real-process crash behavior.
+- Preserved the published `@source-wire/contracts@0.1.0` package boundary and every correction, revocation, provider, remote MCP, deployment, hosting, production, real-data, and release block.
+
+Validation:
+
+- `npm run alpha1:test`
+- `npm run alpha1:conformance:story1`
+- `npm run alpha1:conformance:story2`
+- `npm run alpha1:conformance:story3`
+- `npm run ci:check`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `npm audit --omit=dev`
+- `git diff --check`
+
+Primary files:
+
+- `apps/alpha1-runtime/src/trusted-memory-search.ts`
+- `apps/alpha1-runtime/src/strict-json.ts`
+- `apps/alpha1-runtime/migrations/0003_story3_audited_search.sql`
+- `apps/alpha1-runtime/conformance/story3.ts`
+- `docs/getting-started/alpha1-story3-audited-search.md`
+
+Risks and follow-ups:
+
+- The MCP SDK still carries two moderate advisories in an unused HTTP-server path. Story 3 is local stdio only, with zero high or critical production advisories.
+- Origin-process proof does not defend against same-user host compromise, process-memory inspection, PostgreSQL superuser compromise, or operating-system root.
+- This remains generated-disposable, loopback-only developer proof. Correction, revocation, providers, remote MCP, deployment, hosting, public exposure, real data, and release mutation remain excluded.
+
 ### 2026-07-24 - Alpha 1 Story 2 candidate approval proof
 
 Summary:

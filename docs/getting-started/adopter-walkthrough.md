@@ -38,7 +38,7 @@ Package: @source-wire/contracts
 Version: 0.1.0
 License: Apache-2.0
 Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
-Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 and 2 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, one stdio MCP proposal tool, pending candidates, and owner-controlled approval or rejection; it contains no trusted-memory search, correction, revocation, deployment, hosting, production support, or real data
+Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 3 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, two stdio MCP tools, pending candidates, owner-controlled approval or rejection, and audited active trusted-memory search; it contains no correction, revocation, deployment, hosting, production support, or real data
 ok readiness report
 ```
 

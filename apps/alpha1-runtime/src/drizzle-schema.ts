@@ -3,6 +3,7 @@ import {
   jsonb,
   pgSchema,
   primaryKey,
+  smallint,
   timestamp,
   unique,
   uuid,
@@ -132,6 +133,35 @@ export const idempotencyRecords = sourceWireMemory.table(
   ]
 );
 
+export const protectedReadReceipts = sourceWireMemory.table("protected_read_receipts", {
+  receiptId: uuid("receipt_id").primaryKey(),
+  formatVersion: smallint("format_version").notNull(),
+  traceId: uuid("trace_id").notNull(),
+  requestId: uuid("request_id").notNull().unique(),
+  actorReference: varchar("actor_reference", { length: 64 }).notNull(),
+  actorCredentialId: uuid("actor_credential_id")
+    .notNull()
+    .references(() => credentials.credentialId),
+  ownerId: varchar("owner_id", { length: 64 }).notNull(),
+  namespaceId: varchar("namespace_id", { length: 64 }).notNull(),
+  operation: varchar("operation", { length: 64 }).notNull(),
+  policyDecision: varchar("policy_decision", { length: 16 }).notNull(),
+  releaseBinding: varchar("release_binding", { length: 43 }).notNull().unique(),
+  requestDigest: varchar("request_digest", { length: 64 }).notNull(),
+  resultDigest: varchar("result_digest", { length: 64 }).notNull(),
+  coveredResultCount: smallint("covered_result_count").notNull(),
+  issuedAt: timestamp("issued_at", { withTimezone: true, mode: "date" }).notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }).notNull(),
+  originProcessVerifier: varchar("origin_process_verifier", { length: 64 }).notNull(),
+  consumptionState: varchar("consumption_state", { length: 16 }).notNull(),
+  releaseStatus: varchar("release_status", { length: 32 }).notNull(),
+  consumedAt: timestamp("consumed_at", { withTimezone: true, mode: "date" }),
+  auditEventId: uuid("audit_event_id")
+    .notNull()
+    .unique()
+    .references(() => auditEvents.eventId)
+});
+
 export const story1DrizzleSchema = {
   schemaMigrations,
   owners,
@@ -140,5 +170,6 @@ export const story1DrizzleSchema = {
   credentialNamespaceGrants,
   credentialCapabilityGrants,
   auditEvents,
-  idempotencyRecords
+  idempotencyRecords,
+  protectedReadReceipts
 };

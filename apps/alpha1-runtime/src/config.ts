@@ -2,7 +2,7 @@ const SOURCE_WIRE_IDENTIFIER = /^[A-Za-z][A-Za-z0-9_-]{0,63}$/;
 const BASE64URL = /^[A-Za-z0-9_-]+$/;
 
 export const STORY1_SCHEMA_VERSION = 1;
-export const ALPHA1_SCHEMA_VERSION = 2;
+export const ALPHA1_SCHEMA_VERSION = 3;
 export const STORY1_SCHEMA_NAME = "source_wire_memory";
 export const STORY1_API_SCHEMA = "source-wire.api.v1alpha1";
 export const MAX_AUTHORIZATION_BYTES = 512;
@@ -20,6 +20,11 @@ export const MAX_OWNER_ASSERTION_BYTES = 1_024;
 export const MAX_DECISION_REASON_BYTES = 512;
 export const MAX_LIST_CURSOR_BYTES = 256;
 export const MAX_MCP_STDIO_FRAME_BYTES = 20 * 1_024;
+export const MAX_TRUSTED_MEMORY_QUERY_BYTES = 1_024;
+export const MAX_TRUSTED_MEMORY_SEARCH_RESULTS = 10;
+export const MAX_TRUSTED_MEMORY_RESULT_CONTENT_BYTES = 65_536;
+export const MAX_PROTECTED_READ_RESPONSE_BYTES = 98_304;
+export const PROTECTED_READ_RECEIPT_TTL_MS = 5_000;
 
 export const STORY1_CAPABILITIES = [
   "runtime.health",

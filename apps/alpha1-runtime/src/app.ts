@@ -1,5 +1,4 @@
 import { randomUUID } from "node:crypto";
-import { TextDecoder } from "node:util";
 
 import { Hono, type Context } from "hono";
 import { bodyLimit } from "hono/body-limit";
@@ -34,6 +33,14 @@ import {
   type AuthenticatedCredential
 } from "./repository.js";
 import { stdoutSafeLogger, type SafeLogger } from "./safe-log.js";
+import { parseStrictJsonObject } from "./strict-json.js";
+import {
+  createTrustedMemorySearchResponse,
+  executeTrustedMemorySearch,
+  parseTrustedMemorySearch,
+  serializeTrustedMemorySearchResponse,
+  type ProtectedReadStageHook
+} from "./trusted-memory-search.js";
 
 type AppVariables = {
   traceId: string;
@@ -53,6 +60,8 @@ export type Story1AppOptions = {
     context: Context<{ Variables: AppVariables }>
   ) => string | undefined;
   logger?: SafeLogger;
+  processReleaseSecret: Buffer;
+  onProtectedReadStage?: ProtectedReadStageHook;
 };
 
 export function createStory1App(options: Story1AppOptions): Hono<{ Variables: AppVariables }> {
@@ -194,6 +203,45 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
       },
       201
     );
+  });
+
+  app.post("/v1alpha1/trusted-memories/search", async (context) => {
+    const body = await readStrictJson(context, ["namespaceId", "query", "limit"]);
+    const actor = await authenticateForContext(context, options);
+    const input = parseTrustedMemorySearch(body);
+    context.set("namespaceId", input.namespaceId);
+    const execution = await executeTrustedMemorySearch(
+      options.database.pool,
+      actor,
+      input,
+      context.get("traceId"),
+      {
+        processReleaseSecret: options.processReleaseSecret,
+        startedAtMs: context.get("startedAt"),
+        signal: context.req.raw.signal,
+        ...(options.onProtectedReadStage
+          ? { onStage: options.onProtectedReadStage }
+          : {})
+      }
+    );
+    try {
+      options.onProtectedReadStage?.("before_response_serialization");
+      const serialized = serializeTrustedMemorySearchResponse(
+        createTrustedMemorySearchResponse({
+          traceId: context.get("traceId"),
+          results: execution.results,
+          auditEventId: execution.auditEventId,
+          releaseStatus: execution.releaseStatus
+        }),
+        options.onProtectedReadStage
+      );
+      context.set("safeResult", "allowed");
+      return context.body(serialized, 200, {
+        "Content-Type": "application/json; charset=UTF-8"
+      });
+    } finally {
+      execution.clear();
+    }
   });
 
   app.get("/v1alpha1/admin/namespaces/:namespaceId/memory-candidates", async (context) => {
@@ -462,18 +510,7 @@ async function readStrictJson(
     throw new SafeError("validation_failed", 413);
   }
 
-  let parsed: unknown;
-  try {
-    const text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
-    parsed = JSON.parse(text);
-  } catch {
-    throw new SafeError("validation_failed", 400);
-  }
-  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new SafeError("validation_failed", 400);
-  }
-
-  const body = parsed as Record<string, unknown>;
+  const body = parseStrictJsonObject(bytes);
   if (Object.keys(body).some((field) => !allowedFields.includes(field))) {
     throw new SafeError("validation_failed", 400);
   }
@@ -493,6 +530,9 @@ function operationFor(method: string, path: string): string {
   if (method === "POST" && path === "/v1alpha1/health") return "runtime_health";
   if (method === "POST" && path === "/v1alpha1/memory-candidates") {
     return "propose_memory_candidate";
+  }
+  if (method === "POST" && path === "/v1alpha1/trusted-memories/search") {
+    return "search_trusted_memory";
   }
   if (method === "GET" && isCandidateListRoute(method, path)) {
     return "list_memory_candidates";

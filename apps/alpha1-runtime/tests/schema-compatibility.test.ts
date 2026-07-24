@@ -5,21 +5,24 @@ import { classifySchemaCompatibility } from "../src/schema-compatibility.js";
 
 const expectedChecksum = "a".repeat(64);
 const secondChecksum = "b".repeat(64);
+const thirdChecksum = "c".repeat(64);
 const expectedMigrations = [
   { version: 1, checksumSha256: expectedChecksum },
-  { version: 2, checksumSha256: secondChecksum }
+  { version: 2, checksumSha256: secondChecksum },
+  { version: 3, checksumSha256: thirdChecksum }
 ];
 
-test("schema compatibility accepts the completed two-migration chain", () => {
+test("schema compatibility accepts the completed three-migration chain", () => {
   assert.deepEqual(
     classifySchemaCompatibility(
       [
         { version: 1, checksumSha256: expectedChecksum, state: "completed" },
-        { version: 2, checksumSha256: secondChecksum, state: "completed" }
+        { version: 2, checksumSha256: secondChecksum, state: "completed" },
+        { version: 3, checksumSha256: thirdChecksum, state: "completed" }
       ],
       expectedMigrations
     ),
-    { compatible: true, version: 2 }
+    { compatible: true, version: 3 }
   );
 });
 
@@ -32,7 +35,8 @@ test("schema compatibility fails closed for absent, malformed, old, and new stat
     classifySchemaCompatibility(
       [
         { version: 1, checksumSha256: expectedChecksum, state: "completed" },
-        { version: 2, checksumSha256: "c".repeat(64), state: "completed" }
+        { version: 2, checksumSha256: secondChecksum, state: "completed" },
+        { version: 3, checksumSha256: "d".repeat(64), state: "completed" }
       ],
       expectedMigrations
     ),
@@ -42,7 +46,8 @@ test("schema compatibility fails closed for absent, malformed, old, and new stat
     classifySchemaCompatibility(
       [
         { version: 1, checksumSha256: expectedChecksum, state: "completed" },
-        { version: 2, checksumSha256: secondChecksum, state: "applying" }
+        { version: 2, checksumSha256: secondChecksum, state: "completed" },
+        { version: 3, checksumSha256: thirdChecksum, state: "applying" }
       ],
       expectedMigrations
     ),
@@ -60,7 +65,8 @@ test("schema compatibility fails closed for absent, malformed, old, and new stat
       [
         { version: 1, checksumSha256: expectedChecksum, state: "completed" },
         { version: 2, checksumSha256: secondChecksum, state: "completed" },
-        { version: 3, checksumSha256: "c".repeat(64), state: "completed" }
+        { version: 3, checksumSha256: thirdChecksum, state: "completed" },
+        { version: 4, checksumSha256: "d".repeat(64), state: "completed" }
       ],
       expectedMigrations
     ),

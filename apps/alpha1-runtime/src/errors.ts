@@ -9,6 +9,8 @@ export type SafeErrorCode =
   | "validation_failed"
   | "state_conflict"
   | "idempotency_conflict"
+  | "audit_unavailable"
+  | "release_binding_invalid"
   | "schema_incompatible"
   | "schema_too_old"
   | "schema_too_new"

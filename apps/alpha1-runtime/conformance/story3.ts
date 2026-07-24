@@ -24,6 +24,7 @@ import { Client as McpClient } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import pg from "pg";
 
+import { ALPHA1_SCHEMA_VERSION } from "../src/config.js";
 import type { AuthenticatedCredential } from "../src/repository.js";
 import {
   consumeProtectedReadReceipt,
@@ -325,8 +326,11 @@ async function migrateAndInitialize(): Promise<void> {
   assert.equal(migration.code, 0, migration.stderr);
   const migrationBody = parseJsonLine(migration.stdout);
   assert.equal(migrationBody.status, "applied");
-  assert.equal(migrationBody.version, 4);
-  assert.equal((migrationBody.migrations as unknown[]).length, 4);
+  assert.equal(migrationBody.version, ALPHA1_SCHEMA_VERSION);
+  assert.equal(
+    (migrationBody.migrations as unknown[]).length,
+    ALPHA1_SCHEMA_VERSION
+  );
   const replay = await runProcess(
     operatorCli,
     ["migrate"],
@@ -336,7 +340,7 @@ async function migrateAndInitialize(): Promise<void> {
   assert.equal(parseJsonLine(replay.stdout).status, "already_applied");
   pass(
     "S3-MIG-01",
-    "forward-only migrations through 0004 applied once and replayed without mutation"
+    `forward-only migrations through ${String(ALPHA1_SCHEMA_VERSION).padStart(4, "0")} applied once and replayed without mutation`
   );
 
   assert(adminPool);
@@ -360,7 +364,7 @@ async function migrateAndInitialize(): Promise<void> {
   );
   assert.equal(initialized.code, 0, initialized.stderr);
   const body = parseJsonLine(initialized.stdout);
-  assert.equal(body.schemaVersion, 4);
+  assert.equal(body.schemaVersion, ALPHA1_SCHEMA_VERSION);
   const owner = body.ownerAdminCredential as Record<string, unknown>;
   ownerToken = String(owner.secret);
   ownerCredentialId = String(owner.credentialId);
@@ -481,11 +485,12 @@ async function mcpLifecycleAndSearchProbe(): Promise<void> {
   const tools = await mcpClient.listTools();
   assert.deepEqual(tools.tools.map((tool) => tool.name).sort(), [
     "propose_memory_candidate",
+    "search_source_evidence",
     "search_trusted_memory"
   ]);
   pass(
     "S3-MCP-01",
-    "official SDK discovery exposed exactly proposal plus trusted-memory search and no owner operation"
+    "official SDK discovery exposed proposal, source-evidence search, and trusted-memory search with no owner operation"
   );
 
   protectedMarker = `story3_protected_${randomBytes(12).toString("hex")}`;
@@ -2119,7 +2124,8 @@ async function writeReport(): Promise<void> {
       "migrations/0001_story1_bootstrap.sql",
       "migrations/0002_story2_candidate_lifecycle.sql",
       "migrations/0003_story3_audited_search.sql",
-      "migrations/0004_story4_lifecycle_portability.sql"
+      "migrations/0004_story4_lifecycle_portability.sql",
+      "migrations/0005_story5_knowledge_provider_host.sql"
     ].map(async (path) => ({
       path,
       sha256: createHash("sha256")

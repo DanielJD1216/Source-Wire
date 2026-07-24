@@ -11,7 +11,10 @@ import { fileURLToPath } from "node:url";
 
 import pg from "pg";
 
-import { RUNTIME_RECOVERY_GUARD_APPLICATION_NAME } from "../src/config.js";
+import {
+  ALPHA1_SCHEMA_VERSION,
+  RUNTIME_RECOVERY_GUARD_APPLICATION_NAME
+} from "../src/config.js";
 
 const { Client, Pool } = pg;
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -1403,9 +1406,9 @@ async function schemaAndBindingProbes(): Promise<void> {
     name: string;
     checksumSha256: string;
   }>;
-  assert.equal(expectedMigrations.length, 4);
-  const story4 = expectedMigrations[3];
-  assert(story4);
+  assert.equal(expectedMigrations.length, ALPHA1_SCHEMA_VERSION);
+  const latestMigration = expectedMigrations.at(-1);
+  assert(latestMigration);
   const mutations: Array<{
     id: string;
     apply: string;
@@ -1420,26 +1423,26 @@ async function schemaAndBindingProbes(): Promise<void> {
     },
     {
       id: "malformed",
-      apply: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${"c".repeat(64)}' WHERE version = 4`,
-      restore: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${story4.checksumSha256}' WHERE version = 4`,
+      apply: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${"c".repeat(64)}' WHERE version = ${ALPHA1_SCHEMA_VERSION}`,
+      restore: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${latestMigration.checksumSha256}' WHERE version = ${ALPHA1_SCHEMA_VERSION}`,
       expected: "schema_incompatible"
     },
     {
       id: "incomplete",
-      apply: "UPDATE source_wire_memory.schema_migrations SET state = 'applying' WHERE version = 4",
-      restore: "UPDATE source_wire_memory.schema_migrations SET state = 'completed' WHERE version = 4",
+      apply: `UPDATE source_wire_memory.schema_migrations SET state = 'applying' WHERE version = ${ALPHA1_SCHEMA_VERSION}`,
+      restore: `UPDATE source_wire_memory.schema_migrations SET state = 'completed' WHERE version = ${ALPHA1_SCHEMA_VERSION}`,
       expected: "schema_incompatible"
     },
     {
       id: "old",
-      apply: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 4",
-      restore: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (4, '${story4.name}', '${story4.checksumSha256}', 'completed')`,
+      apply: `DELETE FROM source_wire_memory.schema_migrations WHERE version = ${ALPHA1_SCHEMA_VERSION}`,
+      restore: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (${ALPHA1_SCHEMA_VERSION}, '${latestMigration.name}', '${latestMigration.checksumSha256}', 'completed')`,
       expected: "schema_too_old"
     },
     {
       id: "new",
-      apply: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (5, 'future', '${"d".repeat(64)}', 'completed')`,
-      restore: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 5",
+      apply: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (${ALPHA1_SCHEMA_VERSION + 1}, 'future', '${"d".repeat(64)}', 'completed')`,
+      restore: `DELETE FROM source_wire_memory.schema_migrations WHERE version = ${ALPHA1_SCHEMA_VERSION + 1}`,
       expected: "schema_too_new"
     }
   ];
@@ -1867,7 +1870,7 @@ async function writeReport(): Promise<void> {
   const report = {
     schema: "source-wire.alpha1.story1-conformance.v1",
     status: failure || !cleanupPassed ? "failed" : "passed",
-    revision: 4,
+    revision: ALPHA1_SCHEMA_VERSION,
     sourceCommit: commit.stdout.trim(),
     environment: {
       node: process.version,

@@ -4,6 +4,49 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Alpha 1 Story 5 audited source-evidence search slice
+
+Summary:
+
+- Added one optional immutable `KnowledgeProvider v1` binding to the unpublished local Alpha runtime, with no dynamic provider registry or caller-selected provider authority.
+- Added `search_source_evidence` to the local stdio MCP surface and routed it through the loopback API, exact harness capability and namespace policy, a deterministic synthetic read-only provider, and an internal unreleased buffer.
+- Added forward-only migration `0005` for durable provider-read audit receipts, exact serialized-result binding, origin-process verification, and single-use receipt consumption.
+- Kept provider identity, owner, namespace, scope, timeout, endpoint, and credentials outside MCP and API input.
+- Preserved zero-provider operation as a safe unavailable result and kept provider reads separate from candidates and trusted memory.
+- Preserved the published `@source-wire/contracts@0.1.0` package boundary. Exact-evidence fetch and full Story 5 PostgreSQL conformance remain later Story 5 issues.
+
+Validation:
+
+- `npm run alpha1:test`
+- `npm run alpha1:conformance:story1`
+- `npm run alpha1:conformance:story2`
+- `npm run alpha1:conformance:story3`
+- `npm run alpha1:conformance:story4`
+- `npm run alpha1:story5:security-gate`
+- `npm test`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run docs:command-setup`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `git diff --check`
+
+Primary files:
+
+- `apps/alpha1-runtime/src/knowledge-provider-host.ts`
+- `apps/alpha1-runtime/src/provider-read-audit-store.ts`
+- `apps/alpha1-runtime/src/knowledge-provider/synthetic-provider.ts`
+- `apps/alpha1-runtime/src/mcp/server.ts`
+- `apps/alpha1-runtime/migrations/0005_story5_knowledge_provider_host.sql`
+- `apps/alpha1-runtime/tests/knowledge-provider-host.test.ts`
+- `apps/alpha1-runtime/tests/mcp-source-evidence-search.test.ts`
+
+Risks and follow-ups:
+
+- The known moderate MCP dependency advisory is temporarily accepted only for the local, stdio-only synthetic Alpha runtime. It must be reviewed again no later than 2026-08-24, or immediately if the dependency, transport, platform, or runtime scope changes.
+- Production, hosting, Windows runtime, HTTP/SSE MCP, static serving, deployment, live connectors, real data, package publication, and automatic trusted-memory promotion remain blocked.
+- This slice does not add `get_source_evidence`, provider fault-injection conformance, continuous PostgreSQL conformance, or a published provider contract. Those remain separate Story 5 issues.
+
 ### 2026-07-24 - Public documentation and visual-system redesign
 
 Summary:

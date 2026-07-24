@@ -21,6 +21,7 @@ import { fileURLToPath } from "node:url";
 
 import pg from "pg";
 
+import { ALPHA1_SCHEMA_VERSION } from "../src/config.js";
 import {
   initializeFromPortableExport,
   type PortableRestoreStage
@@ -259,15 +260,16 @@ async function migrationProbes(): Promise<void> {
        FROM source_wire_memory.schema_migrations
       ORDER BY version`
   );
-  assert.deepEqual(versions.rows, [
-    { version: 1, state: "completed" },
-    { version: 2, state: "completed" },
-    { version: 3, state: "completed" },
-    { version: 4, state: "completed" }
-  ]);
+  assert.deepEqual(
+    versions.rows,
+    Array.from({ length: ALPHA1_SCHEMA_VERSION }, (_, index) => ({
+      version: index + 1,
+      state: "completed"
+    }))
+  );
   pass(
     "S4-MIG-01",
-    "the delivered Story 3 schema advanced through forward-only migration 0004"
+    `the delivered Story 3 schema advanced through the current forward-only migration ${String(ALPHA1_SCHEMA_VERSION).padStart(4, "0")}`
   );
 
   const rollback = await provisionDatabase("rollback");

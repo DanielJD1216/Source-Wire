@@ -20,6 +20,10 @@ import {
 import type { Story1Database } from "./database.js";
 import { asSafeError, SafeError } from "./errors.js";
 import { inspectSchemaCompatibility } from "./migration.js";
+import {
+  parseSourceEvidenceSearch,
+  type KnowledgeProviderHost
+} from "./knowledge-provider-host.js";
 import { LocalProtectedRequestGate } from "./rate-gate.js";
 import {
   authenticateCredential,
@@ -69,6 +73,7 @@ export type Story1AppOptions = {
   ) => string | undefined;
   logger?: SafeLogger;
   processReleaseSecret: Buffer;
+  knowledgeProviderHost?: KnowledgeProviderHost;
   onProtectedReadStage?: ProtectedReadStageHook;
 };
 
@@ -230,6 +235,37 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
         ...(options.onProtectedReadStage
           ? { onStage: options.onProtectedReadStage }
           : {})
+      }
+    );
+    try {
+      const serialized = Uint8Array.from(execution.serializedResponse).buffer;
+      context.set("safeResult", "allowed");
+      return context.body(serialized, 200, {
+        "Content-Type": "application/json; charset=UTF-8"
+      });
+    } finally {
+      execution.clear();
+    }
+  });
+
+  app.post("/v1alpha1/source-evidence/search", async (context) => {
+    const body = await readStrictJson(context, ["namespaceId", "query", "limit"]);
+    const actor = await authenticateForContext(context, options);
+    const input = parseSourceEvidenceSearch(body);
+    context.set("namespaceId", input.namespaceId);
+    if (!options.knowledgeProviderHost) {
+      throw new SafeError("operation_unavailable", 503, true);
+    }
+    const execution = await options.knowledgeProviderHost.execute(
+      {
+        actor,
+        traceId: context.get("traceId"),
+        startedAtMs: context.get("startedAt"),
+        signal: context.req.raw.signal
+      },
+      {
+        operation: "search_evidence",
+        ...input
       }
     );
     try {
@@ -646,6 +682,9 @@ function operationFor(method: string, path: string): string {
   }
   if (method === "POST" && path === "/v1alpha1/trusted-memories/search") {
     return "search_trusted_memory";
+  }
+  if (method === "POST" && path === "/v1alpha1/source-evidence/search") {
+    return "search_source_evidence";
   }
   if (method === "GET" && isCandidateListRoute(method, path)) {
     return "list_memory_candidates";

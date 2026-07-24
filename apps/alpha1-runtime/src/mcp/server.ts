@@ -8,6 +8,9 @@ import {
   MAX_CANDIDATE_CONTENT_BYTES,
   MAX_OWNER_ASSERTION_BYTES,
   MAX_PROTECTED_READ_RESPONSE_BYTES,
+  MAX_SOURCE_EVIDENCE_EXCERPT_BYTES,
+  MAX_SOURCE_EVIDENCE_QUERY_BYTES,
+  MAX_SOURCE_EVIDENCE_SEARCH_RESULTS,
   MAX_TRUSTED_MEMORY_QUERY_BYTES,
   MAX_TRUSTED_MEMORY_RESULT_CONTENT_BYTES,
   MAX_TRUSTED_MEMORY_SEARCH_RESULTS,
@@ -64,6 +67,21 @@ const searchInput = z
     limit: z.number().int().min(1).max(MAX_TRUSTED_MEMORY_SEARCH_RESULTS).optional()
   })
   .strict();
+const sourceEvidenceSearchInput = z
+  .object({
+    namespaceId: identifier,
+    query: boundedText(MAX_SOURCE_EVIDENCE_QUERY_BYTES).refine(
+      (value) => value.trim().length > 0,
+      "query required"
+    ),
+    limit: z
+      .number()
+      .int()
+      .min(1)
+      .max(MAX_SOURCE_EVIDENCE_SEARCH_RESULTS)
+      .optional()
+  })
+  .strict();
 
 async function main(): Promise<void> {
   rejectForbiddenAuthority();
@@ -77,6 +95,52 @@ async function main(): Promise<void> {
     {
       capabilities: {
         tools: {}
+      }
+    }
+  );
+
+  server.registerTool(
+    "search_source_evidence",
+    {
+      title: "Search source evidence",
+      description:
+        "Searches read-only source evidence in one granted namespace through the loopback API policy boundary. Evidence is not trusted memory.",
+      inputSchema: sourceEvidenceSearchInput,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: false
+      }
+    },
+    async (input) => {
+      try {
+        const response = await fetch(`${baseUrl}/v1alpha1/source-evidence/search`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            namespaceId: input.namespaceId,
+            query: input.query,
+            limit: input.limit ?? MAX_SOURCE_EVIDENCE_SEARCH_RESULTS
+          }),
+          signal: AbortSignal.timeout(5_000)
+        });
+        const body = await readSafeApiBody(response);
+        if (!response.ok) {
+          return safeToolError(readSafeErrorCode(body));
+        }
+        const safeResult = readSourceEvidenceSearchResult(body);
+        return {
+          content: [{ type: "text" as const, text: JSON.stringify(safeResult) }],
+          structuredContent: safeResult
+        };
+      } catch (error) {
+        const code =
+          error instanceof SafeError ? error.code : "operation_unavailable";
+        return safeToolError(code);
       }
     }
   );
@@ -276,6 +340,99 @@ async function readSafeApiBody(response: Response): Promise<Record<string, unkno
     throw new Error("invalid_api_response");
   }
   return body;
+}
+
+function readSourceEvidenceSearchResult(body: Record<string, unknown>) {
+  const data = body.data;
+  const audit = body.audit;
+  if (
+    !data ||
+    typeof data !== "object" ||
+    Array.isArray(data) ||
+    !audit ||
+    typeof audit !== "object" ||
+    Array.isArray(audit) ||
+    typeof body.traceId !== "string" ||
+    !uuid.test(body.traceId)
+  ) {
+    throw new Error("invalid_api_response");
+  }
+  const dataValue = data as Record<string, unknown>;
+  const auditValue = audit as Record<string, unknown>;
+  if (
+    !Array.isArray(dataValue.evidence) ||
+    dataValue.evidence.length > MAX_SOURCE_EVIDENCE_SEARCH_RESULTS ||
+    !Array.isArray(dataValue.gaps) ||
+    (dataValue.status !== "allowed" &&
+      dataValue.status !== "partial_success" &&
+      dataValue.status !== "unavailable") ||
+    typeof auditValue.eventId !== "string" ||
+    !uuid.test(auditValue.eventId) ||
+    auditValue.releaseStatus !== "release_attempted"
+  ) {
+    throw new Error("invalid_api_response");
+  }
+
+  let aggregateExcerptBytes = 0;
+  const evidence = dataValue.evidence.map((value) => {
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      throw new Error("invalid_api_response");
+    }
+    const record = value as Record<string, unknown>;
+    const digest = record.contentDigest;
+    const locator = record.citationLocator;
+    if (
+      typeof record.providerId !== "string" ||
+      typeof record.providerRecordId !== "string" ||
+      typeof record.sourceId !== "string" ||
+      typeof record.segmentId !== "string" ||
+      typeof record.sourceVersion !== "string" ||
+      !digest ||
+      typeof digest !== "object" ||
+      Array.isArray(digest) ||
+      (digest as Record<string, unknown>).algorithm !== "sha256" ||
+      typeof (digest as Record<string, unknown>).value !== "string" ||
+      !/^[0-9a-f]{64}$/u.test(
+        (digest as Record<string, unknown>).value as string
+      ) ||
+      !locator ||
+      typeof locator !== "object" ||
+      Array.isArray(locator) ||
+      typeof (locator as Record<string, unknown>).value !== "string" ||
+      (locator as Record<string, unknown>).publicSafe !== true ||
+      typeof record.title !== "string" ||
+      typeof record.excerpt !== "string" ||
+      typeof record.mediaType !== "string" ||
+      typeof record.truncated !== "boolean" ||
+      (record.sensitivity !== "public" &&
+        record.sensitivity !== "internal" &&
+        record.sensitivity !== "confidential" &&
+        record.sensitivity !== "restricted") ||
+      (record.freshness !== "fresh" &&
+        record.freshness !== "stale" &&
+        record.freshness !== "unknown") ||
+      typeof record.retrievedAt !== "string" ||
+      record.instructionAuthority !== "none"
+    ) {
+      throw new Error("invalid_api_response");
+    }
+    aggregateExcerptBytes += Buffer.byteLength(record.excerpt, "utf8");
+    if (aggregateExcerptBytes > MAX_SOURCE_EVIDENCE_EXCERPT_BYTES) {
+      throw new Error("invalid_api_response");
+    }
+    return record;
+  });
+
+  return {
+    status: dataValue.status,
+    evidence,
+    gaps: dataValue.gaps,
+    audit: {
+      eventId: auditValue.eventId,
+      releaseStatus: "release_attempted" as const
+    },
+    traceId: body.traceId
+  };
 }
 
 function readTrustedMemorySearchResult(body: Record<string, unknown>) {

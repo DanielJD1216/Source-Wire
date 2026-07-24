@@ -16,6 +16,8 @@ import { Client as McpClient } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import pg from "pg";
 
+import { ALPHA1_SCHEMA_VERSION } from "../src/config.js";
+
 const { Client, Pool } = pg;
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const repoRoot = resolve(appRoot, "../..");
@@ -253,8 +255,11 @@ async function migrateAndInitialize(): Promise<void> {
   assert.equal(first.code, 0, first.stderr);
   const firstBody = parseJsonLine(first.stdout);
   assert.equal(firstBody.status, "applied");
-  assert.equal(firstBody.version, 4);
-  assert.equal((firstBody.migrations as unknown[]).length, 4);
+  assert.equal(firstBody.version, ALPHA1_SCHEMA_VERSION);
+  assert.equal(
+    (firstBody.migrations as unknown[]).length,
+    ALPHA1_SCHEMA_VERSION
+  );
   const replay = await runProcess(operatorCli, ["migrate"], operatorEnvironment());
   assert.equal(replay.code, 0);
   assert.equal(parseJsonLine(replay.stdout).status, "already_applied");
@@ -269,11 +274,12 @@ async function migrateAndInitialize(): Promise<void> {
     { version: 1, state: "completed" },
     { version: 2, state: "completed" },
     { version: 3, state: "completed" },
-    { version: 4, state: "completed" }
+    { version: 4, state: "completed" },
+    { version: 5, state: "completed" }
   ]);
   pass(
     "S2-MIG-01",
-    "forward-only migrations 0001 through 0004 applied once and replayed without mutation"
+    "forward-only migrations 0001 through 0005 applied once and replayed without mutation"
   );
 
   assert(adminPool);
@@ -297,7 +303,7 @@ async function migrateAndInitialize(): Promise<void> {
   );
   assert.equal(initialized.code, 0, initialized.stderr);
   const body = parseJsonLine(initialized.stdout);
-  assert.equal(body.schemaVersion, 4);
+  assert.equal(body.schemaVersion, ALPHA1_SCHEMA_VERSION);
   const owner = body.ownerAdminCredential as Record<string, unknown>;
   ownerToken = String(owner.secret);
   ownerCredentialId = String(owner.credentialId);
@@ -697,11 +703,12 @@ async function mcpAndProposalProbes(): Promise<void> {
   const tools = await mcpClient.listTools();
   assert.deepEqual(tools.tools.map((tool) => tool.name).sort(), [
     "propose_memory_candidate",
+    "search_source_evidence",
     "search_trusted_memory"
   ]);
   pass(
     "S2-MCP-01",
-    "real official SDK client discovered exactly the final two-tool Alpha 1 surface"
+    "real official SDK client discovered exactly the approved three-tool Alpha surface"
   );
 
   const content =
@@ -1574,8 +1581,8 @@ async function migrationCompatibilityProbes(): Promise<void> {
     name: string;
     checksumSha256: string;
   }>;
-  const fourth = expected[3];
-  assert(fourth);
+  const latestMigration = expected.at(-1);
+  assert(latestMigration);
   const mutations = [
     {
       apply:
@@ -1587,27 +1594,27 @@ async function migrationCompatibilityProbes(): Promise<void> {
     {
       apply: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${"f".repeat(
         64
-      )}' WHERE version = 4`,
-      restore: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${fourth.checksumSha256}' WHERE version = 4`,
+      )}' WHERE version = ${ALPHA1_SCHEMA_VERSION}`,
+      restore: `UPDATE source_wire_memory.schema_migrations SET checksum_sha256 = '${latestMigration.checksumSha256}' WHERE version = ${ALPHA1_SCHEMA_VERSION}`,
       code: "schema_incompatible"
     },
     {
       apply:
-        "UPDATE source_wire_memory.schema_migrations SET state = 'applying' WHERE version = 4",
+        `UPDATE source_wire_memory.schema_migrations SET state = 'applying' WHERE version = ${ALPHA1_SCHEMA_VERSION}`,
       restore:
-        "UPDATE source_wire_memory.schema_migrations SET state = 'completed' WHERE version = 4",
+        `UPDATE source_wire_memory.schema_migrations SET state = 'completed' WHERE version = ${ALPHA1_SCHEMA_VERSION}`,
       code: "schema_incompatible"
     },
     {
-      apply: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 4",
-      restore: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (4, '${fourth.name}', '${fourth.checksumSha256}', 'completed')`,
+      apply: `DELETE FROM source_wire_memory.schema_migrations WHERE version = ${ALPHA1_SCHEMA_VERSION}`,
+      restore: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (${ALPHA1_SCHEMA_VERSION}, '${latestMigration.name}', '${latestMigration.checksumSha256}', 'completed')`,
       code: "schema_too_old"
     },
     {
-      apply: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (5, 'future', '${"e".repeat(
+      apply: `INSERT INTO source_wire_memory.schema_migrations (version, migration_name, checksum_sha256, state) VALUES (${ALPHA1_SCHEMA_VERSION + 1}, 'future', '${"e".repeat(
         64
       )}', 'completed')`,
-      restore: "DELETE FROM source_wire_memory.schema_migrations WHERE version = 5",
+      restore: `DELETE FROM source_wire_memory.schema_migrations WHERE version = ${ALPHA1_SCHEMA_VERSION + 1}`,
       code: "schema_too_new"
     }
   ];
@@ -2417,7 +2424,8 @@ async function writeReport(): Promise<void> {
       "migrations/0001_story1_bootstrap.sql",
       "migrations/0002_story2_candidate_lifecycle.sql",
       "migrations/0003_story3_audited_search.sql",
-      "migrations/0004_story4_lifecycle_portability.sql"
+      "migrations/0004_story4_lifecycle_portability.sql",
+      "migrations/0005_story5_knowledge_provider_host.sql"
     ].map(async (path) => ({
       path,
       sha256: createHash("sha256")

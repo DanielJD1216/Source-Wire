@@ -11,7 +11,7 @@ const serverEntry = resolve(
   "../src/mcp/server.js"
 );
 
-test("real MCP client discovers exactly the proposal and trusted-memory search tools", async () => {
+test("real MCP client discovers exactly the approved Alpha read and proposal tools", async () => {
   const client = new Client(
     { name: "source-wire-alpha1-test", version: "0.0.0" },
     { capabilities: {} }
@@ -31,7 +31,11 @@ test("real MCP client discovers exactly the proposal and trusted-memory search t
     const result = await client.listTools();
     assert.deepEqual(
       result.tools.map((tool) => tool.name).sort(),
-      ["propose_memory_candidate", "search_trusted_memory"]
+      [
+        "propose_memory_candidate",
+        "search_source_evidence",
+        "search_trusted_memory"
+      ]
     );
   } finally {
     await client.close();

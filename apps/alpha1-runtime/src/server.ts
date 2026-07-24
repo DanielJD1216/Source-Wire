@@ -16,10 +16,16 @@ import { createRuntimeDatabase } from "./database.js";
 import { asSafeError, SafeError } from "./errors.js";
 import { inspectSchemaCompatibility } from "./migration.js";
 import {
+  createKnowledgeProviderHost,
+  type KnowledgeProviderBinding
+} from "./knowledge-provider-host.js";
+import { createSyntheticKnowledgeProvider } from "./knowledge-provider/synthetic-provider.js";
+import {
   acquireRuntimeRecoveryGuard,
   inspectRuntimeRecoveryGate
 } from "./portable-recovery.js";
 import { stdoutSafeLogger } from "./safe-log.js";
+import { PostgresProviderReadAuditStore } from "./provider-read-audit-store.js";
 import {
   createProcessReleaseSecret,
   type ProtectedReadStage
@@ -66,6 +72,12 @@ async function main(): Promise<void> {
     ) {
       throw new SafeError("operation_unavailable", 503);
     }
+    const providerBinding = createStory5ProviderBinding(process.env);
+    const knowledgeProviderHost = createKnowledgeProviderHost({
+      ...(providerBinding ? { binding: providerBinding } : {}),
+      auditStore: new PostgresProviderReadAuditStore(database.pool),
+      processReleaseSecret
+    });
 
     const app = createStory1App({
       database,
@@ -73,6 +85,7 @@ async function main(): Promise<void> {
       verifierKeyId,
       getRemoteAddress: (context) => getConnInfo(context).remote.address,
       processReleaseSecret,
+      knowledgeProviderHost,
       ...(crashPoint || pausePoint
         ? {
             onProtectedReadStage: (stage: ProtectedReadStage) => {
@@ -135,6 +148,32 @@ async function main(): Promise<void> {
     });
     process.exitCode = 1;
   }
+}
+
+function createStory5ProviderBinding(
+  environment: NodeJS.ProcessEnv
+): KnowledgeProviderBinding | undefined {
+  const enabled = environment.SOURCE_WIRE_STORY5_SYNTHETIC_PROVIDER;
+  if (!enabled) return undefined;
+  if (
+    enabled !== "enabled" ||
+    environment.SOURCE_WIRE_CONFORMANCE_MODE !== "story5"
+  ) {
+    throw new Error("story5_provider_binding_refused");
+  }
+  return Object.freeze({
+    provider: createSyntheticKnowledgeProvider(),
+    ownerId: assertSourceWireIdentifier(
+      requireEnvironment("SOURCE_WIRE_STORY5_OWNER_ID", environment),
+      "ownerId"
+    ),
+    namespaceId: assertSourceWireIdentifier(
+      requireEnvironment("SOURCE_WIRE_STORY5_NAMESPACE_ID", environment),
+      "namespaceId"
+    ),
+    providerScopeId: "scope_docs_alpha",
+    timeoutMs: 1_000
+  });
 }
 
 function parseConformanceCrashPoint(

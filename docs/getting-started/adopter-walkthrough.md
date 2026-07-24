@@ -37,7 +37,8 @@ Source-Wire Package Readiness Report
 Package: @source-wire/contracts
 Version: 0.1.0
 License: Apache-2.0
-Runtime boundary: synthetic in-memory boundary plus synthetic API/MCP skeleton, threat-boundary package, API policy contract package, MCP adapter contract package, database posture package, hosted-runtime fixture package, and deployment-boundary package only, no backend runtime included
+Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
+Latest-source runtime boundary: an unpublished loopback-only Story 1 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, liveness, and authenticated health; it contains no MCP process, candidate flow, trusted-memory lifecycle, deployment, hosting, production support, or real data
 ok readiness report
 ```
 
@@ -45,7 +46,8 @@ What this proves:
 
 - The package posture is readable in one place.
 - The current version and license boundary are explicit.
-- The package is still a contract skeleton with only synthetic in-memory runtime proof code.
+- The published package still contains contracts and synthetic proofs only.
+- Latest source separately contains the unpublished, loopback-only Story 1 developer alpha.
 - The report can summarize package exports, schemas, commands, installed smokes, required readiness docs, and blocked scope without running the full readiness gate.
 
 ## 3. Validate The Synthetic Fixtures

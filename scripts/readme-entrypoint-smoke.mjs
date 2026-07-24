@@ -11,7 +11,9 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 
 for (const requiredText of [
   "Current public status: Source-Wire is Apache-2.0 licensed as a source package.",
-  "It is published to npm, released on GitHub, undeployed, and not a hosted runtime.",
+  "The contracts package is published to npm and released on GitHub.",
+  "Latest source also contains an unpublished, loopback-only Story 1 developer alpha for disposable local PostgreSQL proof.",
+  "Nothing is deployed or hosted.",
   "## First Reviewer Quickstart",
   "Use Node.js 22 with npm.",
   "npm install",

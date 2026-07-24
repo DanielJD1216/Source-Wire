@@ -12,6 +12,7 @@ Summary:
 - Added a forward-only PostgreSQL 16 migration boundary, generated-disposable initialization, and owner-admin plus scoped harness credential lifecycle.
 - Added durable retry-safe credential mutations, bounded protected requests, explicit five-second request deadlines, structured safe logs, and complete cleanup proof.
 - Preserved the published `@source-wire/contracts@0.1.0` package boundary. The Alpha workspace is excluded from the installed package.
+- Aligned the README entrypoint smoke with the split status of the published contracts package and the unpublished local alpha.
 
 Validation:
 

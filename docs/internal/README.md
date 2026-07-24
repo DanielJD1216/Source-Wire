@@ -11,6 +11,12 @@ These files remain public for provenance and review, but they are not the first-
 - auditing historical approval and stop conditions,
 - continuing an explicitly approved project workflow.
 
+Current proposed design:
+
+- [Alpha 1 Story 5 Knowledge Provider Runtime Host Design](alpha1-story5-knowledge-provider-runtime-host-design.md)
+- [Alpha 1 Story 5 Published Implementation Issues](alpha1-story5-knowledge-provider-runtime-host-issue-drafts.md)
+- [Alpha 1 Story 5 MCP Dependency Advisory Disposition](alpha1-story5-mcp-advisory-disposition.md)
+
 ## Do Not Use This Archive As
 
 - the onboarding path for a new adopter,

@@ -194,6 +194,7 @@ Read [CI Checks](docs/reference/ci-checks.md) for the detailed marker map.
 - [Architecture Map](docs/concepts/architecture-map.md)
 - [Knowledge Provider And Memory Store Boundary](docs/concepts/knowledge-provider-memory-store-boundary.md)
 - [API Reference](docs/reference/api-reference.md)
+- [Repository Metadata](docs/reference/repository-metadata.md)
 - [Public Status](docs/status/public-status.md)
 - [Security Policy](SECURITY.md)
 - [Support](SUPPORT.md)

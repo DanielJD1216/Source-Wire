@@ -1,8 +1,8 @@
 # Source-Wire Runtime Boundary
 
-Source-Wire is currently a public contract package skeleton.
+The published Source-Wire package is a public contracts package. Latest source also contains one unpublished local Story 1 runtime workspace.
 
-It is not a full memory backend yet.
+It is not a full memory backend, hosted service, or production runtime.
 
 ## Included In The Current Public Package
 
@@ -23,16 +23,32 @@ It is not a full memory backend yet.
 
 ## Not Included Yet
 
-- API server.
-- MCP server runtime.
-- Database migrations.
-- PostgreSQL or pgvector setup.
+- Hosted or production API server.
+- Real MCP server runtime.
+- Candidate or trusted-memory lifecycle in the real runtime.
+- Production PostgreSQL setup or pgvector.
 - Memory-engine fork code.
 - Mission Control UI.
 - Live connectors.
 - Private implementation modules.
 - Real user data.
 - Trusted Memory Record promotion.
+
+## Included In Latest Source Only
+
+`apps/alpha1-runtime/` adds one local developer-alpha path that is not part of `@source-wire/contracts@0.1.0`:
+
+- Hono API bound only to literal loopback addresses.
+- Explicit forward-only PostgreSQL 16 migration.
+- Separate migration and runtime role posture.
+- Fresh initialization of one explicit owner and two or more explicit namespaces.
+- One-time owner-admin and harness credentials backed by an external-keyed verifier.
+- Retry-safe credential issue, rotation, and revocation with a five-minute encrypted exact-replay window.
+- Streaming 16 KiB request bounds, query-string refusal, and literal loopback-address request limits.
+- Content-free liveness and authenticated health.
+- Generated disposable real-process conformance with cleanup.
+
+Read [Alpha 1 Story 1 Local Runtime](../getting-started/alpha1-story1-local-runtime.md) before running it. It is synthetic-data-only and does not authorize deployment, hosting, production use, real data, MCP tools, or trusted-memory lifecycle.
 
 For the whole package shape, read the [Architecture Map](architecture-map.md).
 
@@ -63,7 +79,7 @@ Those decisions should be opened by later PRDs, not hidden inside the first pack
 
 The package can define public shapes, expose contract types and schemas, validate public fixtures, typecheck public examples, and prove package readiness from a local tarball.
 
-The package should not:
+The published contracts package should not:
 
 - connect to databases,
 - start servers,
@@ -74,13 +90,7 @@ The package should not:
 
 ## Next Safe Expansion
 
-The next safe expansion is not more runtime behavior by default.
-
-The next safe expansion should be one of these explicit PRD paths:
-
-1. Documentation or examples that make the existing contract package easier to adopt.
-2. A runtime decision package that chooses the first public runtime boundary before adding server, database, MCP, or connector code.
-3. A future release approval gate, if the owner decides Source-Wire is ready for a new package version after `0.1.0`.
+Story 1 stops at bootstrap and authenticated health. Any candidate lifecycle, MCP process, trusted-memory search, correction, export, deployment, or release work requires its own approved story and evidence gate.
 
 The current runtime decision is recorded in [Public Runtime Decision](../internal/public-runtime-decision.md).
 

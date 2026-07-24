@@ -15,6 +15,9 @@ const requiredScripts = [
   "consumer:smoke",
   "package:content-smoke",
   "examples:installed-smoke",
+  "alpha1:build",
+  "alpha1:test",
+  "alpha1:conformance:story1",
   "minimal-runtime:smoke",
   "runtime:skeleton-smoke",
   "runtime:threat-boundary-smoke",
@@ -135,10 +138,11 @@ const blockedScope = [
   "publishing a new package version",
   "creating a new GitHub release",
   "deployment",
-  "API server runtime",
-  "MCP server runtime",
-  "database migrations",
-  "PostgreSQL or pgvector setup",
+  "hosted or production API server runtime",
+  "real MCP server runtime",
+  "non-disposable or production database migrations",
+  "production PostgreSQL or any pgvector setup",
+  "candidate and trusted-memory lifecycle in the real runtime",
   "memory-engine integration",
   "live connectors",
   "Mission Control UI",
@@ -184,7 +188,9 @@ for (const schemaFile of [
 }
 
 for (const requiredPath of [
+  "AGENTS.md",
   "README.md",
+  "docs/getting-started/alpha1-story1-local-runtime.md",
   "docs/internal/apache-2-license-implementation-readiness.md",
   "docs/internal/first-time-visitor-share-readiness-audit.md",
   "docs/internal/license-approval-rehearsal.md",
@@ -312,7 +318,8 @@ printRows([
   ["Version", packageJson.version],
   ["License", packageJson.license],
   ["Publish boundary", "npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked"],
-  ["Runtime boundary", "synthetic in-memory boundary plus synthetic API/MCP skeleton, threat-boundary package, API policy contract package, MCP adapter contract package, database posture package, hosted-runtime fixture package, and deployment-boundary package only, no backend runtime included"]
+  ["Published runtime boundary", "the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime"],
+  ["Latest-source runtime boundary", "an unpublished loopback-only Story 1 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, liveness, and authenticated health; it contains no MCP process, candidate flow, trusted-memory lifecycle, deployment, hosting, production support, or real data"]
 ]);
 
 printSection("Package Surfaces");
@@ -324,6 +331,14 @@ printList([
 
 printSection("Readiness Commands");
 printList(requiredScripts.map((scriptName) => `npm run ${scriptName}`));
+
+printSection("Latest Source Story 1 Proof");
+printList([
+  "alpha1:build builds the unpublished local runtime workspace without adding it to the contracts package",
+  "alpha1:test runs focused request-boundary, request-deadline, credential, idempotency, rate-gate, and schema-compatibility tests",
+  "alpha1:conformance:story1 uses Node.js 22.23.1 plus generated disposable PostgreSQL 16 state to prove the live loopback Story 1 path, stalled-body deadline recovery, and cleanup",
+  "docs/getting-started/alpha1-story1-local-runtime.md defines prerequisites, commands, trust boundaries, retry behavior, cleanup, and blocked scope"
+]);
 
 printSection("Installed Package Smokes");
 printList([
@@ -346,7 +361,7 @@ printList([
   "runtime:threat-implementation-packet validates the synthetic trust-boundary implementation approval packet while production runtime remains blocked",
   "runtime:api-implementation-packet validates the synthetic API policy contract implementation approval packet while API server runtime remains blocked",
   "runtime:mcp-implementation-packet validates the synthetic MCP adapter contract implementation approval packet while MCP server runtime remains blocked",
-  "runtime:database-implementation-packet validates the implemented synthetic database posture package while migrations and real database connections remain blocked",
+  "runtime:database-implementation-packet validates the historical synthetic database-posture unit; the separately bounded Story 1 workspace is the only latest-source migration and database path",
   "runtime:fixture-implementation-packet validates the implemented synthetic public-safe fixture package while hosted runtime implementation remains blocked",
   "runtime:deployment-implementation-packet validates the implemented synthetic deployment-boundary package while deployment config and hosted services remain blocked",
   "runtime:first-implementation-recommendation verifies issue #259 threat-model implementation was the recommended first approval gate and now points to the synthetic threat-boundary proof",
@@ -362,7 +377,9 @@ printList([
 
 printSection("Required Readiness Docs");
 printList([
+  "AGENTS.md distinguishes the published contracts package, synthetic examples, and unpublished local Story 1 proof for AI agents",
   "README.md is the package entrypoint and public boundary summary",
+  "docs/getting-started/alpha1-story1-local-runtime.md defines the unpublished loopback Story 1 proof, disposable PostgreSQL boundary, and cleanup path",
   "docs/internal/apache-2-license-implementation-readiness.md records the completed Apache-2.0 implementation while keeping hosted runtime and production runtime blocked",
   "docs/internal/first-time-visitor-share-readiness-audit.md records source-package sharing readiness and remaining launch blockers",
   "docs/internal/license-approval-rehearsal.md records the Apache-2.0 implementation check and current runtime/contribution boundary",

@@ -1,10 +1,12 @@
 # Source-Wire Quickstart
 
-Source-Wire is a public contract package skeleton for agent-first memory systems.
+This page is the quickstart for the published Source-Wire contracts package.
 
 This quickstart verifies the package locally with synthetic fixtures.
 
-It does not run a backend, sync sources, connect to MCP, call a database, create memories, or publish a new package version.
+These commands do not run the unpublished Story 1 workspace, sync sources, connect to MCP, call a database, create memories, or publish a new package version.
+
+To exercise the latest-source local bootstrap and authenticated-health proof separately, use [Alpha 1 Story 1 Local Runtime](alpha1-story1-local-runtime.md).
 
 ## Prerequisites
 
@@ -223,9 +225,9 @@ More detail:
 - [Validation CLI](../reference/validation-cli.md)
 - [API Reference](../reference/api-reference.md)
 
-## Current Boundaries
+## Published Package Boundaries
 
-Source-Wire does not currently include:
+`@source-wire/contracts@0.1.0` does not include:
 
 - API server runtime,
 - MCP server runtime,
@@ -236,6 +238,8 @@ Source-Wire does not currently include:
 - Mission Control UI,
 - real user data,
 - trusted Memory Record promotion.
+
+Latest source contains an unpublished local Story 1 runtime workspace. It does not change the published package or authorize hosting, deployment, production use, real data, MCP tools, or trusted-memory lifecycle.
 
 Current release posture:
 

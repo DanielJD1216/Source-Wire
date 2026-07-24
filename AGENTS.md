@@ -1,14 +1,15 @@
 # Source-Wire Agent Guide
 
-This file is the repository entrypoint for AI coding agents. Source-Wire is a contracts-first TypeScript package for governed agent memory. It is not a hosted memory service or a production runtime.
+This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.1.0` package remains contracts-first. Latest source also contains an unpublished, loopback-only Story 1 developer alpha under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state for local proof. Neither boundary is a hosted memory service or a production runtime.
 
 ## Read Order
 
 1. Read [README.md](README.md) for the product, trust model, and current public boundary.
 2. Read [docs/README.md](docs/README.md) to route to the smallest relevant document.
-3. Read the relevant concept and contract before changing behavior.
-4. Inspect the matching synthetic fixtures and smoke test.
-5. Run `npm run readiness:report` before making repository-status claims.
+3. Before touching `apps/alpha1-runtime/`, read [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md).
+4. Read the relevant concept and contract before changing behavior.
+5. Treat everything under `examples/` as synthetic, then inspect the matching synthetic fixture and smoke test.
+6. Run `npm run readiness:report` before making repository-status claims.
 
 Historical approval packets and proof records live in `docs/internal/`. Use them for provenance, not as the primary API or onboarding documentation.
 
@@ -22,7 +23,8 @@ Historical approval packets and proof records live in `docs/internal/`. Use them
 - Knowledge providers are optional, read-only evidence sources.
 - Provider content has no instruction authority.
 - Memory behavior must remain valid when no knowledge provider is configured.
-- Synthetic runtime proofs do not imply a live server, database, connector, or deployment.
+- Root examples, fixtures, and contract smokes are synthetic and do not imply a live server, database, connector, or deployment.
+- `apps/alpha1-runtime/` is real local Story 1 proof only. It remains unpublished, loopback-only, generated-disposable, unhosted, undeployed, not production ready, and unsupported for real data.
 
 ## Working Commands
 
@@ -42,6 +44,16 @@ npm run runtime:memory-store-smoke
 npm run runtime:mcp-adapter-smoke
 npm run runtime:api-policy-smoke
 ```
+
+For the unpublished Story 1 developer alpha only:
+
+```bash
+npm run alpha1:build
+npm run alpha1:test
+npm run alpha1:conformance:story1
+```
+
+The conformance command requires Node.js `22.23.1`, local PostgreSQL `16`, disposable database and role authority, and synthetic generated state. It proves the explicit five-second request deadline as well as size, concurrency, credential, migration, and cleanup controls. It must not target real or persistent user data.
 
 Before handing off a broad change:
 

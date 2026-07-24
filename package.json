@@ -23,6 +23,9 @@
   },
   "type": "module",
   "license": "Apache-2.0",
+  "workspaces": [
+    "apps/*"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -51,6 +54,9 @@
     "README.md"
   ],
   "scripts": {
+    "alpha1:build": "npm run build --workspace @source-wire/alpha1-runtime",
+    "alpha1:test": "npm run test --workspace @source-wire/alpha1-runtime",
+    "alpha1:conformance:story1": "npm run alpha1:build && npm run conformance:story1 --workspace @source-wire/alpha1-runtime",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "examples:typecheck": "tsc -p examples/typescript/tsconfig.json --noEmit",
     "build": "tsc -p tsconfig.json",

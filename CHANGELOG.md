@@ -4,6 +4,31 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Public documentation and visual-system redesign
+
+Summary:
+
+- Reworked the root README into a public product entrypoint for first-time visitors, adopters, AI agents, and technical reviewers.
+- Added a branded Higgsfield-generated hero and three text-readable SVG explainers for the system boundary, knowledge-versus-memory distinction, and trusted-memory lifecycle.
+- Added a documented semantic color system so future human and agent-authored diagrams preserve the same trust-state meanings.
+- Reorganized the documentation home around audience and task routes while keeping historical proof records outside the primary onboarding path.
+- Updated the public architecture and product-direction explanations to distinguish the published contracts package from the unpublished local Alpha 1 Stories 1 through 4 proof.
+- Updated the public external-link checker to ignore localhost and IP loopback examples while continuing to verify public URLs.
+- Preserved all release, hosting, deployment, production, provider, real-data, contribution, and automatic-promotion blocks.
+
+Primary files:
+
+- `README.md`
+- `docs/README.md`
+- `docs/assets/README.md`
+- `docs/assets/source-wire-higgsfield-hero.jpg`
+- `docs/assets/source-wire-overview.svg`
+- `docs/assets/knowledge-vs-memory.svg`
+- `docs/assets/trusted-memory-lifecycle.svg`
+- `docs/concepts/architecture-map.md`
+- `docs/concepts/product-direction.md`
+- `scripts/check-external-links.mjs`
+
 ### 2026-07-24 - Alpha 1 Story 4 governed lifecycle and portability proof
 
 Summary:

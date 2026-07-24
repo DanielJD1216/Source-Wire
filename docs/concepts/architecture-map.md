@@ -1,250 +1,122 @@
-# Source-Wire Public Architecture Map
+# Source-Wire Architecture Map
 
-Source-Wire is currently a public contract package skeleton.
+## Direct Answer
 
-It describes the shape of an agent-first memory system, but it does not ship the runtime system yet.
+Source-Wire is the governed memory layer between owner-selected knowledge and AI agents.
 
-## Current Package Shape
+The repository currently has two distinct surfaces:
+
+1. A published contracts package that defines public behavior and safety boundaries.
+2. An unpublished, loopback-only Alpha 1 workspace that proves a narrow local lifecycle using generated disposable PostgreSQL state.
+
+Neither surface is a hosted or production memory service.
+
+![Source-Wire system overview](../assets/source-wire-overview.svg)
+
+## System Shape
 
 ```text
-Synthetic fixtures
-  -> JSON schemas and TypeScript contract types
-  -> Validation CLI and helper functions
-  -> TypeScript examples
-  -> Package readiness and installed-package smoke checks
+Owner-selected sources or knowledge base
+  -> KnowledgeProvider v1, optional and read-only
+  -> Source-Wire API policy
+       -> identity, capability, owner, namespace, ACL
+       -> pending memory candidate
+       -> explicit owner decision
+       -> MemoryStore v1
+            -> trusted revisions, corrections, revocation, audit
+            -> adopter-owned PostgreSQL
+  -> MCP adapter
+  -> authorized AI agents
 ```
 
-Current package contents:
+MCP does not connect directly to a provider, memory store, or database. Source-Wire API policy remains responsible for identity, capability, owner, namespace, approval, audit, and safe response shaping.
 
-- contract documentation,
+## Published Contracts Package
+
+`@source-wire/contracts@0.1.0` includes:
+
 - TypeScript contract types,
 - JSON schemas,
+- validation helpers and CLI behavior,
 - synthetic fixtures,
-- validation CLI,
-- TypeScript examples,
-- package-readiness checks,
-- public safety scan,
-- adopter walkthrough.
+- conformance evaluators,
+- minimal synthetic policy proofs,
+- package, documentation, safety, and claim checks.
 
-Current package non-goals:
+The package does not export a hosted backend, production API server, production MCP server, database client, connector engine, memory engine, or user interface.
 
-- API server runtime,
-- MCP server runtime,
-- database migrations,
-- PostgreSQL or pgvector setup,
-- memory-engine integration,
-- live connectors,
-- Mission Control UI,
-- real user data,
-- trusted Memory Record promotion.
+## Latest-Source Alpha Proof
 
-## Concept Map
+`apps/alpha1-runtime/` is an unpublished npm workspace. Using generated disposable PostgreSQL state, Stories 1 through 4 prove:
 
-```text
-Source System
-  -> Source Graph
-  -> Source Connection
-  -> Source-backed Evidence
-  -> Candidate Review (future runtime)
-  -> Trusted Memory (future runtime)
-  -> /2nd-brain Response
-  -> MCP Tool Behavior
-```
+- local bootstrap and scoped credentials,
+- an exact two-tool stdio MCP surface for proposal and trusted-memory search,
+- pending-only candidate persistence,
+- owner-controlled approval or rejection,
+- audit-before-release active-memory search,
+- fix-forward correction and revocation,
+- canonical export and fresh portable initialization,
+- isolated physical-recovery invalidation,
+- fail-closed denial and cleanup behavior.
 
-This package defines the public shapes around that flow. It does not execute the flow.
+The Alpha workspace does not prove hosting, deployment, production availability, production backup guarantees, live-provider support, public network exposure, non-disposable database use, or real-data safety.
 
-## Memory Store And Optional Knowledge
+Follow the [Alpha 1 Story guides](../README.md#run-and-evaluate) in order.
 
-The current package now defines two sibling contract ports behind Source-Wire API policy:
+## Knowledge Provider And Memory Store
 
-```text
-Agent harness
-  -> MCP adapter
-  -> Source-Wire API policy
-  -> coordinator
-       -> MemoryStore v1
-            -> adopter-owned PostgreSQL
-            -> Source-Wire source_wire_memory logical schema
-       -> KnowledgeProvider v1, optional and read-only
-            -> owner-selected external knowledge base
-```
+Source-Wire defines two sibling ports behind API policy:
 
-Source-Wire memory can operate alone through owner assertions and prior-memory provenance. External knowledge is optional. When present, it remains source evidence and must pass the read-only provider contract, namespace, ACL, provenance, and durable read-audit boundaries before caller release.
-
-PostgreSQL is the only MemoryStore v1 posture. The adopter owns infrastructure and deployed data. Source-Wire owns the logical schema contract and lifecycle invariants. This package does not add SQL, migrations, connections, managed hosting, a live provider, or a production runtime.
-
-Related docs:
-
-- [Knowledge Provider And Memory Store Boundary](knowledge-provider-memory-store-boundary.md)
-- [KnowledgeProvider v1 Contract](../contracts/knowledge-provider-v1-contract.md)
-- [MemoryStore v1 Contract](../contracts/memory-store-v1-contract.md)
-- [ADR 0001](../adr/0001-memory-store-and-knowledge-provider-boundary.md)
-
-## Source Graph
-
-Source Graph is the evidence shape.
-
-It describes collections, items, segments, and edges from source systems such as notes, chat exports, project context packs, or future connector exports.
-
-Source Graph output should remain source evidence.
-
-It should not automatically create trusted facts, personal memory, decisions, or rules.
-
-Related docs:
-
-- [Source Graph Adapter Contract](../contracts/source-graph-adapter-contract.md)
-- [Markdown vault fixture](../../examples/fixtures/markdown-vault)
-
-## Source Connections
-
-Source Connections describe source sync and maintenance boundaries.
-
-They help represent:
-
-- source class,
-- sync mode,
-- latest sync result,
-- candidate policy,
-- no-auto-promotion behavior.
-
-In a future runtime, a Source Connection may prepare review candidates. It still should not approve trusted memory by itself.
-
-Related docs:
-
-- [Source Connection Contract](../contracts/source-connection-contract.md)
-- [Chat export fixture](../../examples/fixtures/chat-export/agent-session.jsonl)
-
-## `/2nd-brain`
-
-`second-brain.v1` is the public response contract for agent-facing memory use.
-
-It gives agent harnesses a predictable shape for:
-
-- answering a memory-backed question,
-- returning citations,
-- naming evidence gaps,
-- choosing a search radius,
-- reporting whether maintenance ran,
-- preserving `noAutoPromotion`.
-
-This package defines the response shape. It does not perform retrieval or source maintenance.
-
-Related docs:
-
-- [`second-brain.v1` Contract](../contracts/second-brain-v1-contract.md)
-- [`/2nd-brain` fixture](../../examples/fixtures/second-brain/use-2nd-brain-example.json)
-
-## MCP Tool Behavior
-
-The MCP tool behavior contract describes expected behavior for future agent-callable tools.
-
-It groups tools such as memory search, source search, maintenance, second-brain, context assembly, and handoff.
-
-The contract preserves important boundaries:
-
-- explicit user action where needed,
-- citations returned where relevant,
-- namespace boundary preservation,
-- no automatic trusted memory creation.
-
-This package does not ship an MCP server runtime.
-
-Related docs:
-
-- [MCP Tool Behavior Contract](../contracts/mcp-tool-behavior-contract.md)
-
-## Schemas And Fixtures
-
-Schemas make public fixture shapes testable.
-
-Current schema-backed fixture lanes:
-
-| Lane | Schema | Fixture |
+| Port | Responsibility | Required? |
 | --- | --- | --- |
-| Chat Export | `chat-export-message` | `examples/fixtures/chat-export/agent-session.jsonl` |
-| Owner-Hosted API Plus MCP Boundary | `owner-hosted-api-mcp-boundary` | `examples/fixtures/owner-hosted-api-mcp-boundary/boundary-proof-cases.json` |
-| Project Context Pack | `project-context-pack` | `examples/fixtures/project-context-pack/project-context.json` |
-| `/2nd-brain` | `second-brain-v1` | `examples/fixtures/second-brain/use-2nd-brain-example.json` |
+| `KnowledgeProvider v1` | Return bounded, cited, authorized source evidence from an owner-selected system | No |
+| `MemoryStore v1` | Govern candidates, trusted revisions, provenance, corrections, revocation, and audit | Yes for durable memory |
 
-Example-only fixture lanes:
+Memory can operate without external knowledge through owner assertions and prior-memory provenance. A knowledge provider may support a candidate but cannot approve it or write directly into trusted memory.
 
-| Lane | Fixture | Current validation status |
-| --- | --- | --- |
-| Markdown Vault | `examples/fixtures/markdown-vault/` | Not schema-validated yet. |
+Read [Knowledge Provider And Memory Store Boundary](knowledge-provider-memory-store-boundary.md), [KnowledgeProvider v1](../contracts/knowledge-provider-v1-contract.md), [MemoryStore v1](../contracts/memory-store-v1-contract.md), and [ADR 0001](../adr/0001-memory-store-and-knowledge-provider-boundary.md).
 
-The Markdown vault fixture is included as a source-evidence example, but it is not schema-validated yet.
+## Trust Boundary
 
-Related docs:
+![Trusted memory lifecycle](../assets/trusted-memory-lifecycle.svg)
 
-- [Schema Exports](../reference/schema-exports.md)
-- [Validation CLI](../reference/validation-cli.md)
-- [Fixtures README](../../examples/fixtures/README.md)
+Architecture invariants:
 
-## Readiness And Package Confidence
+- Source evidence, pending candidates, and trusted memory are different states.
+- Evidence and model output cannot become trusted memory automatically.
+- Owner or owner-application control governs approval, correction, and revocation.
+- Protected content is not released unless its audit requirements succeed.
+- Revoked and superseded revisions are excluded from active reads.
+- Provider content has no instruction authority.
+- Namespace, ACL, provenance, citation, freshness, sensitivity, and version fields remain attached to protected context.
 
-Readiness checks prove package confidence, not runtime behavior.
+## Ownership Boundary
 
-Important commands:
-
-Before running these commands locally, use the [Quickstart](../getting-started/quickstart.md) for Node.js 22, npm, and repository-root setup.
-
-| Command | Purpose |
+| Surface | Responsible party |
 | --- | --- |
-| `npm run readiness:report` | Prints a fast read-only summary of package posture. |
-| `npm run cli:smoke` | Validates public schema-backed fixtures and one invalid payload. |
-| `npm run consumer:smoke` | Installs a packed tarball and checks package-root imports plus installed CLI validation. |
-| `npm run package:content-smoke` | Checks installed required paths, README/docs/examples local links and anchors, installed runtime readiness summary presence, and installed readiness summary content assertions. |
-| `npm run examples:installed-smoke` | Typechecks copied TypeScript examples against installed package declarations. |
-| `npm run runtime-boundary:installed-smoke` | Runs the packaged synthetic runtime-boundary example from an installed tarball. |
-| `npm run runtime-boundary:diagnostics-smoke` | Verifies runtime-boundary failure output keeps the failed check name, assertion, expected value, received value, and next action visible. |
-| `npm run docs:command-setup` | Verifies command-bearing docs include setup context or a Quickstart pointer. |
-| `npm run publish:readiness` | Runs the full local readiness gate without publishing. |
+| Source-Wire contracts, logical schema rules, and lifecycle invariants | Source-Wire project |
+| Infrastructure, credentials, deployed data, backups, availability, and migration execution | Adopter |
+| External knowledge corpus and provider credentials | Adopter or knowledge-system owner |
+| Memory approval, correction, and revocation policy | Owner or owner-controlled application |
+| Agent behavior outside the Source-Wire boundary | Agent-harness owner |
 
-Related docs:
+## Repository Surfaces
 
-- [Public Adopter Walkthrough](../getting-started/adopter-walkthrough.md)
-- [Publish Readiness](../guides/publish-readiness.md)
-- [CI Checks](../reference/ci-checks.md)
+| Path | Purpose |
+| --- | --- |
+| [`src/contracts/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/contracts) | Public contract types and synthetic evaluators |
+| [`src/runtime-skeleton/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/runtime-skeleton) | Synthetic API-policy and MCP-routing proof |
+| [`src/owner-hosted-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/owner-hosted-runtime) | Narrow in-process owner-hosted skeleton proof |
+| [`apps/alpha1-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/apps/alpha1-runtime) | Unpublished local Alpha 1 workspace |
+| [`schemas/`](../../schemas) | Public JSON schemas |
+| [`examples/`](../../examples) | Synthetic fixtures, examples, and conformance checks |
+| [`docs/`](..) | Public documentation and historical project records |
+| [`scripts/`](https://github.com/DanielJD1216/Source-Wire/tree/main/scripts) | Verification and boundary checks |
 
-Use [Publish Readiness](../guides/publish-readiness.md) for the local readiness marker map and [CI Checks](../reference/ci-checks.md) for the GitHub Actions Package Checks marker map.
+## What To Inspect Next
 
-## Future Runtime Boundary
-
-Future runtime work may add:
-
-- owner-hosted API server,
-- MCP server runtime,
-- database migrations,
-- Postgres and pgvector setup,
-- memory-engine integration,
-- source maintenance workflows,
-- candidate review,
-- Mission Control UI.
-
-The [synthetic runtime boundary example](../../examples/runtime-boundary/README.md) shows the proposed owner-hosted API plus MCP boundary with synthetic data only, local smoke proof, and installed-package smoke proof.
-
-It does not start a server, connect to a database, add package exports, or approve runtime implementation.
-
-Those are future implementation layers. They should be opened by explicit PRDs and must preserve the trust boundary:
-
-```text
-Source evidence is not trusted memory.
-Trusted memory requires an owner or application approval path.
-```
-
-Related docs:
-
-- [Runtime Boundary](runtime-boundary.md)
-- [Synthetic Runtime Boundary Example](../../examples/runtime-boundary/README.md)
-- [Release Decision](../internal/release-decision.md)
-
-## Safe Mental Model
-
-Use Source-Wire this way today:
-
-- Treat fixtures as synthetic examples.
-- Treat schemas and types as public contracts.
-- Treat readiness checks as package confidence checks.
-- Treat Source Graph as evidence.
-- Treat trusted memory as future runtime behavior.
-- Treat runtime systems as intentionally absent until a later PRD opens them.
+- First local evaluation: [Quickstart](../getting-started/quickstart.md)
+- Package integration: [API Reference](../reference/api-reference.md)
+- Current availability: [Public Status](../status/public-status.md)
+- Runtime limits: [Runtime Boundary](runtime-boundary.md)
+- AI-agent workflow: [AGENTS.md](https://github.com/DanielJD1216/Source-Wire/blob/main/AGENTS.md)

@@ -1,96 +1,110 @@
 # Source-Wire Product Direction
 
-Status: future product direction. Current runtime implementation remains blocked.
+## Direct Answer
 
-Source-Wire's intended end state is a public BYO, owner-hosted AI memory system.
+Source-Wire is intended to become a public, bring-your-own, owner-hosted memory system for AI agents.
 
-Plain English:
+The target is not a shared hosted service by default. An adopter should be able to run Source-Wire with their own infrastructure, data, credentials, knowledge sources, and agent harnesses.
 
-- Source-Wire should become the public version of the same memory-system idea proven first in a private owner instance.
-- People should be able to fork or clone it, run it on their own device, server, local network, or cloud account, and connect their own tools.
-- Each owner should bring their own database, model/API keys, data sources, MCP-capable agent harnesses, and private runtime configuration.
-- Source-Wire should not host everyone else's memory by default.
-- Managed-hosted operation remains a separate later product path, not the default open-source path.
-
-## Current State
-
-The current public repository is not that full product yet.
-
-Current Source-Wire includes:
-
-- Apache-2.0 contracts,
-- JSON schemas,
-- public-safe synthetic fixtures,
-- TypeScript validation helpers,
-- a minimal synthetic in-memory runtime boundary,
-- npm package `@source-wire/contracts@0.1.0`,
-- GitHub release `v0.1.0`.
-
-Current Source-Wire does not include:
-
-- a hosted or production API service,
-- a hosted or production MCP service,
-- non-disposable or production database migrations,
-- Mission Control UI,
-- live source connectors,
-- memory-engine integration,
-- deployment,
-- production runtime use,
-- real user data.
-
-## Why This Exists
-
-The first public package was intentionally conservative. It created clean contracts, fixtures, release gates, and public-safety boundaries before exposing runtime behavior.
-
-That first step should not be confused with the final product goal.
-
-The final product goal is:
+## Target Product
 
 ```text
-Source-Wire = public self-hosted memory system that adopters can run with their own infrastructure.
+Your knowledge sources
+  -> Source-Wire trust and memory lifecycle
+  -> your PostgreSQL
+  -> your authorized AI agents
 ```
 
-## Runtime Baseline
+The knowledge base remains optional and replaceable. Source-Wire owns the logical memory contract and trust rules, while the adopter owns the deployed system and data.
 
-`DanielJD1216/Source-Wire-Memory-Engine` is the current memory-engine baseline candidate.
+## Current Position
 
-It is a fork/rebrand of the Open-RLM-Memory style runtime and currently carries an AGPLv3 license posture.
+| Surface | Current state |
+| --- | --- |
+| Public contract package | Published as `@source-wire/contracts@0.1.0` |
+| GitHub release | `v0.1.0` |
+| License | Apache-2.0 |
+| Contracts, schemas, synthetic fixtures, validation | Available |
+| Local developer Alpha | Stories 1 through 4 in latest source, unpublished and loopback-only |
+| PostgreSQL proof | Generated disposable state only |
+| Hosted or production runtime | Not available |
+| Live knowledge connectors | Not available |
+| Real user data support | Not approved |
+| Automatic trusted-memory promotion | Forbidden |
 
-That means it can inform the implementation path, but its code should not be copied into Apache-2.0 Source-Wire without a deliberate license decision, dual-license plan, or clean rewrite.
+The local Alpha proves that the core lifecycle can operate across real processes and disposable PostgreSQL. It does not convert the repository into a hosted, deployed, or production-ready product.
 
-## Next Strategic Gate
+## Product Principles
 
-Before Source-Wire becomes the runnable self-hosted product, run a focused audit that answers:
+### Owner control
 
-1. Which parts of `Source-Wire-Memory-Engine` should remain the runtime baseline?
-2. Which Source-Wire contracts must the runtime implement?
-3. What is the license path: AGPLv3 runtime, Apache-2.0 rewrite, dual licensing, or separate reference implementation?
-4. What setup path lets a nontechnical owner run it with their own device/server and PostgreSQL-compatible database?
-5. What must stay blocked until public safety, namespace isolation, auth, audit, and no-private-data gates are green?
+Owners or owner-controlled applications approve, correct, and revoke trusted memory. Agent harnesses cannot take those actions through MCP.
 
-Current audit package:
+### Replaceable knowledge
 
-- [Memory Engine Baseline Grill Outcome](../internal/memory-engine-baseline-grill-outcome.md)
-- [Memory Engine Baseline Audit PRD](../internal/memory-engine-baseline-audit-prd.md)
-- [Memory Engine Baseline Audit Issue Slices](../internal/memory-engine-baseline-audit-issue-slices.md)
-- [Memory Engine Baseline Issue Publication Approval Request](../internal/memory-engine-baseline-issue-publication-approval-request.md)
-- [Memory Engine Baseline Audit Diagram Pack](../internal/diagrams/memory-engine-baseline-audit/README.md)
+An adopter may use no knowledge base or plug in an owner-selected system through the read-only `KnowledgeProvider v1` contract.
+
+### Adopter-owned infrastructure
+
+The adopter owns the PostgreSQL server, credentials, networking, stored data, backups, availability, and migration execution.
+
+### Evidence before memory
+
+Source evidence may support a pending candidate. It cannot directly create trusted memory.
+
+### Portable policy
+
+Different agent harnesses should retrieve context through the same identity, namespace, provenance, lifecycle, and audit rules.
+
+## From Evidence To Memory
+
+![Source-Wire knowledge and memory boundary](../assets/knowledge-vs-memory.svg)
+
+The intended product loop is:
+
+1. Retrieve authorized evidence or accept an explicit owner assertion.
+2. Preserve provenance and propose a pending candidate.
+3. Require an explicit owner-controlled decision.
+4. Store approved memory as a versioned trusted revision.
+5. Serve only active, authorized memory with durable audit evidence.
+6. Correct by creating a new revision, or revoke to exclude memory from active reads.
+
+## What Productization Still Requires
+
+Alpha 1 is local proof, not product completion. A future productization unit would still need separate approval and evidence for:
+
+- non-disposable installation and migration workflows,
+- production authentication and secret custody,
+- operational backup, recovery, and encryption policy,
+- supported live provider adapters,
+- deployment and upgrade procedures,
+- monitoring and incident response,
+- real-data privacy and retention controls,
+- user-facing owner review and administration,
+- production support and contribution policy.
+
+This direction document does not approve any of that work.
+
+## Historical Runtime Baseline
+
+`DanielJD1216/Source-Wire-Memory-Engine` was evaluated as a reference runtime candidate with an AGPLv3 posture. It may inform architecture, but its code must not be copied into Apache-2.0 Source-Wire without a deliberate license path or clean implementation decision.
+
+The historical audit and decision records remain in [`docs/internal/`](../internal/README.md). They provide provenance, not current onboarding.
 
 ## Hard Boundaries
 
-Do not treat this direction doc as approval to implement runtime behavior.
-
 Still blocked until separately approved:
 
-- hosted runtime implementation,
-- API server runtime,
-- MCP server runtime,
-- database migrations,
-- Mission Control UI,
+- hosted or production API runtime,
+- hosted or production MCP runtime,
+- non-disposable or production database migrations,
 - live connectors,
 - deployment,
 - production runtime use,
 - real user data,
+- managed hosting,
 - code contribution acceptance,
 - new npm publishing,
 - new GitHub releases or tags.
+
+Read [Public Status](../status/public-status.md) for current availability and [Release Snapshot Boundary](../status/release-snapshot-boundary.md) for the difference between `v0.1.0` and latest `main`.

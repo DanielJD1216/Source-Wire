@@ -9,9 +9,9 @@ import { createOperatorPool } from "../database.js";
 import { asSafeError } from "../errors.js";
 import { initializeFreshTarget } from "../initialize.js";
 import {
-  applyStory1Migration,
+  applyAlpha1Migrations,
   inspectSchemaCompatibilityAsMigrator,
-  readStory1Migration
+  readAlpha1Migrations
 } from "../migration.js";
 
 async function main(): Promise<void> {
@@ -21,16 +21,20 @@ async function main(): Promise<void> {
 
   try {
     if (command === "migrate") {
-      printJson(await applyStory1Migration(pool));
+      printJson(await applyAlpha1Migrations(pool));
       return;
     }
 
     if (command === "migration-status") {
       const compatibility = await inspectSchemaCompatibilityAsMigrator(pool);
-      const migration = await readStory1Migration();
+      const migrations = await readAlpha1Migrations();
       printJson({
         compatibility,
-        expectedChecksumSha256: migration.checksumSha256
+        expectedMigrations: migrations.map(({ version, name, checksumSha256 }) => ({
+          version,
+          name,
+          checksumSha256
+        }))
       });
       if (!compatibility.compatible) {
         process.exitCode = 1;

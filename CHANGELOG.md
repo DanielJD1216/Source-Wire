@@ -4,6 +4,41 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Alpha 1 Story 2 candidate approval proof
+
+Summary:
+
+- Added one unpublished stdio MCP server using the official TypeScript SDK, with live discovery of exactly `propose_memory_candidate`.
+- Added forward-only migration `0002` for pending candidates, provenance, owner decisions, trusted-memory identities, immutable first revisions, and provenance linkage.
+- Added loopback API and owner CLI paths for metadata-first review plus owner-controlled approval or rejection.
+- Added durable lifecycle idempotency, deterministic UTF-8 key ordering, atomic audit behavior, one-winner decision concurrency, bounded stdio input, and least-privilege runtime grants.
+- Preserved the published `@source-wire/contracts@0.1.0` package boundary and all release, deployment, hosting, production, real-data, and Story 3 blocks.
+
+Validation:
+
+- `npm run alpha1:test`
+- `npm run alpha1:conformance:story1`
+- `npm run alpha1:conformance:story2`
+- `npm run ci:check`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `git diff --check`
+
+Primary files:
+
+- `apps/alpha1-runtime/src/candidate-lifecycle.ts`
+- `apps/alpha1-runtime/src/mcp/`
+- `apps/alpha1-runtime/migrations/0002_story2_candidate_lifecycle.sql`
+- `apps/alpha1-runtime/conformance/story2.ts`
+- `docs/getting-started/alpha1-story2-candidate-approval.md`
+
+Risks and follow-ups:
+
+- The MCP SDK currently carries two moderate advisories in an unused HTTP-server transitive path. There are zero high or critical production advisories.
+- This remains generated-disposable, loopback-only developer proof. Story 3 search, correction, revocation, providers, deployment, hosting, public exposure, real data, and release mutation remain excluded.
+
 ### 2026-07-24 - Alpha 1 Story 1 local runtime proof
 
 Summary:
@@ -37,7 +72,7 @@ Primary files:
 Risks and follow-ups:
 
 - This is generated-disposable, loopback-only developer-alpha proof, not production runtime support.
-- Stories 2 through 4, MCP runtime, trusted-memory lifecycle, deployment, hosting, public exposure, real data, and release mutation remain excluded.
+- Stories 3 and 4, trusted-memory search, correction, revocation, deployment, hosting, public exposure, real data, and release mutation remain excluded.
 
 ### 2026-07-23 - Public memory boundaries and repository experience
 

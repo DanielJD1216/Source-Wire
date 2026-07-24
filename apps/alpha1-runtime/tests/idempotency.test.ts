@@ -33,6 +33,28 @@ test("canonical request digests are stable across object key order", () => {
   assert.match(first, /^[0-9a-f]{64}$/u);
 });
 
+test("canonical request digests use locale-independent UTF-8 byte ordering", () => {
+  const value = {
+    "ä": "unicode",
+    z: "ascii",
+    A: "upper"
+  };
+  const original = Intl.Collator;
+  Object.defineProperty(Intl, "Collator", {
+    value: class {
+      compare(): number {
+        return 0;
+      }
+    },
+    configurable: true
+  });
+  try {
+    assert.equal(canonicalRequestDigest(value), canonicalRequestDigest({ z: "ascii", A: "upper", "ä": "unicode" }));
+  } finally {
+    Object.defineProperty(Intl, "Collator", { value: original, configurable: true });
+  }
+});
+
 test("replay secrets use domain-separated authenticated encryption", () => {
   const verifierKey = randomBytes(32);
   const replayKey = deriveIdempotencyReplayKey(verifierKey);

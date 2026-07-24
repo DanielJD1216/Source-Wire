@@ -4,47 +4,65 @@ import test from "node:test";
 import { classifySchemaCompatibility } from "../src/schema-compatibility.js";
 
 const expectedChecksum = "a".repeat(64);
+const secondChecksum = "b".repeat(64);
+const expectedMigrations = [
+  { version: 1, checksumSha256: expectedChecksum },
+  { version: 2, checksumSha256: secondChecksum }
+];
 
-test("schema compatibility accepts one completed exact migration", () => {
+test("schema compatibility accepts the completed two-migration chain", () => {
   assert.deepEqual(
     classifySchemaCompatibility(
-      [{ version: 1, checksumSha256: expectedChecksum, state: "completed" }],
-      expectedChecksum
+      [
+        { version: 1, checksumSha256: expectedChecksum, state: "completed" },
+        { version: 2, checksumSha256: secondChecksum, state: "completed" }
+      ],
+      expectedMigrations
     ),
-    { compatible: true, version: 1 }
+    { compatible: true, version: 2 }
   );
 });
 
 test("schema compatibility fails closed for absent, malformed, old, and new state", () => {
-  assert.deepEqual(classifySchemaCompatibility([], expectedChecksum), {
+  assert.deepEqual(classifySchemaCompatibility([], expectedMigrations), {
     compatible: false,
     code: "schema_incompatible"
   });
   assert.deepEqual(
     classifySchemaCompatibility(
-      [{ version: 1, checksumSha256: "b".repeat(64), state: "completed" }],
-      expectedChecksum
+      [
+        { version: 1, checksumSha256: expectedChecksum, state: "completed" },
+        { version: 2, checksumSha256: "c".repeat(64), state: "completed" }
+      ],
+      expectedMigrations
     ),
     { compatible: false, code: "schema_incompatible" }
   );
   assert.deepEqual(
     classifySchemaCompatibility(
-      [{ version: 1, checksumSha256: expectedChecksum, state: "applying" }],
-      expectedChecksum
+      [
+        { version: 1, checksumSha256: expectedChecksum, state: "completed" },
+        { version: 2, checksumSha256: secondChecksum, state: "applying" }
+      ],
+      expectedMigrations
     ),
     { compatible: false, code: "schema_incompatible" }
   );
   assert.deepEqual(
     classifySchemaCompatibility(
-      [{ version: 0, checksumSha256: expectedChecksum, state: "completed" }],
-      expectedChecksum
+      [{ version: 1, checksumSha256: expectedChecksum, state: "completed" }],
+      expectedMigrations
     ),
     { compatible: false, code: "schema_too_old" }
   );
   assert.deepEqual(
     classifySchemaCompatibility(
-      [{ version: 2, checksumSha256: expectedChecksum, state: "completed" }],
-      expectedChecksum
+      [
+        { version: 1, checksumSha256: expectedChecksum, state: "completed" },
+        { version: 2, checksumSha256: secondChecksum, state: "completed" },
+        { version: 3, checksumSha256: "c".repeat(64), state: "completed" }
+      ],
+      expectedMigrations
     ),
     { compatible: false, code: "schema_too_new" }
   );

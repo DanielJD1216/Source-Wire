@@ -4,9 +4,9 @@ This page is the quickstart for the published Source-Wire contracts package.
 
 This quickstart verifies the package locally with synthetic fixtures.
 
-These commands do not run the unpublished Story 1 workspace, sync sources, connect to MCP, call a database, create memories, or publish a new package version.
+These commands do not run the unpublished Alpha 1 workspace, sync sources, connect to MCP, call a database, create memories, or publish a new package version.
 
-To exercise the latest-source local bootstrap and authenticated-health proof separately, use [Alpha 1 Story 1 Local Runtime](alpha1-story1-local-runtime.md).
+To exercise the latest-source local runtime separately, use [Alpha 1 Story 1 Local Runtime](alpha1-story1-local-runtime.md) for bootstrap and credentials, then [Alpha 1 Story 2 Candidate Approval](alpha1-story2-candidate-approval.md) for the MCP proposal and owner-decision path.
 
 ## Prerequisites
 
@@ -239,7 +239,7 @@ More detail:
 - real user data,
 - trusted Memory Record promotion.
 
-Latest source contains an unpublished local Story 1 runtime workspace. It does not change the published package or authorize hosting, deployment, production use, real data, MCP tools, or trusted-memory lifecycle.
+Latest source contains an unpublished local Alpha 1 Stories 1 and 2 runtime workspace. It proves one loopback API, one stdio MCP proposal tool, pending candidates, and owner-controlled approval or rejection with disposable synthetic PostgreSQL state. It does not change the published package or authorize hosting, deployment, production use, real data, trusted-memory search, correction, or revocation.
 
 Current release posture:
 

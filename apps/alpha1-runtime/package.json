@@ -13,15 +13,19 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "npm run build && node --test dist/tests/*.test.js",
     "conformance:story1": "node dist/conformance/story1.js",
+    "conformance:story2": "node dist/conformance/story2.js",
+    "mcp": "node dist/src/mcp/server.js",
     "operator": "node dist/src/cli/operator.js",
     "owner": "node dist/src/cli/owner.js",
     "start": "node dist/src/server.js"
   },
   "dependencies": {
     "@hono/node-server": "2.0.11",
+    "@modelcontextprotocol/sdk": "1.29.0",
     "drizzle-orm": "0.45.2",
     "hono": "4.12.31",
-    "pg": "8.22.0"
+    "pg": "8.22.0",
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/node": "22.20.1",

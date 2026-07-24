@@ -140,8 +140,8 @@ Repository metadata does not approve:
 - code contribution acceptance,
 - hosted runtime backend,
 - production runtime use,
-- real MCP server runtime,
-- database setup,
+- hosted or production MCP service,
+- non-disposable or production database setup,
 - live connectors,
 - real data examples.
 

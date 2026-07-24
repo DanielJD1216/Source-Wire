@@ -13,7 +13,13 @@ async function main(): Promise<void> {
       capability: { type: "string", multiple: true },
       "expires-at": { type: "string" },
       "credential-id": { type: "string" },
-      "idempotency-key": { type: "string" }
+      "candidate-id": { type: "string" },
+      "idempotency-key": { type: "string" },
+      reason: { type: "string" },
+      state: { type: "string" },
+      cursor: { type: "string" },
+      limit: { type: "string" },
+      "include-content": { type: "boolean", default: false }
     },
     strict: true
   });
@@ -28,6 +34,46 @@ async function main(): Promise<void> {
   }
 
   const ownerToken = requireEnvironment("SOURCE_WIRE_OWNER_TOKEN");
+  if (command === "list-candidates") {
+    const namespaceId = parsed.values["namespace-id"]?.[0];
+    if (!namespaceId) {
+      throw new Error("validation_failed");
+    }
+    const query = new URLSearchParams();
+    query.set("state", parsed.values.state ?? "pending");
+    if (parsed.values.cursor) query.set("cursor", parsed.values.cursor);
+    if (parsed.values.limit) query.set("limit", parsed.values.limit);
+    if (parsed.values["include-content"]) query.set("includeContent", "true");
+    await executeGetRequest(
+      baseUrl,
+      `/v1alpha1/admin/namespaces/${encodeURIComponent(namespaceId)}/memory-candidates?${query.toString()}`,
+      ownerToken
+    );
+    return;
+  }
+
+  if (command === "approve-candidate" || command === "reject-candidate") {
+    const namespaceId = parsed.values["namespace-id"]?.[0];
+    const candidateId = parsed.values["candidate-id"];
+    const reason = parsed.values.reason;
+    if (!namespaceId || !candidateId || !reason) {
+      throw new Error("validation_failed");
+    }
+    await executeRequest(
+      baseUrl,
+      `/v1alpha1/admin/memory-candidates/${encodeURIComponent(candidateId)}/decision`,
+      ownerToken,
+      {
+        namespaceId,
+        decision: command === "approve-candidate" ? "approve" : "reject",
+        expectedState: "pending",
+        reason,
+        idempotencyKey
+      }
+    );
+    return;
+  }
+
   if (command === "issue-harness") {
     await executeRequest(
       baseUrl,
@@ -77,6 +123,27 @@ async function main(): Promise<void> {
   throw new Error("validation_failed");
 }
 
+async function executeGetRequest(
+  baseUrl: string,
+  path: string,
+  token: string
+): Promise<void> {
+  let response: Response;
+  try {
+    response = await fetch(`${baseUrl}${path}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      signal: AbortSignal.timeout(3_000)
+    });
+  } catch {
+    writeUnavailable();
+    return;
+  }
+  await writeResponse(response);
+}
+
 async function executeRequest(
   baseUrl: string,
   path: string,
@@ -100,24 +167,32 @@ async function executeRequest(
       signal: AbortSignal.timeout(3_000)
     });
   } catch {
-    process.stdout.write(
-      `${JSON.stringify({
-        error: {
-          code: "operation_unavailable",
-          message: "The local Source-Wire API is unavailable.",
-          retryable: true
-        }
-      })}\n`
-    );
-    process.exitCode = 1;
+    writeUnavailable();
     return;
   }
 
+  await writeResponse(response);
+}
+
+async function writeResponse(response: Response): Promise<void> {
   const text = await response.text();
   process.stdout.write(`${text}\n`);
   if (!response.ok) {
     process.exitCode = 1;
   }
+}
+
+function writeUnavailable(): void {
+  process.stdout.write(
+    `${JSON.stringify({
+      error: {
+        code: "operation_unavailable",
+        message: "The local Source-Wire API is unavailable.",
+        retryable: true
+      }
+    })}\n`
+  );
+  process.exitCode = 1;
 }
 
 function validateBaseUrl(value: string): string {

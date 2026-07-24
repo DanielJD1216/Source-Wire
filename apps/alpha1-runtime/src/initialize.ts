@@ -3,8 +3,8 @@ import { randomUUID } from "node:crypto";
 import type pg from "pg";
 
 import {
+  ALPHA1_SCHEMA_VERSION,
   assertSourceWireIdentifier,
-  STORY1_SCHEMA_VERSION
 } from "./config.js";
 import {
   computeCredentialVerifier,
@@ -26,7 +26,7 @@ export type InitializeFreshTargetInput = {
 };
 
 export type InitializeFreshTargetResult = {
-  schemaVersion: typeof STORY1_SCHEMA_VERSION;
+  schemaVersion: typeof ALPHA1_SCHEMA_VERSION;
   ownerId: string;
   namespaceIds: string[];
   ownerAdminCredential: {
@@ -141,7 +141,12 @@ export async function initializeFreshTarget(
         [createdSecret.credentialId, namespaceId]
       );
     }
-    for (const capability of ["runtime.health", "credential.manage"]) {
+    for (const capability of [
+      "runtime.health",
+      "credential.manage",
+      "memory_candidate.review",
+      "memory_candidate.decide"
+    ]) {
       await client.query(
         `INSERT INTO source_wire_memory.credential_capability_grants
           (credential_id, capability)
@@ -165,7 +170,7 @@ export async function initializeFreshTarget(
     await client.query("COMMIT");
 
     return {
-      schemaVersion: STORY1_SCHEMA_VERSION,
+      schemaVersion: ALPHA1_SCHEMA_VERSION,
       ownerId,
       namespaceIds,
       ownerAdminCredential: {

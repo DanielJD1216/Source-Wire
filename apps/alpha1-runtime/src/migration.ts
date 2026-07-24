@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import type pg from "pg";
 
-import { STORY1_SCHEMA_VERSION } from "./config.js";
+import { ALPHA1_SCHEMA_VERSION, STORY1_SCHEMA_VERSION } from "./config.js";
 import {
   classifySchemaCompatibility,
   type SchemaCompatibility,
@@ -12,110 +12,107 @@ import {
 } from "./schema-compatibility.js";
 
 export const STORY1_MIGRATION_NAME = "0001_story1_bootstrap.sql";
+export const STORY2_MIGRATION_NAME = "0002_story2_candidate_lifecycle.sql";
 const MIGRATION_ADVISORY_LOCK = 1_913_770_101;
 
-export type MigrationResult = {
-  status: "applied" | "already_applied";
-  version: typeof STORY1_SCHEMA_VERSION;
+export type MigrationDefinition = {
+  version: number;
+  name: string;
+  sql: string;
   checksumSha256: string;
 };
 
-export async function readStory1Migration(): Promise<{ sql: string; checksumSha256: string }> {
-  const migrationUrl = new URL(`../../migrations/${STORY1_MIGRATION_NAME}`, import.meta.url);
-  const sql = await readFile(fileURLToPath(migrationUrl), "utf8");
-  const checksumSha256 = createHash("sha256").update(sql, "utf8").digest("hex");
+export type MigrationResult = {
+  status: "applied" | "already_applied";
+  version: typeof ALPHA1_SCHEMA_VERSION;
+  checksumSha256: string;
+  migrations: Array<{
+    version: number;
+    name: string;
+    checksumSha256: string;
+  }>;
+};
 
-  return { sql, checksumSha256 };
+export async function readStory1Migration(): Promise<{ sql: string; checksumSha256: string }> {
+  const [migration] = await readAlpha1Migrations();
+  if (!migration || migration.version !== STORY1_SCHEMA_VERSION) {
+    throw new Error("schema_incompatible");
+  }
+  return { sql: migration.sql, checksumSha256: migration.checksumSha256 };
 }
 
-export async function applyStory1Migration(pool: pg.Pool): Promise<MigrationResult> {
-  const migration = await readStory1Migration();
+export async function readAlpha1Migrations(): Promise<MigrationDefinition[]> {
+  const definitions = [
+    { version: STORY1_SCHEMA_VERSION, name: STORY1_MIGRATION_NAME },
+    { version: ALPHA1_SCHEMA_VERSION, name: STORY2_MIGRATION_NAME }
+  ] as const;
+
+  return Promise.all(
+    definitions.map(async ({ version, name }) => {
+      const migrationUrl = new URL(`../../migrations/${name}`, import.meta.url);
+      const sql = await readFile(fileURLToPath(migrationUrl), "utf8");
+      return {
+        version,
+        name,
+        sql,
+        checksumSha256: createHash("sha256").update(sql, "utf8").digest("hex")
+      };
+    })
+  );
+}
+
+export async function applyAlpha1Migrations(pool: pg.Pool): Promise<MigrationResult> {
+  const migrations = await readAlpha1Migrations();
   const client = await pool.connect();
+  let appliedCount = 0;
 
   try {
     await client.query("BEGIN");
     await client.query("SET LOCAL lock_timeout = '2s'");
     await client.query("SET LOCAL statement_timeout = '2s'");
     await client.query("SELECT pg_advisory_xact_lock($1)", [MIGRATION_ADVISORY_LOCK]);
-    const posture = await client.query<{
-      public_schema_create: boolean;
-      migrator_can_assume_owner: boolean;
-      schema_owner_can_login: boolean;
-      runtime_can_login: boolean;
-      runtime_inherits: boolean;
-      runtime_creates_database: boolean;
-      runtime_creates_role: boolean;
-      runtime_superuser: boolean;
-      runtime_bypasses_rls: boolean;
-    }>(
-      `SELECT
-         has_schema_privilege('public', 'CREATE') AS public_schema_create,
-         pg_has_role(current_user, 'source_wire_schema_owner', 'MEMBER') AS migrator_can_assume_owner,
-         (SELECT rolcanlogin FROM pg_roles WHERE rolname = 'source_wire_schema_owner') AS schema_owner_can_login,
-         (SELECT rolcanlogin FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_can_login,
-         (SELECT rolinherit FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_inherits,
-         (SELECT rolcreatedb FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_creates_database,
-         (SELECT rolcreaterole FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_creates_role,
-         (SELECT rolsuper FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_superuser,
-         (SELECT rolbypassrls FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_bypasses_rls`
-    );
-    const rolePosture = posture.rows[0];
-    if (
-      !rolePosture ||
-      rolePosture.public_schema_create ||
-      !rolePosture.migrator_can_assume_owner ||
-      rolePosture.schema_owner_can_login ||
-      !rolePosture.runtime_can_login ||
-      rolePosture.runtime_inherits ||
-      rolePosture.runtime_creates_database ||
-      rolePosture.runtime_creates_role ||
-      rolePosture.runtime_superuser ||
-      rolePosture.runtime_bypasses_rls
-    ) {
-      throw new Error("database_role_posture_invalid");
-    }
+    await assertDatabaseRolePosture(client);
     await client.query("SET LOCAL ROLE source_wire_schema_owner");
-
-    const server = await client.query<{ server_version_num: string }>(
-      "SELECT current_setting('server_version_num') AS server_version_num"
-    );
-    const serverVersion = Number(server.rows[0]?.server_version_num ?? "0");
-    if (Math.floor(serverVersion / 10_000) !== 16) {
-      throw new Error("postgresql_version_unsupported");
-    }
+    await assertPostgresql16(client);
 
     const relation = await client.query<{ migration_table: string | null }>(
       "SELECT to_regclass('source_wire_memory.schema_migrations')::text AS migration_table"
     );
-
+    let existingRows: SchemaMigrationRow[] = [];
     if (relation.rows[0]?.migration_table) {
-      const rows = await readMigrationRows(client);
-      const compatibility = classifySchemaCompatibility(rows, migration.checksumSha256);
-      if (!compatibility.compatible) {
-        throw new Error(compatibility.code);
-      }
-
-      await client.query("COMMIT");
-      return {
-        status: "already_applied",
-        version: STORY1_SCHEMA_VERSION,
-        checksumSha256: migration.checksumSha256
-      };
+      existingRows = await readMigrationRows(client);
+      assertExactMigrationPrefix(existingRows, migrations);
     }
 
-    await client.query(migration.sql);
-    await client.query(
-      `INSERT INTO source_wire_memory.schema_migrations
-        (version, migration_name, checksum_sha256, state)
-       VALUES ($1, $2, $3, 'completed')`,
-      [STORY1_SCHEMA_VERSION, STORY1_MIGRATION_NAME, migration.checksumSha256]
-    );
+    for (const migration of migrations.slice(existingRows.length)) {
+      await client.query(migration.sql);
+      await client.query(
+        `INSERT INTO source_wire_memory.schema_migrations
+          (version, migration_name, checksum_sha256, state)
+         VALUES ($1, $2, $3, 'completed')`,
+        [migration.version, migration.name, migration.checksumSha256]
+      );
+      appliedCount += 1;
+    }
+
+    const completedRows = await readMigrationRows(client);
+    const compatibility = classifySchemaCompatibility(completedRows, migrations);
+    if (!compatibility.compatible) {
+      throw new Error(compatibility.code);
+    }
     await client.query("COMMIT");
 
+    const latest = migrations.at(-1);
+    if (!latest) throw new Error("schema_incompatible");
     return {
-      status: "applied",
-      version: STORY1_SCHEMA_VERSION,
-      checksumSha256: migration.checksumSha256
+      status: appliedCount > 0 ? "applied" : "already_applied",
+      version: ALPHA1_SCHEMA_VERSION,
+      checksumSha256: latest.checksumSha256,
+      migrations: migrations.map(({ version, name, checksumSha256 }) => ({
+        version,
+        name,
+        checksumSha256
+      }))
     };
   } catch (error) {
     await client.query("ROLLBACK").catch(() => undefined);
@@ -124,6 +121,8 @@ export async function applyStory1Migration(pool: pg.Pool): Promise<MigrationResu
     client.release();
   }
 }
+
+export const applyStory1Migration = applyAlpha1Migrations;
 
 export async function inspectSchemaCompatibility(pool: pg.Pool): Promise<SchemaCompatibility> {
   return inspectSchemaCompatibilityWithQueryable(pool);
@@ -150,11 +149,11 @@ export async function inspectSchemaCompatibilityAsMigrator(
 export async function inspectSchemaCompatibilityWithQueryable(
   queryable: Pick<pg.Pool, "query"> | Pick<pg.PoolClient, "query">
 ): Promise<SchemaCompatibility> {
-  const migration = await readStory1Migration();
+  const migrations = await readAlpha1Migrations();
 
   try {
     const rows = await readMigrationRows(queryable);
-    return classifySchemaCompatibility(rows, migration.checksumSha256);
+    return classifySchemaCompatibility(rows, migrations);
   } catch (error) {
     const code =
       typeof error === "object" && error !== null && "code" in error
@@ -170,7 +169,82 @@ export async function inspectSchemaCompatibilityWithQueryable(
   }
 }
 
-async function readMigrationRows(queryable: Pick<pg.Pool, "query"> | Pick<pg.PoolClient, "query">): Promise<SchemaMigrationRow[]> {
+function assertExactMigrationPrefix(
+  rows: SchemaMigrationRow[],
+  migrations: MigrationDefinition[]
+): void {
+  if (rows.length === 0) {
+    throw new Error("schema_incompatible");
+  }
+  if (rows.length > migrations.length || (rows.at(-1)?.version ?? 0) > ALPHA1_SCHEMA_VERSION) {
+    throw new Error("schema_too_new");
+  }
+  const exact = rows.every((row, index) => {
+    const expected = migrations[index];
+    return (
+      expected !== undefined &&
+      row.version === expected.version &&
+      row.state === "completed" &&
+      row.checksumSha256 === expected.checksumSha256
+    );
+  });
+  if (!exact) {
+    throw new Error("schema_incompatible");
+  }
+}
+
+async function assertDatabaseRolePosture(client: pg.PoolClient): Promise<void> {
+  const posture = await client.query<{
+    public_schema_create: boolean;
+    migrator_can_assume_owner: boolean;
+    schema_owner_can_login: boolean;
+    runtime_can_login: boolean;
+    runtime_inherits: boolean;
+    runtime_creates_database: boolean;
+    runtime_creates_role: boolean;
+    runtime_superuser: boolean;
+    runtime_bypasses_rls: boolean;
+  }>(
+    `SELECT
+       has_schema_privilege('public', 'CREATE') AS public_schema_create,
+       pg_has_role(current_user, 'source_wire_schema_owner', 'MEMBER') AS migrator_can_assume_owner,
+       (SELECT rolcanlogin FROM pg_roles WHERE rolname = 'source_wire_schema_owner') AS schema_owner_can_login,
+       (SELECT rolcanlogin FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_can_login,
+       (SELECT rolinherit FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_inherits,
+       (SELECT rolcreatedb FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_creates_database,
+       (SELECT rolcreaterole FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_creates_role,
+       (SELECT rolsuper FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_superuser,
+       (SELECT rolbypassrls FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_bypasses_rls`
+  );
+  const row = posture.rows[0];
+  if (
+    !row ||
+    row.public_schema_create ||
+    !row.migrator_can_assume_owner ||
+    row.schema_owner_can_login ||
+    !row.runtime_can_login ||
+    row.runtime_inherits ||
+    row.runtime_creates_database ||
+    row.runtime_creates_role ||
+    row.runtime_superuser ||
+    row.runtime_bypasses_rls
+  ) {
+    throw new Error("database_role_posture_invalid");
+  }
+}
+
+async function assertPostgresql16(client: pg.PoolClient): Promise<void> {
+  const result = await client.query<{ server_version_num: string }>(
+    "SELECT current_setting('server_version_num') AS server_version_num"
+  );
+  if (Math.floor(Number(result.rows[0]?.server_version_num ?? "0") / 10_000) !== 16) {
+    throw new Error("postgresql_version_unsupported");
+  }
+}
+
+async function readMigrationRows(
+  queryable: Pick<pg.Pool, "query"> | Pick<pg.PoolClient, "query">
+): Promise<SchemaMigrationRow[]> {
   const result = await queryable.query<{
     version: number;
     checksum_sha256: string;

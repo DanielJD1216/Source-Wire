@@ -86,8 +86,8 @@ function canonicalJson(value: unknown): string {
     return `[${value.map((item) => canonicalJson(item)).join(",")}]`;
   }
   if (typeof value === "object") {
-    const entries = Object.entries(value as Record<string, unknown>).sort(([left], [right]) =>
-      left.localeCompare(right)
+    const entries = Object.entries(value as Record<string, unknown>).sort(
+      ([left], [right]) => Buffer.compare(Buffer.from(left, "utf8"), Buffer.from(right, "utf8"))
     );
     return `{${entries
       .map(([key, item]) => `${JSON.stringify(key)}:${canonicalJson(item)}`)

@@ -19,10 +19,10 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 | Snapshot boundary | npm `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` may contain post-release documentation and readiness hardening. |
 | Known `v0.1.0` artifact issue | The immutable npm `0.1.0` package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`. Latest `main` fixes this for a future owner-approved patch release. |
 | Hosted runtime | Not included |
-| Real MCP server runtime | Not included |
+| Local stdio MCP proposal process | Included only in latest source Story 2; hosted and production MCP remain excluded |
 | Synthetic runtime skeleton | Included on latest `main` only |
-| Local Story 1 developer alpha | Included in latest source as an unpublished npm workspace, not in the published package |
-| Database or migrations | One explicit forward-only disposable Story 1 migration is included in latest source; production and non-disposable use remain unapproved |
+| Local Alpha 1 Stories 1 and 2 developer runtime | Included in latest source as an unpublished npm workspace, not in the published package |
+| Database or migrations | Two explicit forward-only disposable Alpha 1 migrations are included in latest source; production and non-disposable use remain unapproved |
 | Real user data | Not included |
 | Trusted memory auto-promotion | Not allowed |
 | Code contribution acceptance | Blocked |
@@ -50,7 +50,7 @@ It currently includes:
 - package-readiness checks,
 - minimal synthetic in-memory runtime-boundary proof,
 - synthetic owner-hosted API policy route and MCP adapter skeleton,
-- unpublished npm `apps/alpha1-runtime` workspace for disposable PostgreSQL bootstrap, credential lifecycle, and authenticated health,
+- unpublished npm `apps/alpha1-runtime` workspace for disposable PostgreSQL bootstrap, credential lifecycle, authenticated health, one stdio MCP proposal tool, pending candidates, and owner-controlled approval or rejection,
 - issue templates for structured public feedback,
 - GitHub-visible support, security, and contribution-boundary files,
 - Apache-2.0 licensing for source package reuse.
@@ -61,7 +61,7 @@ Source-Wire is not yet:
 
 - a hosted memory service,
 - a hosted or production API server,
-- a real MCP server runtime,
+- a hosted or production MCP service,
 - a complete database-backed memory engine,
 - a connector framework,
 - a Mission Control UI,
@@ -70,7 +70,7 @@ Source-Wire is not yet:
 
 For the current owner-hosted setup boundary, read [Owner-Hosted Setup Claim Boundary](../internal/owner-hosted-setup-claim-boundary.md).
 
-That historical setup boundary states that Source-Wire is not managed hosting and `Source-Wire-Memory-Engine` remains separate. The separate Story 1 unit has now added one disposable developer-alpha migration and runtime path. Production runtime and non-disposable database use remain blocked.
+That historical setup boundary states that Source-Wire is not managed hosting and `Source-Wire-Memory-Engine` remains separate. Alpha 1 Stories 1 and 2 now add a disposable developer-runtime migration, stdio MCP proposal, candidate, and owner-decision path. Production runtime and non-disposable database use remain blocked.
 
 The current setup package closeout is recorded in [Owner-Hosted Setup Final Proof](../internal/owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Docs Audit](../internal/owner-hosted-setup-docs-audit.md), and [Owner-Hosted Setup Go/No-Go Gate](../internal/owner-hosted-setup-go-no-go-gate.md).
 
@@ -87,7 +87,7 @@ You may:
 - run local package dry-run checks,
 - run synthetic runtime-boundary smokes,
 - run synthetic runtime-skeleton smokes,
-- run the generated disposable Story 1 conformance path,
+- run the generated disposable Story 1 and Story 2 conformance paths,
 - open structured feedback issues using the provided templates.
 
 The Apache-2.0 license alone does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.
@@ -180,7 +180,7 @@ Do not include secrets, tokens, private data, local private paths, private scree
 Separate owner approvals are still required before any of these happen:
 
 - hosted runtime backend,
-- real MCP server runtime,
+- hosted or production MCP service,
 - non-disposable or production database setup,
 - live connectors,
 - Mission Control UI,

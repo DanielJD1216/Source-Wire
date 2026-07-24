@@ -11,7 +11,7 @@
 
 Source-Wire defines how AI agents can retrieve source evidence, preserve provenance, propose durable memories, and use trusted context without silently turning every document, message, or model output into truth.
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. The contracts package is published to npm and released on GitHub. Latest source also contains an unpublished, loopback-only Story 1 developer alpha for disposable local PostgreSQL proof. Nothing is deployed or hosted.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. The contracts package is published to npm and released on GitHub. Latest source also contains unpublished, loopback-only Alpha 1 Stories 1 and 2 for disposable local PostgreSQL, MCP candidate proposal, and owner-approval proof. Nothing is deployed or hosted.
 
 > Source-Wire is the governed memory layer. Your knowledge base, data sources, PostgreSQL infrastructure, and agent harnesses remain replaceable components around it.
 
@@ -86,7 +86,7 @@ Trusted memory requires explicit owner or owner-application approval.
 | Knowledge base | Finds current information across documents, chats, code, databases, or search indexes. | Optional, external, read-only through `KnowledgeProvider v1`. |
 | Memory system | Preserves reviewed context, decisions, corrections, project state, provenance, and lifecycle history. | Governed through `MemoryStore v1`. |
 | Agent harness | Chooses tools and uses retrieved context to answer or act. | Routes through MCP and Source-Wire API policy. |
-| PostgreSQL | Stores adopter-owned memory data. | PostgreSQL is the only planned `MemoryStore v1` backend. Latest source includes a narrow disposable Story 1 bootstrap and health proof; the published contracts package does not include that runtime. |
+| PostgreSQL | Stores adopter-owned memory data. | PostgreSQL is the only planned `MemoryStore v1` backend. Latest source includes a narrow disposable Alpha 1 bootstrap, candidate, and owner-approval proof; the published contracts package does not include that runtime. |
 
 Source-Wire can operate without a knowledge base. Owner assertions and prior-memory references can create pending candidates. When a knowledge provider is present, its evidence can support a candidate, but it cannot approve or promote memory.
 
@@ -105,13 +105,15 @@ Source-Wire is a contracts-first TypeScript package with the first narrow local 
 | Synthetic fixtures and conformance smokes | Included |
 | Minimal in-memory policy proofs | Included |
 | Local Story 1 bootstrap and authenticated health | Included in latest source as an unpublished workspace |
+| Local Story 2 MCP candidate and owner approval | Included in the same unpublished workspace |
 | Hosted API or MCP service | Not included |
-| Disposable PostgreSQL Story 1 proof | Included in latest source |
-| Candidate or trusted-memory lifecycle | Not included in the real runtime |
+| Disposable PostgreSQL Alpha 1 proof | Included in latest source |
+| Pending candidate and first trusted revision | Included only in the local Story 2 proof |
+| Trusted-memory search, correction, or revocation | Not included in the real runtime |
 | Live knowledge connectors | Not included |
 | Automatic trusted-memory promotion | Forbidden |
 
-For the local Story 1 proof, read [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md). For the release boundary, read [Public Status](docs/status/public-status.md) and [Product Direction](docs/concepts/product-direction.md).
+For the local runtime proof, read [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md) and [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md). For the release boundary, read [Public Status](docs/status/public-status.md) and [Product Direction](docs/concepts/product-direction.md).
 
 ## First Reviewer Quickstart
 
@@ -150,7 +152,8 @@ Use [Share For Technical Review](docs/guides/share-for-review.md) and [Reviewer 
 - hosted runtime,
 - production runtime use,
 - non-disposable or production database use,
-- MCP tools and trusted-memory lifecycle in the real runtime,
+- hosted or production MCP service behavior,
+- trusted-memory search, correction, supersession, and revocation,
 - live knowledge connectors,
 - real user or client data,
 - code contribution acceptance.
@@ -177,7 +180,7 @@ The package and release are available for technical review and Apache-2.0 source
 - Installed-package, consumer, documentation, safety, and claim-boundary checks.
 - Architecture, decision, release, security, and reviewer documentation.
 
-Existing examples under `examples/` are synthetic. The unpublished npm workspace under `apps/alpha1-runtime/` is a real local Story 1 proof against generated disposable PostgreSQL state. It does not prove production availability, hosting, deployment, MCP behavior, or trusted-memory lifecycle.
+Existing examples under `examples/` are synthetic. The unpublished npm workspace under `apps/alpha1-runtime/` is a real local Alpha 1 Stories 1 and 2 proof against generated disposable PostgreSQL state. It proves one stdio MCP proposal tool, pending-only candidates, and owner-controlled approval or rejection. It does not prove production availability, hosting, deployment, trusted-memory search, correction, revocation, or real-data support.
 
 ## For AI Agents
 
@@ -282,7 +285,7 @@ Important invariants:
 | [`src/contracts/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/contracts) | TypeScript contracts and synthetic evaluators. |
 | [`src/runtime-skeleton/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/runtime-skeleton) | Synthetic API-policy and MCP-routing proof. |
 | [`src/owner-hosted-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/owner-hosted-runtime) | Narrow in-process owner-hosted runtime skeleton proof. |
-| [`apps/alpha1-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/apps/alpha1-runtime) | Unpublished loopback-only Story 1 runtime and disposable PostgreSQL conformance. |
+| [`apps/alpha1-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/apps/alpha1-runtime) | Unpublished loopback-only Alpha 1 Stories 1 and 2 runtime with disposable PostgreSQL and stdio MCP conformance. |
 | [`schemas/`](schemas) | Public JSON schemas. |
 | [`examples/`](examples) | Synthetic fixtures, conformance matrices, and smoke tests. |
 | [`docs/`](docs) | Architecture, contract, reviewer, release, and safety documentation. |
@@ -315,8 +318,10 @@ It does not export a hosted backend, production API server, production MCP serve
 | `npm test` | Type checking, fixture validation, schema exports, CLI, and TypeScript examples. |
 | `npm run runtime:knowledge-provider-smoke` | Synthetic read-only provider contract conformance. |
 | `npm run runtime:memory-store-smoke` | Synthetic PostgreSQL memory posture and lifecycle conformance. |
-| `npm run alpha1:build` | Builds the unpublished local Story 1 runtime workspace. |
+| `npm run alpha1:build` | Builds the unpublished local Alpha 1 runtime workspace. |
+| `npm run alpha1:test` | Runs focused Alpha 1 unit and MCP discovery tests. |
 | `npm run alpha1:conformance:story1` | Uses generated disposable PostgreSQL state to prove bootstrap, credentials, authenticated health, denial paths, and cleanup. |
+| `npm run alpha1:conformance:story2` | Uses a real MCP client and generated disposable PostgreSQL state to prove pending proposals, owner decisions, durable idempotency, atomic audit, least privilege, and cleanup. |
 | `npm run safety:scan` | Public-safety scan for sensitive material. |
 | `npm run claims:scan` | Guard against unsupported public runtime claims. |
 | `npm run docs:links` | Local documentation link validation. |
@@ -332,6 +337,7 @@ Read [CI Checks](docs/reference/ci-checks.md) for the hosted workflow marker map
 - [Documentation Index](docs/README.md)
 - [Quickstart](docs/getting-started/quickstart.md)
 - [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md)
+- [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md)
 - [Public Status](docs/status/public-status.md)
 - [Product Direction](docs/concepts/product-direction.md)
 - [Architecture Map](docs/concepts/architecture-map.md)

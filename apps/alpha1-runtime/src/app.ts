@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { TextDecoder } from "node:util";
 
 import { Hono, type Context } from "hono";
 import { bodyLimit } from "hono/body-limit";
@@ -9,6 +10,14 @@ import {
   MAX_JSON_BODY_BYTES,
   STORY1_API_SCHEMA
 } from "./config.js";
+import {
+  decideMemoryCandidate,
+  listMemoryCandidates,
+  parseCandidateDecision,
+  parseCandidateListQuery,
+  parseCandidateProposal,
+  proposeMemoryCandidate
+} from "./candidate-lifecycle.js";
 import type { Story1Database } from "./database.js";
 import { asSafeError, SafeError } from "./errors.js";
 import { inspectSchemaCompatibility } from "./migration.js";
@@ -33,6 +42,7 @@ type AppVariables = {
   actor: AuthenticatedCredential | undefined;
   namespaceId: string | undefined;
   safeResult: string;
+  auditAvailability: "available" | "denial_audit_unavailable";
 };
 
 export type Story1AppOptions = {
@@ -57,6 +67,7 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
     context.set("actor", undefined);
     context.set("namespaceId", undefined);
     context.set("safeResult", "operation_unavailable");
+    context.set("auditAvailability", "available");
 
     try {
       await next();
@@ -68,14 +79,17 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
         operation: context.get("operation"),
         result: context.get("safeResult"),
         durationMs: Math.max(0, Date.now() - context.get("startedAt")),
-        actorReference: context.get("actor")?.actorReference ?? "unknown"
+        actorReference: context.get("actor")?.actorReference ?? "unknown",
+        ...(context.get("auditAvailability") === "denial_audit_unavailable"
+          ? { availabilityMarker: "denial_audit_unavailable" as const }
+          : {})
       });
     }
   });
 
   app.use("/v1alpha1/*", async (context, next) => {
     const url = new URL(context.req.url);
-    if (url.search.length > 0) {
+    if (url.search.length > 0 && !isCandidateListRoute(context.req.method, context.req.path)) {
       throw new SafeError("validation_failed", 400);
     }
 
@@ -137,6 +151,114 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
       },
       audit: {
         eventId: auditEventId,
+        releaseStatus: "not_applicable"
+      }
+    });
+  });
+
+  app.post("/v1alpha1/memory-candidates", async (context) => {
+    const body = await readStrictJson(context, [
+      "namespaceId",
+      "content",
+      "provenance",
+      "idempotencyKey"
+    ]);
+    const actor = await authenticateForContext(context, options);
+    const proposal = parseCandidateProposal({
+      namespaceId: body.namespaceId,
+      content: body.content,
+      provenance: body.provenance,
+      idempotencyKey: body.idempotencyKey
+    });
+    context.set("namespaceId", proposal.namespaceId);
+    const result = await proposeMemoryCandidate(
+      options.database.pool,
+      actor,
+      proposal,
+      context.get("traceId")
+    );
+    context.set("safeResult", "allowed");
+    return context.json(
+      {
+        schema: STORY1_API_SCHEMA,
+        traceId: context.get("traceId"),
+        data: {
+          candidateId: result.candidateId,
+          state: result.state,
+          createdAt: result.createdAt
+        },
+        audit: {
+          eventId: result.auditEventId,
+          releaseStatus: "not_applicable"
+        }
+      },
+      201
+    );
+  });
+
+  app.get("/v1alpha1/admin/namespaces/:namespaceId/memory-candidates", async (context) => {
+    const actor = await authenticateForContext(context, options);
+    const namespaceId = requireNamespace(actor, context.req.param("namespaceId"));
+    context.set("namespaceId", namespaceId);
+    const result = await listMemoryCandidates(
+      options.database.pool,
+      actor,
+      namespaceId,
+      parseCandidateListQuery(new URL(context.req.url).searchParams),
+      context.get("traceId"),
+      options.verifierKey
+    );
+    context.set("safeResult", "allowed");
+    return context.json({
+      schema: STORY1_API_SCHEMA,
+      traceId: context.get("traceId"),
+      data: {
+        items: result.items,
+        ...(result.nextCursor ? { nextCursor: result.nextCursor } : {})
+      },
+      audit: {
+        eventId: result.auditEventId,
+        releaseStatus: "not_applicable"
+      }
+    });
+  });
+
+  app.post("/v1alpha1/admin/memory-candidates/:candidateId/decision", async (context) => {
+    const body = await readStrictJson(context, [
+      "namespaceId",
+      "decision",
+      "expectedState",
+      "reason",
+      "idempotencyKey"
+    ]);
+    const actor = await authenticateForContext(context, options);
+    const decision = parseCandidateDecision(context.req.param("candidateId"), {
+      namespaceId: body.namespaceId,
+      decision: body.decision,
+      expectedState: body.expectedState,
+      reason: body.reason,
+      idempotencyKey: body.idempotencyKey
+    });
+    context.set("namespaceId", decision.namespaceId);
+    const result = await decideMemoryCandidate(
+      options.database.pool,
+      actor,
+      decision,
+      context.get("traceId")
+    );
+    context.set("safeResult", "allowed");
+    return context.json({
+      schema: STORY1_API_SCHEMA,
+      traceId: context.get("traceId"),
+      data: {
+        candidateId: result.candidateId,
+        state: result.state,
+        decidedAt: result.decidedAt,
+        ...(result.memoryId ? { memoryId: result.memoryId } : {}),
+        ...(result.revisionId ? { revisionId: result.revisionId } : {})
+      },
+      audit: {
+        eventId: result.auditEventId,
         releaseStatus: "not_applicable"
       }
     });
@@ -283,6 +405,7 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
         auditEventId = await recordAudit(options.database.pool, auditInput);
       } catch {
         auditEventId = undefined;
+        context.set("auditAvailability", "denial_audit_unavailable");
       }
     }
 
@@ -341,7 +464,8 @@ async function readStrictJson(
 
   let parsed: unknown;
   try {
-    parsed = JSON.parse(bytes.toString("utf8"));
+    const text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+    parsed = JSON.parse(text);
   } catch {
     throw new SafeError("validation_failed", 400);
   }
@@ -367,12 +491,31 @@ function requireIdempotencyHeader(context: Context<{ Variables: AppVariables }>)
 function operationFor(method: string, path: string): string {
   if (method === "GET" && path === "/health/live") return "public_liveness";
   if (method === "POST" && path === "/v1alpha1/health") return "runtime_health";
+  if (method === "POST" && path === "/v1alpha1/memory-candidates") {
+    return "propose_memory_candidate";
+  }
+  if (method === "GET" && isCandidateListRoute(method, path)) {
+    return "list_memory_candidates";
+  }
+  if (
+    method === "POST" &&
+    /^\/v1alpha1\/admin\/memory-candidates\/[^/]+\/decision$/u.test(path)
+  ) {
+    return "decide_memory_candidate";
+  }
   if (method === "POST" && path === "/v1alpha1/admin/harness-credentials") {
     return "issue_harness_credential";
   }
   if (method === "POST" && path.endsWith("/rotate")) return "rotate_credential";
   if (method === "POST" && path.endsWith("/revoke")) return "revoke_credential";
   return "unsupported_operation";
+}
+
+function isCandidateListRoute(method: string, path: string): boolean {
+  return (
+    method === "GET" &&
+    /^\/v1alpha1\/admin\/namespaces\/[^/]+\/memory-candidates$/u.test(path)
+  );
 }
 
 function safeErrorEnvelope(traceId: string, error: SafeError) {

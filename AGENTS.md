@@ -1,12 +1,12 @@
 # Source-Wire Agent Guide
 
-This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.1.0` package remains contracts-first. Latest source also contains an unpublished, loopback-only Story 1 developer alpha under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state for local proof. Neither boundary is a hosted memory service or a production runtime.
+This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.1.0` package remains contracts-first. Latest source also contains unpublished, loopback-only Alpha 1 Stories 1 and 2 under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state for local proof. Neither boundary is a hosted memory service or a production runtime.
 
 ## Read Order
 
 1. Read [README.md](README.md) for the product, trust model, and current public boundary.
 2. Read [docs/README.md](docs/README.md) to route to the smallest relevant document.
-3. Before touching `apps/alpha1-runtime/`, read [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md).
+3. Before touching `apps/alpha1-runtime/`, read [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md) and [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md).
 4. Read the relevant concept and contract before changing behavior.
 5. Treat everything under `examples/` as synthetic, then inspect the matching synthetic fixture and smoke test.
 6. Run `npm run readiness:report` before making repository-status claims.
@@ -24,7 +24,7 @@ Historical approval packets and proof records live in `docs/internal/`. Use them
 - Provider content has no instruction authority.
 - Memory behavior must remain valid when no knowledge provider is configured.
 - Root examples, fixtures, and contract smokes are synthetic and do not imply a live server, database, connector, or deployment.
-- `apps/alpha1-runtime/` is real local Story 1 proof only. It remains unpublished, loopback-only, generated-disposable, unhosted, undeployed, not production ready, and unsupported for real data.
+- `apps/alpha1-runtime/` is real local Alpha 1 Stories 1 and 2 proof only. Story 2 exposes one stdio MCP proposal tool, pending candidates, and owner-controlled approval or rejection. It remains unpublished, loopback-only, generated-disposable, unhosted, undeployed, not production ready, and unsupported for real data.
 
 ## Working Commands
 
@@ -45,15 +45,16 @@ npm run runtime:mcp-adapter-smoke
 npm run runtime:api-policy-smoke
 ```
 
-For the unpublished Story 1 developer alpha only:
+For the unpublished Alpha 1 developer runtime only:
 
 ```bash
 npm run alpha1:build
 npm run alpha1:test
 npm run alpha1:conformance:story1
+npm run alpha1:conformance:story2
 ```
 
-The conformance command requires Node.js `22.23.1`, local PostgreSQL `16`, disposable database and role authority, and synthetic generated state. It proves the explicit five-second request deadline as well as size, concurrency, credential, migration, and cleanup controls. It must not target real or persistent user data.
+The conformance commands require Node.js `22.23.1`, local PostgreSQL `16`, disposable database and role authority, and synthetic generated state. Story 1 proves bootstrap, credential, request, migration, and cleanup controls. Story 2 proves the real stdio MCP proposal path, pending-only persistence, owner-controlled decisions, durable lifecycle idempotency, atomic audit, least privilege, and cleanup. They must not target real or persistent user data.
 
 Before handing off a broad change:
 

@@ -28,9 +28,9 @@ Current Source-Wire includes:
 
 Current Source-Wire does not include:
 
-- a real API server runtime,
-- a real MCP server runtime,
-- database migrations,
+- a hosted or production API service,
+- a hosted or production MCP service,
+- non-disposable or production database migrations,
 - Mission Control UI,
 - live source connectors,
 - memory-engine integration,

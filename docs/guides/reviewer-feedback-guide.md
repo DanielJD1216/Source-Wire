@@ -14,8 +14,8 @@ Source-Wire is Apache-2.0 licensed as a source package, but it is still:
 - published to npm as `@source-wire/contracts@0.1.0`,
 - released on GitHub as `v0.1.0`,
 - not a hosted runtime,
-- not a real MCP server runtime,
-- not a database or connector system,
+- not a hosted or production MCP service,
+- not a production database or connector system,
 - not approved for real user data examples.
 
 Do not treat Apache-2.0 source package reuse or the first `0.1.0` release as permission to publish new package versions, create new GitHub releases, deploy services, accept code contributions, or claim production runtime readiness.
@@ -135,8 +135,8 @@ Feedback intake does not approve:
 - npm publishing,
 - GitHub release publishing,
 - hosted runtime backend,
-- real MCP server runtime,
-- database setup,
+- hosted or production MCP service,
+- non-disposable or production database setup,
 - live connectors,
 - Mission Control UI,
 - real data examples,

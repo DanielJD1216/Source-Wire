@@ -5,6 +5,7 @@ export type SafeLogEntry = {
   result: string;
   durationMs: number;
   actorReference: string;
+  availabilityMarker?: "denial_audit_unavailable";
 };
 
 export type SafeLogger = (entry: SafeLogEntry) => void;
@@ -17,7 +18,10 @@ export const stdoutSafeLogger: SafeLogger = (entry) => {
       operation: entry.operation,
       result: entry.result,
       durationMs: entry.durationMs,
-      actorReference: entry.actorReference
+      actorReference: entry.actorReference,
+      ...(entry.availabilityMarker
+        ? { availabilityMarker: entry.availabilityMarker }
+        : {})
     })}\n`
   );
 };

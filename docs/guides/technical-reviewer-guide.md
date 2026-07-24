@@ -68,7 +68,7 @@ Version: 0.1.0
 License: Apache-2.0
 Publish boundary: npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked
 Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
-Latest-source runtime boundary: an unpublished loopback-only Story 1 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, liveness, and authenticated health; it contains no MCP process, candidate flow, trusted-memory lifecycle, deployment, hosting, production support, or real data
+Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 and 2 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, one stdio MCP proposal tool, pending candidates, and owner-controlled approval or rejection; it contains no trusted-memory search, correction, revocation, deployment, hosting, production support, or real data
 ok readiness report
 ```
 
@@ -209,8 +209,8 @@ Separate owner approvals are still needed for:
 - npm publishing,
 - GitHub release publishing,
 - hosted runtime backend,
-- real MCP server runtime,
-- database setup,
+- hosted or production MCP service,
+- non-disposable or production database setup,
 - live connectors,
 - Mission Control UI,
 - real data examples.

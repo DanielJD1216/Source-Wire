@@ -1,6 +1,6 @@
 # Alpha 1 Story 1 Local Runtime
 
-Source-Wire latest source includes an unpublished local developer alpha for one narrow operating path:
+Source-Wire latest source includes an unpublished local developer alpha. This page covers the Story 1 foundation:
 
 ```text
 operator migration and fresh initialization
@@ -13,7 +13,7 @@ operator migration and fresh initialization
   -> adopter-controlled PostgreSQL 16
 ```
 
-This is not part of `@source-wire/contracts@0.1.0`. It is not hosted, deployed, production ready, or approved for real data. It does not implement MCP tools, memory candidates, trusted-memory search, correction, revocation of memory, external knowledge providers, or a UI.
+This is not part of `@source-wire/contracts@0.1.0`. It is not hosted, deployed, production ready, or approved for real data. Story 1 does not implement memory behavior by itself. Latest source extends this foundation with the bounded Story 2 MCP candidate and owner-approval path described in [Alpha 1 Story 2 Candidate Approval](alpha1-story2-candidate-approval.md). Trusted-memory search, correction, revocation, external knowledge providers, and a UI remain unimplemented.
 
 ## Requirements
 
@@ -29,6 +29,8 @@ The runtime pins:
 - `@hono/node-server@2.0.11`
 - `pg@8.22.0`
 - `drizzle-orm@0.45.2`
+- `@modelcontextprotocol/sdk@1.29.0`
+- `zod@4.4.3`
 
 ## Build
 
@@ -54,7 +56,7 @@ The runner:
 
 1. refuses to run if the three fixed conformance role names already exist,
 2. creates one generated disposable database and three generated test roles,
-3. applies the explicit forward-only migration separately from runtime startup,
+3. applies the exact forward-only Alpha 1 migration chain separately from runtime startup,
 4. initializes one synthetic owner and two synthetic namespaces,
 5. starts fresh operator CLI, owner CLI, and loopback API processes,
 6. exercises valid and denied credential paths,
@@ -82,7 +84,7 @@ Authenticated health requires:
 
 Owner-only credential routes require an owner-admin credential plus `credential.manage`. Harness credentials cannot gain owner authority by presenting a capability string.
 
-Story 1 defines no protected query parameters. Every non-empty query string on `/v1alpha1/*` is rejected before authentication or operation execution. The protected-request concurrency gate wraps streaming body consumption, then JSON request bodies are limited to 16 KiB before route code buffers or parses them. Held partial protected bodies therefore consume active request slots and cannot bypass the loopback request gate.
+Story 1 routes define no protected query parameters. Story 2 adds only the bounded candidate-list query described in its guide. Other non-empty query strings on `/v1alpha1/*` are rejected before authentication or operation execution. The protected-request concurrency gate wraps streaming body consumption, then JSON request bodies are limited to 16 KiB before route code buffers or parses them. Held partial protected bodies therefore consume active request slots and cannot bypass the loopback request gate.
 
 The Node server applies an explicit five-second request and header deadline, checked every 250 milliseconds. A client cannot retain a protected slot indefinitely with a small stalled body. Deadline expiry returns a content-free HTTP `408`, closes the stalled request, releases the slot, and leaves liveness and authenticated health available for subsequent requests. The conformance suite also rejects any API process output that is not a six-field structured safe-log record, so timeout handling cannot silently introduce free-form stack traces or request content.
 
@@ -144,13 +146,13 @@ The adopter provisions three separate roles:
 | --- | --- |
 | `source_wire_schema_owner` | Non-login owner of only the `source_wire_memory` schema. |
 | `source_wire_migrator` | Login operator role allowed to assume the schema owner only for explicit migration and initialization. |
-| `source_wire_runtime` | `NOINHERIT`, no database or role creation, no schema ownership, and only the exact Story 1 table privileges. |
+| `source_wire_runtime` | `NOINHERIT`, no database or role creation, no schema ownership, and only the exact Alpha 1 table privileges. |
 
 The runtime role cannot apply migrations, assume the schema owner, create roles or databases, truncate governed tables, or update or delete audit or idempotency history.
 
 ## Rollback and cleanup
 
-Story 1 has no down migration. For this developer alpha, rollback means:
+The Alpha 1 migration chain has no down migration. For this developer alpha, rollback means:
 
 1. stop the loopback API,
 2. revoke generated test credentials,

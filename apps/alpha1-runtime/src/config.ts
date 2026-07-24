@@ -2,6 +2,7 @@ const SOURCE_WIRE_IDENTIFIER = /^[A-Za-z][A-Za-z0-9_-]{0,63}$/;
 const BASE64URL = /^[A-Za-z0-9_-]+$/;
 
 export const STORY1_SCHEMA_VERSION = 1;
+export const ALPHA1_SCHEMA_VERSION = 2;
 export const STORY1_SCHEMA_NAME = "source_wire_memory";
 export const STORY1_API_SCHEMA = "source-wire.api.v1alpha1";
 export const MAX_AUTHORIZATION_BYTES = 512;
@@ -14,6 +15,11 @@ export const STORY1_CONNECTION_CHECK_INTERVAL_MS = 250;
 export const RUNTIME_POOL_MAX = 5;
 export const RUNTIME_QUERY_TIMEOUT_MS = 2_000;
 export const RUNTIME_CONNECTION_TIMEOUT_MS = 2_000;
+export const MAX_CANDIDATE_CONTENT_BYTES = 8_192;
+export const MAX_OWNER_ASSERTION_BYTES = 1_024;
+export const MAX_DECISION_REASON_BYTES = 512;
+export const MAX_LIST_CURSOR_BYTES = 256;
+export const MAX_MCP_STDIO_FRAME_BYTES = 20 * 1_024;
 
 export const STORY1_CAPABILITIES = [
   "runtime.health",

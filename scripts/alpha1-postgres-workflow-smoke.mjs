@@ -23,6 +23,8 @@ for (const required of [
   "persist-credentials: false",
   "npm pack --pack-destination",
   "npm install --no-save --package-lock=false --ignore-scripts",
+  "rm -rf -- evidence-first-knowledge-base",
+  "test ! -e evidence-first-knowledge-base",
   "npm run alpha1:story5:security-gate",
   "npm run alpha1:conformance",
   "npm run alpha1:conformance:evidence-first",

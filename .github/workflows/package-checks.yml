@@ -89,6 +89,8 @@ jobs:
           adapter_packages=("$RUNNER_TEMP"/doomade-evidence-first-source-wire-adapter-*.tgz)
           test "${#adapter_packages[@]}" -eq 1
           npm install --no-save --package-lock=false --ignore-scripts "${adapter_packages[0]}"
+          rm -rf -- evidence-first-knowledge-base
+          test ! -e evidence-first-knowledge-base
 
       - name: Run Alpha PostgreSQL conformance
         env:

@@ -1,16 +1,16 @@
-# Alpha 1 Story 6.8: Local Runtime Package Candidate
+# Alpha 1 Story 6.8: Local Runtime Package Release
 
-Source-Wire prepares `@source-wire/local-runtime@0.1.0-alpha.1` for public npm
-Alpha distribution under the `alpha` dist-tag.
+Source-Wire publishes `@source-wire/local-runtime@0.1.0-alpha.1` for public npm
+Alpha distribution.
 
 The installed binary is `source-wire-local`. The package is configured with
 public npm access, while Git tags, GitHub releases, deployment, and hosted
-services remain separate and blocked. Before the registry write, the exact
-candidate can be evaluated by packing an explicit local checkout.
+services remain separate and blocked. The same exact artifact can also be
+evaluated by packing an explicit local checkout.
 
 ## Support Boundary
 
-This candidate is experimental Alpha software for:
+This release is experimental Alpha software for:
 
 - macOS or Linux,
 - Node.js `22.23.1`,
@@ -34,7 +34,7 @@ It is not supported for:
 
 ## Install The Public Alpha
 
-After npm publication, install the exact version:
+Install the exact version:
 
 ```bash
 npm install --save-exact @source-wire/local-runtime@0.1.0-alpha.1

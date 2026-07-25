@@ -4,9 +4,9 @@ This page is the quickstart for the published Source-Wire contracts package.
 
 This quickstart verifies the package locally with synthetic fixtures.
 
-These commands do not run the unpublished Alpha 1 workspace, sync sources, connect to MCP, call a database, create memories, or publish a new package version.
+These commands do not run the separate Alpha local runtime, sync sources, connect to MCP, call a database, create memories, or publish a new package version.
 
-To exercise the latest-source local runtime separately, follow [Alpha 1 Story 1 Local Runtime](alpha1-story1-local-runtime.md) through [Alpha 1 Story 6.8 Local Runtime Package Candidate](alpha1-story6-local-runtime-package-candidate.md) in order.
+To exercise the latest-source local runtime separately, follow [Alpha 1 Story 1 Local Runtime](alpha1-story1-local-runtime.md) through [Alpha 1 Story 6.8 Local Runtime Package Release](alpha1-story6-local-runtime-package-candidate.md) in order.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ To exercise the latest-source local runtime separately, follow [Alpha 1 Story 1 
 
 Node.js 22 matches GitHub Actions Package Checks.
 
-The contracts package is published to npm as `@source-wire/contracts@0.2.0`. Use the local repository checkout for development and full verification. The separate `@source-wire/local-runtime@0.1.0-alpha.1` public npm Alpha candidate is approved for publication but still pending its exact-revision release gate.
+The contracts package is published to npm as `@source-wire/contracts@0.2.0`. The separate experimental local runtime is published as `@source-wire/local-runtime@0.1.0-alpha.1`. Use exact versions and the local repository checkout for development and full verification.
 
 ## Install
 
@@ -239,7 +239,7 @@ More detail:
 - real user data,
 - trusted Memory Record promotion.
 
-Latest source contains an unpublished local Alpha 1 Stories 1 through 5 runtime workspace. It proves one loopback API, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected source-evidence search and fetch through synthetic read-only providers with disposable PostgreSQL state. Story 6.1 adds private offline local configuration, Story 6.2 adds a private one-command memory-only composition with exactly two tools, Story 6.3 lets the same command bind one immutable repository synthetic provider for exactly four tools, Story 6.4 makes startup and cleanup failures fail closed, Story 6.5 adds explicit read-only database status plus apply-gated migration control, Story 6.6 adds exact-owner local canonical export with default no-overwrite and zero upload, and Story 6.7 proves a pinned evidence-first synthetic adapter through the unchanged protected path. It does not add the runtime to the published package or authorize hosting, deployment, managed database provisioning, live-provider use, production use, production backup guarantees, or real data.
+Latest source contains the full Alpha 1 Stories 1 through 6.8 verification workspace. It proves one loopback API, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected source-evidence search and fetch through synthetic read-only providers with disposable PostgreSQL state. Story 6.1 adds offline local configuration, Story 6.2 adds a one-command memory-only composition with exactly two tools, Story 6.3 lets the same command bind one immutable repository synthetic provider for exactly four tools, Story 6.4 makes startup and cleanup failures fail closed, Story 6.5 adds explicit read-only database status plus apply-gated migration control, Story 6.6 adds exact-owner local canonical export with default no-overwrite and zero upload, Story 6.7 proves a pinned evidence-first synthetic adapter through the unchanged protected path, and Story 6.8 packages the supported local surface for public npm Alpha evaluation. Publication does not authorize hosting, deployment, managed database provisioning, live-provider use, production use, production backup guarantees, or real data.
 
 For the Story 6 path, read:
 
@@ -257,6 +257,7 @@ Current release posture:
 - package version is `0.2.0`,
 - `LICENSE` file exists,
 - npm package `@source-wire/contracts@0.2.0` is published,
+- npm package `@source-wire/local-runtime@0.1.0-alpha.1` is published as an experimental Alpha,
 - GitHub release `v0.2.0` is published,
 - runtime backend work is blocked.
 

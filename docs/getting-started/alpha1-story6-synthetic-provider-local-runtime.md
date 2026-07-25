@@ -1,7 +1,8 @@
 # Alpha 1 Story 6.3 Synthetic Provider Local Runtime
 
-Latest source can compose one owner-selected synthetic `KnowledgeProvider v1`
-through the private `source-wire-local` command:
+Latest source and the experimental local-runtime npm Alpha can compose one
+owner-selected synthetic `KnowledgeProvider v1` through the
+`source-wire-local` command:
 
 ```text
 owner-controlled config
@@ -13,7 +14,7 @@ owner-controlled config
   -> exactly four stdio MCP tools
 ```
 
-This is unpublished local Alpha proof using generated disposable PostgreSQL
+This is experimental local Alpha proof using generated disposable PostgreSQL
 state and repository-owned synthetic providers. It is not a live connector,
 provider registry, hosted service, production runtime, or real-data path.
 

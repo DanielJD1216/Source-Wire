@@ -1,6 +1,7 @@
 # Alpha 1 Story 6.1 Local CLI Init And Offline Doctor
 
-Latest source includes the first private Story 6 local CLI slice:
+Latest source and the experimental local-runtime npm Alpha include the first
+Story 6 local CLI slice:
 
 ```text
 empty owner-controlled directory
@@ -14,13 +15,13 @@ This slice does not start Source-Wire, load a provider, connect PostgreSQL,
 contact a service, apply a migration, create an account, request an API key,
 send telemetry, or provision paid infrastructure.
 
-The CLI remains inside the unpublished `@source-wire/local-runtime`
-workspace. It is not part of `@source-wire/contracts@0.2.0`, is not a published
-runtime package, and is not approved for production or real data.
+The CLI is published separately as
+`@source-wire/local-runtime@0.1.0-alpha.1`. It is not part of
+`@source-wire/contracts@0.2.0` and is not approved for production or real data.
 
 ## What This Slice Proves
 
-- `source-wire-local` is a separate private binary. The public
+- `source-wire-local` is a separate experimental binary. The public
   `source-wire validate` command remains unchanged.
 - `init` writes one versioned `source-wire.local.v1` configuration with mode
   `0600`.

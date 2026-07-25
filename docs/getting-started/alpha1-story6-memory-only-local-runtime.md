@@ -1,7 +1,7 @@
 # Alpha 1 Story 6.2 Memory-Only Local Runtime
 
-Latest source includes the first complete private `source-wire-local` runtime
-composition for memory-only use:
+Latest source and the experimental local-runtime npm Alpha include the first
+complete `source-wire-local` runtime composition for memory-only use:
 
 ```text
 owner-controlled config
@@ -12,7 +12,7 @@ owner-controlled config
   -> exactly two memory tools
 ```
 
-This is unpublished local Alpha proof. It is not a hosted service, production
+This is experimental local Alpha proof. It is not a hosted service, production
 runtime, live connector, managed database, or real-data path.
 
 ## What The Command Does

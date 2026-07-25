@@ -53,9 +53,10 @@ Use tutorials and walkthroughs when you need a safe, executable path.
 - [Alpha 1 Story 6.5: Explicit Database Control Plane](getting-started/alpha1-story6-database-control-plane.md)
 - [Alpha 1 Story 6.6: Owner-Controlled Local Export](getting-started/alpha1-story6-owner-controlled-local-export.md)
 - [Alpha 1 Story 6.7: Evidence-First Compatibility](getting-started/alpha1-story6-evidence-first-compatibility.md)
-- [Alpha 1 Story 6.8: Local Runtime Package Candidate](getting-started/alpha1-story6-local-runtime-package-candidate.md)
+- [Alpha 1 Story 6.8: Local Runtime Package Release](getting-started/alpha1-story6-local-runtime-package-candidate.md)
+- [Local Runtime 0.1.0-alpha.1 npm Release](status/local-runtime-0.1.0-alpha.1-release.md)
 
-The Alpha stories use generated disposable PostgreSQL state. Story 6.8 prepares the public npm Alpha distribution while keeping Git tags and GitHub releases separate. npm availability does not establish hosting, deployment, production readiness, live-provider support, production backup guarantees, or real-data safety.
+The Alpha stories use generated disposable PostgreSQL state. Story 6.8 publishes the public npm Alpha distribution while keeping Git tags and GitHub releases separate. npm availability does not establish hosting, deployment, production readiness, live-provider support, production backup guarantees, or real-data safety.
 
 ## Build Against Contracts
 

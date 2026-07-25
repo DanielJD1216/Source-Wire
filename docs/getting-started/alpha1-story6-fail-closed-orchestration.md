@@ -1,10 +1,11 @@
 # Alpha 1 Story 6.4 Fail-Closed Orchestration And Cleanup
 
-Latest source hardens the private `source-wire-local` runner so startup,
+Latest source and the experimental local-runtime npm Alpha harden the
+`source-wire-local` runner so startup,
 protected response release, child-process failure, and shutdown remain one
 coordinated local boundary.
 
-This is unpublished Alpha proof with generated disposable PostgreSQL state. It
+This is experimental Alpha proof with generated disposable PostgreSQL state. It
 does not approve hosting, deployment, production use, external providers,
 non-disposable databases, or real data.
 

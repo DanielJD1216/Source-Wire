@@ -1,7 +1,7 @@
 # Alpha 1 Story 5 Knowledge Provider Runtime Host
 
-Latest source adds one injected, immutable `KnowledgeProvider v1` binding to
-the unpublished local Alpha runtime.
+Latest source and the experimental local-runtime npm Alpha include one
+injected, immutable `KnowledgeProvider v1` binding.
 
 ```text
 stdio MCP
@@ -17,10 +17,10 @@ The provider is synthetic and deterministic. Story 5 does not connect
 Source-Wire to a live knowledge base, register arbitrary providers, accept
 provider credentials from callers, or promote evidence into memory.
 
-This workspace remains an unpublished, loopback-only developer alpha. It uses
-generated synthetic data and disposable PostgreSQL 16 databases for
-conformance. It is not part of `@source-wire/contracts@0.1.0`, is not hosted,
-and is not approved for production or real data.
+This remains a loopback-only developer Alpha. It uses generated synthetic data
+and disposable PostgreSQL 16 databases for conformance. It is distributed
+separately from the contracts package, is not hosted, and is not approved for
+production or real data.
 
 ## What Story 5 Proves
 

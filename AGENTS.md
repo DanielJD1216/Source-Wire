@@ -1,12 +1,12 @@
 # Source-Wire Agent Guide
 
-This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.2.0` package is the current immutable contracts snapshot and includes `KnowledgeProvider v1`. Latest source also contains loopback-only Alpha proof under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state and synthetic read-only providers. Story 6.8 prepares `@source-wire/local-runtime@0.1.0-alpha.1` and the `source-wire-local` binary for public npm Alpha distribution on macOS and Linux. The exact registry write is pending its final release gate. Git tags, GitHub releases, deployment, hosting, production, real data, and live providers remain blocked.
+This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.2.0` package is the current immutable contracts snapshot and includes `KnowledgeProvider v1`. Latest source also contains loopback-only Alpha proof under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state and synthetic read-only providers. The public npm Alpha `@source-wire/local-runtime@0.1.0-alpha.1` provides the `source-wire-local` binary for macOS and Linux local evaluation. Git tags, GitHub releases, deployment, hosting, production, real data, and live providers remain blocked.
 
 ## Read Order
 
 1. Read [README.md](README.md) for the product, trust model, and current public boundary.
 2. Read [docs/README.md](docs/README.md) to route to the smallest relevant document.
-3. Before touching `apps/alpha1-runtime/`, read the Alpha guides in order through [Alpha 1 Story 6.8 Local Runtime Package Candidate](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md).
+3. Before touching `apps/alpha1-runtime/`, read the Alpha guides in order through [Alpha 1 Story 6.8 Local Runtime Package Release](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md).
 4. Read the relevant concept and contract before changing behavior.
 5. Treat everything under `examples/` as synthetic, then inspect the matching synthetic fixture and smoke test.
 6. Run `npm run readiness:report` before making repository-status claims.
@@ -32,8 +32,8 @@ runtime, read [Knowledge Provider Host Composition Story](docs/internal/knowledg
 - Memory behavior must remain valid when no knowledge provider is configured.
 - Root examples, fixtures, and contract smokes are synthetic and do not imply a live server, database, connector, or deployment.
 - `apps/alpha1-runtime/` is real local Alpha 1 Stories 1 through 5 proof only. Its MCP surface contains exactly two memory tools and two synthetic source-evidence tools. Approval, correction, revocation, export, recovery, and provider configuration stay outside MCP and under owner or operator control. Protected reads require durable audit plus a single-use origin-process receipt before response release. It remains loopback-only, generated-disposable, unhosted, undeployed, not production ready, and unsupported for real data or live providers.
-- `@source-wire/local-runtime@0.1.0-alpha.1` is the public npm Alpha distribution candidate. Its supported package exports are the root composition API and two synthetic provider proof entrypoints. Do not import package internals. Public npm availability does not authorize production, hosting, deployment, real data, live providers, Windows, HTTP or SSE MCP, static serving, or non-disposable databases.
-- Story 6.1 adds config creation and offline validation. Story 6.2 adds a memory-only launcher that inspects but never applies migrations, starts loopback API plus stdio MCP, gives the MCP child no owner or database authority, advertises exactly two memory tools, and revokes its process credential on shutdown. It remains unpublished and generated-disposable only.
+- `@source-wire/local-runtime@0.1.0-alpha.1` is the public experimental npm Alpha distribution. Its supported package exports are the root composition API and two synthetic provider proof entrypoints. Do not import package internals. Public npm availability does not authorize production, hosting, deployment, real data, live providers, Windows, HTTP or SSE MCP, static serving, or non-disposable databases.
+- Story 6.1 adds config creation and offline validation. Story 6.2 adds a memory-only launcher that inspects but never applies migrations, starts loopback API plus stdio MCP, gives the MCP child no owner or database authority, advertises exactly two memory tools, and revokes its process credential on shutdown. It remains generated-disposable and experimental only.
 - Story 6.3 accepts zero or one owner-selected provider module at startup. Offline checking imports nothing. Explicit connected checking invokes only bounded readiness. A valid provider produces exactly four tools, while callers cannot choose provider identity, scope, module, credentials, owner, namespace, ACL, or bounds. Replacement requires config plus restart, and evidence reads create no memory.
 - Story 6.4 requires config, compatibility, environment, provider, API, MCP, database, audit, receipt, response, signal, and cleanup failures to remain redacted and fail closed. API crash cleanup may directly revoke only the exact generated process credential through existing runtime database authority and must record metadata-only audit. Synthetic crash injection is refused outside locked conformance.
 - Story 6.5 keeps database status read-only under the exact runtime role and migration mutation behind an explicit `--apply` flag plus exact non-superuser migrator authority. Init, doctor, provider check, and MCP startup must never apply migrations.
@@ -60,7 +60,7 @@ npm run runtime:mcp-adapter-smoke
 npm run runtime:api-policy-smoke
 ```
 
-For the unpublished Alpha 1 developer runtime only:
+For the latest-source Alpha 1 developer runtime only:
 
 ```bash
 npm run alpha1:build
@@ -80,7 +80,7 @@ npm run local-runtime:security-gate
 npm run local-runtime:candidate-conformance
 ```
 
-For the private Story 6 CLI:
+For the public experimental Story 6 CLI:
 
 ```bash
 npm run alpha1:build

@@ -4,12 +4,13 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
-### 2026-07-25 - Local-runtime public npm Alpha release candidate
+### 2026-07-25 - Local-runtime public npm Alpha publication
 
 Summary:
 
-- Converted `@source-wire/local-runtime@0.1.0-alpha.1` from a private packed
-  candidate into a public npm Alpha candidate under the `alpha` dist-tag.
+- Published `@source-wire/local-runtime@0.1.0-alpha.1` as a public experimental
+  npm Alpha from exact approved revision
+  `84b2f83f6099f7991539a86eebcd413712e0e083`.
 - Added public package metadata, exact-version installation guidance, and the
   npm-only distribution boundary.
 - Re-ran the two-moderate-finding disposition for the publication scope while
@@ -17,6 +18,12 @@ Summary:
 - Kept Git tags, GitHub releases, deployment, hosting, production, Windows,
   HTTP or SSE MCP, static serving, real data, live providers, and
   non-disposable databases blocked.
+- Verified a clean registry install under Node.js `22.23.1`, the installed
+  `source-wire-local` init and offline doctor path, and the public composition
+  and synthetic-provider exports.
+- Recorded that npm requires every package to have a `latest` tag. Both
+  `alpha` and the registry-required `latest` alias currently resolve to the
+  same prerelease. Exact-version installation remains the supported path.
 
 Verification:
 
@@ -24,6 +31,7 @@ Verification:
 npm run local-runtime:candidate-smoke
 npm run local-runtime:security-gate
 npm publish --workspace @source-wire/local-runtime --dry-run --access public --tag alpha
+npm install --save-exact @source-wire/local-runtime@0.1.0-alpha.1
 ```
 
 ### 2026-07-25 - Story 6.8 no-publish local-runtime package candidate

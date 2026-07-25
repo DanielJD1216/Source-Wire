@@ -1,9 +1,9 @@
 # Alpha 1 Story 6.5 Explicit Database Control Plane
 
-Latest source adds explicit database status and migration commands to the
-private `source-wire-local` CLI.
+Latest source and the experimental local-runtime npm Alpha add explicit
+database status and migration commands to the `source-wire-local` CLI.
 
-This is unpublished Alpha proof with generated disposable PostgreSQL 16 state.
+This is experimental Alpha proof with generated disposable PostgreSQL 16 state.
 It does not provision PostgreSQL, support persistent databases, authorize
 production migration, or change the hosted and deployment blocks.
 

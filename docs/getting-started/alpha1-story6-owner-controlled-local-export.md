@@ -1,9 +1,9 @@
 # Alpha 1 Story 6.6 Owner-Controlled Local Export
 
-Latest source exposes the existing canonical portable memory export through the
-private `source-wire-local` CLI.
+Latest source and the experimental local-runtime npm Alpha expose the existing
+canonical portable memory export through the `source-wire-local` CLI.
 
-This is unpublished Alpha proof with generated disposable PostgreSQL 16 state.
+This is experimental Alpha proof with generated disposable PostgreSQL 16 state.
 It does not upload data, add an MCP administration tool, support production
 backup, authorize real data, or change any hosting and deployment block.
 

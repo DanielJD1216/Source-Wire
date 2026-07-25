@@ -2,6 +2,7 @@
 
 [![Package Checks](https://github.com/DanielJD1216/Source-Wire/actions/workflows/package-checks.yml/badge.svg)](https://github.com/DanielJD1216/Source-Wire/actions/workflows/package-checks.yml)
 [![npm](https://img.shields.io/npm/v/@source-wire/contracts.svg?label=npm)](https://www.npmjs.com/package/@source-wire/contracts)
+[![local runtime alpha](https://img.shields.io/npm/v/@source-wire/local-runtime/alpha.svg?label=local%20runtime)](https://www.npmjs.com/package/@source-wire/local-runtime)
 [![License](https://img.shields.io/badge/license-Apache--2.0-c56f37.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-22-3c873a.svg)](https://nodejs.org/)
 
@@ -11,7 +12,7 @@
 
 Source-Wire defines how agents can retrieve evidence, preserve provenance, propose durable memories, and use trusted context without silently turning every document, message, or model output into truth.
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains a loopback-only Alpha workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. Story 6.8 prepares the public npm Alpha release candidate `@source-wire/local-runtime@0.1.0-alpha.1` and the `source-wire-local` binary for macOS and Linux local evaluation with synthetic or disposable data. Registry publication is approved but still pending the exact-revision release gate. Nothing is deployed, hosted, tagged, or released from that candidate.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains a loopback-only Alpha workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. The public npm Alpha `@source-wire/local-runtime@0.1.0-alpha.1` provides the `source-wire-local` binary for macOS and Linux local evaluation with synthetic or disposable data. No local-runtime Git tag or GitHub release was created, and nothing is deployed or hosted.
 
 > Bring your own knowledge base, PostgreSQL, credentials, and agent harness. Source-Wire keeps the memory lifecycle and trust boundary explicit.
 
@@ -86,12 +87,12 @@ Use the [Documentation Index](docs/README.md) when you already know the task you
 | Local Story 6.5 database control plane | Included in latest source for read-only runtime-role status, safe migration planning, explicit `--apply`, exact migrator authority, transaction rollback, and idempotent disposable migration proof |
 | Local Story 6.6 owner-controlled export | Included in latest source for explicit namespaces, canonical bounded output, atomic owner-only local files, default no-overwrite, exact owner authority, interruption cleanup, and zero upload |
 | Local Story 6.7 evidence-first compatibility | Included in latest source as cross-repository synthetic proof against a pinned private adapter that depends on published `@source-wire/contracts@0.2.0`; no live connector or real evidence is included |
-| Local Story 6.8 package candidate | Prepared for public npm Alpha publication as `@source-wire/local-runtime@0.1.0-alpha.1` under the `alpha` dist-tag with a supported composition API and `source-wire-local` binary; registry publication is pending the exact-revision gate, and Git tags, GitHub releases, deployment, hosting, production, real data, and live providers remain blocked |
+| Local Story 6.8 package release | Published to public npm as `@source-wire/local-runtime@0.1.0-alpha.1` for experimental local evaluation with a supported composition API and `source-wire-local` binary; Git tags, GitHub releases, deployment, hosting, production, real data, and live providers remain blocked |
 | Hosted API, hosted MCP, deployment | Not included |
 | Live knowledge connectors or real user data | Not included |
 | Automatic trusted-memory promotion | Forbidden |
 
-The published `0.2.0` contracts package, public npm Alpha runtime candidate, and latest-source Alpha workspace are separate boundaries. Read [Public Status](docs/status/public-status.md) before making runtime, hosting, or production claims.
+The published `0.2.0` contracts package, public npm Alpha runtime package, and latest-source Alpha workspace are separate boundaries. Read [Public Status](docs/status/public-status.md) before making runtime, hosting, or production claims.
 
 ## First Reviewer Quickstart
 
@@ -118,7 +119,7 @@ npm run publish:readiness
 
 Despite its name, `publish:readiness` does not publish a package, create a release, deploy a service, connect a production database, or use real data.
 
-For setup details, read the [Quickstart](docs/getting-started/quickstart.md). For the unpublished local proof, follow [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md), [Alpha 1 Story 6.1 Local CLI Init And Offline Doctor](docs/getting-started/alpha1-story6-local-cli-init-doctor.md), [Alpha 1 Story 6.2 Memory-Only Local Runtime](docs/getting-started/alpha1-story6-memory-only-local-runtime.md), [Alpha 1 Story 6.3 Synthetic Provider Local Runtime](docs/getting-started/alpha1-story6-synthetic-provider-local-runtime.md), [Alpha 1 Story 6.4 Fail-Closed Orchestration And Cleanup](docs/getting-started/alpha1-story6-fail-closed-orchestration.md), [Alpha 1 Story 6.5 Explicit Database Control Plane](docs/getting-started/alpha1-story6-database-control-plane.md), [Alpha 1 Story 6.6 Owner-Controlled Local Export](docs/getting-started/alpha1-story6-owner-controlled-local-export.md), [Alpha 1 Story 6.7 Evidence-First Compatibility](docs/getting-started/alpha1-story6-evidence-first-compatibility.md), and [Alpha 1 Story 6.8 Local Runtime Package Candidate](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md) in order.
+For setup details, read the [Quickstart](docs/getting-started/quickstart.md). For the local Alpha proof, follow [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md), [Alpha 1 Story 6.1 Local CLI Init And Offline Doctor](docs/getting-started/alpha1-story6-local-cli-init-doctor.md), [Alpha 1 Story 6.2 Memory-Only Local Runtime](docs/getting-started/alpha1-story6-memory-only-local-runtime.md), [Alpha 1 Story 6.3 Synthetic Provider Local Runtime](docs/getting-started/alpha1-story6-synthetic-provider-local-runtime.md), [Alpha 1 Story 6.4 Fail-Closed Orchestration And Cleanup](docs/getting-started/alpha1-story6-fail-closed-orchestration.md), [Alpha 1 Story 6.5 Explicit Database Control Plane](docs/getting-started/alpha1-story6-database-control-plane.md), [Alpha 1 Story 6.6 Owner-Controlled Local Export](docs/getting-started/alpha1-story6-owner-controlled-local-export.md), [Alpha 1 Story 6.7 Evidence-First Compatibility](docs/getting-started/alpha1-story6-evidence-first-compatibility.md), and [Alpha 1 Story 6.8 Local Runtime Package Release](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md) in order.
 
 Use [Share For Technical Review](docs/guides/share-for-review.md) and [Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md) when sharing findings.
 
@@ -146,7 +147,7 @@ The package and release are available for technical review and Apache-2.0 source
 | Policy proofs | In-memory and owner-hosted skeletons for identity, namespace, denial, audit, and no-auto-promotion behavior |
 | Latest-source Alpha | Disposable local PostgreSQL bootstrap, candidate proposal, owner decisions, audited memory search, correction, revocation, export, recovery, and synthetic source-evidence read proof |
 
-The Alpha workspace under `apps/alpha1-runtime/` is local developer proof. Story 6.7 installs a pinned private synthetic package from the separate evidence-first repository and proves it through the same CLI, API policy, audit, receipt, MCP, and official-client path. Story 6.8 prepares the public npm Alpha tarball, limits its public exports, and proves a clean installed consumer and AI-agent binary path. Provider replacement requires a config change and restart. npm publication does not establish production availability, hosting, deployment, managed database provisioning, production backup guarantees, external or live providers, or real-data support.
+The Alpha workspace under `apps/alpha1-runtime/` is local developer proof. Story 6.7 installs a pinned private synthetic package from the separate evidence-first repository and proves it through the same CLI, API policy, audit, receipt, MCP, and official-client path. Story 6.8 publishes the public npm Alpha tarball, limits its public exports, and proves a clean installed consumer and AI-agent binary path. Provider replacement requires a config change and restart. npm publication does not establish production availability, hosting, deployment, managed database provisioning, production backup guarantees, external or live providers, or real-data support.
 
 ## For AI Agents
 
@@ -178,7 +179,7 @@ Core invariants:
 | [`src/contracts/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/contracts) | TypeScript contracts and synthetic evaluators |
 | [`src/runtime-skeleton/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/runtime-skeleton) | Synthetic API-policy and MCP-routing proof |
 | [`src/owner-hosted-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/owner-hosted-runtime) | Narrow in-process owner-hosted skeleton proof |
-| [`apps/alpha1-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/apps/alpha1-runtime) | Loopback-only Alpha workspace and public npm Alpha local-runtime package candidate |
+| [`apps/alpha1-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/apps/alpha1-runtime) | Loopback-only Alpha workspace and public npm Alpha local-runtime package source |
 | [`schemas/`](schemas) | Public JSON schemas |
 | [`examples/`](examples) | Synthetic fixtures, conformance matrices, and smokes |
 | [`docs/`](docs) | Public documentation and historical project records |
@@ -219,7 +220,8 @@ Read [CI Checks](docs/reference/ci-checks.md) for the detailed marker map.
 - [API Reference](docs/reference/api-reference.md)
 - [Repository Metadata](docs/reference/repository-metadata.md)
 - [Public Status](docs/status/public-status.md)
-- [Alpha 1 Story 6.8 Local Runtime Package Candidate](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md)
+- [Alpha 1 Story 6.8 Local Runtime Package Release](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md)
+- [Local Runtime 0.1.0-alpha.1 npm Release](docs/status/local-runtime-0.1.0-alpha.1-release.md)
 - [Security Policy](SECURITY.md)
 - [Support](SUPPORT.md)
 - [Visual System](docs/assets/README.md)
@@ -228,11 +230,11 @@ Historical planning packets, approvals, and implementation proofs are preserved 
 
 ## Release Snapshot
 
-The npm packages `@source-wire/contracts@0.1.0` and `@source-wire/contracts@0.2.0`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable release snapshots. The approved `@source-wire/local-runtime@0.1.0-alpha.1` npm publication is a separate Alpha-only distribution boundary and does not create a GitHub release. Latest `main` may contain later documentation and local Alpha proof.
+The npm packages `@source-wire/contracts@0.1.0`, `@source-wire/contracts@0.2.0`, and `@source-wire/local-runtime@0.1.0-alpha.1`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable release snapshots. The local-runtime npm Alpha is a separate distribution boundary and did not create a GitHub release. Latest `main` may contain later documentation and local Alpha proof.
 
 Known `v0.1.0` package issue: that immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though package metadata is `0.1.0`. Version `0.2.0` exports the corrected package version and adds the public `KnowledgeProvider v1` contract.
 
-Read [Contracts 0.2.0 Release](docs/status/0.2.0-release.md) and [Release Snapshot Boundary](docs/status/release-snapshot-boundary.md).
+Read [Contracts 0.2.0 Release](docs/status/0.2.0-release.md), [Local Runtime 0.1.0-alpha.1 npm Release](docs/status/local-runtime-0.1.0-alpha.1-release.md), and [Release Snapshot Boundary](docs/status/release-snapshot-boundary.md).
 
 ## Safety Rule
 

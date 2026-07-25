@@ -5,15 +5,17 @@ Source-Wire repository.
 
 The published `@source-wire/contracts@0.2.0` package defines contract shapes,
 schemas, fixtures, examples, validation tools, and package-readiness checks.
-Latest source separately contains an unpublished loopback-only Alpha workspace.
-Stories 6.1 through 6.7 add private config checks, a memory-only two-tool local
-runner, immutable synthetic-provider composition behind a four-tool stdio MCP
-surface, fail-closed orchestration, explicit database and export controls, and
+The separate experimental `@source-wire/local-runtime@0.1.0-alpha.1` package
+provides the local CLI and supported Alpha composition surface. Latest source
+also contains the complete conformance workspace. Stories 6.1 through 6.7 add
+config checks, a memory-only two-tool local runner, immutable
+synthetic-provider composition behind a four-tool stdio MCP surface,
+fail-closed orchestration, explicit database and export controls, and
 cross-repository evidence-first compatibility proof.
 
 The Alpha path uses generated disposable PostgreSQL state. It is not a hosted
 service, production runtime, live knowledge connector, real-data path,
-provider registry, Mission Control UI, or published runtime package.
+provider registry, or Mission Control UI.
 
 For the whole system shape, read the [Architecture Map](../concepts/architecture-map.md).
 
@@ -131,7 +133,7 @@ What this proves:
 - Schema exports are verified.
 - CLI smoke passes.
 - Public-safety scanning finds no issues.
-- Release gate keeps publishing blocked.
+- Release gates prevent an unexpected registry write.
 - Package dry-run includes required files and excludes forbidden files.
 - Installed package smokes pass after local tarball install.
 
@@ -140,10 +142,10 @@ What this does not do:
 - It does not publish npm.
 - It does not create a GitHub release.
 - It does not deploy services.
-- It does not start the unpublished Alpha runtime, connect PostgreSQL, load a
-  provider, or run the private stdio MCP command.
+- It does not start the separate Alpha runtime, connect PostgreSQL, load a
+  provider, or run the stdio MCP command.
 
-## 5. Evaluate The Private Local Alpha
+## 5. Evaluate The Experimental Local Alpha
 
 Start with the repository [Quickstart](quickstart.md), then follow:
 

@@ -12,8 +12,8 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 for (const requiredText of [
   "Current public status: Source-Wire is Apache-2.0 licensed as a source package.",
   "Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract.",
-  "Latest source also contains a loopback-only Alpha workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers.",
-  "The first public npm Alpha, `@source-wire/local-runtime@0.1.0-alpha.1`, is deprecated because namespace binding and provider deadline enforcement were incomplete.",
+  "The corrected experimental runtime `@source-wire/local-runtime@0.1.0-alpha.2` is published to npm under the `alpha` tag for macOS and Linux local evaluation with synthetic or disposable data.",
+  "Its predecessor, `0.1.0-alpha.1`, is deprecated because namespace binding and provider deadline enforcement were incomplete.",
   "No local-runtime Git tag or GitHub release was created, and nothing is deployed or hosted.",
   "## First Reviewer Quickstart",
   "Use Node.js 22 with npm.",

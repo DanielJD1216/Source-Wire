@@ -10,18 +10,18 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 | --- | --- |
 | Repository visibility | Public source repository |
 | Package name | `@source-wire/contracts` |
-| Latest-source package candidate | `0.2.0`, not published, tagged, or released |
+| Current package version | `0.2.0` |
 | License | `Apache-2.0` |
 | `LICENSE` file | Present |
 | Source package reuse | Allowed under Apache-2.0 |
-| npm package | Published as `@source-wire/contracts@0.1.0` |
-| GitHub release | Published as `v0.1.0` |
-| Snapshot boundary | npm `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` contains an unpublished `0.2.0` contracts candidate plus later documentation and runtime proof. |
-| Known `v0.1.0` artifact issue | The immutable npm `0.1.0` package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`. Latest `main` fixes this for a future owner-approved patch release. |
+| npm package | Published as `@source-wire/contracts@0.2.0` |
+| GitHub release | Published as `v0.2.0` |
+| Snapshot boundary | npm versions `0.1.0` and `0.2.0`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable snapshots. Latest `main` may contain later documentation and unpublished runtime proof. |
+| Known `v0.1.0` artifact issue | The immutable npm `0.1.0` package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`. Version `0.2.0` exports the corrected package version. |
 | Hosted runtime | Not included |
 | Local stdio MCP proposal and search process | Included only in latest source, established by Stories 2 and 3 and preserved by Story 4; hosted and production MCP remain excluded |
 | Synthetic runtime skeleton | Included on latest `main` only |
-| Local Alpha 1 Stories 1 through 5 developer runtime | Included in latest source as an unpublished npm workspace, not in the contracts candidate or published package |
+| Local Alpha 1 Stories 1 through 5 developer runtime | Included in latest source as an unpublished npm workspace, not in the published contracts package |
 | Database or migrations | Six explicit forward-only disposable Alpha 1 migrations are included in latest source; production and non-disposable use remain unapproved |
 | Trusted-memory search | Included only as local active-only PostgreSQL full-text proof with audit-before-release receipts |
 | Trusted-memory correction and revocation | Included only as owner-controlled, fix-forward local Story 4 proof |
@@ -98,13 +98,20 @@ The npm package and GitHub release do not mean Source-Wire is deployed, hosted, 
 
 ## Release Snapshot Boundary
 
-Use [Release Snapshot Boundary](release-snapshot-boundary.md) to distinguish the immutable npm package, the immutable `v0.1.0` release snapshot, and latest `main`.
+Use [Release Snapshot Boundary](release-snapshot-boundary.md) to distinguish the immutable npm and GitHub release snapshots from latest `main`.
 
-Latest `main` may move ahead with public docs, issue gates, readiness checks, an unpublished `0.2.0` contracts candidate, and an unpublished local developer-alpha workspace. That does not mutate the already-published npm package or the already-published `v0.1.0` release snapshot.
+Latest `main` may move ahead with public docs, issue gates, readiness checks,
+and the unpublished local developer-alpha workspace. That does not mutate
+already-published npm packages or GitHub release snapshots.
 
-Known `v0.1.0` artifact issue: the published npm package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though the package metadata is `0.1.0`. Latest `main` corrects the source export and adds a consumer-smoke guard. The npm artifact remains immutable, so correcting the public registry artifact requires a future owner-approved patch release.
+Known `v0.1.0` artifact issue: that npm package exports
+`SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though its package metadata is
+`0.1.0`. Version `0.2.0` exports `0.2.0` and preserves the consumer-smoke guard.
 
-Preparing the `0.2.0` candidate is approved. Publishing it, creating a new release, creating a new tag, deploying services, starting hosted runtime behavior, and accepting code contributions remain blocked.
+Version `0.2.0` is published and released. Future package versions still
+require a separate exact release approval. Deployment, hosted runtime behavior,
+production use, live providers, real data, and code contribution acceptance
+remain blocked.
 
 ## Main Verification Command
 

@@ -5,8 +5,8 @@ const repo = "DanielJD1216/Source-Wire";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
-const expectedDescription = "Apache-2.0 agent-memory contracts. npm v0.1.0, GitHub release v0.1.0, not hosted.";
-const expectedReleaseTag = "v0.1.0";
+const expectedDescription = "Apache-2.0 agent-memory contracts. npm v0.2.0, GitHub release v0.2.0, not hosted.";
+const expectedReleaseTag = "v0.2.0";
 const expectedHomepage = "https://github.com/DanielJD1216/Source-Wire/blob/main/docs/guides/share-for-review.md";
 const expectedTopics = [
   "agent-memory",
@@ -53,6 +53,8 @@ const latestRun = await ghJson([
   repo,
   "--workflow",
   "Package Checks",
+  "--branch",
+  "main",
   "--limit",
   "1",
   "--json",
@@ -91,12 +93,12 @@ if (!Array.isArray(releases) || !releases.some((release) => release.tagName === 
 
 const [runInfo] = latestRun;
 if (!runInfo) {
-  failures.push("latest Package Checks run is missing");
+  failures.push("latest main Package Checks run is missing");
 } else {
   assertEqual(runInfo.workflowName, "Package Checks", "latest workflow name must be Package Checks");
-  assertEqual(runInfo.status, "completed", "latest Package Checks run must be completed");
-  assertEqual(runInfo.conclusion, "success", "latest Package Checks run must be successful");
-  assertEqual(runInfo.headSha, remoteHead, "latest Package Checks run must match origin/main");
+  assertEqual(runInfo.status, "completed", "latest main Package Checks run must be completed");
+  assertEqual(runInfo.conclusion, "success", "latest main Package Checks run must be successful");
+  assertEqual(runInfo.headSha, remoteHead, "latest main Package Checks run must match origin/main");
 }
 
 if (failures.length > 0) {
@@ -121,7 +123,7 @@ printRows([
   ["Projects", "disabled"],
   ["Wiki", "disabled"],
   ["GitHub release", expectedReleaseTag],
-  ["Latest Package Checks", `${runInfo.conclusion} ${runInfo.url}`],
+  ["Latest main Package Checks", `${runInfo.conclusion} ${runInfo.url}`],
   ["Version", packageJson.version],
   ["npm publishing", "published"],
   ["Hosted runtime", "blocked"],
@@ -132,7 +134,7 @@ console.log("");
 console.log("ok live github public surface ready");
 console.log("ok live github metadata matches docs");
 console.log("ok live package checks green");
-console.log("ok github release published v0.1.0");
+console.log("ok github release published v0.2.0");
 console.log("blocked hosted runtime implementation");
 
 function ghJson(args) {

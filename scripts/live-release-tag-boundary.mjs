@@ -3,8 +3,8 @@ import { readFile } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
-const expectedTag = "v0.1.0";
-const expectedTarget = "bd240283ec45e5b83ecd0e1c1cc9650097fd6509";
+const expectedTag = "v0.2.0";
+const expectedTarget = "180896b8ab8a0c4e587226ef79dc2ec53bbe6749";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, "0.2.0", "package candidate version must remain 0.2.0");
@@ -13,6 +13,16 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 
 const localTags = parseLines(await run("git", ["tag", "--list"]));
 const remoteTags = parseRemoteTags(await run("git", ["ls-remote", "--tags", "origin"]));
+const localTagTarget = (await run("git", ["rev-list", "-n", "1", expectedTag])).trim();
+const remoteTagTarget = parseRemoteTagTarget(
+  await run("git", [
+    "ls-remote",
+    "--tags",
+    "origin",
+    `refs/tags/${expectedTag}`,
+    `refs/tags/${expectedTag}^{}`
+  ])
+);
 const release = JSON.parse(await run("gh", ["release", "view", expectedTag, "--repo", "DanielJD1216/Source-Wire", "--json", "tagName,name,isDraft,isPrerelease,targetCommitish,publishedAt,url"]));
 
 if (!localTags.includes(expectedTag)) {
@@ -24,7 +34,8 @@ if (!remoteTags.includes(expectedTag)) {
 }
 
 assertEqual(release.tagName, expectedTag, "GitHub release tag must match expected tag");
-assertEqual(release.targetCommitish, expectedTarget, "GitHub release target commit must match release commit");
+assertEqual(localTagTarget, expectedTarget, "local release tag target must match release commit");
+assertEqual(remoteTagTarget, expectedTarget, "remote release tag target must match release commit");
 assertEqual(release.isDraft, false, "GitHub release must not be draft");
 assertEqual(release.isPrerelease, false, "GitHub release must not be prerelease");
 
@@ -44,7 +55,7 @@ printRows([
   ["Local git tag", expectedTag],
   ["Remote git tag", expectedTag],
   ["GitHub release", release.url],
-  ["Release target", release.targetCommitish],
+  ["Release target", remoteTagTarget],
   ["Published at", release.publishedAt],
   ["npm publishing", "published"],
   ["GitHub release publishing", "published"],
@@ -55,9 +66,9 @@ printRows([
 
 console.log("");
 console.log("ok live release tag boundary ready");
-console.log("ok local release tag v0.1.0");
-console.log("ok remote release tag v0.1.0");
-console.log("ok github release published v0.1.0");
+console.log("ok local release tag v0.2.0");
+console.log("ok remote release tag v0.2.0");
+console.log("ok github release published v0.2.0");
 console.log("blocked hosted runtime implementation");
 
 function parseLines(text) {
@@ -73,6 +84,13 @@ function parseRemoteTags(text) {
     .filter(Boolean)
     .map((ref) => ref.replace(/^refs\/tags\//u, ""))
     .filter((ref) => !ref.endsWith("^{}"));
+}
+
+function parseRemoteTagTarget(text) {
+  const refs = parseLines(text).map((line) => line.split(/\s+/u));
+  const peeled = refs.find(([, ref]) => ref === `refs/tags/${expectedTag}^{}`);
+  const direct = refs.find(([, ref]) => ref === `refs/tags/${expectedTag}`);
+  return peeled?.[0] ?? direct?.[0] ?? "";
 }
 
 function run(command, args) {

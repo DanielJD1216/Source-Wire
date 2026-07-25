@@ -227,7 +227,7 @@ More detail:
 
 ## Published Package Boundaries
 
-`@source-wire/contracts@0.1.0` does not include:
+`@source-wire/contracts@0.2.0` does not include:
 
 - API server runtime,
 - MCP server runtime,
@@ -239,15 +239,15 @@ More detail:
 - real user data,
 - trusted Memory Record promotion.
 
-Latest source contains an unpublished local Alpha 1 Stories 1 through 5 runtime workspace. It proves one loopback API, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected source-evidence search and fetch through one synthetic read-only provider with disposable PostgreSQL state. It does not change the published package or authorize hosting, deployment, live-provider use, production use, production backup guarantees, or real data.
+Latest source contains an unpublished local Alpha 1 Stories 1 through 5 runtime workspace. It proves one loopback API, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected source-evidence search and fetch through synthetic read-only providers with disposable PostgreSQL state. It does not add that runtime to the published package or authorize hosting, deployment, live-provider use, production use, production backup guarantees, or real data.
 
 Current release posture:
 
 - package license is `Apache-2.0`,
-- package version is `0.1.0`,
+- package version is `0.2.0`,
 - `LICENSE` file exists,
-- npm package `@source-wire/contracts@0.1.0` is published,
-- GitHub release `v0.1.0` is published,
+- npm package `@source-wire/contracts@0.2.0` is published,
+- GitHub release `v0.2.0` is published,
 - runtime backend work is blocked.
 
 ## Safety Rule

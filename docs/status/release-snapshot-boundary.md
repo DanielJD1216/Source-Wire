@@ -6,11 +6,13 @@ This check does not publish a new npm version, create a new GitHub release, crea
 
 ## Purpose
 
-Use this check to distinguish three things that can otherwise blur together:
+Use this check to distinguish release snapshots from latest source:
 
-- the immutable npm package `@source-wire/contracts@0.1.0`,
-- the immutable GitHub release snapshot `v0.1.0`,
-- the latest `main` branch, which contains an unpublished `0.2.0` contracts candidate plus post-release documentation and runtime proof.
+- the immutable npm packages `@source-wire/contracts@0.1.0` and
+  `@source-wire/contracts@0.2.0`,
+- the immutable GitHub release snapshots `v0.1.0` and `v0.2.0`,
+- the latest `main` branch, which may contain post-release documentation and
+  unpublished runtime proof.
 
 After a release is published, `main` can keep improving public docs, issue gates, and reviewer safety checks without changing the already-published npm tarball or GitHub release snapshot.
 
@@ -34,8 +36,8 @@ Expected markers:
 
 ```text
 ok release snapshot boundary ready
-ok latest main can differ from v0.1.0 release snapshot
-ok npm artifact immutable at @source-wire/contracts@0.1.0
+ok latest main can differ from v0.2.0 release snapshot
+ok npm artifact immutable at @source-wire/contracts@0.2.0
 blocked future release mutation approval missing
 ```
 
@@ -44,33 +46,33 @@ blocked future release mutation approval missing
 The command verifies:
 
 - package name remains `@source-wire/contracts`,
-- latest-source package version is the unpublished `0.2.0` candidate,
+- latest-source package version is `0.2.0`,
 - package license remains `Apache-2.0`,
 - `publishConfig.access` remains `public`,
-- the public remote release tag is `v0.1.0`,
-- the public remote release tag target remains the first release snapshot commit,
-- the live npm package version remains `0.1.0`,
-- the live npm latest dist-tag remains `0.1.0`,
+- the public remote release tag is `v0.2.0`,
+- the public remote release tag target remains commit
+  `180896b8ab8a0c4e587226ef79dc2ec53bbe6749`,
+- the live npm package version is `0.2.0`,
+- the live npm latest dist-tag is `0.2.0`,
 - the live npm artifact has tarball, shasum, and integrity metadata.
 
 The command also prints whether `origin/main` currently matches the release target or contains post-release changes.
 
 ## Reader Guidance
 
-Use the GitHub release when you want the exact first public release snapshot.
+Use a GitHub release when you want an exact public release snapshot.
 
 Use latest `main` when you want the newest docs, public-readiness checks, owner-decision issue evidence, and reviewer-safety wording.
 
-Use the npm package when you want the immutable published package artifact for `0.1.0`.
+Use the npm package when you want the immutable published contract artifact.
 
 ## Current Boundary
 
-The `0.2.0` candidate-preparation unit is approved, but release mutation is not:
+Version `0.2.0` is published. Future release mutation is not pre-approved:
 
-- publishing a new npm package version remains blocked,
-- creating a new GitHub release remains blocked,
-- creating a new release tag remains blocked,
-- the local package candidate remains unpublished,
+- publishing another npm package version requires a new exact approval,
+- creating another GitHub release requires a new exact approval,
+- creating another release tag requires a new exact approval,
 - deployment remains blocked,
 - hosted runtime behavior remains blocked,
 - production runtime claims remain blocked,

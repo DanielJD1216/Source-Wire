@@ -11,9 +11,8 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 
 for (const requiredText of [
   "Current public status: Source-Wire is Apache-2.0 licensed as a source package.",
-  "Version `0.1.0` remains published to npm and released on GitHub.",
-  "Latest source is an unpublished `0.2.0` release candidate that adds the public `KnowledgeProvider v1` contract.",
-  "It also contains loopback-only Alpha 1 Stories 1 through 5 for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through one synthetic provider.",
+  "Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract.",
+  "Latest source also contains an unpublished, loopback-only Alpha 1 Stories 1 through 5 workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers.",
   "Nothing is deployed or hosted.",
   "## First Reviewer Quickstart",
   "Use Node.js 22 with npm.",
@@ -32,7 +31,7 @@ for (const requiredText of [
   "[Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md)",
   "[Share For Technical Review](docs/guides/share-for-review.md)",
   "[Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md)",
-  "Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`"
+  "Known `v0.1.0` package issue: that immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`"
 ]) {
   assertIncludes(readme, requiredText, `README public entrypoint includes ${requiredText}`);
 }

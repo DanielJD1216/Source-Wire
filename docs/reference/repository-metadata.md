@@ -6,11 +6,11 @@ This page explains the GitHub-visible files and status surfaces in Source-Wire.
 
 Source-Wire is Apache-2.0 licensed as a source package.
 
-It is still:
+It is:
 
-- version `0.1.0`,
-- published to npm as `@source-wire/contracts@0.1.0`,
-- released on GitHub as `v0.1.0`,
+- version `0.2.0`,
+- published to npm as `@source-wire/contracts@0.2.0`,
+- released on GitHub as `v0.2.0`,
 - undeployed,
 - not a hosted runtime,
 - not accepting code contributions.
@@ -22,7 +22,7 @@ The actual GitHub repository About panel should use source-package wording.
 Intended description:
 
 ```text
-Apache-2.0 agent-memory contracts. npm v0.1.0, GitHub release v0.1.0, not hosted.
+Apache-2.0 agent-memory contracts. npm v0.2.0, GitHub release v0.2.0, not hosted.
 ```
 
 Intended homepage URL:

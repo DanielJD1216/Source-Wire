@@ -4,6 +4,22 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Contracts 0.2.0 released
+
+Summary:
+
+- Published `@source-wire/contracts@0.2.0` to npm with public access.
+- Created annotated Git tag `v0.2.0` and the matching public GitHub release from commit `180896b8ab8a0c4e587226ef79dc2ec53bbe6749`.
+- Made the complete read-only `KnowledgeProvider v1` contract available from the stable package root.
+- Verified a clean external registry install exports package version `0.2.0` and contract version `knowledge-provider.v1`.
+- Verified the registry tarball matches the inspected pre-publish SHA-1 and SHA-256 digests.
+- Kept the Alpha runtime unpublished and kept hosting, deployment, production runtime, live providers, real data, and automatic trusted-memory promotion blocked.
+
+Release:
+
+- npm: `@source-wire/contracts@0.2.0`
+- GitHub: `v0.2.0`
+
 ### 2026-07-24 - Contracts 0.2.0 focused release gate
 
 Summary:

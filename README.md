@@ -11,7 +11,7 @@
 
 Source-Wire defines how agents can retrieve evidence, preserve provenance, propose durable memories, and use trusted context without silently turning every document, message, or model output into truth.
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.1.0` remains published to npm and released on GitHub. Latest source is an unpublished `0.2.0` release candidate that adds the public `KnowledgeProvider v1` contract. It also contains loopback-only Alpha 1 Stories 1 through 5 for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through one synthetic provider. Nothing is deployed or hosted.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains an unpublished, loopback-only Alpha 1 Stories 1 through 5 workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. Nothing is deployed or hosted.
 
 > Bring your own knowledge base, PostgreSQL, credentials, and agent harness. Source-Wire keeps the memory lifecycle and trust boundary explicit.
 
@@ -72,10 +72,10 @@ Use the [Documentation Index](docs/README.md) when you already know the task you
 
 | Surface | Current state |
 | --- | --- |
-| Public package | `@source-wire/contracts@0.1.0` |
-| Latest-source package candidate | `@source-wire/contracts@0.2.0`, prepared locally but not published, tagged, or released |
+| Public package | `@source-wire/contracts@0.2.0` |
+| Previous immutable snapshot | `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` |
 | License | Apache-2.0 |
-| GitHub release | `v0.1.0` |
+| GitHub release | `v0.2.0` |
 | Contracts, schemas, fixtures, validation | Included |
 | Synthetic policy and conformance proofs | Included |
 | Local Alpha 1 Stories 1 through 5 | Included in latest source as an unpublished workspace using generated disposable PostgreSQL state and one synthetic read-only provider |
@@ -83,7 +83,7 @@ Use the [Documentation Index](docs/README.md) when you already know the task you
 | Live knowledge connectors or real user data | Not included |
 | Automatic trusted-memory promotion | Forbidden |
 
-The published package, unpublished `0.2.0` contracts candidate, and unpublished Alpha workspace are separate boundaries. Read [Public Status](docs/status/public-status.md) before making runtime, release, hosting, or production claims.
+The published `0.2.0` contracts package and unpublished Alpha workspace are separate boundaries. Read [Public Status](docs/status/public-status.md) before making runtime, hosting, or production claims.
 
 ## First Reviewer Quickstart
 
@@ -187,7 +187,6 @@ Core invariants:
 | `npm run alpha1:conformance:story5:replaceable` | The same protected path with the separate public-contract-only adapter |
 | `npm run alpha1:conformance` | All five disposable local Alpha story proofs, including both Story 5 adapters |
 | `npm run release:0.2.0-gate` | Focused no-publish gate for the packed contract, clean external adapter, installed consumers, docs, safety, and claims |
-| `npm run release:0.2.0-execution-preflight` | Authenticated, read-only pre-publication gate for exact-commit CI, npm availability, package access, and absent `v0.2.0` release channels |
 | `npm run docs:links && npm run docs:anchors` | Documentation link and anchor integrity |
 | `npm run safety:scan && npm run claims:scan` | Public-safety and claim-boundary checks |
 | `npm run publish:readiness` | Full local package and boundary gate, without publishing |
@@ -210,11 +209,11 @@ Historical planning packets, approvals, and implementation proofs are preserved 
 
 ## Release Snapshot
 
-The npm package `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` now contains an unpublished `0.2.0` contracts candidate, later documentation, and unpublished local Alpha proof.
+The npm packages `@source-wire/contracts@0.1.0` and `@source-wire/contracts@0.2.0`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable release snapshots. Latest `main` may contain later documentation and unpublished local Alpha proof.
 
-Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though package metadata is `0.1.0`. Latest `main` fixes the source export and adds a consumer-smoke guard. Correcting the registry artifact requires a future owner-approved patch release.
+Known `v0.1.0` package issue: that immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though package metadata is `0.1.0`. Version `0.2.0` exports the corrected package version and adds the public `KnowledgeProvider v1` contract.
 
-Read [Contracts 0.2.0 Release Candidate](docs/status/0.2.0-release-candidate.md) and [Release Snapshot Boundary](docs/status/release-snapshot-boundary.md).
+Read [Contracts 0.2.0 Release](docs/status/0.2.0-release.md) and [Release Snapshot Boundary](docs/status/release-snapshot-boundary.md).
 
 ## Safety Rule
 

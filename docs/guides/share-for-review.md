@@ -6,9 +6,9 @@ Source-Wire is Apache-2.0 licensed.
 
 Source-Wire is public so reviewers and adopters can inspect and reuse the source package boundary: contracts, schemas, fixtures, examples, and readiness gates.
 
-It is published as `@source-wire/contracts@0.1.0` and released on GitHub as `v0.1.0`, but it is not deployed and not a hosted runtime.
+It is published as `@source-wire/contracts@0.2.0` and released on GitHub as `v0.2.0`, but it is not deployed and not a hosted runtime.
 
-Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though the package metadata is `0.1.0`. Latest `main` fixes this for a future owner-approved patch release.
+Known `v0.1.0` package issue: that immutable artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`. Version `0.2.0` exports the corrected package version.
 
 For public-channel copy such as YouTube, Substack, X, LinkedIn, Discord, or direct review messages, read [World Share Kit](../internal/world-share-kit.md).
 
@@ -21,7 +21,7 @@ I am looking for technical review on Source-Wire, an agent-first memory contract
 
 Repo: https://github.com/DanielJD1216/Source-Wire
 
-Important boundary: Source-Wire is Apache-2.0 licensed as a source package. It is version 0.1.0, published to npm, released on GitHub, undeployed, and not a hosted runtime. Known package issue: the immutable npm 0.1.0 artifact exports SOURCE_WIRE_PACKAGE_VERSION as 0.0.0; latest main fixes this for a future patch release. Please do not assume production readiness, hosted memory behavior, or code contribution acceptance yet.
+Important boundary: Source-Wire is Apache-2.0 licensed as a source package. Version 0.2.0 is published to npm and released on GitHub. It is undeployed and not a hosted runtime. The immutable npm 0.1.0 artifact has a package-version export mismatch; 0.2.0 exports the corrected version. Please do not assume production readiness, hosted memory behavior, or code contribution acceptance yet.
 
 Reviewer-safe first pass:
 1. Read docs/status/public-status.md.
@@ -45,7 +45,7 @@ npm run world:post-share-monitor
 ## Short Safe Version
 
 ```text
-Source-Wire is Apache-2.0 licensed as a source package. Its `0.1.0` package and GitHub release are live. Please review the contracts, schemas, fixtures, docs, and readiness gates without assuming production readiness or code contribution acceptance.
+Source-Wire is Apache-2.0 licensed as a source package. Its `0.2.0` package and GitHub release are live. Please review the contracts, schemas, fixtures, docs, and readiness gates without assuming production readiness or code contribution acceptance.
 ```
 
 ## Current Owner-Decision Status
@@ -104,11 +104,11 @@ Expected first-pass markers:
 
 ```text
 Package: @source-wire/contracts
-Version: 0.1.0
+Version: 0.2.0
 License: Apache-2.0
-Publish boundary: npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked
+Publish boundary: npm package public at @source-wire/contracts@0.2.0, hosted runtime blocked
 Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
-Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 4 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, two stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, and isolated physical recovery; it contains no deployment, hosting, production support, production backup guarantee, or real data
+Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; it contains no deployment, hosting, live provider, production support, production backup guarantee, or real data
 ok readiness report
 ```
 

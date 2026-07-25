@@ -13,13 +13,13 @@ Source-Wire is currently a public contract package skeleton.
 Current state:
 
 - package license is `Apache-2.0`,
-- package version is `0.1.0`,
+- package version is `0.2.0`,
 - `LICENSE` file exists,
-- npm package is published as `@source-wire/contracts@0.1.0`,
-- GitHub release is published as `v0.1.0`,
+- npm package is published as `@source-wire/contracts@0.2.0`,
+- GitHub release is published as `v0.2.0`,
 - hosted runtime backend work is blocked.
 
-Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though the package metadata is `0.1.0`. Latest `main` fixes this for a future owner-approved patch release.
+Known `v0.1.0` package issue: that immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`. Version `0.2.0` exports the corrected package version.
 
 The Apache-2.0 license plus first release grants source package reuse rights. It does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.
 
@@ -64,11 +64,11 @@ Expected high-signal markers:
 
 ```text
 Package: @source-wire/contracts
-Version: 0.1.0
+Version: 0.2.0
 License: Apache-2.0
-Publish boundary: npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked
+Publish boundary: npm package public at @source-wire/contracts@0.2.0, hosted runtime blocked
 Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
-Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 4 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, two stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, and isolated physical recovery; it contains no deployment, hosting, production support, production backup guarantee, or real data
+Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; it contains no deployment, hosting, live provider, production support, production backup guarantee, or real data
 ok readiness report
 ```
 
@@ -97,7 +97,7 @@ npm run package:dry-run
 Expected markers:
 
 ```text
-ok package dry-run @source-wire/contracts@0.1.0
+ok package dry-run @source-wire/contracts@0.2.0
 ok package file count
 ok package filename source-wire-contracts-0.1.0.tgz
 ```

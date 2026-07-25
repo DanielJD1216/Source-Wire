@@ -2,6 +2,8 @@ name: Package Checks
 
 on:
   push:
+    branches:
+      - "**"
   pull_request:
 
 permissions:

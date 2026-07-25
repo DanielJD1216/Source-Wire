@@ -35,10 +35,10 @@ Expected markers:
 ```text
 Source-Wire Package Readiness Report
 Package: @source-wire/contracts
-Version: 0.1.0
+Version: 0.2.0
 License: Apache-2.0
 Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
-Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 4 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, two stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, and isolated physical recovery; it contains no deployment, hosting, production support, production backup guarantee, or real data
+Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; it contains no deployment, hosting, live provider, production support, production backup guarantee, or real data
 ok readiness report
 ```
 
@@ -47,7 +47,7 @@ What this proves:
 - The package posture is readable in one place.
 - The current version and license boundary are explicit.
 - The published package still contains contracts and synthetic proofs only.
-- Latest source separately contains the unpublished, loopback-only Story 1 developer alpha.
+- Latest source separately contains the unpublished, loopback-only Stories 1 through 5 developer alpha.
 - The report can summarize package exports, schemas, commands, installed smokes, required readiness docs, and blocked scope without running the full readiness gate.
 
 ## 3. Validate The Synthetic Fixtures

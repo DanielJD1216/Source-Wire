@@ -329,7 +329,7 @@ printRows([
   ["Package", packageJson.name],
   ["Version", packageJson.version],
   ["License", packageJson.license],
-  ["Publish boundary", "npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked"],
+  ["Publish boundary", "npm package public at @source-wire/contracts@0.2.0, hosted runtime blocked"],
   ["Published runtime boundary", "the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime"],
   ["Latest-source runtime boundary", "an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; it contains no deployment, hosting, live provider, production support, production backup guarantee, or real data"]
 ]);
@@ -452,7 +452,7 @@ printList([
   "docs/internal/release-0.2.0-execution-preflight.md records the dedicated authenticated pre-publication gate for the 0.2.0 candidate",
   "docs/internal/release-candidate-readiness.md records release-candidate evidence",
   "docs/internal/release-artifact-manifest.md records the package artifact identity, file count, size, shasum, and integrity",
-  "docs/status/release-snapshot-boundary.md distinguishes latest main, the immutable npm artifact, and the immutable v0.1.0 release snapshot",
+  "docs/status/release-snapshot-boundary.md distinguishes latest main from the immutable npm and GitHub 0.1.0 and 0.2.0 release snapshots",
   "docs/internal/release-implementation-preparation.md records the release execution packet, required approval evidence, and stop conditions",
   "docs/internal/branch-governance-approval-request.md records minimal branch protection as approved and implemented while repository ruleset options remain deferred",
   "docs/internal/branch-governance-decision-preflight.md records the live owner-side branch governance preflight after minimal branch protection",

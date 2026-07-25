@@ -33,7 +33,7 @@ MCP does not connect directly to a provider, memory store, or database. Source-W
 
 ## Published Contracts Package
 
-`@source-wire/contracts@0.1.0` includes:
+`@source-wire/contracts@0.2.0` includes:
 
 - TypeScript contract types,
 - JSON schemas,
@@ -47,16 +47,18 @@ The package does not export a hosted backend, production API server, production 
 
 ## Latest-Source Alpha Proof
 
-`apps/alpha1-runtime/` is an unpublished npm workspace. Using generated disposable PostgreSQL state, Stories 1 through 4 prove:
+`apps/alpha1-runtime/` is an unpublished npm workspace. Using generated disposable PostgreSQL state, Stories 1 through 5 prove:
 
 - local bootstrap and scoped credentials,
-- an exact two-tool stdio MCP surface for proposal and trusted-memory search,
+- an exact four-tool stdio MCP surface for proposal, trusted-memory search,
+  source-evidence search, and exact source-evidence fetch,
 - pending-only candidate persistence,
 - owner-controlled approval or rejection,
 - audit-before-release active-memory search,
 - fix-forward correction and revocation,
 - canonical export and fresh portable initialization,
 - isolated physical-recovery invalidation,
+- immutable synthetic knowledge-provider composition and protected evidence release,
 - fail-closed denial and cleanup behavior.
 
 The Alpha workspace does not prove hosting, deployment, production availability, production backup guarantees, live-provider support, public network exposure, non-disposable database use, or real-data safety.

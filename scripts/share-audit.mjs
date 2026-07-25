@@ -49,8 +49,8 @@ for (const [label, text, requiredText] of [
   ["first visitor audit", firstVisitorAudit, "Ready for technical review: yes."],
   ["first visitor audit", firstVisitorAudit, "Ready for source package reuse: yes, under Apache-2.0."],
   ["first visitor audit", firstVisitorAudit, "Still blocked: deployment, hosted runtime use, production runtime use, and code contribution acceptance."],
-  ["technical reviewer guide", technicalReviewerGuide, "Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`"],
-  ["technical reviewer guide", technicalReviewerGuide, "Publish boundary: npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked"],
+  ["technical reviewer guide", technicalReviewerGuide, "Known `v0.1.0` package issue: that immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`"],
+  ["technical reviewer guide", technicalReviewerGuide, "Publish boundary: npm package public at @source-wire/contracts@0.2.0, hosted runtime blocked"],
   ["world readiness", worldReadiness, "Source-Wire can be shared as an Apache-2.0 licensed source package."],
   ["world readiness", worldReadiness, "It is an npm-published package and GitHub release, but not a deployed service, hosted runtime, or production runtime."]
 ]) {
@@ -92,7 +92,7 @@ printRows([
 printSection("Safe Share Boundary");
 printList([
   "Share the source repo under Apache-2.0.",
-  "Share npm package @source-wire/contracts@0.1.0 and GitHub release v0.1.0.",
+  "Share npm package @source-wire/contracts@0.2.0 and GitHub release v0.2.0.",
   "Do not imply deployment, hosted runtime, production runtime readiness, or contribution acceptance."
 ]);
 

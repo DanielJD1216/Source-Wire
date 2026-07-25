@@ -3,7 +3,7 @@ import { readFile, stat } from "node:fs/promises";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 
-const expectedDescription = "Apache-2.0 agent-memory contracts. npm v0.1.0, GitHub release v0.1.0, not hosted.";
+const expectedDescription = "Apache-2.0 agent-memory contracts. npm v0.2.0, GitHub release v0.2.0, not hosted.";
 const expectedHomepage = "https://github.com/DanielJD1216/Source-Wire/blob/main/docs/guides/share-for-review.md";
 const expectedTopics = [
   "agent-memory",
@@ -42,8 +42,8 @@ for (const [label, text, requiredText] of [
   ["repository metadata", repositoryMetadata, "License: Apache-2.0"],
   ["repository metadata", repositoryMetadata, "Visibility: public"],
   ["repository metadata", repositoryMetadata, "code contribution acceptance"],
-  ["repository metadata", repositoryMetadata, "published to npm as `@source-wire/contracts@0.1.0`"],
-  ["repository metadata", repositoryMetadata, "released on GitHub as `v0.1.0`"],
+  ["repository metadata", repositoryMetadata, "published to npm as `@source-wire/contracts@0.2.0`"],
+  ["repository metadata", repositoryMetadata, "released on GitHub as `v0.2.0`"],
   ["repository metadata", repositoryMetadata, "hosted runtime backend"],
   ["README", readme, "[Repository Metadata](docs/reference/repository-metadata.md)"]
 ]) {

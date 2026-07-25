@@ -4,6 +4,30 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Story 6.5 explicit database control plane
+
+Summary:
+
+- Added private `source-wire-local database status` with exact runtime-role posture and a read-only transaction.
+- Added private `source-wire-local database migrate` planning with safe current, target, and pending migration sets.
+- Required the explicit `--apply` flag and exact non-superuser migrator role before migration mutation.
+- Hardened migrator posture checks against runtime-role, superuser, inherited, create-database, create-role, replication, and bypass-RLS authority.
+- Added locked transaction-failure injection for rollback conformance only.
+- Extended Story 1 to 42 cases with pending, compatible, incompatible, unavailable, no-side-effect, wrong-role, over-privileged, rollback, idempotency, output-safety, and cleanup proof.
+- Added the [Story 6.5 Explicit Database Control Plane](docs/getting-started/alpha1-story6-database-control-plane.md) guide and aligned public, agent, architecture, quickstart, CI, and issue documentation.
+
+Boundary:
+
+- Managed PostgreSQL provisioning, non-disposable databases, production migration, external or live providers, publication, hosting, deployment, production use, and real data remain blocked.
+
+Verification:
+
+```text
+npm run alpha1:build
+npm run alpha1:test
+npm run alpha1:conformance:story1
+```
+
 ### 2026-07-24 - Story 6.4 fail-closed orchestration and cleanup
 
 Summary:

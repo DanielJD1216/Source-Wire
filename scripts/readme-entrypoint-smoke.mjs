@@ -30,6 +30,7 @@ for (const requiredText of [
   "[Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md)",
   "[Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md)",
   "[Alpha 1 Story 6.4 Fail-Closed Orchestration And Cleanup](docs/getting-started/alpha1-story6-fail-closed-orchestration.md)",
+  "[Alpha 1 Story 6.5 Explicit Database Control Plane](docs/getting-started/alpha1-story6-database-control-plane.md)",
   "[Share For Technical Review](docs/guides/share-for-review.md)",
   "[Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md)",
   "Known `v0.1.0` package issue: that immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`"

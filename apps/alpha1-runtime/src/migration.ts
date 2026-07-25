@@ -38,6 +38,15 @@ export type MigrationResult = {
   }>;
 };
 
+export type ApplyAlpha1MigrationOptions = Readonly<{
+  afterMigrationApplied?: (
+    migration: Readonly<{
+      version: number;
+      name: string;
+    }>
+  ) => void | Promise<void>;
+}>;
+
 export async function readStory1Migration(): Promise<{ sql: string; checksumSha256: string }> {
   const [migration] = await readAlpha1Migrations();
   if (!migration || migration.version !== STORY1_SCHEMA_VERSION) {
@@ -70,7 +79,10 @@ export async function readAlpha1Migrations(): Promise<MigrationDefinition[]> {
   );
 }
 
-export async function applyAlpha1Migrations(pool: pg.Pool): Promise<MigrationResult> {
+export async function applyAlpha1Migrations(
+  pool: pg.Pool,
+  options: ApplyAlpha1MigrationOptions = {}
+): Promise<MigrationResult> {
   const migrations = await readAlpha1Migrations();
   const client = await pool.connect();
   let appliedCount = 0;
@@ -80,7 +92,7 @@ export async function applyAlpha1Migrations(pool: pg.Pool): Promise<MigrationRes
     await client.query("SET LOCAL lock_timeout = '2s'");
     await client.query("SET LOCAL statement_timeout = '2s'");
     await client.query("SELECT pg_advisory_xact_lock($1)", [MIGRATION_ADVISORY_LOCK]);
-    await assertDatabaseRolePosture(client);
+    await assertMigratorRolePosture(client);
     await client.query("SET LOCAL ROLE source_wire_schema_owner");
     await assertPostgresql16(client);
 
@@ -95,6 +107,10 @@ export async function applyAlpha1Migrations(pool: pg.Pool): Promise<MigrationRes
 
     for (const migration of migrations.slice(existingRows.length)) {
       await client.query(migration.sql);
+      await options.afterMigrationApplied?.({
+        version: migration.version,
+        name: migration.name
+      });
       await client.query(
         `INSERT INTO source_wire_memory.schema_migrations
           (version, migration_name, checksum_sha256, state)
@@ -202,10 +218,20 @@ function assertExactMigrationPrefix(
   }
 }
 
-async function assertDatabaseRolePosture(client: pg.PoolClient): Promise<void> {
+export async function assertMigratorRolePosture(
+  client: pg.PoolClient
+): Promise<void> {
   const posture = await client.query<{
+    current_user: string;
     public_schema_create: boolean;
     migrator_can_assume_owner: boolean;
+    migrator_can_login: boolean;
+    migrator_inherits: boolean;
+    migrator_creates_database: boolean;
+    migrator_creates_role: boolean;
+    migrator_superuser: boolean;
+    migrator_replication: boolean;
+    migrator_bypasses_rls: boolean;
     schema_owner_can_login: boolean;
     runtime_can_login: boolean;
     runtime_inherits: boolean;
@@ -215,8 +241,16 @@ async function assertDatabaseRolePosture(client: pg.PoolClient): Promise<void> {
     runtime_bypasses_rls: boolean;
   }>(
     `SELECT
+       current_user,
        has_schema_privilege('public', 'CREATE') AS public_schema_create,
        pg_has_role(current_user, 'source_wire_schema_owner', 'MEMBER') AS migrator_can_assume_owner,
+       (SELECT rolcanlogin FROM pg_roles WHERE rolname = current_user) AS migrator_can_login,
+       (SELECT rolinherit FROM pg_roles WHERE rolname = current_user) AS migrator_inherits,
+       (SELECT rolcreatedb FROM pg_roles WHERE rolname = current_user) AS migrator_creates_database,
+       (SELECT rolcreaterole FROM pg_roles WHERE rolname = current_user) AS migrator_creates_role,
+       (SELECT rolsuper FROM pg_roles WHERE rolname = current_user) AS migrator_superuser,
+       (SELECT rolreplication FROM pg_roles WHERE rolname = current_user) AS migrator_replication,
+       (SELECT rolbypassrls FROM pg_roles WHERE rolname = current_user) AS migrator_bypasses_rls,
        (SELECT rolcanlogin FROM pg_roles WHERE rolname = 'source_wire_schema_owner') AS schema_owner_can_login,
        (SELECT rolcanlogin FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_can_login,
        (SELECT rolinherit FROM pg_roles WHERE rolname = 'source_wire_runtime') AS runtime_inherits,
@@ -228,8 +262,16 @@ async function assertDatabaseRolePosture(client: pg.PoolClient): Promise<void> {
   const row = posture.rows[0];
   if (
     !row ||
+    row.current_user !== "source_wire_migrator" ||
     row.public_schema_create ||
     !row.migrator_can_assume_owner ||
+    !row.migrator_can_login ||
+    row.migrator_inherits ||
+    row.migrator_creates_database ||
+    row.migrator_creates_role ||
+    row.migrator_superuser ||
+    row.migrator_replication ||
+    row.migrator_bypasses_rls ||
     row.schema_owner_can_login ||
     !row.runtime_can_login ||
     row.runtime_inherits ||

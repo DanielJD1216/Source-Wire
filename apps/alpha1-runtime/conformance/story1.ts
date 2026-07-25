@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { spawn, type ChildProcessByStdio } from "node:child_process";
 import { randomBytes, randomUUID } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import { request as requestHttp, type ClientRequest } from "node:http";
 import { createServer } from "node:net";
 import { userInfo } from "node:os";
@@ -15,12 +15,14 @@ import {
   ALPHA1_SCHEMA_VERSION,
   RUNTIME_RECOVERY_GUARD_APPLICATION_NAME
 } from "../src/config.js";
+import { createLocalConfigTemplate } from "../src/local-cli/config.js";
 
 const { Client, Pool } = pg;
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const repoRoot = resolve(appRoot, "../..");
 const operatorCli = resolve(appRoot, "dist/src/cli/operator.js");
 const ownerCli = resolve(appRoot, "dist/src/cli/owner.js");
+const localCli = resolve(appRoot, "dist/src/cli/local.js");
 const serverEntry = resolve(appRoot, "dist/src/server.js");
 const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
@@ -72,6 +74,8 @@ let migratorUrl = "";
 let runtimeUrl = "";
 let verifierKey = "";
 let verifierKeyId = "local_alpha1_conformance";
+let localDatabaseConfigPath = "";
+let localInitConfigPath = "";
 let cleanupPassed = false;
 let failure: unknown;
 
@@ -266,13 +270,18 @@ async function driverProbes(): Promise<void> {
 }
 
 async function migrationAndInitializationProbes(): Promise<void> {
+  await localDatabaseControlPlaneProbes();
   const environment = operatorEnvironment();
-  const firstMigration = await runProcess(operatorCli, ["migrate"], environment);
-  assert.equal(firstMigration.code, 0);
-  assert.equal(parseJsonLine(firstMigration.stdout).status, "applied");
-  const secondMigration = await runProcess(operatorCli, ["migrate"], environment);
-  assert.equal(secondMigration.code, 0);
-  assert.equal(parseJsonLine(secondMigration.stdout).status, "already_applied");
+  const legacyMigrationReplay = await runProcess(
+    operatorCli,
+    ["migrate"],
+    environment
+  );
+  assert.equal(legacyMigrationReplay.code, 0);
+  assert.equal(
+    parseJsonLine(legacyMigrationReplay.stdout).status,
+    "already_applied"
+  );
   assert(targetAdminPool);
   const idempotencyPrivileges = await targetAdminPool.query<{
     can_select: boolean;
@@ -362,6 +371,434 @@ async function migrationAndInitializationProbes(): Promise<void> {
   assert.equal(duplicate.stdout.includes("sw_a1."), false);
   outputsOutsideAuthorizedSecretResponses.push(duplicate.stdout, duplicate.stderr);
   pass("S1-INIT-02", "non-empty initialization refused without creating or displaying a replacement credential");
+}
+
+async function localDatabaseControlPlaneProbes(): Promise<void> {
+  assert(adminPool);
+  assert(targetAdminPool);
+  await mkdir(dirname(reportPath), { recursive: true });
+  localDatabaseConfigPath = resolve(
+    dirname(reportPath),
+    "story6-database-control.json"
+  );
+  localInitConfigPath = resolve(
+    dirname(reportPath),
+    "story6-init-control.json"
+  );
+  await writeFile(
+    localDatabaseConfigPath,
+    `${JSON.stringify(
+      createLocalConfigTemplate({
+        ownerId: "owner_alpha",
+        namespaceIds: ["ns_project_alpha", "ns_project_beta"]
+      }),
+      null,
+      2
+    )}\n`,
+    { mode: 0o600 }
+  );
+
+  const init = await runProcess(
+    localCli,
+    [
+      "init",
+      "--config",
+      localInitConfigPath,
+      "--owner-id",
+      "owner_init_only",
+      "--namespace-id",
+      "ns_init_alpha",
+      "--json"
+    ],
+    {}
+  );
+  assert.equal(init.code, 0, init.stderr);
+  const doctor = await runProcess(
+    localCli,
+    ["doctor", "--config", localDatabaseConfigPath, "--json"],
+    {}
+  );
+  assert.equal(doctor.code, 0, doctor.stderr);
+  const provider = await runProcess(
+    localCli,
+    ["provider", "check", "--config", localDatabaseConfigPath, "--json"],
+    {}
+  );
+  assert.equal(provider.code, 1);
+  assert.equal(
+    (parseJsonLine(provider.stdout).error as Record<string, unknown>).code,
+    "provider_not_configured"
+  );
+  const mcp = await runProcess(
+    localCli,
+    ["mcp", "stdio", "--config", localDatabaseConfigPath],
+    {
+      SOURCE_WIRE_DATABASE_URL: runtimeUrl,
+      SOURCE_WIRE_TOKEN_VERIFIER_KEY: verifierKey,
+      SOURCE_WIRE_OWNER_TOKEN: "synthetic-owner-token"
+    }
+  );
+  assert.equal(mcp.code, 1);
+  assert.equal(mcp.stdout, "");
+  assert.match(mcp.stderr, /database_incompatible/u);
+  assert.equal(await migrationTableExists(), false);
+  outputsOutsideAuthorizedSecretResponses.push(
+    init.stdout,
+    init.stderr,
+    doctor.stdout,
+    doctor.stderr,
+    provider.stdout,
+    provider.stderr,
+    mcp.stdout,
+    mcp.stderr
+  );
+  pass(
+    "S6-DB-01",
+    "init, offline doctor, provider checking, and MCP startup applied zero migrations before the explicit database command"
+  );
+
+  const pendingStatus = await runProcess(
+    localCli,
+    [
+      "database",
+      "status",
+      "--config",
+      localDatabaseConfigPath,
+      "--json"
+    ],
+    {
+      SOURCE_WIRE_DATABASE_URL: runtimeUrl
+    }
+  );
+  assert.equal(pendingStatus.code, 1, pendingStatus.stderr);
+  const pendingStatusBody = parseJsonLine(pendingStatus.stdout);
+  assert.equal(pendingStatusBody.ok, true);
+  assert.equal(
+    (pendingStatusBody.result as Record<string, unknown>).state,
+    "pending"
+  );
+  assert.deepEqual(
+    (pendingStatusBody.result as Record<string, unknown>)
+      .currentMigrations,
+    []
+  );
+  assert.equal(
+    (
+      (pendingStatusBody.result as Record<string, unknown>)
+        .targetMigrations as unknown[]
+    ).length,
+    ALPHA1_SCHEMA_VERSION
+  );
+  assert.equal(
+    (pendingStatusBody.result as Record<string, unknown>)
+      .mutationApplied,
+    false
+  );
+
+  const unavailableUrl =
+    "postgresql://unavailable:unavailable@127.0.0.1:1/unavailable";
+  sensitiveValues.add(unavailableUrl);
+  const unavailable = await runProcess(
+    localCli,
+    [
+      "database",
+      "status",
+      "--config",
+      localDatabaseConfigPath,
+      "--json"
+    ],
+    {
+      SOURCE_WIRE_DATABASE_URL: unavailableUrl
+    }
+  );
+  assert.equal(unavailable.code, 1);
+  assert.equal(
+    (parseJsonLine(unavailable.stdout).error as Record<string, unknown>).code,
+    "database_unavailable"
+  );
+
+  const plan = await runProcess(
+    localCli,
+    [
+      "database",
+      "migrate",
+      "--config",
+      localDatabaseConfigPath,
+      "--json"
+    ],
+    {
+      SOURCE_WIRE_MIGRATOR_DATABASE_URL: migratorUrl
+    }
+  );
+  assert.equal(plan.code, 0, `migration plan failed: ${plan.stderr}`);
+  const planResult = parseJsonLine(plan.stdout)
+    .result as Record<string, unknown>;
+  assert.equal(planResult.state, "pending");
+  assert.equal(planResult.applyRequired, true);
+  assert.equal(planResult.applyRequested, false);
+  assert.equal(planResult.mutationApplied, false);
+  assert.equal(await migrationTableExists(), false);
+
+  const missingAuthority = await runProcess(
+    localCli,
+    [
+      "database",
+      "migrate",
+      "--config",
+      localDatabaseConfigPath,
+      "--apply",
+      "--json"
+    ],
+    {}
+  );
+  assert.equal(missingAuthority.code, 1);
+  assert.equal(
+    (
+      parseJsonLine(missingAuthority.stdout)
+        .error as Record<string, unknown>
+    ).code,
+    "environment_missing"
+  );
+  const wrongClass = await runProcess(
+    localCli,
+    [
+      "database",
+      "migrate",
+      "--config",
+      localDatabaseConfigPath,
+      "--apply",
+      "--json"
+    ],
+    {
+      SOURCE_WIRE_MIGRATOR_DATABASE_URL: runtimeUrl
+    }
+  );
+  assert.equal(wrongClass.code, 1);
+  assert.equal(
+    (parseJsonLine(wrongClass.stdout).error as Record<string, unknown>).code,
+    "database_authority_invalid"
+  );
+
+  await adminPool.query(`ALTER ROLE ${roleNames.migrator} SUPERUSER`);
+  try {
+    const overPrivileged = await runProcess(
+      localCli,
+      [
+        "database",
+        "migrate",
+        "--config",
+        localDatabaseConfigPath,
+        "--apply",
+        "--json"
+      ],
+      {
+        SOURCE_WIRE_MIGRATOR_DATABASE_URL: migratorUrl
+      }
+    );
+    assert.equal(overPrivileged.code, 1);
+    assert.equal(
+      (
+        parseJsonLine(overPrivileged.stdout)
+          .error as Record<string, unknown>
+      ).code,
+      "database_authority_invalid"
+    );
+  } finally {
+    await adminPool.query(`ALTER ROLE ${roleNames.migrator} NOSUPERUSER`);
+  }
+
+  const rolledBack = await runProcess(
+    localCli,
+    [
+      "database",
+      "migrate",
+      "--config",
+      localDatabaseConfigPath,
+      "--apply",
+      "--json"
+    ],
+    {
+      SOURCE_WIRE_MIGRATOR_DATABASE_URL: migratorUrl,
+      SOURCE_WIRE_CONFORMANCE_MODE: "story6",
+      SOURCE_WIRE_STORY6_MIGRATION_FAULT: "after_first_migration"
+    }
+  );
+  assert.equal(rolledBack.code, 1);
+  assert.equal(
+    (parseJsonLine(rolledBack.stdout).error as Record<string, unknown>).code,
+    "database_migration_failed"
+  );
+  assert.equal(await migrationTableExists(), false);
+
+  const applied = await runProcess(
+    localCli,
+    [
+      "database",
+      "migrate",
+      "--config",
+      localDatabaseConfigPath,
+      "--apply",
+      "--json"
+    ],
+    {
+      SOURCE_WIRE_MIGRATOR_DATABASE_URL: migratorUrl
+    }
+  );
+  assert.equal(
+    applied.code,
+    0,
+    `explicit migration apply failed: ${applied.stderr || applied.stdout}`
+  );
+  const appliedResult = parseJsonLine(applied.stdout)
+    .result as Record<string, unknown>;
+  assert.equal(appliedResult.state, "compatible");
+  assert.equal(appliedResult.applyRequested, true);
+  assert.equal(appliedResult.migrationResult, "applied");
+  assert.equal(appliedResult.mutationApplied, true);
+  assert.deepEqual(
+    appliedResult.targetMigrations,
+    planResult.targetMigrations
+  );
+
+  const replay = await runProcess(
+    localCli,
+    [
+      "database",
+      "migrate",
+      "--config",
+      localDatabaseConfigPath,
+      "--apply",
+      "--json"
+    ],
+    {
+      SOURCE_WIRE_MIGRATOR_DATABASE_URL: migratorUrl
+    }
+  );
+  assert.equal(
+    replay.code,
+    0,
+    `migration replay failed: ${replay.stderr || replay.stdout}`
+  );
+  const replayResult = parseJsonLine(replay.stdout)
+    .result as Record<string, unknown>;
+  assert.equal(replayResult.migrationResult, "already_applied");
+  assert.equal(replayResult.mutationApplied, false);
+
+  const compatibleStatus = await runProcess(
+    localCli,
+    [
+      "database",
+      "status",
+      "--config",
+      localDatabaseConfigPath,
+      "--json"
+    ],
+    {
+      SOURCE_WIRE_DATABASE_URL: runtimeUrl
+    }
+  );
+  assert.equal(
+    compatibleStatus.code,
+    0,
+    `compatible status failed: ${compatibleStatus.stderr || compatibleStatus.stdout}`
+  );
+  assert.equal(
+    (
+      parseJsonLine(compatibleStatus.stdout)
+        .result as Record<string, unknown>
+    ).state,
+    "compatible"
+  );
+
+  const migrationRows = await targetAdminPool.query<{
+    checksum_sha256: string;
+  }>(
+    `SELECT checksum_sha256
+       FROM source_wire_memory.schema_migrations
+      WHERE version = $1`,
+    [ALPHA1_SCHEMA_VERSION]
+  );
+  const expectedChecksum = migrationRows.rows[0]?.checksum_sha256;
+  assert(expectedChecksum);
+  await targetAdminPool.query(
+    `UPDATE source_wire_memory.schema_migrations
+        SET checksum_sha256 = $1
+      WHERE version = $2`,
+    ["0".repeat(64), ALPHA1_SCHEMA_VERSION]
+  );
+  try {
+    const incompatible = await runProcess(
+      localCli,
+      [
+        "database",
+        "status",
+        "--config",
+        localDatabaseConfigPath,
+        "--json"
+      ],
+      {
+        SOURCE_WIRE_DATABASE_URL: runtimeUrl
+      }
+    );
+    assert.equal(incompatible.code, 1);
+    const incompatibleResult = parseJsonLine(incompatible.stdout)
+      .result as Record<string, unknown>;
+    assert.equal(incompatibleResult.state, "incompatible");
+    assert.equal(
+      JSON.stringify(incompatibleResult).includes(expectedChecksum),
+      false
+    );
+  } finally {
+    await targetAdminPool.query(
+      `UPDATE source_wire_memory.schema_migrations
+          SET checksum_sha256 = $1
+        WHERE version = $2`,
+      [expectedChecksum, ALPHA1_SCHEMA_VERSION]
+    );
+  }
+
+  for (const result of [
+    pendingStatus,
+    unavailable,
+    plan,
+    missingAuthority,
+    wrongClass,
+    rolledBack,
+    applied,
+    replay,
+    compatibleStatus
+  ]) {
+    outputsOutsideAuthorizedSecretResponses.push(
+      result.stdout,
+      result.stderr
+    );
+    assert.equal(result.stdout.includes("postgresql://"), false);
+    assert.equal(result.stderr.includes("postgresql://"), false);
+    assert.equal(result.stdout.includes(migratorUrl), false);
+    assert.equal(result.stdout.includes(runtimeUrl), false);
+  }
+  pass(
+    "S6-DB-02",
+    "read-only runtime-role status reported pending, compatible, incompatible, and unavailable states without owner, harness, or provider credentials"
+  );
+  pass(
+    "S6-DB-03",
+    "migration required an explicit apply flag and exact least-privilege migrator authority while missing, runtime-class, and superuser authority failed safely"
+  );
+  pass(
+    "S6-DB-04",
+    "migration displayed safe current and target sets, rolled back an injected transaction failure, applied once, and replayed idempotently"
+  );
+}
+
+async function migrationTableExists(): Promise<boolean> {
+  assert(targetAdminPool);
+  const result = await targetAdminPool.query<{
+    migration_table: string | null;
+  }>(
+    "SELECT to_regclass('source_wire_memory.schema_migrations')::text AS migration_table"
+  );
+  return result.rows[0]?.migration_table !== null;
 }
 
 async function apiAndCredentialProbes(): Promise<void> {
@@ -1832,6 +2269,14 @@ function pass(id: string, observation: string): void {
 
 async function cleanup(): Promise<boolean> {
   try {
+    if (localDatabaseConfigPath) {
+      await unlink(localDatabaseConfigPath).catch(() => undefined);
+      localDatabaseConfigPath = "";
+    }
+    if (localInitConfigPath) {
+      await unlink(localInitConfigPath).catch(() => undefined);
+      localInitConfigPath = "";
+    }
     await targetAdminPool?.end().catch(() => undefined);
     targetAdminPool = undefined;
     if (!adminPool) return false;

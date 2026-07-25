@@ -239,7 +239,7 @@ receipt.
 - [x] Provider reads create zero candidates and zero trusted memories.
 - [x] Replacing the provider requires owner-controlled configuration plus process restart; no registry or hot reload exists.
 
-**Latest-source implementation status:** Complete. Verified by 143 focused
+**Latest-source implementation status:** Complete. Verified by 145 focused
 Alpha tests and both 27-case disposable PostgreSQL Story 5 adapter paths. The
 provider is repository synthetic proof only. External or live providers,
 publication, deployment, production use, and real data remain blocked.
@@ -277,7 +277,7 @@ source-evidence audit-before-release guarantees.
 - [x] Crash and interruption tests prove deterministic child, credential, database, and temporary-file cleanup.
 - [x] Existing Alpha Stories 1 through 5 remain green.
 
-**Latest-source implementation status:** Complete. Verified by 143 focused
+**Latest-source implementation status:** Complete. Verified by 145 focused
 Alpha tests and both 27-case disposable PostgreSQL Story 5 adapter paths.
 Story 6 crash injection is locked to conformance. API-crash cleanup revokes
 only the exact generated harness credential and records metadata-only audit.
@@ -304,16 +304,23 @@ of initialization, diagnostics, provider checks, or MCP startup.
 
 ### Acceptance criteria
 
-- [ ] Database status reports compatible, pending, incompatible, and unavailable states without mutation.
-- [ ] Database status uses no owner, harness, or provider credential.
-- [ ] Migration requires distinct migrator authority and an explicit apply flag.
-- [ ] The command prints the current and target migration set before applying changes.
-- [ ] Initialization, diagnostics, provider checking, and MCP startup never apply migrations.
-- [ ] Migration success and failure return the same stable redacted CLI envelope as other commands.
-- [ ] Missing, wrong-class, or over-privileged credentials fail safely.
-- [ ] Migration output contains no database URL, credential, schema secret, or private data.
-- [ ] Disposable PostgreSQL conformance proves least privilege, idempotency, rollback behavior, and cleanup.
-- [ ] No managed PostgreSQL provisioning or persistent database support is introduced.
+- [x] Database status reports compatible, pending, incompatible, and unavailable states without mutation.
+- [x] Database status uses no owner, harness, or provider credential.
+- [x] Migration requires distinct migrator authority and an explicit apply flag.
+- [x] The command prints the current and target migration set before applying changes.
+- [x] Initialization, diagnostics, provider checking, and MCP startup never apply migrations.
+- [x] Migration success and failure return the same stable redacted CLI envelope as other commands.
+- [x] Missing, wrong-class, or over-privileged credentials fail safely.
+- [x] Migration output contains no database URL, credential, schema secret, or private data.
+- [x] Disposable PostgreSQL conformance proves least privilege, idempotency, rollback behavior, and cleanup.
+- [x] No managed PostgreSQL provisioning or persistent database support is introduced.
+
+**Latest-source implementation status:** Complete. Verified by 145 focused
+Alpha tests and 42-case disposable PostgreSQL Story 1 conformance. Status uses
+the exact runtime role inside a read-only transaction. Migration planning and
+explicit apply require the exact non-superuser migrator posture. Managed
+PostgreSQL provisioning, persistent databases, production migration,
+deployment, hosting, and real data remain blocked.
 
 ## Issue 6: Add Owner-Controlled Local Export
 

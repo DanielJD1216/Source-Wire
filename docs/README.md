@@ -50,6 +50,7 @@ Use tutorials and walkthroughs when you need a safe, executable path.
 - [Alpha 1 Story 6.2: Memory-Only Local Runtime](getting-started/alpha1-story6-memory-only-local-runtime.md)
 - [Alpha 1 Story 6.3: Synthetic Provider Local Runtime](getting-started/alpha1-story6-synthetic-provider-local-runtime.md)
 - [Alpha 1 Story 6.4: Fail-Closed Orchestration And Cleanup](getting-started/alpha1-story6-fail-closed-orchestration.md)
+- [Alpha 1 Story 6.5: Explicit Database Control Plane](getting-started/alpha1-story6-database-control-plane.md)
 
 The Alpha stories use generated disposable PostgreSQL state. They do not establish hosting, deployment, production readiness, live-provider support, production backup guarantees, or real-data safety.
 

@@ -21,6 +21,12 @@ import {
   checkKnowledgeProviderReadiness,
   loadConfiguredKnowledgeProvider
 } from "./provider.js";
+import {
+  applyLocalMigrations,
+  inspectLocalDatabaseStatus,
+  inspectLocalMigrationPlan,
+  migrationPlanResult
+} from "./database.js";
 
 export type SourceWireLocalCliExecution = Readonly<{
   exitCode: 0 | 1;
@@ -29,7 +35,8 @@ export type SourceWireLocalCliExecution = Readonly<{
 }>;
 
 export async function runSourceWireLocalCli(
-  args: readonly string[]
+  args: readonly string[],
+  environment: NodeJS.ProcessEnv = process.env
 ): Promise<SourceWireLocalCliExecution> {
   const command = args[0];
   const operation: SourceWireLocalOperation =
@@ -37,7 +44,11 @@ export async function runSourceWireLocalCli(
       ? "local.doctor"
       : command === "provider"
         ? "local.provider.check"
-        : "local.init";
+        : command === "database" && args[1] === "status"
+          ? "local.database.status"
+          : command === "database" && args[1] === "migrate"
+            ? "local.database.migrate"
+            : "local.init";
   try {
     if (command === "init") {
       const parsed = parseLocalArgs(args.slice(1), {
@@ -159,6 +170,73 @@ export async function runSourceWireLocalCli(
       };
     }
 
+    if (command === "database" && args[1] === "status") {
+      const parsed = parseLocalArgs(args.slice(2), {
+        config: { type: "string" },
+        json: { type: "boolean", default: false }
+      });
+      const configPath = parsed.values.config;
+      if (typeof configPath !== "string") invalidArguments();
+      const config = await readAndValidateLocalConfig(configPath);
+      const databaseUrl = requireLocalDatabaseUrl(
+        config.memory.runtimeDatabaseUrlEnv,
+        environment
+      );
+      const status = await inspectLocalDatabaseStatus(databaseUrl);
+      return {
+        exitCode: status.state === "compatible" ? 0 : 1,
+        format: parsed.values.json ? "json" : "human",
+        result: {
+          ok: true,
+          operation,
+          result: status,
+          warnings: []
+        }
+      };
+    }
+
+    if (command === "database" && args[1] === "migrate") {
+      const parsed = parseLocalArgs(args.slice(2), {
+        config: { type: "string" },
+        apply: { type: "boolean", default: false },
+        json: { type: "boolean", default: false }
+      });
+      const configPath = parsed.values.config;
+      if (typeof configPath !== "string") invalidArguments();
+      const config = await readAndValidateLocalConfig(configPath);
+      const databaseUrl = requireLocalDatabaseUrl(
+        config.memory.migratorDatabaseUrlEnv,
+        environment
+      );
+      const fault = parseStory6MigrationFault(environment);
+      const plan = await inspectLocalMigrationPlan(databaseUrl);
+      const result = parsed.values.apply
+        ? await applyLocalMigrations(
+            databaseUrl,
+            plan,
+            fault === "after_first_migration"
+              ? {
+                  afterMigrationApplied: () => {
+                    throw new SourceWireLocalCliError(
+                      "database_migration_failed"
+                    );
+                  }
+                }
+              : {}
+          )
+        : migrationPlanResult(plan);
+      return {
+        exitCode: result.state === "incompatible" ? 1 : 0,
+        format: parsed.values.json ? "json" : "human",
+        result: {
+          ok: true,
+          operation,
+          result,
+          warnings: []
+        }
+      };
+    }
+
     invalidArguments();
   } catch (error) {
     const format = args.includes("--json") ? "json" : "human";
@@ -188,4 +266,43 @@ function parseLocalArgs(
 
 function invalidArguments(): never {
   throw new SourceWireLocalCliError("invalid_arguments");
+}
+
+function requireLocalDatabaseUrl(
+  environmentName: string,
+  environment: NodeJS.ProcessEnv
+): string {
+  const value = environment[environmentName];
+  if (!value) {
+    throw new SourceWireLocalCliError("environment_missing");
+  }
+  try {
+    const parsed = new URL(value);
+    if (
+      (parsed.protocol !== "postgres:" &&
+        parsed.protocol !== "postgresql:") ||
+      !parsed.username ||
+      !parsed.hostname ||
+      parsed.pathname.length <= 1
+    ) {
+      throw new Error("invalid");
+    }
+  } catch {
+    throw new SourceWireLocalCliError("environment_invalid");
+  }
+  return value;
+}
+
+function parseStory6MigrationFault(
+  environment: NodeJS.ProcessEnv
+): "after_first_migration" | undefined {
+  const value = environment.SOURCE_WIRE_STORY6_MIGRATION_FAULT;
+  if (value === undefined) return undefined;
+  if (
+    environment.SOURCE_WIRE_CONFORMANCE_MODE !== "story6" ||
+    value !== "after_first_migration"
+  ) {
+    throw new SourceWireLocalCliError("environment_invalid");
+  }
+  return value;
 }

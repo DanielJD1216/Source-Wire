@@ -76,8 +76,16 @@ crash, response interruption, and shutdown races. A failed API cannot strand
 the generated MCP credential: the runner revokes that exact credential through
 its existing runtime database authority, records metadata-only audit, then
 closes dependent sessions and children.
+Story 6.5 adds an explicit database control plane. Status uses only the exact
+runtime role inside a read-only transaction. Migration planning uses the
+separate migrator role and applies nothing without `--apply`. Migration
+mutation requires the exact bounded migrator posture, assumes the non-login
+schema owner only inside the transaction, and rolls back atomically on failure.
 
-The Alpha workspace does not prove hosting, deployment, production availability, production backup guarantees, live-provider support, public network exposure, non-disposable database use, or real-data safety.
+The Alpha workspace does not prove hosting, deployment, managed database
+provisioning, production availability, production migration, production
+backup guarantees, live-provider support, public network exposure,
+non-disposable database use, or real-data safety.
 
 Follow the [Alpha 1 Story guides](../README.md#run-and-evaluate) in order.
 

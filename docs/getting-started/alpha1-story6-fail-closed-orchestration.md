@@ -127,5 +127,5 @@ explicitly locked to the synthetic conformance environment.
 - production authentication, secret custody, availability, and support,
 - publication of the Alpha runtime.
 
-The next dependency-ordered unit is
-[#282 Story 6.5: Add the explicit database control plane](https://github.com/DanielJD1216/Source-Wire/issues/282).
+Continue with
+[Story 6.5 Explicit Database Control Plane](alpha1-story6-database-control-plane.md).

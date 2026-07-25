@@ -1,0 +1,158 @@
+# Alpha 1 Story 6.5 Explicit Database Control Plane
+
+Latest source adds explicit database status and migration commands to the
+private `source-wire-local` CLI.
+
+This is unpublished Alpha proof with generated disposable PostgreSQL 16 state.
+It does not provision PostgreSQL, support persistent databases, authorize
+production migration, or change the hosted and deployment blocks.
+
+## Prerequisites
+
+Start with the repository [Quickstart](quickstart.md), then complete:
+
+1. [Story 6.1 Local CLI Init And Offline Doctor](alpha1-story6-local-cli-init-doctor.md)
+2. [Story 6.2 Memory-Only Local Runtime](alpha1-story6-memory-only-local-runtime.md)
+3. [Story 6.3 Synthetic Provider Local Runtime](alpha1-story6-synthetic-provider-local-runtime.md)
+4. [Story 6.4 Fail-Closed Orchestration And Cleanup](alpha1-story6-fail-closed-orchestration.md)
+
+Use exact Node.js `22.23.1` and PostgreSQL `16` for disposable Alpha
+conformance.
+
+The local config stores environment variable names, not database URLs:
+
+```json
+{
+  "memory": {
+    "kind": "postgres",
+    "runtimeDatabaseUrlEnv": "SOURCE_WIRE_DATABASE_URL",
+    "migratorDatabaseUrlEnv": "SOURCE_WIRE_MIGRATOR_DATABASE_URL",
+    "verifierKeyEnv": "SOURCE_WIRE_TOKEN_VERIFIER_KEY"
+  }
+}
+```
+
+Keep the runtime and migrator values separate.
+
+## Read-Only Status
+
+Set only the runtime-role database reference:
+
+```bash
+export SOURCE_WIRE_DATABASE_URL='<generated disposable runtime URL>'
+```
+
+Inspect status:
+
+```bash
+npm run local --workspace @source-wire/alpha1-runtime -- \
+  database status \
+  --config /owner-controlled/source-wire.local.json
+```
+
+For a stable machine-readable envelope:
+
+```bash
+npm run local --workspace @source-wire/alpha1-runtime -- \
+  database status \
+  --config /owner-controlled/source-wire.local.json \
+  --json
+```
+
+Status:
+
+- accepts only the exact `source_wire_runtime` role posture,
+- runs inside a read-only transaction,
+- uses no owner, harness, or provider credential,
+- reports `compatible`, `pending`, or `incompatible`,
+- returns `database_unavailable` when PostgreSQL cannot be reached,
+- applies zero migrations.
+
+The output contains safe migration versions and repository migration names. It
+does not contain database URLs, passwords, verifier material, schema
+checksums, private queries, evidence, memory, or hidden row counts.
+
+## Migration Plan
+
+Set the separate migrator-role database reference:
+
+```bash
+export SOURCE_WIRE_MIGRATOR_DATABASE_URL='<generated disposable migrator URL>'
+```
+
+Print the current set, target set, and pending set without mutation:
+
+```bash
+npm run local --workspace @source-wire/alpha1-runtime -- \
+  database migrate \
+  --config /owner-controlled/source-wire.local.json
+```
+
+This plan is the required pre-apply view. Without `--apply`, the command
+returns `migration-result not_applied` and `mutation-applied false`.
+
+## Explicit Apply
+
+Apply the displayed forward-only migration set:
+
+```bash
+npm run local --workspace @source-wire/alpha1-runtime -- \
+  database migrate \
+  --config /owner-controlled/source-wire.local.json \
+  --apply
+```
+
+Migration:
+
+- accepts only the exact `source_wire_migrator` login role,
+- rejects runtime-role, missing, superuser, inherited, create-database,
+  create-role, replication, and bypass-RLS authority,
+- assumes the non-login schema owner only inside the bounded migration
+  transaction,
+- uses the existing advisory lock and forward-only checksum chain,
+- rolls back the complete transaction on failure,
+- reports `applied` or `already_applied`,
+- never runs from init, doctor, provider check, or MCP startup.
+
+## Verification
+
+Focused tests:
+
+```bash
+npm run alpha1:test
+```
+
+Generated disposable PostgreSQL proof:
+
+```bash
+npm run alpha1:conformance:story1
+```
+
+Story 1 now passes 42 cases. The Story 6.5 cases are:
+
+- `S6-DB-01`, init, doctor, provider check, and MCP startup apply no
+  migrations,
+- `S6-DB-02`, runtime-role status reports pending, compatible, incompatible,
+  and unavailable safely,
+- `S6-DB-03`, migration requires `--apply` plus exact migrator authority and
+  rejects missing, wrong-class, and over-privileged authority,
+- `S6-DB-04`, the safe plan is visible, an injected failure rolls back,
+  first apply succeeds, and replay is idempotent.
+
+The temporary config files, database, roles, sessions, and generated
+credentials are removed by conformance cleanup.
+
+## Still Blocked
+
+- managed PostgreSQL provisioning,
+- non-disposable or production databases,
+- production migrations,
+- external or live knowledge providers,
+- hosted API or hosted MCP,
+- HTTP or SSE MCP,
+- deployment,
+- real user or client data,
+- publication of the Alpha runtime.
+
+The next dependency-ordered unit is
+[#283 Story 6.6: Add owner-controlled local export](https://github.com/DanielJD1216/Source-Wire/issues/283).

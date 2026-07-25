@@ -586,6 +586,85 @@ test("local crash injection is unavailable outside locked Story 6 conformance", 
   }
 });
 
+test("database commands keep status and migration authority explicit before connection", async () => {
+  const directory = await privateTemporaryDirectory();
+  try {
+    const configPath = join(directory, "memory-only.json");
+    await writeConfig(configPath, createLocalConfigTemplate());
+
+    const missingStatus = await runSourceWireLocalCli(
+      ["database", "status", "--config", configPath],
+      {}
+    );
+    assert.equal(missingStatus.exitCode, 1);
+    assert(!missingStatus.result.ok);
+    assert.equal(missingStatus.result.operation, "local.database.status");
+    assert.equal(missingStatus.result.error.code, "environment_missing");
+
+    const missingMigrator = await runSourceWireLocalCli(
+      ["database", "migrate", "--config", configPath, "--apply"],
+      {}
+    );
+    assert.equal(missingMigrator.exitCode, 1);
+    assert(!missingMigrator.result.ok);
+    assert.equal(
+      missingMigrator.result.operation,
+      "local.database.migrate"
+    );
+    assert.equal(missingMigrator.result.error.code, "environment_missing");
+
+    const refusedFault = await runSourceWireLocalCli(
+      ["database", "migrate", "--config", configPath, "--apply"],
+      {
+        SOURCE_WIRE_MIGRATOR_DATABASE_URL:
+          "postgresql://migrator:secret@127.0.0.1:1/disposable",
+        SOURCE_WIRE_STORY6_MIGRATION_FAULT: "after_first_migration"
+      }
+    );
+    assert.equal(refusedFault.exitCode, 1);
+    assert(!refusedFault.result.ok);
+    assert.equal(refusedFault.result.error.code, "environment_invalid");
+    assertNonSecretSurface(
+      renderLocalCliResult(refusedFault.result, refusedFault.format)
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("database result renderers expose only safe migration identity and mutation state", () => {
+  const result = {
+    ok: true as const,
+    operation: "local.database.migrate" as const,
+    result: {
+      state: "pending" as const,
+      currentMigrations: [
+        { version: 1, name: "0001_story1_bootstrap.sql" }
+      ],
+      targetMigrations: [
+        { version: 1, name: "0001_story1_bootstrap.sql" },
+        { version: 2, name: "0002_story2_candidate_lifecycle.sql" }
+      ],
+      pendingMigrations: [
+        { version: 2, name: "0002_story2_candidate_lifecycle.sql" }
+      ],
+      applyRequired: true,
+      applyRequested: false,
+      migrationResult: "not_applied" as const,
+      mutationApplied: false
+    },
+    warnings: []
+  };
+  const human = renderLocalCliResult(result, "human");
+  assert.match(human, /ok local\.database\.migrate/u);
+  assert.match(human, /current 1:0001_story1_bootstrap\.sql/u);
+  assert.match(human, /pending 2:0002_story2_candidate_lifecycle\.sql/u);
+  assert.match(human, /apply-required true/u);
+  assert.match(human, /mutation-applied false/u);
+  assertNonSecretSurface(human);
+  assertNonSecretSurface(renderLocalCliResult(result, "json"));
+});
+
 function plainConfig(): Record<string, unknown> {
   return JSON.parse(
     JSON.stringify(createLocalConfigTemplate())

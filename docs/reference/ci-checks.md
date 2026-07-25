@@ -10,7 +10,9 @@ request:
   ephemeral PostgreSQL 16 service. Its Story 2 path also runs the Story 6.2
   memory-only local launcher conformance. Both Story 5 adapter paths also run
   the Story 6.3 provider-check and four-tool local launcher conformance plus
-  the Story 6.4 fail-closed orchestration and cleanup matrix.
+  the Story 6.4 fail-closed orchestration and cleanup matrix. Story 1 also
+  runs the Story 6.5 read-only status, explicit migration, role-separation,
+  rollback, idempotency, and cleanup matrix.
 
 The workflow is for release and conformance confidence only. It does not
 publish, deploy, call private services, use real data, or preserve a database
@@ -64,7 +66,8 @@ SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED
 A success marker appears only after Stories 1 through 5, the embedded Story 6.2
 memory-only launcher cases, the Story 6.3 provider-composition cases through
 both Story 5 adapters, the Story 6.4 failure cases, and their cleanup checks
-pass in dependency order.
+pass in dependency order. The same marker also requires the Story 6.5 database
+control plane to pass inside Story 1.
 Alpha unit tests cannot emit that marker.
 
 ## Local Mirror

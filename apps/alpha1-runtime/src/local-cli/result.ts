@@ -2,6 +2,8 @@ export const SOURCE_WIRE_LOCAL_OPERATIONS = [
   "local.init",
   "local.doctor",
   "local.provider.check",
+  "local.database.status",
+  "local.database.migrate",
   "local.mcp.stdio"
 ] as const;
 
@@ -48,6 +50,9 @@ export type SourceWireLocalErrorCode =
   | "environment_invalid"
   | "database_unavailable"
   | "database_incompatible"
+  | "database_authority_invalid"
+  | "database_status_failed"
+  | "database_migration_failed"
   | "api_unavailable"
   | "api_start_failed"
   | "credential_issue_failed"
@@ -78,6 +83,12 @@ const ERROR_MESSAGES: Readonly<Record<SourceWireLocalErrorCode, string>> = {
   database_unavailable: "The local PostgreSQL memory store is unavailable.",
   database_incompatible:
     "The local PostgreSQL memory store migration state is incompatible.",
+  database_authority_invalid:
+    "The local PostgreSQL authority does not match the requested database operation.",
+  database_status_failed:
+    "The local PostgreSQL migration state could not be inspected safely.",
+  database_migration_failed:
+    "The local PostgreSQL migration could not be applied safely.",
   api_unavailable: "The loopback API operation is unavailable.",
   api_start_failed: "The loopback API did not start safely.",
   credential_issue_failed:
@@ -169,6 +180,38 @@ export function renderLocalCliResult(
     ].join("\n") + "\n";
   }
 
+  if (
+    result.operation === "local.database.status" ||
+    result.operation === "local.database.migrate"
+  ) {
+    const value = result.result as {
+      state: "compatible" | "pending" | "incompatible";
+      currentMigrations: ReadonlyArray<{ version: number; name: string }>;
+      targetMigrations: ReadonlyArray<{ version: number; name: string }>;
+      pendingMigrations: ReadonlyArray<{ version: number; name: string }>;
+      mutationApplied: boolean;
+      applyRequired?: boolean;
+      applyRequested?: boolean;
+      migrationResult?: "not_applied" | "applied" | "already_applied";
+    };
+    const lines = [
+      `ok ${result.operation}`,
+      `state ${value.state}`,
+      `current ${renderMigrationSet(value.currentMigrations)}`,
+      `target ${renderMigrationSet(value.targetMigrations)}`,
+      `pending ${renderMigrationSet(value.pendingMigrations)}`,
+      `mutation-applied ${value.mutationApplied}`
+    ];
+    if (result.operation === "local.database.migrate") {
+      lines.push(
+        `apply-required ${value.applyRequired}`,
+        `apply-requested ${value.applyRequested}`,
+        `migration-result ${value.migrationResult}`
+      );
+    }
+    return `${lines.join("\n")}\n`;
+  }
+
   const value = result.result as {
     schema: string;
     contractsPackageVersion: string;
@@ -190,4 +233,13 @@ export function renderLocalCliResult(
     `api ${value.apiBinding}`,
     `external-checks ${value.externalChecks}`
   ].join("\n") + "\n";
+}
+
+function renderMigrationSet(
+  migrations: ReadonlyArray<{ version: number; name: string }>
+): string {
+  if (migrations.length === 0) return "none";
+  return migrations
+    .map((migration) => `${migration.version}:${migration.name}`)
+    .join(",");
 }

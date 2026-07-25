@@ -334,7 +334,7 @@ printRows([
   ["License", packageJson.license],
   ["Publish boundary", "npm package public at @source-wire/contracts@0.2.0, hosted runtime blocked"],
   ["Published runtime boundary", "the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime"],
-  ["Latest-source runtime boundary", "an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, Story 6.3 composes one repository synthetic provider into the four-tool path, and Story 6.4 hardens fail-closed orchestration and cleanup behind the same local command; it contains no deployment, hosting, external or live provider, production support, production backup guarantee, or real data"]
+  ["Latest-source runtime boundary", "an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, Story 6.3 composes one repository synthetic provider into the four-tool path, Story 6.4 hardens fail-closed orchestration and cleanup, and Story 6.5 adds explicit read-only database status plus apply-gated migration control behind the same local CLI; it contains no deployment, hosting, managed database provisioning, external or live provider, production support, production backup guarantee, or real data"]
 ]);
 
 printSection("Package Surfaces");
@@ -357,10 +357,11 @@ printList([
   "alpha1:conformance:story4 uses real API, owner CLI, operator CLI, and generated disposable PostgreSQL 16 state to prove correction, revocation, protected-read races, deterministic secret-free export, fresh portable initialization, isolated physical recovery, runtime verification gates, least privilege, and cleanup",
   "alpha1:conformance:story5 runs 27 real-process and disposable PostgreSQL cases for immutable provider binding, protected evidence release, Story 6.3 composition, and Story 6.4 fail-closed orchestration plus cleanup",
   "alpha1:conformance:story5:replaceable runs the same 27-case protected local CLI and failure path through the separate public-contract-only synthetic adapter",
+  "alpha1:conformance:story1 runs 42 disposable PostgreSQL cases including Story 6.5 read-only status, explicit migration, role separation, rollback, idempotency, and cleanup",
   "alpha1:story5:security-gate verifies the temporary local stdio advisory disposition, dependency set, transport exclusions, immutable provider policy, and review deadline",
   "alpha1:ci-workflow-smoke verifies the separate exact-version hosted PostgreSQL conformance job cannot be replaced by unit tests",
   "alpha1:conformance runs all five local Alpha 1 story conformance paths in order and runs Story 5 through both synthetic adapters",
-  "the nine Alpha 1 and Story 6 getting-started guides define prerequisites, commands, trust boundaries, retry, receipt, lifecycle, portability, recovery, provider release, local composition, fail-closed cleanup, and blocked scope"
+  "the ten Alpha 1 and Story 6 getting-started guides define prerequisites, commands, trust boundaries, retry, receipt, lifecycle, portability, recovery, provider release, local composition, fail-closed cleanup, database control, and blocked scope"
 ]);
 
 printSection("Installed Package Smokes");

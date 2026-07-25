@@ -11,6 +11,7 @@ Summary:
 - Extended the complete Alpha conformance command and hosted PostgreSQL job to run Story 5 through both the original and replaceable synthetic provider adapters.
 - Kept exact Node.js `22.23.1`, PostgreSQL `16`, generated disposable credentials and state, deterministic cleanup, stable begin/success/failure markers, and no artifact upload.
 - Extended the Story 5 security gate to enforce the replaceable adapter's public-contract-only imports and the startup composition's no-registry boundary.
+- Made the Story 2 capability-order assertion use PostgreSQL's explicit `C` collation so the complete gate is deterministic across macOS and Ubuntu.
 - Preserved fail-closed coverage for provider absence, malformed startup composition, capability and namespace denial, scope mismatch, opaque identifier bounds, provenance, deadlines, response bounds, audit failure, receipt mismatch and replay, foreign process, database outage, crash checkpoints, response-write interruption, buffer clearing, and least privilege.
 - Kept the dated moderate MCP advisory disposition valid for the unchanged local stdio-only synthetic Alpha scope through 2026-08-24.
 - Updated human and agent documentation so the full command, both-adapter proof, and continuous gate are explicit.

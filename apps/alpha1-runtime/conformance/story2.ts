@@ -312,7 +312,7 @@ async function migrateAndInitialize(): Promise<void> {
     `SELECT capability
        FROM source_wire_memory.credential_capability_grants
       WHERE credential_id = $1
-      ORDER BY capability`,
+      ORDER BY capability COLLATE "C"`,
     [ownerCredentialId]
   );
   assert.deepEqual(

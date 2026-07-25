@@ -1,7 +1,7 @@
 # Local Runtime 0.1.0-alpha.2 Security Candidate
 
-`@source-wire/local-runtime@0.1.0-alpha.2` is an unpublished security-fix
-candidate. It is prepared only for reviewed macOS and Linux local evaluation
+`@source-wire/local-runtime@0.1.0-alpha.2` is a publication-approved
+security-fix Alpha. It is limited to reviewed macOS and Linux local evaluation
 with synthetic or disposable data.
 
 ## Why This Candidate Exists
@@ -61,8 +61,8 @@ disposable state, and cleanup proof.
 
 ## Release Boundary
 
-This candidate is not published. Publication requires a new exact owner
-approval after the source revision and hosted verification are known.
+Exact owner publication approval is recorded after green hosted package and
+PostgreSQL verification. The approved npm channel is the `alpha` tag only.
 
 Still blocked:
 
@@ -74,5 +74,4 @@ Still blocked:
 - real user or client data,
 - live or untrusted providers,
 - non-disposable databases,
-- npm publication,
 - Git tags and GitHub releases.

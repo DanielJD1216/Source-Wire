@@ -2,8 +2,8 @@
 
 ## 0.1.0-alpha.2
 
-Unpublished security-fix candidate. No npm publication, Git tag, GitHub
-release, deployment, or hosted service is included.
+Reviewed public security-fix Alpha. No Git tag, GitHub release, deployment, or
+hosted service is included.
 
 - Rejects actor-owner and requested-namespace mismatches before provider
   invocation.
@@ -14,8 +14,7 @@ release, deployment, or hosted service is included.
   crash conformance.
 - Documents in-process provider adapters as trusted application code and keeps
   live providers blocked.
-- Supersedes deprecated `0.1.0-alpha.1` after a separate future publication
-  approval.
+- Supersedes deprecated `0.1.0-alpha.1` under the npm `alpha` tag.
 
 ## 0.1.0-alpha.1
 

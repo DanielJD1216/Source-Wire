@@ -16,21 +16,21 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 | Source package reuse | Allowed under Apache-2.0 |
 | npm package | Published as `@source-wire/contracts@0.2.0` |
 | GitHub release | Published as `v0.2.0` |
-| Snapshot boundary | npm contracts versions `0.1.0` and `0.2.0`, deprecated local-runtime version `0.1.0-alpha.1`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable snapshots. Unpublished local-runtime `0.1.0-alpha.2` is a source candidate only. The local-runtime npm Alpha did not create a GitHub release. |
+| Snapshot boundary | npm contracts versions `0.1.0` and `0.2.0`, deprecated local-runtime version `0.1.0-alpha.1`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable snapshots. Local-runtime `0.1.0-alpha.2` is approved for npm publication only. No local-runtime GitHub release is approved. |
 | Known `v0.1.0` artifact issue | The immutable npm `0.1.0` package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`. Version `0.2.0` exports the corrected package version. |
 | Hosted runtime | Not included |
 | Local stdio MCP proposal and search process | Included only in latest source, established by Stories 2 and 3 and preserved by Story 4; hosted and production MCP remain excluded |
 | Synthetic runtime skeleton | Included on latest `main` only |
-| Local Alpha 1 Stories 1 through 5 developer runtime | Included in latest source and the unpublished `0.1.0-alpha.2` candidate, not in the published contracts package |
-| Local Story 6.1 CLI tracer | Included in latest source and the unpublished candidate for non-secret config creation and offline validation; hosting and production use are not included |
-| Local Story 6.2 memory-only runner | Included in latest source and the unpublished candidate as a loopback API plus exactly two memory tools over stdio; verified only with generated disposable PostgreSQL state |
+| Local Alpha 1 Stories 1 through 5 developer runtime | Included in latest source and the publication-approved `0.1.0-alpha.2` Alpha, not in the published contracts package |
+| Local Story 6.1 CLI tracer | Included in latest source and the publication-approved Alpha for non-secret config creation and offline validation; hosting and production use are not included |
+| Local Story 6.2 memory-only runner | Included in latest source and the publication-approved Alpha as a loopback API plus exactly two memory tools over stdio; verified only with generated disposable PostgreSQL state |
 | Local Story 6.3 synthetic provider runner | Included in latest source for offline metadata checking, explicit connected readiness, immutable startup composition, and four-tool stdio proof with repository synthetic providers only |
 | Local Story 6.4 fail-closed runner | Included in latest source for stable redacted failure results, child-crash teardown, API-independent process-credential invalidation, protocol separation, and disposable cleanup proof |
 | Local Story 6.5 database control plane | Included in latest source for read-only runtime-role status, safe current and target migration planning, explicit apply, exact migrator posture, rollback, idempotency, and disposable cleanup proof |
 | Local Story 6.6 owner-controlled export | Included in latest source for explicit namespace selection, exact owner authority, canonical bounded local output, default no-overwrite, interruption cleanup, and zero upload |
 | Local Story 6.7 evidence-first compatibility | Included in latest source as synthetic cross-repository proof against a pinned private adapter that depends exactly on published `@source-wire/contracts@0.2.0`; no live connector or real evidence is included |
 | Local Story 6.8 package release | Public `@source-wire/local-runtime@0.1.0-alpha.1` was published and is now deprecated with a security warning |
-| Local Story 6.9 security candidate | Latest source prepares unpublished `0.1.0-alpha.2` with pre-invocation owner and namespace binding, hard provider deadlines, cooperative abort, and unified protected search and exact-fetch handoff |
+| Local Story 6.9 security Alpha | `0.1.0-alpha.2` is approved for npm publication with pre-invocation owner and namespace binding, hard provider deadlines, cooperative abort, and unified protected search and exact-fetch handoff |
 | Local-runtime registry tags | `alpha` and npm's required `latest` alias still resolve to deprecated `0.1.0-alpha.1`; no registry local-runtime version is currently recommended |
 | Database or migrations | Six explicit forward-only disposable Alpha 1 migrations are included in latest source; production and non-disposable use remain unapproved |
 | Trusted-memory search | Included only as local active-only PostgreSQL full-text proof with audit-before-release receipts |
@@ -53,8 +53,8 @@ These public issues track completed release, branch-governance, hosted-runtime P
 
 Source-Wire is a public contracts package plus the first local operating proof
 for agent-first memory systems. The first local-runtime npm Alpha is
-deprecated. The corrected `0.1.0-alpha.2` candidate exists only in source and
-has not been approved for publication.
+deprecated. The corrected `0.1.0-alpha.2` Alpha is approved for npm
+publication under the `alpha` tag.
 
 It currently includes:
 

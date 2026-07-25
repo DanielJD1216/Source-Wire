@@ -4,14 +4,15 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
-### 2026-07-25 - Local-runtime 0.1.0-alpha.2 security candidate
+### 2026-07-25 - Local-runtime 0.1.0-alpha.2 security Alpha
 
 Summary:
 
 - Deprecated public `@source-wire/local-runtime@0.1.0-alpha.1` with a security
   warning because provider owner and namespace binding and hard provider
   deadline enforcement were incomplete.
-- Prepared, but did not publish, `0.1.0-alpha.2`.
+- Prepared and received exact owner approval to publish `0.1.0-alpha.2` under
+  the npm `alpha` tag.
 - Bound authenticated owner and requested namespace to the immutable provider
   binding before search or exact-fetch provider invocation.
 - Raced provider execution against the configured deadline, supplied
@@ -28,7 +29,7 @@ Summary:
 
 Boundary:
 
-- `0.1.0-alpha.2` is not published.
+- npm publication is approved as a separate owner gate.
 - Production, hosting, deployment, real data, live or untrusted providers,
   Windows, HTTP or SSE MCP, static serving, non-disposable databases, Git
   tags, and GitHub releases remain blocked.

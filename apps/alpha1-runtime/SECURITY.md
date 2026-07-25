@@ -5,15 +5,15 @@ confirmed that a multi-namespace credential could substitute the configured
 provider namespace and that a never-settling provider could outlive its
 configured deadline.
 
-`0.1.0-alpha.2` is an unpublished security-fix candidate limited to macOS and
+`0.1.0-alpha.2` is a reviewed public security-fix Alpha limited to macOS and
 Linux local evaluation with synthetic or disposable data.
 
-This candidate restores pre-invocation namespace binding and provider deadline enforcement
+This Alpha restores pre-invocation namespace binding and provider deadline enforcement
 with a hard response deadline.
 
 ## Provider boundary
 
-The candidate:
+The Alpha:
 
 - binds actor owner, requested namespace, and provider owner and namespace
   before provider invocation,
@@ -32,12 +32,12 @@ in-process code.
 
 ## Dependency advisory disposition
 
-A fresh review of the exact candidate dependency tree reports two moderate
+A fresh review of the exact Alpha dependency tree reports two moderate
 findings for nested `@hono/node-server@1.19.15` through
 `@modelcontextprotocol/sdk@1.29.0`. The current advisory concerns Windows
 static-file path handling and is tracked as `GHSA-frvp-7c67-39w9`.
 
-The findings are temporarily accepted for this candidate because:
+The findings are temporarily accepted for this Alpha because:
 
 - Windows is unsupported and blocked by package metadata.
 - MCP transport is stdio only.
@@ -51,7 +51,7 @@ The findings are temporarily accepted for this candidate because:
 
 This is a scope-limited disposition, not a claim that the dependency is safe
 for other uses. The dependency disposition was re-reviewed on July 25, 2026
-for the unpublished `0.1.0-alpha.2` candidate after the runtime changed.
+for the public `0.1.0-alpha.2` Alpha after the runtime changed.
 Re-review is required no later than August 24, 2026, or immediately if any
 dependency, transport, platform, runtime, future publication, hosting,
 deployment, or data boundary changes.
@@ -60,9 +60,9 @@ deployment, or data boundary changes.
 
 There is no production authentication, hosted secret custody, managed
 database, managed provider credential, telemetry, billing, or
-Source-Wire-operated service in this candidate.
+Source-Wire-operated service in this Alpha.
 
-Do not use this candidate with real user data, client data, production
+Do not use this Alpha with real user data, client data, production
 credentials, production databases, live knowledge providers, Windows, HTTP or
 SSE MCP, or static serving.
 

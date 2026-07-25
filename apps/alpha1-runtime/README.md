@@ -3,9 +3,9 @@
 Experimental Source-Wire local runtime for macOS and Linux evaluation with
 synthetic or disposable data only.
 
-Version `0.1.0-alpha.2` is an unpublished security-fix candidate. The first
+Version `0.1.0-alpha.2` is the reviewed public security-fix Alpha. The first
 public npm Alpha, `0.1.0-alpha.1`, is deprecated because namespace binding and
-provider deadline enforcement were incomplete. Neither version is a hosted
+provider deadline enforcement were incomplete. This package is not a hosted
 service, production runtime, GitHub release, or stable release.
 
 ## Compatibility
@@ -19,16 +19,14 @@ service, production runtime, GitHub release, or stable release.
 
 ## Install
 
-Build and pack the unpublished candidate from an explicit reviewed checkout:
+Install the exact reviewed Alpha:
 
 ```sh
-npm run alpha1:build
-npm pack --workspace @source-wire/local-runtime --pack-destination /tmp
+npm install --save-exact @source-wire/local-runtime@0.1.0-alpha.2
 ```
 
-Install the resulting tarball into an evaluation project with an explicit local
-path. Do not install deprecated `0.1.0-alpha.1`, use `npx`, use a floating
-package version, or use an unreviewed remote URL.
+Do not install deprecated `0.1.0-alpha.1`, use `npx`, use a floating package
+version, or use an unreviewed remote URL.
 
 The installed binary is:
 
@@ -52,7 +50,7 @@ query deadlines, including PostgreSQL `statement_timeout`.
 
 ## Support boundary
 
-Supported for this Alpha candidate:
+Supported for this public Alpha:
 
 - local macOS or Linux evaluation
 - synthetic or disposable data
@@ -87,7 +85,6 @@ publication, hosting, deployment, or data-scope change.
 
 ## Public Alpha boundary
 
-The `0.1.0-alpha.2` candidate is not published. Preparing it does not authorize
-npm publication, a Git tag or release, deployment, hosting, real data, live
-providers, Windows, HTTP or SSE MCP, static serving, non-disposable databases,
-or production use.
+npm publication of `0.1.0-alpha.2` does not authorize a Git tag or release,
+deployment, hosting, real data, live providers, Windows, HTTP or SSE MCP,
+static serving, non-disposable databases, or production use.

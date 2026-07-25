@@ -48,12 +48,12 @@ assertEqual(
 );
 assertEqual(
   candidate?.publicationSecurityReview?.scope,
-  "npm-alpha-0.1.0-alpha.2-candidate",
+  "npm-public-alpha-0.1.0-alpha.2",
   "publication security review scope"
 );
 assertEqual(
   candidate?.publicationSecurityReview?.status,
-  "prepared-not-published",
+  "approved-for-publication",
   "publication security review status"
 );
 assertJsonEqual(
@@ -150,7 +150,7 @@ for (const forbiddenReference of [
 console.log("ok local runtime security scope macOS Linux and stdio only");
 console.log("ok local runtime exact Alpha dependency pins");
 console.log(
-  "ok local runtime alpha.2 candidate security review recorded 2026-07-25 publication blocked"
+  "ok local runtime alpha.2 publication security review recorded 2026-07-25"
 );
 console.log(
   "accepted two moderate nested MCP findings for unsupported Windows static serving scope"

@@ -227,9 +227,9 @@ try {
     `ok local runtime candidate ${expected.name}@${expected.version}`
   );
   console.log(
-    "ok local runtime candidate has public npm Alpha metadata publication blocked"
+    "ok local runtime candidate has public npm Alpha metadata"
   );
-  console.log("ok local runtime candidate reserves alpha dist-tag metadata without publishing");
+  console.log("ok local runtime candidate reserves the alpha dist-tag");
   console.log(
     `ok local runtime candidate pins @source-wire/contracts@${expected.contractsVersion}`
   );

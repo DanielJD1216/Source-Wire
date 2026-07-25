@@ -70,8 +70,8 @@
     "sourceWireEndpointRequired": false,
     "publicationSecurityReview": {
       "reviewedAt": "2026-07-25",
-      "scope": "npm-alpha-0.1.0-alpha.2-candidate",
-      "status": "prepared-not-published"
+      "scope": "npm-public-alpha-0.1.0-alpha.2",
+      "status": "approved-for-publication"
     },
     "advisoryDisposition": {
       "status": "temporarily-accepted",

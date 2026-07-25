@@ -69,7 +69,8 @@ Use latest `main` when you want the newest docs, public-readiness checks, owner-
 Use the npm package when you want the immutable published contract artifact.
 
 Do not use deprecated `@source-wire/local-runtime@0.1.0-alpha.1`. Latest source
-prepares `0.1.0-alpha.2`, but that candidate is not published.
+contains publication-approved `0.1.0-alpha.2`; npm publication does not create
+or approve a Git tag or GitHub release.
 
 ## Current Boundary
 

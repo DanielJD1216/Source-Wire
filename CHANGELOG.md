@@ -21,6 +21,8 @@ Summary:
 - Added forward-only migration `0005` for durable provider-read audit receipts, exact serialized-result binding, origin-process verification, and single-use receipt consumption.
 - Added a dedicated Story 5 disposable PostgreSQL conformance runner covering the exact four-tool MCP surface, API and provider routing, durable read audit, release receipts, authorization, provider faults, replay denial, crash stages, least privilege, leak resistance, zero memory promotion, and deterministic cleanup.
 - Fixed provider-receipt consumption in migration `0005` by using PostgreSQL's `COALESCE` expression without an invalid `pg_catalog` function qualification.
+- Added a separate GitHub Actions job pinned to Node.js `22.23.1` with an ephemeral PostgreSQL `16` service. It runs the Story 5 security gate and Stories 1 through 5 in order, emits stable begin, success, and failure markers, and uploads no conformance artifacts.
+- Added a workflow smoke that prevents the hosted PostgreSQL gate from being replaced by Alpha unit tests or broadened with production secrets or artifact uploads.
 - Kept provider identity, owner, namespace, scope, timeout, endpoint, and credentials outside MCP and API input.
 - Preserved zero-provider operation as a safe unavailable result and kept provider reads separate from candidates and trusted memory.
 - Preserved the published `@source-wire/contracts@0.1.0` package boundary. Story 5 PostgreSQL conformance is now included, while continuous PostgreSQL CI and a published provider contract remain later Story 5 issues.
@@ -35,6 +37,7 @@ Validation:
 - `npm run alpha1:conformance:story4`
 - `npm run alpha1:conformance:story5`
 - `npm run alpha1:story5:security-gate`
+- `npm run alpha1:ci-workflow-smoke`
 - `npm test`
 - `npm run docs:links`
 - `npm run docs:anchors`
@@ -55,12 +58,14 @@ Primary files:
 - `apps/alpha1-runtime/tests/mcp-source-evidence-search.test.ts`
 - `apps/alpha1-runtime/tests/mcp-source-evidence-get.test.ts`
 - `apps/alpha1-runtime/conformance/story5.ts`
+- `.github/workflows/package-checks.yml`
+- `scripts/alpha1-postgres-workflow-smoke.mjs`
 
 Risks and follow-ups:
 
 - The known moderate MCP dependency advisory is temporarily accepted only for the local, stdio-only synthetic Alpha runtime. It must be reviewed again no later than 2026-08-24, or immediately if the dependency, transport, platform, or runtime scope changes.
 - Production, hosting, Windows runtime, HTTP/SSE MCP, static serving, deployment, live connectors, real data, package publication, and automatic trusted-memory promotion remain blocked.
-- These slices do not add continuous PostgreSQL conformance or a published provider contract. Those remain separate Story 5 issues.
+- These slices do not publish the provider contract. Release-candidate preparation remains a separate Story 5 issue.
 
 ### 2026-07-24 - Public documentation and visual-system redesign
 

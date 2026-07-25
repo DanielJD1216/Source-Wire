@@ -97,6 +97,7 @@ The `ci:check` sub-gate includes:
 - `npm run build`
 - `npm test`
 - `npm run alpha1:test`
+- `npm run alpha1:ci-workflow-smoke`
 - `npm run validate:fixtures`
 - `npm run verify:schema-exports`
 - `npm run cli:smoke`

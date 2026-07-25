@@ -1,8 +1,16 @@
 # Source-Wire CI Checks
 
-Source-Wire uses GitHub Actions to run package checks on push and pull request.
+Source-Wire uses GitHub Actions to run two independent jobs on push and pull
+request:
 
-The workflow is for release confidence only. It does not publish, deploy, run a backend, or call private services.
+- `Source-Wire package checks` runs the contracts, documentation, safety, claim,
+  and release-boundary gates.
+- `Source-Wire Alpha PostgreSQL conformance` runs the complete local Alpha
+  Stories 1 through 5 against an ephemeral PostgreSQL 16 service.
+
+The workflow is for release and conformance confidence only. It does not
+publish, deploy, call private services, use real data, or preserve a database
+after the job.
 
 ## Workflow
 
@@ -19,7 +27,8 @@ The workflow uses:
 
 Those actions use Node 24 for their own action internals.
 
-Source-Wire package checks still run on Node 22 through `actions/setup-node`.
+Source-Wire package checks run on Node 22 through `actions/setup-node`. The
+Alpha PostgreSQL job pins the runtime exactly to Node.js `22.23.1`.
 
 The workflow runs:
 
@@ -27,6 +36,29 @@ The workflow runs:
 npm ci
 npm run publish:readiness
 ```
+
+The separate PostgreSQL job runs:
+
+```bash
+npm ci
+npm run alpha1:story5:security-gate
+npm run alpha1:conformance
+```
+
+Its PostgreSQL password is generated from the GitHub run ID and attempt, is
+used only by the ephemeral PostgreSQL 16 service, and is never uploaded. The
+job uploads no database dump, report, evidence body, credential, or path.
+
+Stable gate markers:
+
+```text
+SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN
+SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS
+SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED
+```
+
+A success marker appears only after Stories 1 through 5 and their cleanup
+checks pass in dependency order. Alpha unit tests cannot emit that marker.
 
 ## Local Mirror
 
@@ -44,6 +76,14 @@ Run the same readiness gate locally:
 npm run publish:readiness
 ```
 
+With exact Node.js `22.23.1` and local PostgreSQL `16`, mirror the hosted Alpha
+job with:
+
+```bash
+npm run alpha1:story5:security-gate
+npm run alpha1:conformance
+```
+
 ## Check Coverage
 
 For the runtime-boundary proof lane summarized across these checks, see [Runtime Boundary Readiness](../internal/runtime-boundary-readiness.md).
@@ -54,6 +94,7 @@ The readiness gate runs:
 - `npm run build`
 - `npm test`
 - `npm run alpha1:test`
+- `npm run alpha1:ci-workflow-smoke`
 - `npm run validate:fixtures`
 - `npm run verify:schema-exports`
 - `npm run cli:smoke`
@@ -255,6 +296,8 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Public safety | `Findings: 0 high=0 medium=0 low=0` | Public-safety scan found no obvious private-data or secret findings. |
 | Public claim boundary | `ok public claim boundary scan` | Public docs do not make unsafe production, contribution, npm publishing, GitHub release, or hosted-runtime claims while Source-Wire remains not hosted. |
 | CI marker self-smoke | `ok ci markers smoke` | The marker helper accepts a complete synthetic log and rejects an incomplete synthetic log. |
+| Alpha PostgreSQL workflow smoke | `ok Alpha PostgreSQL workflow uses Node.js 22.23.1`, `ok Alpha PostgreSQL workflow uses PostgreSQL 16`, `ok Alpha PostgreSQL workflow runs Stories 1 through 5`, `ok Alpha PostgreSQL workflow exposes stable gate markers`, `blocked Alpha PostgreSQL workflow artifacts and production secrets` | Static workflow checks preserve the independent exact-version PostgreSQL job, all-story command, stable markers, ephemeral credential shape, and no-artifact or production-secret boundary. |
+| Hosted Alpha PostgreSQL conformance | `SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN`, `SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS` | The separate GitHub Actions job ran Stories 1 through 5 against PostgreSQL 16 with exact Node.js 22.23.1 and reached success only after cleanup. `SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED` identifies any command, least-privilege, or cleanup failure. |
 
 If one marker group is missing, inspect the command that owns that group before treating CI as release-ready.
 

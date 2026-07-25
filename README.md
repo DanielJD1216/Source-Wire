@@ -181,6 +181,7 @@ Core invariants:
 | `npm run readiness:report` | Fast package and boundary summary |
 | `npm test` | Types, fixtures, schema exports, CLI, and examples |
 | `npm run reviewer:smoke` | Clean first-reviewer path in a temporary copy |
+| `npm run alpha1:ci-workflow-smoke` | Hosted Alpha PostgreSQL job keeps exact versions, all five stories, stable markers, and no artifact or production-secret path |
 | `npm run alpha1:conformance:story5` | Disposable PostgreSQL proof for the four-tool MCP and protected source-evidence release path |
 | `npm run alpha1:conformance` | All five disposable local Alpha story proofs |
 | `npm run docs:links && npm run docs:anchors` | Documentation link and anchor integrity |

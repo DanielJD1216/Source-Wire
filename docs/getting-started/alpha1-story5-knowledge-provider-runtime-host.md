@@ -82,6 +82,18 @@ To run the complete Alpha 1 chain:
 npm run alpha1:conformance
 ```
 
+GitHub Actions runs the same chain in a separate
+`Source-Wire Alpha PostgreSQL conformance` job with exact Node.js `22.23.1`
+and an ephemeral PostgreSQL `16` service. Validate the workflow contract
+locally with:
+
+```bash
+npm run alpha1:ci-workflow-smoke
+```
+
+That smoke checks the job definition. It does not replace the hosted
+PostgreSQL run.
+
 The redacted machine report is written to:
 
 ```text
@@ -118,4 +130,3 @@ deployment, and real-data use remain blocked.
 - production authentication or secret custody,
 - deployment or managed hosting,
 - a published package containing `KnowledgeProvider v1`.
-

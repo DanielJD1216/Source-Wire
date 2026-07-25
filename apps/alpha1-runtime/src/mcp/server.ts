@@ -6,6 +6,7 @@ import { parseCandidateProposal } from "../candidate-lifecycle.js";
 import {
   assertLoopbackHost,
   MAX_CANDIDATE_CONTENT_BYTES,
+  MAX_LIST_CURSOR_BYTES,
   MAX_OWNER_ASSERTION_BYTES,
   MAX_PROTECTED_READ_RESPONSE_BYTES,
   MAX_SOURCE_EVIDENCE_EXCERPT_BYTES,
@@ -79,6 +80,18 @@ const sourceEvidenceSearchInput = z
       .int()
       .min(1)
       .max(MAX_SOURCE_EVIDENCE_SEARCH_RESULTS)
+      .optional(),
+    cursor: z
+      .object({
+        providerId: identifier,
+        providerScopeId: identifier,
+        value: z
+          .string()
+          .min(1)
+          .max(MAX_LIST_CURSOR_BYTES)
+          .regex(/^[A-Za-z0-9_-]+$/u)
+      })
+      .strict()
       .optional()
   })
   .strict();
@@ -139,7 +152,7 @@ async function main(): Promise<void> {
         if (!response.ok) {
           return safeToolError(readSafeErrorCode(body));
         }
-        const safeResult = readSourceEvidenceSearchResult(body);
+        const safeResult = readSourceEvidenceSearchResult(body, "get");
         return {
           content: [{ type: "text" as const, text: JSON.stringify(safeResult) }],
           structuredContent: safeResult
@@ -177,7 +190,10 @@ async function main(): Promise<void> {
           body: JSON.stringify({
             namespaceId: input.namespaceId,
             query: input.query,
-            limit: input.limit ?? MAX_SOURCE_EVIDENCE_SEARCH_RESULTS
+            limit: input.limit ?? MAX_SOURCE_EVIDENCE_SEARCH_RESULTS,
+            ...(input.cursor === undefined
+              ? {}
+              : { cursor: input.cursor })
           }),
           signal: AbortSignal.timeout(5_000)
         });
@@ -185,7 +201,7 @@ async function main(): Promise<void> {
         if (!response.ok) {
           return safeToolError(readSafeErrorCode(body));
         }
-        const safeResult = readSourceEvidenceSearchResult(body);
+        const safeResult = readSourceEvidenceSearchResult(body, "search");
         return {
           content: [{ type: "text" as const, text: JSON.stringify(safeResult) }],
           structuredContent: safeResult
@@ -395,7 +411,10 @@ async function readSafeApiBody(response: Response): Promise<Record<string, unkno
   return body;
 }
 
-function readSourceEvidenceSearchResult(body: Record<string, unknown>) {
+function readSourceEvidenceSearchResult(
+  body: Record<string, unknown>,
+  operation: "search" | "get"
+) {
   const data = body.data;
   const audit = body.audit;
   if (
@@ -414,14 +433,34 @@ function readSourceEvidenceSearchResult(body: Record<string, unknown>) {
   const auditValue = audit as Record<string, unknown>;
   if (
     !Array.isArray(dataValue.evidence) ||
-    dataValue.evidence.length > MAX_SOURCE_EVIDENCE_SEARCH_RESULTS ||
+    dataValue.evidence.length >
+      (operation === "get" ? 1 : MAX_SOURCE_EVIDENCE_SEARCH_RESULTS) ||
     !Array.isArray(dataValue.gaps) ||
     (dataValue.status !== "allowed" &&
       dataValue.status !== "partial_success" &&
+      dataValue.status !== "denied" &&
       dataValue.status !== "unavailable") ||
+    ((dataValue.status === "denied" ||
+      dataValue.status === "unavailable") &&
+      dataValue.evidence.length !== 0) ||
     typeof auditValue.eventId !== "string" ||
     !uuid.test(auditValue.eventId) ||
     auditValue.releaseStatus !== "release_attempted"
+  ) {
+    throw new Error("invalid_api_response");
+  }
+  const gaps = readSafeProviderGaps(dataValue.gaps);
+  const providerError = readSafeProviderError(
+    dataValue.error,
+    body.traceId
+  );
+  if (
+    ((dataValue.status === "allowed" ||
+      dataValue.status === "partial_success") &&
+      providerError !== undefined) ||
+    ((dataValue.status === "denied" ||
+      dataValue.status === "unavailable") &&
+      providerError === undefined)
   ) {
     throw new Error("invalid_api_response");
   }
@@ -435,14 +474,36 @@ function readSourceEvidenceSearchResult(body: Record<string, unknown>) {
     const digest = record.contentDigest;
     const locator = record.citationLocator;
     if (
-      typeof record.providerId !== "string" ||
-      typeof record.providerRecordId !== "string" ||
-      typeof record.sourceId !== "string" ||
-      typeof record.segmentId !== "string" ||
-      typeof record.sourceVersion !== "string" ||
+      Object.keys(record).some(
+        (key) =>
+          key !== "providerId" &&
+          key !== "providerRecordId" &&
+          key !== "sourceId" &&
+          key !== "segmentId" &&
+          key !== "sourceVersion" &&
+          key !== "contentDigest" &&
+          key !== "citationLocator" &&
+          key !== "title" &&
+          key !== "excerpt" &&
+          key !== "mediaType" &&
+          key !== "truncated" &&
+          key !== "sensitivity" &&
+          key !== "freshness" &&
+          key !== "retrievedAt" &&
+          key !== "sourceModifiedAt" &&
+          key !== "instructionAuthority"
+      ) ||
+      !identifier.safeParse(record.providerId).success ||
+      !identifier.safeParse(record.providerRecordId).success ||
+      !identifier.safeParse(record.sourceId).success ||
+      !identifier.safeParse(record.segmentId).success ||
+      !boundedText(256).safeParse(record.sourceVersion).success ||
       !digest ||
       typeof digest !== "object" ||
       Array.isArray(digest) ||
+      Object.keys(digest).some(
+        (key) => key !== "algorithm" && key !== "value"
+      ) ||
       (digest as Record<string, unknown>).algorithm !== "sha256" ||
       typeof (digest as Record<string, unknown>).value !== "string" ||
       !/^[0-9a-f]{64}$/u.test(
@@ -451,11 +512,18 @@ function readSourceEvidenceSearchResult(body: Record<string, unknown>) {
       !locator ||
       typeof locator !== "object" ||
       Array.isArray(locator) ||
-      typeof (locator as Record<string, unknown>).value !== "string" ||
+      Object.keys(locator).some(
+        (key) => key !== "value" && key !== "publicSafe"
+      ) ||
+      !boundedText(2_048).safeParse(
+        (locator as Record<string, unknown>).value
+      ).success ||
       (locator as Record<string, unknown>).publicSafe !== true ||
-      typeof record.title !== "string" ||
-      typeof record.excerpt !== "string" ||
-      typeof record.mediaType !== "string" ||
+      !boundedText(1_024).safeParse(record.title).success ||
+      !boundedText(MAX_SOURCE_EVIDENCE_EXCERPT_BYTES).safeParse(
+        record.excerpt
+      ).success ||
+      !boundedText(128).safeParse(record.mediaType).success ||
       typeof record.truncated !== "boolean" ||
       (record.sensitivity !== "public" &&
         record.sensitivity !== "internal" &&
@@ -464,28 +532,201 @@ function readSourceEvidenceSearchResult(body: Record<string, unknown>) {
       (record.freshness !== "fresh" &&
         record.freshness !== "stale" &&
         record.freshness !== "unknown") ||
-      typeof record.retrievedAt !== "string" ||
+      !isExactIsoDate(record.retrievedAt) ||
+      (record.sourceModifiedAt !== undefined &&
+        !isExactIsoDate(record.sourceModifiedAt)) ||
       record.instructionAuthority !== "none"
     ) {
       throw new Error("invalid_api_response");
     }
-    aggregateExcerptBytes += Buffer.byteLength(record.excerpt, "utf8");
+    aggregateExcerptBytes += Buffer.byteLength(
+      record.excerpt as string,
+      "utf8"
+    );
     if (aggregateExcerptBytes > MAX_SOURCE_EVIDENCE_EXCERPT_BYTES) {
       throw new Error("invalid_api_response");
     }
-    return record;
+    return {
+      providerId: record.providerId,
+      providerRecordId: record.providerRecordId,
+      sourceId: record.sourceId,
+      segmentId: record.segmentId,
+      sourceVersion: record.sourceVersion,
+      contentDigest: {
+        algorithm: "sha256" as const,
+        value: (digest as Record<string, unknown>).value
+      },
+      citationLocator: {
+        value: (locator as Record<string, unknown>).value,
+        publicSafe: true as const
+      },
+      title: record.title,
+      excerpt: record.excerpt,
+      mediaType: record.mediaType,
+      truncated: record.truncated,
+      sensitivity: record.sensitivity,
+      freshness: record.freshness,
+      retrievedAt: record.retrievedAt,
+      ...(record.sourceModifiedAt === undefined
+        ? {}
+        : { sourceModifiedAt: record.sourceModifiedAt }),
+      instructionAuthority: "none" as const
+    };
   });
+  const nextCursor = dataValue.nextCursor;
+  if (
+    nextCursor !== undefined &&
+    (operation !== "search" ||
+      (dataValue.status !== "allowed" &&
+      dataValue.status !== "partial_success") ||
+      !nextCursor ||
+      typeof nextCursor !== "object" ||
+      Array.isArray(nextCursor) ||
+      Object.keys(nextCursor).some(
+        (key) =>
+          key !== "providerId" &&
+          key !== "providerScopeId" &&
+          key !== "value"
+      ) ||
+      typeof (nextCursor as Record<string, unknown>).providerId !== "string" ||
+      !identifier.safeParse(
+        (nextCursor as Record<string, unknown>).providerId
+      ).success ||
+      typeof (nextCursor as Record<string, unknown>).providerScopeId !==
+        "string" ||
+      !identifier.safeParse(
+        (nextCursor as Record<string, unknown>).providerScopeId
+      ).success ||
+      typeof (nextCursor as Record<string, unknown>).value !== "string" ||
+      !/^[A-Za-z0-9_-]+$/u.test(
+        (nextCursor as Record<string, unknown>).value as string
+      ) ||
+      Buffer.byteLength(
+        (nextCursor as Record<string, unknown>).value as string,
+        "utf8"
+      ) > MAX_LIST_CURSOR_BYTES)
+  ) {
+    throw new Error("invalid_api_response");
+  }
+  const safeNextCursor =
+    nextCursor === undefined
+      ? undefined
+      : {
+          providerId: (nextCursor as Record<string, unknown>).providerId,
+          providerScopeId: (nextCursor as Record<string, unknown>)
+            .providerScopeId,
+          value: (nextCursor as Record<string, unknown>).value
+        };
 
   return {
     status: dataValue.status,
     evidence,
-    gaps: dataValue.gaps,
+    gaps,
+    ...(safeNextCursor === undefined
+      ? {}
+      : { nextCursor: safeNextCursor }),
+    ...(providerError === undefined ? {} : { error: providerError }),
     audit: {
       eventId: auditValue.eventId,
       releaseStatus: "release_attempted" as const
     },
     traceId: body.traceId
   };
+}
+
+function readSafeProviderError(value: unknown, traceId: string) {
+  if (value === undefined) return undefined;
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error("invalid_api_response");
+  }
+  const record = value as Record<string, unknown>;
+  const safeMessages = {
+    invalid_request: "The request is not valid for this contract.",
+    unsupported_contract_version:
+      "The requested contract version is not supported.",
+    unsupported_operation: "The requested operation is not supported.",
+    incompatible_provider_authority:
+      "The provider authority is incompatible with this contract.",
+    scope_not_mapped: "The requested provider scope is not available.",
+    scope_violation: "The request is not allowed for this scope.",
+    not_found: "The requested item is not available.",
+    provenance_incomplete: "Required provenance is incomplete.",
+    rate_limited: "The request cannot be completed at this time.",
+    deadline_exceeded: "The request deadline was exceeded.",
+    temporarily_unavailable: "The service is temporarily unavailable.",
+    provider_failure: "The provider could not complete the request."
+  } as const;
+  if (
+    Object.keys(record).some(
+      (key) =>
+        key !== "code" &&
+        key !== "message" &&
+        key !== "traceId" &&
+        key !== "retryable" &&
+        key !== "retryAfterMs" &&
+        key !== "detailsRedacted"
+    ) ||
+    typeof record.code !== "string" ||
+    !(record.code in safeMessages) ||
+    record.message !==
+      safeMessages[record.code as keyof typeof safeMessages] ||
+    record.traceId !== traceId ||
+    typeof record.retryable !== "boolean" ||
+    record.detailsRedacted !== true ||
+    (record.retryAfterMs !== undefined &&
+      (!Number.isInteger(record.retryAfterMs) ||
+        (record.retryAfterMs as number) < 0 ||
+        (record.retryAfterMs as number) > 30_000))
+  ) {
+    throw new Error("invalid_api_response");
+  }
+  return {
+    code: record.code,
+    message: record.message,
+    traceId,
+    retryable: record.retryable,
+    ...(record.retryAfterMs === undefined
+      ? {}
+      : { retryAfterMs: record.retryAfterMs }),
+    detailsRedacted: true as const
+  };
+}
+
+function readSafeProviderGaps(value: unknown) {
+  if (
+    !Array.isArray(value) ||
+    value.length > MAX_SOURCE_EVIDENCE_SEARCH_RESULTS
+  ) {
+    throw new Error("invalid_api_response");
+  }
+  const safeMessages = {
+    no_evidence: "No evidence matched the request.",
+    partial_evidence: "Some evidence could not be returned.",
+    provider_unavailable: "Source evidence is temporarily unavailable.",
+    rate_limited: "Source evidence is temporarily unavailable.",
+    not_found: "Requested evidence is unavailable.",
+    invalid_evidence: "Some evidence was withheld."
+  } as const;
+  return value.map((gap) => {
+    if (!gap || typeof gap !== "object" || Array.isArray(gap)) {
+      throw new Error("invalid_api_response");
+    }
+    const record = gap as Record<string, unknown>;
+    if (
+      typeof record.code !== "string" ||
+      !(record.code in safeMessages) ||
+      record.message !==
+        safeMessages[record.code as keyof typeof safeMessages] ||
+      typeof record.retryable !== "boolean"
+    ) {
+      throw new Error("invalid_api_response");
+    }
+    return {
+      code: record.code,
+      message: record.message,
+      retryable: record.retryable
+    };
+  });
 }
 
 function readTrustedMemorySearchResult(body: Record<string, unknown>) {
@@ -635,6 +876,14 @@ function safeStderr(result: string): void {
       operation: "mcp_stdio",
       result
     })}\n`
+  );
+}
+
+function isExactIsoDate(value: unknown): value is string {
+  return (
+    boundedText(64).safeParse(value).success &&
+    Number.isFinite(Date.parse(value as string)) &&
+    new Date(value as string).toISOString() === value
   );
 }
 

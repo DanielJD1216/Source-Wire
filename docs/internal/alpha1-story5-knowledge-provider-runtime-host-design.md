@@ -1,8 +1,25 @@
 # Alpha 1 Story 5 Knowledge Provider Runtime Host Design
 
-Status: Proposed design, awaiting owner acceptance before implementation
+Status: Accepted design, implementation in progress
 
 Date: 2026-07-24
+
+## Implementation Status
+
+The accepted Story 5 design is implemented through the fail-closed provider
+policy slice:
+
+- one optional immutable provider binding,
+- loopback API and stdio MCP search and exact fetch,
+- durable receipt-covered release,
+- provider-bound cursors,
+- fail-closed scope, provenance, authority, and bounds validation,
+- constant safe gaps and errors,
+- late-result discard without a forced transport-cancellation claim.
+
+Provider fault-injection conformance, disposable PostgreSQL Story 5
+conformance, continuous PostgreSQL CI, and the un-published `0.2.0` contracts
+release candidate remain separate issues.
 
 ## Direct Answer
 
@@ -40,12 +57,21 @@ The deletion test supports the host seam. Removing the host would spread provide
 
 ### Motivating Pressure
 
-Current `main` contains the `KnowledgeProvider v1` interface and synthetic conformance evaluator, but the Alpha runtime does not construct, register, invoke, audit, or release results from a provider.
+At design acceptance, `main` contained the `KnowledgeProvider v1` interface
+and synthetic conformance evaluator, but the Alpha runtime did not construct,
+register, invoke, audit, or release results from a provider. The accepted
+implementation now places those responsibilities behind
+`KnowledgeProviderHost`.
 
-The current Alpha MCP runtime exposes exactly:
+Before Story 5 implementation, the Alpha MCP runtime exposed exactly:
 
 - `propose_memory_candidate`
 - `search_trusted_memory`
+
+The accepted local implementation adds:
+
+- `search_source_evidence`
+- `get_source_evidence`
 
 The current public npm artifact, `@source-wire/contracts@0.1.0`, does not contain the later `KnowledgeProvider v1` exports found on `main`.
 
@@ -546,7 +572,10 @@ Remaining uncertainty:
 - The provider contract has no cancellation signal.
 - The knowledge-base public schemas need a provider-ready mapping shape.
 - The knowledge-base public repository has no runnable retrieval endpoint.
-- The dependency advisory needs a tested resolution or formal disposition.
+- The moderate MCP dependency advisory is temporarily dispositioned for the
+  local stdio-only synthetic Alpha runtime through 2026-08-24. It remains a
+  production stop gate and must be reviewed sooner if the dependency,
+  transport, platform, or runtime scope changes.
 - Production authentication, endpoint custody, secret custody, deployment, and real-data operation remain separate future decisions.
 
 ## Recommended Implementation Order

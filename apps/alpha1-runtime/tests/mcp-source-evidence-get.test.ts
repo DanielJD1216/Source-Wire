@@ -15,11 +15,13 @@ const serverEntry = resolve(
 test("official MCP client fetches exact source evidence through caller-safe loopback input", async () => {
   let requestBody: unknown;
   let requestUrl: string | undefined;
+  let callCount = 0;
   const api = createServer((request, response) => {
     requestUrl = request.url;
     const chunks: Buffer[] = [];
     request.on("data", (chunk: Buffer) => chunks.push(chunk));
     request.on("end", () => {
+      callCount += 1;
       requestBody = JSON.parse(Buffer.concat(chunks).toString("utf8"));
       response.writeHead(200, {
         "Content-Type": "application/json; charset=UTF-8"
@@ -57,7 +59,16 @@ test("official MCP client fetches exact source evidence through caller-safe loop
                 instructionAuthority: "none"
               }
             ],
-            gaps: []
+            gaps: [],
+            ...(callCount === 1
+              ? {}
+              : {
+                  nextCursor: {
+                    providerId: "synthetic_document_index",
+                    providerScopeId: "scope_docs_alpha",
+                    value: "cursor_page_2"
+                  }
+                })
           },
           audit: {
             eventId: "00000000-0000-4000-8000-000000000302",
@@ -110,6 +121,16 @@ test("official MCP client fetches exact source evidence through caller-safe loop
     };
     assert.equal(structured.evidence.length, 1);
     assert.equal(structured.audit.releaseStatus, "release_attempted");
+
+    const getWithCursor = await client.callTool({
+      name: "get_source_evidence",
+      arguments: {
+        namespaceId: "ns_project_alpha",
+        sourceId: "source_synthetic_runbook",
+        segmentId: "segment_release_gate"
+      }
+    });
+    assert.equal(getWithCursor.isError, true);
   } finally {
     await client.close();
     await new Promise<void>((resolveClose, reject) =>

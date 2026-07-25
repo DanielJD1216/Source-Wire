@@ -7,6 +7,7 @@ import {
 
 import {
   assertSourceWireIdentifier,
+  MAX_LIST_CURSOR_BYTES,
   MAX_PROTECTED_READ_RESPONSE_BYTES,
   MAX_SOURCE_EVIDENCE_EXCERPT_BYTES,
   MAX_SOURCE_EVIDENCE_QUERY_BYTES,
@@ -33,6 +34,36 @@ const MCP_OPERATION = "search_source_evidence" as const;
 const MCP_GET_OPERATION = "get_source_evidence" as const;
 const RECEIPT_FORMAT_VERSION = 1 as const;
 type ProviderReadOperation = typeof SEARCH_OPERATION | typeof GET_OPERATION;
+const MAX_SAFE_RETRY_AFTER_MS = 30_000;
+
+type RuntimeKnowledgeProviderErrorCode =
+  | "invalid_request"
+  | "unsupported_contract_version"
+  | "unsupported_operation"
+  | "incompatible_provider_authority"
+  | "scope_not_mapped"
+  | "scope_violation"
+  | "not_found"
+  | "provenance_incomplete"
+  | "rate_limited"
+  | "deadline_exceeded"
+  | "temporarily_unavailable"
+  | "provider_failure";
+
+type RuntimeKnowledgeProviderSafeError = {
+  code: RuntimeKnowledgeProviderErrorCode;
+  message: string;
+  traceId: string;
+  retryable: boolean;
+  retryAfterMs?: number;
+  detailsRedacted: true;
+};
+
+export type RuntimeKnowledgeProviderCursor = {
+  providerId: string;
+  providerScopeId: string;
+  value: string;
+};
 
 export type RuntimeKnowledgeProviderProfile = Readonly<{
   contractId: typeof CONTRACT_ID;
@@ -107,6 +138,7 @@ export type RuntimeKnowledgeProviderRequest =
           search: {
             query: string;
             maximumResults: number;
+            cursor?: RuntimeKnowledgeProviderCursor;
           };
         }
       | {
@@ -140,6 +172,8 @@ export type RuntimeKnowledgeProviderResult = {
     message: string;
     retryable: boolean;
   }>;
+  nextCursor?: RuntimeKnowledgeProviderCursor;
+  error?: RuntimeKnowledgeProviderSafeError;
   providerMutationAttempted: false;
   memoryMutationAttempted: false;
   trustedMemoryCreated: false;
@@ -168,6 +202,7 @@ export type SourceEvidenceSearchInput = {
   query: string;
   queryByteCount: number;
   limit: number;
+  cursor?: RuntimeKnowledgeProviderCursor;
 };
 
 export type SourceEvidenceGetInput = {
@@ -234,6 +269,7 @@ export type EvidenceReadCommand =
       query: string;
       queryByteCount: number;
       limit: number;
+      cursor?: RuntimeKnowledgeProviderCursor;
     }
   | {
       operation: typeof GET_OPERATION;
@@ -258,7 +294,11 @@ export function parseSourceEvidenceSearch(
   const record = value as Record<string, unknown>;
   if (
     Object.keys(record).some(
-      (key) => key !== "namespaceId" && key !== "query" && key !== "limit"
+      (key) =>
+        key !== "namespaceId" &&
+        key !== "query" &&
+        key !== "limit" &&
+        key !== "cursor"
     )
   ) {
     throw new SafeError("validation_failed", 400);
@@ -295,11 +335,16 @@ export function parseSourceEvidenceSearch(
   ) {
     throw new SafeError("validation_failed", 400);
   }
+  const cursor =
+    record.cursor === undefined
+      ? undefined
+      : parseProviderCursor(record.cursor);
   return {
     namespaceId,
     query: record.query,
     queryByteCount,
-    limit: limit as number
+    limit: limit as number,
+    ...(cursor === undefined ? {} : { cursor })
   };
 }
 
@@ -330,6 +375,34 @@ export function parseSourceEvidenceGet(value: unknown): SourceEvidenceGetInput {
   }
 }
 
+function parseProviderCursor(value: unknown): RuntimeKnowledgeProviderCursor {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new SafeError("validation_failed", 400);
+  }
+  const record = value as Record<string, unknown>;
+  if (
+    Object.keys(record).some(
+      (key) =>
+        key !== "providerId" &&
+        key !== "providerScopeId" &&
+        key !== "value"
+    ) ||
+    !isProviderIdentifier(record.providerId) ||
+    !isProviderIdentifier(record.providerScopeId) ||
+    typeof record.value !== "string" ||
+    record.value.length < 1 ||
+    Buffer.byteLength(record.value, "utf8") > MAX_LIST_CURSOR_BYTES ||
+    !/^[A-Za-z0-9_-]+$/u.test(record.value)
+  ) {
+    throw new SafeError("validation_failed", 400);
+  }
+  return {
+    providerId: record.providerId,
+    providerScopeId: record.providerScopeId,
+    value: record.value
+  };
+}
+
 export function createKnowledgeProviderHost(options: {
   binding?: KnowledgeProviderBinding;
   auditStore: ProviderReadAuditStore;
@@ -352,6 +425,14 @@ export function createKnowledgeProviderHost(options: {
         throw new SafeError("operation_unavailable", 503, true);
       }
       requireEvidenceSearchAuthority(context.actor, command.namespaceId);
+      if (
+        command.operation === SEARCH_OPERATION &&
+        command.cursor !== undefined &&
+        (command.cursor.providerId !== binding.providerId ||
+          command.cursor.providerScopeId !== binding.providerScopeId)
+      ) {
+        throw new SafeError("operation_unavailable", 503, true);
+      }
       assertReadStillLive(context);
       const requestId = randomUUID();
       const requestDigest = canonicalRequestDigest({
@@ -370,7 +451,13 @@ export function createKnowledgeProviderHost(options: {
         providerScopeId: binding.providerScopeId,
         selector:
           command.operation === SEARCH_OPERATION
-            ? { query: command.query, limit: command.limit }
+            ? {
+                query: command.query,
+                limit: command.limit,
+                ...(command.cursor === undefined
+                  ? {}
+                  : { cursor: command.cursor })
+              }
             : {
                 sourceId: command.sourceId,
                 segmentId: command.segmentId
@@ -414,7 +501,10 @@ export function createKnowledgeProviderHost(options: {
                     command.limit,
                     binding.maximumResultCount,
                     MAX_SOURCE_EVIDENCE_SEARCH_RESULTS
-                  )
+                  ),
+                  ...(command.cursor === undefined
+                    ? {}
+                    : { cursor: { ...command.cursor } })
                 }
               }
             : {
@@ -435,22 +525,47 @@ export function createKnowledgeProviderHost(options: {
       } catch {
         throw new SafeError("operation_unavailable", 503, true);
       }
+      if (Date.now() >= deadlineMs) {
+        throw new SafeError("operation_unavailable", 503, true);
+      }
       assertReadStillLive(context);
 
-      const evidence = validateAndCopyProviderResult(
-        providerResult,
-        binding,
-        context,
-        requestId,
-        command
-      );
-      const gaps = providerResult.gaps.map((gap) => ({ ...gap }));
+      let evidence: RuntimeKnowledgeProviderEvidence[];
+      let gaps: RuntimeKnowledgeProviderResult["gaps"];
+      let nextCursor: RuntimeKnowledgeProviderCursor | undefined;
+      let providerError: RuntimeKnowledgeProviderSafeError | undefined;
+      let providerStatus: RuntimeKnowledgeProviderResult["status"];
+      try {
+        evidence = validateAndCopyProviderResult(
+          providerResult,
+          binding,
+          context,
+          requestId,
+          command
+        );
+        gaps = normalizeProviderGaps(providerResult.gaps);
+        nextCursor = validateProviderNextCursor(
+          providerResult.nextCursor,
+          binding,
+          command.operation
+        );
+        providerError = normalizeProviderError(
+          providerResult.error,
+          context.traceId
+        );
+        providerStatus = providerResult.status;
+      } catch (error) {
+        if (error instanceof SafeError) throw error;
+        throw new SafeError("operation_unavailable", 503, true);
+      }
       const auditEventId = randomUUID();
       let serializedResponse = serializeEvidenceResponse({
         traceId: context.traceId,
-        status: providerResult.status,
+        status: providerStatus,
         evidence,
         gaps,
+        ...(nextCursor === undefined ? {} : { nextCursor }),
+        ...(providerError === undefined ? {} : { error: providerError }),
         auditEventId
       });
       const resultDigest = createHash("sha256")
@@ -622,7 +737,19 @@ function validateAndCopyProviderResult(
     result.traceId !== context.traceId ||
     result.providerId !== binding.providerId ||
     result.contractVersion !== CONTRACT_VERSION ||
-    (result.status !== "allowed" && result.status !== "partial_success") ||
+    (result.status !== "allowed" &&
+      result.status !== "partial_success" &&
+      result.status !== "denied" &&
+      result.status !== "unavailable") ||
+    ((result.status === "allowed" ||
+      result.status === "partial_success") &&
+      result.error !== undefined) ||
+    ((result.status === "denied" ||
+      result.status === "unavailable") &&
+      result.error === undefined) ||
+    ((result.status === "denied" ||
+      result.status === "unavailable") &&
+      result.nextCursor !== undefined) ||
     result.providerMutationAttempted !== false ||
     result.memoryMutationAttempted !== false ||
     result.trustedMemoryCreated !== false ||
@@ -630,6 +757,8 @@ function validateAndCopyProviderResult(
     result.readAuditRequired !== true ||
     result.releaseState !== "internal_unreleased" ||
     !Array.isArray(result.evidence) ||
+    ((result.status === "denied" || result.status === "unavailable") &&
+      result.evidence.length !== 0) ||
     result.evidence.length >
       Math.min(
         command.operation === GET_OPERATION ? 1 : requestedLimit,
@@ -642,7 +771,26 @@ function validateAndCopyProviderResult(
   }
 
   let aggregateExcerptBytes = 0;
-  return result.evidence.map((item) => {
+  return (result.evidence as unknown[]).map((value) => {
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      throw new SafeError("operation_unavailable", 503, true);
+    }
+    const item = value as Record<string, unknown>;
+    const contentDigest = item.contentDigest;
+    const citationLocator = item.citationLocator;
+    if (
+      !contentDigest ||
+      typeof contentDigest !== "object" ||
+      Array.isArray(contentDigest) ||
+      !citationLocator ||
+      typeof citationLocator !== "object" ||
+      Array.isArray(citationLocator) ||
+      typeof item.excerpt !== "string"
+    ) {
+      throw new SafeError("operation_unavailable", 503, true);
+    }
+    const digest = contentDigest as Record<string, unknown>;
+    const locator = citationLocator as Record<string, unknown>;
     const excerptBytes = Buffer.byteLength(item.excerpt, "utf8");
     aggregateExcerptBytes += excerptBytes;
     if (
@@ -653,9 +801,28 @@ function validateAndCopyProviderResult(
         (item.sourceId !== command.sourceId ||
           item.segmentId !== command.segmentId)) ||
       item.aclDecision !== "allowed" ||
-      item.contentDigest.algorithm !== "sha256" ||
-      !DIGEST.test(item.contentDigest.value) ||
-      item.citationLocator.publicSafe !== true ||
+      !isProviderIdentifier(item.providerRecordId) ||
+      !isProviderIdentifier(item.sourceId) ||
+      !isProviderIdentifier(item.segmentId) ||
+      !isBoundedText(item.sourceVersion, 256) ||
+      digest.algorithm !== "sha256" ||
+      typeof digest.value !== "string" ||
+      !DIGEST.test(digest.value) ||
+      locator.publicSafe !== true ||
+      !isBoundedText(locator.value, 2_048) ||
+      !isBoundedText(item.title, 1_024) ||
+      !isBoundedText(item.mediaType, 128) ||
+      typeof item.truncated !== "boolean" ||
+      (item.sensitivity !== "public" &&
+        item.sensitivity !== "internal" &&
+        item.sensitivity !== "confidential" &&
+        item.sensitivity !== "restricted") ||
+      (item.freshness !== "fresh" &&
+        item.freshness !== "stale" &&
+        item.freshness !== "unknown") ||
+      !isIsoDate(item.retrievedAt) ||
+      (item.sourceModifiedAt !== undefined &&
+        !isIsoDate(item.sourceModifiedAt)) ||
       item.instructionAuthority !== "none" ||
       excerptBytes < 1 ||
       excerptBytes > binding.maximumExcerptBytes ||
@@ -663,21 +830,172 @@ function validateAndCopyProviderResult(
     ) {
       throw new SafeError("operation_unavailable", 503, true);
     }
-    const {
-      ownerId: _ownerId,
-      namespaceId: _namespaceId,
-      aclDecision: _aclDecision,
-      ...publicEvidence
-    } = item;
     return {
-      ...publicEvidence,
+      providerId: binding.providerId,
+      providerRecordId: item.providerRecordId,
+      sourceId: item.sourceId,
+      segmentId: item.segmentId,
       ownerId: binding.ownerId,
       namespaceId: binding.namespaceId,
       aclDecision: "allowed" as const,
-      contentDigest: { ...item.contentDigest },
-      citationLocator: { ...item.citationLocator }
+      sourceVersion: item.sourceVersion,
+      contentDigest: {
+        algorithm: "sha256" as const,
+        value: digest.value
+      },
+      citationLocator: {
+        value: locator.value,
+        publicSafe: true as const
+      },
+      title: item.title,
+      excerpt: item.excerpt,
+      mediaType: item.mediaType,
+      truncated: item.truncated,
+      sensitivity: item.sensitivity,
+      freshness: item.freshness,
+      retrievedAt: item.retrievedAt,
+      ...(item.sourceModifiedAt === undefined
+        ? {}
+        : { sourceModifiedAt: item.sourceModifiedAt }),
+      instructionAuthority: "none" as const
     };
   });
+}
+
+function isProviderIdentifier(value: unknown): value is string {
+  return (
+    typeof value === "string" &&
+    /^[A-Za-z][A-Za-z0-9_-]{0,63}$/u.test(value)
+  );
+}
+
+function isBoundedText(value: unknown, maximumBytes: number): value is string {
+  return (
+    typeof value === "string" &&
+    value.length > 0 &&
+    !value.includes("\0") &&
+    !hasUnpairedSurrogate(value) &&
+    Buffer.byteLength(value, "utf8") <= maximumBytes
+  );
+}
+
+function isIsoDate(value: unknown): value is string {
+  return (
+    isBoundedText(value, 64) &&
+    Number.isFinite(Date.parse(value)) &&
+    new Date(value).toISOString() === value
+  );
+}
+
+function normalizeProviderGaps(
+  gaps: RuntimeKnowledgeProviderResult["gaps"]
+): RuntimeKnowledgeProviderResult["gaps"] {
+  if (!Array.isArray(gaps) || gaps.length > MAX_SOURCE_EVIDENCE_SEARCH_RESULTS) {
+    throw new SafeError("operation_unavailable", 503, true);
+  }
+  const safeMessages = {
+    no_evidence: "No evidence matched the request.",
+    partial_evidence: "Some evidence could not be returned.",
+    provider_unavailable: "Source evidence is temporarily unavailable.",
+    rate_limited: "Source evidence is temporarily unavailable.",
+    not_found: "Requested evidence is unavailable.",
+    invalid_evidence: "Some evidence was withheld."
+  } as const;
+  return gaps.map((gap) => {
+    if (
+      !gap ||
+      typeof gap !== "object" ||
+      !(gap.code in safeMessages) ||
+      typeof gap.retryable !== "boolean"
+    ) {
+      throw new SafeError("operation_unavailable", 503, true);
+    }
+    return {
+      code: gap.code,
+      message: safeMessages[gap.code],
+      retryable: gap.retryable
+    };
+  });
+}
+
+function normalizeProviderError(
+  error: RuntimeKnowledgeProviderSafeError | undefined,
+  traceId: string
+): RuntimeKnowledgeProviderSafeError | undefined {
+  if (error === undefined) return undefined;
+  if (!error || typeof error !== "object" || Array.isArray(error)) {
+    throw new SafeError("operation_unavailable", 503, true);
+  }
+  const record = error as Record<string, unknown>;
+  if (
+    Object.keys(record).some(
+      (key) =>
+        key !== "code" &&
+        key !== "message" &&
+        key !== "traceId" &&
+        key !== "retryable" &&
+        key !== "retryAfterMs" &&
+        key !== "detailsRedacted"
+    ) ||
+    typeof record.code !== "string" ||
+    !(record.code in SAFE_PROVIDER_ERROR_MESSAGES) ||
+    record.traceId !== traceId ||
+    typeof record.retryable !== "boolean" ||
+    record.detailsRedacted !== true ||
+    (record.retryAfterMs !== undefined &&
+      (!Number.isInteger(record.retryAfterMs) ||
+        (record.retryAfterMs as number) < 0 ||
+        (record.retryAfterMs as number) > MAX_SAFE_RETRY_AFTER_MS))
+  ) {
+    throw new SafeError("operation_unavailable", 503, true);
+  }
+  const code = record.code as RuntimeKnowledgeProviderErrorCode;
+  return {
+    code,
+    message: SAFE_PROVIDER_ERROR_MESSAGES[code],
+    traceId,
+    retryable: record.retryable,
+    ...(record.retryAfterMs === undefined
+      ? {}
+      : { retryAfterMs: record.retryAfterMs as number }),
+    detailsRedacted: true
+  };
+}
+
+const SAFE_PROVIDER_ERROR_MESSAGES: Record<
+  RuntimeKnowledgeProviderErrorCode,
+  string
+> = {
+  invalid_request: "The request is not valid for this contract.",
+  unsupported_contract_version:
+    "The requested contract version is not supported.",
+  unsupported_operation: "The requested operation is not supported.",
+  incompatible_provider_authority:
+    "The provider authority is incompatible with this contract.",
+  scope_not_mapped: "The requested provider scope is not available.",
+  scope_violation: "The request is not allowed for this scope.",
+  not_found: "The requested item is not available.",
+  provenance_incomplete: "Required provenance is incomplete.",
+  rate_limited: "The request cannot be completed at this time.",
+  deadline_exceeded: "The request deadline was exceeded.",
+  temporarily_unavailable: "The service is temporarily unavailable.",
+  provider_failure: "The provider could not complete the request."
+};
+
+function validateProviderNextCursor(
+  cursor: RuntimeKnowledgeProviderCursor | undefined,
+  binding: ReturnType<typeof freezeAndValidateBinding>,
+  operation: ProviderReadOperation
+): RuntimeKnowledgeProviderCursor | undefined {
+  if (cursor === undefined) return undefined;
+  if (
+    operation !== SEARCH_OPERATION ||
+    cursor.providerId !== binding.providerId ||
+    cursor.providerScopeId !== binding.providerScopeId
+  ) {
+    throw new SafeError("operation_unavailable", 503, true);
+  }
+  return parseProviderCursor(cursor);
 }
 
 function serializeEvidenceResponse(input: {
@@ -685,6 +1003,8 @@ function serializeEvidenceResponse(input: {
   status: "allowed" | "partial_success" | "denied" | "unavailable";
   evidence: RuntimeKnowledgeProviderEvidence[];
   gaps: RuntimeKnowledgeProviderResult["gaps"];
+  nextCursor?: RuntimeKnowledgeProviderCursor;
+  error?: RuntimeKnowledgeProviderSafeError;
   auditEventId: string;
 }): Buffer {
   const publicEvidence = input.evidence.map(
@@ -698,7 +1018,11 @@ function serializeEvidenceResponse(input: {
       data: {
         status: input.status,
         evidence: publicEvidence,
-        gaps: input.gaps
+        gaps: input.gaps,
+        ...(input.nextCursor === undefined
+          ? {}
+          : { nextCursor: input.nextCursor }),
+        ...(input.error === undefined ? {} : { error: input.error })
       },
       audit: {
         eventId: input.auditEventId,

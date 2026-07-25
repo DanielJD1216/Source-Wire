@@ -11,10 +11,15 @@ Summary:
 - Added one optional immutable `KnowledgeProvider v1` binding to the unpublished local Alpha runtime, with no dynamic provider registry or caller-selected provider authority.
 - Added `search_source_evidence` to the local stdio MCP surface and routed it through the loopback API, exact harness capability and namespace policy, a deterministic synthetic read-only provider, and an internal unreleased buffer.
 - Added `get_source_evidence` through the same immutable provider binding and protected-release protocol. Callers supply only namespace, source, and segment identifiers, while the runtime derives provider authority and returns at most one bounded synthetic evidence item.
+- Added provider-bound search cursors, bounded next-cursor release, late-result discard, and exact request-lifetime enforcement without claiming forced transport cancellation.
+- Added fail-closed result validation for owner, namespace, provider scope, ACL, provenance, digests, public-safe locators, provider authority, result counts, excerpt sizes, and aggregate response size.
+- Added constant safe gap and error normalization for empty, partial, unavailable, rate-limited, denied, and not-found outcomes. Raw provider messages, exceptions, endpoints, credentials, and evidence details are excluded before audit or release.
+- Added independent stdio MCP validation for safe denied responses, gaps, errors, and cursors.
 - Added forward-only migration `0005` for durable provider-read audit receipts, exact serialized-result binding, origin-process verification, and single-use receipt consumption.
 - Kept provider identity, owner, namespace, scope, timeout, endpoint, and credentials outside MCP and API input.
 - Preserved zero-provider operation as a safe unavailable result and kept provider reads separate from candidates and trusted memory.
 - Preserved the published `@source-wire/contracts@0.1.0` package boundary. Full Story 5 PostgreSQL conformance remains a later Story 5 issue.
+- Preserved deadline-only provider semantics. The host discards late results, while provider adapters remain responsible for cancelling their own transports.
 
 Validation:
 

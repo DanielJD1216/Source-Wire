@@ -250,7 +250,12 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
   });
 
   app.post("/v1alpha1/source-evidence/search", async (context) => {
-    const body = await readStrictJson(context, ["namespaceId", "query", "limit"]);
+    const body = await readStrictJson(context, [
+      "namespaceId",
+      "query",
+      "limit",
+      "cursor"
+    ]);
     const actor = await authenticateForContext(context, options);
     const input = parseSourceEvidenceSearch(body);
     context.set("namespaceId", input.namespaceId);

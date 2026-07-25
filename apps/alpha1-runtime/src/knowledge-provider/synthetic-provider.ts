@@ -51,7 +51,7 @@ export function createSyntheticKnowledgeProvider(): RuntimeKnowledgeProvider {
         traceId: request.traceId,
         providerId: profile.providerId,
         contractVersion: profile.contractVersion,
-        status: "allowed",
+        status: exactMatch ? "allowed" : "denied",
         evidence: exactMatch ? [syntheticEvidence(request)] : [],
         gaps: exactMatch
           ? []
@@ -62,6 +62,17 @@ export function createSyntheticKnowledgeProvider(): RuntimeKnowledgeProvider {
                 retryable: false
               }
             ],
+        ...(exactMatch
+          ? {}
+          : {
+              error: {
+                code: "not_found" as const,
+                message: "The requested item is not available.",
+                traceId: request.traceId,
+                retryable: false,
+                detailsRedacted: true as const
+              }
+            }),
         providerMutationAttempted: false,
         memoryMutationAttempted: false,
         trustedMemoryCreated: false,

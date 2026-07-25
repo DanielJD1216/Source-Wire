@@ -3,7 +3,9 @@
 Experimental Source-Wire local runtime for macOS and Linux evaluation with
 synthetic or disposable data only.
 
-Version `0.1.0-alpha.1` is the first public npm Alpha. It is not a hosted
+Version `0.1.0-alpha.2` is an unpublished security-fix candidate. The first
+public npm Alpha, `0.1.0-alpha.1`, is deprecated because namespace binding and
+provider deadline enforcement were incomplete. Neither version is a hosted
 service, production runtime, GitHub release, or stable release.
 
 ## Compatibility
@@ -17,18 +19,7 @@ service, production runtime, GitHub release, or stable release.
 
 ## Install
 
-Install the exact public Alpha version:
-
-```sh
-npm install --save-exact @source-wire/local-runtime@0.1.0-alpha.1
-```
-
-This release uses the `alpha` dist-tag. Prefer the exact version above for
-repeatable evaluation.
-
-To inspect a locally packed candidate before publication, run:
-
-From the Source-Wire repository:
+Build and pack the unpublished candidate from an explicit reviewed checkout:
 
 ```sh
 npm run alpha1:build
@@ -36,7 +27,8 @@ npm pack --workspace @source-wire/local-runtime --pack-destination /tmp
 ```
 
 Install the resulting tarball into an evaluation project with an explicit local
-path. Do not use `npx`, a floating package version, or an unreviewed remote URL.
+path. Do not install deprecated `0.1.0-alpha.1`, use `npx`, use a floating
+package version, or use an unreviewed remote URL.
 
 The installed binary is:
 
@@ -52,6 +44,11 @@ The supported programmatic entrypoint exports:
 
 The supported synthetic provider entrypoint is
 `@source-wire/local-runtime/synthetic-provider`. Live providers remain blocked.
+
+Provider adapters execute as trusted in-process application code. The runtime
+enforces a hard response deadline and supplies an optional cooperative
+`AbortSignal`; adapters remain responsible for enforcing their own downstream
+query deadlines, including PostgreSQL `statement_timeout`.
 
 ## Support boundary
 
@@ -90,7 +87,7 @@ publication, hosting, deployment, or data-scope change.
 
 ## Public Alpha boundary
 
-Public npm availability authorizes installation of this exact experimental
-Alpha only. It does not authorize a GitHub tag or release, deployment, hosting,
-real data, live providers, Windows, HTTP or SSE MCP, static serving,
-non-disposable databases, or production use.
+The `0.1.0-alpha.2` candidate is not published. Preparing it does not authorize
+npm publication, a Git tag or release, deployment, hosting, real data, live
+providers, Windows, HTTP or SSE MCP, static serving, non-disposable databases,
+or production use.

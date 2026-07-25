@@ -60,7 +60,7 @@ try {
   );
   if (
     packageJson.name !== "@source-wire/local-runtime" ||
-    packageJson.version !== "0.1.0-alpha.1" ||
+    packageJson.version !== "0.1.0-alpha.2" ||
     packageJson.private !== false ||
     packageJson.publishConfig?.access !== "public" ||
     packageJson.publishConfig?.tag !== "alpha"

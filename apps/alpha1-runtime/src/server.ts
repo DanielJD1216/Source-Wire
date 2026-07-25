@@ -80,6 +80,7 @@ const STORY5_PROVIDER_FAULTS = new Set<SyntheticKnowledgeProviderFault>([
   "provenance_missing",
   "result_bound_exceeded",
   "deadline_exceeded",
+  "never_settles",
   "provider_outage"
 ]);
 

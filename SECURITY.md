@@ -4,6 +4,18 @@ Source-Wire is currently public for technical review.
 
 It is Apache-2.0 licensed as a source package, published to npm, released on GitHub, and not a hosted runtime.
 
+## Current Local-Runtime Warning
+
+`@source-wire/local-runtime@0.1.0-alpha.1` is deprecated because provider owner
+and namespace binding and hard provider deadline enforcement were incomplete.
+Do not install or use that version.
+
+Latest source prepares `0.1.0-alpha.2` with pre-invocation binding checks,
+deadline racing, cooperative abort, and unified protected response handoff.
+That candidate is not published and is not approved for production, hosting,
+deployment, real data, live or untrusted providers, Windows, HTTP or SSE MCP,
+static serving, or non-disposable databases.
+
 ## Supported Scope
 
 Security review is currently limited to the public Source-Wire repository:
@@ -15,14 +27,16 @@ Security review is currently limited to the public Source-Wire repository:
 - validation CLI,
 - package-readiness scripts,
 - GitHub Actions workflow,
-- issue templates.
+- issue templates,
+- the loopback-only local Alpha workspace and its synthetic or disposable
+  conformance paths.
 
 Source-Wire does not currently include:
 
 - hosted runtime backend,
-- API server runtime,
-- MCP server runtime,
-- database migrations,
+- hosted or production API server runtime,
+- hosted or production MCP server runtime,
+- production database migrations,
 - live connectors,
 - real user data,
 - deployed services.

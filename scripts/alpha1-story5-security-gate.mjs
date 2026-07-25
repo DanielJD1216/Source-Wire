@@ -48,13 +48,15 @@ assertStory5KnowledgeProviderSecurityPolicy(
 if (
   alphaPackage.private !== false ||
   alphaPackage.name !== "@source-wire/local-runtime" ||
-  alphaPackage.version !== "0.1.0-alpha.1" ||
+  alphaPackage.version !== "0.1.0-alpha.2" ||
   alphaPackage.publishConfig?.access !== "public" ||
   alphaPackage.publishConfig?.tag !== "alpha" ||
   alphaPackage.sourceWireCandidate?.publicationSecurityReview?.reviewedAt !==
     "2026-07-25" ||
   alphaPackage.sourceWireCandidate?.publicationSecurityReview?.scope !==
-    "npm-public-alpha-0.1.0-alpha.1"
+    "npm-alpha-0.1.0-alpha.2-candidate" ||
+  alphaPackage.sourceWireCandidate?.publicationSecurityReview?.status !==
+    "prepared-not-published"
 ) {
   throw new Error("story5_public_alpha_distribution_boundary_invalid");
 }

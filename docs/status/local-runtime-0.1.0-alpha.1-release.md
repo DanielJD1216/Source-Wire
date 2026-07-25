@@ -4,6 +4,12 @@
 registry on July 25, 2026 for experimental macOS and Linux local evaluation
 with synthetic or disposable data only.
 
+> [!CAUTION]
+> This version was deprecated on July 25, 2026. A security review confirmed
+> incomplete namespace binding and provider deadline enforcement. Do not
+> install or use `0.1.0-alpha.1`. A corrected `0.1.0-alpha.2` candidate is
+> being prepared but is not published.
+
 ## Release Identity
 
 | Field | Value |
@@ -52,15 +58,18 @@ latest: 0.1.0-alpha.1
 ```
 
 Both aliases resolve to the same prerelease. `latest` is not a stable-support
-claim. Use the exact supported installation:
+claim. The historical exact installation was:
 
 ```bash
 npm install --save-exact @source-wire/local-runtime@0.1.0-alpha.1
 ```
 
+Do not run that command. The package is deprecated and no registry
+local-runtime version is currently recommended.
+
 ## Support Boundary
 
-Supported only for experimental local evaluation:
+The original release boundary was experimental local evaluation only:
 
 - macOS and Linux,
 - Node.js `22.23.1`,
@@ -97,3 +106,9 @@ If a critical security, integrity, or boundary defect is confirmed:
 3. publish a corrected Alpha only after a new exact release gate,
 4. unpublish only under separate explicit owner authorization because npm
    version identity cannot be reused.
+
+The approved deprecation step is complete. npm returns:
+
+```text
+Security review: namespace binding and provider deadline enforcement are incomplete. Do not use this version. Upgrade to a later reviewed Alpha when available.
+```

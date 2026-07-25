@@ -187,6 +187,7 @@ test("replaceable adapter faults release zero protected evidence", async (t) => 
     "provenance_missing",
     "result_bound_exceeded",
     "deadline_exceeded",
+    "never_settles",
     "provider_outage"
   ] as const) {
     await t.test(fault, async () => {

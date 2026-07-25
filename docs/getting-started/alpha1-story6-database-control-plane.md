@@ -1,6 +1,6 @@
 # Alpha 1 Story 6.5 Explicit Database Control Plane
 
-Latest source and the experimental local-runtime npm Alpha add explicit
+Latest source and the unpublished local-runtime `0.1.0-alpha.2` candidate add explicit
 database status and migration commands to the `source-wire-local` CLI.
 
 This is experimental Alpha proof with generated disposable PostgreSQL 16 state.

@@ -10,6 +10,8 @@ Use this check to distinguish release snapshots from latest source:
 
 - the immutable npm packages `@source-wire/contracts@0.1.0` and
   `@source-wire/contracts@0.2.0`,
+- the immutable and deprecated npm package
+  `@source-wire/local-runtime@0.1.0-alpha.1`,
 - the immutable GitHub release snapshots `v0.1.0` and `v0.2.0`,
 - the latest `main` branch, which may contain post-release documentation and
   unpublished runtime proof.
@@ -65,6 +67,9 @@ Use a GitHub release when you want an exact public release snapshot.
 Use latest `main` when you want the newest docs, public-readiness checks, owner-decision issue evidence, and reviewer-safety wording.
 
 Use the npm package when you want the immutable published contract artifact.
+
+Do not use deprecated `@source-wire/local-runtime@0.1.0-alpha.1`. Latest source
+prepares `0.1.0-alpha.2`, but that candidate is not published.
 
 ## Current Boundary
 

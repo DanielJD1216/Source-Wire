@@ -5,10 +5,11 @@ Source-Wire repository.
 
 The published `@source-wire/contracts@0.2.0` package defines contract shapes,
 schemas, fixtures, examples, validation tools, and package-readiness checks.
-The separate experimental `@source-wire/local-runtime@0.1.0-alpha.1` package
-provides the local CLI and supported Alpha composition surface. Latest source
-also contains the complete conformance workspace. Stories 6.1 through 6.7 add
-config checks, a memory-only two-tool local runner, immutable
+The separate experimental `@source-wire/local-runtime@0.1.0-alpha.1` package is
+deprecated. Unpublished `0.1.0-alpha.2` is the current local CLI and Alpha
+composition candidate. Latest source also contains the complete conformance
+workspace. Stories 6.1 through 6.7 add config checks, a memory-only two-tool
+local runner, immutable
 synthetic-provider composition behind a four-tool stdio MCP surface,
 fail-closed orchestration, explicit database and export controls, and
 cross-repository evidence-first compatibility proof.

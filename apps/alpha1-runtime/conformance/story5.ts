@@ -149,6 +149,7 @@ const providerFaults: SyntheticKnowledgeProviderFault[] = [
   "provenance_missing",
   "result_bound_exceeded",
   "deadline_exceeded",
+  "never_settles",
   "provider_outage"
 ];
 
@@ -351,10 +352,12 @@ async function runConformance(): Promise<void> {
   await authorizationProbes();
   await durableAuditAndNoPromotionProbes();
   await closeMcp();
+  await immutableProviderBindingAuthorizationProbes();
   await providerFaultProbes();
   await receiptDenialReplayAndPrivilegeProbes();
   await stopApi();
   await crashMatrixProbes();
+  await exactFetchResponseHandoffCrashProbe();
   await leakResistanceProbe();
   await localCliProviderCompositionProbe();
   await localCliFailureBoundaryProbe();
@@ -1220,6 +1223,47 @@ async function authorizationProbes(): Promise<void> {
   );
 }
 
+async function immutableProviderBindingAuthorizationProbes(): Promise<void> {
+  await stopApi();
+  await startApi({ crashPoint: "after_provider_return" });
+  const multiNamespaceHarness = await issueHarness(
+    [NAMESPACE_ID, SECOND_NAMESPACE_ID],
+    ["source_evidence.read"]
+  );
+  const before = await receiptCounts();
+  const search = await postJson(
+    `${baseUrl}/v1alpha1/source-evidence/search`,
+    multiNamespaceHarness.token,
+    {
+      namespaceId: SECOND_NAMESPACE_ID,
+      query: PROTECTED_QUERY,
+      limit: 10
+    }
+  );
+  assertError(search, "namespace_not_allowed", 403);
+  const exact = await postJson(
+    `${baseUrl}/v1alpha1/source-evidence/get`,
+    multiNamespaceHarness.token,
+    {
+      namespaceId: SECOND_NAMESPACE_ID,
+      sourceId: LOCAL_SOURCE_ID,
+      segmentId: LOCAL_SEGMENT_ID
+    }
+  );
+  assertError(exact, "namespace_not_allowed", 403);
+  assert.deepEqual(await receiptCounts(), before);
+  const health = await fetch(`${baseUrl}/health/live`, {
+    signal: AbortSignal.timeout(1_000)
+  });
+  assert.equal(health.status, 200);
+  await stopApi();
+  await startApi();
+  pass(
+    "S5-AUTH-02",
+    "multi-namespace search and exact fetch mismatches were denied before provider invocation, audit issuance, or evidence release"
+  );
+}
+
 async function durableAuditAndNoPromotionProbes(): Promise<void> {
   assert(targetAdminPool);
   const receipts = await targetAdminPool.query<{
@@ -1303,8 +1347,8 @@ async function providerFaultProbes(): Promise<void> {
   }
   await startApi();
   pass(
-    "S5-FAULT-07",
-    "provider scope, ACL, provenance, result bound, deadline, and outage faults returned constant safe failures with zero receipts or evidence"
+    "S5-FAULT-08",
+    "provider scope, ACL, provenance, result bound, delayed deadline, never-settling deadline, and outage faults returned constant safe failures with zero receipts or evidence"
   );
 }
 
@@ -1485,6 +1529,52 @@ async function crashMatrixProbes(): Promise<void> {
   pass(
     "S5-CRASH-01",
     "provider return, serialization, audit, receipt, and response-handoff crash points exited deterministically and released no protected response"
+  );
+}
+
+async function exactFetchResponseHandoffCrashProbe(): Promise<void> {
+  assert(harness);
+  const before = await receiptCounts();
+  await startApi({ crashPoint: "after_response_write" });
+  let responseText = "";
+  try {
+    const response = await fetch(
+      `${baseUrl}/v1alpha1/source-evidence/get`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${harness.token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          namespaceId: NAMESPACE_ID,
+          sourceId: LOCAL_SOURCE_ID,
+          segmentId: LOCAL_SEGMENT_ID
+        }),
+        signal: AbortSignal.timeout(5_000)
+      }
+    );
+    responseText = await response.text();
+  } catch {
+    responseText = "";
+  }
+  assert.equal(
+    responseText.includes(LOCAL_PROTECTED_EXCERPT),
+    false,
+    "exact_fetch_after_response_write"
+  );
+  const child = apiProcess;
+  assert(child);
+  const exitCode =
+    child.exitCode ?? (await waitForExit(child, 5_000));
+  assert.equal(exitCode, 87, "exact_fetch_after_response_write");
+  apiProcess = undefined;
+  const after = await receiptCounts();
+  assert.equal(after.total - before.total, 1);
+  assert.equal(after.consumed - before.consumed, 1);
+  pass(
+    "S5-CRASH-02",
+    "exact fetch used the shared protected response handoff and released no protected response when the handoff crashed"
   );
 }
 

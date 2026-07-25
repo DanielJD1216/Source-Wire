@@ -1,7 +1,9 @@
-# Alpha 1 Story 6.8: Local Runtime Package Release
+# Alpha 1 Story 6.9: Local Runtime Security Candidate
 
-Source-Wire publishes `@source-wire/local-runtime@0.1.0-alpha.1` for public npm
-Alpha distribution.
+Published `@source-wire/local-runtime@0.1.0-alpha.1` is deprecated because
+namespace binding and provider deadline enforcement were incomplete.
+`0.1.0-alpha.2` is prepared in latest source as an unpublished security-fix
+candidate.
 
 The installed binary is `source-wire-local`. The package is configured with
 public npm access, while Git tags, GitHub releases, deployment, and hosted
@@ -32,16 +34,10 @@ It is not supported for:
 - live knowledge providers,
 - non-disposable databases.
 
-## Install The Public Alpha
+## Registry Boundary
 
-Install the exact version:
-
-```bash
-npm install --save-exact @source-wire/local-runtime@0.1.0-alpha.1
-```
-
-The package uses the `alpha` dist-tag. Exact-version installation is
-recommended for repeatable evaluation.
+Do not install deprecated `0.1.0-alpha.1`. `0.1.0-alpha.2` is not published.
+Evaluate only a locally packed artifact from an explicit reviewed revision.
 
 ## Prepare The Local Tarball
 
@@ -58,7 +54,7 @@ This creates a local tarball. It does not publish anything.
 Install the exact tarball into an evaluation project:
 
 ```bash
-npm install --ignore-scripts /tmp/source-wire-local-runtime-0.1.0-alpha.1.tgz
+npm install --ignore-scripts /tmp/source-wire-local-runtime-0.1.0-alpha.2.tgz
 ```
 
 Do not use `npx` or a floating version. An AI-agent MCP configuration should

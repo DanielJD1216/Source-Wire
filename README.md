@@ -12,7 +12,7 @@
 
 Source-Wire defines how agents can retrieve evidence, preserve provenance, propose durable memories, and use trusted context without silently turning every document, message, or model output into truth.
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains a loopback-only Alpha workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. The public npm Alpha `@source-wire/local-runtime@0.1.0-alpha.1` provides the `source-wire-local` binary for macOS and Linux local evaluation with synthetic or disposable data. No local-runtime Git tag or GitHub release was created, and nothing is deployed or hosted.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains a loopback-only Alpha workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. The first public npm Alpha, `@source-wire/local-runtime@0.1.0-alpha.1`, is deprecated because namespace binding and provider deadline enforcement were incomplete. Latest source prepares an unpublished `0.1.0-alpha.2` security candidate. No local-runtime Git tag or GitHub release was created, and nothing is deployed or hosted.
 
 > Bring your own knowledge base, PostgreSQL, credentials, and agent harness. Source-Wire keeps the memory lifecycle and trust boundary explicit.
 
@@ -87,7 +87,8 @@ Use the [Documentation Index](docs/README.md) when you already know the task you
 | Local Story 6.5 database control plane | Included in latest source for read-only runtime-role status, safe migration planning, explicit `--apply`, exact migrator authority, transaction rollback, and idempotent disposable migration proof |
 | Local Story 6.6 owner-controlled export | Included in latest source for explicit namespaces, canonical bounded output, atomic owner-only local files, default no-overwrite, exact owner authority, interruption cleanup, and zero upload |
 | Local Story 6.7 evidence-first compatibility | Included in latest source as cross-repository synthetic proof against a pinned private adapter that depends on published `@source-wire/contracts@0.2.0`; no live connector or real evidence is included |
-| Local Story 6.8 package release | Published to public npm as `@source-wire/local-runtime@0.1.0-alpha.1` for experimental local evaluation with a supported composition API and `source-wire-local` binary; Git tags, GitHub releases, deployment, hosting, production, real data, and live providers remain blocked |
+| Local Story 6.8 package release | `@source-wire/local-runtime@0.1.0-alpha.1` was published and is now deprecated with a security warning |
+| Local Story 6.9 security candidate | Unpublished `0.1.0-alpha.2` candidate binds owner and namespace before provider invocation, enforces hard provider deadlines, and unifies protected search and exact-fetch handoff |
 | Hosted API, hosted MCP, deployment | Not included |
 | Live knowledge connectors or real user data | Not included |
 | Automatic trusted-memory promotion | Forbidden |
@@ -220,8 +221,9 @@ Read [CI Checks](docs/reference/ci-checks.md) for the detailed marker map.
 - [API Reference](docs/reference/api-reference.md)
 - [Repository Metadata](docs/reference/repository-metadata.md)
 - [Public Status](docs/status/public-status.md)
-- [Alpha 1 Story 6.8 Local Runtime Package Release](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md)
+- [Alpha 1 Story 6.9 Local Runtime Security Candidate](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md)
 - [Local Runtime 0.1.0-alpha.1 npm Release](docs/status/local-runtime-0.1.0-alpha.1-release.md)
+- [Local Runtime 0.1.0-alpha.2 Security Candidate](docs/status/local-runtime-0.1.0-alpha.2-candidate.md)
 - [Security Policy](SECURITY.md)
 - [Support](SUPPORT.md)
 - [Visual System](docs/assets/README.md)
@@ -230,11 +232,11 @@ Historical planning packets, approvals, and implementation proofs are preserved 
 
 ## Release Snapshot
 
-The npm packages `@source-wire/contracts@0.1.0`, `@source-wire/contracts@0.2.0`, and `@source-wire/local-runtime@0.1.0-alpha.1`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable release snapshots. The local-runtime npm Alpha is a separate distribution boundary and did not create a GitHub release. Latest `main` may contain later documentation and local Alpha proof.
+The npm packages `@source-wire/contracts@0.1.0`, `@source-wire/contracts@0.2.0`, and deprecated `@source-wire/local-runtime@0.1.0-alpha.1`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable release snapshots. The unpublished `0.1.0-alpha.2` candidate does not change those snapshots and did not create a GitHub release. Latest `main` may contain later documentation and local Alpha proof.
 
 Known `v0.1.0` package issue: that immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though package metadata is `0.1.0`. Version `0.2.0` exports the corrected package version and adds the public `KnowledgeProvider v1` contract.
 
-Read [Contracts 0.2.0 Release](docs/status/0.2.0-release.md), [Local Runtime 0.1.0-alpha.1 npm Release](docs/status/local-runtime-0.1.0-alpha.1-release.md), and [Release Snapshot Boundary](docs/status/release-snapshot-boundary.md).
+Read [Contracts 0.2.0 Release](docs/status/0.2.0-release.md), [Local Runtime 0.1.0-alpha.1 npm Release](docs/status/local-runtime-0.1.0-alpha.1-release.md), [Local Runtime 0.1.0-alpha.2 Security Candidate](docs/status/local-runtime-0.1.0-alpha.2-candidate.md), and [Release Snapshot Boundary](docs/status/release-snapshot-boundary.md).
 
 ## Safety Rule
 

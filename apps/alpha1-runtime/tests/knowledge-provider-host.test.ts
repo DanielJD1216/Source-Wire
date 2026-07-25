@@ -1271,6 +1271,100 @@ test("provider results arriving after the configured deadline are discarded", as
   assert.equal(auditStore.issued, undefined);
 });
 
+test("a provider that never settles cannot outlive the configured deadline", async () => {
+  const synthetic = createSyntheticKnowledgeProvider();
+  const auditStore = new RecordingAuditStore();
+  let providerInvocationCount = 0;
+  const host = createKnowledgeProviderHost({
+    binding: {
+      provider: {
+        profile: synthetic.profile,
+        async execute() {
+          providerInvocationCount += 1;
+          return new Promise<never>(() => {});
+        }
+      },
+      ownerId: "owner_alpha",
+      namespaceId: "ns_project_alpha",
+      providerScopeId: "scope_docs_alpha",
+      timeoutMs: 5
+    },
+    auditStore,
+    processReleaseSecret: randomBytes(32)
+  });
+
+  await assert.rejects(
+    Promise.race([
+      host.execute(
+        {
+          actor,
+          traceId: randomUUID(),
+          startedAtMs: Date.now()
+        },
+        searchCommand()
+      ),
+      new Promise<never>((_resolve, reject) => {
+        setTimeout(
+          () => reject(new Error("provider_deadline_was_not_enforced")),
+          100
+        );
+      })
+    ]),
+    (error: unknown) =>
+      error instanceof SafeError &&
+      error.code === "operation_unavailable" &&
+      error.status === 503
+  );
+  assert.equal(providerInvocationCount, 1);
+  assert.equal(auditStore.issued, undefined);
+});
+
+test("the configured deadline aborts cooperative provider execution", async () => {
+  const synthetic = createSyntheticKnowledgeProvider();
+  const auditStore = new RecordingAuditStore();
+  let providerSignal: AbortSignal | undefined;
+  const host = createKnowledgeProviderHost({
+    binding: {
+      provider: {
+        profile: synthetic.profile,
+        async execute(_request, context) {
+          providerSignal = context?.signal;
+          return new Promise<never>((_resolve, reject) => {
+            context?.signal.addEventListener(
+              "abort",
+              () => reject(new Error("provider_execution_aborted")),
+              { once: true }
+            );
+          });
+        }
+      },
+      ownerId: "owner_alpha",
+      namespaceId: "ns_project_alpha",
+      providerScopeId: "scope_docs_alpha",
+      timeoutMs: 5
+    },
+    auditStore,
+    processReleaseSecret: randomBytes(32)
+  });
+
+  await assert.rejects(
+    host.execute(
+      {
+        actor,
+        traceId: randomUUID(),
+        startedAtMs: Date.now()
+      },
+      searchCommand()
+    ),
+    (error: unknown) =>
+      error instanceof SafeError &&
+      error.code === "operation_unavailable" &&
+      error.status === 503
+  );
+  assert.equal(providerSignal?.aborted, true);
+  assert.equal(auditStore.issued, undefined);
+});
+
 test("expired and aborted request lifetimes fail before provider invocation", async (t) => {
   for (const testCase of [
     {
@@ -1543,6 +1637,138 @@ test("authority and immutable provider scope fail closed before invocation", asy
       /knowledge_provider_binding_invalid/u
     );
   });
+});
+
+test("multi-namespace credentials cannot substitute the configured provider namespace", async () => {
+  const synthetic = createSyntheticKnowledgeProvider();
+  const auditStore = new RecordingAuditStore();
+  let providerInvocationCount = 0;
+  const host = createKnowledgeProviderHost({
+    binding: {
+      provider: {
+        profile: synthetic.profile,
+        async execute(request) {
+          providerInvocationCount += 1;
+          return synthetic.execute(request);
+        }
+      },
+      ownerId: "owner_alpha",
+      namespaceId: "ns_project_alpha",
+      providerScopeId: "scope_docs_alpha",
+      timeoutMs: 1_000
+    },
+    auditStore,
+    processReleaseSecret: randomBytes(32)
+  });
+
+  await assert.rejects(
+    host.execute(
+      {
+        actor: {
+          ...actor,
+          namespaceIds: ["ns_project_alpha", "ns_project_beta"]
+        },
+        traceId: randomUUID(),
+        startedAtMs: Date.now()
+      },
+      {
+        operation: "search_evidence",
+        ...parseSourceEvidenceSearch({
+          namespaceId: "ns_project_beta",
+          query: "deployment review"
+        })
+      }
+    ),
+    (error: unknown) =>
+      error instanceof SafeError &&
+      error.code === "namespace_not_allowed" &&
+      error.status === 403
+  );
+  assert.equal(providerInvocationCount, 0);
+  assert.equal(auditStore.issued, undefined);
+});
+
+test("wrong owner and exact-fetch namespace mismatches fail before provider invocation", async (t) => {
+  for (const testCase of [
+    {
+      name: "search with wrong owner",
+      actor: {
+        ...actor,
+        ownerId: "owner_beta"
+      } satisfies AuthenticatedCredential,
+      command: searchCommand()
+    },
+    {
+      name: "exact fetch with wrong owner",
+      actor: {
+        ...actor,
+        ownerId: "owner_beta"
+      } satisfies AuthenticatedCredential,
+      command: {
+        operation: "get_evidence" as const,
+        ...parseSourceEvidenceGet({
+          namespaceId: "ns_project_alpha",
+          sourceId: "source_synthetic_runbook",
+          segmentId: "segment_release_gate"
+        })
+      }
+    },
+    {
+      name: "exact fetch with substituted namespace",
+      actor: {
+        ...actor,
+        namespaceIds: ["ns_project_alpha", "ns_project_beta"]
+      } satisfies AuthenticatedCredential,
+      command: {
+        operation: "get_evidence" as const,
+        ...parseSourceEvidenceGet({
+          namespaceId: "ns_project_beta",
+          sourceId: "source_synthetic_runbook",
+          segmentId: "segment_release_gate"
+        })
+      }
+    }
+  ] as const) {
+    await t.test(testCase.name, async () => {
+      const synthetic = createSyntheticKnowledgeProvider();
+      const auditStore = new RecordingAuditStore();
+      let providerInvocationCount = 0;
+      const host = createKnowledgeProviderHost({
+        binding: {
+          provider: {
+            profile: synthetic.profile,
+            async execute(request) {
+              providerInvocationCount += 1;
+              return synthetic.execute(request);
+            }
+          },
+          ownerId: "owner_alpha",
+          namespaceId: "ns_project_alpha",
+          providerScopeId: "scope_docs_alpha",
+          timeoutMs: 1_000
+        },
+        auditStore,
+        processReleaseSecret: randomBytes(32)
+      });
+
+      await assert.rejects(
+        host.execute(
+          {
+            actor: testCase.actor,
+            traceId: randomUUID(),
+            startedAtMs: Date.now()
+          },
+          testCase.command
+        ),
+        (error: unknown) =>
+          error instanceof SafeError &&
+          error.code === "namespace_not_allowed" &&
+          error.status === 403
+      );
+      assert.equal(providerInvocationCount, 0);
+      assert.equal(auditStore.issued, undefined);
+    });
+  }
 });
 
 test("cross-scope, malformed, and over-authoritative evidence releases zero content", async (t) => {

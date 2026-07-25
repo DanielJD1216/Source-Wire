@@ -16,7 +16,7 @@ const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const workspace = join(root, "apps", "alpha1-runtime");
 const expected = Object.freeze({
   name: "@source-wire/local-runtime",
-  version: "0.1.0-alpha.1",
+  version: "0.1.0-alpha.2",
   contractsVersion: "0.2.0",
   binary: "dist/src/cli/local.js"
 });
@@ -227,9 +227,9 @@ try {
     `ok local runtime candidate ${expected.name}@${expected.version}`
   );
   console.log(
-    "ok local runtime candidate is configured for public npm Alpha publication"
+    "ok local runtime candidate has public npm Alpha metadata publication blocked"
   );
-  console.log("ok local runtime candidate publishes under the alpha dist-tag");
+  console.log("ok local runtime candidate reserves alpha dist-tag metadata without publishing");
   console.log(
     `ok local runtime candidate pins @source-wire/contracts@${expected.contractsVersion}`
   );

@@ -48,8 +48,13 @@ assertEqual(
 );
 assertEqual(
   candidate?.publicationSecurityReview?.scope,
-  "npm-public-alpha-0.1.0-alpha.1",
+  "npm-alpha-0.1.0-alpha.2-candidate",
   "publication security review scope"
+);
+assertEqual(
+  candidate?.publicationSecurityReview?.status,
+  "prepared-not-published",
+  "publication security review status"
 );
 assertJsonEqual(
   candidate?.advisoryDisposition?.reviewTriggers,
@@ -73,7 +78,11 @@ for (const requiredText of [
   "MCP transport is stdio only",
   "HTTP and SSE MCP are unsupported",
   "static serving is not used or supported",
-  "Publication review completed on July 25, 2026",
+  "dependency disposition was re-reviewed on July 25, 2026",
+  "namespace binding",
+  "provider deadline enforcement",
+  "trusted application code",
+  "statement_timeout",
   "real data",
   "live providers"
 ]) {
@@ -141,7 +150,7 @@ for (const forbiddenReference of [
 console.log("ok local runtime security scope macOS Linux and stdio only");
 console.log("ok local runtime exact Alpha dependency pins");
 console.log(
-  "ok local runtime npm publication security review completed 2026-07-25"
+  "ok local runtime alpha.2 candidate security review recorded 2026-07-25 publication blocked"
 );
 console.log(
   "accepted two moderate nested MCP findings for unsupported Windows static serving scope"

@@ -77,8 +77,22 @@ type ProviderRequestBase = Omit<
   "operation" | "requiredCapabilities" | "search" | "get"
 >;
 
+export type KnowledgeProviderExecutionContext = Readonly<{
+  signal: AbortSignal;
+}>;
+
+export type RuntimeKnowledgeProvider = Omit<
+  SourceWireKnowledgeProviderV1,
+  "execute"
+> & {
+  execute(
+    request: SourceWireKnowledgeProviderRequestV1,
+    context?: KnowledgeProviderExecutionContext
+  ): Promise<SourceWireKnowledgeProviderResultV1>;
+};
+
 export type KnowledgeProviderBinding = Readonly<{
-  provider: SourceWireKnowledgeProviderV1;
+  provider: RuntimeKnowledgeProvider;
   ownerId: string;
   namespaceId: string;
   providerScopeId: string;
@@ -382,6 +396,12 @@ export function createKnowledgeProviderHost(options: {
       }
       requireEvidenceSearchAuthority(context.actor, command.namespaceId);
       if (
+        context.actor.ownerId !== binding.ownerId ||
+        command.namespaceId !== binding.namespaceId
+      ) {
+        throw new SafeError("namespace_not_allowed", 403);
+      }
+      if (
         command.operation === SEARCH_OPERATION &&
         command.cursor !== undefined &&
         (command.cursor.providerId !== binding.providerId ||
@@ -489,7 +509,12 @@ export function createKnowledgeProviderHost(options: {
                   segmentId: command.segmentId
                 }
               };
-        providerResult = await binding.provider.execute(providerRequest);
+        providerResult = await executeProviderWithDeadline(
+          binding.provider,
+          providerRequest,
+          deadlineMs,
+          context.signal
+        );
         options.onStage?.("after_provider_return");
       } catch {
         throw new SafeError("operation_unavailable", 503, true);
@@ -1109,6 +1134,43 @@ function assertReadStillLive(context: {
     Date.now() - context.startedAtMs >= STORY1_REQUEST_TIMEOUT_MS
   ) {
     throw new SafeError("operation_unavailable", 503, true);
+  }
+}
+
+async function executeProviderWithDeadline(
+  provider: RuntimeKnowledgeProvider,
+  request: SourceWireKnowledgeProviderRequestV1,
+  deadlineMs: number,
+  requestSignal?: AbortSignal
+): Promise<SourceWireKnowledgeProviderResultV1> {
+  if (deadlineMs <= Date.now() || requestSignal?.aborted === true) {
+    throw new SafeError("operation_unavailable", 503, true);
+  }
+  const controller = new AbortController();
+  const abortForRequest = () => controller.abort(requestSignal?.reason);
+  const abortPromise = new Promise<never>((_resolve, reject) => {
+    controller.signal.addEventListener(
+      "abort",
+      () => reject(new SafeError("operation_unavailable", 503, true)),
+      { once: true }
+    );
+  });
+  requestSignal?.addEventListener("abort", abortForRequest, { once: true });
+  const timeout = setTimeout(
+    () => controller.abort(),
+    Math.max(0, deadlineMs - Date.now())
+  );
+  const providerExecution = Promise.resolve().then(() => {
+    if (controller.signal.aborted || deadlineMs <= Date.now()) {
+      throw new SafeError("operation_unavailable", 503, true);
+    }
+    return provider.execute(request, { signal: controller.signal });
+  });
+  try {
+    return await Promise.race([providerExecution, abortPromise]);
+  } finally {
+    clearTimeout(timeout);
+    requestSignal?.removeEventListener("abort", abortForRequest);
   }
 }
 

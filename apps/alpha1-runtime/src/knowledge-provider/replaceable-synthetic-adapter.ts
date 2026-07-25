@@ -28,6 +28,7 @@ export type ReplaceableSyntheticProviderFault =
   | "provenance_missing"
   | "result_bound_exceeded"
   | "deadline_exceeded"
+  | "never_settles"
   | "provider_outage";
 
 const profile: SourceWireKnowledgeProviderProfileV1 = Object.freeze({
@@ -81,6 +82,9 @@ export function createReplaceableSyntheticProvider(options?: {
       }
       if (fault === "deadline_exceeded") {
         await new Promise((resolve) => setTimeout(resolve, 1_100));
+      }
+      if (fault === "never_settles") {
+        return new Promise<never>(() => {});
       }
       const readiness =
         request.operation === "describe" ||

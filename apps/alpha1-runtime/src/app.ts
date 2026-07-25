@@ -314,15 +314,15 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
         ...input
       }
     );
-    try {
-      const serialized = Uint8Array.from(execution.serializedResponse).buffer;
-      context.set("safeResult", "allowed");
-      return context.body(serialized, 200, {
-        "Content-Type": "application/json; charset=UTF-8"
-      });
-    } finally {
-      execution.clear();
-    }
+    context.set("safeResult", "allowed");
+    return releaseAuditedEvidenceResponse(
+      execution,
+      (serialized) =>
+        context.body(serialized, 200, {
+          "Content-Type": "application/json; charset=UTF-8"
+        }),
+      options.onProviderReadStage
+    );
   });
 
   app.get("/v1alpha1/admin/namespaces/:namespaceId/memory-candidates", async (context) => {

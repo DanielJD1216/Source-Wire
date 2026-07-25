@@ -109,9 +109,9 @@ jobs:
           set -Eeuo pipefail
           trap 'status=$?; echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED status=${status}"; exit "${status}"' ERR
           test "$(node --version)" = "v22.23.1"
-          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN node=v22.23.1 postgres=16 stories=1-5 providers=baseline,replaceable,evidence-first candidate=local-runtime-alpha.1 data=generated_disposable"
+          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN node=v22.23.1 postgres=16 stories=1-5 providers=baseline,replaceable,evidence-first candidate=local-runtime-alpha.2 data=generated_disposable"
           npm run alpha1:story5:security-gate
           npm run alpha1:conformance
           npm run alpha1:conformance:evidence-first
           npm run local-runtime:candidate-conformance
-          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS node=v22.23.1 postgres=16 stories=1-5 providers=baseline,replaceable,evidence-first candidate=local-runtime-alpha.1 cleanup=verified"
+          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS node=v22.23.1 postgres=16 stories=1-5 providers=baseline,replaceable,evidence-first candidate=local-runtime-alpha.2 cleanup=verified"

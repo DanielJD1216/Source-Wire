@@ -4,6 +4,47 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-25 - Local-runtime 0.1.0-alpha.2 security candidate
+
+Summary:
+
+- Deprecated public `@source-wire/local-runtime@0.1.0-alpha.1` with a security
+  warning because provider owner and namespace binding and hard provider
+  deadline enforcement were incomplete.
+- Prepared, but did not publish, `0.1.0-alpha.2`.
+- Bound authenticated owner and requested namespace to the immutable provider
+  binding before search or exact-fetch provider invocation.
+- Raced provider execution against the configured deadline, supplied
+  cooperative cancellation through an optional `AbortSignal`, and stopped
+  waiting on non-cooperative providers.
+- Routed search and exact fetch through the same protected audited response
+  handoff.
+- Added unit and disposable PostgreSQL conformance coverage for wrong owner,
+  wrong namespace, multi-namespace substitution, never-settling providers,
+  zero audit or evidence release, and exact-fetch handoff crashes.
+- Recorded that in-process adapters remain trusted application code and that
+  database-backed adapters must enforce downstream query deadlines such as
+  PostgreSQL `statement_timeout`.
+
+Boundary:
+
+- `0.1.0-alpha.2` is not published.
+- Production, hosting, deployment, real data, live or untrusted providers,
+  Windows, HTTP or SSE MCP, static serving, non-disposable databases, Git
+  tags, and GitHub releases remain blocked.
+
+Verification:
+
+```text
+npm run alpha1:test
+npm run alpha1:story5:security-gate
+npm run alpha1:conformance:story5
+npm run alpha1:conformance:story5:replaceable
+npm run local-runtime:candidate-smoke
+npm run local-runtime:security-gate
+npm run publish:readiness
+```
+
 ### 2026-07-25 - Local-runtime public npm Alpha publication
 
 Summary:

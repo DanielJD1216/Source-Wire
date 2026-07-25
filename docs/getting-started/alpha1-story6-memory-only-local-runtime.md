@@ -1,6 +1,6 @@
 # Alpha 1 Story 6.2 Memory-Only Local Runtime
 
-Latest source and the experimental local-runtime npm Alpha include the first
+Latest source and the unpublished local-runtime `0.1.0-alpha.2` candidate include the first
 complete `source-wire-local` runtime composition for memory-only use:
 
 ```text

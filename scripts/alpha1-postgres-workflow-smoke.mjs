@@ -33,7 +33,7 @@ for (const required of [
   "SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS",
   "SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED",
   "providers=baseline,replaceable,evidence-first",
-  "candidate=local-runtime-alpha.1",
+  "candidate=local-runtime-alpha.2",
   "${{ github.run_id }}",
   "${{ github.run_attempt }}"
 ]) {

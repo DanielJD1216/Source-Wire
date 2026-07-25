@@ -1,6 +1,6 @@
 # Alpha 1 Story 6.3 Synthetic Provider Local Runtime
 
-Latest source and the experimental local-runtime npm Alpha can compose one
+Latest source and the unpublished local-runtime `0.1.0-alpha.2` candidate can compose one
 owner-selected synthetic `KnowledgeProvider v1` through the
 `source-wire-local` command:
 

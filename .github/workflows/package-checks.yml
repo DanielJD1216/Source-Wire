@@ -67,6 +67,29 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Checkout pinned evidence-first adapter
+        uses: actions/checkout@v5
+        with:
+          repository: DanielJD1216/evidence-first-knowledge-base
+          ref: a01cd307582cecbed54c4ca8e7873d7f9df1ecb8
+          path: evidence-first-knowledge-base
+          persist-credentials: false
+
+      - name: Build and test pinned evidence-first adapter
+        working-directory: evidence-first-knowledge-base
+        run: |
+          npm ci
+          npm test
+          npm pack --pack-destination "$RUNNER_TEMP"
+
+      - name: Install private evidence-first adapter package
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          adapter_packages=("$RUNNER_TEMP"/doomade-evidence-first-source-wire-adapter-*.tgz)
+          test "${#adapter_packages[@]}" -eq 1
+          npm install --no-save --package-lock=false --ignore-scripts "${adapter_packages[0]}"
+
       - name: Run Alpha PostgreSQL conformance
         env:
           PGDATABASE: postgres
@@ -78,7 +101,8 @@ jobs:
           set -Eeuo pipefail
           trap 'status=$?; echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED status=${status}"; exit "${status}"' ERR
           test "$(node --version)" = "v22.23.1"
-          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN node=v22.23.1 postgres=16 stories=1-5 providers=baseline,replaceable data=generated_disposable"
+          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN node=v22.23.1 postgres=16 stories=1-5 providers=baseline,replaceable,evidence-first data=generated_disposable"
           npm run alpha1:story5:security-gate
           npm run alpha1:conformance
-          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS node=v22.23.1 postgres=16 stories=1-5 providers=baseline,replaceable cleanup=verified"
+          npm run alpha1:conformance:evidence-first
+          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS node=v22.23.1 postgres=16 stories=1-5 providers=baseline,replaceable,evidence-first cleanup=verified"

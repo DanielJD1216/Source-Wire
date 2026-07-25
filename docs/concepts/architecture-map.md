@@ -87,6 +87,12 @@ through exact owner authority, writes the existing canonical portable format
 to one explicit local path, rejects existing files by default, and performs no
 provider call, MCP administration, or upload.
 
+Story 6.7 proves a pinned private synthetic adapter from the separate
+evidence-first repository through the same provider-neutral CLI, loopback API
+policy, protected provider host, audit, receipt, stdio MCP, and official-client
+path. The adapter depends only on published `@source-wire/contracts@0.2.0`;
+neither repository receives the other's private runtime authority.
+
 The Alpha workspace does not prove hosting, deployment, managed database
 provisioning, production availability, production migration, production
 backup guarantees, live-provider support, public network exposure,

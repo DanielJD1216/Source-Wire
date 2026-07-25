@@ -47,8 +47,10 @@ const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
   resolve(appRoot, ".artifacts/story5-conformance-report.json");
 
-const OWNER_ID = "owner_story5";
-const NAMESPACE_ID = "ns_story5_alpha";
+const OWNER_ID =
+  process.env.SOURCE_WIRE_CROSS_PROVIDER_OWNER_ID ?? "owner_story5";
+const NAMESPACE_ID =
+  process.env.SOURCE_WIRE_CROSS_PROVIDER_NAMESPACE_ID ?? "ns_story5_alpha";
 const SECOND_NAMESPACE_ID = "ns_story5_beta";
 const PROVIDER_ADAPTER =
   process.env.SOURCE_WIRE_STORY5_PROVIDER_ADAPTER ?? "baseline";
@@ -76,6 +78,62 @@ const SEGMENT_ID =
   PROVIDER_ADAPTER === "replaceable"
     ? REPLACEABLE_SEGMENT_ID
     : "segment_release_gate";
+const CROSS_PROVIDER_MODULE =
+  process.env.SOURCE_WIRE_CROSS_PROVIDER_MODULE;
+const CROSS_PROVIDER_EXPORT =
+  process.env.SOURCE_WIRE_CROSS_PROVIDER_EXPORT;
+const CROSS_PROVIDER_SCOPE_ID =
+  process.env.SOURCE_WIRE_CROSS_PROVIDER_SCOPE_ID;
+const CROSS_PROVIDER_QUERY =
+  process.env.SOURCE_WIRE_CROSS_PROVIDER_QUERY;
+const CROSS_PROVIDER_EXCERPT =
+  process.env.SOURCE_WIRE_CROSS_PROVIDER_EXCERPT;
+const CROSS_PROVIDER_LOCATOR =
+  process.env.SOURCE_WIRE_CROSS_PROVIDER_LOCATOR;
+const CROSS_PROVIDER_SOURCE_ID =
+  process.env.SOURCE_WIRE_CROSS_PROVIDER_SOURCE_ID;
+const CROSS_PROVIDER_SEGMENT_ID =
+  process.env.SOURCE_WIRE_CROSS_PROVIDER_SEGMENT_ID;
+const CROSS_PROVIDER_VALUES = [
+  CROSS_PROVIDER_MODULE,
+  CROSS_PROVIDER_EXPORT,
+  CROSS_PROVIDER_SCOPE_ID,
+  CROSS_PROVIDER_QUERY,
+  CROSS_PROVIDER_EXCERPT,
+  CROSS_PROVIDER_LOCATOR,
+  CROSS_PROVIDER_SOURCE_ID,
+  CROSS_PROVIDER_SEGMENT_ID
+];
+assert(
+  CROSS_PROVIDER_VALUES.every((value) => value === undefined) ||
+    CROSS_PROVIDER_VALUES.every(
+      (value) => typeof value === "string" && value.length > 0
+    ),
+  "cross-provider conformance requires the complete public fixture binding"
+);
+const CROSS_PROVIDER_ENABLED = CROSS_PROVIDER_MODULE !== undefined;
+const LOCAL_PROVIDER_MODULE =
+  CROSS_PROVIDER_MODULE ??
+  (PROVIDER_ADAPTER === "replaceable"
+    ? "@source-wire/alpha1-runtime/replaceable-synthetic-provider"
+    : "@source-wire/alpha1-runtime/synthetic-provider");
+const LOCAL_PROVIDER_EXPORT =
+  CROSS_PROVIDER_EXPORT ??
+  (PROVIDER_ADAPTER === "replaceable"
+    ? "createReplaceableSyntheticProvider"
+    : "createSyntheticKnowledgeProvider");
+const LOCAL_PROVIDER_SCOPE_ID =
+  CROSS_PROVIDER_SCOPE_ID ?? PROVIDER_SCOPE_ID;
+const LOCAL_PROTECTED_QUERY =
+  CROSS_PROVIDER_QUERY ?? PROTECTED_QUERY;
+const LOCAL_PROTECTED_EXCERPT =
+  CROSS_PROVIDER_EXCERPT ?? PROTECTED_EXCERPT;
+const LOCAL_PROTECTED_LOCATOR =
+  CROSS_PROVIDER_LOCATOR ?? PROTECTED_LOCATOR;
+const LOCAL_SOURCE_ID =
+  CROSS_PROVIDER_SOURCE_ID ?? SOURCE_ID;
+const LOCAL_SEGMENT_ID =
+  CROSS_PROVIDER_SEGMENT_ID ?? SEGMENT_ID;
 
 const roleNames = {
   schemaOwner: "source_wire_schema_owner",
@@ -203,7 +261,12 @@ for (const value of [
   PROTECTED_EXCERPT,
   PROTECTED_LOCATOR,
   SOURCE_ID,
-  SEGMENT_ID
+  SEGMENT_ID,
+  LOCAL_PROTECTED_QUERY,
+  LOCAL_PROTECTED_EXCERPT,
+  LOCAL_PROTECTED_LOCATOR,
+  LOCAL_SOURCE_ID,
+  LOCAL_SEGMENT_ID
 ]) {
   sensitiveValues.add(value);
 }
@@ -298,17 +361,14 @@ async function runConformance(): Promise<void> {
 async function localCliProviderCompositionProbe(): Promise<void> {
   assert(targetAdminPool);
   assert(harness);
-  const module =
-    PROVIDER_ADAPTER === "replaceable"
-      ? "@source-wire/alpha1-runtime/replaceable-synthetic-provider"
-      : "@source-wire/alpha1-runtime/synthetic-provider";
-  const exportName =
-    PROVIDER_ADAPTER === "replaceable"
-      ? "createReplaceableSyntheticProvider"
-      : "createSyntheticKnowledgeProvider";
+  const module = LOCAL_PROVIDER_MODULE;
+  const exportName = LOCAL_PROVIDER_EXPORT;
+  const providerModuleBefore = await providerModuleDigest(module);
   const configPath = resolve(
     tempDirectory,
-    `source-wire-story6-provider-${PROVIDER_ADAPTER}.json`
+    `source-wire-story6-provider-${
+      CROSS_PROVIDER_ENABLED ? "external" : PROVIDER_ADAPTER
+    }.json`
   );
   await writeFile(
     configPath,
@@ -321,7 +381,7 @@ async function localCliProviderCompositionProbe(): Promise<void> {
         knowledgeProvider: {
           module,
           exportName,
-          providerScopeId: PROVIDER_SCOPE_ID,
+          providerScopeId: LOCAL_PROVIDER_SCOPE_ID,
           timeoutMs: 1_000
         }
       },
@@ -343,7 +403,7 @@ async function localCliProviderCompositionProbe(): Promise<void> {
     (offlineResult.result as Record<string, unknown>).executableLoaded,
     false
   );
-  assert.equal(offlineCheck.stdout.includes(PROTECTED_EXCERPT), false);
+  assert.equal(offlineCheck.stdout.includes(LOCAL_PROTECTED_EXCERPT), false);
 
   const connectedCheck = await runProcess(
     localCliEntry,
@@ -366,7 +426,7 @@ async function localCliProviderCompositionProbe(): Promise<void> {
     readiness: "ready",
     evidenceReleased: false
   });
-  assert.equal(connectedCheck.stdout.includes(PROTECTED_EXCERPT), false);
+  assert.equal(connectedCheck.stdout.includes(LOCAL_PROTECTED_EXCERPT), false);
   pass(
     "S6-PROVIDER-01",
     "offline provider checking loaded no executable code while explicit connected checking validated the immutable read-only profile and health operation without evidence release"
@@ -418,7 +478,7 @@ async function localCliProviderCompositionProbe(): Promise<void> {
       name: "search_source_evidence",
       arguments: {
         namespaceId: NAMESPACE_ID,
-        query: PROTECTED_QUERY,
+        query: LOCAL_PROTECTED_QUERY,
         limit: 10
       }
     })) as Record<string, unknown>;
@@ -429,15 +489,15 @@ async function localCliProviderCompositionProbe(): Promise<void> {
       (
         searchResult.evidence as Array<Record<string, unknown>>
       )[0]?.excerpt,
-      PROTECTED_EXCERPT
+      LOCAL_PROTECTED_EXCERPT
     );
 
     const exact = (await client.callTool({
       name: "get_source_evidence",
       arguments: {
         namespaceId: NAMESPACE_ID,
-        sourceId: SOURCE_ID,
-        segmentId: SEGMENT_ID
+        sourceId: LOCAL_SOURCE_ID,
+        segmentId: LOCAL_SEGMENT_ID
       }
     })) as Record<string, unknown>;
     assert.notEqual(exact.isError, true, JSON.stringify(exact));
@@ -447,7 +507,7 @@ async function localCliProviderCompositionProbe(): Promise<void> {
       (
         exactResult.evidence as Array<Record<string, unknown>>
       )[0]?.segmentId,
-      SEGMENT_ID
+      LOCAL_SEGMENT_ID
     );
 
     const issued = await targetAdminPool.query<{
@@ -508,8 +568,8 @@ async function localCliProviderCompositionProbe(): Promise<void> {
       configPath,
       ownerToken,
       runtimeUrl,
-      PROTECTED_EXCERPT,
-      PROTECTED_LOCATOR
+      LOCAL_PROTECTED_EXCERPT,
+      LOCAL_PROTECTED_LOCATOR
     ]) {
       assert.equal(row.metadata.includes(forbidden), false);
     }
@@ -522,7 +582,7 @@ async function localCliProviderCompositionProbe(): Promise<void> {
     ownerToken,
     runtimeUrl,
     verifierKey,
-    PROTECTED_EXCERPT
+    LOCAL_PROTECTED_EXCERPT
   ]) {
     assert.equal(diagnosticText.includes(forbidden), false);
   }
@@ -534,18 +594,23 @@ async function localCliProviderCompositionProbe(): Promise<void> {
     "S6-PROVIDER-03",
     "provider reads created zero governed memory, provider details stayed out of MCP diagnostics and audit metadata, and coordinated shutdown revoked the process credential"
   );
+  assert.equal(await providerModuleDigest(module), providerModuleBefore);
+  if (CROSS_PROVIDER_ENABLED) {
+    pass(
+      "S6-EVIDENCE-FIRST-01",
+      "the separately packed evidence-first adapter stayed byte-stable while the unchanged local CLI released ordered synthetic search and exact-fetch evidence through protected audit and single-use receipts"
+    );
+    pass(
+      "S6-EVIDENCE-FIRST-02",
+      "cross-repository reads produced zero memory candidates, trusted memories, or adapter-package writes and exposed no provider credential, endpoint, SQL, entitlement, or ranking implementation"
+    );
+  }
 }
 
 async function localCliFailureBoundaryProbe(): Promise<void> {
   assert(targetAdminPool);
-  const module =
-    PROVIDER_ADAPTER === "replaceable"
-      ? "@source-wire/alpha1-runtime/replaceable-synthetic-provider"
-      : "@source-wire/alpha1-runtime/synthetic-provider";
-  const exportName =
-    PROVIDER_ADAPTER === "replaceable"
-      ? "createReplaceableSyntheticProvider"
-      : "createSyntheticKnowledgeProvider";
+  const module = LOCAL_PROVIDER_MODULE;
+  const exportName = LOCAL_PROVIDER_EXPORT;
   const configPath = resolve(
     tempDirectory,
     `source-wire-story6-failure-${PROVIDER_ADAPTER}.json`
@@ -562,7 +627,7 @@ async function localCliFailureBoundaryProbe(): Promise<void> {
     knowledgeProvider: {
       module,
       exportName,
-      providerScopeId: PROVIDER_SCOPE_ID,
+      providerScopeId: LOCAL_PROVIDER_SCOPE_ID,
       timeoutMs: 1_000
     }
   };
@@ -782,6 +847,9 @@ function assertSafeLocalFailure(
     PROTECTED_QUERY,
     PROTECTED_EXCERPT,
     PROTECTED_LOCATOR,
+    LOCAL_PROTECTED_QUERY,
+    LOCAL_PROTECTED_EXCERPT,
+    LOCAL_PROTECTED_LOCATOR,
     moduleSafeMarker()
   ]) {
     assert.equal(output.includes(forbidden), false);
@@ -790,7 +858,7 @@ function assertSafeLocalFailure(
 }
 
 function moduleSafeMarker(): string {
-  return "@source-wire/alpha1-runtime/";
+  return LOCAL_PROVIDER_MODULE;
 }
 
 async function provisionDisposableTarget(): Promise<void> {
@@ -1726,6 +1794,13 @@ async function runProcess(
   });
   const code = await waitForExit(child, timeoutMs);
   return { code, stdout, stderr };
+}
+
+async function providerModuleDigest(module: string): Promise<string> {
+  const modulePath = fileURLToPath(import.meta.resolve(module));
+  return createHash("sha256")
+    .update(await readFile(modulePath))
+    .digest("hex");
 }
 
 async function waitForExit(

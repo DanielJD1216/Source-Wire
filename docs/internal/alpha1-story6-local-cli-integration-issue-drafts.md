@@ -383,16 +383,16 @@ authorization, ranking, or retrieval implementation.
 
 ### Acceptance criteria
 
-- [ ] The adapter depends on a stable published Source-Wire contracts version rather than a Git commit.
-- [ ] The adapter imports no private Alpha host, database, API, MCP, audit, receipt, credential, or memory-store implementation.
-- [ ] Search returns ordered provider-ready synthetic evidence with complete provenance and bounds.
-- [ ] Exact fetch returns the matching synthetic source and segment only.
-- [ ] Inactive, deleted, denied, incomplete, oversized, late, and cross-scope evidence releases zero protected content.
-- [ ] Source-Wire receives no knowledge-base database credential, endpoint, SQL, entitlement implementation, or ranking implementation.
-- [ ] The knowledge-base adapter receives no Source-Wire actor context, owner credential, audit store, process secret, receipt authority, or memory mutation authority.
-- [ ] The same local CLI and provider-check commands work without provider-specific branches.
-- [ ] Cross-repository conformance proves zero knowledge-base writes and zero automatic memory promotion.
-- [ ] All fixtures are synthetic and no private endpoint, credential, evidence, or deployment detail enters either repository.
+- [x] The adapter depends on a stable published Source-Wire contracts version rather than a Git commit.
+- [x] The adapter imports no private Alpha host, database, API, MCP, audit, receipt, credential, or memory-store implementation.
+- [x] Search returns ordered provider-ready synthetic evidence with complete provenance and bounds.
+- [x] Exact fetch returns the matching synthetic source and segment only.
+- [x] Inactive, deleted, denied, incomplete, oversized, late, and cross-scope evidence releases zero protected content.
+- [x] Source-Wire receives no knowledge-base database credential, endpoint, SQL, entitlement implementation, or ranking implementation.
+- [x] The knowledge-base adapter receives no Source-Wire actor context, owner credential, audit store, process secret, receipt authority, or memory mutation authority.
+- [x] The same local CLI and provider-check commands work without provider-specific branches.
+- [x] Cross-repository conformance proves zero knowledge-base writes and zero automatic memory promotion.
+- [x] All fixtures are synthetic and no private endpoint, credential, evidence, or deployment detail enters either repository.
 
 ## Issue 8: Prepare A No-Publish Local-Runtime Package Candidate
 

@@ -239,7 +239,7 @@ More detail:
 - real user data,
 - trusted Memory Record promotion.
 
-Latest source contains an unpublished local Alpha 1 Stories 1 through 5 runtime workspace. It proves one loopback API, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected source-evidence search and fetch through synthetic read-only providers with disposable PostgreSQL state. Story 6.1 adds private offline local configuration, Story 6.2 adds a private one-command memory-only composition with exactly two tools, Story 6.3 lets the same command bind one immutable repository synthetic provider for exactly four tools, Story 6.4 makes startup and cleanup failures fail closed, Story 6.5 adds explicit read-only database status plus apply-gated migration control, and Story 6.6 adds exact-owner local canonical export with default no-overwrite and zero upload. It does not add the runtime to the published package or authorize hosting, deployment, managed database provisioning, external or live-provider use, production use, production backup guarantees, or real data.
+Latest source contains an unpublished local Alpha 1 Stories 1 through 5 runtime workspace. It proves one loopback API, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected source-evidence search and fetch through synthetic read-only providers with disposable PostgreSQL state. Story 6.1 adds private offline local configuration, Story 6.2 adds a private one-command memory-only composition with exactly two tools, Story 6.3 lets the same command bind one immutable repository synthetic provider for exactly four tools, Story 6.4 makes startup and cleanup failures fail closed, Story 6.5 adds explicit read-only database status plus apply-gated migration control, Story 6.6 adds exact-owner local canonical export with default no-overwrite and zero upload, and Story 6.7 proves a pinned evidence-first synthetic adapter through the unchanged protected path. It does not add the runtime to the published package or authorize hosting, deployment, managed database provisioning, live-provider use, production use, production backup guarantees, or real data.
 
 For the Story 6 path, read:
 
@@ -249,6 +249,7 @@ For the Story 6 path, read:
 - [Story 6.4 Fail-Closed Orchestration And Cleanup](alpha1-story6-fail-closed-orchestration.md)
 - [Story 6.5 Explicit Database Control Plane](alpha1-story6-database-control-plane.md)
 - [Story 6.6 Owner-Controlled Local Export](alpha1-story6-owner-controlled-local-export.md)
+- [Story 6.7 Evidence-First Compatibility](alpha1-story6-evidence-first-compatibility.md)
 
 Current release posture:
 

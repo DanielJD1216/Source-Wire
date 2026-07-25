@@ -14,7 +14,9 @@ request:
   runs the Story 6.5 read-only status, explicit migration, role-separation,
   rollback, idempotency, and cleanup matrix. Story 4 also runs the Story 6.6
   owner-authority, canonical local export, overwrite-policy, interruption,
-  and cleanup matrix.
+  and cleanup matrix. It also checks out the evidence-first adapter at the
+  exact approved revision, builds and packs it privately, and runs Story 6.7
+  through the same protected host.
 
 The workflow is for release and conformance confidence only. It does not
 publish, deploy, call private services, use real data, or preserve a database
@@ -49,8 +51,13 @@ The separate PostgreSQL job runs:
 
 ```bash
 npm ci
+npm ci # in the pinned evidence-first adapter checkout
+npm test # in the pinned evidence-first adapter checkout
+npm pack --pack-destination "$RUNNER_TEMP" # private adapter tarball
+npm install --no-save --package-lock=false --ignore-scripts <adapter-tarball>
 npm run alpha1:story5:security-gate
 npm run alpha1:conformance
+npm run alpha1:conformance:evidence-first
 ```
 
 Its PostgreSQL password is generated from the GitHub run ID and attempt, is
@@ -69,8 +76,8 @@ A success marker appears only after Stories 1 through 5, the embedded Story 6.2
 memory-only launcher cases, the Story 6.3 provider-composition cases through
 both Story 5 adapters, the Story 6.4 failure cases, and their cleanup checks
 pass in dependency order. The same marker also requires the Story 6.5 database
-control plane to pass inside Story 1 and the Story 6.6 local export gate to
-pass inside Story 4.
+control plane to pass inside Story 1, the Story 6.6 local export gate to pass
+inside Story 4, and the 29-case Story 6.7 pinned evidence-first path to pass.
 Alpha unit tests cannot emit that marker.
 
 ## Local Mirror
@@ -95,6 +102,8 @@ job with:
 ```bash
 npm run alpha1:story5:security-gate
 npm run alpha1:conformance
+npm run alpha1:evidence-first-package-smoke
+npm run alpha1:conformance:evidence-first
 ```
 
 ## Check Coverage
@@ -307,8 +316,8 @@ They prove package readiness and synthetic runtime-boundary behavior only. They 
 | Public safety | `Findings: 0 high=0 medium=0 low=0` | Public-safety scan found no obvious private-data or secret findings. |
 | Public claim boundary | `ok public claim boundary scan` | Public docs do not make unsafe production, contribution, npm publishing, GitHub release, or hosted-runtime claims while Source-Wire remains not hosted. |
 | CI marker self-smoke | `ok ci markers smoke` | The marker helper accepts a complete synthetic log and rejects an incomplete synthetic log. |
-| Alpha PostgreSQL workflow smoke | `ok Alpha PostgreSQL workflow uses Node.js 22.23.1`, `ok Alpha PostgreSQL workflow uses PostgreSQL 16`, `ok Alpha PostgreSQL workflow runs Stories 1 through 5`, `ok Alpha PostgreSQL workflow runs both provider adapters`, `ok Alpha PostgreSQL workflow exposes stable gate markers`, `blocked Alpha PostgreSQL workflow artifacts and production secrets` | Static workflow checks preserve the independent exact-version PostgreSQL job, all-story and both-adapter commands, stable markers, ephemeral credential shape, and no-artifact or production-secret boundary. |
-| Hosted Alpha PostgreSQL conformance | `SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN`, `SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS` | The separate GitHub Actions job ran Stories 1 through 5 and both Story 5 adapters against PostgreSQL 16 with exact Node.js 22.23.1, then reached success only after cleanup. `SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED` identifies any command, least-privilege, or cleanup failure. |
+| Alpha PostgreSQL workflow smoke | `ok Alpha PostgreSQL workflow uses Node.js 22.23.1`, `ok Alpha PostgreSQL workflow uses PostgreSQL 16`, `ok Alpha PostgreSQL workflow runs Stories 1 through 5`, `ok Alpha PostgreSQL workflow runs both provider adapters`, `ok Alpha PostgreSQL workflow pins evidence-first adapter`, `ok Alpha PostgreSQL workflow exposes stable gate markers`, `blocked Alpha PostgreSQL workflow artifacts and production secrets` | Static workflow checks preserve the independent exact-version PostgreSQL job, all-story repository-adapter commands, exact evidence-first revision, stable markers, ephemeral credential shape, and no-artifact or production-secret boundary. |
+| Hosted Alpha PostgreSQL conformance | `SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN`, `SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS` | The separate GitHub Actions job ran Stories 1 through 5, both Story 5 repository adapters, and the pinned Story 6.7 evidence-first adapter against PostgreSQL 16 with exact Node.js 22.23.1, then reached success only after cleanup. `SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED` identifies any command, least-privilege, or cleanup failure. |
 
 If one marker group is missing, inspect the command that owns that group before treating CI as release-ready.
 

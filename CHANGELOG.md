@@ -4,6 +4,43 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Story 6.7 evidence-first compatibility proof
+
+Summary:
+
+- Added a cross-repository conformance path for the private synthetic
+  `@doomade/evidence-first-source-wire-adapter@0.1.0-alpha.1` package.
+- Pinned the adapter repository at
+  `a01cd307582cecbed54c4ca8e7873d7f9df1ecb8` while keeping its dependency
+  fixed to published `@source-wire/contracts@0.2.0`.
+- Reused the same generic local CLI, provider check, loopback API policy,
+  protected provider host, durable audit, single-use receipt, stdio MCP, and
+  official MCP client path without provider-specific runtime branches.
+- Added a package preflight that rejects private Alpha authority imports and
+  verifies the adapter's read-only, out-of-band, provenance-required,
+  no-auto-promotion profile.
+- Extended Story 5 cross-repository conformance to 29 cases with ordered
+  synthetic search, exact fetch, byte-stable adapter proof, zero memory writes,
+  and zero automatic memory promotion.
+- Added exact-revision adapter checkout, build, test, pack, install, and
+  PostgreSQL conformance to hosted CI.
+- Added the [Story 6.7 Evidence-First Compatibility](docs/getting-started/alpha1-story6-evidence-first-compatibility.md)
+  guide.
+
+Boundary:
+
+- Live connectors, real evidence, production authentication, non-disposable
+  databases, publication of the Alpha runtime or adapter, hosting, deployment,
+  production use, and real data remain blocked.
+
+Verification:
+
+```text
+npm run alpha1:evidence-first-package-smoke
+npm run alpha1:conformance:evidence-first
+npm run alpha1:ci-workflow-smoke
+```
+
 ### 2026-07-24 - Story 6.6 owner-controlled local export
 
 Summary:

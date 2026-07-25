@@ -18,12 +18,18 @@ for (const required of [
   "name: Source-Wire Alpha PostgreSQL conformance",
   "image: postgres:16",
   "node-version: 22.23.1",
+  "repository: DanielJD1216/evidence-first-knowledge-base",
+  "ref: a01cd307582cecbed54c4ca8e7873d7f9df1ecb8",
+  "persist-credentials: false",
+  "npm pack --pack-destination",
+  "npm install --no-save --package-lock=false --ignore-scripts",
   "npm run alpha1:story5:security-gate",
   "npm run alpha1:conformance",
+  "npm run alpha1:conformance:evidence-first",
   "SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN",
   "SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS",
   "SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED",
-  "providers=baseline,replaceable",
+  "providers=baseline,replaceable,evidence-first",
   "${{ github.run_id }}",
   "${{ github.run_attempt }}"
 ]) {
@@ -56,5 +62,6 @@ console.log("ok Alpha PostgreSQL workflow uses Node.js 22.23.1");
 console.log("ok Alpha PostgreSQL workflow uses PostgreSQL 16");
 console.log("ok Alpha PostgreSQL workflow runs Stories 1 through 5");
 console.log("ok Alpha PostgreSQL workflow runs both provider adapters");
+console.log("ok Alpha PostgreSQL workflow pins evidence-first adapter");
 console.log("ok Alpha PostgreSQL workflow exposes stable gate markers");
 console.log("blocked Alpha PostgreSQL workflow artifacts and production secrets");

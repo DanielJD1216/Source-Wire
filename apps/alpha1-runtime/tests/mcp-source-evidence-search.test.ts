@@ -11,6 +11,12 @@ const serverEntry = resolve(
   dirname(fileURLToPath(import.meta.url)),
   "../src/mcp/server.js"
 );
+const opaqueRecordId =
+  "record:deployment-review/2026-07-24#0001";
+const opaqueSourceId =
+  "docs://runbooks/deployment review?version=synthetic-v1#owner-gate";
+const opaqueSegmentId =
+  "section:release/gate[0]/owner approval?locale=en-CA";
 
 test("official MCP client searches source evidence through loopback API with caller-safe input", async () => {
   let requestBody: unknown;
@@ -33,9 +39,9 @@ test("official MCP client searches source evidence through loopback API with cal
             evidence: [
               {
                 providerId: "synthetic_document_index",
-                providerRecordId: "record_deployment_review",
-                sourceId: "source_synthetic_runbook",
-                segmentId: "segment_release_gate",
+                providerRecordId: opaqueRecordId,
+                sourceId: opaqueSourceId,
+                segmentId: opaqueSegmentId,
                 sourceVersion: "synthetic-v1",
                 contentDigest: {
                   algorithm: "sha256",
@@ -127,9 +133,9 @@ test("official MCP client searches source evidence through loopback API with cal
       evidence: [
         {
           providerId: "synthetic_document_index",
-          providerRecordId: "record_deployment_review",
-          sourceId: "source_synthetic_runbook",
-          segmentId: "segment_release_gate",
+          providerRecordId: opaqueRecordId,
+          sourceId: opaqueSourceId,
+          segmentId: opaqueSegmentId,
           sourceVersion: "synthetic-v1",
           contentDigest: {
             algorithm: "sha256",

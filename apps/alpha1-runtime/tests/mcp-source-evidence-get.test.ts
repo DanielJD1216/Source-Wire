@@ -11,6 +11,12 @@ const serverEntry = resolve(
   dirname(fileURLToPath(import.meta.url)),
   "../src/mcp/server.js"
 );
+const opaqueRecordId =
+  "record:deployment-review/2026-07-24#0001";
+const opaqueSourceId =
+  "docs://runbooks/deployment review?version=synthetic-v1#owner-gate";
+const opaqueSegmentId =
+  "section:release/gate[0]/owner approval?locale=en-CA";
 
 test("official MCP client fetches exact source evidence through caller-safe loopback input", async () => {
   let requestBody: unknown;
@@ -35,9 +41,9 @@ test("official MCP client fetches exact source evidence through caller-safe loop
             evidence: [
               {
                 providerId: "synthetic_document_index",
-                providerRecordId: "record_deployment_review",
-                sourceId: "source_synthetic_runbook",
-                segmentId: "segment_release_gate",
+                providerRecordId: opaqueRecordId,
+                sourceId: opaqueSourceId,
+                segmentId: opaqueSegmentId,
                 sourceVersion: "synthetic-v1",
                 contentDigest: {
                   algorithm: "sha256",
@@ -104,16 +110,16 @@ test("official MCP client fetches exact source evidence through caller-safe loop
       name: "get_source_evidence",
       arguments: {
         namespaceId: "ns_project_alpha",
-        sourceId: "source_synthetic_runbook",
-        segmentId: "segment_release_gate"
+        sourceId: opaqueSourceId,
+        segmentId: opaqueSegmentId
       }
     });
     assert.equal(result.isError, undefined);
     assert.equal(requestUrl, "/v1alpha1/source-evidence/get");
     assert.deepEqual(requestBody, {
       namespaceId: "ns_project_alpha",
-      sourceId: "source_synthetic_runbook",
-      segmentId: "segment_release_gate"
+      sourceId: opaqueSourceId,
+      segmentId: opaqueSegmentId
     });
     const structured = result.structuredContent as {
       evidence: unknown[];
@@ -126,8 +132,8 @@ test("official MCP client fetches exact source evidence through caller-safe loop
       name: "get_source_evidence",
       arguments: {
         namespaceId: "ns_project_alpha",
-        sourceId: "source_synthetic_runbook",
-        segmentId: "segment_release_gate"
+        sourceId: opaqueSourceId,
+        segmentId: opaqueSegmentId
       }
     });
     assert.equal(getWithCursor.isError, true);

@@ -35,6 +35,18 @@ const boundedText = (maximumBytes: number) =>
     .refine((value) => !value.includes("\0"), "invalid text")
     .refine((value) => !hasUnpairedSurrogate(value), "invalid Unicode")
     .refine((value) => Buffer.byteLength(value, "utf8") <= maximumBytes, "text too large");
+const opaqueProviderKey = z
+  .string()
+  .min(1)
+  .refine((value) => !hasUnpairedSurrogate(value), "invalid Unicode")
+  .refine(
+    (value) => !/[\u0000-\u001F\u007F]/u.test(value),
+    "control character not allowed"
+  )
+  .refine(
+    (value) => Buffer.byteLength(value, "utf8") <= 512,
+    "provider key too large"
+  );
 const provenance = z.discriminatedUnion("kind", [
   z
     .object({
@@ -102,8 +114,8 @@ const sourceEvidenceSearchInput = z
 const sourceEvidenceGetInput = z
   .object({
     namespaceId: identifier,
-    sourceId: identifier,
-    segmentId: identifier
+    sourceId: opaqueProviderKey,
+    segmentId: opaqueProviderKey
   })
   .strict();
 
@@ -504,9 +516,9 @@ function readSourceEvidenceSearchResult(
           key !== "instructionAuthority"
       ) ||
       !identifier.safeParse(record.providerId).success ||
-      !identifier.safeParse(record.providerRecordId).success ||
-      !identifier.safeParse(record.sourceId).success ||
-      !identifier.safeParse(record.segmentId).success ||
+      !opaqueProviderKey.safeParse(record.providerRecordId).success ||
+      !opaqueProviderKey.safeParse(record.sourceId).success ||
+      !opaqueProviderKey.safeParse(record.segmentId).success ||
       !boundedText(256).safeParse(record.sourceVersion).success ||
       !digest ||
       typeof digest !== "object" ||

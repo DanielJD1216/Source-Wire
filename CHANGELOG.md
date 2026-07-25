@@ -4,6 +4,27 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Opaque provider-owned identifiers
+
+Summary:
+
+- Separated Source-Wire authority identifiers from provider-owned record, source, and segment keys in the unpublished Alpha provider-read path.
+- Added an exact opaque-key boundary: non-empty, at most 512 UTF-8 bytes, no NUL or ASCII control characters, and no normalization, truncation, hashing, or interpretation.
+- Preserved punctuation-bearing provider keys unchanged through MCP, API parsing, provider execution, evidence validation, exact fetch, receipt binding, response serialization, and deterministic digests.
+- Kept owner, namespace, provider, and provider-scope identifiers on the existing Source-Wire authority grammar.
+- Added boundary tests for exact limits, invalid controls, oversized provider output, protected-release denial, and official MCP round trips.
+- Preserved caller-safe provider selection, synthetic-only data, zero memory promotion, and all existing production and release blocks.
+
+Validation:
+
+- `npm run test --workspace @source-wire/alpha1-runtime`
+- `npm test`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `git diff --check`
+
 ### 2026-07-24 - Alpha host contract convergence
 
 Summary:

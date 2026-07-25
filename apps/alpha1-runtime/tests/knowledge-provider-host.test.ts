@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { randomBytes, randomUUID } from "node:crypto";
+import { createHash, randomBytes, randomUUID } from "node:crypto";
 import test from "node:test";
 
 import type {
@@ -8,6 +8,7 @@ import type {
 } from "@source-wire/contracts";
 
 import { SafeError } from "../src/errors.js";
+import { canonicalRequestDigest } from "../src/idempotency.js";
 import {
   computeProviderOriginProcessVerifier,
   createKnowledgeProviderHost,
@@ -833,6 +834,166 @@ test("audited exact-evidence fetch releases at most one receipt-covered segment"
   );
 });
 
+test("punctuation-bearing provider-owned keys survive exact fetch without normalization", async () => {
+  const sourceId =
+    "docs://runbooks/deployment review?version=synthetic-v1#owner-gate";
+  const segmentId =
+    "section:release/gate[0]/owner approval?locale=en-CA";
+  const providerRecordId =
+    "record:deployment-review/2026-07-24#0001";
+  const synthetic = createSyntheticKnowledgeProvider();
+  const auditStore = new RecordingAuditStore();
+  const host = createKnowledgeProviderHost({
+    binding: {
+      provider: {
+        profile: synthetic.profile,
+        async execute(request) {
+          const result = await synthetic.execute({
+            ...request,
+            get: {
+              sourceId: "source_synthetic_runbook",
+              segmentId: "segment_release_gate"
+            }
+          });
+          return {
+            ...result,
+            evidence: result.evidence.map((item) => ({
+              ...item,
+              providerRecordId,
+              sourceId,
+              segmentId
+            }))
+          };
+        }
+      },
+      ownerId: "owner_alpha",
+      namespaceId: "ns_project_alpha",
+      providerScopeId: "scope_docs_alpha",
+      timeoutMs: 1_000
+    },
+    auditStore,
+    processReleaseSecret: randomBytes(32)
+  });
+
+  const execution = await host.execute(
+    {
+      actor,
+      traceId: randomUUID(),
+      startedAtMs: Date.now()
+    },
+    {
+      operation: "get_evidence",
+      ...parseSourceEvidenceGet({
+        namespaceId: "ns_project_alpha",
+        sourceId,
+        segmentId
+      })
+    }
+  );
+
+  try {
+    const response = JSON.parse(
+      execution.serializedResponse.toString("utf8")
+    ) as {
+      data: {
+        evidence: Array<{
+          providerRecordId: string;
+          sourceId: string;
+          segmentId: string;
+        }>;
+      };
+    };
+    assert.deepEqual(response.data.evidence[0], {
+      providerRecordId,
+      sourceId,
+      segmentId,
+      providerId: "synthetic_document_index",
+      sourceVersion: "synthetic-v1",
+      contentDigest: {
+        algorithm: "sha256",
+        value:
+          "473b425d17d88198eda8f78b44cc26bd4740ddbe44430c7d62e6c9a5c55bbf85"
+      },
+      citationLocator: {
+        value: "synthetic://runbook/release-gate",
+        publicSafe: true
+      },
+      title: "Synthetic deployment review gate",
+      excerpt:
+        "Synthetic evidence: deployment requires an owner-reviewed release gate.",
+      mediaType: "text/markdown",
+      truncated: false,
+      sensitivity: "internal",
+      freshness: "fresh",
+      retrievedAt: "2026-07-24T00:00:00.000Z",
+      sourceModifiedAt: "2026-07-23T00:00:00.000Z",
+      instructionAuthority: "none"
+    });
+    assert.equal(auditStore.issued?.coveredResultCount, 1);
+    assert.equal(
+      auditStore.issued?.resultDigest,
+      createHash("sha256")
+        .update(execution.serializedResponse)
+        .digest("hex")
+    );
+    assert.equal(
+      auditStore.issued?.targetOrderDigest,
+      canonicalRequestDigest({
+        domain: "source-wire.alpha1.story5.provider-result-order.v1",
+        targets: [
+          {
+            ordinal: 1,
+            providerRecordId,
+            sourceId,
+            segmentId,
+            contentDigest:
+              "473b425d17d88198eda8f78b44cc26bd4740ddbe44430c7d62e6c9a5c55bbf85"
+          }
+        ]
+      })
+    );
+  } finally {
+    execution.clear();
+  }
+});
+
+test("opaque provider-key validation enforces exact UTF-8 and control-character bounds", () => {
+  const maximumKey = "x".repeat(512);
+  assert.deepEqual(
+    parseSourceEvidenceGet({
+      namespaceId: "ns_project_alpha",
+      sourceId: maximumKey,
+      segmentId: "segment:one/two"
+    }),
+    {
+      namespaceId: "ns_project_alpha",
+      sourceId: maximumKey,
+      segmentId: "segment:one/two"
+    }
+  );
+
+  for (const invalidKey of [
+    "",
+    "x".repeat(513),
+    "line\nbreak",
+    "tab\tbreak",
+    `delete${String.fromCharCode(127)}control`
+  ]) {
+    assert.throws(
+      () =>
+        parseSourceEvidenceGet({
+          namespaceId: "ns_project_alpha",
+          sourceId: invalidKey,
+          segmentId: "segment:one/two"
+        }),
+      (error: unknown) =>
+        error instanceof SafeError &&
+        error.code === "validation_failed" &&
+        error.status === 400
+    );
+  }
+});
+
 test("provider availability gaps are normalized before audited release", async () => {
   const synthetic = createSyntheticKnowledgeProvider();
   const auditStore = new RecordingAuditStore();
@@ -1421,6 +1582,26 @@ test("cross-scope, malformed, and over-authoritative evidence releases zero cont
             aclDecision: "denied"
           }))
         }) as unknown as SourceWireKnowledgeProviderResultV1
+    },
+    {
+      name: "oversized opaque provider record key",
+      mutate: (result) => ({
+        ...result,
+        evidence: result.evidence.map((item) => ({
+          ...item,
+          providerRecordId: "x".repeat(513)
+        }))
+      })
+    },
+    {
+      name: "control character in opaque source key",
+      mutate: (result) => ({
+        ...result,
+        evidence: result.evidence.map((item) => ({
+          ...item,
+          sourceId: "source\ninjected"
+        }))
+      })
     },
     {
       name: "invalid digest",

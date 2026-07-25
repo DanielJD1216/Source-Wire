@@ -48,6 +48,7 @@ const GET_OPERATION = "get_evidence" as const;
 const MCP_OPERATION = "search_source_evidence" as const;
 const MCP_GET_OPERATION = "get_source_evidence" as const;
 const RECEIPT_FORMAT_VERSION = 1 as const;
+const MAX_OPAQUE_PROVIDER_KEY_BYTES = 512;
 type ProviderReadOperation = typeof SEARCH_OPERATION | typeof GET_OPERATION;
 const REQUIRED_PROVIDER_CAPABILITIES: readonly SourceWireKnowledgeProviderOperationV1[] =
   ["describe", "health", SEARCH_OPERATION, GET_OPERATION];
@@ -301,8 +302,8 @@ export function parseSourceEvidenceGet(value: unknown): SourceEvidenceGetInput {
         record.namespaceId,
         "namespaceId"
       ),
-      sourceId: assertSourceWireIdentifier(record.sourceId, "sourceId"),
-      segmentId: assertSourceWireIdentifier(record.segmentId, "segmentId")
+      sourceId: requireOpaqueProviderKey(record.sourceId),
+      segmentId: requireOpaqueProviderKey(record.segmentId)
     };
   } catch {
     throw new SafeError("validation_failed", 400);
@@ -771,9 +772,9 @@ function validateAndCopyProviderResult(
         (item.sourceId !== command.sourceId ||
           item.segmentId !== command.segmentId)) ||
       item.aclDecision !== "allowed" ||
-      !isProviderIdentifier(item.providerRecordId) ||
-      !isProviderIdentifier(item.sourceId) ||
-      !isProviderIdentifier(item.segmentId) ||
+      !isOpaqueProviderKey(item.providerRecordId) ||
+      !isOpaqueProviderKey(item.sourceId) ||
+      !isOpaqueProviderKey(item.segmentId) ||
       !isBoundedText(item.sourceVersion, 256) ||
       digest.algorithm !== "sha256" ||
       typeof digest.value !== "string" ||
@@ -836,6 +837,23 @@ function isProviderIdentifier(value: unknown): value is string {
   return (
     typeof value === "string" &&
     /^[A-Za-z][A-Za-z0-9_-]{0,63}$/u.test(value)
+  );
+}
+
+function requireOpaqueProviderKey(value: unknown): string {
+  if (!isOpaqueProviderKey(value)) {
+    throw new SafeError("validation_failed", 400);
+  }
+  return value;
+}
+
+function isOpaqueProviderKey(value: unknown): value is string {
+  return (
+    typeof value === "string" &&
+    value.length > 0 &&
+    !hasUnpairedSurrogate(value) &&
+    !/[\u0000-\u001F\u007F]/u.test(value) &&
+    Buffer.byteLength(value, "utf8") <= MAX_OPAQUE_PROVIDER_KEY_BYTES
   );
 }
 

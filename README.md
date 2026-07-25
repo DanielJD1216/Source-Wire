@@ -11,7 +11,7 @@
 
 Source-Wire defines how agents can retrieve evidence, preserve provenance, propose durable memories, and use trusted context without silently turning every document, message, or model output into truth.
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. The contracts package is published to npm and released on GitHub. Latest source also contains unpublished, loopback-only Alpha 1 Stories 1 through 4 for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, and bounded portability proof. Nothing is deployed or hosted.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. The contracts package is published to npm and released on GitHub. Latest source also contains unpublished, loopback-only Alpha 1 Stories 1 through 5 for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through one synthetic provider. Nothing is deployed or hosted.
 
 > Bring your own knowledge base, PostgreSQL, credentials, and agent harness. Source-Wire keeps the memory lifecycle and trust boundary explicit.
 
@@ -77,7 +77,7 @@ Use the [Documentation Index](docs/README.md) when you already know the task you
 | GitHub release | `v0.1.0` |
 | Contracts, schemas, fixtures, validation | Included |
 | Synthetic policy and conformance proofs | Included |
-| Local Alpha 1 Stories 1 through 4 | Included in latest source as an unpublished workspace using generated disposable PostgreSQL state |
+| Local Alpha 1 Stories 1 through 5 | Included in latest source as an unpublished workspace using generated disposable PostgreSQL state and one synthetic read-only provider |
 | Hosted API, hosted MCP, deployment | Not included |
 | Live knowledge connectors or real user data | Not included |
 | Automatic trusted-memory promotion | Forbidden |
@@ -109,7 +109,7 @@ npm run publish:readiness
 
 Despite its name, `publish:readiness` does not publish a package, create a release, deploy a service, connect a production database, or use real data.
 
-For setup details, read the [Quickstart](docs/getting-started/quickstart.md). For the unpublished local proof, follow [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), and [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md) in order.
+For setup details, read the [Quickstart](docs/getting-started/quickstart.md). For the unpublished local proof, follow [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), and [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md) in order.
 
 Use [Share For Technical Review](docs/guides/share-for-review.md) and [Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md) when sharing findings.
 
@@ -134,9 +134,9 @@ The package and release are available for technical review and Apache-2.0 source
 | Contracts | `KnowledgeProvider v1`, `MemoryStore v1`, MCP behavior, API policy, source graph, and cited response shapes |
 | Developer surfaces | TypeScript exports, JSON schemas, validation CLI, synthetic fixtures, and conformance checks |
 | Policy proofs | In-memory and owner-hosted skeletons for identity, namespace, denial, audit, and no-auto-promotion behavior |
-| Latest-source Alpha | Disposable local PostgreSQL bootstrap, candidate proposal, owner decisions, audited search, correction, revocation, export, and recovery proof |
+| Latest-source Alpha | Disposable local PostgreSQL bootstrap, candidate proposal, owner decisions, audited memory search, correction, revocation, export, recovery, and synthetic source-evidence read proof |
 
-The Alpha workspace under `apps/alpha1-runtime/` is local developer proof. It does not establish production availability, hosting, deployment, production backup guarantees, live providers, or real-data support.
+The Alpha workspace under `apps/alpha1-runtime/` is local developer proof. Its four-tool stdio MCP surface adds synthetic source-evidence search and exact fetch to the two memory tools. It does not establish production availability, hosting, deployment, production backup guarantees, live providers, or real-data support.
 
 ## For AI Agents
 
@@ -181,7 +181,8 @@ Core invariants:
 | `npm run readiness:report` | Fast package and boundary summary |
 | `npm test` | Types, fixtures, schema exports, CLI, and examples |
 | `npm run reviewer:smoke` | Clean first-reviewer path in a temporary copy |
-| `npm run alpha1:conformance` | All four disposable local Alpha story proofs |
+| `npm run alpha1:conformance:story5` | Disposable PostgreSQL proof for the four-tool MCP and protected source-evidence release path |
+| `npm run alpha1:conformance` | All five disposable local Alpha story proofs |
 | `npm run docs:links && npm run docs:anchors` | Documentation link and anchor integrity |
 | `npm run safety:scan && npm run claims:scan` | Public-safety and claim-boundary checks |
 | `npm run publish:readiness` | Full local package and boundary gate, without publishing |

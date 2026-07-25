@@ -76,6 +76,16 @@ if (
 if (!disposition.includes("Status: Owner accepted")) {
   throw new Error("story5_advisory_disposition_owner_acceptance_required");
 }
+const reviewDeadline = disposition.match(
+  /^Review deadline: (\d{4}-\d{2}-\d{2})$/mu
+)?.[1];
+if (!reviewDeadline) {
+  throw new Error("story5_advisory_review_deadline_missing");
+}
+const reviewDeadlineEnd = Date.parse(`${reviewDeadline}T23:59:59.999Z`);
+if (!Number.isFinite(reviewDeadlineEnd) || Date.now() > reviewDeadlineEnd) {
+  throw new Error("story5_advisory_review_deadline_expired");
+}
 
 console.log("ok Story 5 immutable provider binding policy");
 console.log("ok Story 5 caller authority exclusion");
@@ -83,6 +93,7 @@ console.log("ok Story 5 source-evidence tool and capability policy");
 console.log(`ok MCP SDK ${sdkVersion} avoids known high-severity SDK ranges`);
 console.log("ok MCP stdio path excludes static-file and HTTP transports");
 console.log("ok known moderate advisory set matches owner-accepted disposition");
+console.log(`ok advisory review deadline remains active through ${reviewDeadline}`);
 console.log("ok Story 5 production and deployment blocks");
 
 function readProductionAudit() {

@@ -10,6 +10,14 @@ import type {
 const EXCERPT =
   "Synthetic evidence: deployment requires an owner-reviewed release gate.";
 
+export type SyntheticKnowledgeProviderFault =
+  | "provider_scope_mismatch"
+  | "acl_denied"
+  | "provenance_missing"
+  | "result_bound_exceeded"
+  | "deadline_exceeded"
+  | "provider_outage";
+
 const profile: RuntimeKnowledgeProviderProfile = Object.freeze({
   contractId: "source-wire.knowledge-provider",
   contractVersion: "knowledge-provider.v1",
@@ -36,23 +44,54 @@ const profile: RuntimeKnowledgeProviderProfile = Object.freeze({
   maximumExcerptBytes: 65_536
 });
 
-export function createSyntheticKnowledgeProvider(): RuntimeKnowledgeProvider {
+export function createSyntheticKnowledgeProvider(options?: {
+  fault?: SyntheticKnowledgeProviderFault;
+}): RuntimeKnowledgeProvider {
+  const fault = options?.fault;
   return Object.freeze({
     profile,
     async execute(
       request: RuntimeKnowledgeProviderRequest
     ): Promise<RuntimeKnowledgeProviderResult> {
+      if (fault === "provider_outage") {
+        throw new Error("synthetic_provider_outage");
+      }
+      if (fault === "deadline_exceeded") {
+        await new Promise((resolve) => setTimeout(resolve, 1_100));
+      }
       const exactMatch =
         request.operation === "search_evidence" ||
         (request.get.sourceId === "source_synthetic_runbook" &&
           request.get.segmentId === "segment_release_gate");
+      const baseEvidence = syntheticEvidence(request);
+      const evidence =
+        fault === "acl_denied"
+          ? [{ ...baseEvidence, aclDecision: "denied" as const }]
+          : fault === "provenance_missing"
+            ? [
+                Object.fromEntries(
+                  Object.entries(baseEvidence).filter(
+                    ([key]) => key !== "sourceVersion"
+                  )
+                )
+              ]
+            : fault === "result_bound_exceeded"
+              ? Array.from({ length: 11 }, (_, index) => ({
+                  ...baseEvidence,
+                  providerRecordId: `record_deployment_review_${index}`,
+                  sourceId: `source_synthetic_runbook_${index}`,
+                  segmentId: `segment_release_gate_${index}`
+                }))
+              : [baseEvidence];
       return {
         requestId: request.requestId,
         traceId: request.traceId,
         providerId: profile.providerId,
         contractVersion: profile.contractVersion,
         status: exactMatch ? "allowed" : "denied",
-        evidence: exactMatch ? [syntheticEvidence(request)] : [],
+        evidence: exactMatch
+          ? (evidence as RuntimeKnowledgeProviderResult["evidence"])
+          : [],
         gaps: exactMatch
           ? []
           : [
@@ -63,7 +102,16 @@ export function createSyntheticKnowledgeProvider(): RuntimeKnowledgeProvider {
               }
             ],
         ...(exactMatch
-          ? {}
+          ? fault === "provider_scope_mismatch" &&
+            request.operation === "search_evidence"
+            ? {
+                nextCursor: {
+                  providerId: profile.providerId,
+                  providerScopeId: "scope_docs_other",
+                  value: "cursor_fault"
+                }
+              }
+            : {}
           : {
               error: {
                 code: "not_found" as const,

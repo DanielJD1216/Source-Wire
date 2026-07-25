@@ -368,7 +368,7 @@ BEGIN
      AND expires_at > pg_catalog.clock_timestamp()
   RETURNING true INTO consumed;
 
-  RETURN pg_catalog.coalesce(consumed, false);
+  RETURN COALESCE(consumed, false);
 END;
 $$;
 

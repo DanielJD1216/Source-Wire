@@ -19,9 +19,11 @@ Summary:
 - Added fail-closed audit-store error translation, receipt-denial handling, idempotent protected-buffer clearing, and zeroing of failed response-handoff copies.
 - Added focused tests proving zero protected release across audit failure, receipt mismatch or replay, database-store outage, every provider fault stage, response-write interruption, and metadata leak checks.
 - Added forward-only migration `0005` for durable provider-read audit receipts, exact serialized-result binding, origin-process verification, and single-use receipt consumption.
+- Added a dedicated Story 5 disposable PostgreSQL conformance runner covering the exact four-tool MCP surface, API and provider routing, durable read audit, release receipts, authorization, provider faults, replay denial, crash stages, least privilege, leak resistance, zero memory promotion, and deterministic cleanup.
+- Fixed provider-receipt consumption in migration `0005` by using PostgreSQL's `COALESCE` expression without an invalid `pg_catalog` function qualification.
 - Kept provider identity, owner, namespace, scope, timeout, endpoint, and credentials outside MCP and API input.
 - Preserved zero-provider operation as a safe unavailable result and kept provider reads separate from candidates and trusted memory.
-- Preserved the published `@source-wire/contracts@0.1.0` package boundary. Full Story 5 PostgreSQL conformance remains a later Story 5 issue.
+- Preserved the published `@source-wire/contracts@0.1.0` package boundary. Story 5 PostgreSQL conformance is now included, while continuous PostgreSQL CI and a published provider contract remain later Story 5 issues.
 - Preserved deadline-only provider semantics. The host discards late results, while provider adapters remain responsible for cancelling their own transports.
 
 Validation:
@@ -31,6 +33,7 @@ Validation:
 - `npm run alpha1:conformance:story2`
 - `npm run alpha1:conformance:story3`
 - `npm run alpha1:conformance:story4`
+- `npm run alpha1:conformance:story5`
 - `npm run alpha1:story5:security-gate`
 - `npm test`
 - `npm run docs:links`
@@ -51,12 +54,13 @@ Primary files:
 - `apps/alpha1-runtime/tests/knowledge-provider-host.test.ts`
 - `apps/alpha1-runtime/tests/mcp-source-evidence-search.test.ts`
 - `apps/alpha1-runtime/tests/mcp-source-evidence-get.test.ts`
+- `apps/alpha1-runtime/conformance/story5.ts`
 
 Risks and follow-ups:
 
 - The known moderate MCP dependency advisory is temporarily accepted only for the local, stdio-only synthetic Alpha runtime. It must be reviewed again no later than 2026-08-24, or immediately if the dependency, transport, platform, or runtime scope changes.
 - Production, hosting, Windows runtime, HTTP/SSE MCP, static serving, deployment, live connectors, real data, package publication, and automatic trusted-memory promotion remain blocked.
-- These slices do not add the disposable PostgreSQL Story 5 conformance runner, continuous PostgreSQL conformance, or a published provider contract. Those remain separate Story 5 issues.
+- These slices do not add continuous PostgreSQL conformance or a published provider contract. Those remain separate Story 5 issues.
 
 ### 2026-07-24 - Public documentation and visual-system redesign
 

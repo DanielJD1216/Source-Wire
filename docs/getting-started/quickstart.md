@@ -6,7 +6,7 @@ This quickstart verifies the package locally with synthetic fixtures.
 
 These commands do not run the unpublished Alpha 1 workspace, sync sources, connect to MCP, call a database, create memories, or publish a new package version.
 
-To exercise the latest-source local runtime separately, follow [Alpha 1 Story 1 Local Runtime](alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](alpha1-story3-audited-search.md), and [Alpha 1 Story 4 Governed Lifecycle And Portability](alpha1-story4-governed-lifecycle-portability.md) in order.
+To exercise the latest-source local runtime separately, follow [Alpha 1 Story 1 Local Runtime](alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](alpha1-story4-governed-lifecycle-portability.md), and [Alpha 1 Story 5 Knowledge Provider Runtime Host](alpha1-story5-knowledge-provider-runtime-host.md) in order.
 
 ## Prerequisites
 
@@ -239,7 +239,7 @@ More detail:
 - real user data,
 - trusted Memory Record promotion.
 
-Latest source contains an unpublished local Alpha 1 Stories 1 through 4 runtime workspace. It proves one loopback API, a two-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, and isolated physical recovery with disposable synthetic PostgreSQL state. It does not change the published package or authorize hosting, deployment, production use, production backup guarantees, or real data.
+Latest source contains an unpublished local Alpha 1 Stories 1 through 5 runtime workspace. It proves one loopback API, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected source-evidence search and fetch through one synthetic read-only provider with disposable PostgreSQL state. It does not change the published package or authorize hosting, deployment, live-provider use, production use, production backup guarantees, or real data.
 
 Current release posture:
 

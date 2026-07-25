@@ -21,7 +21,10 @@ import {
   type ProviderReadStage,
   type ProviderReadStageHook
 } from "./knowledge-provider-host.js";
-import { createSyntheticKnowledgeProvider } from "./knowledge-provider/synthetic-provider.js";
+import {
+  createSyntheticKnowledgeProvider,
+  type SyntheticKnowledgeProviderFault
+} from "./knowledge-provider/synthetic-provider.js";
 import {
   acquireRuntimeRecoveryGuard,
   inspectRuntimeRecoveryGate
@@ -56,6 +59,15 @@ const STORY5_PROVIDER_CRASH_POINTS = new Set<ProviderReadStage>([
   "after_receipt_consumption",
   "before_response_write",
   "after_response_write"
+]);
+
+const STORY5_PROVIDER_FAULTS = new Set<SyntheticKnowledgeProviderFault>([
+  "provider_scope_mismatch",
+  "acl_denied",
+  "provenance_missing",
+  "result_bound_exceeded",
+  "deadline_exceeded",
+  "provider_outage"
 ]);
 
 async function main(): Promise<void> {
@@ -201,8 +213,11 @@ function createStory5ProviderBinding(
   ) {
     throw new Error("story5_provider_binding_refused");
   }
+  const fault = parseStory5SyntheticProviderFault(environment);
   return Object.freeze({
-    provider: createSyntheticKnowledgeProvider(),
+    provider: createSyntheticKnowledgeProvider(
+      fault === undefined ? undefined : { fault }
+    ),
     ownerId: assertSourceWireIdentifier(
       requireEnvironment("SOURCE_WIRE_STORY5_OWNER_ID", environment),
       "ownerId"
@@ -214,6 +229,20 @@ function createStory5ProviderBinding(
     providerScopeId: "scope_docs_alpha",
     timeoutMs: 1_000
   });
+}
+
+function parseStory5SyntheticProviderFault(
+  environment: NodeJS.ProcessEnv
+): SyntheticKnowledgeProviderFault | undefined {
+  const value = environment.SOURCE_WIRE_STORY5_SYNTHETIC_FAULT;
+  if (!value) return undefined;
+  if (
+    environment.SOURCE_WIRE_CONFORMANCE_MODE !== "story5" ||
+    !STORY5_PROVIDER_FAULTS.has(value as SyntheticKnowledgeProviderFault)
+  ) {
+    throw new Error("story5_provider_fault_injection_refused");
+  }
+  return value as SyntheticKnowledgeProviderFault;
 }
 
 function parseConformanceCrashPoint(

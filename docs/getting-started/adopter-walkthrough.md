@@ -47,7 +47,7 @@ Package: @source-wire/contracts
 Version: 0.2.0
 License: Apache-2.0
 Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
-Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, Story 6.3 composes one repository synthetic provider into the four-tool path, Story 6.4 hardens fail-closed orchestration and cleanup, and Story 6.5 adds explicit read-only database status plus apply-gated migration control behind the same local CLI; it contains no deployment, hosting, managed database provisioning, external or live provider, production support, production backup guarantee, or real data
+Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, Story 6.3 composes one repository synthetic provider into the four-tool path, Story 6.4 hardens fail-closed orchestration and cleanup, Story 6.5 adds explicit read-only database status plus apply-gated migration control, and Story 6.6 adds owner-only local canonical export with default no-overwrite and zero upload; it contains no deployment, hosting, managed database provisioning, external or live provider, production support, production backup guarantee, or real data
 ok readiness report
 ```
 
@@ -152,6 +152,7 @@ Start with the repository [Quickstart](quickstart.md), then follow:
 3. [Story 6.3 Synthetic Provider Local Runtime](alpha1-story6-synthetic-provider-local-runtime.md)
 4. [Story 6.4 Fail-Closed Orchestration And Cleanup](alpha1-story6-fail-closed-orchestration.md)
 5. [Story 6.5 Explicit Database Control Plane](alpha1-story6-database-control-plane.md)
+6. [Story 6.6 Owner-Controlled Local Export](alpha1-story6-owner-controlled-local-export.md)
 
 Story 6.3 proves one repository synthetic provider through offline and explicit
 connected checking, immutable startup composition, exactly four stdio MCP
@@ -165,6 +166,10 @@ database, migration, provider, API, MCP, audit, receipt, and response faults.
 Story 6.5 proves read-only database status under runtime authority, safe
 current and target migration planning, explicit apply under separate migrator
 authority, rollback, idempotency, and cleanup.
+
+Story 6.6 proves exact-owner canonical local export for explicit namespaces,
+default no-overwrite, atomic owner-only files, interruption cleanup, no
+provider call, and zero upload.
 
 It does not prove that an external knowledge base is connected. That
 cross-repository synthetic compatibility proof remains a later dependency-

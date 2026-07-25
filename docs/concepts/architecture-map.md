@@ -82,6 +82,11 @@ separate migrator role and applies nothing without `--apply`. Migration
 mutation requires the exact bounded migrator posture, assumes the non-login
 schema owner only inside the transaction, and rolls back atomically on failure.
 
+Story 6.6 adds an owner-only local export control. It reads governed memory
+through exact owner authority, writes the existing canonical portable format
+to one explicit local path, rejects existing files by default, and performs no
+provider call, MCP administration, or upload.
+
 The Alpha workspace does not prove hosting, deployment, managed database
 provisioning, production availability, production migration, production
 backup guarantees, live-provider support, public network exposure,

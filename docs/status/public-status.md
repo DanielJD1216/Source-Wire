@@ -27,6 +27,7 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 | Local Story 6.3 synthetic provider runner | Included in latest source for offline metadata checking, explicit connected readiness, immutable startup composition, and four-tool stdio proof with repository synthetic providers only |
 | Local Story 6.4 fail-closed runner | Included in latest source for stable redacted failure results, child-crash teardown, API-independent process-credential invalidation, protocol separation, and disposable cleanup proof |
 | Local Story 6.5 database control plane | Included in latest source for read-only runtime-role status, safe current and target migration planning, explicit apply, exact migrator posture, rollback, idempotency, and disposable cleanup proof |
+| Local Story 6.6 owner-controlled export | Included in latest source for explicit namespace selection, exact owner authority, canonical bounded local output, default no-overwrite, interruption cleanup, and zero upload |
 | Database or migrations | Six explicit forward-only disposable Alpha 1 migrations are included in latest source; production and non-disposable use remain unapproved |
 | Trusted-memory search | Included only as local active-only PostgreSQL full-text proof with audit-before-release receipts |
 | Trusted-memory correction and revocation | Included only as owner-controlled, fix-forward local Story 4 proof |
@@ -64,6 +65,7 @@ It currently includes:
 - private Story 6.3 zero-or-one synthetic provider composition with offline and connected checks, exactly four stdio MCP tools, protected evidence reads, zero memory promotion, and restart-only replacement,
 - private Story 6.4 fail-closed startup, migration, provider, API, MCP, database, signal, protocol, credential-revocation, and cleanup behavior,
 - private Story 6.5 read-only database status and explicit apply-gated migration control with separate runtime and migrator authority,
+- private Story 6.6 exact-owner canonical local export with explicit namespaces, default no-overwrite, atomic owner-only files, and no upload,
 - issue templates for structured public feedback,
 - GitHub-visible support, security, and contribution-boundary files,
 - Apache-2.0 licensing for source package reuse.
@@ -83,7 +85,7 @@ Source-Wire is not yet:
 
 For the current owner-hosted setup boundary, read [Owner-Hosted Setup Claim Boundary](../internal/owner-hosted-setup-claim-boundary.md).
 
-That historical setup boundary states that Source-Wire is not managed hosting and `Source-Wire-Memory-Engine` remains separate. Alpha 1 Stories 1 through 5 add a disposable developer-runtime migration chain, stdio MCP proposal, memory search, evidence search and fetch, candidate, owner-decision, audited protected reads, owner correction and revocation, canonical export, fresh portable initialization, and isolated physical recovery. Story 6.1 adds non-secret config initialization and offline diagnostics. Story 6.2 composes the memory-only loopback API and two-tool stdio MCP path through one private local command. Story 6.3 uses the same command to compose one owner-selected repository synthetic provider into the four-tool protected-read path. Story 6.4 makes invalid startup, migration mismatch, provider mismatch, database outage, child crash, response interruption, process credential invalidation, and shutdown cleanup fail closed. Story 6.5 adds explicit read-only database status and exact apply-gated migrator control. Production runtime, managed database provisioning, external or live providers, production backup guarantees, and non-disposable database use remain blocked.
+That historical setup boundary states that Source-Wire is not managed hosting and `Source-Wire-Memory-Engine` remains separate. Alpha 1 Stories 1 through 5 add a disposable developer-runtime migration chain, stdio MCP proposal, memory search, evidence search and fetch, candidate, owner-decision, audited protected reads, owner correction and revocation, canonical export, fresh portable initialization, and isolated physical recovery. Story 6.1 adds non-secret config initialization and offline diagnostics. Story 6.2 composes the memory-only loopback API and two-tool stdio MCP path through one private local command. Story 6.3 uses the same command to compose one owner-selected repository synthetic provider into the four-tool protected-read path. Story 6.4 makes invalid startup, migration mismatch, provider mismatch, database outage, child crash, response interruption, process credential invalidation, and shutdown cleanup fail closed. Story 6.5 adds explicit read-only database status and exact apply-gated migrator control. Story 6.6 adds exact-owner canonical local export without adding an MCP administration tool or upload. Production runtime, managed database provisioning, external or live providers, production backup guarantees, and non-disposable database use remain blocked.
 
 The current setup package closeout is recorded in [Owner-Hosted Setup Final Proof](../internal/owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Docs Audit](../internal/owner-hosted-setup-docs-audit.md), and [Owner-Hosted Setup Go/No-Go Gate](../internal/owner-hosted-setup-go-no-go-gate.md).
 
@@ -106,6 +108,7 @@ You may:
 - run the private Story 6.3 synthetic provider launcher through both Story 5 disposable conformance paths,
 - run the private Story 6.4 fail-closed matrix through both 27-case Story 5 adapter paths,
 - run the private Story 6.5 database control plane through the 42-case Story 1 disposable conformance path,
+- run the private Story 6.6 owner-controlled export through the 25-case Story 4 disposable conformance path,
 - open structured feedback issues using the provided templates.
 
 The Apache-2.0 license alone does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.

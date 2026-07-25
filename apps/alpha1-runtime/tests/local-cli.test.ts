@@ -665,6 +665,91 @@ test("database result renderers expose only safe migration identity and mutation
   assertNonSecretSurface(renderLocalCliResult(result, "json"));
 });
 
+test("local export requires explicit scope, destination, and owner environment before database access", async () => {
+  const directory = await privateTemporaryDirectory();
+  try {
+    const configPath = join(directory, "memory-only.json");
+    const destination = join(directory, "portable.ndjson");
+    await writeConfig(configPath, createLocalConfigTemplate());
+
+    const invalid = await runSourceWireLocalCli(
+      ["export", "--config", configPath, "--destination", destination],
+      {}
+    );
+    assert.equal(invalid.exitCode, 1);
+    assert(!invalid.result.ok);
+    assert.equal(invalid.result.operation, "local.export");
+    assert.equal(invalid.result.error.code, "invalid_arguments");
+
+    const missing = await runSourceWireLocalCli(
+      [
+        "export",
+        "--config",
+        configPath,
+        "--namespace-id",
+        "namespace_local",
+        "--destination",
+        destination
+      ],
+      {}
+    );
+    assert.equal(missing.exitCode, 1);
+    assert(!missing.result.ok);
+    assert.equal(missing.result.operation, "local.export");
+    assert.equal(missing.result.error.code, "environment_missing");
+
+    const refusedFault = await runSourceWireLocalCli(
+      [
+        "export",
+        "--config",
+        configPath,
+        "--namespace-id",
+        "namespace_local",
+        "--destination",
+        destination
+      ],
+      {
+        SOURCE_WIRE_STORY6_EXPORT_FAULT: "before_finalize"
+      }
+    );
+    assert.equal(refusedFault.exitCode, 1);
+    assert(!refusedFault.result.ok);
+    assert.equal(refusedFault.result.error.code, "environment_invalid");
+    assertNonSecretSurface(
+      renderLocalCliResult(refusedFault.result, refusedFault.format)
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("local export result renderers expose integrity metadata without destination or authority", () => {
+  const result = {
+    ok: true as const,
+    operation: "local.export" as const,
+    result: {
+      schema: "source-wire.local-export.v1" as const,
+      status: "exported" as const,
+      logicalStateSha256: "a".repeat(64),
+      fileSha256: "b".repeat(64),
+      governedRecordCount: 7,
+      byteCount: 2048,
+      namespaceCount: 2,
+      existingFilePolicy: "reject" as const,
+      uploaded: false as const
+    },
+    warnings: []
+  };
+  const human = renderLocalCliResult(result, "human");
+  assert.match(human, /ok local\.export/u);
+  assert.match(human, /namespace-count 2/u);
+  assert.match(human, /existing-file-policy reject/u);
+  assert.match(human, /uploaded false/u);
+  assert.equal(human.includes("/private/"), false);
+  assertNonSecretSurface(human);
+  assertNonSecretSurface(renderLocalCliResult(result, "json"));
+});
+
 function plainConfig(): Record<string, unknown> {
   return JSON.parse(
     JSON.stringify(createLocalConfigTemplate())

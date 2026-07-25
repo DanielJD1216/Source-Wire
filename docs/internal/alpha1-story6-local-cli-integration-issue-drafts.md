@@ -326,9 +326,16 @@ deployment, hosting, and real data remain blocked.
 
 **Type:** AFK
 
-**Blocked by:** #282
+**Blocked by:** #282, completed
 
 **User stories covered:** US6.4, US6.6
+
+**Latest-source implementation status:** Complete. Verified by 148 focused
+Alpha tests and 25-case disposable PostgreSQL Story 4 conformance. The local
+command requires exact active owner authority for every explicit namespace,
+reuses the canonical portable format, writes atomically with default
+no-overwrite and explicit `--overwrite`, exposes no MCP administration tool,
+performs no provider call or upload, and removes interrupted artifacts.
 
 ### What to build
 
@@ -341,16 +348,16 @@ never uploads the result or grants export authority to MCP.
 
 ### Acceptance criteria
 
-- [ ] Export requires owner authority and rejects harness, runtime, migrator, and provider credentials.
-- [ ] The owner supplies an explicit namespace set and local destination.
-- [ ] Output uses the current bounded canonical portable format.
-- [ ] The destination is written atomically with safe local permissions.
-- [ ] Existing files are not overwritten without an explicit accepted policy.
-- [ ] Output contains no credentials, verifier material, provider secrets, database locators, or process release secrets.
-- [ ] MCP exposes no export, recovery, correction, revocation, or owner-admin tool.
-- [ ] Export sends no data to Source-Wire or any third party.
-- [ ] JSON and human-readable results remain deterministic and redacted.
-- [ ] Disposable conformance proves interruption safety and cleanup.
+- [x] Export requires owner authority and rejects harness, runtime, migrator, and provider credentials.
+- [x] The owner supplies an explicit namespace set and local destination.
+- [x] Output uses the current bounded canonical portable format.
+- [x] The destination is written atomically with safe local permissions.
+- [x] Existing files are not overwritten without an explicit accepted policy.
+- [x] Output contains no credentials, verifier material, provider secrets, database locators, or process release secrets.
+- [x] MCP exposes no export, recovery, correction, revocation, or owner-admin tool.
+- [x] Export sends no data to Source-Wire or any third party.
+- [x] JSON and human-readable results remain deterministic and redacted.
+- [x] Disposable conformance proves interruption safety and cleanup.
 
 ## Issue 7: Prove Evidence-First Compatibility End To End
 

@@ -4,6 +4,30 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Story 6.6 owner-controlled local export
+
+Summary:
+
+- Added private `source-wire-local export` for explicit namespaces and one explicit local destination.
+- Required exact active owner authority for every selected namespace and rejected harness, runtime-shaped, migrator-shaped, and provider-shaped credentials.
+- Reused the bounded canonical portable memory format without loading a provider or adding MCP administration authority.
+- Added atomic owner-only file finalization, default no-overwrite, explicit `--overwrite`, unsafe-path denial, and interruption cleanup.
+- Added deterministic redacted human and JSON result envelopes with integrity metadata and `uploaded: false`.
+- Extended Story 4 from 21 to 25 cases with owner authority, secret-free canonical output, overwrite policy, interruption safety, and cleanup proof.
+- Added the [Story 6.6 Owner-Controlled Local Export](docs/getting-started/alpha1-story6-owner-controlled-local-export.md) guide and aligned public, agent, architecture, quickstart, CI, and issue documentation.
+
+Boundary:
+
+- Scheduled export, remote upload, production backup, external or live providers, publication, hosting, deployment, production use, non-disposable databases, and real data remain blocked.
+
+Verification:
+
+```text
+npm run alpha1:build
+npm run alpha1:test
+npm run alpha1:conformance:story4
+```
+
 ### 2026-07-24 - Story 6.5 explicit database control plane
 
 Summary:

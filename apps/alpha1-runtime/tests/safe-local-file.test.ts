@@ -52,7 +52,10 @@ test("stream and finalization failures leave no partial destination or temporary
       writeSensitiveStreamAtomically(
         existing,
         failingChunks(),
-        128
+        128,
+        undefined,
+        undefined,
+        "replace"
       ),
       /injected_stream_failure/u
     );
@@ -76,6 +79,35 @@ test("stream and finalization failures leave no partial destination or temporary
       (await readdir(directory)).filter((name) => name.endsWith(".tmp")),
       []
     );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("sensitive local files reject replacement unless the caller accepts it explicitly", async () => {
+  const directory = await privateTemporaryDirectory();
+  try {
+    const destination = join(directory, "portable.ndjson");
+    await writeFile(destination, "original\n", { mode: 0o600 });
+    await assert.rejects(
+      writeSensitiveBufferAtomically(
+        destination,
+        Buffer.from("replacement\n"),
+        128,
+        "reject"
+      ),
+      /safe_local_file_exists/u
+    );
+    assert.equal(await readFile(destination, "utf8"), "original\n");
+
+    await writeSensitiveBufferAtomically(
+      destination,
+      Buffer.from("replacement\n"),
+      128,
+      "replace"
+    );
+    assert.equal(await readFile(destination, "utf8"), "replacement\n");
+    assert.equal((await lstat(destination)).mode & 0o777, 0o600);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

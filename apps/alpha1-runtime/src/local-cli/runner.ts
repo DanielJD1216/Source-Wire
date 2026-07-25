@@ -27,6 +27,7 @@ import {
   inspectLocalMigrationPlan,
   migrationPlanResult
 } from "./database.js";
+import { exportLocalPortableState } from "./export.js";
 
 export type SourceWireLocalCliExecution = Readonly<{
   exitCode: 0 | 1;
@@ -48,7 +49,9 @@ export async function runSourceWireLocalCli(
           ? "local.database.status"
           : command === "database" && args[1] === "migrate"
             ? "local.database.migrate"
-            : "local.init";
+            : command === "export"
+              ? "local.export"
+              : "local.init";
   try {
     if (command === "init") {
       const parsed = parseLocalArgs(args.slice(1), {
@@ -237,6 +240,56 @@ export async function runSourceWireLocalCli(
       };
     }
 
+    if (command === "export") {
+      const parsed = parseLocalArgs(args.slice(1), {
+        config: { type: "string" },
+        "namespace-id": { type: "string", multiple: true },
+        destination: { type: "string" },
+        overwrite: { type: "boolean", default: false },
+        json: { type: "boolean", default: false }
+      });
+      const configPath = parsed.values.config;
+      const namespaceIds = parsed.values["namespace-id"];
+      const destination = parsed.values.destination;
+      if (
+        typeof configPath !== "string" ||
+        !Array.isArray(namespaceIds) ||
+        namespaceIds.length < 1 ||
+        namespaceIds.some((value) => typeof value !== "string") ||
+        typeof destination !== "string"
+      ) {
+        invalidArguments();
+      }
+      const config = await readAndValidateLocalConfig(configPath);
+      const fault = parseStory6ExportFault(environment);
+      const result = await exportLocalPortableState({
+        config,
+        namespaceIds: namespaceIds as string[],
+        destination,
+        existingFilePolicy: parsed.values.overwrite
+          ? "replace"
+          : "reject",
+        environment,
+        ...(fault === "before_finalize"
+          ? {
+              beforeFinalize: () => {
+                throw new SourceWireLocalCliError("export_failed");
+              }
+            }
+          : {})
+      });
+      return {
+        exitCode: 0,
+        format: parsed.values.json ? "json" : "human",
+        result: {
+          ok: true,
+          operation,
+          result,
+          warnings: []
+        }
+      };
+    }
+
     invalidArguments();
   } catch (error) {
     const format = args.includes("--json") ? "json" : "human";
@@ -301,6 +354,20 @@ function parseStory6MigrationFault(
   if (
     environment.SOURCE_WIRE_CONFORMANCE_MODE !== "story6" ||
     value !== "after_first_migration"
+  ) {
+    throw new SourceWireLocalCliError("environment_invalid");
+  }
+  return value;
+}
+
+function parseStory6ExportFault(
+  environment: NodeJS.ProcessEnv
+): "before_finalize" | undefined {
+  const value = environment.SOURCE_WIRE_STORY6_EXPORT_FAULT;
+  if (value === undefined) return undefined;
+  if (
+    environment.SOURCE_WIRE_CONFORMANCE_MODE !== "story6" ||
+    value !== "before_finalize"
   ) {
     throw new SourceWireLocalCliError("environment_invalid");
   }

@@ -4,6 +4,7 @@ export const SOURCE_WIRE_LOCAL_OPERATIONS = [
   "local.provider.check",
   "local.database.status",
   "local.database.migrate",
+  "local.export",
   "local.mcp.stdio"
 ] as const;
 
@@ -53,6 +54,10 @@ export type SourceWireLocalErrorCode =
   | "database_authority_invalid"
   | "database_status_failed"
   | "database_migration_failed"
+  | "export_authority_invalid"
+  | "export_destination_unsafe"
+  | "export_destination_exists"
+  | "export_failed"
   | "api_unavailable"
   | "api_start_failed"
   | "credential_issue_failed"
@@ -89,6 +94,13 @@ const ERROR_MESSAGES: Readonly<Record<SourceWireLocalErrorCode, string>> = {
     "The local PostgreSQL migration state could not be inspected safely.",
   database_migration_failed:
     "The local PostgreSQL migration could not be applied safely.",
+  export_authority_invalid:
+    "The local export requires exact active owner authority for every selected namespace.",
+  export_destination_unsafe:
+    "The local export destination is unsafe.",
+  export_destination_exists:
+    "The local export destination already exists and replacement was not accepted.",
+  export_failed: "The local export could not be completed safely.",
   api_unavailable: "The loopback API operation is unavailable.",
   api_start_failed: "The loopback API did not start safely.",
   credential_issue_failed:
@@ -210,6 +222,32 @@ export function renderLocalCliResult(
       );
     }
     return `${lines.join("\n")}\n`;
+  }
+
+  if (result.operation === "local.export") {
+    const value = result.result as {
+      schema: "source-wire.local-export.v1";
+      status: "exported";
+      logicalStateSha256: string;
+      fileSha256: string;
+      governedRecordCount: number;
+      byteCount: number;
+      namespaceCount: number;
+      existingFilePolicy: "reject" | "replace";
+      uploaded: false;
+    };
+    return [
+      `ok ${result.operation}`,
+      `schema ${value.schema}`,
+      `status ${value.status}`,
+      `logical-state-sha256 ${value.logicalStateSha256}`,
+      `file-sha256 ${value.fileSha256}`,
+      `governed-record-count ${value.governedRecordCount}`,
+      `byte-count ${value.byteCount}`,
+      `namespace-count ${value.namespaceCount}`,
+      `existing-file-policy ${value.existingFilePolicy}`,
+      `uploaded ${value.uploaded}`
+    ].join("\n") + "\n";
   }
 
   const value = result.result as {

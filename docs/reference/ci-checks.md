@@ -12,7 +12,9 @@ request:
   the Story 6.3 provider-check and four-tool local launcher conformance plus
   the Story 6.4 fail-closed orchestration and cleanup matrix. Story 1 also
   runs the Story 6.5 read-only status, explicit migration, role-separation,
-  rollback, idempotency, and cleanup matrix.
+  rollback, idempotency, and cleanup matrix. Story 4 also runs the Story 6.6
+  owner-authority, canonical local export, overwrite-policy, interruption,
+  and cleanup matrix.
 
 The workflow is for release and conformance confidence only. It does not
 publish, deploy, call private services, use real data, or preserve a database
@@ -67,7 +69,8 @@ A success marker appears only after Stories 1 through 5, the embedded Story 6.2
 memory-only launcher cases, the Story 6.3 provider-composition cases through
 both Story 5 adapters, the Story 6.4 failure cases, and their cleanup checks
 pass in dependency order. The same marker also requires the Story 6.5 database
-control plane to pass inside Story 1.
+control plane to pass inside Story 1 and the Story 6.6 local export gate to
+pass inside Story 4.
 Alpha unit tests cannot emit that marker.
 
 ## Local Mirror

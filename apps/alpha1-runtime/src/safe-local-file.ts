@@ -1,11 +1,13 @@
 import { randomBytes } from "node:crypto";
 import {
   constants,
+  link,
   lstat,
   open,
   realpath,
   rename,
-  rm
+  rm,
+  unlink
 } from "node:fs/promises";
 import { basename, dirname, isAbsolute, join } from "node:path";
 
@@ -52,14 +54,18 @@ export async function readBoundedRegularFile(
 export async function writeSensitiveBufferAtomically(
   destination: string,
   bytes: Buffer,
-  maximumBytes: number
+  maximumBytes: number,
+  existingFilePolicy: "reject" | "replace" = "replace"
 ): Promise<void> {
   await writeSensitiveStreamAtomically(
     destination,
     (async function* () {
       yield bytes;
     })(),
-    maximumBytes
+    maximumBytes,
+    undefined,
+    undefined,
+    existingFilePolicy
   );
 }
 
@@ -68,15 +74,19 @@ export async function writeSensitiveStreamAtomically(
   chunks: AsyncIterable<Uint8Array>,
   maximumBytes: number,
   onChunk?: (chunk: Buffer) => void,
-  beforeFinalize?: () => void
+  beforeFinalize?: () => void,
+  existingFilePolicy: "reject" | "replace" = "replace"
 ): Promise<{ byteCount: number }> {
-  const parent = await validateDestination(destination);
+  const parent = await validateDestination(
+    destination,
+    existingFilePolicy
+  );
   const temporaryPath = join(
     parent,
     `.${basename(destination)}.${randomBytes(16).toString("hex")}.tmp`
   );
   let handle: Awaited<ReturnType<typeof open>> | undefined;
-  let renamed = false;
+  let finalized = false;
   let byteCount = 0;
   try {
     handle = await open(
@@ -100,8 +110,23 @@ export async function writeSensitiveStreamAtomically(
     await handle.chmod(0o600);
     await handle.close();
     handle = undefined;
-    await rename(temporaryPath, destination);
-    renamed = true;
+    if (existingFilePolicy === "replace") {
+      await rename(temporaryPath, destination);
+    } else {
+      try {
+        await link(temporaryPath, destination);
+        try {
+          await unlink(temporaryPath);
+        } catch (error) {
+          await rm(destination, { force: true }).catch(() => undefined);
+          throw error;
+        }
+      } catch (error) {
+        if (readErrorCode(error) === "EEXIST") fileExists();
+        throw error;
+      }
+    }
+    finalized = true;
     const parentHandle = await open(parent, constants.O_RDONLY);
     try {
       await parentHandle.sync();
@@ -111,13 +136,16 @@ export async function writeSensitiveStreamAtomically(
     return { byteCount };
   } finally {
     await handle?.close().catch(() => undefined);
-    if (!renamed) {
+    if (!finalized) {
       await rm(temporaryPath, { force: true }).catch(() => undefined);
     }
   }
 }
 
-async function validateDestination(destination: string): Promise<string> {
+async function validateDestination(
+  destination: string,
+  existingFilePolicy: "reject" | "replace"
+): Promise<string> {
   assertAbsolutePath(destination);
   const parent = dirname(destination);
   const parentStat = await lstat(parent);
@@ -138,6 +166,7 @@ async function validateDestination(destination: string): Promise<string> {
     ) {
       invalidFile();
     }
+    if (existingFilePolicy === "reject") fileExists();
   } catch (error) {
     const code =
       typeof error === "object" && error !== null && "code" in error
@@ -160,4 +189,14 @@ function noFollowFlag(): number {
 
 function invalidFile(): never {
   throw new Error("safe_local_file_invalid");
+}
+
+function fileExists(): never {
+  throw new Error("safe_local_file_exists");
+}
+
+function readErrorCode(error: unknown): string {
+  return typeof error === "object" && error !== null && "code" in error
+    ? String(error.code)
+    : "";
 }

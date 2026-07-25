@@ -32,6 +32,10 @@ import {
 } from "../src/portable-format.js";
 import { validatePortableState } from "../src/portable-validation.js";
 import { createOperatorPool } from "../src/database.js";
+import {
+  createLocalConfigTemplate,
+  serializeLocalConfig
+} from "../src/local-cli/config.js";
 import { readAlpha1Migrations } from "../src/migration.js";
 import { writeSensitiveStreamAtomically } from "../src/safe-local-file.js";
 
@@ -40,6 +44,7 @@ const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const repoRoot = resolve(appRoot, "../..");
 const operatorCli = resolve(appRoot, "dist/src/cli/operator.js");
 const ownerCli = resolve(appRoot, "dist/src/cli/owner.js");
+const localCli = resolve(appRoot, "dist/src/cli/local.js");
 const serverEntry = resolve(appRoot, "dist/src/server.js");
 const lifecycleMutator = resolve(
   appRoot,
@@ -872,6 +877,179 @@ async function exportProbes(): Promise<void> {
     "S4-EXPORT-02",
     "owner CLI finalized the bundle atomically without writing the body or credential to stdout"
   );
+  await localExportProbes();
+}
+
+async function localExportProbes(): Promise<void> {
+  assert(source);
+  const configPath = join(tempDirectory, "source-wire.local.json");
+  await writeFile(
+    configPath,
+    serializeLocalConfig(
+      createLocalConfigTemplate({
+        ownerId: "owner_story4",
+        namespaceIds: ["ns_story4_alpha", "ns_story4_beta"]
+      })
+    ),
+    { mode: 0o600 }
+  );
+  const destination = join(tempDirectory, "local-owner-export.ndjson");
+  const environment = localExportEnvironment(ownerToken);
+  const successful = await runProcess(
+    localCli,
+    [
+      "export",
+      "--config",
+      configPath,
+      "--namespace-id",
+      "ns_story4_alpha",
+      "--namespace-id",
+      "ns_story4_beta",
+      "--destination",
+      destination,
+      "--json"
+    ],
+    environment
+  );
+  assert.equal(successful.code, 0, successful.stderr);
+  const successfulResult = parseJsonLine(successful.stdout);
+  const successfulData = successfulResult.result as Record<string, unknown>;
+  assert.equal(successfulResult.ok, true);
+  assert.equal(successfulData.schema, "source-wire.local-export.v1");
+  assert.equal(successfulData.status, "exported");
+  assert.equal(successfulData.logicalStateSha256, exportDigest);
+  assert.equal(successfulData.existingFilePolicy, "reject");
+  assert.equal(successfulData.uploaded, false);
+  assert.equal(successful.stdout.includes(destination), false);
+  assert.equal(successful.stdout.includes(ownerToken), false);
+  assert.equal(successful.stdout.includes(source.runtimeUrl), false);
+  const localBundle = await readFile(destination);
+  assert.equal(
+    parsePortableBundle(localBundle, exportDigest).logicalStateSha256,
+    exportDigest
+  );
+  pass(
+    "S6-EXPORT-01",
+    "the local owner command exported the canonical bounded bundle for an explicit namespace set without upload, path, credential, or database-locator output"
+  );
+
+  const providerCredential = randomBytes(24).toString("base64url");
+  sensitiveValues.add(providerCredential);
+  for (const unauthorizedToken of [
+    harnessToken,
+    source.runtimeUrl,
+    source.migratorUrl,
+    providerCredential
+  ]) {
+    const unauthorized = await runProcess(
+      localCli,
+      [
+        "export",
+        "--config",
+        configPath,
+        "--namespace-id",
+        "ns_story4_alpha",
+        "--destination",
+        join(tempDirectory, `unauthorized-${randomUUID()}.ndjson`),
+        "--json"
+      ],
+      localExportEnvironment(unauthorizedToken)
+    );
+    assert.equal(unauthorized.code, 1, unauthorized.stderr);
+    assert.equal(
+      readLocalCliError(unauthorized.stdout),
+      "export_authority_invalid"
+    );
+  }
+  pass(
+    "S6-EXPORT-02",
+    "harness, runtime-shaped, migrator-shaped, and provider-shaped credentials could not invoke local export"
+  );
+
+  const originalBytes = await readFile(destination);
+  const rejectedReplacement = await runProcess(
+    localCli,
+    [
+      "export",
+      "--config",
+      configPath,
+      "--namespace-id",
+      "ns_story4_alpha",
+      "--namespace-id",
+      "ns_story4_beta",
+      "--destination",
+      destination,
+      "--json"
+    ],
+    environment
+  );
+  assert.equal(rejectedReplacement.code, 1, rejectedReplacement.stderr);
+  assert.equal(
+    readLocalCliError(rejectedReplacement.stdout),
+    "export_destination_exists"
+  );
+  assert.deepEqual(await readFile(destination), originalBytes);
+  const acceptedReplacement = await runProcess(
+    localCli,
+    [
+      "export",
+      "--config",
+      configPath,
+      "--namespace-id",
+      "ns_story4_alpha",
+      "--namespace-id",
+      "ns_story4_beta",
+      "--destination",
+      destination,
+      "--overwrite",
+      "--json"
+    ],
+    environment
+  );
+  assert.equal(acceptedReplacement.code, 0, acceptedReplacement.stderr);
+  assert.equal(
+    (parseJsonLine(acceptedReplacement.stdout).result as Record<string, unknown>)
+      .existingFilePolicy,
+    "replace"
+  );
+  pass(
+    "S6-EXPORT-03",
+    "existing local files were preserved by default and replaced only after the explicit overwrite policy was accepted"
+  );
+
+  const interruptedDestination = join(
+    tempDirectory,
+    "interrupted-local-export.ndjson"
+  );
+  const interrupted = await runProcess(
+    localCli,
+    [
+      "export",
+      "--config",
+      configPath,
+      "--namespace-id",
+      "ns_story4_alpha",
+      "--destination",
+      interruptedDestination,
+      "--json"
+    ],
+    {
+      ...environment,
+      SOURCE_WIRE_CONFORMANCE_MODE: "story6",
+      SOURCE_WIRE_STORY6_EXPORT_FAULT: "before_finalize"
+    }
+  );
+  assert.equal(interrupted.code, 1, interrupted.stderr);
+  assert.equal(readLocalCliError(interrupted.stdout), "export_failed");
+  await assert.rejects(lstat(interruptedDestination), { code: "ENOENT" });
+  assert.deepEqual(
+    (await readdir(tempDirectory)).filter((name) => name.endsWith(".tmp")),
+    []
+  );
+  pass(
+    "S6-EXPORT-04",
+    "an injected local export interruption left no destination or temporary artifact"
+  );
 }
 
 async function portableRestoreWorkflow(): Promise<void> {
@@ -949,7 +1127,11 @@ async function portableRestoreWorkflow(): Promise<void> {
     operatorEnvironment(portable),
     130_000
   );
-  assert.equal(restore.code, 0, restore.stderr);
+  assert.equal(
+    restore.code,
+    0,
+    redact(`${restore.stdout}\n${restore.stderr}`)
+  );
   const restored = parseJsonLine(restore.stdout);
   assert.equal(restored.logicalStateSha256, exportDigest);
   assert.equal(restored.governedRecordCount, exportRecordCount);
@@ -1669,6 +1851,17 @@ function ownerEnvironment(token: string): NodeJS.ProcessEnv {
   };
 }
 
+function localExportEnvironment(token: string): NodeJS.ProcessEnv {
+  assert(source);
+  return {
+    ...process.env,
+    SOURCE_WIRE_DATABASE_URL: source.runtimeUrl,
+    SOURCE_WIRE_TOKEN_VERIFIER_KEY: verifierKey,
+    SOURCE_WIRE_TOKEN_VERIFIER_KEY_ID: verifierKeyId,
+    SOURCE_WIRE_OWNER_TOKEN: token
+  };
+}
+
 function runtimeEnvironment(
   target: DatabaseTarget,
   port: number
@@ -1810,6 +2003,12 @@ function parseJsonLine(value: string): Record<string, unknown> {
   const parsed = JSON.parse(lines[0]!) as unknown;
   assert(parsed && typeof parsed === "object" && !Array.isArray(parsed));
   return parsed as Record<string, unknown>;
+}
+
+function readLocalCliError(value: string): string {
+  const parsed = parseJsonLine(value);
+  const error = parsed.error as Record<string, unknown> | undefined;
+  return String(error?.code ?? "");
 }
 
 function databaseName(label: string): string {

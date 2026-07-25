@@ -154,5 +154,5 @@ credentials are removed by conformance cleanup.
 - real user or client data,
 - publication of the Alpha runtime.
 
-The next dependency-ordered unit is
-[#283 Story 6.6: Add owner-controlled local export](https://github.com/DanielJD1216/Source-Wire/issues/283).
+Continue with
+[Story 6.6 Owner-Controlled Local Export](alpha1-story6-owner-controlled-local-export.md).

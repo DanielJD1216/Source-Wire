@@ -1,10 +1,11 @@
-# Local Runtime 0.1.0-alpha.2 Security Candidate
+# Local Runtime 0.1.0-alpha.2 npm Release
 
-`@source-wire/local-runtime@0.1.0-alpha.2` is a publication-approved
-security-fix Alpha. It is limited to reviewed macOS and Linux local evaluation
-with synthetic or disposable data.
+`@source-wire/local-runtime@0.1.0-alpha.2` is the reviewed public
+security-fix Alpha published to npm under the `alpha` tag on July 25, 2026.
+It is limited to macOS and Linux local evaluation with synthetic or disposable
+data.
 
-## Why This Candidate Exists
+## Why This Release Exists
 
 Review of `0.1.0-alpha.1` confirmed two defects:
 
@@ -15,9 +16,9 @@ Review of `0.1.0-alpha.1` confirmed two defects:
 
 The published `0.1.0-alpha.1` version is deprecated with a security warning.
 
-## Candidate Controls
+## Release Controls
 
-The candidate:
+The release:
 
 - requires the authenticated actor owner to equal the provider binding owner,
 - requires the requested namespace to equal the provider binding namespace,
@@ -42,7 +43,7 @@ Use Node.js `22.23.1` and PostgreSQL `16.x`. Follow the
 [Quickstart](../getting-started/quickstart.md) for repository setup before
 running these commands.
 
-Required before publication approval:
+Completed before publication:
 
 ```text
 npm run alpha1:test
@@ -59,10 +60,23 @@ npm run publish:readiness
 Full conformance requires exact Node.js `22.23.1`, PostgreSQL `16`, generated
 disposable state, and cleanup proof.
 
+## Registry Evidence
+
+- Package: `@source-wire/local-runtime@0.1.0-alpha.2`
+- npm tag: `alpha`
+- Tarball shasum: `d18316bfc79d9766c439d4dad3fbb7afcd38e2b9`
+- Published from reviewed source commit:
+  `2057ddb870bb07f1cdabb37272155f33df80b89f`
+- Clean-install `source-wire-local init` and offline `doctor` passed under
+  Node.js `22.23.1`.
+- npm's `latest` tag remains on deprecated `0.1.0-alpha.1`. Consumers must
+  install the exact reviewed version or use the `alpha` tag deliberately.
+
 ## Release Boundary
 
-Exact owner publication approval is recorded after green hosted package and
-PostgreSQL verification. The approved npm channel is the `alpha` tag only.
+The npm package was published only after exact owner approval, green hosted
+package checks, green PostgreSQL conformance, and exact-source verification.
+Publication did not create or approve a Git tag or GitHub release.
 
 Still blocked:
 

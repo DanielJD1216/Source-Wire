@@ -13,7 +13,7 @@ const requiredMarkers = [
   "License: Apache-2.0",
   "Publish boundary: npm package public at @source-wire/contracts@0.2.0, hosted runtime blocked",
   "Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime",
-  "published local-runtime 0.1.0-alpha.1 is deprecated, and latest source prepares unpublished 0.1.0-alpha.2 with pre-invocation provider binding, hard provider deadlines, cooperative abort, and unified search and exact-fetch handoff",
+  "published local-runtime 0.1.0-alpha.1 is deprecated, and reviewed 0.1.0-alpha.2 is published under the npm alpha tag with pre-invocation provider binding, hard provider deadlines, cooperative abort, and unified search and exact-fetch handoff",
   "ok readiness report"
 ];
 

@@ -1,9 +1,9 @@
-# Alpha 1 Story 6.9: Local Runtime Security Candidate
+# Alpha 1 Story 6.9: Local Runtime Security Alpha
 
 Published `@source-wire/local-runtime@0.1.0-alpha.1` is deprecated because
 namespace binding and provider deadline enforcement were incomplete.
-`0.1.0-alpha.2` is prepared in latest source as an unpublished security-fix
-candidate.
+`0.1.0-alpha.2` is published to npm under the `alpha` tag as the reviewed
+security-fix release.
 
 The installed binary is `source-wire-local`. The package is configured with
 public npm access, while Git tags, GitHub releases, deployment, and hosted
@@ -36,8 +36,10 @@ It is not supported for:
 
 ## Registry Boundary
 
-Do not install deprecated `0.1.0-alpha.1`. `0.1.0-alpha.2` is not published.
-Evaluate only a locally packed artifact from an explicit reviewed revision.
+Do not install deprecated `0.1.0-alpha.1`. Install exact reviewed
+`@source-wire/local-runtime@0.1.0-alpha.2` for local synthetic or disposable
+evaluation. Use a locally packed artifact only when reproducing the
+pre-publication gate.
 
 ## Prepare The Local Tarball
 

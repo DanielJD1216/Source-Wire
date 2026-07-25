@@ -1,6 +1,6 @@
 # Alpha 1 Story 6.6 Owner-Controlled Local Export
 
-Latest source and the unpublished local-runtime `0.1.0-alpha.2` candidate expose the existing
+Latest source and published local-runtime `0.1.0-alpha.2` expose the existing
 canonical portable memory export through the `source-wire-local` CLI.
 
 This is experimental Alpha proof with generated disposable PostgreSQL 16 state.

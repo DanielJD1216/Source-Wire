@@ -15,7 +15,7 @@ To exercise the latest-source local runtime separately, follow [Alpha 1 Story 1 
 
 Node.js 22 matches GitHub Actions Package Checks.
 
-The contracts package is published to npm as `@source-wire/contracts@0.2.0`. Separate local runtime `0.1.0-alpha.1` is deprecated. Unpublished `0.1.0-alpha.2` is the current security-fix candidate. Use an explicit local repository checkout for candidate evaluation and full verification.
+The contracts package is published to npm as `@source-wire/contracts@0.2.0`. Separate local runtime `0.1.0-alpha.1` is deprecated. Reviewed `@source-wire/local-runtime@0.1.0-alpha.2` is published under the npm `alpha` tag for macOS and Linux local evaluation with synthetic or disposable data. Install the exact version. Use an explicit repository checkout for full conformance verification.
 
 ## Install
 
@@ -258,7 +258,7 @@ Current release posture:
 - `LICENSE` file exists,
 - npm package `@source-wire/contracts@0.2.0` is published,
 - npm package `@source-wire/local-runtime@0.1.0-alpha.1` is published but deprecated,
-- local-runtime `0.1.0-alpha.2` is prepared but not published,
+- local-runtime `0.1.0-alpha.2` is published under the npm `alpha` tag,
 - GitHub release `v0.2.0` is published,
 - runtime backend work is blocked.
 

@@ -6,9 +6,10 @@ Source-Wire repository.
 The published `@source-wire/contracts@0.2.0` package defines contract shapes,
 schemas, fixtures, examples, validation tools, and package-readiness checks.
 The separate experimental `@source-wire/local-runtime@0.1.0-alpha.1` package is
-deprecated. Unpublished `0.1.0-alpha.2` is the current local CLI and Alpha
-composition candidate. Latest source also contains the complete conformance
-workspace. Stories 6.1 through 6.7 add config checks, a memory-only two-tool
+deprecated. Reviewed `@source-wire/local-runtime@0.1.0-alpha.2` is published
+under the npm `alpha` tag as the current local CLI and Alpha composition
+package. Latest source also contains the complete conformance workspace.
+Stories 6.1 through 6.7 add config checks, a memory-only two-tool
 local runner, immutable
 synthetic-provider composition behind a four-tool stdio MCP surface,
 fail-closed orchestration, explicit database and export controls, and
@@ -50,7 +51,7 @@ Package: @source-wire/contracts
 Version: 0.2.0
 License: Apache-2.0
 Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
-Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, Story 6.3 composes one repository synthetic provider into the four-tool path, Story 6.4 hardens fail-closed orchestration and cleanup, Story 6.5 adds explicit read-only database status plus apply-gated migration control, Story 6.6 adds owner-only local canonical export, and Story 6.7 proves one pinned evidence-first synthetic adapter through the same protected path; it contains no deployment, hosting, managed database provisioning, live provider, production support, production backup guarantee, or real data
+Latest-source runtime boundary: a loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; published local-runtime 0.1.0-alpha.1 is deprecated, and reviewed 0.1.0-alpha.2 is published under the npm alpha tag with pre-invocation provider binding, hard provider deadlines, cooperative abort, and unified search and exact-fetch handoff; Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, Story 6.3 composes one repository synthetic provider into the four-tool path, Story 6.4 hardens fail-closed orchestration and cleanup, Story 6.5 adds explicit read-only database status plus apply-gated migration control, Story 6.6 adds owner-only local canonical export, and Story 6.7 proves one pinned evidence-first synthetic adapter through the same protected path; it contains no deployment, hosting, managed database provisioning, live provider, production support, production backup guarantee, or real data
 ok readiness report
 ```
 

@@ -1,7 +1,7 @@
 # Alpha 1 Story 6.1 Local CLI Init And Offline Doctor
 
-Latest source and the unpublished local-runtime `0.1.0-alpha.2` security
-candidate include the first Story 6 local CLI slice:
+Latest source and published local-runtime `0.1.0-alpha.2` include the first
+Story 6 local CLI slice:
 
 ```text
 empty owner-controlled directory
@@ -16,9 +16,9 @@ contact a service, apply a migration, create an account, request an API key,
 send telemetry, or provision paid infrastructure.
 
 Published `@source-wire/local-runtime@0.1.0-alpha.1` is deprecated and must not
-be used. The corrected `0.1.0-alpha.2` candidate is not published. The local
-runtime is not part of `@source-wire/contracts@0.2.0` and is not approved for
-production or real data.
+be used. The corrected `0.1.0-alpha.2` is published under the npm `alpha` tag.
+The local runtime is not part of `@source-wire/contracts@0.2.0` and is not
+approved for production or real data.
 
 ## What This Slice Proves
 

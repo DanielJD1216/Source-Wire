@@ -7,8 +7,9 @@ with synthetic or disposable data only.
 > [!CAUTION]
 > This version was deprecated on July 25, 2026. A security review confirmed
 > incomplete namespace binding and provider deadline enforcement. Do not
-> install or use `0.1.0-alpha.1`. A corrected `0.1.0-alpha.2` candidate is
-> being prepared but is not published.
+> install or use `0.1.0-alpha.1`. Corrected
+> `@source-wire/local-runtime@0.1.0-alpha.2` is published under the npm
+> `alpha` tag.
 
 ## Release Identity
 
@@ -50,22 +51,24 @@ version. npm's registry documentation states that every package has a
 `latest` tag. Supported removal attempts with npm `11.9.0` and `11.18.0` were
 rejected by the registry with `E400`.
 
-Current registry state:
+Historical registry state immediately after Alpha 1 publication:
 
 ```text
 alpha: 0.1.0-alpha.1
 latest: 0.1.0-alpha.1
 ```
 
-Both aliases resolve to the same prerelease. `latest` is not a stable-support
-claim. The historical exact installation was:
+The current `alpha` tag now resolves to reviewed `0.1.0-alpha.2`; `latest`
+remains on deprecated `0.1.0-alpha.1`. `latest` is not a stable-support claim.
+The historical exact installation was:
 
 ```bash
 npm install --save-exact @source-wire/local-runtime@0.1.0-alpha.1
 ```
 
-Do not run that command. The package is deprecated and no registry
-local-runtime version is currently recommended.
+Do not run that command. The package is deprecated. Install exact
+`@source-wire/local-runtime@0.1.0-alpha.2` for supported local Alpha
+evaluation.
 
 ## Support Boundary
 

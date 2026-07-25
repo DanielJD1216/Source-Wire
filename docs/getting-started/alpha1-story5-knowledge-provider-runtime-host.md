@@ -1,6 +1,6 @@
 # Alpha 1 Story 5 Knowledge Provider Runtime Host
 
-Latest source and the unpublished local-runtime `0.1.0-alpha.2` candidate include one
+Latest source and published local-runtime `0.1.0-alpha.2` include one
 injected, immutable `KnowledgeProvider v1` binding.
 
 ```text

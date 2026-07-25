@@ -11,8 +11,9 @@ Summary:
 - Deprecated public `@source-wire/local-runtime@0.1.0-alpha.1` with a security
   warning because provider owner and namespace binding and hard provider
   deadline enforcement were incomplete.
-- Prepared and received exact owner approval to publish `0.1.0-alpha.2` under
-  the npm `alpha` tag.
+- Published `@source-wire/local-runtime@0.1.0-alpha.2` under the npm `alpha`
+  tag from reviewed source commit
+  `2057ddb870bb07f1cdabb37272155f33df80b89f`.
 - Bound authenticated owner and requested namespace to the immutable provider
   binding before search or exact-fetch provider invocation.
 - Raced provider execution against the configured deadline, supplied
@@ -29,7 +30,7 @@ Summary:
 
 Boundary:
 
-- npm publication is approved as a separate owner gate.
+- npm publication completed without creating a Git tag or GitHub release.
 - Production, hosting, deployment, real data, live or untrusted providers,
   Windows, HTTP or SSE MCP, static serving, non-disposable databases, Git
   tags, and GitHub releases remain blocked.

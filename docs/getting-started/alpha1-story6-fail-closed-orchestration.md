@@ -1,6 +1,6 @@
 # Alpha 1 Story 6.4 Fail-Closed Orchestration And Cleanup
 
-Latest source and the unpublished local-runtime `0.1.0-alpha.2` candidate harden the
+Latest source and published local-runtime `0.1.0-alpha.2` harden the
 `source-wire-local` runner so startup,
 protected response release, child-process failure, and shutdown remain one
 coordinated local boundary.

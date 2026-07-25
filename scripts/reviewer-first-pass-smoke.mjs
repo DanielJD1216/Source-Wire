@@ -13,7 +13,7 @@ const requiredMarkers = [
   "License: Apache-2.0",
   "Publish boundary: npm package public at @source-wire/contracts@0.2.0, hosted runtime blocked",
   "Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime",
-  "Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; it contains no deployment, hosting, live provider, production support, production backup guarantee, or real data",
+  "Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, and Story 6.3 composes one repository synthetic provider into the four-tool path behind the same local command; it contains no deployment, hosting, external or live provider, production support, production backup guarantee, or real data",
   "ok readiness report"
 ];
 

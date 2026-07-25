@@ -11,7 +11,7 @@
 
 Source-Wire defines how agents can retrieve evidence, preserve provenance, propose durable memories, and use trusted context without silently turning every document, message, or model output into truth.
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains an unpublished, loopback-only Alpha 1 Stories 1 through 5 workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. Private Story 6.1 adds offline local configuration, and Story 6.2 composes the existing memory-only API and two-tool stdio MCP path behind one local command. Nothing is deployed or hosted.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains an unpublished, loopback-only Alpha 1 Stories 1 through 5 workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. Private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only API and two-tool stdio MCP path, and Story 6.3 composes one owner-selected synthetic provider into the four-tool path through the same local command. Nothing is deployed or hosted.
 
 > Bring your own knowledge base, PostgreSQL, credentials, and agent harness. Source-Wire keeps the memory lifecycle and trust boundary explicit.
 
@@ -81,6 +81,7 @@ Use the [Documentation Index](docs/README.md) when you already know the task you
 | Local Alpha 1 Stories 1 through 5 | Included in latest source as an unpublished workspace using generated disposable PostgreSQL state and one synthetic read-only provider |
 | Local Story 6.1 CLI tracer | Included in latest source for owner-only non-secret config creation and offline validation; it starts no runtime and contacts no dependency |
 | Local Story 6.2 memory-only runner | Included in latest source as a private one-command loopback API plus two-tool stdio MCP composition over generated disposable PostgreSQL; it is unpublished and not production approved |
+| Local Story 6.3 synthetic provider runner | Included in latest source as immutable zero-or-one-provider composition with offline and explicit connected checks plus four-tool stdio proof; no external or live provider is included |
 | Hosted API, hosted MCP, deployment | Not included |
 | Live knowledge connectors or real user data | Not included |
 | Automatic trusted-memory promotion | Forbidden |
@@ -112,7 +113,7 @@ npm run publish:readiness
 
 Despite its name, `publish:readiness` does not publish a package, create a release, deploy a service, connect a production database, or use real data.
 
-For setup details, read the [Quickstart](docs/getting-started/quickstart.md). For the unpublished local proof, follow [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md), [Alpha 1 Story 6.1 Local CLI Init And Offline Doctor](docs/getting-started/alpha1-story6-local-cli-init-doctor.md), and [Alpha 1 Story 6.2 Memory-Only Local Runtime](docs/getting-started/alpha1-story6-memory-only-local-runtime.md) in order.
+For setup details, read the [Quickstart](docs/getting-started/quickstart.md). For the unpublished local proof, follow [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md), [Alpha 1 Story 6.1 Local CLI Init And Offline Doctor](docs/getting-started/alpha1-story6-local-cli-init-doctor.md), [Alpha 1 Story 6.2 Memory-Only Local Runtime](docs/getting-started/alpha1-story6-memory-only-local-runtime.md), and [Alpha 1 Story 6.3 Synthetic Provider Local Runtime](docs/getting-started/alpha1-story6-synthetic-provider-local-runtime.md) in order.
 
 Use [Share For Technical Review](docs/guides/share-for-review.md) and [Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md) when sharing findings.
 
@@ -139,7 +140,7 @@ The package and release are available for technical review and Apache-2.0 source
 | Policy proofs | In-memory and owner-hosted skeletons for identity, namespace, denial, audit, and no-auto-promotion behavior |
 | Latest-source Alpha | Disposable local PostgreSQL bootstrap, candidate proposal, owner decisions, audited memory search, correction, revocation, export, recovery, and synthetic source-evidence read proof |
 
-The Alpha workspace under `apps/alpha1-runtime/` is local developer proof. Its four-tool stdio MCP surface adds synthetic source-evidence search and exact fetch to the two memory tools. It does not establish production availability, hosting, deployment, production backup guarantees, live providers, or real-data support.
+The Alpha workspace under `apps/alpha1-runtime/` is local developer proof. Story 6.3 can bind one repository synthetic provider at owner-controlled startup, then expose the four-tool stdio MCP surface that adds source-evidence search and exact fetch to the two memory tools. Provider replacement requires a config change and restart. It does not establish production availability, hosting, deployment, production backup guarantees, external or live providers, or real-data support.
 
 ## For AI Agents
 
@@ -185,11 +186,11 @@ Core invariants:
 | `npm test` | Types, fixtures, schema exports, CLI, and examples |
 | `npm run reviewer:smoke` | Clean first-reviewer path in a temporary copy |
 | `npm run alpha1:ci-workflow-smoke` | Hosted Alpha PostgreSQL job keeps exact versions, all five stories, both synthetic adapters, stable markers, and no artifact or production-secret path |
-| `npm run alpha1:conformance:story5` | Disposable PostgreSQL proof for the original four-tool MCP and protected source-evidence release path |
-| `npm run alpha1:conformance:story5:replaceable` | The same protected path with the separate public-contract-only adapter |
+| `npm run alpha1:conformance:story5` | Disposable PostgreSQL proof for the four-tool MCP, protected source-evidence release, and Story 6.3 local CLI composition |
+| `npm run alpha1:conformance:story5:replaceable` | The same protected local CLI path with the separate public-contract-only adapter |
 | `npm run alpha1:conformance` | All five disposable local Alpha story proofs, including both Story 5 adapters |
 | `npm run alpha1:conformance:story2` | Disposable PostgreSQL proof for candidate lifecycle and the Story 6.2 one-command two-tool memory runner |
-| `npm run alpha1:test` | Focused Alpha unit coverage, including private Story 6.1 config checks and Story 6.2 memory-only authority |
+| `npm run alpha1:test` | Focused Alpha unit coverage, including Story 6.1 config, Story 6.2 memory-only authority, and Story 6.3 provider checks |
 | `npm run release:0.2.0-gate` | Focused no-publish gate for the packed contract, clean external adapter, installed consumers, docs, safety, and claims |
 | `npm run docs:links && npm run docs:anchors` | Documentation link and anchor integrity |
 | `npm run safety:scan && npm run claims:scan` | Public-safety and claim-boundary checks |

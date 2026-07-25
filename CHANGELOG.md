@@ -4,6 +4,30 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Story 6.3 synthetic provider local runtime
+
+Summary:
+
+- Added private `source-wire-local provider check` with offline non-executing validation and explicit connected profile plus readiness validation.
+- Added owner-controlled zero-or-one provider startup composition using repository synthetic package exports, exactly one provider namespace, immutable scope and bounds, and restart-only replacement.
+- Preserved the memory-only two-tool path while exposing exactly four stdio MCP tools only after successful provider composition.
+- Kept provider identity, module, export, scope, credentials, endpoints, owner, namespace authority, and ACL decisions out of MCP caller input.
+- Extended both disposable PostgreSQL Story 5 adapter paths with `S6-PROVIDER-01` through `S6-PROVIDER-03` for provider checks, four-tool protected reads, zero memory promotion, redacted diagnostics and audit metadata, credential revocation, and cleanup.
+- Added the [Story 6.3 Synthetic Provider Local Runtime](docs/getting-started/alpha1-story6-synthetic-provider-local-runtime.md) guide and aligned public status, architecture, product direction, quickstart, CI, agent, and issue documentation.
+
+Boundary:
+
+- External or live providers, provider credentials, registries, hot reload, publication, hosting, deployment, production databases, production runtime use, and real data remain blocked.
+
+Verification:
+
+```text
+npm run alpha1:build
+npm run alpha1:test
+npm run alpha1:conformance:story5
+npm run alpha1:conformance:story5:replaceable
+```
+
 ### 2026-07-24 - Story 6.2 memory-only local runtime
 
 Summary:

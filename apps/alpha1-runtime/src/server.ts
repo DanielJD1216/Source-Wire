@@ -39,6 +39,12 @@ import {
   type AlphaRuntimeComposition
 } from "./runtime-composition.js";
 import {
+  validateLocalKnowledgeProviderConfig
+} from "./local-cli/config.js";
+import {
+  loadKnowledgeProviderBinding
+} from "./local-cli/provider.js";
+import {
   createProcessReleaseSecret,
   type ProtectedReadStage
 } from "./trusted-memory-search.js";
@@ -113,7 +119,7 @@ async function main(): Promise<void> {
     ) {
       throw new SafeError("operation_unavailable", 503);
     }
-    const runtimeComposition = createStory5RuntimeComposition(process.env);
+    const runtimeComposition = await createRuntimeComposition(process.env);
     const knowledgeProviderHost = createComposedKnowledgeProviderHost({
       composition: runtimeComposition,
       auditStore: new PostgresProviderReadAuditStore(database.pool),
@@ -270,6 +276,63 @@ function createStory5RuntimeComposition(
         : "scope_docs_alpha",
     timeoutMs: 1_000
   });
+}
+
+async function createRuntimeComposition(
+  environment: NodeJS.ProcessEnv
+): Promise<AlphaRuntimeComposition> {
+  const localProviderMode =
+    environment.SOURCE_WIRE_LOCAL_PROVIDER_MODE;
+  if (localProviderMode === undefined) {
+    return createStory5RuntimeComposition(environment);
+  }
+  if (
+    localProviderMode !== "enabled" ||
+    environment.SOURCE_WIRE_CONFORMANCE_MODE !== undefined ||
+    Object.keys(environment).some((key) =>
+      key.startsWith("SOURCE_WIRE_STORY5_")
+    )
+  ) {
+    throw new Error("local_provider_binding_refused");
+  }
+  const providerConfig = validateLocalKnowledgeProviderConfig({
+    module: requireEnvironment(
+      "SOURCE_WIRE_LOCAL_PROVIDER_MODULE",
+      environment
+    ),
+    exportName: requireEnvironment(
+      "SOURCE_WIRE_LOCAL_PROVIDER_EXPORT",
+      environment
+    ),
+    providerScopeId: requireEnvironment(
+      "SOURCE_WIRE_LOCAL_PROVIDER_SCOPE_ID",
+      environment
+    ),
+    timeoutMs: Number(
+      requireEnvironment(
+        "SOURCE_WIRE_LOCAL_PROVIDER_TIMEOUT_MS",
+        environment
+      )
+    )
+  });
+  const loaded = await loadKnowledgeProviderBinding({
+    providerConfig,
+    ownerId: assertSourceWireIdentifier(
+      requireEnvironment(
+        "SOURCE_WIRE_LOCAL_PROVIDER_OWNER_ID",
+        environment
+      ),
+      "ownerId"
+    ),
+    namespaceId: assertSourceWireIdentifier(
+      requireEnvironment(
+        "SOURCE_WIRE_LOCAL_PROVIDER_NAMESPACE_ID",
+        environment
+      ),
+      "namespaceId"
+    )
+  });
+  return createAlphaRuntimeComposition(loaded.binding);
 }
 
 function parseStory5ProviderAdapter(

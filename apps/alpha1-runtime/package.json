@@ -8,6 +8,10 @@
   "bin": {
     "source-wire-local": "dist/src/cli/local.js"
   },
+  "exports": {
+    "./synthetic-provider": "./dist/src/knowledge-provider/synthetic-provider.js",
+    "./replaceable-synthetic-provider": "./dist/src/knowledge-provider/replaceable-synthetic-adapter.js"
+  },
   "engines": {
     "node": "22.23.1"
   },

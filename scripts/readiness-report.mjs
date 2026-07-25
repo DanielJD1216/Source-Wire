@@ -203,6 +203,9 @@ for (const requiredPath of [
   "docs/getting-started/alpha1-story3-audited-search.md",
   "docs/getting-started/alpha1-story4-governed-lifecycle-portability.md",
   "docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md",
+  "docs/getting-started/alpha1-story6-local-cli-init-doctor.md",
+  "docs/getting-started/alpha1-story6-memory-only-local-runtime.md",
+  "docs/getting-started/alpha1-story6-synthetic-provider-local-runtime.md",
   "docs/internal/apache-2-license-implementation-readiness.md",
   "docs/internal/first-time-visitor-share-readiness-audit.md",
   "docs/internal/license-approval-rehearsal.md",
@@ -331,7 +334,7 @@ printRows([
   ["License", packageJson.license],
   ["Publish boundary", "npm package public at @source-wire/contracts@0.2.0, hosted runtime blocked"],
   ["Published runtime boundary", "the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime"],
-  ["Latest-source runtime boundary", "an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; it contains no deployment, hosting, live provider, production support, production backup guarantee, or real data"]
+  ["Latest-source runtime boundary", "an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, and Story 6.3 composes one repository synthetic provider into the four-tool path behind the same local command; it contains no deployment, hosting, external or live provider, production support, production backup guarantee, or real data"]
 ]);
 
 printSection("Package Surfaces");
@@ -352,12 +355,12 @@ printList([
   "alpha1:conformance:story2 uses a real MCP client, loopback API, owner CLI, and generated disposable PostgreSQL 16 state to prove pending proposal, owner decision, durable lifecycle idempotency, atomic audit, least privilege, and cleanup",
   "alpha1:conformance:story3 uses real API and MCP processes plus generated disposable PostgreSQL 16 state to prove audited active-memory search, exact origin-process receipts, fail-closed crashes and outages, bounds, leak resistance, least privilege, and cleanup",
   "alpha1:conformance:story4 uses real API, owner CLI, operator CLI, and generated disposable PostgreSQL 16 state to prove correction, revocation, protected-read races, deterministic secret-free export, fresh portable initialization, isolated physical recovery, runtime verification gates, least privilege, and cleanup",
-  "alpha1:conformance:story5 uses real API and MCP processes plus generated disposable PostgreSQL 16 state to prove immutable synthetic provider binding, source-evidence search and fetch, durable audit, single-use receipts, fault and crash denial, zero memory promotion, least privilege, leak resistance, and cleanup",
-  "alpha1:conformance:story5:replaceable runs the same protected path through the separate public-contract-only synthetic adapter",
+  "alpha1:conformance:story5 uses real API and MCP processes plus generated disposable PostgreSQL 16 state to prove immutable synthetic provider binding, source-evidence search and fetch, durable audit, single-use receipts, fault and crash denial, zero memory promotion, least privilege, leak resistance, cleanup, and Story 6.3 local CLI composition",
+  "alpha1:conformance:story5:replaceable runs the same protected local CLI path through the separate public-contract-only synthetic adapter",
   "alpha1:story5:security-gate verifies the temporary local stdio advisory disposition, dependency set, transport exclusions, immutable provider policy, and review deadline",
   "alpha1:ci-workflow-smoke verifies the separate exact-version hosted PostgreSQL conformance job cannot be replaced by unit tests",
   "alpha1:conformance runs all five local Alpha 1 story conformance paths in order and runs Story 5 through both synthetic adapters",
-  "the five Alpha 1 getting-started guides define prerequisites, commands, trust boundaries, retry, receipt, lifecycle, portability, recovery, provider release, cleanup, and blocked scope"
+  "the eight Alpha 1 and Story 6 getting-started guides define prerequisites, commands, trust boundaries, retry, receipt, lifecycle, portability, recovery, provider release, local composition, cleanup, and blocked scope"
 ]);
 
 printSection("Installed Package Smokes");
@@ -406,6 +409,9 @@ printList([
   "docs/getting-started/alpha1-story3-audited-search.md defines the unpublished Story 3 active-only FTS, audit-before-release receipt, crash, outage, leak, and cleanup proof",
   "docs/getting-started/alpha1-story4-governed-lifecycle-portability.md defines the unpublished Story 4 correction, revocation, protected-read race, canonical export, portable initialization, physical recovery, runtime verification, and cleanup proof",
   "docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md defines the unpublished Story 5 immutable synthetic provider, source-evidence tools, protected release, conformance, advisory, cleanup, and blocked scope",
+  "docs/getting-started/alpha1-story6-local-cli-init-doctor.md defines private non-secret local config initialization and dependency-free offline validation",
+  "docs/getting-started/alpha1-story6-memory-only-local-runtime.md defines the private memory-only two-tool local composition and process-authority boundary",
+  "docs/getting-started/alpha1-story6-synthetic-provider-local-runtime.md defines offline and connected provider checking plus immutable four-tool repository synthetic-provider composition",
   "docs/internal/apache-2-license-implementation-readiness.md records the completed Apache-2.0 implementation while keeping hosted runtime and production runtime blocked",
   "docs/internal/first-time-visitor-share-readiness-audit.md records source-package sharing readiness and remaining launch blockers",
   "docs/internal/license-approval-rehearsal.md records the Apache-2.0 implementation check and current runtime/contribution boundary",

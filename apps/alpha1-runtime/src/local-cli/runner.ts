@@ -17,6 +17,10 @@ import {
   type SourceWireLocalCliResultV1,
   type SourceWireLocalOperation
 } from "./result.js";
+import {
+  checkKnowledgeProviderReadiness,
+  loadConfiguredKnowledgeProvider
+} from "./provider.js";
 
 export type SourceWireLocalCliExecution = Readonly<{
   exitCode: 0 | 1;
@@ -29,7 +33,11 @@ export async function runSourceWireLocalCli(
 ): Promise<SourceWireLocalCliExecution> {
   const command = args[0];
   const operation: SourceWireLocalOperation =
-    command === "doctor" ? "local.doctor" : "local.init";
+    command === "doctor"
+      ? "local.doctor"
+      : command === "provider"
+        ? "local.provider.check"
+        : "local.init";
   try {
     if (command === "init") {
       const parsed = parseLocalArgs(args.slice(1), {
@@ -105,6 +113,46 @@ export async function runSourceWireLocalCli(
             apiBinding: "loopback",
             externalChecks: "skipped",
             requiredEnvironmentReferenceCount: 3
+          },
+          warnings: []
+        }
+      };
+    }
+
+    if (command === "provider" && args[1] === "check") {
+      const parsed = parseLocalArgs(args.slice(2), {
+        config: { type: "string" },
+        connect: { type: "boolean", default: false },
+        json: { type: "boolean", default: false }
+      });
+      const configPath = parsed.values.config;
+      if (typeof configPath !== "string") invalidArguments();
+      const config = await readAndValidateLocalConfig(configPath);
+      if (!config.knowledgeProvider) {
+        throw new SourceWireLocalCliError("provider_not_configured");
+      }
+      if (config.namespaces.length !== 1) {
+        throw new SourceWireLocalCliError("provider_namespace_invalid");
+      }
+      if (parsed.values.connect) {
+        const loaded = await loadConfiguredKnowledgeProvider({ config });
+        await checkKnowledgeProviderReadiness(loaded);
+      }
+      return {
+        exitCode: 0,
+        format: parsed.values.json ? "json" : "human",
+        result: {
+          ok: true,
+          operation,
+          result: {
+            contractVersion:
+              SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
+            executableLoaded: parsed.values.connect,
+            profileValidation: parsed.values.connect
+              ? "passed"
+              : "deferred",
+            readiness: parsed.values.connect ? "ready" : "skipped",
+            evidenceReleased: false
           },
           warnings: []
         }

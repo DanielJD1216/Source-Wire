@@ -46,9 +46,10 @@ export async function runLocalMcpStdio(
     throw new SourceWireLocalCliError("invalid_arguments");
   }
   const config = await readAndValidateLocalConfig(configPath);
-  if (config.knowledgeProvider) {
-    throw new SourceWireLocalCliError("provider_not_supported");
+  if (config.knowledgeProvider && config.namespaces.length !== 1) {
+    throw new SourceWireLocalCliError("provider_namespace_invalid");
   }
+  const providerEnabled = config.knowledgeProvider !== undefined;
 
   const runtimeDatabaseUrl = requireReferencedEnvironment(
     config.memory.runtimeDatabaseUrlEnv,
@@ -96,7 +97,16 @@ export async function runLocalMcpStdio(
       verifierKey,
       verifierKeyId,
       host: config.api.host,
-      port
+      port,
+      ...(config.knowledgeProvider
+        ? {
+            provider: {
+              ...config.knowledgeProvider,
+              ownerId: config.ownerId,
+              namespaceId: config.namespaces[0] as string
+            }
+          }
+        : {})
     });
     await waitForApi(baseUrl, port, api);
     safeDiagnostic("api_ready");
@@ -104,13 +114,15 @@ export async function runLocalMcpStdio(
     credential = await issueProcessCredential({
       baseUrl,
       ownerToken,
-      namespaceIds: config.namespaces
+      namespaceIds: config.namespaces,
+      sourceEvidenceRead: providerEnabled
     });
     safeDiagnostic("process_credential_issued");
 
     mcp = startMcp({
       baseUrl,
-      token: credential.secret
+      token: credential.secret,
+      providerEnabled
     });
     safeDiagnostic("mcp_stdio_ready");
 
@@ -185,6 +197,14 @@ function startApi(input: {
   verifierKeyId: string;
   host: "127.0.0.1" | "::1";
   port: number;
+  provider?: Readonly<{
+    module: string;
+    exportName: string;
+    providerScopeId: string;
+    timeoutMs: number;
+    ownerId: string;
+    namespaceId: string;
+  }>;
 }): ChildProcess {
   const child = spawn(process.execPath, [API_ENTRY], {
     env: {
@@ -192,7 +212,24 @@ function startApi(input: {
       SOURCE_WIRE_TOKEN_VERIFIER_KEY: input.verifierKey,
       SOURCE_WIRE_TOKEN_VERIFIER_KEY_ID: input.verifierKeyId,
       SOURCE_WIRE_HOST: input.host,
-      SOURCE_WIRE_PORT: String(input.port)
+      SOURCE_WIRE_PORT: String(input.port),
+      ...(input.provider
+        ? {
+            SOURCE_WIRE_LOCAL_PROVIDER_MODE: "enabled",
+            SOURCE_WIRE_LOCAL_PROVIDER_MODULE: input.provider.module,
+            SOURCE_WIRE_LOCAL_PROVIDER_EXPORT:
+              input.provider.exportName,
+            SOURCE_WIRE_LOCAL_PROVIDER_OWNER_ID:
+              input.provider.ownerId,
+            SOURCE_WIRE_LOCAL_PROVIDER_NAMESPACE_ID:
+              input.provider.namespaceId,
+            SOURCE_WIRE_LOCAL_PROVIDER_SCOPE_ID:
+              input.provider.providerScopeId,
+            SOURCE_WIRE_LOCAL_PROVIDER_TIMEOUT_MS: String(
+              input.provider.timeoutMs
+            )
+          }
+        : {})
     },
     stdio: ["ignore", "pipe", "pipe", "ipc"]
   });
@@ -203,9 +240,14 @@ function startApi(input: {
 function startMcp(input: {
   baseUrl: string;
   token: string;
+  providerEnabled: boolean;
 }): ChildProcess {
   const options: SpawnOptions = {
-    env: createMemoryOnlyMcpEnvironment(input.baseUrl, input.token),
+    env: createMcpEnvironment(
+      input.baseUrl,
+      input.token,
+      input.providerEnabled
+    ),
     stdio: ["inherit", "inherit", "pipe"]
   };
   const child = spawn(process.execPath, [MCP_ENTRY], options);
@@ -218,10 +260,20 @@ export function createMemoryOnlyMcpEnvironment(
   baseUrl: string,
   token: string
 ): Readonly<Record<string, string>> {
+  return createMcpEnvironment(baseUrl, token, false);
+}
+
+export function createMcpEnvironment(
+  baseUrl: string,
+  token: string,
+  providerEnabled: boolean
+): Readonly<Record<string, string>> {
   return {
     SOURCE_WIRE_API_URL: baseUrl,
     SOURCE_WIRE_MCP_TOKEN: token,
-    SOURCE_WIRE_MCP_TOOL_PROFILE: "memory_only"
+    SOURCE_WIRE_MCP_TOOL_PROFILE: providerEnabled
+      ? "provider"
+      : "memory_only"
   };
 }
 
@@ -299,6 +351,7 @@ async function issueProcessCredential(input: {
   baseUrl: string;
   ownerToken: string;
   namespaceIds: readonly string[];
+  sourceEvidenceRead: boolean;
 }): Promise<IssuedProcessCredential> {
   const response = await postAdminJson(
     `${input.baseUrl}/v1alpha1/admin/harness-credentials`,
@@ -307,7 +360,8 @@ async function issueProcessCredential(input: {
       namespaceIds: input.namespaceIds,
       capabilities: [
         "memory_candidate.propose",
-        "trusted_memory.search"
+        "trusted_memory.search",
+        ...(input.sourceEvidenceRead ? ["source_evidence.read"] : [])
       ],
       expiresAt: new Date(
         Date.now() + PROCESS_CREDENTIAL_TTL_MS

@@ -25,6 +25,7 @@ import {
   SourceWireLocalCliError
 } from "../src/local-cli/result.js";
 import {
+  createMcpEnvironment,
   createMemoryOnlyMcpEnvironment,
   runLocalMcpStdio
 } from "../src/local-cli/mcp-stdio.js";
@@ -355,6 +356,136 @@ test("compiled private binary emits deterministic JSON and leaves the public con
   }
 });
 
+test("provider check stays offline by default and connected checking validates readiness without evidence", async () => {
+  const directory = await privateTemporaryDirectory();
+  try {
+    const missingPath = join(directory, "missing-provider.json");
+    await writeConfig(missingPath, {
+      ...createLocalConfigTemplate(),
+      knowledgeProvider: {
+        module: "@synthetic-does-not-exist/source-wire-provider",
+        exportName: "createProvider",
+        providerScopeId: "scope_docs_alpha",
+        timeoutMs: 1_000
+      }
+    });
+    const offline = await runSourceWireLocalCli([
+      "provider",
+      "check",
+      "--config",
+      missingPath,
+      "--json"
+    ]);
+    assert.equal(offline.exitCode, 0);
+    assert(offline.result.ok);
+    assert.deepEqual(offline.result.result, {
+      contractVersion: "knowledge-provider.v1",
+      executableLoaded: false,
+      profileValidation: "deferred",
+      readiness: "skipped",
+      evidenceReleased: false
+    });
+
+    const connectedPath = join(directory, "connected-provider.json");
+    await writeConfig(connectedPath, {
+      ...createLocalConfigTemplate(),
+      knowledgeProvider: {
+        module: "@source-wire/alpha1-runtime/synthetic-provider",
+        exportName: "createSyntheticKnowledgeProvider",
+        providerScopeId: "scope_docs_alpha",
+        timeoutMs: 1_000
+      }
+    });
+    const connected = await runSourceWireLocalCli([
+      "provider",
+      "check",
+      "--config",
+      connectedPath,
+      "--connect"
+    ]);
+    assert.equal(connected.exitCode, 0);
+    assert(connected.result.ok);
+    assert.deepEqual(connected.result.result, {
+      contractVersion: "knowledge-provider.v1",
+      executableLoaded: true,
+      profileValidation: "passed",
+      readiness: "ready",
+      evidenceReleased: false
+    });
+    assertNonSecretSurface(
+      renderLocalCliResult(connected.result, connected.format)
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("connected provider check fails closed for missing, mismatched, and multi-namespace providers", async () => {
+  const directory = await privateTemporaryDirectory();
+  try {
+    const noProviderPath = join(directory, "no-provider.json");
+    await writeConfig(noProviderPath, createLocalConfigTemplate());
+    const absent = await runSourceWireLocalCli([
+      "provider",
+      "check",
+      "--config",
+      noProviderPath
+    ]);
+    assert.equal(absent.exitCode, 1);
+    assert(!absent.result.ok);
+    assert.equal(absent.result.error.code, "provider_not_configured");
+
+    const mismatchPath = join(directory, "mismatch.json");
+    await writeConfig(mismatchPath, {
+      ...createLocalConfigTemplate(),
+      knowledgeProvider: {
+        module: "@source-wire/alpha1-runtime/synthetic-provider",
+        exportName: "createSyntheticKnowledgeProvider",
+        providerScopeId: "scope_docs_other",
+        timeoutMs: 1_000
+      }
+    });
+    const mismatch = await runSourceWireLocalCli([
+      "provider",
+      "check",
+      "--config",
+      mismatchPath,
+      "--connect"
+    ]);
+    assert.equal(mismatch.exitCode, 1);
+    assert(!mismatch.result.ok);
+    assert.equal(mismatch.result.error.code, "provider_profile_invalid");
+
+    const multiNamespacePath = join(directory, "multi-namespace.json");
+    await writeConfig(multiNamespacePath, {
+      ...createLocalConfigTemplate({
+        namespaceIds: ["ns_alpha", "ns_beta"]
+      }),
+      knowledgeProvider: {
+        module: "@source-wire/alpha1-runtime/synthetic-provider",
+        exportName: "createSyntheticKnowledgeProvider",
+        providerScopeId: "scope_docs_alpha",
+        timeoutMs: 1_000
+      }
+    });
+    const multiNamespace = await runSourceWireLocalCli([
+      "provider",
+      "check",
+      "--config",
+      multiNamespacePath,
+      "--connect"
+    ]);
+    assert.equal(multiNamespace.exitCode, 1);
+    assert(!multiNamespace.result.ok);
+    assert.equal(
+      multiNamespace.result.error.code,
+      "provider_namespace_invalid"
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
 test("memory-only MCP authority is an exact API-token allowlist", () => {
   const environment = createMemoryOnlyMcpEnvironment(
     "http://127.0.0.1:4318",
@@ -376,12 +507,37 @@ test("memory-only MCP authority is an exact API-token allowlist", () => {
   }
 });
 
-test("memory-only MCP startup fails before dependencies for providers and missing authority", async () => {
+test("provider MCP authority remains an exact API-token allowlist", () => {
+  const environment = createMcpEnvironment(
+    "http://127.0.0.1:4318",
+    "generated-process-token",
+    true
+  );
+  assert.deepEqual(environment, {
+    SOURCE_WIRE_API_URL: "http://127.0.0.1:4318",
+    SOURCE_WIRE_MCP_TOKEN: "generated-process-token",
+    SOURCE_WIRE_MCP_TOOL_PROFILE: "provider"
+  });
+  for (const forbidden of [
+    "SOURCE_WIRE_OWNER_TOKEN",
+    "SOURCE_WIRE_DATABASE_URL",
+    "SOURCE_WIRE_LOCAL_PROVIDER_MODULE",
+    "SOURCE_WIRE_LOCAL_PROVIDER_EXPORT",
+    "SOURCE_WIRE_LOCAL_PROVIDER_SCOPE_ID",
+    "DATABASE_URL"
+  ]) {
+    assert.equal(Object.hasOwn(environment, forbidden), false);
+  }
+});
+
+test("MCP startup fails before dependencies for ambiguous provider scope and missing authority", async () => {
   const directory = await privateTemporaryDirectory();
   try {
     const providerPath = join(directory, "provider.json");
     await writeConfig(providerPath, {
-      ...createLocalConfigTemplate(),
+      ...createLocalConfigTemplate({
+        namespaceIds: ["ns_alpha", "ns_beta"]
+      }),
       knowledgeProvider: {
         module: "@example/source-wire-provider",
         exportName: "createProvider",
@@ -393,7 +549,7 @@ test("memory-only MCP startup fails before dependencies for providers and missin
       runLocalMcpStdio(["--config", providerPath], {}),
       (error: unknown) =>
         error instanceof SourceWireLocalCliError &&
-        error.code === "provider_not_supported"
+        error.code === "provider_namespace_invalid"
     );
 
     const memoryOnlyPath = join(directory, "memory-only.json");

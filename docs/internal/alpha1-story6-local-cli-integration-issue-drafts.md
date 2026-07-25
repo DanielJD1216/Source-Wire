@@ -228,16 +228,21 @@ receipt.
 
 ### Acceptance criteria
 
-- [ ] The provider check validates contract identity, version, family, capabilities, scope, bounds, read-only posture, provenance, and no-auto-promotion behavior.
-- [ ] Offline provider checking does not load executable provider code.
-- [ ] Connected provider checking is explicit and releases no evidence.
-- [ ] Runtime startup accepts zero or one immutable provider composition.
-- [ ] MCP and API callers cannot select provider identity, scope, module, endpoint, credentials, owner, namespace authority, or ACL decisions.
-- [ ] The four-tool stdio surface appears only when the provider is configured successfully.
-- [ ] Search and exact fetch pass through Source-Wire policy, audit, and response-release behavior.
-- [ ] Provider credentials and retrieval clients do not enter Source-Wire configuration, MCP input, diagnostics, or audit metadata.
-- [ ] Provider reads create zero candidates and zero trusted memories.
-- [ ] Replacing the provider requires owner-controlled configuration plus process restart; no registry or hot reload exists.
+- [x] The provider check validates contract identity, version, family, capabilities, scope, bounds, read-only posture, provenance, and no-auto-promotion behavior.
+- [x] Offline provider checking does not load executable provider code.
+- [x] Connected provider checking is explicit and releases no evidence.
+- [x] Runtime startup accepts zero or one immutable provider composition.
+- [x] MCP and API callers cannot select provider identity, scope, module, endpoint, credentials, owner, namespace authority, or ACL decisions.
+- [x] The four-tool stdio surface appears only when the provider is configured successfully.
+- [x] Search and exact fetch pass through Source-Wire policy, audit, and response-release behavior.
+- [x] Provider credentials and retrieval clients do not enter Source-Wire configuration, MCP input, diagnostics, or audit metadata.
+- [x] Provider reads create zero candidates and zero trusted memories.
+- [x] Replacing the provider requires owner-controlled configuration plus process restart; no registry or hot reload exists.
+
+**Latest-source implementation status:** Complete. Verified by 142 focused
+Alpha tests and both 24-case disposable PostgreSQL Story 5 adapter paths. The
+provider is repository synthetic proof only. External or live providers,
+publication, deployment, production use, and real data remain blocked.
 
 ## Issue 4: Fail Closed Across Local Orchestration And Cleanup
 

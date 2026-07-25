@@ -82,7 +82,11 @@ export function createReplaceableSyntheticProvider(options?: {
       if (fault === "deadline_exceeded") {
         await new Promise((resolve) => setTimeout(resolve, 1_100));
       }
+      const readiness =
+        request.operation === "describe" ||
+        request.operation === "health";
       const exactMatch =
+        readiness ||
         request.operation === "search_evidence" ||
         (request.operation === "get_evidence" &&
           request.get?.sourceId === REPLACEABLE_SOURCE_ID &&
@@ -139,9 +143,10 @@ export function createReplaceableSyntheticProvider(options?: {
         providerId: profile.providerId,
         contractVersion: profile.contractVersion,
         status: exactMatch ? "allowed" : "denied",
-        evidence: exactMatch
-          ? (evidence as SourceWireKnowledgeProviderResultV1["evidence"])
-          : [],
+        evidence:
+          exactMatch && !readiness
+            ? (evidence as SourceWireKnowledgeProviderResultV1["evidence"])
+            : [],
         gaps: exactMatch
           ? []
           : [

@@ -6,6 +6,7 @@ import {
 } from "node:child_process";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
 import {
+  chmod,
   mkdir,
   mkdtemp,
   readFile,
@@ -24,6 +25,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import pg from "pg";
 
 import { ALPHA1_SCHEMA_VERSION } from "../src/config.js";
+import { createLocalConfigTemplate } from "../src/local-cli/config.js";
 import type { ProviderReadStage } from "../src/knowledge-provider-host.js";
 import type { SyntheticKnowledgeProviderFault } from "../src/knowledge-provider/synthetic-provider.js";
 import {
@@ -40,6 +42,7 @@ const repoRoot = resolve(appRoot, "../..");
 const operatorCli = resolve(appRoot, "dist/src/cli/operator.js");
 const serverEntry = resolve(appRoot, "dist/src/server.js");
 const mcpServerEntry = resolve(appRoot, "dist/src/mcp/server.js");
+const localCliEntry = resolve(appRoot, "dist/src/cli/local.js");
 const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
   resolve(appRoot, ".artifacts/story5-conformance-report.json");
@@ -288,6 +291,248 @@ async function runConformance(): Promise<void> {
   await stopApi();
   await crashMatrixProbes();
   await leakResistanceProbe();
+  await localCliProviderCompositionProbe();
+}
+
+async function localCliProviderCompositionProbe(): Promise<void> {
+  assert(targetAdminPool);
+  assert(harness);
+  const module =
+    PROVIDER_ADAPTER === "replaceable"
+      ? "@source-wire/alpha1-runtime/replaceable-synthetic-provider"
+      : "@source-wire/alpha1-runtime/synthetic-provider";
+  const exportName =
+    PROVIDER_ADAPTER === "replaceable"
+      ? "createReplaceableSyntheticProvider"
+      : "createSyntheticKnowledgeProvider";
+  const configPath = resolve(
+    tempDirectory,
+    `source-wire-story6-provider-${PROVIDER_ADAPTER}.json`
+  );
+  await writeFile(
+    configPath,
+    `${JSON.stringify(
+      {
+        ...createLocalConfigTemplate({
+          ownerId: OWNER_ID,
+          namespaceIds: [NAMESPACE_ID]
+        }),
+        knowledgeProvider: {
+          module,
+          exportName,
+          providerScopeId: PROVIDER_SCOPE_ID,
+          timeoutMs: 1_000
+        }
+      },
+      null,
+      2
+    )}\n`,
+    { mode: 0o600 }
+  );
+  await chmod(configPath, 0o600);
+
+  const offlineCheck = await runProcess(
+    localCliEntry,
+    ["provider", "check", "--config", configPath, "--json"],
+    {}
+  );
+  assert.equal(offlineCheck.code, 0, offlineCheck.stderr);
+  const offlineResult = parseJsonLine(offlineCheck.stdout);
+  assert.equal(
+    (offlineResult.result as Record<string, unknown>).executableLoaded,
+    false
+  );
+  assert.equal(offlineCheck.stdout.includes(PROTECTED_EXCERPT), false);
+
+  const connectedCheck = await runProcess(
+    localCliEntry,
+    [
+      "provider",
+      "check",
+      "--config",
+      configPath,
+      "--connect",
+      "--json"
+    ],
+    {}
+  );
+  assert.equal(connectedCheck.code, 0, connectedCheck.stderr);
+  const connectedResult = parseJsonLine(connectedCheck.stdout);
+  assert.deepEqual(connectedResult.result, {
+    contractVersion: "knowledge-provider.v1",
+    executableLoaded: true,
+    profileValidation: "passed",
+    readiness: "ready",
+    evidenceReleased: false
+  });
+  assert.equal(connectedCheck.stdout.includes(PROTECTED_EXCERPT), false);
+  pass(
+    "S6-PROVIDER-01",
+    "offline provider checking loaded no executable code while explicit connected checking validated the immutable read-only profile and health operation without evidence release"
+  );
+
+  const beforeState = await governedStateCounts();
+  const beforeReceipts = await receiptCounts();
+  const diagnostics: string[] = [];
+  const client = new McpClient(
+    {
+      name: "source-wire-story6-provider-conformance",
+      version: "0.0.0"
+    },
+    { capabilities: {} }
+  );
+  const transport = new StdioClientTransport({
+    command: process.execPath,
+    args: [localCliEntry, "mcp", "stdio", "--config", configPath],
+    env: {
+      SOURCE_WIRE_DATABASE_URL: runtimeUrl,
+      SOURCE_WIRE_TOKEN_VERIFIER_KEY: verifierKey,
+      SOURCE_WIRE_TOKEN_VERIFIER_KEY_ID:
+        "local_alpha1_story5",
+      SOURCE_WIRE_OWNER_TOKEN: ownerToken
+    },
+    stderr: "pipe"
+  });
+  transport.stderr?.on("data", (chunk) => {
+    diagnostics.push(
+      Buffer.isBuffer(chunk) ? chunk.toString("utf8") : String(chunk)
+    );
+  });
+
+  let localPid: number | null = null;
+  let processCredentialId = "";
+  try {
+    await client.connect(transport);
+    localPid = transport.pid;
+    if (localPid !== null) generatedChildPids.add(localPid);
+    const tools = await client.listTools();
+    assert.deepEqual(tools.tools.map((tool) => tool.name).sort(), [
+      "get_source_evidence",
+      "propose_memory_candidate",
+      "search_source_evidence",
+      "search_trusted_memory"
+    ]);
+
+    const search = (await client.callTool({
+      name: "search_source_evidence",
+      arguments: {
+        namespaceId: NAMESPACE_ID,
+        query: PROTECTED_QUERY,
+        limit: 10
+      }
+    })) as Record<string, unknown>;
+    assert.notEqual(search.isError, true, JSON.stringify(search));
+    const searchResult = search.structuredContent as Record<string, unknown>;
+    assert.equal(searchResult.status, "allowed");
+    assert.equal(
+      (
+        searchResult.evidence as Array<Record<string, unknown>>
+      )[0]?.excerpt,
+      PROTECTED_EXCERPT
+    );
+
+    const exact = (await client.callTool({
+      name: "get_source_evidence",
+      arguments: {
+        namespaceId: NAMESPACE_ID,
+        sourceId: SOURCE_ID,
+        segmentId: SEGMENT_ID
+      }
+    })) as Record<string, unknown>;
+    assert.notEqual(exact.isError, true, JSON.stringify(exact));
+    const exactResult = exact.structuredContent as Record<string, unknown>;
+    assert.equal(exactResult.status, "allowed");
+    assert.equal(
+      (
+        exactResult.evidence as Array<Record<string, unknown>>
+      )[0]?.segmentId,
+      SEGMENT_ID
+    );
+
+    const issued = await targetAdminPool.query<{
+      credential_id: string;
+      status: string;
+    }>(
+      `SELECT credential.credential_id, credential.status
+         FROM source_wire_memory.credentials AS credential
+        WHERE credential.credential_class = 'harness'
+          AND credential.credential_id <> $1
+          AND credential.status = 'active'
+          AND EXISTS (
+            SELECT 1
+              FROM source_wire_memory.credential_capability_grants AS grant_row
+             WHERE grant_row.credential_id = credential.credential_id
+               AND grant_row.capability = 'source_evidence.read'
+          )
+        ORDER BY credential.issued_at DESC
+        LIMIT 1`,
+      [harness.credentialId]
+    );
+    assert.equal(issued.rowCount, 1);
+    processCredentialId = issued.rows[0]?.credential_id ?? "";
+  } finally {
+    await client.close().catch(() => undefined);
+    if (localPid !== null) {
+      await waitFor(async () => !processExists(localPid as number), 5_000);
+    }
+    await rm(configPath, { force: true });
+  }
+
+  assert.notEqual(processCredentialId, "");
+  await waitFor(async () => {
+    const status = await targetAdminPool?.query<{ status: string }>(
+      `SELECT status
+         FROM source_wire_memory.credentials
+        WHERE credential_id = $1`,
+      [processCredentialId]
+    );
+    return status?.rows[0]?.status === "revoked";
+  }, 5_000);
+  const afterReceipts = await receiptCounts();
+  assert.equal(afterReceipts.total - beforeReceipts.total, 2);
+  assert.equal(afterReceipts.consumed - beforeReceipts.consumed, 2);
+  assert.deepEqual(await governedStateCounts(), beforeState);
+  const auditMetadata = await targetAdminPool.query<{ metadata: string }>(
+    `SELECT audit.metadata::text AS metadata
+       FROM source_wire_memory.provider_read_receipts AS receipt
+       JOIN source_wire_memory.audit_events AS audit
+         ON audit.event_id = receipt.audit_event_id
+      ORDER BY receipt.issued_at DESC, receipt.receipt_id DESC
+      LIMIT 2`
+  );
+  for (const row of auditMetadata.rows) {
+    for (const forbidden of [
+      module,
+      exportName,
+      configPath,
+      ownerToken,
+      runtimeUrl,
+      PROTECTED_EXCERPT,
+      PROTECTED_LOCATOR
+    ]) {
+      assert.equal(row.metadata.includes(forbidden), false);
+    }
+  }
+  const diagnosticText = diagnostics.join("");
+  for (const forbidden of [
+    module,
+    exportName,
+    configPath,
+    ownerToken,
+    runtimeUrl,
+    verifierKey,
+    PROTECTED_EXCERPT
+  ]) {
+    assert.equal(diagnosticText.includes(forbidden), false);
+  }
+  pass(
+    "S6-PROVIDER-02",
+    "one owner-selected provider produced exactly four stdio tools and routed search plus exact fetch through loopback policy, durable audit, and single-use release receipts"
+  );
+  pass(
+    "S6-PROVIDER-03",
+    "provider reads created zero governed memory, provider details stayed out of MCP diagnostics and audit metadata, and coordinated shutdown revoked the process credential"
+  );
 }
 
 async function provisionDisposableTarget(): Promise<void> {

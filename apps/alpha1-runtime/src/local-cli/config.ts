@@ -31,6 +31,13 @@ const JAVASCRIPT_EXPORT = /^[A-Za-z_$][A-Za-z0-9_$]{0,127}$/u;
 const MAX_NAMESPACES = 64;
 const MAX_PROVIDER_TIMEOUT_MS = 5_000;
 
+export type SourceWireLocalKnowledgeProviderConfigV1 = Readonly<{
+  module: string;
+  exportName: string;
+  providerScopeId: string;
+  timeoutMs: number;
+}>;
+
 export type SourceWireLocalConfigV1 = Readonly<{
   schema: typeof SOURCE_WIRE_LOCAL_CONFIG_SCHEMA;
   compatibility: Readonly<{
@@ -49,12 +56,7 @@ export type SourceWireLocalConfigV1 = Readonly<{
     migratorDatabaseUrlEnv: string;
     verifierKeyEnv: string;
   }>;
-  knowledgeProvider?: Readonly<{
-    module: string;
-    exportName: string;
-    providerScopeId: string;
-    timeoutMs: number;
-  }>;
+  knowledgeProvider?: SourceWireLocalKnowledgeProviderConfigV1;
   mcp: Readonly<{
     transport: "stdio";
   }>;
@@ -302,7 +304,19 @@ export function validateLocalConfig(
   };
 
   if (value.knowledgeProvider === undefined) return base;
-  const provider = requireObject(value.knowledgeProvider);
+  const knowledgeProvider = validateLocalKnowledgeProviderConfig(
+    value.knowledgeProvider
+  );
+  return {
+    ...base,
+    knowledgeProvider
+  };
+}
+
+export function validateLocalKnowledgeProviderConfig(
+  value: unknown
+): SourceWireLocalKnowledgeProviderConfigV1 {
+  const provider = requireObject(value);
   assertExactKeys(provider, [
     "module",
     "exportName",
@@ -336,13 +350,10 @@ export function validateLocalConfig(
     invalidConfig();
   }
   return {
-    ...base,
-    knowledgeProvider: {
-      module: provider.module,
-      exportName: provider.exportName,
-      providerScopeId,
-      timeoutMs: provider.timeoutMs
-    }
+    module: provider.module,
+    exportName: provider.exportName,
+    providerScopeId,
+    timeoutMs: provider.timeoutMs
   };
 }
 

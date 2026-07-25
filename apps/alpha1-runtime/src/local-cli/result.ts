@@ -1,6 +1,7 @@
 export const SOURCE_WIRE_LOCAL_OPERATIONS = [
   "local.init",
   "local.doctor",
+  "local.provider.check",
   "local.mcp.stdio"
 ] as const;
 
@@ -38,7 +39,11 @@ export type SourceWireLocalErrorCode =
   | "config_unreadable"
   | "config_invalid"
   | "config_incompatible"
-  | "provider_not_supported"
+  | "provider_not_configured"
+  | "provider_namespace_invalid"
+  | "provider_load_failed"
+  | "provider_profile_invalid"
+  | "provider_readiness_failed"
   | "environment_missing"
   | "environment_invalid"
   | "database_unavailable"
@@ -58,8 +63,16 @@ const ERROR_MESSAGES: Readonly<Record<SourceWireLocalErrorCode, string>> = {
   config_unreadable: "The local configuration could not be read.",
   config_invalid: "The local configuration is invalid.",
   config_incompatible: "The local configuration is incompatible.",
-  provider_not_supported:
-    "The memory-only local runtime does not accept a knowledge provider.",
+  provider_not_configured:
+    "The local configuration does not select a knowledge provider.",
+  provider_namespace_invalid:
+    "The Alpha provider composition requires exactly one configured namespace.",
+  provider_load_failed:
+    "The configured knowledge provider could not be loaded safely.",
+  provider_profile_invalid:
+    "The configured knowledge provider profile is incompatible.",
+  provider_readiness_failed:
+    "The configured knowledge provider readiness check failed safely.",
   environment_missing: "A required local environment value is missing.",
   environment_invalid: "A required local environment value is invalid.",
   database_unavailable: "The local PostgreSQL memory store is unavailable.",
@@ -136,6 +149,24 @@ export function renderLocalCliResult(
 
   if (result.operation === "local.mcp.stdio") {
     return `ok ${result.operation}\n`;
+  }
+
+  if (result.operation === "local.provider.check") {
+    const value = result.result as {
+      contractVersion: string;
+      executableLoaded: boolean;
+      profileValidation: "deferred" | "passed";
+      readiness: "skipped" | "ready";
+      evidenceReleased: false;
+    };
+    return [
+      `ok ${result.operation}`,
+      `knowledge-provider ${value.contractVersion}`,
+      `executable-loaded ${value.executableLoaded}`,
+      `profile-validation ${value.profileValidation}`,
+      `readiness ${value.readiness}`,
+      `evidence-released ${value.evidenceReleased}`
+    ].join("\n") + "\n";
   }
 
   const value = result.result as {

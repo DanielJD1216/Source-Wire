@@ -1,10 +1,18 @@
 # Source-Wire Public Adopter Walkthrough
 
-This walkthrough gives a new adopter one practical path through the current Source-Wire package.
+This walkthrough gives a new adopter one practical path through the current
+Source-Wire repository.
 
-Source-Wire is a public contract package skeleton with a minimal synthetic in-memory runtime boundary. It defines contract shapes, schemas, fixtures, examples, validation tools, and package-readiness checks for agent-first memory systems.
+The published `@source-wire/contracts@0.2.0` package defines contract shapes,
+schemas, fixtures, examples, validation tools, and package-readiness checks.
+Latest source separately contains an unpublished loopback-only Alpha workspace.
+Stories 6.1 through 6.3 add private config checks, a memory-only two-tool local
+runner, and one immutable repository synthetic provider behind a four-tool
+stdio MCP surface.
 
-It does not run a memory backend, API server, MCP server, database, connector sync engine, memory engine, Mission Control UI, or trusted-memory promotion workflow.
+The Alpha path uses generated disposable PostgreSQL state. It is not a hosted
+service, production runtime, live knowledge connector, real-data path,
+provider registry, Mission Control UI, or published runtime package.
 
 For the whole system shape, read the [Architecture Map](../concepts/architecture-map.md).
 
@@ -38,7 +46,7 @@ Package: @source-wire/contracts
 Version: 0.2.0
 License: Apache-2.0
 Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
-Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration and Story 6.2 composes the memory-only two-tool path behind one local command; it contains no deployment, hosting, live provider, production support, production backup guarantee, or real data
+Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, and Story 6.3 composes one repository synthetic provider into the four-tool path behind the same local command; it contains no deployment, hosting, external or live provider, production support, production backup guarantee, or real data
 ok readiness report
 ```
 
@@ -47,7 +55,9 @@ What this proves:
 - The package posture is readable in one place.
 - The current version and license boundary are explicit.
 - The published package still contains contracts and synthetic proofs only.
-- Latest source separately contains the unpublished, loopback-only Stories 1 through 5 developer alpha plus private Story 6.1 and 6.2 local CLI slices.
+- Latest source separately contains the unpublished, loopback-only Stories 1
+  through 5 developer Alpha plus private Story 6.1 through 6.3 local CLI
+  slices.
 - The report can summarize package exports, schemas, commands, installed smokes, required readiness docs, and blocked scope without running the full readiness gate.
 
 ## 3. Validate The Synthetic Fixtures
@@ -129,9 +139,27 @@ What this does not do:
 - It does not publish npm.
 - It does not create a GitHub release.
 - It does not deploy services.
-- It does not run a backend, database, MCP server, memory engine, or connector.
+- It does not start the unpublished Alpha runtime, connect PostgreSQL, load a
+  provider, or run the private stdio MCP command.
 
-## 5. Inspect TypeScript Examples
+## 5. Evaluate The Private Local Alpha
+
+Start with the repository [Quickstart](quickstart.md), then follow:
+
+1. [Story 6.1 Local CLI Init And Offline Doctor](alpha1-story6-local-cli-init-doctor.md)
+2. [Story 6.2 Memory-Only Local Runtime](alpha1-story6-memory-only-local-runtime.md)
+3. [Story 6.3 Synthetic Provider Local Runtime](alpha1-story6-synthetic-provider-local-runtime.md)
+
+Story 6.3 proves one repository synthetic provider through offline and explicit
+connected checking, immutable startup composition, exactly four stdio MCP
+tools, loopback API policy, durable protected-read audit, zero memory promotion,
+and coordinated credential cleanup.
+
+It does not prove that an external knowledge base is connected. That
+cross-repository synthetic compatibility proof remains a later dependency-
+ordered Story 6 unit.
+
+## 6. Inspect TypeScript Examples
 
 Start here:
 
@@ -164,7 +192,7 @@ What this proves:
 - The same public example files can typecheck in a temporary external project.
 - Consumer imports from `@source-wire/contracts` work through installed package declarations.
 
-## 6. Understand Installed Package Smokes
+## 7. Understand Installed Package Smokes
 
 Source-Wire has six installed-package or runtime-boundary smoke checks:
 
@@ -238,7 +266,7 @@ ok diagnostic failure includes next action
 
 The runtime-boundary smokes use synthetic data only. They do not start a backend, API server, MCP server, database, connector, memory engine, deployment, or Source-Wire-hosted memory.
 
-## 7. Know What Is Intentionally Missing
+## 8. Know What Is Intentionally Missing
 
 Source-Wire does not currently include:
 

@@ -52,6 +52,26 @@ const MAX_OPAQUE_PROVIDER_KEY_BYTES = 512;
 type ProviderReadOperation = typeof SEARCH_OPERATION | typeof GET_OPERATION;
 const REQUIRED_PROVIDER_CAPABILITIES: readonly SourceWireKnowledgeProviderOperationV1[] =
   ["describe", "health", SEARCH_OPERATION, GET_OPERATION];
+const PROVIDER_PROFILE_KEYS = [
+  "accessMode",
+  "arbitraryTableMappingSupported",
+  "capabilities",
+  "contractId",
+  "contractVersion",
+  "credentialMode",
+  "maximumExcerptBytes",
+  "maximumResultCount",
+  "noAutoPromotion",
+  "providerFamily",
+  "providerId",
+  "providerScopeId",
+  "requiredProvenance"
+] as const;
+const PROVIDER_CAPABILITY_KEYS = [
+  "capability",
+  "requirement",
+  "supported"
+] as const;
 type ProviderRequestBase = Omit<
   SourceWireKnowledgeProviderRequestV1,
   "operation" | "requiredCapabilities" | "search" | "get"
@@ -349,7 +369,7 @@ export function createKnowledgeProviderHost(options: {
   }
   const originProcessId = randomUUID();
   const binding = options.binding
-    ? freezeAndValidateBinding(options.binding)
+    ? validateKnowledgeProviderBinding(options.binding)
     : undefined;
 
   return Object.freeze({
@@ -640,9 +660,24 @@ export function computeProviderOriginProcessVerifier(
     .digest("hex");
 }
 
-function freezeAndValidateBinding(binding: KnowledgeProviderBinding) {
+export function validateKnowledgeProviderBinding(
+  binding: KnowledgeProviderBinding
+) {
   const profile = binding.provider.profile;
+  const profileKeys =
+    profile && typeof profile === "object"
+      ? Object.keys(profile).sort()
+      : [];
+  const capabilityNames = Array.isArray(profile?.capabilities)
+    ? profile.capabilities.map((entry) =>
+        entry && typeof entry === "object"
+          ? entry.capability
+          : undefined
+      )
+    : [];
   if (
+    JSON.stringify(profileKeys) !==
+      JSON.stringify([...PROVIDER_PROFILE_KEYS].sort()) ||
     profile.contractId !== SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_ID ||
     profile.contractVersion !== SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION ||
     (profile.providerFamily !== "document_index" &&
@@ -654,6 +689,15 @@ function freezeAndValidateBinding(binding: KnowledgeProviderBinding) {
     profile.noAutoPromotion !== true ||
     profile.arbitraryTableMappingSupported !== false ||
     !Array.isArray(profile.capabilities) ||
+    profile.capabilities.length !== REQUIRED_PROVIDER_CAPABILITIES.length ||
+    new Set(capabilityNames).size !== REQUIRED_PROVIDER_CAPABILITIES.length ||
+    profile.capabilities.some(
+      (entry) =>
+        !entry ||
+        typeof entry !== "object" ||
+        JSON.stringify(Object.keys(entry).sort()) !==
+          JSON.stringify([...PROVIDER_CAPABILITY_KEYS].sort())
+    ) ||
     !REQUIRED_PROVIDER_CAPABILITIES.every((capability) =>
       profile.capabilities.some(
         (entry) =>
@@ -665,8 +709,10 @@ function freezeAndValidateBinding(binding: KnowledgeProviderBinding) {
     profile.providerScopeId !== binding.providerScopeId ||
     !Number.isInteger(profile.maximumResultCount) ||
     profile.maximumResultCount < 1 ||
+    profile.maximumResultCount > MAX_SOURCE_EVIDENCE_SEARCH_RESULTS ||
     !Number.isInteger(profile.maximumExcerptBytes) ||
     profile.maximumExcerptBytes < 1 ||
+    profile.maximumExcerptBytes > MAX_SOURCE_EVIDENCE_EXCERPT_BYTES ||
     !Number.isInteger(binding.timeoutMs) ||
     binding.timeoutMs < 1 ||
     binding.timeoutMs > STORY1_REQUEST_TIMEOUT_MS
@@ -696,7 +742,7 @@ function freezeAndValidateBinding(binding: KnowledgeProviderBinding) {
 
 function validateAndCopyProviderResult(
   result: SourceWireKnowledgeProviderResultV1,
-  binding: ReturnType<typeof freezeAndValidateBinding>,
+  binding: ReturnType<typeof validateKnowledgeProviderBinding>,
   context: AuthorizedEvidenceReadContext,
   requestId: string,
   command: EvidenceReadCommand
@@ -972,7 +1018,7 @@ const SAFE_PROVIDER_ERROR_MESSAGES: Record<
 
 function validateProviderNextCursor(
   cursor: SourceWireKnowledgeProviderCursorV1 | undefined,
-  binding: ReturnType<typeof freezeAndValidateBinding>,
+  binding: ReturnType<typeof validateKnowledgeProviderBinding>,
   operation: ProviderReadOperation
 ): SourceWireKnowledgeProviderCursorV1 | undefined {
   if (cursor === undefined) return undefined;

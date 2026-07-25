@@ -65,6 +65,11 @@ Story 6.1 adds private offline configuration. Story 6.2 composes the
 memory-only subset through one private `source-wire-local mcp stdio` command.
 That path advertises exactly the two memory tools, inspects but never applies
 migrations, and revokes its process-scoped harness credential on shutdown.
+Story 6.3 lets owner-controlled startup bind one repository synthetic provider.
+Offline checking imports nothing, explicit connected checking invokes only
+bounded readiness, and successful startup advertises exactly four tools.
+Provider selection and authority never enter MCP or API caller input, and
+replacement requires configuration plus restart.
 
 The Alpha workspace does not prove hosting, deployment, production availability, production backup guarantees, live-provider support, public network exposure, non-disposable database use, or real-data safety.
 

@@ -1,12 +1,12 @@
 # Source-Wire Agent Guide
 
-This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.2.0` package is the current immutable contracts snapshot and includes `KnowledgeProvider v1`. Latest source also contains loopback-only Alpha 1 Stories 1 through 5 under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state and synthetic read-only providers for local proof. Story 6.1 adds private non-secret local configuration, and Story 6.2 composes the memory-only API and two-tool stdio MCP path behind one local command. None of these boundaries is a hosted memory service or a production runtime.
+This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.2.0` package is the current immutable contracts snapshot and includes `KnowledgeProvider v1`. Latest source also contains loopback-only Alpha 1 Stories 1 through 5 under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state and synthetic read-only providers for local proof. Story 6.1 adds private non-secret local configuration, Story 6.2 composes the memory-only API and two-tool stdio MCP path, and Story 6.3 composes one immutable synthetic provider into the four-tool path behind the same local command. None of these boundaries is a hosted memory service or a production runtime.
 
 ## Read Order
 
 1. Read [README.md](README.md) for the product, trust model, and current public boundary.
 2. Read [docs/README.md](docs/README.md) to route to the smallest relevant document.
-3. Before touching `apps/alpha1-runtime/`, read [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md), [Alpha 1 Story 6.1 Local CLI Init And Offline Doctor](docs/getting-started/alpha1-story6-local-cli-init-doctor.md), and [Alpha 1 Story 6.2 Memory-Only Local Runtime](docs/getting-started/alpha1-story6-memory-only-local-runtime.md).
+3. Before touching `apps/alpha1-runtime/`, read [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md), [Alpha 1 Story 6.1 Local CLI Init And Offline Doctor](docs/getting-started/alpha1-story6-local-cli-init-doctor.md), [Alpha 1 Story 6.2 Memory-Only Local Runtime](docs/getting-started/alpha1-story6-memory-only-local-runtime.md), and [Alpha 1 Story 6.3 Synthetic Provider Local Runtime](docs/getting-started/alpha1-story6-synthetic-provider-local-runtime.md).
 4. Read the relevant concept and contract before changing behavior.
 5. Treat everything under `examples/` as synthetic, then inspect the matching synthetic fixture and smoke test.
 6. Run `npm run readiness:report` before making repository-status claims.
@@ -32,6 +32,7 @@ runtime, read [Knowledge Provider Host Composition Story](docs/internal/knowledg
 - Root examples, fixtures, and contract smokes are synthetic and do not imply a live server, database, connector, or deployment.
 - `apps/alpha1-runtime/` is real local Alpha 1 Stories 1 through 5 proof only. Its MCP surface contains exactly two memory tools and two synthetic source-evidence tools. Approval, correction, revocation, export, recovery, and provider configuration stay outside MCP and under owner or operator control. Protected reads require durable audit plus a single-use origin-process receipt before response release. It remains unpublished, loopback-only, generated-disposable, unhosted, undeployed, not production ready, and unsupported for real data or live providers.
 - Story 6.1 adds config creation and offline validation. Story 6.2 adds a memory-only launcher that inspects but never applies migrations, starts loopback API plus stdio MCP, gives the MCP child no owner or database authority, advertises exactly two memory tools, and revokes its process credential on shutdown. It remains unpublished and generated-disposable only.
+- Story 6.3 accepts zero or one owner-selected provider module at startup. Offline checking imports nothing. Explicit connected checking invokes only bounded readiness. A valid provider produces exactly four tools, while callers cannot choose provider identity, scope, module, credentials, owner, namespace, ACL, or bounds. Replacement requires config plus restart, and evidence reads create no memory.
 
 ## Working Commands
 
@@ -74,6 +75,8 @@ For the private Story 6 CLI:
 npm run alpha1:build
 npm run local --workspace @source-wire/alpha1-runtime -- init --config /owner-controlled/source-wire.local.json
 npm run local --workspace @source-wire/alpha1-runtime -- doctor --config /owner-controlled/source-wire.local.json
+npm run local --workspace @source-wire/alpha1-runtime -- provider check --config /owner-controlled/source-wire.local.json
+npm run local --workspace @source-wire/alpha1-runtime -- provider check --config /owner-controlled/source-wire.local.json --connect
 npm run local --workspace @source-wire/alpha1-runtime -- mcp stdio --config /owner-controlled/source-wire.local.json
 ```
 

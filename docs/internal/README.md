@@ -18,6 +18,8 @@ Current proposed design:
 - [Alpha 1 Story 5 MCP Dependency Advisory Disposition](alpha1-story5-mcp-advisory-disposition.md)
 - [Knowledge Provider Host Composition Story](knowledge-provider-host-composition-story.md)
 - [Knowledge Provider Host Composition Published Issues](knowledge-provider-host-composition-issue-drafts.md)
+- [Alpha 1 Story 6 Local CLI Integration Design](alpha1-story6-local-cli-integration-design.md)
+- [Alpha 1 Story 6 Published Implementation Issues](alpha1-story6-local-cli-integration-issue-drafts.md)
 
 ## Do Not Use This Archive As
 

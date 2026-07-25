@@ -4,6 +4,27 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Story 6.1 local CLI init and offline doctor
+
+Summary:
+
+- Added a private `source-wire-local` binary inside the unpublished Alpha workspace without changing the public contracts-package `source-wire validate` CLI.
+- Added owner-only, no-overwrite creation for a versioned `source-wire.local.v1` configuration containing environment-variable references rather than secret values.
+- Added strict offline validation for exact contract compatibility, identifiers, zero-or-one provider declarations, loopback API binding, stdio-only MCP, and safe local file permissions.
+- Added one stable redacted human and JSON result envelope that omits environment values, endpoints, credentials, private paths, queries, and evidence.
+- Proved offline diagnostics require no PostgreSQL connection, provider import, Source-Wire account, API key, telemetry, billing, hosted service, migration, or provisioning path.
+- Kept runtime startup, provider loading, database control, owner export, package publication, deployment, production, live providers, non-disposable data, and real data outside this slice.
+
+Validation:
+
+- `npm run alpha1:test`
+- compiled clean-directory `source-wire-local init` and `doctor` smoke
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `git diff --check`
+
 ### 2026-07-24 - Contracts 0.2.0 released
 
 Summary:

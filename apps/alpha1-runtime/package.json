@@ -5,6 +5,9 @@
   "description": "Unpublished local owner-hosted Source-Wire Alpha 1 runtime.",
   "type": "module",
   "license": "Apache-2.0",
+  "bin": {
+    "source-wire-local": "dist/src/cli/local.js"
+  },
   "engines": {
     "node": "22.23.1"
   },
@@ -21,6 +24,7 @@
     "conformance:story4": "node dist/conformance/story4.js",
     "conformance:story5": "node dist/conformance/story5.js",
     "mcp": "node dist/src/mcp/server.js",
+    "local": "node dist/src/cli/local.js",
     "operator": "node dist/src/cli/operator.js",
     "owner": "node dist/src/cli/owner.js",
     "start": "node dist/src/server.js"

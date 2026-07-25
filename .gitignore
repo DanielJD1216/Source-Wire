@@ -1,4 +1,6 @@
 dist/
 node_modules/
 apps/*/.artifacts/
+.source-wire-local/
+source-wire.local.json
 .DS_Store

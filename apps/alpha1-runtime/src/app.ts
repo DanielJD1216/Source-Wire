@@ -257,7 +257,9 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
       "namespaceId",
       "query",
       "limit",
-      "cursor"
+      "cursor",
+      "freshness",
+      "sensitivity"
     ]);
     const actor = await authenticateForContext(context, options);
     const input = parseSourceEvidenceSearch(body);

@@ -4,6 +4,28 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Alpha host contract convergence
+
+Summary:
+
+- Replaced the unpublished Alpha runtime's duplicate provider protocol with the authoritative public `SourceWireKnowledgeProviderV1` contract.
+- Made the synthetic provider implement the public profile, request, result, capability, evidence, cursor, gap, and safe-error shapes directly.
+- Added startup checks for every required provider profile capability and field while preserving valid memory-only startup when no provider is composed.
+- Preserved optional freshness and sensitivity filters through MCP, API validation, request digests, and provider execution without silent loss.
+- Added compile-time and runtime drift tests, including clean build ordering for the local contracts dependency.
+- Preserved audited release, bounded responses, zero automatic memory promotion, synthetic-only data, and all existing hosting, deployment, publication, live-provider, production, and real-data blocks.
+
+Validation:
+
+- `npm run typecheck --workspace @source-wire/alpha1-runtime`
+- `npm run test --workspace @source-wire/alpha1-runtime`
+- `npm test`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `git diff --check`
+
 ### 2026-07-24 - Contracts 0.2.0 release candidate
 
 Summary:

@@ -99,6 +99,8 @@ test("official MCP client searches source evidence through loopback API with cal
       arguments: {
         namespaceId: "ns_project_alpha",
         query: "deployment review",
+        freshness: "fresh",
+        sensitivity: "internal",
         cursor: {
           providerId: "synthetic_document_index",
           providerScopeId: "scope_docs_alpha",
@@ -111,6 +113,8 @@ test("official MCP client searches source evidence through loopback API with cal
       namespaceId: "ns_project_alpha",
       query: "deployment review",
       limit: 10,
+      freshness: "fresh",
+      sensitivity: "internal",
       cursor: {
         providerId: "synthetic_document_index",
         providerScopeId: "scope_docs_alpha",

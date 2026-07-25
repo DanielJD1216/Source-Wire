@@ -2,6 +2,11 @@ import assert from "node:assert/strict";
 import { randomBytes, randomUUID } from "node:crypto";
 import test from "node:test";
 
+import type {
+  SourceWireKnowledgeProviderRequestV1,
+  SourceWireKnowledgeProviderResultV1
+} from "@source-wire/contracts";
+
 import { SafeError } from "../src/errors.js";
 import {
   computeProviderOriginProcessVerifier,
@@ -11,9 +16,7 @@ import {
   releaseAuditedEvidenceResponse,
   type ProviderReadAuditStore,
   type ProviderReadReceiptBinding,
-  type ProviderReadStage,
-  type RuntimeKnowledgeProviderRequest,
-  type RuntimeKnowledgeProviderResult
+  type ProviderReadStage
 } from "../src/knowledge-provider-host.js";
 import { createSyntheticKnowledgeProvider } from "../src/knowledge-provider/synthetic-provider.js";
 import type { AuthenticatedCredential } from "../src/repository.js";
@@ -130,9 +133,9 @@ function searchCommand() {
 
 async function expectRejectedProviderResult(
   mutate: (
-    result: RuntimeKnowledgeProviderResult,
-    request: RuntimeKnowledgeProviderRequest
-  ) => RuntimeKnowledgeProviderResult
+    result: SourceWireKnowledgeProviderResultV1,
+    request: SourceWireKnowledgeProviderRequestV1
+  ) => SourceWireKnowledgeProviderResultV1
 ): Promise<void> {
   const synthetic = createSyntheticKnowledgeProvider();
   const auditStore = new RecordingAuditStore();
@@ -324,6 +327,53 @@ test("audited source-evidence search releases only the receipt-covered synthetic
         originalVerifier
       );
     }
+  } finally {
+    execution.clear();
+  }
+});
+
+test("freshness and sensitivity filters reach the public provider request unchanged", async () => {
+  const synthetic = createSyntheticKnowledgeProvider();
+  let observedRequest: SourceWireKnowledgeProviderRequestV1 | undefined;
+  const host = createKnowledgeProviderHost({
+    binding: {
+      provider: {
+        profile: synthetic.profile,
+        async execute(request) {
+          observedRequest = structuredClone(request);
+          return synthetic.execute(request);
+        }
+      },
+      ownerId: "owner_alpha",
+      namespaceId: "ns_project_alpha",
+      providerScopeId: "scope_docs_alpha",
+      timeoutMs: 1_000
+    },
+    auditStore: new RecordingAuditStore(),
+    processReleaseSecret: randomBytes(32)
+  });
+
+  const execution = await host.execute(
+    {
+      actor,
+      traceId: randomUUID(),
+      startedAtMs: Date.now()
+    },
+    {
+      operation: "search_evidence",
+      ...parseSourceEvidenceSearch({
+        namespaceId: "ns_project_alpha",
+        query: "deployment review",
+        freshness: "fresh",
+        sensitivity: "internal"
+      })
+    }
+  );
+
+  try {
+    assert.equal(observedRequest?.operation, "search_evidence");
+    assert.equal(observedRequest?.search?.freshness, "fresh");
+    assert.equal(observedRequest?.search?.sensitivity, "internal");
   } finally {
     execution.clear();
   }
@@ -1256,6 +1306,58 @@ test("authority and immutable provider scope fail closed before invocation", asy
     );
   });
 
+  await t.test("invalid provider family", () => {
+    const synthetic = createSyntheticKnowledgeProvider();
+    assert.throws(
+      () =>
+        createKnowledgeProviderHost({
+          binding: {
+            provider: {
+              ...synthetic,
+              profile: {
+                ...synthetic.profile,
+                providerFamily: "instruction_engine"
+              } as unknown as typeof synthetic.profile
+            },
+            ownerId: "owner_alpha",
+            namespaceId: "ns_project_alpha",
+            providerScopeId: "scope_docs_alpha",
+            timeoutMs: 1_000
+          },
+          auditStore: new RecordingAuditStore(),
+          processReleaseSecret: randomBytes(32)
+        }),
+      /knowledge_provider_binding_invalid/u
+    );
+  });
+
+  await t.test("missing declared health capability", () => {
+    const synthetic = createSyntheticKnowledgeProvider();
+    assert.throws(
+      () =>
+        createKnowledgeProviderHost({
+          binding: {
+            provider: {
+              ...synthetic,
+              profile: {
+                ...synthetic.profile,
+                capabilities: synthetic.profile.capabilities.filter(
+                  ({ capability }) => capability !== "health"
+                )
+              }
+            },
+            ownerId: "owner_alpha",
+            namespaceId: "ns_project_alpha",
+            providerScopeId: "scope_docs_alpha",
+            timeoutMs: 1_000
+          },
+          auditStore: new RecordingAuditStore(),
+          processReleaseSecret: randomBytes(32)
+        }),
+      /knowledge_provider_binding_invalid/u
+    );
+  });
+
   await t.test("incompatible profile contract version", () => {
     const synthetic = createSyntheticKnowledgeProvider();
     assert.throws(
@@ -1286,8 +1388,8 @@ test("cross-scope, malformed, and over-authoritative evidence releases zero cont
   const cases: Array<{
     name: string;
     mutate: (
-      result: RuntimeKnowledgeProviderResult
-    ) => RuntimeKnowledgeProviderResult;
+      result: SourceWireKnowledgeProviderResultV1
+    ) => SourceWireKnowledgeProviderResultV1;
   }> = [
     {
       name: "cross-owner evidence",
@@ -1318,7 +1420,7 @@ test("cross-scope, malformed, and over-authoritative evidence releases zero cont
             ...item,
             aclDecision: "denied"
           }))
-        }) as unknown as RuntimeKnowledgeProviderResult
+        }) as unknown as SourceWireKnowledgeProviderResultV1
     },
     {
       name: "invalid digest",
@@ -1345,7 +1447,7 @@ test("cross-scope, malformed, and over-authoritative evidence releases zero cont
               publicSafe: false
             }
           }))
-        }) as unknown as RuntimeKnowledgeProviderResult
+        }) as unknown as SourceWireKnowledgeProviderResultV1
     },
     {
       name: "incompatible result contract version",
@@ -1353,7 +1455,7 @@ test("cross-scope, malformed, and over-authoritative evidence releases zero cont
         ({
           ...result,
           contractVersion: "knowledge-provider.v2"
-        }) as unknown as RuntimeKnowledgeProviderResult
+        }) as unknown as SourceWireKnowledgeProviderResultV1
     },
     {
       name: "invalid provider authority",
@@ -1364,7 +1466,7 @@ test("cross-scope, malformed, and over-authoritative evidence releases zero cont
             ...item,
             instructionAuthority: "provider"
           }))
-        }) as unknown as RuntimeKnowledgeProviderResult
+        }) as unknown as SourceWireKnowledgeProviderResultV1
     },
     {
       name: "allowed result with contradictory error",

@@ -1,11 +1,13 @@
 import { createHash } from "node:crypto";
 
-import type {
-  RuntimeKnowledgeProvider,
-  RuntimeKnowledgeProviderProfile,
-  RuntimeKnowledgeProviderRequest,
-  RuntimeKnowledgeProviderResult
-} from "../knowledge-provider-host.js";
+import {
+  SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_ID,
+  SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
+  type SourceWireKnowledgeProviderProfileV1,
+  type SourceWireKnowledgeProviderRequestV1,
+  type SourceWireKnowledgeProviderResultV1,
+  type SourceWireKnowledgeProviderV1
+} from "@source-wire/contracts";
 
 const EXCERPT =
   "Synthetic evidence: deployment requires an owner-reviewed release gate.";
@@ -18,41 +20,54 @@ export type SyntheticKnowledgeProviderFault =
   | "deadline_exceeded"
   | "provider_outage";
 
-const profile: RuntimeKnowledgeProviderProfile = Object.freeze({
-  contractId: "source-wire.knowledge-provider",
-  contractVersion: "knowledge-provider.v1",
+const profile: SourceWireKnowledgeProviderProfileV1 = {
+  contractId: SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_ID,
+  contractVersion: SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
   providerId: "synthetic_document_index",
   providerScopeId: "scope_docs_alpha",
+  providerFamily: "document_index",
   accessMode: "read_only",
   credentialMode: "out_of_band",
-  capabilities: Object.freeze([
-    Object.freeze({
+  capabilities: [
+    {
+      capability: "describe",
+      requirement: "required",
+      supported: true
+    },
+    {
+      capability: "health",
+      requirement: "required",
+      supported: true
+    },
+    {
       capability: "search_evidence",
       requirement: "required",
       supported: true
-    }),
-    Object.freeze({
+    },
+    {
       capability: "get_evidence",
       requirement: "required",
       supported: true
-    })
-  ]),
+    }
+  ],
   requiredProvenance: true,
   noAutoPromotion: true,
   arbitraryTableMappingSupported: false,
   maximumResultCount: 10,
   maximumExcerptBytes: 65_536
-});
+};
+Object.freeze(profile.capabilities);
+Object.freeze(profile);
 
 export function createSyntheticKnowledgeProvider(options?: {
   fault?: SyntheticKnowledgeProviderFault;
-}): RuntimeKnowledgeProvider {
+}): SourceWireKnowledgeProviderV1 {
   const fault = options?.fault;
   return Object.freeze({
     profile,
     async execute(
-      request: RuntimeKnowledgeProviderRequest
-    ): Promise<RuntimeKnowledgeProviderResult> {
+      request: SourceWireKnowledgeProviderRequestV1
+    ): Promise<SourceWireKnowledgeProviderResultV1> {
       if (fault === "provider_outage") {
         throw new Error("synthetic_provider_outage");
       }
@@ -61,7 +76,8 @@ export function createSyntheticKnowledgeProvider(options?: {
       }
       const exactMatch =
         request.operation === "search_evidence" ||
-        (request.get.sourceId === "source_synthetic_runbook" &&
+        (request.operation === "get_evidence" &&
+          request.get?.sourceId === "source_synthetic_runbook" &&
           request.get.segmentId === "segment_release_gate");
       const baseEvidence = syntheticEvidence(request);
       const evidence =
@@ -90,7 +106,7 @@ export function createSyntheticKnowledgeProvider(options?: {
         contractVersion: profile.contractVersion,
         status: exactMatch ? "allowed" : "denied",
         evidence: exactMatch
-          ? (evidence as RuntimeKnowledgeProviderResult["evidence"])
+          ? (evidence as SourceWireKnowledgeProviderResultV1["evidence"])
           : [],
         gaps: exactMatch
           ? []
@@ -132,7 +148,7 @@ export function createSyntheticKnowledgeProvider(options?: {
   });
 }
 
-function syntheticEvidence(request: RuntimeKnowledgeProviderRequest) {
+function syntheticEvidence(request: SourceWireKnowledgeProviderRequestV1) {
   return {
     providerId: profile.providerId,
     providerRecordId: "record_deployment_review",

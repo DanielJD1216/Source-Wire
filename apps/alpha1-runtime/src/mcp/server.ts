@@ -92,6 +92,10 @@ const sourceEvidenceSearchInput = z
           .regex(/^[A-Za-z0-9_-]+$/u)
       })
       .strict()
+      .optional(),
+    freshness: z.enum(["fresh", "stale", "unknown"]).optional(),
+    sensitivity: z
+      .enum(["public", "internal", "confidential", "restricted"])
       .optional()
   })
   .strict();
@@ -193,7 +197,13 @@ async function main(): Promise<void> {
             limit: input.limit ?? MAX_SOURCE_EVIDENCE_SEARCH_RESULTS,
             ...(input.cursor === undefined
               ? {}
-              : { cursor: input.cursor })
+              : { cursor: input.cursor }),
+            ...(input.freshness === undefined
+              ? {}
+              : { freshness: input.freshness }),
+            ...(input.sensitivity === undefined
+              ? {}
+              : { sensitivity: input.sensitivity })
           }),
           signal: AbortSignal.timeout(5_000)
         });

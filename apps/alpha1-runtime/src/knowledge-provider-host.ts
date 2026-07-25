@@ -6,6 +6,23 @@ import {
 } from "node:crypto";
 
 import {
+  SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_ID,
+  SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
+  SOURCE_WIRE_MAX_SAFE_RETRY_AFTER_MS,
+  type SourceWireKnowledgeEvidenceV1,
+  type SourceWireKnowledgeFreshnessV1,
+  type SourceWireKnowledgeProviderCursorV1,
+  type SourceWireKnowledgeProviderErrorCodeV1,
+  type SourceWireKnowledgeProviderGapV1,
+  type SourceWireKnowledgeProviderOperationV1,
+  type SourceWireKnowledgeProviderRequestV1,
+  type SourceWireKnowledgeProviderResultV1,
+  type SourceWireKnowledgeProviderV1,
+  type SourceWireKnowledgeSensitivityV1,
+  type SourceWireSafeErrorV1
+} from "@source-wire/contracts";
+
+import {
   assertSourceWireIdentifier,
   MAX_LIST_CURSOR_BYTES,
   MAX_PROTECTED_READ_RESPONSE_BYTES,
@@ -26,171 +43,21 @@ const DIGEST = /^[0-9a-f]{64}$/u;
 const RELEASE_BINDING = /^[A-Za-z0-9_-]{43}$/u;
 const ORIGIN_VERIFIER_DOMAIN =
   "source-wire.alpha1.story5.provider-read-origin-process.v1";
-const CONTRACT_ID = "source-wire.knowledge-provider" as const;
-const CONTRACT_VERSION = "knowledge-provider.v1" as const;
 const SEARCH_OPERATION = "search_evidence" as const;
 const GET_OPERATION = "get_evidence" as const;
 const MCP_OPERATION = "search_source_evidence" as const;
 const MCP_GET_OPERATION = "get_source_evidence" as const;
 const RECEIPT_FORMAT_VERSION = 1 as const;
 type ProviderReadOperation = typeof SEARCH_OPERATION | typeof GET_OPERATION;
-const MAX_SAFE_RETRY_AFTER_MS = 30_000;
-
-type RuntimeKnowledgeProviderErrorCode =
-  | "invalid_request"
-  | "unsupported_contract_version"
-  | "unsupported_operation"
-  | "incompatible_provider_authority"
-  | "scope_not_mapped"
-  | "scope_violation"
-  | "not_found"
-  | "provenance_incomplete"
-  | "rate_limited"
-  | "deadline_exceeded"
-  | "temporarily_unavailable"
-  | "provider_failure";
-
-type RuntimeKnowledgeProviderSafeError = {
-  code: RuntimeKnowledgeProviderErrorCode;
-  message: string;
-  traceId: string;
-  retryable: boolean;
-  retryAfterMs?: number;
-  detailsRedacted: true;
-};
-
-export type RuntimeKnowledgeProviderCursor = {
-  providerId: string;
-  providerScopeId: string;
-  value: string;
-};
-
-export type RuntimeKnowledgeProviderProfile = Readonly<{
-  contractId: typeof CONTRACT_ID;
-  contractVersion: typeof CONTRACT_VERSION;
-  providerId: string;
-  providerScopeId: string;
-  accessMode: "read_only";
-  credentialMode: "out_of_band";
-  capabilities: ReadonlyArray<
-    Readonly<{
-      capability: "search_evidence" | "get_evidence" | "describe" | "health";
-      requirement: "required" | "optional";
-      supported: boolean;
-    }>
-  >;
-  requiredProvenance: true;
-  noAutoPromotion: true;
-  arbitraryTableMappingSupported: false;
-  maximumResultCount: number;
-  maximumExcerptBytes: number;
-}>;
-
-export type RuntimeKnowledgeProviderEvidence = {
-  providerId: string;
-  providerRecordId: string;
-  sourceId: string;
-  segmentId: string;
-  ownerId: string;
-  namespaceId: string;
-  aclDecision: "allowed";
-  sourceVersion: string;
-  contentDigest: {
-    algorithm: "sha256";
-    value: string;
-  };
-  citationLocator: {
-    value: string;
-    publicSafe: true;
-  };
-  title: string;
-  excerpt: string;
-  mediaType: string;
-  truncated: boolean;
-  sensitivity: "public" | "internal" | "confidential" | "restricted";
-  freshness: "fresh" | "stale" | "unknown";
-  retrievedAt: string;
-  sourceModifiedAt?: string;
-  instructionAuthority: "none";
-};
-
-type RuntimeKnowledgeProviderRequestBase = {
-  contractId: typeof CONTRACT_ID;
-  contractVersion: typeof CONTRACT_VERSION;
-  requestId: string;
-  traceId: string;
-  providerId: string;
-  ownerId: string;
-  namespaceId: string;
-  providerScopeId: string;
-  deadlineAt: string;
-};
-
-export type RuntimeKnowledgeProviderRequest =
-  RuntimeKnowledgeProviderRequestBase &
-    (
-      | {
-          operation: typeof SEARCH_OPERATION;
-          requiredCapabilities: Array<{
-            capability: typeof SEARCH_OPERATION;
-            requirement: "required";
-          }>;
-          search: {
-            query: string;
-            maximumResults: number;
-            cursor?: RuntimeKnowledgeProviderCursor;
-          };
-        }
-      | {
-          operation: typeof GET_OPERATION;
-          requiredCapabilities: Array<{
-            capability: typeof GET_OPERATION;
-            requirement: "required";
-          }>;
-          get: {
-            sourceId: string;
-            segmentId: string;
-          };
-        }
-    );
-
-export type RuntimeKnowledgeProviderResult = {
-  requestId: string;
-  traceId: string;
-  providerId: string;
-  contractVersion: typeof CONTRACT_VERSION;
-  status: "allowed" | "partial_success" | "denied" | "unavailable";
-  evidence: RuntimeKnowledgeProviderEvidence[];
-  gaps: Array<{
-    code:
-      | "no_evidence"
-      | "partial_evidence"
-      | "provider_unavailable"
-      | "rate_limited"
-      | "not_found"
-      | "invalid_evidence";
-    message: string;
-    retryable: boolean;
-  }>;
-  nextCursor?: RuntimeKnowledgeProviderCursor;
-  error?: RuntimeKnowledgeProviderSafeError;
-  providerMutationAttempted: false;
-  memoryMutationAttempted: false;
-  trustedMemoryCreated: false;
-  noAutoPromotion: true;
-  readAuditRequired: true;
-  releaseState: "internal_unreleased";
-};
-
-export interface RuntimeKnowledgeProvider {
-  readonly profile: RuntimeKnowledgeProviderProfile;
-  execute(
-    request: RuntimeKnowledgeProviderRequest
-  ): Promise<RuntimeKnowledgeProviderResult>;
-}
+const REQUIRED_PROVIDER_CAPABILITIES: readonly SourceWireKnowledgeProviderOperationV1[] =
+  ["describe", "health", SEARCH_OPERATION, GET_OPERATION];
+type ProviderRequestBase = Omit<
+  SourceWireKnowledgeProviderRequestV1,
+  "operation" | "requiredCapabilities" | "search" | "get"
+>;
 
 export type KnowledgeProviderBinding = Readonly<{
-  provider: RuntimeKnowledgeProvider;
+  provider: SourceWireKnowledgeProviderV1;
   ownerId: string;
   namespaceId: string;
   providerScopeId: string;
@@ -202,7 +69,9 @@ export type SourceEvidenceSearchInput = {
   query: string;
   queryByteCount: number;
   limit: number;
-  cursor?: RuntimeKnowledgeProviderCursor;
+  cursor?: SourceWireKnowledgeProviderCursorV1;
+  freshness?: SourceWireKnowledgeFreshnessV1;
+  sensitivity?: SourceWireKnowledgeSensitivityV1;
 };
 
 export type SourceEvidenceGetInput = {
@@ -283,7 +152,9 @@ export type EvidenceReadCommand =
       query: string;
       queryByteCount: number;
       limit: number;
-      cursor?: RuntimeKnowledgeProviderCursor;
+      cursor?: SourceWireKnowledgeProviderCursorV1;
+      freshness?: SourceWireKnowledgeFreshnessV1;
+      sensitivity?: SourceWireKnowledgeSensitivityV1;
     }
   | {
       operation: typeof GET_OPERATION;
@@ -330,7 +201,9 @@ export function parseSourceEvidenceSearch(
         key !== "namespaceId" &&
         key !== "query" &&
         key !== "limit" &&
-        key !== "cursor"
+        key !== "cursor" &&
+        key !== "freshness" &&
+        key !== "sensitivity"
     )
   ) {
     throw new SafeError("validation_failed", 400);
@@ -371,13 +244,42 @@ export function parseSourceEvidenceSearch(
     record.cursor === undefined
       ? undefined
       : parseProviderCursor(record.cursor);
+  const freshness =
+    record.freshness === undefined
+      ? undefined
+      : parseFreshness(record.freshness);
+  const sensitivity =
+    record.sensitivity === undefined
+      ? undefined
+      : parseSensitivity(record.sensitivity);
   return {
     namespaceId,
     query: record.query,
     queryByteCount,
     limit: limit as number,
-    ...(cursor === undefined ? {} : { cursor })
+    ...(cursor === undefined ? {} : { cursor }),
+    ...(freshness === undefined ? {} : { freshness }),
+    ...(sensitivity === undefined ? {} : { sensitivity })
   };
+}
+
+function parseFreshness(value: unknown): SourceWireKnowledgeFreshnessV1 {
+  if (value === "fresh" || value === "stale" || value === "unknown") {
+    return value;
+  }
+  throw new SafeError("validation_failed", 400);
+}
+
+function parseSensitivity(value: unknown): SourceWireKnowledgeSensitivityV1 {
+  if (
+    value === "public" ||
+    value === "internal" ||
+    value === "confidential" ||
+    value === "restricted"
+  ) {
+    return value;
+  }
+  throw new SafeError("validation_failed", 400);
 }
 
 export function parseSourceEvidenceGet(value: unknown): SourceEvidenceGetInput {
@@ -407,7 +309,7 @@ export function parseSourceEvidenceGet(value: unknown): SourceEvidenceGetInput {
   }
 }
 
-function parseProviderCursor(value: unknown): RuntimeKnowledgeProviderCursor {
+function parseProviderCursor(value: unknown): SourceWireKnowledgeProviderCursorV1 {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new SafeError("validation_failed", 400);
   }
@@ -489,7 +391,13 @@ export function createKnowledgeProviderHost(options: {
                 limit: command.limit,
                 ...(command.cursor === undefined
                   ? {}
-                  : { cursor: command.cursor })
+                  : { cursor: command.cursor }),
+                ...(command.freshness === undefined
+                  ? {}
+                  : { freshness: command.freshness }),
+                ...(command.sensitivity === undefined
+                  ? {}
+                  : { sensitivity: command.sensitivity })
               }
             : {
                 sourceId: command.sourceId,
@@ -504,11 +412,11 @@ export function createKnowledgeProviderHost(options: {
         throw new SafeError("operation_unavailable", 503, true);
       }
 
-      let providerResult: RuntimeKnowledgeProviderResult;
+      let providerResult: SourceWireKnowledgeProviderResultV1;
       try {
-        const providerRequestBase: RuntimeKnowledgeProviderRequestBase = {
-          contractId: CONTRACT_ID,
-          contractVersion: CONTRACT_VERSION,
+        const providerRequestBase: ProviderRequestBase = {
+          contractId: SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_ID,
+          contractVersion: SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
           requestId,
           traceId: context.traceId,
           providerId: binding.providerId,
@@ -517,7 +425,7 @@ export function createKnowledgeProviderHost(options: {
           providerScopeId: binding.providerScopeId,
           deadlineAt: new Date(deadlineMs).toISOString()
         };
-        const providerRequest: RuntimeKnowledgeProviderRequest =
+        const providerRequest: SourceWireKnowledgeProviderRequestV1 =
           command.operation === SEARCH_OPERATION
             ? {
                 ...providerRequestBase,
@@ -537,7 +445,13 @@ export function createKnowledgeProviderHost(options: {
                   ),
                   ...(command.cursor === undefined
                     ? {}
-                    : { cursor: { ...command.cursor } })
+                    : { cursor: { ...command.cursor } }),
+                  ...(command.freshness === undefined
+                    ? {}
+                    : { freshness: command.freshness }),
+                  ...(command.sensitivity === undefined
+                    ? {}
+                    : { sensitivity: command.sensitivity })
                 }
               }
             : {
@@ -564,10 +478,10 @@ export function createKnowledgeProviderHost(options: {
       }
       assertReadStillLive(context);
 
-      let evidence: RuntimeKnowledgeProviderEvidence[] = [];
-      let gaps: RuntimeKnowledgeProviderResult["gaps"] = [];
-      let nextCursor: RuntimeKnowledgeProviderCursor | undefined;
-      let providerError: RuntimeKnowledgeProviderSafeError | undefined;
+      let evidence: SourceWireKnowledgeEvidenceV1[] = [];
+      let gaps: SourceWireKnowledgeProviderResultV1["gaps"] = [];
+      let nextCursor: SourceWireKnowledgeProviderCursorV1 | undefined;
+      let providerError: SourceWireSafeErrorV1<SourceWireKnowledgeProviderErrorCodeV1> | undefined;
       let serializedResponse: Buffer | undefined;
       try {
         evidence = validateAndCopyProviderResult(
@@ -728,22 +642,24 @@ export function computeProviderOriginProcessVerifier(
 function freezeAndValidateBinding(binding: KnowledgeProviderBinding) {
   const profile = binding.provider.profile;
   if (
-    profile.contractId !== CONTRACT_ID ||
-    profile.contractVersion !== CONTRACT_VERSION ||
+    profile.contractId !== SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_ID ||
+    profile.contractVersion !== SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION ||
+    (profile.providerFamily !== "document_index" &&
+      profile.providerFamily !== "relational_view" &&
+      profile.providerFamily !== "custom") ||
     profile.accessMode !== "read_only" ||
     profile.credentialMode !== "out_of_band" ||
     profile.requiredProvenance !== true ||
     profile.noAutoPromotion !== true ||
     profile.arbitraryTableMappingSupported !== false ||
-    !profile.capabilities.some(
-      (entry) =>
-        entry.capability === SEARCH_OPERATION &&
-        entry.supported === true
-    ) ||
-    !profile.capabilities.some(
-      (entry) =>
-        entry.capability === GET_OPERATION &&
-        entry.supported === true
+    !Array.isArray(profile.capabilities) ||
+    !REQUIRED_PROVIDER_CAPABILITIES.every((capability) =>
+      profile.capabilities.some(
+        (entry) =>
+          entry.capability === capability &&
+          entry.requirement === "required" &&
+          entry.supported === true
+      )
     ) ||
     profile.providerScopeId !== binding.providerScopeId ||
     !Number.isInteger(profile.maximumResultCount) ||
@@ -778,19 +694,19 @@ function freezeAndValidateBinding(binding: KnowledgeProviderBinding) {
 }
 
 function validateAndCopyProviderResult(
-  result: RuntimeKnowledgeProviderResult,
+  result: SourceWireKnowledgeProviderResultV1,
   binding: ReturnType<typeof freezeAndValidateBinding>,
   context: AuthorizedEvidenceReadContext,
   requestId: string,
   command: EvidenceReadCommand
-): RuntimeKnowledgeProviderEvidence[] {
+): SourceWireKnowledgeEvidenceV1[] {
   const requestedLimit =
     command.operation === SEARCH_OPERATION ? command.limit : 1;
   if (
     result.requestId !== requestId ||
     result.traceId !== context.traceId ||
     result.providerId !== binding.providerId ||
-    result.contractVersion !== CONTRACT_VERSION ||
+    result.contractVersion !== SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION ||
     (result.status !== "allowed" &&
       result.status !== "partial_success" &&
       result.status !== "denied" &&
@@ -942,8 +858,8 @@ function isIsoDate(value: unknown): value is string {
 }
 
 function normalizeProviderGaps(
-  gaps: RuntimeKnowledgeProviderResult["gaps"]
-): RuntimeKnowledgeProviderResult["gaps"] {
+  gaps: SourceWireKnowledgeProviderResultV1["gaps"]
+): SourceWireKnowledgeProviderResultV1["gaps"] {
   if (!Array.isArray(gaps) || gaps.length > MAX_SOURCE_EVIDENCE_SEARCH_RESULTS) {
     throw new SafeError("operation_unavailable", 503, true);
   }
@@ -973,9 +889,9 @@ function normalizeProviderGaps(
 }
 
 function normalizeProviderError(
-  error: RuntimeKnowledgeProviderSafeError | undefined,
+  error: SourceWireSafeErrorV1<SourceWireKnowledgeProviderErrorCodeV1> | undefined,
   traceId: string
-): RuntimeKnowledgeProviderSafeError | undefined {
+): SourceWireSafeErrorV1<SourceWireKnowledgeProviderErrorCodeV1> | undefined {
   if (error === undefined) return undefined;
   if (!error || typeof error !== "object" || Array.isArray(error)) {
     throw new SafeError("operation_unavailable", 503, true);
@@ -999,11 +915,11 @@ function normalizeProviderError(
     (record.retryAfterMs !== undefined &&
       (!Number.isInteger(record.retryAfterMs) ||
         (record.retryAfterMs as number) < 0 ||
-        (record.retryAfterMs as number) > MAX_SAFE_RETRY_AFTER_MS))
+        (record.retryAfterMs as number) > SOURCE_WIRE_MAX_SAFE_RETRY_AFTER_MS))
   ) {
     throw new SafeError("operation_unavailable", 503, true);
   }
-  const code = record.code as RuntimeKnowledgeProviderErrorCode;
+  const code = record.code as SourceWireKnowledgeProviderErrorCodeV1;
   return {
     code,
     message: SAFE_PROVIDER_ERROR_MESSAGES[code],
@@ -1017,7 +933,7 @@ function normalizeProviderError(
 }
 
 const SAFE_PROVIDER_ERROR_MESSAGES: Record<
-  RuntimeKnowledgeProviderErrorCode,
+  SourceWireKnowledgeProviderErrorCodeV1,
   string
 > = {
   invalid_request: "The request is not valid for this contract.",
@@ -1037,10 +953,10 @@ const SAFE_PROVIDER_ERROR_MESSAGES: Record<
 };
 
 function validateProviderNextCursor(
-  cursor: RuntimeKnowledgeProviderCursor | undefined,
+  cursor: SourceWireKnowledgeProviderCursorV1 | undefined,
   binding: ReturnType<typeof freezeAndValidateBinding>,
   operation: ProviderReadOperation
-): RuntimeKnowledgeProviderCursor | undefined {
+): SourceWireKnowledgeProviderCursorV1 | undefined {
   if (cursor === undefined) return undefined;
   if (
     operation !== SEARCH_OPERATION ||
@@ -1056,10 +972,10 @@ function serializeEvidenceResponse(
   input: {
     traceId: string;
     status: "allowed" | "partial_success" | "denied" | "unavailable";
-    evidence: RuntimeKnowledgeProviderEvidence[];
-    gaps: RuntimeKnowledgeProviderResult["gaps"];
-    nextCursor?: RuntimeKnowledgeProviderCursor;
-    error?: RuntimeKnowledgeProviderSafeError;
+    evidence: SourceWireKnowledgeEvidenceV1[];
+    gaps: SourceWireKnowledgeProviderResultV1["gaps"];
+    nextCursor?: SourceWireKnowledgeProviderCursorV1;
+    error?: SourceWireSafeErrorV1<SourceWireKnowledgeProviderErrorCodeV1>;
     auditEventId: string;
   },
   onStage?: ProviderReadStageHook

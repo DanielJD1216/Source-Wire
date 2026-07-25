@@ -9,7 +9,10 @@
     "node": "22.23.1"
   },
   "scripts": {
+    "build:contracts": "npm run build --prefix ../.. --workspaces=false",
+    "prebuild": "npm run build:contracts",
     "build": "tsc -p tsconfig.json",
+    "pretypecheck": "npm run build:contracts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "npm run build && node --test dist/tests/*.test.js",
     "conformance:story1": "node dist/conformance/story1.js",
@@ -23,6 +26,7 @@
     "start": "node dist/src/server.js"
   },
   "dependencies": {
+    "@source-wire/contracts": "file:../..",
     "@hono/node-server": "2.0.11",
     "@modelcontextprotocol/sdk": "1.29.0",
     "drizzle-orm": "0.45.2",

@@ -14,6 +14,15 @@ Install dependencies first:
 npm install
 ```
 
+For the focused, no-publish `0.2.0` contract and external-adapter gate:
+
+```bash
+npm run release:0.2.0-gate
+```
+
+This focused command does not publish, tag, release, deploy, connect a live
+provider, or use real data.
+
 Then run:
 
 ```bash

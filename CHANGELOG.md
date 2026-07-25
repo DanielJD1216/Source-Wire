@@ -4,6 +4,21 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Contracts 0.2.0 focused release gate
+
+Summary:
+
+- Added `npm run release:0.2.0-gate` as the focused no-publish check for release metadata, blocked commands, packed content, installed consumers and examples, documentation integrity, public safety, and claim boundaries.
+- Extended the packed-candidate smoke so a clean external consumer implements and executes a complete read-only `SourceWireKnowledgeProviderV1` adapter using only package-root imports.
+- Updated human and agent documentation to distinguish external-adapter compatibility from a live connector, hosted runtime, provider credentials, production readiness, or real-data support.
+- Kept npm publication, Git tags, GitHub releases, deployment, hosted services, live providers, real data, and automatic trusted-memory promotion blocked.
+
+Validation:
+
+- `npm run release:0.2.0-gate`
+- `npm run publish:readiness`
+- `git diff --check`
+
 ### 2026-07-24 - Provider composition security closure
 
 Summary:

@@ -38,7 +38,9 @@ try {
     "real data remains blocked",
     "automatic trusted-memory promotion remains forbidden",
     "No npm package was published",
-    "No GitHub release or Git tag was created"
+    "No GitHub release or Git tag was created",
+    "clean external consumer",
+    "does not prove a live connector"
   ]) {
     assertIncludes(releaseNotes, requiredPhrase, "release-candidate notes");
   }
@@ -113,6 +115,7 @@ try {
     join(srcRoot, "consumer.ts"),
     `import {
   SOURCE_WIRE_KNOWLEDGE_PROVIDER_BOUNDARY,
+  SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_ID,
   SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
   SOURCE_WIRE_PACKAGE_VERSION
 } from "@source-wire/contracts";
@@ -146,6 +149,79 @@ const publicTypeSurface: [
 ] = [];
 void publicTypeSurface;
 
+const externalAdapter: SourceWireKnowledgeProviderV1 = {
+  profile: {
+    contractId: SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_ID,
+    contractVersion: SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
+    providerId: "external_release_gate_provider",
+    providerScopeId: "scope_release_gate",
+    providerFamily: "custom",
+    accessMode: "read_only",
+    credentialMode: "out_of_band",
+    capabilities: [
+      "describe",
+      "health",
+      "search_evidence",
+      "get_evidence"
+    ].map((capability) => ({
+      capability: capability as SourceWireKnowledgeProviderProfileV1["capabilities"][number]["capability"],
+      requirement: "required",
+      supported: true
+    })),
+    requiredProvenance: true,
+    noAutoPromotion: true,
+    arbitraryTableMappingSupported: false,
+    maximumResultCount: 20,
+    maximumExcerptBytes: 65_536
+  },
+  async execute(request) {
+    return {
+      requestId: request.requestId,
+      traceId: request.traceId,
+      providerId: request.providerId,
+      contractVersion: SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
+      status: "allowed",
+      evidence: [],
+      gaps: [
+        {
+          code: "no_evidence",
+          message: "Synthetic release-gate adapter returned no evidence.",
+          retryable: false
+        }
+      ],
+      providerMutationAttempted: false,
+      memoryMutationAttempted: false,
+      trustedMemoryCreated: false,
+      noAutoPromotion: true,
+      readAuditRequired: true,
+      releaseState: "internal_unreleased"
+    };
+  }
+};
+
+const adapterResult = await externalAdapter.execute({
+  contractId: SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_ID,
+  contractVersion: SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION,
+  requestId: "request_release_gate",
+  traceId: "trace_release_gate",
+  providerId: externalAdapter.profile.providerId,
+  ownerId: "owner_release_gate",
+  namespaceId: "namespace_release_gate",
+  providerScopeId: externalAdapter.profile.providerScopeId,
+  operation: "search_evidence",
+  requiredCapabilities: [
+    {
+      capability: "search_evidence",
+      requirement: "required"
+    }
+  ],
+  deadlineAt: new Date(Date.now() + 1_000).toISOString(),
+  search: {
+    query: "synthetic release gate",
+    maximumResults: 1
+  }
+});
+
 if (SOURCE_WIRE_PACKAGE_VERSION !== "${CANDIDATE_VERSION}") {
   throw new Error("unexpected candidate version");
 }
@@ -155,7 +231,12 @@ if (SOURCE_WIRE_KNOWLEDGE_PROVIDER_CONTRACT_VERSION !== "knowledge-provider.v1")
 if (SOURCE_WIRE_KNOWLEDGE_PROVIDER_BOUNDARY.liveConnectorIncluded !== false) {
   throw new Error("live connector boundary changed");
 }
-console.log(JSON.stringify({ ok: true, version: SOURCE_WIRE_PACKAGE_VERSION }));
+console.log(JSON.stringify({
+  ok: true,
+  version: SOURCE_WIRE_PACKAGE_VERSION,
+  adapterContractVersion: externalAdapter.profile.contractVersion,
+  adapterStatus: adapterResult.status
+}));
 `
   );
 
@@ -198,10 +279,17 @@ console.log(JSON.stringify({ ok: true, version: SOURCE_WIRE_PACKAGE_VERSION }));
   const runtimeResult = await runChecked(process.execPath, ["dist/consumer.js"], consumerRoot);
   const parsedRuntime = JSON.parse(runtimeResult.stdout);
   assertEqual(parsedRuntime.version, CANDIDATE_VERSION, "clean consumer runtime version");
+  assertEqual(
+    parsedRuntime.adapterContractVersion,
+    "knowledge-provider.v1",
+    "clean consumer adapter contract version"
+  );
+  assertEqual(parsedRuntime.adapterStatus, "allowed", "clean consumer adapter result");
 
   console.log("ok Story 5 contracts 0.2.0 release candidate");
   console.log("ok candidate package metadata and exported version aligned");
   console.log("ok KnowledgeProvider v1 complete public type surface");
+  console.log("ok clean consumer external adapter implementation");
   console.log("ok packed artifact excludes unpublished Alpha runtime state");
   console.log("ok clean installed consumer typecheck and runtime import");
   console.log("ok additive compatibility and blocked release notes");

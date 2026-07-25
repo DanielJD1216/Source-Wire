@@ -134,6 +134,7 @@ const requiredScripts = [
   "release:artifact-manifest",
   "release:snapshot-boundary",
   "story5:release-candidate-smoke",
+  "release:0.2.0-gate",
   "release-command-guard:smoke",
   "release:gate",
   "package:dry-run",
@@ -360,6 +361,7 @@ printList([
 
 printSection("Installed Package Smokes");
 printList([
+  "release:0.2.0-gate verifies the packed 0.2.0 candidate, a clean external provider adapter, release metadata, blocked commands, required package content, installed consumers and examples, docs integrity, public safety, and claim boundaries without publishing",
   "reviewer:smoke validates the documented first reviewer path from a temporary clean checkout-style copy",
   "consumer:smoke validates package-root imports and installed CLI fixture validation",
   "package:content-smoke validates installed required paths, README/docs/examples links and anchors, installed runtime readiness summary presence, and installed readiness summary content assertions",

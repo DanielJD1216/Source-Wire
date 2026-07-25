@@ -49,7 +49,7 @@ printRows([
 
 printSection("Next Action");
 printList([
-  "Use npm run story5:release-candidate-smoke to verify the packed local candidate.",
+  "Use npm run release:0.2.0-gate to verify the packed local candidate and clean external provider-adapter surface.",
   "Use npm run registry:live-npm and npm run release:live-tags only to verify the immutable 0.1.0 publication.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them.",
   "Do not publish a new npm version, create a new GitHub release, create a new tag, deploy services, or accept code contributions from this check."

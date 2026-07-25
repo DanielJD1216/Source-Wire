@@ -40,6 +40,7 @@ Use Node.js 22 with npm.
 npm install
 npm run readiness:report
 npm test
+npm run release:0.2.0-gate
 ```
 
 Run the narrowest relevant smoke first:

@@ -565,6 +565,27 @@ test("MCP startup fails before dependencies for ambiguous provider scope and mis
   }
 });
 
+test("local crash injection is unavailable outside locked Story 6 conformance", async () => {
+  const directory = await privateTemporaryDirectory();
+  try {
+    const configPath = join(directory, "memory-only.json");
+    await writeConfig(configPath, createLocalConfigTemplate());
+    await assert.rejects(
+      runLocalMcpStdio(
+        ["--config", configPath],
+        {
+          SOURCE_WIRE_STORY6_LOCAL_FAULT: "api_after_credential"
+        }
+      ),
+      (error: unknown) =>
+        error instanceof SourceWireLocalCliError &&
+        error.code === "environment_invalid"
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
 function plainConfig(): Record<string, unknown> {
   return JSON.parse(
     JSON.stringify(createLocalConfigTemplate())

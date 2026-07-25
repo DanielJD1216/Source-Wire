@@ -70,6 +70,12 @@ Offline checking imports nothing, explicit connected checking invokes only
 bounded readiness, and successful startup advertises exactly four tools.
 Provider selection and authority never enter MCP or API caller input, and
 replacement requires configuration plus restart.
+Story 6.4 closes the local failure boundary across invalid configuration,
+incompatible migrations, malformed provider binding, dependency outage, child
+crash, response interruption, and shutdown races. A failed API cannot strand
+the generated MCP credential: the runner revokes that exact credential through
+its existing runtime database authority, records metadata-only audit, then
+closes dependent sessions and children.
 
 The Alpha workspace does not prove hosting, deployment, production availability, production backup guarantees, live-provider support, public network exposure, non-disposable database use, or real-data safety.
 

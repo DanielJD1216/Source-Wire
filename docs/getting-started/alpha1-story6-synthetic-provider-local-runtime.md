@@ -165,5 +165,5 @@ The Story 5 conformance report includes:
 - production authentication, secret custody, and support,
 - publication of the Alpha runtime.
 
-The next dependency-ordered unit is
-[#281 Story 6.4: Fail closed across local orchestration and cleanup](https://github.com/DanielJD1216/Source-Wire/issues/281).
+Continue with
+[Story 6.4 Fail-Closed Orchestration And Cleanup](alpha1-story6-fail-closed-orchestration.md).

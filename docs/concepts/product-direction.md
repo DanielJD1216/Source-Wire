@@ -27,14 +27,14 @@ The knowledge base remains optional and replaceable. Source-Wire owns the logica
 | License | Apache-2.0 |
 | Contracts, schemas, synthetic fixtures, validation | Available |
 | Local developer Alpha | Stories 1 through 5 in latest source, unpublished and loopback-only |
-| Private local CLI | Story 6.1 offline configuration, Story 6.2 memory-only two-tool composition, and Story 6.3 immutable synthetic-provider four-tool composition |
+| Private local CLI | Story 6.1 offline configuration, Story 6.2 memory-only two-tool composition, Story 6.3 immutable synthetic-provider four-tool composition, and Story 6.4 fail-closed orchestration and cleanup |
 | PostgreSQL proof | Generated disposable state only |
 | Hosted or production runtime | Not available |
 | Live knowledge connectors | Not available |
 | Real user data support | Not approved |
 | Automatic trusted-memory promotion | Forbidden |
 
-The local Alpha proves that the core lifecycle can operate across real processes and disposable PostgreSQL. Story 6.2 proves the memory-only path can be composed behind one private local command without giving the MCP child owner or database authority. Story 6.3 proves the same command can bind one immutable repository synthetic provider while keeping provider selection and authority outside caller input. It does not prove an external or live provider and does not convert the repository into a hosted, deployed, or production-ready product.
+The local Alpha proves that the core lifecycle can operate across real processes and disposable PostgreSQL. Story 6.2 proves the memory-only path can be composed behind one private local command without giving the MCP child owner or database authority. Story 6.3 proves the same command can bind one immutable repository synthetic provider while keeping provider selection and authority outside caller input. Story 6.4 proves invalid startup, dependency outage, child crash, credential invalidation, protocol separation, and cleanup fail closed in both synthetic provider paths. It does not prove an external or live provider and does not convert the repository into a hosted, deployed, or production-ready product.
 
 ## Product Principles
 

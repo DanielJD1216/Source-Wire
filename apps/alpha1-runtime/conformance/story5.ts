@@ -292,6 +292,7 @@ async function runConformance(): Promise<void> {
   await crashMatrixProbes();
   await leakResistanceProbe();
   await localCliProviderCompositionProbe();
+  await localCliFailureBoundaryProbe();
 }
 
 async function localCliProviderCompositionProbe(): Promise<void> {
@@ -533,6 +534,263 @@ async function localCliProviderCompositionProbe(): Promise<void> {
     "S6-PROVIDER-03",
     "provider reads created zero governed memory, provider details stayed out of MCP diagnostics and audit metadata, and coordinated shutdown revoked the process credential"
   );
+}
+
+async function localCliFailureBoundaryProbe(): Promise<void> {
+  assert(targetAdminPool);
+  const module =
+    PROVIDER_ADAPTER === "replaceable"
+      ? "@source-wire/alpha1-runtime/replaceable-synthetic-provider"
+      : "@source-wire/alpha1-runtime/synthetic-provider";
+  const exportName =
+    PROVIDER_ADAPTER === "replaceable"
+      ? "createReplaceableSyntheticProvider"
+      : "createSyntheticKnowledgeProvider";
+  const configPath = resolve(
+    tempDirectory,
+    `source-wire-story6-failure-${PROVIDER_ADAPTER}.json`
+  );
+  const mismatchedConfigPath = resolve(
+    tempDirectory,
+    `source-wire-story6-mismatch-${PROVIDER_ADAPTER}.json`
+  );
+  const config = {
+    ...createLocalConfigTemplate({
+      ownerId: OWNER_ID,
+      namespaceIds: [NAMESPACE_ID]
+    }),
+    knowledgeProvider: {
+      module,
+      exportName,
+      providerScopeId: PROVIDER_SCOPE_ID,
+      timeoutMs: 1_000
+    }
+  };
+  await writeFile(
+    configPath,
+    `${JSON.stringify(config, null, 2)}\n`,
+    { mode: 0o600 }
+  );
+  await chmod(configPath, 0o600);
+  await writeFile(
+    mismatchedConfigPath,
+    `${JSON.stringify(
+      {
+        ...config,
+        knowledgeProvider: {
+          ...config.knowledgeProvider,
+          providerScopeId: "scope_story6_mismatch"
+        }
+      },
+      null,
+      2
+    )}\n`,
+    { mode: 0o600 }
+  );
+  await chmod(mismatchedConfigPath, 0o600);
+
+  const runtimeEnvironment = {
+    SOURCE_WIRE_DATABASE_URL: runtimeUrl,
+    SOURCE_WIRE_TOKEN_VERIFIER_KEY: verifierKey,
+    SOURCE_WIRE_TOKEN_VERIFIER_KEY_ID: "local_alpha1_story5",
+    SOURCE_WIRE_OWNER_TOKEN: ownerToken
+  };
+  const unavailableDatabaseUrl =
+    "postgresql://unavailable:unavailable@127.0.0.1:1/unavailable";
+  sensitiveValues.add(unavailableDatabaseUrl);
+
+  try {
+    const unavailable = await runProcess(
+      localCliEntry,
+      ["mcp", "stdio", "--config", configPath],
+      {
+        ...runtimeEnvironment,
+        SOURCE_WIRE_DATABASE_URL: unavailableDatabaseUrl
+      }
+    );
+    assert.equal(unavailable.code, 1);
+    assert.equal(unavailable.stdout, "");
+    assert.match(unavailable.stderr, /database_unavailable/u);
+    assertSafeLocalFailure(
+      unavailable,
+      [configPath, mismatchedConfigPath]
+    );
+
+    const latestMigration = await targetAdminPool.query<{
+      checksum_sha256: string;
+    }>(
+      `SELECT checksum_sha256
+         FROM source_wire_memory.schema_migrations
+        WHERE version = $1`,
+      [ALPHA1_SCHEMA_VERSION]
+    );
+    const expectedChecksum = latestMigration.rows[0]?.checksum_sha256;
+    assert(expectedChecksum);
+    const incompatibleChecksum = "0".repeat(64);
+    await targetAdminPool.query(
+      `UPDATE source_wire_memory.schema_migrations
+          SET checksum_sha256 = $1
+        WHERE version = $2`,
+      [incompatibleChecksum, ALPHA1_SCHEMA_VERSION]
+    );
+    try {
+      const incompatible = await runProcess(
+        localCliEntry,
+        ["mcp", "stdio", "--config", configPath],
+        runtimeEnvironment
+      );
+      assert.equal(incompatible.code, 1);
+      assert.equal(incompatible.stdout, "");
+      assert.match(incompatible.stderr, /database_incompatible/u);
+      assertSafeLocalFailure(
+        incompatible,
+        [configPath, mismatchedConfigPath]
+      );
+      const afterFailure = await targetAdminPool.query<{
+        checksum_sha256: string;
+      }>(
+        `SELECT checksum_sha256
+           FROM source_wire_memory.schema_migrations
+          WHERE version = $1`,
+        [ALPHA1_SCHEMA_VERSION]
+      );
+      assert.equal(
+        afterFailure.rows[0]?.checksum_sha256,
+        incompatibleChecksum
+      );
+    } finally {
+      await targetAdminPool.query(
+        `UPDATE source_wire_memory.schema_migrations
+            SET checksum_sha256 = $1
+          WHERE version = $2`,
+        [expectedChecksum, ALPHA1_SCHEMA_VERSION]
+      );
+    }
+    pass(
+      "S6-FAIL-01",
+      "database outage and incompatible migration state failed before startup with one redacted result, empty protocol stdout, and zero automatic migration mutation"
+    );
+
+    const credentialsBeforeMismatch = await harnessCredentialRows();
+    const mismatch = await runProcess(
+      localCliEntry,
+      ["mcp", "stdio", "--config", mismatchedConfigPath],
+      runtimeEnvironment
+    );
+    assert.equal(mismatch.code, 1);
+    assert.equal(mismatch.stdout, "");
+    assert.match(mismatch.stderr, /api_start_failed/u);
+    assertSafeLocalFailure(mismatch, [configPath, mismatchedConfigPath]);
+    assert.deepEqual(
+      await harnessCredentialRows(),
+      credentialsBeforeMismatch
+    );
+
+    const sessionsBefore = await runtimeSessionCount();
+    for (const fault of [
+      "api_after_credential",
+      "mcp_after_start"
+    ] as const) {
+      const credentialsBefore = new Set(
+        (await harnessCredentialRows()).map((row) => row.credential_id)
+      );
+      const result = await runProcess(
+        localCliEntry,
+        ["mcp", "stdio", "--config", configPath],
+        {
+          ...runtimeEnvironment,
+          SOURCE_WIRE_CONFORMANCE_MODE: "story6",
+          SOURCE_WIRE_STORY6_LOCAL_FAULT: fault
+        }
+      );
+      assert.equal(result.code, 1);
+      assert.equal(result.stdout, "");
+      assert.match(
+        result.stderr,
+        fault === "api_after_credential"
+          ? /composition_failed/u
+          : /mcp_start_failed/u
+      );
+      assertSafeLocalFailure(result, [configPath, mismatchedConfigPath]);
+      const createdRows = (await harnessCredentialRows()).filter(
+        (row) => !credentialsBefore.has(row.credential_id)
+      );
+      assert.equal(createdRows.length, 1, fault);
+      assert.equal(createdRows[0]?.status, "revoked", fault);
+      await waitFor(
+        async () => (await runtimeSessionCount()) === sessionsBefore,
+        5_000
+      );
+    }
+    pass(
+      "S6-FAIL-02",
+      "malformed provider composition invoked no provider and API or MCP child crashes stopped the complete local composition with stable safe errors"
+    );
+    pass(
+      "S6-FAIL-03",
+      "crash cleanup revoked each process credential, removed dependent database sessions, emitted no malformed stdout, and leaked no protected content or local secrets"
+    );
+  } finally {
+    await rm(configPath, { force: true });
+    await rm(mismatchedConfigPath, { force: true });
+  }
+}
+
+async function harnessCredentialRows(): Promise<Array<{
+  credential_id: string;
+  status: string;
+}>> {
+  assert(targetAdminPool);
+  const result = await targetAdminPool.query<{
+    credential_id: string;
+    status: string;
+  }>(
+    `SELECT credential_id::text, status
+       FROM source_wire_memory.credentials
+      WHERE credential_class = 'harness'
+      ORDER BY credential_id`
+  );
+  return result.rows;
+}
+
+async function runtimeSessionCount(): Promise<number> {
+  assert(targetAdminPool);
+  const result = await targetAdminPool.query<{ count: string }>(
+    `SELECT count(*)::text AS count
+       FROM pg_stat_activity
+      WHERE datname = $1
+        AND usename = $2
+        AND application_name = 'source_wire_alpha1_runtime'`,
+    [databaseName, roleNames.runtime]
+  );
+  return Number(result.rows[0]?.count ?? "-1");
+}
+
+function assertSafeLocalFailure(
+  result: ProcessResult,
+  localPaths: readonly string[]
+): void {
+  const output = `${result.stdout}${result.stderr}`;
+  errorOutputs.push(output);
+  for (const sensitive of sensitiveValues) {
+    assert.equal(output.includes(sensitive), false);
+  }
+  for (const localPath of localPaths) {
+    assert.equal(output.includes(localPath), false);
+  }
+  for (const forbidden of [
+    PROTECTED_QUERY,
+    PROTECTED_EXCERPT,
+    PROTECTED_LOCATOR,
+    moduleSafeMarker()
+  ]) {
+    assert.equal(output.includes(forbidden), false);
+  }
+  assert.equal(/postgres(?:ql)?:\/\//iu.test(output), false);
+}
+
+function moduleSafeMarker(): string {
+  return "@source-wire/alpha1-runtime/";
 }
 
 async function provisionDisposableTarget(): Promise<void> {

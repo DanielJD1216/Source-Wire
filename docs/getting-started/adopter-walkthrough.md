@@ -6,9 +6,10 @@ Source-Wire repository.
 The published `@source-wire/contracts@0.2.0` package defines contract shapes,
 schemas, fixtures, examples, validation tools, and package-readiness checks.
 Latest source separately contains an unpublished loopback-only Alpha workspace.
-Stories 6.1 through 6.3 add private config checks, a memory-only two-tool local
-runner, and one immutable repository synthetic provider behind a four-tool
-stdio MCP surface.
+Stories 6.1 through 6.4 add private config checks, a memory-only two-tool local
+runner, one immutable repository synthetic provider behind a four-tool stdio
+MCP surface, and fail-closed startup, crash, credential, protocol, and cleanup
+behavior.
 
 The Alpha path uses generated disposable PostgreSQL state. It is not a hosted
 service, production runtime, live knowledge connector, real-data path,
@@ -46,7 +47,7 @@ Package: @source-wire/contracts
 Version: 0.2.0
 License: Apache-2.0
 Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
-Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, and Story 6.3 composes one repository synthetic provider into the four-tool path behind the same local command; it contains no deployment, hosting, external or live provider, production support, production backup guarantee, or real data
+Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, Story 6.3 composes one repository synthetic provider into the four-tool path, and Story 6.4 hardens fail-closed orchestration and cleanup behind the same local command; it contains no deployment, hosting, external or live provider, production support, production backup guarantee, or real data
 ok readiness report
 ```
 
@@ -56,7 +57,7 @@ What this proves:
 - The current version and license boundary are explicit.
 - The published package still contains contracts and synthetic proofs only.
 - Latest source separately contains the unpublished, loopback-only Stories 1
-  through 5 developer Alpha plus private Story 6.1 through 6.3 local CLI
+  through 5 developer Alpha plus private Story 6.1 through 6.4 local CLI
   slices.
 - The report can summarize package exports, schemas, commands, installed smokes, required readiness docs, and blocked scope without running the full readiness gate.
 
@@ -149,11 +150,16 @@ Start with the repository [Quickstart](quickstart.md), then follow:
 1. [Story 6.1 Local CLI Init And Offline Doctor](alpha1-story6-local-cli-init-doctor.md)
 2. [Story 6.2 Memory-Only Local Runtime](alpha1-story6-memory-only-local-runtime.md)
 3. [Story 6.3 Synthetic Provider Local Runtime](alpha1-story6-synthetic-provider-local-runtime.md)
+4. [Story 6.4 Fail-Closed Orchestration And Cleanup](alpha1-story6-fail-closed-orchestration.md)
 
 Story 6.3 proves one repository synthetic provider through offline and explicit
 connected checking, immutable startup composition, exactly four stdio MCP
 tools, loopback API policy, durable protected-read audit, zero memory promotion,
 and coordinated credential cleanup.
+
+Story 6.4 proves stable redacted failures, protocol separation, coordinated
+child shutdown, process-credential invalidation, and disposable cleanup across
+database, migration, provider, API, MCP, audit, receipt, and response faults.
 
 It does not prove that an external knowledge base is connected. That
 cross-repository synthetic compatibility proof remains a later dependency-

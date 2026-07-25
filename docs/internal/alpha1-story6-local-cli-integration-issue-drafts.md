@@ -239,8 +239,8 @@ receipt.
 - [x] Provider reads create zero candidates and zero trusted memories.
 - [x] Replacing the provider requires owner-controlled configuration plus process restart; no registry or hot reload exists.
 
-**Latest-source implementation status:** Complete. Verified by 142 focused
-Alpha tests and both 24-case disposable PostgreSQL Story 5 adapter paths. The
+**Latest-source implementation status:** Complete. Verified by 143 focused
+Alpha tests and both 27-case disposable PostgreSQL Story 5 adapter paths. The
 provider is repository synthetic proof only. External or live providers,
 publication, deployment, production use, and real data remain blocked.
 
@@ -266,16 +266,23 @@ source-evidence audit-before-release guarantees.
 
 ### Acceptance criteria
 
-- [ ] Missing or malformed configuration, secret references, and package versions fail before process startup.
-- [ ] Non-loopback API binding and non-stdio MCP transports are rejected.
-- [ ] Incompatible migrations fail startup without automatic mutation.
-- [ ] Malformed provider profiles and binding mismatches invoke no provider and release no evidence.
-- [ ] Provider, API, MCP, and database outages stop the local composition with stable safe errors.
-- [ ] Audit failure, receipt mismatch, replay, foreign-process consumption, and response-write interruption release zero protected content.
-- [ ] stdout never contains diagnostics or malformed MCP protocol frames.
-- [ ] stderr, JSON diagnostics, logs, and reports contain no credentials, endpoints, private queries, evidence bodies, or hidden result counts.
-- [ ] Crash and interruption tests prove deterministic child, credential, database, and temporary-file cleanup.
-- [ ] Existing Alpha Stories 1 through 5 remain green.
+- [x] Missing or malformed configuration, secret references, and package versions fail before process startup.
+- [x] Non-loopback API binding and non-stdio MCP transports are rejected.
+- [x] Incompatible migrations fail startup without automatic mutation.
+- [x] Malformed provider profiles and binding mismatches invoke no provider and release no evidence.
+- [x] Provider, API, MCP, and database outages stop the local composition with stable safe errors.
+- [x] Audit failure, receipt mismatch, replay, foreign-process consumption, and response-write interruption release zero protected content.
+- [x] stdout never contains diagnostics or malformed MCP protocol frames.
+- [x] stderr, JSON diagnostics, logs, and reports contain no credentials, endpoints, private queries, evidence bodies, or hidden result counts.
+- [x] Crash and interruption tests prove deterministic child, credential, database, and temporary-file cleanup.
+- [x] Existing Alpha Stories 1 through 5 remain green.
+
+**Latest-source implementation status:** Complete. Verified by 143 focused
+Alpha tests and both 27-case disposable PostgreSQL Story 5 adapter paths.
+Story 6 crash injection is locked to conformance. API-crash cleanup revokes
+only the exact generated harness credential and records metadata-only audit.
+External or live providers, publication, deployment, production use,
+non-disposable databases, and real data remain blocked.
 
 ## Issue 5: Add The Explicit Database Control Plane
 

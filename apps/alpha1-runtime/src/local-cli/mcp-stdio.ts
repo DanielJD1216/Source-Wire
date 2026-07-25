@@ -13,6 +13,7 @@ import {
   parseVerifierKey,
   STORY1_API_SCHEMA
 } from "../config.js";
+import { assertCredentialIdentifier } from "../credentials.js";
 import { createRuntimeDatabase } from "../database.js";
 import { inspectSchemaCompatibility } from "../migration.js";
 import { readAndValidateLocalConfig } from "./config.js";
@@ -25,6 +26,10 @@ const MAX_ADMIN_RESPONSE_BYTES = 16 * 1_024;
 const OWNER_TOKEN_ENV = "SOURCE_WIRE_OWNER_TOKEN";
 const API_ENTRY = fileURLToPath(new URL("../server.js", import.meta.url));
 const MCP_ENTRY = fileURLToPath(new URL("../mcp/server.js", import.meta.url));
+const STORY6_CONFORMANCE_FAULTS = new Set([
+  "api_after_credential",
+  "mcp_after_start"
+] as const);
 
 type IssuedProcessCredential = Readonly<{
   credentialId: string;
@@ -35,6 +40,10 @@ type ChildOutcome = Readonly<{
   source: "api" | "mcp";
   code: number;
 }>;
+
+type Story6ConformanceFault =
+  | "api_after_credential"
+  | "mcp_after_start";
 
 export async function runLocalMcpStdio(
   args: readonly string[],
@@ -50,6 +59,7 @@ export async function runLocalMcpStdio(
     throw new SourceWireLocalCliError("provider_namespace_invalid");
   }
   const providerEnabled = config.knowledgeProvider !== undefined;
+  const conformanceFault = parseStory6ConformanceFault(environment);
 
   const runtimeDatabaseUrl = requireReferencedEnvironment(
     config.memory.runtimeDatabaseUrlEnv,
@@ -87,11 +97,13 @@ export async function runLocalMcpStdio(
   const interrupt = () => {
     interrupted = true;
     mcp?.kill("SIGTERM");
+    api?.kill("SIGTERM");
   };
   process.once("SIGINT", interrupt);
   process.once("SIGTERM", interrupt);
 
   try {
+    throwIfInterrupted(interrupted);
     api = startApi({
       runtimeDatabaseUrl,
       verifierKey,
@@ -109,6 +121,7 @@ export async function runLocalMcpStdio(
         : {})
     });
     await waitForApi(baseUrl, port, api);
+    throwIfInterrupted(interrupted);
     safeDiagnostic("api_ready");
 
     credential = await issueProcessCredential({
@@ -117,14 +130,21 @@ export async function runLocalMcpStdio(
       namespaceIds: config.namespaces,
       sourceEvidenceRead: providerEnabled
     });
+    throwIfInterrupted(interrupted);
     safeDiagnostic("process_credential_issued");
 
+    if (conformanceFault === "api_after_credential") {
+      api.kill("SIGKILL");
+    }
     mcp = startMcp({
       baseUrl,
       token: credential.secret,
       providerEnabled
     });
     safeDiagnostic("mcp_stdio_ready");
+    if (conformanceFault === "mcp_after_start") {
+      mcp.kill("SIGKILL");
+    }
 
     const outcome = await waitForComposition(api, mcp);
     if (outcome.source === "api") {
@@ -139,11 +159,13 @@ export async function runLocalMcpStdio(
     process.removeListener("SIGINT", interrupt);
     process.removeListener("SIGTERM", interrupt);
     await stopChild(mcp);
-    if (credential && api?.exitCode === null) {
-      await revokeProcessCredential({
+    if (credential) {
+      await revokeProcessCredentialForCleanup({
         baseUrl,
         ownerToken,
-        credentialId: credential.credentialId
+        runtimeDatabaseUrl,
+        credentialId: credential.credentialId,
+        apiAvailable: childIsRunning(api)
       }).catch(() => {
         cleanupError = new SourceWireLocalCliError(
           "credential_revoke_failed"
@@ -380,10 +402,40 @@ async function issueProcessCredential(input: {
   ) {
     throw new SourceWireLocalCliError("credential_issue_failed");
   }
+  try {
+    assertCredentialIdentifier(data.credentialId);
+  } catch {
+    throw new SourceWireLocalCliError("credential_issue_failed");
+  }
   return {
     credentialId: data.credentialId,
     secret: data.secret
   };
+}
+
+async function revokeProcessCredentialForCleanup(input: {
+  baseUrl: string;
+  ownerToken: string;
+  runtimeDatabaseUrl: string;
+  credentialId: string;
+  apiAvailable: boolean;
+}): Promise<void> {
+  if (input.apiAvailable) {
+    try {
+      await revokeProcessCredential({
+        baseUrl: input.baseUrl,
+        ownerToken: input.ownerToken,
+        credentialId: input.credentialId
+      });
+      return;
+    } catch {
+      // The API may fail between the liveness check and this request.
+    }
+  }
+  await revokeProcessCredentialDirectly(
+    input.runtimeDatabaseUrl,
+    input.credentialId
+  );
 }
 
 async function revokeProcessCredential(input: {
@@ -402,6 +454,73 @@ async function revokeProcessCredential(input: {
   );
   if (response.status !== 200) {
     throw new SourceWireLocalCliError("credential_revoke_failed");
+  }
+}
+
+async function revokeProcessCredentialDirectly(
+  databaseUrl: string,
+  credentialId: string
+): Promise<void> {
+  const database = createRuntimeDatabase(databaseUrl);
+  const client = await database.pool.connect().catch(() => {
+    throw new SourceWireLocalCliError("credential_revoke_failed");
+  });
+  try {
+    await client.query("BEGIN");
+    const update = await client.query<{ owner_id: string }>(
+      `UPDATE source_wire_memory.credentials
+          SET status = 'revoked', updated_at = clock_timestamp()
+        WHERE credential_id = $1
+          AND credential_class = 'harness'
+          AND status = 'active'
+      RETURNING owner_id`,
+      [credentialId]
+    );
+    if (update.rowCount === 0) {
+      const current = await client.query<{ status: string }>(
+        `SELECT status
+           FROM source_wire_memory.credentials
+          WHERE credential_id = $1
+            AND credential_class = 'harness'`,
+        [credentialId]
+      );
+      if (current.rowCount !== 1 || current.rows[0]?.status !== "revoked") {
+        throw new SourceWireLocalCliError("credential_revoke_failed");
+      }
+      await client.query("COMMIT");
+      return;
+    }
+    await client.query(
+      `INSERT INTO source_wire_memory.audit_events (
+         event_id,
+         trace_id,
+         operation,
+         result,
+         actor_reference,
+         owner_id,
+         metadata
+       ) VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb)`,
+      [
+        randomUUID(),
+        randomUUID(),
+        "revoke_process_credential",
+        "allowed",
+        "local_runner",
+        update.rows[0]?.owner_id,
+        JSON.stringify({
+          credentialScope: "local_process",
+          detailsRedacted: true
+        })
+      ]
+    );
+    await client.query("COMMIT");
+  } catch (error) {
+    await client.query("ROLLBACK").catch(() => undefined);
+    if (error instanceof SourceWireLocalCliError) throw error;
+    throw new SourceWireLocalCliError("credential_revoke_failed");
+  } finally {
+    client.release();
+    await database.pool.end().catch(() => undefined);
   }
 }
 
@@ -453,7 +572,9 @@ async function waitForComposition(
 }
 
 async function waitForExit(child: ChildProcess): Promise<number> {
-  if (child.exitCode !== null) return child.exitCode;
+  if (child.exitCode !== null || child.signalCode !== null) {
+    return child.exitCode ?? 1;
+  }
   return new Promise<number>((resolve, reject) => {
     child.once("error", reject);
     child.once("exit", (code) => resolve(code ?? 1));
@@ -461,16 +582,27 @@ async function waitForExit(child: ChildProcess): Promise<number> {
 }
 
 async function stopChild(child: ChildProcess | undefined): Promise<void> {
-  if (!child || child.exitCode !== null) return;
+  if (!child || !childIsRunning(child)) return;
   child.kill("SIGTERM");
   const stopped = await Promise.race([
-    waitForExit(child).then(() => true),
+    waitForExit(child).then(
+      () => true,
+      () => false
+    ),
     delay(CHILD_STOP_TIMEOUT_MS).then(() => false)
   ]);
-  if (!stopped && child.exitCode === null) {
+  if (!stopped && childIsRunning(child)) {
     child.kill("SIGKILL");
     await waitForExit(child).catch(() => undefined);
   }
+}
+
+function childIsRunning(child: ChildProcess | undefined): boolean {
+  return Boolean(
+    child &&
+      child.exitCode === null &&
+      child.signalCode === null
+  );
 }
 
 async function findAvailablePort(
@@ -508,6 +640,26 @@ function requireReferencedEnvironment(
     throw new SourceWireLocalCliError("environment_missing");
   }
   return value;
+}
+
+function parseStory6ConformanceFault(
+  environment: NodeJS.ProcessEnv
+): Story6ConformanceFault | undefined {
+  const value = environment.SOURCE_WIRE_STORY6_LOCAL_FAULT;
+  if (value === undefined) return undefined;
+  if (
+    environment.SOURCE_WIRE_CONFORMANCE_MODE !== "story6" ||
+    !STORY6_CONFORMANCE_FAULTS.has(value as Story6ConformanceFault)
+  ) {
+    throw new SourceWireLocalCliError("environment_invalid");
+  }
+  return value as Story6ConformanceFault;
+}
+
+function throwIfInterrupted(interrupted: boolean): void {
+  if (interrupted) {
+    throw new SourceWireLocalCliError("composition_failed");
+  }
 }
 
 function requireRecord(value: unknown): Record<string, unknown> {

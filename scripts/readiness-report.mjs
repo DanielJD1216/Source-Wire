@@ -334,7 +334,7 @@ printRows([
   ["License", packageJson.license],
   ["Publish boundary", "npm package public at @source-wire/contracts@0.2.0, hosted runtime blocked"],
   ["Published runtime boundary", "the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime"],
-  ["Latest-source runtime boundary", "an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, and Story 6.3 composes one repository synthetic provider into the four-tool path behind the same local command; it contains no deployment, hosting, external or live provider, production support, production backup guarantee, or real data"]
+  ["Latest-source runtime boundary", "an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only two-tool path, Story 6.3 composes one repository synthetic provider into the four-tool path, and Story 6.4 hardens fail-closed orchestration and cleanup behind the same local command; it contains no deployment, hosting, external or live provider, production support, production backup guarantee, or real data"]
 ]);
 
 printSection("Package Surfaces");
@@ -355,12 +355,12 @@ printList([
   "alpha1:conformance:story2 uses a real MCP client, loopback API, owner CLI, and generated disposable PostgreSQL 16 state to prove pending proposal, owner decision, durable lifecycle idempotency, atomic audit, least privilege, and cleanup",
   "alpha1:conformance:story3 uses real API and MCP processes plus generated disposable PostgreSQL 16 state to prove audited active-memory search, exact origin-process receipts, fail-closed crashes and outages, bounds, leak resistance, least privilege, and cleanup",
   "alpha1:conformance:story4 uses real API, owner CLI, operator CLI, and generated disposable PostgreSQL 16 state to prove correction, revocation, protected-read races, deterministic secret-free export, fresh portable initialization, isolated physical recovery, runtime verification gates, least privilege, and cleanup",
-  "alpha1:conformance:story5 uses real API and MCP processes plus generated disposable PostgreSQL 16 state to prove immutable synthetic provider binding, source-evidence search and fetch, durable audit, single-use receipts, fault and crash denial, zero memory promotion, least privilege, leak resistance, cleanup, and Story 6.3 local CLI composition",
-  "alpha1:conformance:story5:replaceable runs the same protected local CLI path through the separate public-contract-only synthetic adapter",
+  "alpha1:conformance:story5 runs 27 real-process and disposable PostgreSQL cases for immutable provider binding, protected evidence release, Story 6.3 composition, and Story 6.4 fail-closed orchestration plus cleanup",
+  "alpha1:conformance:story5:replaceable runs the same 27-case protected local CLI and failure path through the separate public-contract-only synthetic adapter",
   "alpha1:story5:security-gate verifies the temporary local stdio advisory disposition, dependency set, transport exclusions, immutable provider policy, and review deadline",
   "alpha1:ci-workflow-smoke verifies the separate exact-version hosted PostgreSQL conformance job cannot be replaced by unit tests",
   "alpha1:conformance runs all five local Alpha 1 story conformance paths in order and runs Story 5 through both synthetic adapters",
-  "the eight Alpha 1 and Story 6 getting-started guides define prerequisites, commands, trust boundaries, retry, receipt, lifecycle, portability, recovery, provider release, local composition, cleanup, and blocked scope"
+  "the nine Alpha 1 and Story 6 getting-started guides define prerequisites, commands, trust boundaries, retry, receipt, lifecycle, portability, recovery, provider release, local composition, fail-closed cleanup, and blocked scope"
 ]);
 
 printSection("Installed Package Smokes");

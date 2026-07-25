@@ -4,6 +4,30 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Story 6.4 fail-closed orchestration and cleanup
+
+Summary:
+
+- Hardened local startup signals so interruption stops both API and MCP children and prevents later startup steps from continuing.
+- Added API-crash credential invalidation that revokes only the exact generated harness credential through existing runtime database authority and records metadata-only cleanup audit.
+- Hardened signaled-child detection and bounded SIGTERM-to-SIGKILL cleanup.
+- Added locked Story 6 conformance faults for API crash after credential issuance and MCP crash after startup. Fault injection is refused outside synthetic conformance.
+- Extended both Story 5 adapter paths from 24 to 27 cases with database-outage, incompatible-migration, malformed-provider, child-crash, protocol-separation, credential-revocation, session-cleanup, and leak-resistance proof.
+- Added the [Story 6.4 Fail-Closed Orchestration And Cleanup](docs/getting-started/alpha1-story6-fail-closed-orchestration.md) guide and aligned public, agent, architecture, quickstart, CI, and issue documentation.
+
+Boundary:
+
+- External or live providers, publication, hosting, deployment, HTTP or SSE MCP, non-disposable databases, production runtime use, production secret custody, and real data remain blocked.
+
+Verification:
+
+```text
+npm run alpha1:build
+npm run alpha1:test
+npm run alpha1:conformance:story5
+npm run alpha1:conformance:story5:replaceable
+```
+
 ### 2026-07-24 - Story 6.3 synthetic provider local runtime
 
 Summary:

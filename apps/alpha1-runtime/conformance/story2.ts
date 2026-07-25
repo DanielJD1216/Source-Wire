@@ -33,7 +33,9 @@ const operatorCli = resolve(appRoot, "dist/src/cli/operator.js");
 const ownerCli = resolve(appRoot, "dist/src/cli/owner.js");
 const serverEntry = resolve(appRoot, "dist/src/server.js");
 const mcpServerEntry = resolve(appRoot, "dist/src/mcp/server.js");
-const localCliEntry = resolve(appRoot, "dist/src/cli/local.js");
+const localCliEntry =
+  process.env.SOURCE_WIRE_PACKED_LOCAL_CLI_ENTRY ??
+  resolve(appRoot, "dist/src/cli/local.js");
 const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
   resolve(appRoot, ".artifacts/story2-conformance-report.json");

@@ -390,7 +390,7 @@ test("provider check stays offline by default and connected checking validates r
     await writeConfig(connectedPath, {
       ...createLocalConfigTemplate(),
       knowledgeProvider: {
-        module: "@source-wire/alpha1-runtime/synthetic-provider",
+        module: "@source-wire/local-runtime/synthetic-provider",
         exportName: "createSyntheticKnowledgeProvider",
         providerScopeId: "scope_docs_alpha",
         timeoutMs: 1_000
@@ -439,7 +439,7 @@ test("connected provider check fails closed for missing, mismatched, and multi-n
     await writeConfig(mismatchPath, {
       ...createLocalConfigTemplate(),
       knowledgeProvider: {
-        module: "@source-wire/alpha1-runtime/synthetic-provider",
+        module: "@source-wire/local-runtime/synthetic-provider",
         exportName: "createSyntheticKnowledgeProvider",
         providerScopeId: "scope_docs_other",
         timeoutMs: 1_000
@@ -462,7 +462,7 @@ test("connected provider check fails closed for missing, mismatched, and multi-n
         namespaceIds: ["ns_alpha", "ns_beta"]
       }),
       knowledgeProvider: {
-        module: "@source-wire/alpha1-runtime/synthetic-provider",
+        module: "@source-wire/local-runtime/synthetic-provider",
         exportName: "createSyntheticKnowledgeProvider",
         providerScopeId: "scope_docs_alpha",
         timeoutMs: 1_000

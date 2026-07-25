@@ -18,7 +18,7 @@ runtime, live connector, managed database, or real-data path.
 ## What The Command Does
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   mcp stdio \
   --config /owner-controlled/source-wire.local.json
 ```

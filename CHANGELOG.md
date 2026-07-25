@@ -4,6 +4,42 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-25 - Story 6.8 no-publish local-runtime package candidate
+
+Summary:
+
+- Prepared private `@source-wire/local-runtime@0.1.0-alpha.1` with binary
+  `source-wire-local`, without publishing, tagging, releasing, deploying, or
+  hosting it.
+- Added the supported root composition API, local config helpers, declarations,
+  and synthetic provider proof entrypoints while blocking private subpath
+  imports.
+- Pinned Node.js `22.23.1`, PostgreSQL `16.x`, stdio MCP,
+  `@source-wire/contracts@0.2.0`, and all Alpha dependencies exactly.
+- Added clean packed-consumer, package-content, installed-binary AI-agent,
+  advisory, and disposable PostgreSQL candidate gates.
+- Recorded the temporary scope-limited disposition for the two moderate nested
+  MCP findings with review due by August 24, 2026.
+- Added the [Story 6.8 Local Runtime Package Candidate](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md)
+  guide.
+
+Boundary:
+
+- Production, hosting, deployment, Windows, HTTP or SSE MCP, static serving,
+  real data, live providers, non-disposable databases, publishing, tagging, and
+  releases remain blocked.
+
+Verification:
+
+```text
+npm run alpha1:build
+npm run alpha1:test
+npm run local-runtime:candidate-smoke
+npm run local-runtime:security-gate
+npm run local-runtime:candidate-conformance
+npm run alpha1:ci-workflow-smoke
+```
+
 ### 2026-07-24 - Story 6.7 evidence-first compatibility proof
 
 Summary:
@@ -256,8 +292,8 @@ Summary:
 
 Validation:
 
-- `npm run typecheck --workspace @source-wire/alpha1-runtime`
-- `npm run test --workspace @source-wire/alpha1-runtime`
+- `npm run typecheck --workspace @source-wire/local-runtime`
+- `npm run test --workspace @source-wire/local-runtime`
 - `SOURCE_WIRE_STORY5_PROVIDER_ADAPTER=replaceable npm run alpha1:conformance:story5`
 - `npm test`
 - `npm run docs:links`
@@ -280,8 +316,8 @@ Summary:
 
 Validation:
 
-- `npm run typecheck --workspace @source-wire/alpha1-runtime`
-- `npm run test --workspace @source-wire/alpha1-runtime`
+- `npm run typecheck --workspace @source-wire/local-runtime`
+- `npm run test --workspace @source-wire/local-runtime`
 - `npm test`
 - `npm run docs:links`
 - `npm run docs:anchors`
@@ -302,7 +338,7 @@ Summary:
 
 Validation:
 
-- `npm run test --workspace @source-wire/alpha1-runtime`
+- `npm run test --workspace @source-wire/local-runtime`
 - `npm test`
 - `npm run docs:links`
 - `npm run docs:anchors`
@@ -323,8 +359,8 @@ Summary:
 
 Validation:
 
-- `npm run typecheck --workspace @source-wire/alpha1-runtime`
-- `npm run test --workspace @source-wire/alpha1-runtime`
+- `npm run typecheck --workspace @source-wire/local-runtime`
+- `npm run test --workspace @source-wire/local-runtime`
 - `npm test`
 - `npm run docs:links`
 - `npm run docs:anchors`

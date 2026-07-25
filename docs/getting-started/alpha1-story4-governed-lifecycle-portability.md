@@ -85,7 +85,7 @@ Create an owner-only input file in a private directory. Use an absolute path:
 With the loopback runtime active and `SOURCE_WIRE_OWNER_TOKEN` supplied through your local secret facility:
 
 ```bash
-npm run owner --workspace @source-wire/alpha1-runtime -- \
+npm run owner --workspace @source-wire/local-runtime -- \
   correct-memory \
   --base-url http://127.0.0.1:4318 \
   --namespace-id ns_project_alpha \
@@ -112,7 +112,7 @@ The owner-only input file contains only the reason:
 Run:
 
 ```bash
-npm run owner --workspace @source-wire/alpha1-runtime -- \
+npm run owner --workspace @source-wire/local-runtime -- \
   revoke-memory \
   --base-url http://127.0.0.1:4318 \
   --namespace-id ns_project_alpha \
@@ -129,7 +129,7 @@ Revocation is permanent in Alpha 1. It does not delete or rewrite history, and t
 The owner export command writes the bundle directly to an owner-selected regular file. It never writes the bundle body or owner token to stdout:
 
 ```bash
-npm run owner --workspace @source-wire/alpha1-runtime -- \
+npm run owner --workspace @source-wire/local-runtime -- \
   export \
   --base-url http://127.0.0.1:4318 \
   --namespace-id ns_project_alpha \
@@ -155,7 +155,7 @@ Portable initialization is not an API route or MCP tool. Keep API and MCP proces
 Use a separate compatible target and a migrator connection through `SOURCE_WIRE_MIGRATOR_DATABASE_URL`. Supply `SOURCE_WIRE_TOKEN_VERIFIER_KEY` and `SOURCE_WIRE_TOKEN_VERIFIER_KEY_ID` through your local secret facility.
 
 ```bash
-npm run operator --workspace @source-wire/alpha1-runtime -- \
+npm run operator --workspace @source-wire/local-runtime -- \
   initialize \
   --from-export /absolute/private/path/source-wire-portable.ndjson \
   --expected-logical-state-sha256 <digest-from-an-independent-channel> \
@@ -177,7 +177,7 @@ The operator:
 Verify with a separate process:
 
 ```bash
-npm run operator --workspace @source-wire/alpha1-runtime -- \
+npm run operator --workspace @source-wire/local-runtime -- \
   verify-recovery \
   --credential-file /absolute/private/path/restored-owner.secret \
   --expected-logical-state-sha256 <digest-from-an-independent-channel>
@@ -192,7 +192,7 @@ Source-Wire does not create or transport physical PostgreSQL backups. Restore yo
 Then run:
 
 ```bash
-npm run operator --workspace @source-wire/alpha1-runtime -- \
+npm run operator --workspace @source-wire/local-runtime -- \
   recover \
   --operation-key physical_recovery_001 \
   --secret-output /absolute/private/path/recovered-owner.secret
@@ -201,7 +201,7 @@ npm run operator --workspace @source-wire/alpha1-runtime -- \
 Verify it separately:
 
 ```bash
-npm run operator --workspace @source-wire/alpha1-runtime -- \
+npm run operator --workspace @source-wire/local-runtime -- \
   verify-recovery \
   --credential-file /absolute/private/path/recovered-owner.secret
 ```

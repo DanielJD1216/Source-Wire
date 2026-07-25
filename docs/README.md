@@ -53,8 +53,9 @@ Use tutorials and walkthroughs when you need a safe, executable path.
 - [Alpha 1 Story 6.5: Explicit Database Control Plane](getting-started/alpha1-story6-database-control-plane.md)
 - [Alpha 1 Story 6.6: Owner-Controlled Local Export](getting-started/alpha1-story6-owner-controlled-local-export.md)
 - [Alpha 1 Story 6.7: Evidence-First Compatibility](getting-started/alpha1-story6-evidence-first-compatibility.md)
+- [Alpha 1 Story 6.8: Local Runtime Package Candidate](getting-started/alpha1-story6-local-runtime-package-candidate.md)
 
-The Alpha stories use generated disposable PostgreSQL state. They do not establish hosting, deployment, production readiness, live-provider support, production backup guarantees, or real-data safety.
+The Alpha stories use generated disposable PostgreSQL state. Story 6.8 prepares a private local tarball but publishes nothing. These stories do not establish hosting, deployment, production readiness, live-provider support, production backup guarantees, or real-data safety.
 
 ## Build Against Contracts
 

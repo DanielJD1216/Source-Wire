@@ -6,7 +6,7 @@ This quickstart verifies the package locally with synthetic fixtures.
 
 These commands do not run the unpublished Alpha 1 workspace, sync sources, connect to MCP, call a database, create memories, or publish a new package version.
 
-To exercise the latest-source local runtime separately, follow [Alpha 1 Story 1 Local Runtime](alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](alpha1-story4-governed-lifecycle-portability.md), and [Alpha 1 Story 5 Knowledge Provider Runtime Host](alpha1-story5-knowledge-provider-runtime-host.md) in order.
+To exercise the latest-source local runtime separately, follow [Alpha 1 Story 1 Local Runtime](alpha1-story1-local-runtime.md) through [Alpha 1 Story 6.8 Local Runtime Package Candidate](alpha1-story6-local-runtime-package-candidate.md) in order.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ To exercise the latest-source local runtime separately, follow [Alpha 1 Story 1 
 
 Node.js 22 matches GitHub Actions Package Checks.
 
-The package is published to npm as `@source-wire/contracts@0.1.0`. Use the local repository checkout for development and full verification.
+The package is published to npm as `@source-wire/contracts@0.2.0`. Use the local repository checkout for development and full verification. The separate `@source-wire/local-runtime@0.1.0-alpha.1` candidate is prepared locally but not published.
 
 ## Install
 

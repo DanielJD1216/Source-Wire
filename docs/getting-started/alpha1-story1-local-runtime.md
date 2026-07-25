@@ -110,9 +110,9 @@ An active owner-admin cannot revoke its own credential. It must use zero-overlap
 The operator CLI uses `SOURCE_WIRE_MIGRATOR_DATABASE_URL`. The owner CLI calls the loopback API and never connects directly to PostgreSQL.
 
 ```bash
-npm run operator --workspace @source-wire/alpha1-runtime -- migrate
-npm run operator --workspace @source-wire/alpha1-runtime -- migration-status
-npm run operator --workspace @source-wire/alpha1-runtime -- initialize \
+npm run operator --workspace @source-wire/local-runtime -- migrate
+npm run operator --workspace @source-wire/local-runtime -- migration-status
+npm run operator --workspace @source-wire/local-runtime -- initialize \
   --owner-id owner_alpha \
   --namespace-id ns_project_alpha \
   --namespace-id ns_project_beta
@@ -123,10 +123,10 @@ Initialization also requires `SOURCE_WIRE_TOKEN_VERIFIER_KEY` and may use `SOURC
 The owner CLI reads bearer credentials from `SOURCE_WIRE_OWNER_TOKEN` or `SOURCE_WIRE_TOKEN`. It does not accept bearer tokens in URLs.
 
 ```bash
-npm run owner --workspace @source-wire/alpha1-runtime -- health \
+npm run owner --workspace @source-wire/local-runtime -- health \
   --namespace-id ns_project_alpha
 
-npm run owner --workspace @source-wire/alpha1-runtime -- issue-harness \
+npm run owner --workspace @source-wire/local-runtime -- issue-harness \
   --namespace-id ns_project_alpha \
   --capability runtime.health \
   --expires-at 2030-01-01T00:00:00.000Z

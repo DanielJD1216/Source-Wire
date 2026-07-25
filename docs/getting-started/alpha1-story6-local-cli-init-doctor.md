@@ -14,7 +14,7 @@ This slice does not start Source-Wire, load a provider, connect PostgreSQL,
 contact a service, apply a migration, create an account, request an API key,
 send telemetry, or provision paid infrastructure.
 
-The CLI remains inside the unpublished `@source-wire/alpha1-runtime`
+The CLI remains inside the unpublished `@source-wire/local-runtime`
 workspace. It is not part of `@source-wire/contracts@0.2.0`, is not a published
 runtime package, and is not approved for production or real data.
 
@@ -62,7 +62,7 @@ ignored `.source-wire-local/` directory. Do not commit owner identifiers or
 local provider selections.
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   init \
   --config /absolute/owner-controlled/source-wire.local.json \
   --owner-id owner_local \
@@ -86,7 +86,7 @@ destination.
 ## Run Offline Doctor
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   doctor \
   --config /absolute/owner-controlled/source-wire.local.json
 ```
@@ -94,7 +94,7 @@ npm run local --workspace @source-wire/alpha1-runtime -- \
 For machine-readable output:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   doctor \
   --config /absolute/owner-controlled/source-wire.local.json \
   --json

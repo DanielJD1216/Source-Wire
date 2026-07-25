@@ -11,7 +11,7 @@
 
 Source-Wire defines how agents can retrieve evidence, preserve provenance, propose durable memories, and use trusted context without silently turning every document, message, or model output into truth.
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains an unpublished, loopback-only Alpha 1 Stories 1 through 5 workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. Private Story 6.1 adds offline local configuration, Story 6.2 composes the memory-only API and two-tool stdio MCP path, Story 6.3 composes one owner-selected synthetic provider into the four-tool path, Story 6.4 hardens startup and cleanup failures, Story 6.5 adds explicit read-only database status plus apply-gated migration control, Story 6.6 adds owner-authorized canonical local export, and Story 6.7 proves a separately implemented evidence-first synthetic adapter through the unchanged protected path. Nothing is deployed or hosted.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains a loopback-only Alpha workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. Story 6.8 prepares, but does not publish, the private `@source-wire/local-runtime@0.1.0-alpha.1` candidate and `source-wire-local` binary for macOS and Linux local evaluation with synthetic or disposable data. Nothing is deployed, hosted, tagged, released, or published from that candidate.
 
 > Bring your own knowledge base, PostgreSQL, credentials, and agent harness. Source-Wire keeps the memory lifecycle and trust boundary explicit.
 
@@ -86,6 +86,7 @@ Use the [Documentation Index](docs/README.md) when you already know the task you
 | Local Story 6.5 database control plane | Included in latest source for read-only runtime-role status, safe migration planning, explicit `--apply`, exact migrator authority, transaction rollback, and idempotent disposable migration proof |
 | Local Story 6.6 owner-controlled export | Included in latest source for explicit namespaces, canonical bounded output, atomic owner-only local files, default no-overwrite, exact owner authority, interruption cleanup, and zero upload |
 | Local Story 6.7 evidence-first compatibility | Included in latest source as cross-repository synthetic proof against a pinned private adapter that depends on published `@source-wire/contracts@0.2.0`; no live connector or real evidence is included |
+| Local Story 6.8 package candidate | Prepared as private `@source-wire/local-runtime@0.1.0-alpha.1` with a supported composition API and `source-wire-local` binary; it is not published, tagged, released, deployed, hosted, production-ready, or approved for real data or live providers |
 | Hosted API, hosted MCP, deployment | Not included |
 | Live knowledge connectors or real user data | Not included |
 | Automatic trusted-memory promotion | Forbidden |
@@ -117,7 +118,7 @@ npm run publish:readiness
 
 Despite its name, `publish:readiness` does not publish a package, create a release, deploy a service, connect a production database, or use real data.
 
-For setup details, read the [Quickstart](docs/getting-started/quickstart.md). For the unpublished local proof, follow [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md), [Alpha 1 Story 6.1 Local CLI Init And Offline Doctor](docs/getting-started/alpha1-story6-local-cli-init-doctor.md), [Alpha 1 Story 6.2 Memory-Only Local Runtime](docs/getting-started/alpha1-story6-memory-only-local-runtime.md), [Alpha 1 Story 6.3 Synthetic Provider Local Runtime](docs/getting-started/alpha1-story6-synthetic-provider-local-runtime.md), [Alpha 1 Story 6.4 Fail-Closed Orchestration And Cleanup](docs/getting-started/alpha1-story6-fail-closed-orchestration.md), [Alpha 1 Story 6.5 Explicit Database Control Plane](docs/getting-started/alpha1-story6-database-control-plane.md), [Alpha 1 Story 6.6 Owner-Controlled Local Export](docs/getting-started/alpha1-story6-owner-controlled-local-export.md), and [Alpha 1 Story 6.7 Evidence-First Compatibility](docs/getting-started/alpha1-story6-evidence-first-compatibility.md) in order.
+For setup details, read the [Quickstart](docs/getting-started/quickstart.md). For the unpublished local proof, follow [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md), [Alpha 1 Story 6.1 Local CLI Init And Offline Doctor](docs/getting-started/alpha1-story6-local-cli-init-doctor.md), [Alpha 1 Story 6.2 Memory-Only Local Runtime](docs/getting-started/alpha1-story6-memory-only-local-runtime.md), [Alpha 1 Story 6.3 Synthetic Provider Local Runtime](docs/getting-started/alpha1-story6-synthetic-provider-local-runtime.md), [Alpha 1 Story 6.4 Fail-Closed Orchestration And Cleanup](docs/getting-started/alpha1-story6-fail-closed-orchestration.md), [Alpha 1 Story 6.5 Explicit Database Control Plane](docs/getting-started/alpha1-story6-database-control-plane.md), [Alpha 1 Story 6.6 Owner-Controlled Local Export](docs/getting-started/alpha1-story6-owner-controlled-local-export.md), [Alpha 1 Story 6.7 Evidence-First Compatibility](docs/getting-started/alpha1-story6-evidence-first-compatibility.md), and [Alpha 1 Story 6.8 Local Runtime Package Candidate](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md) in order.
 
 Use [Share For Technical Review](docs/guides/share-for-review.md) and [Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md) when sharing findings.
 
@@ -131,6 +132,7 @@ Use [Share For Technical Review](docs/guides/share-for-review.md) and [Reviewer 
 - production or real-data correction, revocation, export, and recovery,
 - live knowledge connectors,
 - real user or client data,
+- local-runtime npm publication, tags, and releases,
 - code contribution acceptance.
 
 The package and release are available for technical review and Apache-2.0 source reuse. They do not imply that a hosted or production memory system exists.
@@ -144,7 +146,7 @@ The package and release are available for technical review and Apache-2.0 source
 | Policy proofs | In-memory and owner-hosted skeletons for identity, namespace, denial, audit, and no-auto-promotion behavior |
 | Latest-source Alpha | Disposable local PostgreSQL bootstrap, candidate proposal, owner decisions, audited memory search, correction, revocation, export, recovery, and synthetic source-evidence read proof |
 
-The Alpha workspace under `apps/alpha1-runtime/` is local developer proof. Story 6.3 can bind one repository synthetic provider at owner-controlled startup, then expose the four-tool stdio MCP surface that adds source-evidence search and exact fetch to the two memory tools. Story 6.4 makes invalid startup, provider mismatch, API or MCP crash, migration incompatibility, database outage, signal interruption, credential revocation, and child cleanup fail closed with redacted output. Story 6.5 separates read-only runtime-role status from explicit migrator-role mutation, prints a safe migration plan, and applies nothing without `--apply`. Story 6.6 lets the owner export explicit namespaces to the existing canonical portable format, rejects existing files by default, and sends the result nowhere. Story 6.7 installs a pinned private synthetic package from the separate evidence-first repository and proves it through the same CLI, API policy, audit, receipt, MCP, and official-client path. Provider replacement requires a config change and restart. This does not establish production availability, hosting, deployment, managed database provisioning, production backup guarantees, external or live providers, or real-data support.
+The Alpha workspace under `apps/alpha1-runtime/` is local developer proof. Story 6.7 installs a pinned private synthetic package from the separate evidence-first repository and proves it through the same CLI, API policy, audit, receipt, MCP, and official-client path. Story 6.8 prepares the private local-runtime tarball, limits its public exports, and proves a clean installed consumer and AI-agent binary path. Provider replacement requires a config change and restart. This does not establish production availability, publication, hosting, deployment, managed database provisioning, production backup guarantees, external or live providers, or real-data support.
 
 ## For AI Agents
 
@@ -176,7 +178,7 @@ Core invariants:
 | [`src/contracts/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/contracts) | TypeScript contracts and synthetic evaluators |
 | [`src/runtime-skeleton/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/runtime-skeleton) | Synthetic API-policy and MCP-routing proof |
 | [`src/owner-hosted-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/owner-hosted-runtime) | Narrow in-process owner-hosted skeleton proof |
-| [`apps/alpha1-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/apps/alpha1-runtime) | Unpublished loopback-only Alpha workspace |
+| [`apps/alpha1-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/apps/alpha1-runtime) | Unpublished loopback-only Alpha workspace and private local-runtime package candidate |
 | [`schemas/`](schemas) | Public JSON schemas |
 | [`examples/`](examples) | Synthetic fixtures, conformance matrices, and smokes |
 | [`docs/`](docs) | Public documentation and historical project records |
@@ -190,6 +192,9 @@ Core invariants:
 | `npm test` | Types, fixtures, schema exports, CLI, and examples |
 | `npm run reviewer:smoke` | Clean first-reviewer path in a temporary copy |
 | `npm run alpha1:ci-workflow-smoke` | Hosted Alpha PostgreSQL job keeps exact versions, all five stories, repository adapters, the pinned evidence-first adapter, stable markers, and no artifact or production-secret path |
+| `npm run local-runtime:candidate-smoke` | Packs and installs the private candidate, checks the supported API and CLI, rejects private imports, and proves a no-`npx` AI-agent configuration |
+| `npm run local-runtime:security-gate` | Re-runs the exact dependency audit and enforces the temporary stdio-only advisory disposition |
+| `npm run local-runtime:candidate-conformance` | With exact Node.js and disposable PostgreSQL, proves the clean installed binary through memory-only and synthetic-provider stdio MCP paths |
 | `npm run alpha1:conformance:story5` | 27-case disposable PostgreSQL proof for the four-tool MCP, protected source-evidence release, Story 6.3 composition, and Story 6.4 fail-closed cleanup |
 | `npm run alpha1:conformance:story5:replaceable` | The same 27-case protected local CLI and failure path with the separate public-contract-only adapter |
 | `npm run alpha1:evidence-first-package-smoke` | Exact package, published-contract dependency, synthetic provider exports, and no-private-runtime boundary for the installed evidence-first adapter |
@@ -214,6 +219,7 @@ Read [CI Checks](docs/reference/ci-checks.md) for the detailed marker map.
 - [API Reference](docs/reference/api-reference.md)
 - [Repository Metadata](docs/reference/repository-metadata.md)
 - [Public Status](docs/status/public-status.md)
+- [Alpha 1 Story 6.8 Local Runtime Package Candidate](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md)
 - [Security Policy](SECURITY.md)
 - [Support](SUPPORT.md)
 - [Visual System](docs/assets/README.md)

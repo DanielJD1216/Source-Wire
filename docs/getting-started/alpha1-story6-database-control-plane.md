@@ -45,7 +45,7 @@ export SOURCE_WIRE_DATABASE_URL='<generated disposable runtime URL>'
 Inspect status:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   database status \
   --config /owner-controlled/source-wire.local.json
 ```
@@ -53,7 +53,7 @@ npm run local --workspace @source-wire/alpha1-runtime -- \
 For a stable machine-readable envelope:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   database status \
   --config /owner-controlled/source-wire.local.json \
   --json
@@ -83,7 +83,7 @@ export SOURCE_WIRE_MIGRATOR_DATABASE_URL='<generated disposable migrator URL>'
 Print the current set, target set, and pending set without mutation:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   database migrate \
   --config /owner-controlled/source-wire.local.json
 ```
@@ -96,7 +96,7 @@ returns `migration-result not_applied` and `mutation-applied false`.
 Apply the displayed forward-only migration set:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   database migrate \
   --config /owner-controlled/source-wire.local.json \
   --apply

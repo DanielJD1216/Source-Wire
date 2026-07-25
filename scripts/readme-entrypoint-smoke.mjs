@@ -12,8 +12,9 @@ assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access m
 for (const requiredText of [
   "Current public status: Source-Wire is Apache-2.0 licensed as a source package.",
   "Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract.",
-  "Latest source also contains an unpublished, loopback-only Alpha 1 Stories 1 through 5 workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers.",
-  "Nothing is deployed or hosted.",
+  "Latest source also contains a loopback-only Alpha workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers.",
+  "Story 6.8 prepares, but does not publish, the private `@source-wire/local-runtime@0.1.0-alpha.1` candidate and `source-wire-local` binary for macOS and Linux local evaluation with synthetic or disposable data.",
+  "Nothing is deployed, hosted, tagged, released, or published from that candidate.",
   "## First Reviewer Quickstart",
   "Use Node.js 22 with npm.",
   "npm install",
@@ -32,6 +33,7 @@ for (const requiredText of [
   "[Alpha 1 Story 6.4 Fail-Closed Orchestration And Cleanup](docs/getting-started/alpha1-story6-fail-closed-orchestration.md)",
   "[Alpha 1 Story 6.5 Explicit Database Control Plane](docs/getting-started/alpha1-story6-database-control-plane.md)",
   "[Alpha 1 Story 6.6 Owner-Controlled Local Export](docs/getting-started/alpha1-story6-owner-controlled-local-export.md)",
+  "[Alpha 1 Story 6.8 Local Runtime Package Candidate](docs/getting-started/alpha1-story6-local-runtime-package-candidate.md)",
   "[Share For Technical Review](docs/guides/share-for-review.md)",
   "[Reviewer Feedback Guide](docs/guides/reviewer-feedback-guide.md)",
   "Known `v0.1.0` package issue: that immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`"

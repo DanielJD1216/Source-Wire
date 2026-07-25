@@ -28,10 +28,12 @@ for (const required of [
   "npm run alpha1:story5:security-gate",
   "npm run alpha1:conformance",
   "npm run alpha1:conformance:evidence-first",
+  "npm run local-runtime:candidate-conformance",
   "SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN",
   "SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS",
   "SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED",
   "providers=baseline,replaceable,evidence-first",
+  "candidate=local-runtime-alpha.1",
   "${{ github.run_id }}",
   "${{ github.run_attempt }}"
 ]) {
@@ -65,5 +67,6 @@ console.log("ok Alpha PostgreSQL workflow uses PostgreSQL 16");
 console.log("ok Alpha PostgreSQL workflow runs Stories 1 through 5");
 console.log("ok Alpha PostgreSQL workflow runs both provider adapters");
 console.log("ok Alpha PostgreSQL workflow pins evidence-first adapter");
+console.log("ok Alpha PostgreSQL workflow proves packed local runtime candidate");
 console.log("ok Alpha PostgreSQL workflow exposes stable gate markers");
 console.log("blocked Alpha PostgreSQL workflow artifacts and production secrets");

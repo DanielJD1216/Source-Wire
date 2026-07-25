@@ -45,7 +45,7 @@ recovery, correction, revocation, or owner-administration tool.
 Choose every namespace explicitly and provide an absolute local destination:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   export \
   --config /owner-controlled/source-wire.local.json \
   --namespace-id namespace_alpha \
@@ -56,7 +56,7 @@ npm run local --workspace @source-wire/alpha1-runtime -- \
 For a stable machine-readable result:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   export \
   --config /owner-controlled/source-wire.local.json \
   --namespace-id namespace_alpha \
@@ -86,7 +86,7 @@ Replace an existing regular owner-controlled file only after explicitly
 accepting that policy:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   export \
   --config /owner-controlled/source-wire.local.json \
   --namespace-id namespace_alpha \

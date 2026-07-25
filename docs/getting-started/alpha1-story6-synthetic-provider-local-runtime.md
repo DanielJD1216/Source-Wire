@@ -35,7 +35,7 @@ The generated owner-controlled configuration may contain zero or one
 ```json
 {
   "knowledgeProvider": {
-    "module": "@source-wire/alpha1-runtime/synthetic-provider",
+    "module": "@source-wire/local-runtime/synthetic-provider",
     "exportName": "createSyntheticKnowledgeProvider",
     "providerScopeId": "synthetic_owner_sources",
     "timeoutMs": 1000
@@ -60,7 +60,7 @@ Offline checking validates the non-secret configuration only. It does not
 import or execute the provider package:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   provider check \
   --config /owner-controlled/source-wire.local.json \
   --json
@@ -83,7 +83,7 @@ the exact profile and immutable binding, and invokes only the bounded `health`
 operation:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   provider check \
   --config /owner-controlled/source-wire.local.json \
   --connect \
@@ -98,7 +98,7 @@ Provide the same generated disposable authority required by Story 6.2, then
 start:
 
 ```bash
-npm run local --workspace @source-wire/alpha1-runtime -- \
+npm run local --workspace @source-wire/local-runtime -- \
   mcp stdio \
   --config /owner-controlled/source-wire.local.json
 ```

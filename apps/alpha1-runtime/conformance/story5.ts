@@ -42,7 +42,9 @@ const repoRoot = resolve(appRoot, "../..");
 const operatorCli = resolve(appRoot, "dist/src/cli/operator.js");
 const serverEntry = resolve(appRoot, "dist/src/server.js");
 const mcpServerEntry = resolve(appRoot, "dist/src/mcp/server.js");
-const localCliEntry = resolve(appRoot, "dist/src/cli/local.js");
+const localCliEntry =
+  process.env.SOURCE_WIRE_PACKED_LOCAL_CLI_ENTRY ??
+  resolve(appRoot, "dist/src/cli/local.js");
 const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
   resolve(appRoot, ".artifacts/story5-conformance-report.json");
@@ -115,8 +117,8 @@ const CROSS_PROVIDER_ENABLED = CROSS_PROVIDER_MODULE !== undefined;
 const LOCAL_PROVIDER_MODULE =
   CROSS_PROVIDER_MODULE ??
   (PROVIDER_ADAPTER === "replaceable"
-    ? "@source-wire/alpha1-runtime/replaceable-synthetic-provider"
-    : "@source-wire/alpha1-runtime/synthetic-provider");
+    ? "@source-wire/local-runtime/replaceable-synthetic-provider"
+    : "@source-wire/local-runtime/synthetic-provider");
 const LOCAL_PROVIDER_EXPORT =
   CROSS_PROVIDER_EXPORT ??
   (PROVIDER_ADAPTER === "replaceable"

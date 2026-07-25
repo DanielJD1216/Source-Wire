@@ -98,14 +98,14 @@ The owner CLI calls the loopback API and never connects to PostgreSQL. Set `SOUR
 List pending metadata without candidate content:
 
 ```bash
-npm run owner --workspace @source-wire/alpha1-runtime -- list-candidates \
+npm run owner --workspace @source-wire/local-runtime -- list-candidates \
   --namespace-id ns_project_alpha
 ```
 
 Request content explicitly:
 
 ```bash
-npm run owner --workspace @source-wire/alpha1-runtime -- list-candidates \
+npm run owner --workspace @source-wire/local-runtime -- list-candidates \
   --namespace-id ns_project_alpha \
   --include-content
 ```
@@ -113,7 +113,7 @@ npm run owner --workspace @source-wire/alpha1-runtime -- list-candidates \
 Approve one pending candidate:
 
 ```bash
-npm run owner --workspace @source-wire/alpha1-runtime -- approve-candidate \
+npm run owner --workspace @source-wire/local-runtime -- approve-candidate \
   --namespace-id ns_project_alpha \
   --candidate-id 00000000-0000-4000-8000-000000000001 \
   --reason "Synthetic owner approval." \

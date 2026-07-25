@@ -54,9 +54,9 @@ if (
   alphaPackage.sourceWireCandidate?.publicationSecurityReview?.reviewedAt !==
     "2026-07-25" ||
   alphaPackage.sourceWireCandidate?.publicationSecurityReview?.scope !==
-    "npm-alpha-0.1.0-alpha.2-candidate" ||
+    "npm-public-alpha-0.1.0-alpha.2" ||
   alphaPackage.sourceWireCandidate?.publicationSecurityReview?.status !==
-    "prepared-not-published"
+    "approved-for-publication"
 ) {
   throw new Error("story5_public_alpha_distribution_boundary_invalid");
 }

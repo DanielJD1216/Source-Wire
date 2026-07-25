@@ -19,7 +19,7 @@ const expectedTopics = [
 ];
 
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
+assertEqual(packageJson.version, "0.2.0", "package candidate version must remain 0.2.0");
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after npm publication");
 
 const repoView = await ghJson([

@@ -5,14 +5,15 @@ const readme = await readFile("README.md", "utf8");
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
+assertEqual(packageJson.version, "0.2.0", "package candidate version must remain 0.2.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public");
 
 for (const requiredText of [
   "Current public status: Source-Wire is Apache-2.0 licensed as a source package.",
-  "The contracts package is published to npm and released on GitHub.",
-  "Latest source also contains unpublished, loopback-only Alpha 1 Stories 1 through 5 for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through one synthetic provider.",
+  "Version `0.1.0` remains published to npm and released on GitHub.",
+  "Latest source is an unpublished `0.2.0` release candidate that adds the public `KnowledgeProvider v1` contract.",
+  "It also contains loopback-only Alpha 1 Stories 1 through 5 for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through one synthetic provider.",
   "Nothing is deployed or hosted.",
   "## First Reviewer Quickstart",
   "Use Node.js 22 with npm.",

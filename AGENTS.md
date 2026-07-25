@@ -1,6 +1,6 @@
 # Source-Wire Agent Guide
 
-This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.1.0` package remains contracts-first. Latest source also contains unpublished, loopback-only Alpha 1 Stories 1 through 5 under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state and one synthetic read-only provider for local proof. Neither boundary is a hosted memory service or a production runtime.
+This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.1.0` package remains the immutable public snapshot. Latest source is an unpublished `0.2.0` contracts candidate that adds `KnowledgeProvider v1`, plus loopback-only Alpha 1 Stories 1 through 5 under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state and one synthetic read-only provider for local proof. None of these boundaries is a hosted memory service or a production runtime.
 
 ## Read Order
 
@@ -12,6 +12,9 @@ This file is the repository entrypoint for AI coding agents. The published `@sou
 6. Run `npm run readiness:report` before making repository-status claims.
 
 Historical approval packets and proof records live in `docs/internal/`. Use them for provenance, not as the primary API or onboarding documentation.
+
+For release status, distinguish the live `0.1.0` snapshot from the unpublished
+`0.2.0` candidate. Read [Contracts 0.2.0 Release Candidate](docs/status/0.2.0-release-candidate.md).
 
 ## Architecture Invariants
 

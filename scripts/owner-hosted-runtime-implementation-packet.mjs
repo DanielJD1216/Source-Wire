@@ -13,7 +13,7 @@ const exactApprovalText =
   "Approved for a future Source-Wire owner-hosted runtime implementation unit: build a narrow public-safe owner-hosted API server runtime skeleton and MCP server runtime skeleton around the existing Source-Wire policy contracts and synthetic fixtures. Use synthetic fixtures only. Do not add database migrations, real database connections, PostgreSQL or pgvector setup, live connectors, local folder crawling, whole-vault import, Mission Control UI, deployment config, managed hosting, npm publishing, GitHub release creation, package version changes, public contribution acceptance, real user data, client data, private implementation code, AGPLv3 code copying, or Source-Wire-Memory-Engine code merge. MCP must not bypass Source-Wire API policy. Source evidence must remain separate from trusted memory. Trusted memory promotion must remain owner or application controlled. Automatic trusted memory promotion remains blocked.";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
+assertEqual(packageJson.version, "0.2.0", "package candidate version must remain 0.2.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 
 for (const requiredPath of [

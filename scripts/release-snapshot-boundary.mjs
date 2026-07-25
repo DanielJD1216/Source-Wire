@@ -4,10 +4,11 @@ import { readFile } from "node:fs/promises";
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const failures = [];
 const expectedTag = "v0.1.0";
+const publishedVersion = "0.1.0";
 const expectedReleaseTarget = "bd240283ec45e5b83ecd0e1c1cc9650097fd6509";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
+assertEqual(packageJson.version, "0.2.0", "latest-source package candidate must remain 0.2.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public");
 
@@ -18,7 +19,7 @@ const remoteMain = remoteRefs.get("refs/heads/main");
 const releaseTagObject = remoteRefs.get(`refs/tags/${expectedTag}`);
 const releaseTagTarget = remoteRefs.get(`refs/tags/${expectedTag}^{}`) ?? releaseTagObject;
 const npmView = JSON.parse(
-  (await run("npm", ["view", `${packageJson.name}@${packageJson.version}`, "name", "version", "dist-tags", "dist", "--json"])).stdout
+  (await run("npm", ["view", `${packageJson.name}@${publishedVersion}`, "name", "version", "dist-tags", "dist", "--json"])).stdout
 );
 
 if (!remoteMain) {
@@ -31,8 +32,8 @@ if (!releaseTagObject) {
 
 assertEqual(releaseTagTarget, expectedReleaseTarget, "remote release tag target must remain the first release snapshot commit");
 assertEqual(npmView.name, packageJson.name, "npm package name must match package.json");
-assertEqual(npmView.version, packageJson.version, "npm package version must match package.json");
-assertEqual(npmView["dist-tags"]?.latest, packageJson.version, "npm latest dist-tag must remain 0.1.0");
+assertEqual(npmView.version, publishedVersion, "npm package version must remain the published snapshot");
+assertEqual(npmView["dist-tags"]?.latest, publishedVersion, "npm latest dist-tag must remain 0.1.0");
 
 if (typeof npmView.dist?.shasum !== "string" || npmView.dist.shasum.length !== 40) {
   failures.push("npm published artifact shasum must be present");
@@ -62,7 +63,7 @@ const mainRelation =
 printSection("Source-Wire Release Snapshot Boundary");
 printRows([
   ["Package", packageJson.name],
-  ["Version", packageJson.version],
+  ["Latest-source candidate", packageJson.version],
   ["License", packageJson.license],
   ["origin/main", remoteMain],
   ["Remote release tag", expectedTag],

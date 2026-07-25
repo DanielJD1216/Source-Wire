@@ -18,6 +18,7 @@ const forbiddenExactPaths = [
 ];
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
+const publishedVersion = "0.1.0";
 const packResult = await run("npm", ["pack", "--dry-run", "--json"]);
 if (packResult.exitCode !== 0) {
   console.error(packResult.stderr.trim() || packResult.stdout.trim());
@@ -25,7 +26,7 @@ if (packResult.exitCode !== 0) {
 }
 
 const [pack] = JSON.parse(packResult.stdout);
-const liveDistResult = await run("npm", ["view", `${pack.name}@${pack.version}`, "dist", "--json"]);
+const liveDistResult = await run("npm", ["view", `${pack.name}@${publishedVersion}`, "dist", "--json"]);
 if (liveDistResult.exitCode !== 0) {
   console.error(liveDistResult.stderr.trim() || liveDistResult.stdout.trim());
   process.exit(liveDistResult.exitCode);
@@ -36,7 +37,7 @@ const files = pack.files.map((entry) => entry.path).sort();
 const failures = [];
 
 assertEqual(pack.name, "@source-wire/contracts", "package name");
-assertEqual(pack.version, "0.1.0", "package version");
+assertEqual(pack.version, "0.2.0", "package version");
 assertEqual(packageJson.license, "Apache-2.0", "package license");
 assertEqual(packageJson.publishConfig?.access, "public", "publish access");
 
@@ -115,7 +116,7 @@ console.log("");
 console.log("Published npm artifact");
 printRows([
   ["Package", pack.name],
-  ["Version", pack.version],
+  ["Version", publishedVersion],
   ["Tarball", liveDist.tarball],
   ["File count", String(liveDist.fileCount)],
   ["Unpacked size bytes", String(liveDist.unpackedSize)],

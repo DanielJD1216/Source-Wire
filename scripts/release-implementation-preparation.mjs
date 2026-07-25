@@ -21,7 +21,7 @@ const requiredDocs = [
 ];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name");
-assertEqual(packageJson.version, "0.1.0", "package version");
+assertEqual(packageJson.version, "0.2.0", "package version");
 assertEqual(packageJson.license, "Apache-2.0", "package license");
 assertEqual(packageJson.publishConfig?.access, "public", "publish access");
 

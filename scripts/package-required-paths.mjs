@@ -129,6 +129,7 @@ export const requiredPackagePaths = [
   "docs/reference/repository-metadata.md",
   "docs/reference/schema-exports.md",
   "docs/reference/validation-cli.md",
+  "docs/status/0.2.0-release-candidate.md",
   "docs/status/contribution-policy.md",
   "docs/status/public-status.md",
   "docs/status/release-snapshot-boundary.md",

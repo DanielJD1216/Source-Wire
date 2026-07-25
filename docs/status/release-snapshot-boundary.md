@@ -10,7 +10,7 @@ Use this check to distinguish three things that can otherwise blur together:
 
 - the immutable npm package `@source-wire/contracts@0.1.0`,
 - the immutable GitHub release snapshot `v0.1.0`,
-- the latest `main` branch, which may contain post-release documentation or readiness hardening.
+- the latest `main` branch, which contains an unpublished `0.2.0` contracts candidate plus post-release documentation and runtime proof.
 
 After a release is published, `main` can keep improving public docs, issue gates, and reviewer safety checks without changing the already-published npm tarball or GitHub release snapshot.
 
@@ -44,7 +44,7 @@ blocked future release mutation approval missing
 The command verifies:
 
 - package name remains `@source-wire/contracts`,
-- package version remains `0.1.0`,
+- latest-source package version is the unpublished `0.2.0` candidate,
 - package license remains `Apache-2.0`,
 - `publishConfig.access` remains `public`,
 - the public remote release tag is `v0.1.0`,
@@ -65,12 +65,12 @@ Use the npm package when you want the immutable published package artifact for `
 
 ## Current Boundary
 
-Until a future owner-approved release implementation unit exists:
+The `0.2.0` candidate-preparation unit is approved, but release mutation is not:
 
 - publishing a new npm package version remains blocked,
 - creating a new GitHub release remains blocked,
 - creating a new release tag remains blocked,
-- package version remains `0.1.0`,
+- the local package candidate remains unpublished,
 - deployment remains blocked,
 - hosted runtime behavior remains blocked,
 - production runtime claims remain blocked,

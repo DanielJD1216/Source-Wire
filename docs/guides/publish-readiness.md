@@ -23,6 +23,7 @@ npm run publish:readiness
 This command runs:
 
 - `npm run ci:check`
+- `npm run story5:release-candidate-smoke`
 - `npm run release:gate`
 - `npm run release-command-guard:smoke`
 - `npm run release:implementation-preparation`
@@ -31,9 +32,6 @@ This command runs:
 - `npm run release:implementation-rehearsal`
 - `npm run release:review`
 - `npm run release:approval-request`
-- `npm run release:patch-approval-request`
-- `npm run release:patch-execution-preflight`
-- `npm run release:patch-candidate-rehearsal`
 - `npm run release:auth-handoff`
 - `npm run release:candidate-readiness`
 - `npm run release:artifact-manifest`
@@ -142,22 +140,20 @@ They prove the current package skeleton, installed package behavior, docs, safet
 
 | Area | Markers to look for |
 | --- | --- |
-| Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok version 0.1.0`, `ok npm public access ready` |
+| Story 5 release candidate | `ok Story 5 contracts 0.2.0 release candidate`, `ok candidate package metadata and exported version aligned`, `ok KnowledgeProvider v1 complete public type surface`, `blocked npm publish, GitHub release, Git tag, deployment, and hosted-service mutation` |
+| Release boundary | `ok release gate`, `ok license Apache-2.0`, `ok package lock Apache-2.0`, `ok release candidate version 0.2.0`, `ok npm public access ready` |
 | Release command guard smoke | `ok blocked release commands smoke` |
 | Release implementation preparation | `ok release implementation preparation ready`, `ok release implementation evidence map ready`, `ok release execution completed` |
 | Release implementation plan | `ok release implementation plan ready`, `ok release version target documented`, `ok release execution completed` |
 | Release publish config plan | `ok release publish config plan ready`, `ok current npm public access documented`, `blocked future publish config mutation not performed` |
-| Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok future version rehearsal 0.1.0`, `ok future npm public access rehearsal`, `ok release metadata applied` |
+| Release implementation rehearsal | `ok release implementation rehearsal ready`, `ok release candidate rehearsal 0.2.0`, `ok future npm public access rehearsal`, `ok release metadata applied` |
 | Release review | `ok release review packet ready`, `ok release decision inputs documented`, `ok release execution completed` |
 | Release approval request | `ok release approval request ready`, `ok npm publishing completed @source-wire/contracts@0.1.0`, `ok github release completed v0.1.0`, `ok version release completed 0.1.0` |
-| Release patch approval request | `ok release patch approval request ready`, `ok exported version fix on main`, `blocked patch release approval missing`, `blocked npm artifact immutable at @source-wire/contracts@0.1.0` |
-| Release patch execution preflight | `ok release patch execution preflight ready`, `ok patch source export fixed on main`, `ok patch npm artifact mismatch disclosed`, `ok patch approval recorder target ready`, `blocked exact patch release approval missing`, `blocked patch release mutation not approved` |
-| Release patch candidate rehearsal | `ok release patch candidate rehearsal ready`, `ok patch candidate version 0.1.1`, `ok patch candidate export matches package version`, `ok patch candidate consumer smoke`, `blocked real package version unchanged`, `blocked npm publish not performed`, `blocked github release not created` |
 | Release auth handoff | `ok release auth handoff ready`, `ok npm authentication owner steps documented`, `blocked future release auth owner action required` |
 | Release approval status | `ok release approval status readable`, `ok exact release approval recorded`, `ok release execution completed` |
 | Release decision preflight | `ok release decision preflight ready`, `ok world share preflight current`, `ok owner open issue boundary current`, `ok release approval status current`, `ok release candidate evidence current`, `ok release artifact evidence current`, `ok release execution completed`, `ok npm package published @source-wire/contracts@0.1.0`, `ok github release published v0.1.0` |
-| Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `ok release execution completed` |
-| Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.1.0`, `ok release artifact integrity recorded`, `ok release artifact publication recorded`, `ok published npm artifact metadata recorded` |
+| Release candidate readiness | `ok release candidate readiness ready`, `ok local package verification ready`, `blocked release candidate publication` |
+| Release artifact manifest | `ok release artifact manifest ready`, `ok release artifact package identity @source-wire/contracts@0.2.0`, `ok release artifact integrity recorded`, `ok release artifact publication recorded`, `ok published npm artifact metadata recorded` |
 | Release snapshot boundary | `ok release snapshot boundary ready`, `ok latest main can differ from v0.1.0 release snapshot`, `ok npm artifact immutable at @source-wire/contracts@0.1.0`, `blocked future release mutation approval missing` |
 | License rehearsal | `ok license implementation current boundary`, `ok license implementation checklist complete` |
 | License decision record | `ok license decision record ready`, `ok license decision captured`, `ok license implementation complete` |
@@ -196,14 +192,14 @@ They prove the current package skeleton, installed package behavior, docs, safet
 | Historical license boundary | `ok historical license boundary ready`, `ok unlicensed recommendation superseded`, `blocked license history launch approval` |
 | Pull request boundary | `ok pull request boundary ready`, `ok code contribution pr blocked`, `blocked private data in pull requests` |
 | Package required paths | `ok package required paths` |
-| Package dry run | `ok package dry-run @source-wire/contracts@0.1.0`, `ok package file count` |
-| Package content smoke | `ok package content smoke @source-wire/contracts@0.1.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links`, `ok installed package docs anchors` |
+| Package dry run | `ok package dry-run @source-wire/contracts@0.2.0`, `ok package file count` |
+| Package content smoke | `ok package content smoke @source-wire/contracts@0.2.0`, `ok installed required paths`, `ok installed runtime readiness summary`, `ok installed runtime readiness summary content`, `ok installed package docs links`, `ok installed package docs anchors` |
 | Minimal runtime smoke | `ok minimal runtime boundary smoke` |
 | Runtime boundary smoke | `ok runtime boundary check authorized_read`, `ok runtime boundary check unauthorized_read_denial`, `ok runtime boundary check wrong_namespace_denial`, `ok runtime boundary check source_maintenance_no_auto_promotion`, `ok runtime boundary check owner_controlled_approval`, `ok runtime boundary check agent_approval_denial`, `ok synthetic runtime boundary smoke` |
 | Database posture smoke | `ok database posture case authorized_namespace_data_class_read`, `ok database posture case wrong_namespace_denied_without_leak`, `ok database posture smoke` |
 | Public-safe fixture smoke | `ok hosted runtime fixture case authorized_owner_read`, `ok hosted runtime fixture case wrong_namespace_denial_without_leak`, `ok hosted runtime fixture smoke` |
 | Deployment boundary smoke | `ok deployment boundary case local_development_ready`, `ok deployment boundary case no_hosted_service_proof`, `ok deployment boundary smoke` |
-| Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.1.0`, `ok installed runtime boundary example` |
+| Installed runtime boundary smoke | `ok runtime boundary installed smoke @source-wire/contracts@0.2.0`, `ok installed runtime boundary example` |
 | Diagnostic regression smoke | `ok runtime boundary diagnostics smoke authorized_read`, `ok diagnostic failure includes check name`, `ok diagnostic failure includes assertion`, `ok diagnostic failure includes expected value`, `ok diagnostic failure includes received value`, `ok diagnostic failure includes next action` |
 | Docs and readiness | `ok readiness report`, `ok docs links`, `ok docs anchors`, `ok command docs setup`, `ok readiness command docs match package scripts` |
 | Public safety | `Findings: 0 high=0 medium=0 low=0` |

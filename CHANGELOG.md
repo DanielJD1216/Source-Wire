@@ -4,6 +4,34 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Contracts 0.2.0 release candidate
+
+Summary:
+
+- Prepared the additive `@source-wire/contracts@0.2.0` release candidate without publishing, tagging, releasing, deploying, or mutating a hosted service.
+- Added `KnowledgeProvider v1` to the complete public package type surface, including request, profile, search, fetch, result, evidence, cursor, gap, freshness, sensitivity, capability, and safe-error types.
+- Added packed-artifact and clean-installed-consumer proof for the provider declarations, runtime constants, package version, and existing contract imports.
+- Kept the unpublished Alpha runtime, migrations, credentials, generated PostgreSQL state, conformance state, and private paths outside the package artifact.
+- Documented the change from `0.1.0` as additive. Existing public contracts remain exported.
+- Preserved the owner-accepted moderate MCP dependency advisory as a production stop gate through 2026-08-24, or earlier if its dependency, transport, platform, or runtime scope changes.
+- Live connectors remain blocked.
+- Production runtime remains blocked.
+- Deployment remains blocked.
+- Real data remains blocked.
+- Automatic trusted-memory promotion remains forbidden.
+- No npm package was published.
+- No GitHub release or Git tag was created.
+
+Validation:
+
+- `npm run story5:release-candidate-smoke`
+- `npm run consumer:smoke`
+- `npm run package:dry-run`
+- `npm run package:content-smoke`
+- `npm run release-command-guard:smoke`
+- `npm run safety:scan`
+- `npm run claims:scan`
+
 ### 2026-07-24 - Alpha 1 Story 5 audited source-evidence read slices
 
 Summary:
@@ -25,7 +53,7 @@ Summary:
 - Added a workflow smoke that prevents the hosted PostgreSQL gate from being replaced by Alpha unit tests or broadened with production secrets or artifact uploads.
 - Kept provider identity, owner, namespace, scope, timeout, endpoint, and credentials outside MCP and API input.
 - Preserved zero-provider operation as a safe unavailable result and kept provider reads separate from candidates and trusted memory.
-- Preserved the published `@source-wire/contracts@0.1.0` package boundary. Story 5 PostgreSQL conformance is now included, while continuous PostgreSQL CI and a published provider contract remain later Story 5 issues.
+- Preserved the immutable published `@source-wire/contracts@0.1.0` package boundary while adding continuous PostgreSQL CI and preparing the unpublished `0.2.0` provider-contract candidate in later Story 5 issues.
 - Preserved deadline-only provider semantics. The host discards late results, while provider adapters remain responsible for cancelling their own transports.
 
 Validation:

@@ -29,7 +29,7 @@ const consumerSmoke = await readFile("scripts/consumer-smoke.mjs", "utf8");
 const approvalRecorder = await readFile("scripts/record-owner-approval.mjs", "utf8");
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 until a separately approved patch release");
+assertEqual(packageJson.version, "0.2.0", "package candidate version must remain 0.2.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must remain public");
 
@@ -46,7 +46,7 @@ for (const requiredText of [
 
 assertIncludes(patchApprovalRequest, exactPatchApprovalText, "patch approval request exact approval text");
 assertIncludes(snapshotBoundary, "npm artifact immutable at @source-wire/contracts@0.1.0", "release snapshot boundary immutable marker");
-assertIncludes(sourceIndex, 'export const SOURCE_WIRE_PACKAGE_VERSION = "0.1.0";', "source version export");
+assertIncludes(sourceIndex, 'export const SOURCE_WIRE_PACKAGE_VERSION = "0.2.0";', "source version export");
 assertIncludes(consumerSmoke, "SOURCE_WIRE_PACKAGE_VERSION", "consumer smoke source version guard");
 assertIncludes(consumerSmoke, "parsedRuntime.version !== pack.version", "consumer smoke version equality guard");
 assertIncludes(approvalRecorder, "patch-release-implementation", "owner approval recorder patch target");
@@ -68,8 +68,8 @@ console.log("It does not publish npm, create a GitHub release, create tags, chan
 printRows([
   ["Package", packageJson.name],
   ["Current version", packageJson.version],
-  ["Likely patch version", "0.1.1"],
-  ["Source export on main", "SOURCE_WIRE_PACKAGE_VERSION = 0.1.0"],
+  ["Historical patch target", "0.1.1, superseded by the additive 0.2.0 candidate"],
+  ["Source export on main", "SOURCE_WIRE_PACKAGE_VERSION = 0.2.0"],
   ["Immutable npm artifact", "exports SOURCE_WIRE_PACKAGE_VERSION = 0.0.0"],
   ["Owner approval issue", `#${issueNumber}`],
   ["Patch approval", patchApprovalRecorded ? "recorded" : "not recorded"],

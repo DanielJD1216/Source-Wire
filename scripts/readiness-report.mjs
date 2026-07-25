@@ -124,9 +124,6 @@ const requiredScripts = [
   "release:implementation-rehearsal",
   "release:review",
   "release:approval-request",
-  "release:patch-approval-request",
-  "release:patch-execution-preflight",
-  "release:patch-candidate-rehearsal",
   "release:approval-status",
   "release:auth-handoff",
   "release:auth-preflight",
@@ -135,6 +132,7 @@ const requiredScripts = [
   "release:candidate-readiness",
   "release:artifact-manifest",
   "release:snapshot-boundary",
+  "story5:release-candidate-smoke",
   "release-command-guard:smoke",
   "release:gate",
   "package:dry-run",
@@ -158,7 +156,7 @@ const blockedScope = [
 ];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must match approved release version");
+assertEqual(packageJson.version, "0.2.0", "package version must match approved release version");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must match approved release access");
 assertEqual(packageJson.bin?.["source-wire"], "dist/cli.js", "source-wire bin must point to dist/cli.js");

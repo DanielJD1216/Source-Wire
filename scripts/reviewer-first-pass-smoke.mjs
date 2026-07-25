@@ -9,7 +9,7 @@ const checkoutRoot = join(tempRoot, "Source-Wire");
 
 const requiredMarkers = [
   "Package: @source-wire/contracts",
-  "Version: 0.1.0",
+  "Version: 0.2.0",
   "License: Apache-2.0",
   "Publish boundary: npm package public at @source-wire/contracts@0.1.0, hosted runtime blocked",
   "Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime",

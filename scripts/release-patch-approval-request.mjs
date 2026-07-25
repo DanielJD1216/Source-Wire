@@ -9,7 +9,7 @@ const ownerApprovalRecorder = await readFile("scripts/record-owner-approval.mjs"
 const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 until a future approved patch release");
+assertEqual(packageJson.version, "0.2.0", "package candidate version must remain 0.2.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must remain public");
 
@@ -41,7 +41,7 @@ for (const requiredText of [
   assertIncludes(request, requiredText, "release patch approval request");
 }
 
-assertIncludes(sourceIndex, 'export const SOURCE_WIRE_PACKAGE_VERSION = "0.1.0";', "source package version export");
+assertIncludes(sourceIndex, 'export const SOURCE_WIRE_PACKAGE_VERSION = "0.2.0";', "source package version export");
 assertIncludes(consumerSmoke, "SOURCE_WIRE_PACKAGE_VERSION", "consumer smoke version guard");
 assertIncludes(consumerSmoke, "parsedRuntime.version !== pack.version", "consumer smoke version guard condition");
 assertIncludes(consumerSmoke, "package root version export", "consumer smoke version guard failure");
@@ -63,15 +63,15 @@ printRows([
   ["Approval request", "ready"],
   ["Package", packageJson.name],
   ["Current version", packageJson.version],
-  ["Likely patch version", "0.1.1"],
-  ["Source export on main", "SOURCE_WIRE_PACKAGE_VERSION = 0.1.0"],
+  ["Historical patch target", "0.1.1, superseded by the additive 0.2.0 candidate"],
+  ["Source export on main", "SOURCE_WIRE_PACKAGE_VERSION = 0.2.0"],
   ["Immutable npm artifact", "exports SOURCE_WIRE_PACKAGE_VERSION = 0.0.0"],
   ["Patch release implementation", "blocked pending owner approval"]
 ]);
 
 printSection("Patch Release Boundary");
 printList([
-  "Latest main fixes the exported version mismatch and guards it in consumer smoke.",
+  "Latest main fixes the exported version mismatch through the unpublished additive 0.2.0 candidate and guards it in consumer smoke.",
   "The npm 0.1.0 artifact is immutable and remains disclosed as mismatched.",
   "Use the exact approval text in docs/internal/release-patch-approval-request.md before any future patch release.",
   "Hosted runtime child planning issues are already published as #259 through #264 and must not be republished in this patch unit.",

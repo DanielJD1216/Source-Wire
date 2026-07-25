@@ -6,7 +6,7 @@ const failures = [];
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0 after first release");
+assertEqual(packageJson.version, "0.2.0", "package candidate version must remain 0.2.0");
 assertEqual(packageJson.private, false, "package private flag should stay false for package-shape checks");
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public after first release");
 
@@ -36,7 +36,7 @@ if (failures.length > 0) {
 
 printSection("Source-Wire Release Candidate Readiness");
 printRows([
-  ["Release candidate", "published and ready for post-release verification"],
+  ["Release candidate", "prepared locally and blocked from publication"],
   ["Local package verification", "ready"],
   ["Package", packageJson.name],
   ["License", packageJson.license],
@@ -49,8 +49,8 @@ printRows([
 
 printSection("Next Action");
 printList([
-  "Use npm run registry:live-npm and npm run release:live-tags to verify live publication.",
-  "Use npm run release:decision-preflight to verify release evidence remains current.",
+  "Use npm run story5:release-candidate-smoke to verify the packed local candidate.",
+  "Use npm run registry:live-npm and npm run release:live-tags only to verify the immutable 0.1.0 publication.",
   "Keep hosted runtime, production runtime claims, and contribution acceptance blocked unless separate approval opens them.",
   "Do not publish a new npm version, create a new GitHub release, create a new tag, deploy services, or accept code contributions from this check."
 ]);
@@ -58,7 +58,7 @@ printList([
 console.log("");
 console.log("ok release candidate readiness ready");
 console.log("ok local package verification ready");
-console.log("ok release execution completed");
+console.log("blocked release candidate publication");
 
 async function assertPathExists(path) {
   try {

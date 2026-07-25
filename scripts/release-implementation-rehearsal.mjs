@@ -6,9 +6,9 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const packageLock = JSON.parse(await readFile("package-lock.json", "utf8"));
 const failures = [];
 
-const futureVersion = "0.1.0";
+const futureVersion = "0.2.0";
 const futurePublishAccess = "public";
-const currentVersion = "0.1.0";
+const currentVersion = "0.2.0";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
 assertEqual(packageJson.version, currentVersion, "real package version must match approved release version");
@@ -26,6 +26,7 @@ for (const requiredPath of [
   "docs/internal/release-candidate-readiness.md",
   "docs/internal/release-approval-request-packet.md",
   "docs/internal/release-notes-draft.md",
+  "docs/status/0.2.0-release-candidate.md",
   "docs/status/public-status.md"
 ]) {
   await assertPathExists(requiredPath);
@@ -35,6 +36,7 @@ const runbook = await readFile("docs/internal/release-implementation-runbook.md"
 const recommendation = await readFile("docs/internal/release-version-recommendation.md", "utf8");
 const rehearsalDoc = await readFile("docs/internal/release-implementation-rehearsal.md", "utf8");
 const releaseNotesDraft = await readFile("docs/internal/release-notes-draft.md", "utf8");
+const candidateNotes = await readFile("docs/status/0.2.0-release-candidate.md", "utf8");
 
 for (const [label, text, requiredText] of [
   ["release implementation runbook", runbook, "Use version 0.1.0 for the first public release"],
@@ -44,7 +46,8 @@ for (const [label, text, requiredText] of [
     "keep access public unless the owner explicitly approves a different package distribution path"
   ],
   ["version recommendation", recommendation, "Implemented first public release path:"],
-  ["version recommendation", recommendation, futureVersion],
+  ["release candidate notes", candidateNotes, futureVersion],
+  ["release candidate notes", candidateNotes, "Status: release candidate prepared locally, not published."],
   ["release implementation rehearsal", rehearsalDoc, "Status: approved release metadata check."],
   ["release implementation rehearsal", rehearsalDoc, "real `publishConfig.access` is `public`"],
   ["release implementation rehearsal", rehearsalDoc, "ok release metadata applied"],
@@ -68,7 +71,7 @@ const simulatedManifest = {
   files: packageJson.files
 };
 
-assertEqual(simulatedManifest.version, futureVersion, "simulated release manifest must use 0.1.0");
+assertEqual(simulatedManifest.version, futureVersion, "simulated release manifest must use 0.2.0");
 assertEqual(simulatedManifest.license, "Apache-2.0", "simulated release manifest must keep Apache-2.0");
 assertEqual(simulatedManifest.publishConfig?.access, futurePublishAccess, "simulated release manifest must use public npm access");
 assertEqual(simulatedManifest.bin?.["source-wire"], "dist/cli.js", "simulated release manifest must keep source-wire bin");
@@ -103,7 +106,7 @@ printRows([
   ["Real package version", packageJson.version],
   ["Real package-lock version", packageLock.packages[""].version],
   ["Real publishConfig.access", packageJson.publishConfig.access],
-  ["Approved release version", simulatedManifest.version],
+  ["Prepared candidate version", simulatedManifest.version],
   ["Approved release publishConfig.access", simulatedManifest.publishConfig.access],
   ["License", simulatedManifest.license],
   ["npm publishing", "published as @source-wire/contracts@0.1.0"],
@@ -115,13 +118,13 @@ printRows([
 
 printSection("Next Action");
 printList([
-  "Use this check to confirm first-release metadata remains applied.",
+  "Use this check to confirm the unpublished 0.2.0 candidate metadata remains aligned.",
   "Do not create a new tag, publish a new npm version, create a new GitHub release, deploy services, or accept code contributions from this check."
 ]);
 
 console.log("");
 console.log("ok release implementation rehearsal ready");
-console.log("ok future version rehearsal 0.1.0");
+console.log("ok release candidate rehearsal 0.2.0");
 console.log("ok future npm public access rehearsal");
 console.log("ok release metadata applied");
 

@@ -94,6 +94,7 @@ Use guides for tasks and reference pages for exact commands or exports.
 
 ## Current Status And Project Boundaries
 
+- [Contracts 0.2.0 Release Candidate](status/0.2.0-release-candidate.md)
 - [Public Status](status/public-status.md)
 - [Release Snapshot Boundary](status/release-snapshot-boundary.md)
 - [Contribution Policy](status/contribution-policy.md)

@@ -130,6 +130,7 @@ The readiness gate runs:
 - `npm run runtime:first-implementation-recommendation`
 - `npm run safety:scan`
 - `npm run claims:scan`
+- `npm run story5:release-candidate-smoke`
 - `npm run release:gate`
 - `npm run release-command-guard:smoke`
 - `npm run release:implementation-preparation`
@@ -138,9 +139,6 @@ The readiness gate runs:
 - `npm run release:implementation-rehearsal`
 - `npm run release:review`
 - `npm run release:approval-request`
-- `npm run release:patch-approval-request`
-- `npm run release:patch-execution-preflight`
-- `npm run release:patch-candidate-rehearsal`
 - `npm run release:auth-handoff`
 - `npm run release:candidate-readiness`
 - `npm run release:artifact-manifest`

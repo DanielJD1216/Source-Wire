@@ -9,7 +9,7 @@ const rulesetApprovalText =
   "Approved for a future Source-Wire repository ruleset implementation unit: create a repository ruleset for main after current Package Checks are green. Require Package Checks before updates, block force pushes, block branch deletion, document bypass policy, and do not publish npm, create a GitHub release, deploy services, add hosted runtime behavior, or accept code contributions.";
 
 assertEqual(packageJson.name, "@source-wire/contracts", "package name must remain @source-wire/contracts");
-assertEqual(packageJson.version, "0.1.0", "package version must remain 0.1.0");
+assertEqual(packageJson.version, "0.2.0", "package candidate version must remain 0.2.0");
 assertEqual(packageJson.license, "Apache-2.0", "package license must remain Apache-2.0");
 assertEqual(packageJson.publishConfig?.access, "public", "publishConfig.access must stay public");
 

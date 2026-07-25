@@ -10,19 +10,19 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 | --- | --- |
 | Repository visibility | Public source repository |
 | Package name | `@source-wire/contracts` |
-| Package version | `0.1.0` |
+| Latest-source package candidate | `0.2.0`, not published, tagged, or released |
 | License | `Apache-2.0` |
 | `LICENSE` file | Present |
 | Source package reuse | Allowed under Apache-2.0 |
 | npm package | Published as `@source-wire/contracts@0.1.0` |
 | GitHub release | Published as `v0.1.0` |
-| Snapshot boundary | npm `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` may contain post-release documentation and readiness hardening. |
+| Snapshot boundary | npm `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` contains an unpublished `0.2.0` contracts candidate plus later documentation and runtime proof. |
 | Known `v0.1.0` artifact issue | The immutable npm `0.1.0` package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`. Latest `main` fixes this for a future owner-approved patch release. |
 | Hosted runtime | Not included |
 | Local stdio MCP proposal and search process | Included only in latest source, established by Stories 2 and 3 and preserved by Story 4; hosted and production MCP remain excluded |
 | Synthetic runtime skeleton | Included on latest `main` only |
-| Local Alpha 1 Stories 1 through 4 developer runtime | Included in latest source as an unpublished npm workspace, not in the published package |
-| Database or migrations | Four explicit forward-only disposable Alpha 1 migrations are included in latest source; production and non-disposable use remain unapproved |
+| Local Alpha 1 Stories 1 through 5 developer runtime | Included in latest source as an unpublished npm workspace, not in the contracts candidate or published package |
+| Database or migrations | Six explicit forward-only disposable Alpha 1 migrations are included in latest source; production and non-disposable use remain unapproved |
 | Trusted-memory search | Included only as local active-only PostgreSQL full-text proof with audit-before-release receipts |
 | Trusted-memory correction and revocation | Included only as owner-controlled, fix-forward local Story 4 proof |
 | Export and recovery | Included only as bounded canonical export, fresh portable initialization, and isolated physical-recovery proof; not production backup tooling |
@@ -53,7 +53,7 @@ It currently includes:
 - package-readiness checks,
 - minimal synthetic in-memory runtime-boundary proof,
 - synthetic owner-hosted API policy route and MCP adapter skeleton,
-- unpublished npm `apps/alpha1-runtime` workspace for disposable PostgreSQL bootstrap, credential lifecycle, authenticated health, a two-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, owner correction and revocation, canonical export, fresh portable initialization, and isolated physical recovery,
+- unpublished npm `apps/alpha1-runtime` workspace for disposable PostgreSQL bootstrap, credential lifecycle, authenticated health, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, owner correction and revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads,
 - issue templates for structured public feedback,
 - GitHub-visible support, security, and contribution-boundary files,
 - Apache-2.0 licensing for source package reuse.
@@ -73,7 +73,7 @@ Source-Wire is not yet:
 
 For the current owner-hosted setup boundary, read [Owner-Hosted Setup Claim Boundary](../internal/owner-hosted-setup-claim-boundary.md).
 
-That historical setup boundary states that Source-Wire is not managed hosting and `Source-Wire-Memory-Engine` remains separate. Alpha 1 Stories 1 through 4 now add a disposable developer-runtime migration chain, stdio MCP proposal and search, candidate, owner-decision, audited protected reads, owner correction and revocation, canonical export, fresh portable initialization, and isolated physical recovery. Production runtime, production backup guarantees, and non-disposable database use remain blocked.
+That historical setup boundary states that Source-Wire is not managed hosting and `Source-Wire-Memory-Engine` remains separate. Alpha 1 Stories 1 through 5 add a disposable developer-runtime migration chain, stdio MCP proposal, memory search, evidence search and fetch, candidate, owner-decision, audited protected reads, owner correction and revocation, canonical export, fresh portable initialization, and isolated physical recovery. Production runtime, live providers, production backup guarantees, and non-disposable database use remain blocked.
 
 The current setup package closeout is recorded in [Owner-Hosted Setup Final Proof](../internal/owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Docs Audit](../internal/owner-hosted-setup-docs-audit.md), and [Owner-Hosted Setup Go/No-Go Gate](../internal/owner-hosted-setup-go-no-go-gate.md).
 
@@ -90,7 +90,7 @@ You may:
 - run local package dry-run checks,
 - run synthetic runtime-boundary smokes,
 - run synthetic runtime-skeleton smokes,
-- run the generated disposable Story 1, Story 2, Story 3, and Story 4 conformance paths,
+- run the generated disposable Story 1 through Story 5 conformance paths,
 - open structured feedback issues using the provided templates.
 
 The Apache-2.0 license alone does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.
@@ -100,11 +100,11 @@ The npm package and GitHub release do not mean Source-Wire is deployed, hosted, 
 
 Use [Release Snapshot Boundary](release-snapshot-boundary.md) to distinguish the immutable npm package, the immutable `v0.1.0` release snapshot, and latest `main`.
 
-Latest `main` may move ahead with public docs, issue gates, readiness checks, and an unpublished local developer-alpha workspace. That does not mutate the already-published npm package or the already-published `v0.1.0` release snapshot.
+Latest `main` may move ahead with public docs, issue gates, readiness checks, an unpublished `0.2.0` contracts candidate, and an unpublished local developer-alpha workspace. That does not mutate the already-published npm package or the already-published `v0.1.0` release snapshot.
 
 Known `v0.1.0` artifact issue: the published npm package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though the package metadata is `0.1.0`. Latest `main` corrects the source export and adds a consumer-smoke guard. The npm artifact remains immutable, so correcting the public registry artifact requires a future owner-approved patch release.
 
-Until a future owner-approved release implementation unit exists, publishing a new package version, creating a new release, creating a new tag, deploying services, starting hosted runtime behavior, and accepting code contributions remain blocked.
+Preparing the `0.2.0` candidate is approved. Publishing it, creating a new release, creating a new tag, deploying services, starting hosted runtime behavior, and accepting code contributions remain blocked.
 
 ## Main Verification Command
 

@@ -22,10 +22,11 @@ The knowledge base remains optional and replaceable. Source-Wire owns the logica
 | Surface | Current state |
 | --- | --- |
 | Public contract package | Published as `@source-wire/contracts@0.1.0` |
+| Latest-source contract candidate | `0.2.0`, prepared locally but not published, tagged, or released |
 | GitHub release | `v0.1.0` |
 | License | Apache-2.0 |
 | Contracts, schemas, synthetic fixtures, validation | Available |
-| Local developer Alpha | Stories 1 through 4 in latest source, unpublished and loopback-only |
+| Local developer Alpha | Stories 1 through 5 in latest source, unpublished and loopback-only |
 | PostgreSQL proof | Generated disposable state only |
 | Hosted or production runtime | Not available |
 | Live knowledge connectors | Not available |

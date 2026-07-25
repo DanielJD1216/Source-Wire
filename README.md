@@ -11,7 +11,7 @@
 
 Source-Wire defines how agents can retrieve evidence, preserve provenance, propose durable memories, and use trusted context without silently turning every document, message, or model output into truth.
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. The contracts package is published to npm and released on GitHub. Latest source also contains unpublished, loopback-only Alpha 1 Stories 1 through 5 for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through one synthetic provider. Nothing is deployed or hosted.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.1.0` remains published to npm and released on GitHub. Latest source is an unpublished `0.2.0` release candidate that adds the public `KnowledgeProvider v1` contract. It also contains loopback-only Alpha 1 Stories 1 through 5 for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through one synthetic provider. Nothing is deployed or hosted.
 
 > Bring your own knowledge base, PostgreSQL, credentials, and agent harness. Source-Wire keeps the memory lifecycle and trust boundary explicit.
 
@@ -73,6 +73,7 @@ Use the [Documentation Index](docs/README.md) when you already know the task you
 | Surface | Current state |
 | --- | --- |
 | Public package | `@source-wire/contracts@0.1.0` |
+| Latest-source package candidate | `@source-wire/contracts@0.2.0`, prepared locally but not published, tagged, or released |
 | License | Apache-2.0 |
 | GitHub release | `v0.1.0` |
 | Contracts, schemas, fixtures, validation | Included |
@@ -82,7 +83,7 @@ Use the [Documentation Index](docs/README.md) when you already know the task you
 | Live knowledge connectors or real user data | Not included |
 | Automatic trusted-memory promotion | Forbidden |
 
-The published package and the unpublished Alpha workspace are separate boundaries. Read [Public Status](docs/status/public-status.md) before making runtime, release, hosting, or production claims.
+The published package, unpublished `0.2.0` contracts candidate, and unpublished Alpha workspace are separate boundaries. Read [Public Status](docs/status/public-status.md) before making runtime, release, hosting, or production claims.
 
 ## First Reviewer Quickstart
 
@@ -206,11 +207,11 @@ Historical planning packets, approvals, and implementation proofs are preserved 
 
 ## Release Snapshot
 
-The npm package `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` may include later documentation, contract hardening, and unpublished local Alpha proof.
+The npm package `@source-wire/contracts@0.1.0` and GitHub release `v0.1.0` are immutable first-release snapshots. Latest `main` now contains an unpublished `0.2.0` contracts candidate, later documentation, and unpublished local Alpha proof.
 
 Known `v0.1.0` package issue: the immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though package metadata is `0.1.0`. Latest `main` fixes the source export and adds a consumer-smoke guard. Correcting the registry artifact requires a future owner-approved patch release.
 
-Read [Release Snapshot Boundary](docs/status/release-snapshot-boundary.md).
+Read [Contracts 0.2.0 Release Candidate](docs/status/0.2.0-release-candidate.md) and [Release Snapshot Boundary](docs/status/release-snapshot-boundary.md).
 
 ## Safety Rule
 

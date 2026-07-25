@@ -16,6 +16,9 @@ Historical approval packets and proof records live in `docs/internal/`. Use them
 For release status, distinguish the live `0.1.0` snapshot from the unpublished
 `0.2.0` candidate. Read [Contracts 0.2.0 Release Candidate](docs/status/0.2.0-release-candidate.md).
 
+Before changing how an external knowledge provider is installed into the Alpha
+runtime, read [Knowledge Provider Host Composition Story](docs/internal/knowledge-provider-host-composition-story.md).
+
 ## Architecture Invariants
 
 - Source evidence, pending memory candidates, and trusted memory are different states.

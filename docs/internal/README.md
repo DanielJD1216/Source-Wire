@@ -16,6 +16,8 @@ Current proposed design:
 - [Alpha 1 Story 5 Knowledge Provider Runtime Host Design](alpha1-story5-knowledge-provider-runtime-host-design.md)
 - [Alpha 1 Story 5 Published Implementation Issues](alpha1-story5-knowledge-provider-runtime-host-issue-drafts.md)
 - [Alpha 1 Story 5 MCP Dependency Advisory Disposition](alpha1-story5-mcp-advisory-disposition.md)
+- [Knowledge Provider Host Composition Story](knowledge-provider-host-composition-story.md)
+- [Knowledge Provider Host Composition Published Issues](knowledge-provider-host-composition-issue-drafts.md)
 
 ## Do Not Use This Archive As
 

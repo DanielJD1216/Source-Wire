@@ -15,7 +15,7 @@ To exercise the latest-source local runtime separately, follow [Alpha 1 Story 1 
 
 Node.js 22 matches GitHub Actions Package Checks.
 
-The package is published to npm as `@source-wire/contracts@0.2.0`. Use the local repository checkout for development and full verification. The separate `@source-wire/local-runtime@0.1.0-alpha.1` candidate is prepared locally but not published.
+The contracts package is published to npm as `@source-wire/contracts@0.2.0`. Use the local repository checkout for development and full verification. The separate `@source-wire/local-runtime@0.1.0-alpha.1` public npm Alpha candidate is approved for publication but still pending its exact-revision release gate.
 
 ## Install
 

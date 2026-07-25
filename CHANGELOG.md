@@ -4,6 +4,28 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-25 - Local-runtime public npm Alpha release candidate
+
+Summary:
+
+- Converted `@source-wire/local-runtime@0.1.0-alpha.1` from a private packed
+  candidate into a public npm Alpha candidate under the `alpha` dist-tag.
+- Added public package metadata, exact-version installation guidance, and the
+  npm-only distribution boundary.
+- Re-ran the two-moderate-finding disposition for the publication scope while
+  preserving macOS/Linux, stdio-only, synthetic-or-disposable limitations.
+- Kept Git tags, GitHub releases, deployment, hosting, production, Windows,
+  HTTP or SSE MCP, static serving, real data, live providers, and
+  non-disposable databases blocked.
+
+Verification:
+
+```text
+npm run local-runtime:candidate-smoke
+npm run local-runtime:security-gate
+npm publish --workspace @source-wire/local-runtime --dry-run --access public --tag alpha
+```
+
 ### 2026-07-25 - Story 6.8 no-publish local-runtime package candidate
 
 Summary:

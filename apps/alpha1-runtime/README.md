@@ -1,10 +1,10 @@
 # @source-wire/local-runtime
 
-Experimental Source-Wire local runtime candidate for macOS and Linux evaluation
-with synthetic or disposable data only.
+Experimental Source-Wire local runtime for macOS and Linux evaluation with
+synthetic or disposable data only.
 
-This package is prepared as `0.1.0-alpha.1`, but it is private and has not been
-published, tagged, or released.
+Version `0.1.0-alpha.1` is the first public npm Alpha. It is not a hosted
+service, production runtime, GitHub release, or stable release.
 
 ## Compatibility
 
@@ -15,7 +15,18 @@ published, tagged, or released.
 - `KnowledgeProvider v1`
 - exact dependency pins from this package manifest
 
-## Install a locally packed candidate
+## Install
+
+Install the exact public Alpha version:
+
+```sh
+npm install --save-exact @source-wire/local-runtime@0.1.0-alpha.1
+```
+
+This release uses the `alpha` dist-tag. Prefer the exact version above for
+repeatable evaluation.
+
+To inspect a locally packed candidate before publication, run:
 
 From the Source-Wire repository:
 
@@ -72,12 +83,14 @@ promote memory.
 
 Read [SECURITY.md](SECURITY.md) before evaluation. Two moderate nested MCP
 dependency advisories are temporarily accepted only for the exact local,
-stdio-only, non-Windows scope above. Re-review is required no later than
-August 24, 2026, and immediately after any dependency, transport, platform,
-runtime, or publication scope change.
+stdio-only, non-Windows scope above. The npm publication review was completed
+on July 25, 2026. Re-review is required no later than August 24, 2026, and
+immediately after any dependency, transport, platform, runtime, future
+publication, hosting, deployment, or data-scope change.
 
-## No-publish boundary
+## Public Alpha boundary
 
-This package remains `"private": true`. Preparing or packing it locally does not
-authorize npm publication, a GitHub tag or release, deployment, hosting, real
-data, live providers, or production use.
+Public npm availability authorizes installation of this exact experimental
+Alpha only. It does not authorize a GitHub tag or release, deployment, hosting,
+real data, live providers, Windows, HTTP or SSE MCP, static serving,
+non-disposable databases, or production use.

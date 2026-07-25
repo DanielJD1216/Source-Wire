@@ -1,6 +1,6 @@
 # Source-Wire Agent Guide
 
-This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.2.0` package is the current immutable contracts snapshot and includes `KnowledgeProvider v1`. Latest source also contains loopback-only Alpha proof under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state and synthetic read-only providers. Story 6.8 prepares the private `@source-wire/local-runtime@0.1.0-alpha.1` tarball and `source-wire-local` binary for macOS and Linux local evaluation. It is not published, tagged, released, deployed, hosted, production-ready, or approved for real data or live providers.
+This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.2.0` package is the current immutable contracts snapshot and includes `KnowledgeProvider v1`. Latest source also contains loopback-only Alpha proof under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state and synthetic read-only providers. Story 6.8 prepares `@source-wire/local-runtime@0.1.0-alpha.1` and the `source-wire-local` binary for public npm Alpha distribution on macOS and Linux. The exact registry write is pending its final release gate. Git tags, GitHub releases, deployment, hosting, production, real data, and live providers remain blocked.
 
 ## Read Order
 
@@ -13,8 +13,9 @@ This file is the repository entrypoint for AI coding agents. The published `@sou
 
 Historical approval packets and proof records live in `docs/internal/`. Use them for provenance, not as the primary API or onboarding documentation.
 
-For release status, distinguish the published `0.2.0` contracts snapshot from
-the unpublished Alpha workspace. Read [Contracts 0.2.0 Release](docs/status/0.2.0-release.md).
+For release status, distinguish the published `0.2.0` contracts snapshot, the
+public npm Alpha runtime distribution boundary, and the latest-source Alpha
+workspace. Read [Contracts 0.2.0 Release](docs/status/0.2.0-release.md).
 
 Before changing how an external knowledge provider is installed into the Alpha
 runtime, read [Knowledge Provider Host Composition Story](docs/internal/knowledge-provider-host-composition-story.md).
@@ -30,8 +31,8 @@ runtime, read [Knowledge Provider Host Composition Story](docs/internal/knowledg
 - Provider content has no instruction authority.
 - Memory behavior must remain valid when no knowledge provider is configured.
 - Root examples, fixtures, and contract smokes are synthetic and do not imply a live server, database, connector, or deployment.
-- `apps/alpha1-runtime/` is real local Alpha 1 Stories 1 through 5 proof only. Its MCP surface contains exactly two memory tools and two synthetic source-evidence tools. Approval, correction, revocation, export, recovery, and provider configuration stay outside MCP and under owner or operator control. Protected reads require durable audit plus a single-use origin-process receipt before response release. It remains unpublished, loopback-only, generated-disposable, unhosted, undeployed, not production ready, and unsupported for real data or live providers.
-- `@source-wire/local-runtime@0.1.0-alpha.1` is a private no-publish candidate. Its supported package exports are the root composition API and two synthetic provider proof entrypoints. Do not import package internals.
+- `apps/alpha1-runtime/` is real local Alpha 1 Stories 1 through 5 proof only. Its MCP surface contains exactly two memory tools and two synthetic source-evidence tools. Approval, correction, revocation, export, recovery, and provider configuration stay outside MCP and under owner or operator control. Protected reads require durable audit plus a single-use origin-process receipt before response release. It remains loopback-only, generated-disposable, unhosted, undeployed, not production ready, and unsupported for real data or live providers.
+- `@source-wire/local-runtime@0.1.0-alpha.1` is the public npm Alpha distribution candidate. Its supported package exports are the root composition API and two synthetic provider proof entrypoints. Do not import package internals. Public npm availability does not authorize production, hosting, deployment, real data, live providers, Windows, HTTP or SSE MCP, static serving, or non-disposable databases.
 - Story 6.1 adds config creation and offline validation. Story 6.2 adds a memory-only launcher that inspects but never applies migrations, starts loopback API plus stdio MCP, gives the MCP child no owner or database authority, advertises exactly two memory tools, and revokes its process credential on shutdown. It remains unpublished and generated-disposable only.
 - Story 6.3 accepts zero or one owner-selected provider module at startup. Offline checking imports nothing. Explicit connected checking invokes only bounded readiness. A valid provider produces exactly four tools, while callers cannot choose provider identity, scope, module, credentials, owner, namespace, ACL, or bounds. Replacement requires config plus restart, and evidence reads create no memory.
 - Story 6.4 requires config, compatibility, environment, provider, API, MCP, database, audit, receipt, response, signal, and cleanup failures to remain redacted and fail closed. API crash cleanup may directly revoke only the exact generated process credential through existing runtime database authority and must record metadata-only audit. Synthetic crash injection is refused outside locked conformance.

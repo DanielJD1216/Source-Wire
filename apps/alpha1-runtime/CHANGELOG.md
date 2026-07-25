@@ -2,7 +2,8 @@
 
 ## 0.1.0-alpha.1
 
-Prepared locally, not published, tagged, or released.
+First public npm Alpha. No Git tag, GitHub release, deployment, or hosted
+service is included.
 
 - Adds the `source-wire-local` binary.
 - Adds a supported programmatic composition entrypoint.
@@ -12,5 +13,6 @@ Prepared locally, not published, tagged, or released.
 - Includes synthetic provider proof only.
 - Requires no Source-Wire account, API key, telemetry, billing, or
   Source-Wire-operated endpoint.
+- Publishes only the npm package under the `alpha` dist-tag.
 - Keeps production, hosting, deployment, Windows, real data, live providers,
-  HTTP or SSE MCP, static serving, publishing, tagging, and releases blocked.
+  HTTP or SSE MCP, static serving, Git tags, and GitHub releases blocked.

@@ -298,7 +298,7 @@ test("invalid init identifiers fail as arguments before creating a file", async 
   }
 });
 
-test("compiled private binary emits deterministic JSON and leaves the public contracts CLI boundary intact", async () => {
+test("compiled local binary emits deterministic JSON and leaves the public contracts CLI boundary intact", async () => {
   const directory = await privateTemporaryDirectory();
   try {
     const destination = join(directory, "source-wire.local.json");

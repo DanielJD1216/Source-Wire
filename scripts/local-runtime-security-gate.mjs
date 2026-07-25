@@ -11,7 +11,13 @@ const packageJson = JSON.parse(
 const security = await readFile(join(workspace, "SECURITY.md"), "utf8");
 const candidate = packageJson.sourceWireCandidate;
 
-assertEqual(packageJson.private, true, "candidate private guard");
+assertEqual(packageJson.private, false, "public Alpha guard");
+assertEqual(
+  packageJson.publishConfig?.access,
+  "public",
+  "public npm access"
+);
+assertEqual(packageJson.publishConfig?.tag, "alpha", "npm dist-tag");
 assertJsonEqual(packageJson.os, ["darwin", "linux"], "candidate platforms");
 assertEqual(packageJson.engines?.node, "22.23.1", "Node.js compatibility");
 assertEqual(
@@ -35,6 +41,16 @@ assertEqual(
   "2026-08-24",
   "advisory review date"
 );
+assertEqual(
+  candidate?.publicationSecurityReview?.reviewedAt,
+  "2026-07-25",
+  "publication security review date"
+);
+assertEqual(
+  candidate?.publicationSecurityReview?.scope,
+  "npm-public-alpha-0.1.0-alpha.1",
+  "publication security review scope"
+);
 assertJsonEqual(
   candidate?.advisoryDisposition?.reviewTriggers,
   [
@@ -57,6 +73,7 @@ for (const requiredText of [
   "MCP transport is stdio only",
   "HTTP and SSE MCP are unsupported",
   "static serving is not used or supported",
+  "Publication review completed on July 25, 2026",
   "real data",
   "live providers"
 ]) {
@@ -123,6 +140,9 @@ for (const forbiddenReference of [
 
 console.log("ok local runtime security scope macOS Linux and stdio only");
 console.log("ok local runtime exact Alpha dependency pins");
+console.log(
+  "ok local runtime npm publication security review completed 2026-07-25"
+);
 console.log(
   "accepted two moderate nested MCP findings for unsupported Windows static serving scope"
 );

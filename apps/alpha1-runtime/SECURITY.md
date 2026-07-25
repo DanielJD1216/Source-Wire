@@ -1,8 +1,8 @@
 # Security boundary
 
-`@source-wire/local-runtime@0.1.0-alpha.1` is an unpublished experimental Alpha
-candidate. It is limited to macOS and Linux local evaluation with synthetic or
-disposable data.
+`@source-wire/local-runtime@0.1.0-alpha.1` is a public experimental npm Alpha.
+It is limited to macOS and Linux local evaluation with synthetic or disposable
+data.
 
 ## Dependency advisory disposition
 
@@ -24,9 +24,10 @@ The findings are temporarily accepted for this candidate because:
   change the reviewed dependency scope.
 
 This is a scope-limited disposition, not a claim that the dependency is safe
-for other uses. Re-review is required no later than August 24, 2026, or
-immediately if any dependency, transport, platform, runtime, publication,
-hosting, deployment, or data boundary changes.
+for other uses. Publication review completed on July 25, 2026 for the exact
+public npm Alpha scope. Re-review is required no later than August 24, 2026, or
+immediately if any dependency, transport, platform, runtime, future
+publication, hosting, deployment, or data boundary changes.
 
 ## Unsupported security scope
 

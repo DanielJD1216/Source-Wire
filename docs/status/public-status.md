@@ -16,7 +16,7 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 | Source package reuse | Allowed under Apache-2.0 |
 | npm package | Published as `@source-wire/contracts@0.2.0` |
 | GitHub release | Published as `v0.2.0` |
-| Snapshot boundary | npm versions `0.1.0` and `0.2.0`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable snapshots. Latest `main` may contain later documentation and unpublished runtime proof. |
+| Snapshot boundary | npm contracts versions `0.1.0` and `0.2.0`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable snapshots. The approved local-runtime npm Alpha is a separate distribution boundary and does not create a GitHub release. Latest `main` may contain later documentation and local runtime proof. |
 | Known `v0.1.0` artifact issue | The immutable npm `0.1.0` package exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0`. Version `0.2.0` exports the corrected package version. |
 | Hosted runtime | Not included |
 | Local stdio MCP proposal and search process | Included only in latest source, established by Stories 2 and 3 and preserved by Story 4; hosted and production MCP remain excluded |
@@ -29,7 +29,7 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 | Local Story 6.5 database control plane | Included in latest source for read-only runtime-role status, safe current and target migration planning, explicit apply, exact migrator posture, rollback, idempotency, and disposable cleanup proof |
 | Local Story 6.6 owner-controlled export | Included in latest source for explicit namespace selection, exact owner authority, canonical bounded local output, default no-overwrite, interruption cleanup, and zero upload |
 | Local Story 6.7 evidence-first compatibility | Included in latest source as synthetic cross-repository proof against a pinned private adapter that depends exactly on published `@source-wire/contracts@0.2.0`; no live connector or real evidence is included |
-| Local Story 6.8 package candidate | Prepared as private `@source-wire/local-runtime@0.1.0-alpha.1` with binary `source-wire-local`, supported composition API, exact Alpha pins, clean installed-consumer proof, and no-`npx` AI-agent configuration; not published, tagged, released, deployed, hosted, production-ready, or approved for real data or live providers |
+| Local Story 6.8 package candidate | Prepared for public npm Alpha publication as `@source-wire/local-runtime@0.1.0-alpha.1` under the `alpha` dist-tag with binary `source-wire-local`, supported composition API, exact Alpha pins, clean installed-consumer proof, and no-`npx` AI-agent configuration; registry publication is pending the exact-revision gate, while Git tags, GitHub releases, deployment, hosting, production, real data, and live providers remain blocked |
 | Database or migrations | Six explicit forward-only disposable Alpha 1 migrations are included in latest source; production and non-disposable use remain unapproved |
 | Trusted-memory search | Included only as local active-only PostgreSQL full-text proof with audit-before-release receipts |
 | Trusted-memory correction and revocation | Included only as owner-controlled, fix-forward local Story 4 proof |
@@ -49,7 +49,7 @@ These public issues track completed release, branch-governance, hosted-runtime P
 
 ## What This Repo Is Today
 
-Source-Wire is a public contracts package plus the first unpublished local operating proof for agent-first memory systems.
+Source-Wire is a public contracts package plus the first local operating proof for agent-first memory systems. The local-runtime package has a separately approved public npm Alpha distribution boundary.
 
 It currently includes:
 
@@ -69,7 +69,7 @@ It currently includes:
 - private Story 6.5 read-only database status and explicit apply-gated migration control with separate runtime and migrator authority,
 - private Story 6.6 exact-owner canonical local export with explicit namespaces, default no-overwrite, atomic owner-only files, and no upload,
 - private Story 6.7 cross-repository synthetic compatibility proof through the same provider-neutral CLI, API policy, audit, receipt, stdio MCP, and official-client path,
-- private Story 6.8 packed local-runtime candidate with curated exports, package-content checks, exact advisory disposition, clean-consumer proof, and installed-binary MCP configuration,
+- public npm Alpha Story 6.8 packed local-runtime candidate with curated exports, package-content checks, exact advisory disposition, clean-consumer proof, and installed-binary MCP configuration,
 - issue templates for structured public feedback,
 - GitHub-visible support, security, and contribution-boundary files,
 - Apache-2.0 licensing for source package reuse.
@@ -114,7 +114,7 @@ You may:
 - run the private Story 6.5 database control plane through the 42-case Story 1 disposable conformance path,
 - run the private Story 6.6 owner-controlled export through the 25-case Story 4 disposable conformance path,
 - run the private Story 6.7 evidence-first package smoke and 29-case cross-repository disposable conformance path,
-- pack and evaluate the private Story 6.8 local-runtime candidate without publishing it,
+- pack and evaluate the Story 6.8 local-runtime candidate before or after npm publication,
 - open structured feedback issues using the provided templates.
 
 The Apache-2.0 license alone does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.
@@ -125,17 +125,18 @@ The npm package and GitHub release do not mean Source-Wire is deployed, hosted, 
 Use [Release Snapshot Boundary](release-snapshot-boundary.md) to distinguish the immutable npm and GitHub release snapshots from latest `main`.
 
 Latest `main` may move ahead with public docs, issue gates, readiness checks,
-and the unpublished local developer-alpha workspace. That does not mutate
+and the local developer-alpha workspace. That does not mutate
 already-published npm packages or GitHub release snapshots.
 
 Known `v0.1.0` artifact issue: that npm package exports
 `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though its package metadata is
 `0.1.0`. Version `0.2.0` exports `0.2.0` and preserves the consumer-smoke guard.
 
-Version `0.2.0` is published and released. Future package versions still
-require a separate exact release approval. Deployment, hosted runtime behavior,
-production use, live providers, real data, and code contribution acceptance
-remain blocked.
+Contracts version `0.2.0` is published and released. The exact
+`@source-wire/local-runtime@0.1.0-alpha.1` npm publication is separately
+approved. Future package versions still require a new exact release approval.
+Git tags, GitHub releases, deployment, hosted runtime behavior, production use,
+live providers, real data, and code contribution acceptance remain blocked.
 
 ## Main Verification Command
 

@@ -1,10 +1,30 @@
 {
   "name": "@source-wire/local-runtime",
   "version": "0.1.0-alpha.1",
-  "private": true,
-  "description": "Unpublished experimental Source-Wire local runtime candidate for synthetic or disposable evaluation.",
+  "private": false,
+  "description": "Experimental Source-Wire local runtime for synthetic or disposable local evaluation.",
   "type": "module",
   "license": "Apache-2.0",
+  "keywords": [
+    "agent-memory",
+    "knowledge-provider",
+    "mcp",
+    "postgresql",
+    "source-wire"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielJD1216/Source-Wire.git",
+    "directory": "apps/alpha1-runtime"
+  },
+  "homepage": "https://github.com/DanielJD1216/Source-Wire#readme",
+  "bugs": {
+    "url": "https://github.com/DanielJD1216/Source-Wire/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "alpha"
+  },
   "os": [
     "darwin",
     "linux"
@@ -48,6 +68,10 @@
     "telemetryIncluded": false,
     "billingIncluded": false,
     "sourceWireEndpointRequired": false,
+    "publicationSecurityReview": {
+      "reviewedAt": "2026-07-25",
+      "scope": "npm-public-alpha-0.1.0-alpha.1"
+    },
     "advisoryDisposition": {
       "status": "temporarily-accepted",
       "advisory": "GHSA-frvp-7c67-39w9",

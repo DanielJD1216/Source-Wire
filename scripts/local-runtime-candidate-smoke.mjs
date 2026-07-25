@@ -37,7 +37,13 @@ try {
 
   assertEqual(packageJson.name, expected.name, "package name");
   assertEqual(packageJson.version, expected.version, "package version");
-  assertEqual(packageJson.private, true, "no-publish guard");
+  assertEqual(packageJson.private, false, "public Alpha guard");
+  assertEqual(
+    packageJson.publishConfig?.access,
+    "public",
+    "public npm access"
+  );
+  assertEqual(packageJson.publishConfig?.tag, "alpha", "npm dist-tag");
   assertEqual(
     packageJson.dependencies?.["@source-wire/contracts"],
     expected.contractsVersion,
@@ -220,7 +226,10 @@ try {
   console.log(
     `ok local runtime candidate ${expected.name}@${expected.version}`
   );
-  console.log("ok local runtime candidate remains private and no-publish");
+  console.log(
+    "ok local runtime candidate is configured for public npm Alpha publication"
+  );
+  console.log("ok local runtime candidate publishes under the alpha dist-tag");
   console.log(
     `ok local runtime candidate pins @source-wire/contracts@${expected.contractsVersion}`
   );

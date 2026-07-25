@@ -11,7 +11,7 @@
 
 Source-Wire defines how agents can retrieve evidence, preserve provenance, propose durable memories, and use trusted context without silently turning every document, message, or model output into truth.
 
-Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains a loopback-only Alpha workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. Story 6.8 prepares, but does not publish, the private `@source-wire/local-runtime@0.1.0-alpha.1` candidate and `source-wire-local` binary for macOS and Linux local evaluation with synthetic or disposable data. Nothing is deployed, hosted, tagged, released, or published from that candidate.
+Current public status: Source-Wire is Apache-2.0 licensed as a source package. Version `0.2.0` is published to npm and released on GitHub with the public `KnowledgeProvider v1` contract. Latest source also contains a loopback-only Alpha workspace for disposable local PostgreSQL, MCP candidate proposal, owner approval, audited trusted-memory search, owner correction and revocation, bounded portability, and audited source-evidence reads through synthetic providers. Story 6.8 prepares the public npm Alpha release candidate `@source-wire/local-runtime@0.1.0-alpha.1` and the `source-wire-local` binary for macOS and Linux local evaluation with synthetic or disposable data. Registry publication is approved but still pending the exact-revision release gate. Nothing is deployed, hosted, tagged, or released from that candidate.
 
 > Bring your own knowledge base, PostgreSQL, credentials, and agent harness. Source-Wire keeps the memory lifecycle and trust boundary explicit.
 
@@ -86,12 +86,12 @@ Use the [Documentation Index](docs/README.md) when you already know the task you
 | Local Story 6.5 database control plane | Included in latest source for read-only runtime-role status, safe migration planning, explicit `--apply`, exact migrator authority, transaction rollback, and idempotent disposable migration proof |
 | Local Story 6.6 owner-controlled export | Included in latest source for explicit namespaces, canonical bounded output, atomic owner-only local files, default no-overwrite, exact owner authority, interruption cleanup, and zero upload |
 | Local Story 6.7 evidence-first compatibility | Included in latest source as cross-repository synthetic proof against a pinned private adapter that depends on published `@source-wire/contracts@0.2.0`; no live connector or real evidence is included |
-| Local Story 6.8 package candidate | Prepared as private `@source-wire/local-runtime@0.1.0-alpha.1` with a supported composition API and `source-wire-local` binary; it is not published, tagged, released, deployed, hosted, production-ready, or approved for real data or live providers |
+| Local Story 6.8 package candidate | Prepared for public npm Alpha publication as `@source-wire/local-runtime@0.1.0-alpha.1` under the `alpha` dist-tag with a supported composition API and `source-wire-local` binary; registry publication is pending the exact-revision gate, and Git tags, GitHub releases, deployment, hosting, production, real data, and live providers remain blocked |
 | Hosted API, hosted MCP, deployment | Not included |
 | Live knowledge connectors or real user data | Not included |
 | Automatic trusted-memory promotion | Forbidden |
 
-The published `0.2.0` contracts package and unpublished Alpha workspace are separate boundaries. Read [Public Status](docs/status/public-status.md) before making runtime, hosting, or production claims.
+The published `0.2.0` contracts package, public npm Alpha runtime candidate, and latest-source Alpha workspace are separate boundaries. Read [Public Status](docs/status/public-status.md) before making runtime, hosting, or production claims.
 
 ## First Reviewer Quickstart
 
@@ -132,7 +132,7 @@ Use [Share For Technical Review](docs/guides/share-for-review.md) and [Reviewer 
 - production or real-data correction, revocation, export, and recovery,
 - live knowledge connectors,
 - real user or client data,
-- local-runtime npm publication, tags, and releases,
+- local-runtime Git tags and GitHub releases,
 - code contribution acceptance.
 
 The package and release are available for technical review and Apache-2.0 source reuse. They do not imply that a hosted or production memory system exists.
@@ -146,7 +146,7 @@ The package and release are available for technical review and Apache-2.0 source
 | Policy proofs | In-memory and owner-hosted skeletons for identity, namespace, denial, audit, and no-auto-promotion behavior |
 | Latest-source Alpha | Disposable local PostgreSQL bootstrap, candidate proposal, owner decisions, audited memory search, correction, revocation, export, recovery, and synthetic source-evidence read proof |
 
-The Alpha workspace under `apps/alpha1-runtime/` is local developer proof. Story 6.7 installs a pinned private synthetic package from the separate evidence-first repository and proves it through the same CLI, API policy, audit, receipt, MCP, and official-client path. Story 6.8 prepares the private local-runtime tarball, limits its public exports, and proves a clean installed consumer and AI-agent binary path. Provider replacement requires a config change and restart. This does not establish production availability, publication, hosting, deployment, managed database provisioning, production backup guarantees, external or live providers, or real-data support.
+The Alpha workspace under `apps/alpha1-runtime/` is local developer proof. Story 6.7 installs a pinned private synthetic package from the separate evidence-first repository and proves it through the same CLI, API policy, audit, receipt, MCP, and official-client path. Story 6.8 prepares the public npm Alpha tarball, limits its public exports, and proves a clean installed consumer and AI-agent binary path. Provider replacement requires a config change and restart. npm publication does not establish production availability, hosting, deployment, managed database provisioning, production backup guarantees, external or live providers, or real-data support.
 
 ## For AI Agents
 
@@ -178,7 +178,7 @@ Core invariants:
 | [`src/contracts/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/contracts) | TypeScript contracts and synthetic evaluators |
 | [`src/runtime-skeleton/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/runtime-skeleton) | Synthetic API-policy and MCP-routing proof |
 | [`src/owner-hosted-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/src/owner-hosted-runtime) | Narrow in-process owner-hosted skeleton proof |
-| [`apps/alpha1-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/apps/alpha1-runtime) | Unpublished loopback-only Alpha workspace and private local-runtime package candidate |
+| [`apps/alpha1-runtime/`](https://github.com/DanielJD1216/Source-Wire/tree/main/apps/alpha1-runtime) | Loopback-only Alpha workspace and public npm Alpha local-runtime package candidate |
 | [`schemas/`](schemas) | Public JSON schemas |
 | [`examples/`](examples) | Synthetic fixtures, conformance matrices, and smokes |
 | [`docs/`](docs) | Public documentation and historical project records |
@@ -192,7 +192,7 @@ Core invariants:
 | `npm test` | Types, fixtures, schema exports, CLI, and examples |
 | `npm run reviewer:smoke` | Clean first-reviewer path in a temporary copy |
 | `npm run alpha1:ci-workflow-smoke` | Hosted Alpha PostgreSQL job keeps exact versions, all five stories, repository adapters, the pinned evidence-first adapter, stable markers, and no artifact or production-secret path |
-| `npm run local-runtime:candidate-smoke` | Packs and installs the private candidate, checks the supported API and CLI, rejects private imports, and proves a no-`npx` AI-agent configuration |
+| `npm run local-runtime:candidate-smoke` | Packs and installs the public Alpha candidate, checks the supported API and CLI, rejects private imports, and proves a no-`npx` AI-agent configuration |
 | `npm run local-runtime:security-gate` | Re-runs the exact dependency audit and enforces the temporary stdio-only advisory disposition |
 | `npm run local-runtime:candidate-conformance` | With exact Node.js and disposable PostgreSQL, proves the clean installed binary through memory-only and synthetic-provider stdio MCP paths |
 | `npm run alpha1:conformance:story5` | 27-case disposable PostgreSQL proof for the four-tool MCP, protected source-evidence release, Story 6.3 composition, and Story 6.4 fail-closed cleanup |
@@ -228,7 +228,7 @@ Historical planning packets, approvals, and implementation proofs are preserved 
 
 ## Release Snapshot
 
-The npm packages `@source-wire/contracts@0.1.0` and `@source-wire/contracts@0.2.0`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable release snapshots. Latest `main` may contain later documentation and unpublished local Alpha proof.
+The npm packages `@source-wire/contracts@0.1.0` and `@source-wire/contracts@0.2.0`, plus GitHub releases `v0.1.0` and `v0.2.0`, are immutable release snapshots. The approved `@source-wire/local-runtime@0.1.0-alpha.1` npm publication is a separate Alpha-only distribution boundary and does not create a GitHub release. Latest `main` may contain later documentation and local Alpha proof.
 
 Known `v0.1.0` package issue: that immutable npm artifact exports `SOURCE_WIRE_PACKAGE_VERSION` as `0.0.0` even though package metadata is `0.1.0`. Version `0.2.0` exports the corrected package version and adds the public `KnowledgeProvider v1` contract.
 

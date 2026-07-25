@@ -1,12 +1,12 @@
 # Alpha 1 Story 6.8: Local Runtime Package Candidate
 
-Source-Wire now prepares, but does not publish,
-`@source-wire/local-runtime@0.1.0-alpha.1`.
+Source-Wire prepares `@source-wire/local-runtime@0.1.0-alpha.1` for public npm
+Alpha distribution under the `alpha` dist-tag.
 
-The installed binary is `source-wire-local`. The candidate remains
-`"private": true` and is available only by packing an explicit local checkout.
-No npm package, Git tag, GitHub release, deployment, or hosted service was
-created.
+The installed binary is `source-wire-local`. The package is configured with
+public npm access, while Git tags, GitHub releases, deployment, and hosted
+services remain separate and blocked. Before the registry write, the exact
+candidate can be evaluated by packing an explicit local checkout.
 
 ## Support Boundary
 
@@ -31,6 +31,17 @@ It is not supported for:
 - real user or client data,
 - live knowledge providers,
 - non-disposable databases.
+
+## Install The Public Alpha
+
+After npm publication, install the exact version:
+
+```bash
+npm install --save-exact @source-wire/local-runtime@0.1.0-alpha.1
+```
+
+The package uses the `alpha` dist-tag. Exact-version installation is
+recommended for repeatable evaluation.
 
 ## Prepare The Local Tarball
 
@@ -138,9 +149,10 @@ Windows, HTTP and SSE MCP, static serving, hosting, deployment, production,
 real data, and live providers. The direct `@hono/node-server` dependency is
 pinned to `2.0.11`.
 
-Re-review is required no later than August 24, 2026, and immediately after any
-dependency, transport, platform, runtime, publication, hosting, deployment, or
-data-scope change.
+The npm publication review was completed on July 25, 2026 for this exact
+version and support boundary. Re-review is required no later than August 24,
+2026, and immediately after any dependency, transport, platform, runtime,
+future publication, hosting, deployment, or data-scope change.
 
 Run:
 
@@ -179,6 +191,7 @@ It excludes source tests, conformance sources and reports, generated
 databases, environment files, credential material, evidence records, private
 paths, deployment configuration, hosted-service configuration, and real data.
 
-Preparation does not authorize publication, tagging, releases, deployment,
-hosting, production use, real data, live providers, or a non-disposable
-database.
+Public npm Alpha distribution authorizes installation of this exact package
+only. It does not authorize Git tags, GitHub releases, deployment, hosting,
+production use, real data, live providers, Windows, HTTP or SSE MCP, static
+serving, or a non-disposable database.

@@ -6,8 +6,8 @@ Date: 2026-07-24
 
 ## Implementation Status
 
-The accepted Story 5 design is implemented through the fail-closed provider
-policy slice:
+The accepted Story 5 design is implemented through the provider-read fault
+atomicity slice:
 
 - one optional immutable provider binding,
 - loopback API and stdio MCP search and exact fetch,
@@ -15,11 +15,46 @@ policy slice:
 - provider-bound cursors,
 - fail-closed scope, provenance, authority, and bounds validation,
 - constant safe gaps and errors,
-- late-result discard without a forced transport-cancellation claim.
+- late-result discard without a forced transport-cancellation claim,
+- deterministic fault checkpoints from provider return through response
+  handoff,
+- fail-closed audit and receipt-store errors,
+- idempotent clearing of internal protected buffers and failed handoff copies.
 
-Provider fault-injection conformance, disposable PostgreSQL Story 5
-conformance, continuous PostgreSQL CI, and the un-published `0.2.0` contracts
-release candidate remain separate issues.
+The disposable PostgreSQL Story 5 conformance runner, continuous PostgreSQL CI,
+and the unpublished `0.2.0` contracts release candidate remain separate issues.
+
+## Provider Read Fault Boundary
+
+The unpublished Alpha runtime exposes deterministic conformance-only provider
+read stages for:
+
+- provider return,
+- response serialization before, during, and after construction,
+- audit commit before and after the durable call,
+- receipt consumption before and after the single-use call,
+- response write before handoff and after response construction.
+
+The runtime process accepts crash-stage injection only when it is already in
+Story 5 conformance mode. Direct hook injection remains an internal unit-test
+seam in the unpublished workspace. Neither path can select provider identity,
+scope, endpoint, credentials, or authority.
+
+Provider results remain internal until the audit store issues a matching
+receipt and the same store consumes it once. Audit-store exceptions become
+constant safe failures. False receipt consumption covers mismatch, expiry,
+replay, and foreign-process denial without releasing evidence.
+
+Every failure after serialization clears the internal evidence and gap arrays
+and zeroes the serialized protected buffer. A response-construction
+interruption also zeroes the failed handoff copy. A successful response
+transfers one copied byte sequence to the response object and clears the
+internal protected buffer exactly once.
+
+Receipt and audit arguments contain stable identifiers, policy fields, counts,
+times, and digests. They do not contain the raw query, evidence excerpt or body,
+citation locator, provider endpoint or credential, raw provider error, source
+ID, segment ID, or provider record ID.
 
 ## Direct Answer
 

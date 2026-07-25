@@ -17,7 +17,9 @@ import { asSafeError, SafeError } from "./errors.js";
 import { inspectSchemaCompatibility } from "./migration.js";
 import {
   createKnowledgeProviderHost,
-  type KnowledgeProviderBinding
+  type KnowledgeProviderBinding,
+  type ProviderReadStage,
+  type ProviderReadStageHook
 } from "./knowledge-provider-host.js";
 import { createSyntheticKnowledgeProvider } from "./knowledge-provider/synthetic-provider.js";
 import {
@@ -43,6 +45,19 @@ const STORY3_CRASH_POINTS = new Set<ProtectedReadStage>([
   "before_response_write"
 ]);
 
+const STORY5_PROVIDER_CRASH_POINTS = new Set<ProviderReadStage>([
+  "after_provider_return",
+  "before_response_serialization",
+  "during_response_serialization",
+  "after_response_serialization",
+  "before_audit_commit",
+  "after_audit_commit",
+  "before_receipt_consumption",
+  "after_receipt_consumption",
+  "before_response_write",
+  "after_response_write"
+]);
+
 async function main(): Promise<void> {
   const traceId = crypto.randomUUID();
   const startedAt = Date.now();
@@ -60,6 +75,13 @@ async function main(): Promise<void> {
     );
     const crashPoint = parseConformanceCrashPoint(process.env);
     const pausePoint = parseStory4ConformancePause(process.env);
+    const providerCrashPoint = parseStory5ProviderCrashPoint(process.env);
+    const providerStageHook: ProviderReadStageHook | undefined =
+      providerCrashPoint
+        ? (stage) => {
+            if (stage === providerCrashPoint) process.exit(87);
+          }
+        : undefined;
     const processReleaseSecret = createProcessReleaseSecret();
     database = createRuntimeDatabase(databaseUrl);
     const compatibility = await inspectSchemaCompatibility(database.pool);
@@ -76,7 +98,8 @@ async function main(): Promise<void> {
     const knowledgeProviderHost = createKnowledgeProviderHost({
       ...(providerBinding ? { binding: providerBinding } : {}),
       auditStore: new PostgresProviderReadAuditStore(database.pool),
-      processReleaseSecret
+      processReleaseSecret,
+      ...(providerStageHook ? { onStage: providerStageHook } : {})
     });
 
     const app = createStory1App({
@@ -86,6 +109,9 @@ async function main(): Promise<void> {
       getRemoteAddress: (context) => getConnInfo(context).remote.address,
       processReleaseSecret,
       knowledgeProviderHost,
+      ...(providerStageHook
+        ? { onProviderReadStage: providerStageHook }
+        : {}),
       ...(crashPoint || pausePoint
         ? {
             onProtectedReadStage: (stage: ProtectedReadStage) => {
@@ -148,6 +174,20 @@ async function main(): Promise<void> {
     });
     process.exitCode = 1;
   }
+}
+
+function parseStory5ProviderCrashPoint(
+  environment: NodeJS.ProcessEnv
+): ProviderReadStage | undefined {
+  const value = environment.SOURCE_WIRE_STORY5_PROVIDER_CRASH_POINT;
+  if (!value) return undefined;
+  if (
+    environment.SOURCE_WIRE_CONFORMANCE_MODE !== "story5" ||
+    !STORY5_PROVIDER_CRASH_POINTS.has(value as ProviderReadStage)
+  ) {
+    throw new Error("story5_provider_crash_injection_refused");
+  }
+  return value as ProviderReadStage;
 }
 
 function createStory5ProviderBinding(

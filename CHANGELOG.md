@@ -15,6 +15,9 @@ Summary:
 - Added fail-closed result validation for owner, namespace, provider scope, ACL, provenance, digests, public-safe locators, provider authority, result counts, excerpt sizes, and aggregate response size.
 - Added constant safe gap and error normalization for empty, partial, unavailable, rate-limited, denied, and not-found outcomes. Raw provider messages, exceptions, endpoints, credentials, and evidence details are excluded before audit or release.
 - Added independent stdio MCP validation for safe denied responses, gaps, errors, and cursors.
+- Added deterministic provider-read fault stages from provider return through response handoff, including audit issue, receipt consumption, serialization, and response-write interruption checkpoints.
+- Added fail-closed audit-store error translation, receipt-denial handling, idempotent protected-buffer clearing, and zeroing of failed response-handoff copies.
+- Added focused tests proving zero protected release across audit failure, receipt mismatch or replay, database-store outage, every provider fault stage, response-write interruption, and metadata leak checks.
 - Added forward-only migration `0005` for durable provider-read audit receipts, exact serialized-result binding, origin-process verification, and single-use receipt consumption.
 - Kept provider identity, owner, namespace, scope, timeout, endpoint, and credentials outside MCP and API input.
 - Preserved zero-provider operation as a safe unavailable result and kept provider reads separate from candidates and trusted memory.
@@ -53,7 +56,7 @@ Risks and follow-ups:
 
 - The known moderate MCP dependency advisory is temporarily accepted only for the local, stdio-only synthetic Alpha runtime. It must be reviewed again no later than 2026-08-24, or immediately if the dependency, transport, platform, or runtime scope changes.
 - Production, hosting, Windows runtime, HTTP/SSE MCP, static serving, deployment, live connectors, real data, package publication, and automatic trusted-memory promotion remain blocked.
-- These slices do not add provider fault-injection conformance, continuous PostgreSQL conformance, or a published provider contract. Those remain separate Story 5 issues.
+- These slices do not add the disposable PostgreSQL Story 5 conformance runner, continuous PostgreSQL conformance, or a published provider contract. Those remain separate Story 5 issues.
 
 ### 2026-07-24 - Public documentation and visual-system redesign
 

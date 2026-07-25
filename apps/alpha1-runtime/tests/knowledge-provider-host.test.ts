@@ -8,8 +8,10 @@ import {
   createKnowledgeProviderHost,
   parseSourceEvidenceGet,
   parseSourceEvidenceSearch,
+  releaseAuditedEvidenceResponse,
   type ProviderReadAuditStore,
   type ProviderReadReceiptBinding,
+  type ProviderReadStage,
   type RuntimeKnowledgeProviderRequest,
   type RuntimeKnowledgeProviderResult
 } from "../src/knowledge-provider-host.js";
@@ -34,12 +36,14 @@ class RecordingAuditStore implements ProviderReadAuditStore {
   issued?: ProviderReadReceiptBinding;
   consumed?: ProviderReadReceiptBinding;
   originProcessVerifier?: string;
+  readonly consumedReceiptIds = new Set<string>();
 
   async issue(
     receipt: ProviderReadReceiptBinding,
     originProcessVerifier: string
   ): Promise<boolean> {
     this.issued = structuredClone(receipt);
+    delete this.consumed;
     this.originProcessVerifier = originProcessVerifier;
     return true;
   }
@@ -49,6 +53,7 @@ class RecordingAuditStore implements ProviderReadAuditStore {
     originProcessVerifier: string
   ): Promise<boolean> {
     if (
+      this.consumedReceiptIds.has(receipt.receiptId) ||
       !this.issued ||
       this.originProcessVerifier !== originProcessVerifier ||
       JSON.stringify(this.issued) !== JSON.stringify(receipt)
@@ -56,8 +61,71 @@ class RecordingAuditStore implements ProviderReadAuditStore {
       return false;
     }
     this.consumed = structuredClone(receipt);
+    this.consumedReceiptIds.add(receipt.receiptId);
     return true;
   }
+}
+
+class FaultingAuditStore extends RecordingAuditStore {
+  constructor(
+    readonly fault:
+      | "issue_false"
+      | "issue_throw"
+      | "consume_false"
+      | "consume_throw"
+  ) {
+    super();
+  }
+
+  override async issue(
+    receipt: ProviderReadReceiptBinding,
+    originProcessVerifier: string
+  ): Promise<boolean> {
+    if (this.fault === "issue_throw") {
+      throw new Error("database endpoint secret audit issue failure");
+    }
+    const issued = await super.issue(receipt, originProcessVerifier);
+    return this.fault === "issue_false" ? false : issued;
+  }
+
+  override async consume(
+    receipt: ProviderReadReceiptBinding,
+    originProcessVerifier: string
+  ): Promise<boolean> {
+    if (this.fault === "consume_throw") {
+      throw new Error("database endpoint secret receipt consume failure");
+    }
+    if (this.fault === "consume_false") return false;
+    return super.consume(receipt, originProcessVerifier);
+  }
+}
+
+function createTestHost(
+  auditStore: ProviderReadAuditStore,
+  onStage?: (stage: ProviderReadStage) => void
+) {
+  return createKnowledgeProviderHost({
+    binding: {
+      provider: createSyntheticKnowledgeProvider(),
+      ownerId: "owner_alpha",
+      namespaceId: "ns_project_alpha",
+      providerScopeId: "scope_docs_alpha",
+      timeoutMs: 1_000
+    },
+    auditStore,
+    processReleaseSecret: randomBytes(32),
+    ...(onStage ? { onStage } : {})
+  });
+}
+
+function searchCommand() {
+  return {
+    operation: "search_evidence" as const,
+    ...parseSourceEvidenceSearch({
+      namespaceId: "ns_project_alpha",
+      query: "deployment review"
+    })
+  };
 }
 
 async function expectRejectedProviderResult(
@@ -256,6 +324,288 @@ test("audited source-evidence search releases only the receipt-covered synthetic
         originalVerifier
       );
     }
+  } finally {
+    execution.clear();
+  }
+});
+
+test("provider-read fault stages release zero protected content with deterministic receipt state", async (t) => {
+  const cases: Array<{
+    stage: ProviderReadStage;
+    issued: boolean;
+    consumed: boolean;
+  }> = [
+    {
+      stage: "after_provider_return",
+      issued: false,
+      consumed: false
+    },
+    {
+      stage: "before_response_serialization",
+      issued: false,
+      consumed: false
+    },
+    {
+      stage: "during_response_serialization",
+      issued: false,
+      consumed: false
+    },
+    {
+      stage: "after_response_serialization",
+      issued: false,
+      consumed: false
+    },
+    {
+      stage: "before_audit_commit",
+      issued: false,
+      consumed: false
+    },
+    {
+      stage: "after_audit_commit",
+      issued: true,
+      consumed: false
+    },
+    {
+      stage: "before_receipt_consumption",
+      issued: true,
+      consumed: false
+    },
+    {
+      stage: "after_receipt_consumption",
+      issued: true,
+      consumed: true
+    },
+    {
+      stage: "before_response_write",
+      issued: true,
+      consumed: true
+    }
+  ];
+
+  for (const testCase of cases) {
+    await t.test(testCase.stage, async () => {
+      const auditStore = new RecordingAuditStore();
+      const observed: ProviderReadStage[] = [];
+      const host = createTestHost(auditStore, (stage) => {
+        observed.push(stage);
+        if (stage === testCase.stage) {
+          throw new Error(
+            "synthetic protected marker endpoint token response interruption"
+          );
+        }
+      });
+
+      await assert.rejects(
+        host.execute(
+          {
+            actor,
+            traceId: randomUUID(),
+            startedAtMs: Date.now()
+          },
+          searchCommand()
+        ),
+        (error: unknown) =>
+          error instanceof SafeError &&
+          error.code === "operation_unavailable" &&
+          error.status === 503 &&
+          !/protected marker|endpoint|token/u.test(error.message)
+      );
+      assert.equal(observed.includes(testCase.stage), true);
+      assert.equal(Boolean(auditStore.issued), testCase.issued);
+      assert.equal(Boolean(auditStore.consumed), testCase.consumed);
+    });
+  }
+});
+
+test("audit failure, receipt mismatch or replay, and database outage fail safely before release", async (t) => {
+  const cases = [
+    {
+      fault: "issue_false" as const,
+      code: "audit_unavailable",
+      issued: true,
+      consumed: false
+    },
+    {
+      fault: "issue_throw" as const,
+      code: "audit_unavailable",
+      issued: false,
+      consumed: false
+    },
+    {
+      fault: "consume_false" as const,
+      code: "release_binding_invalid",
+      issued: true,
+      consumed: false
+    },
+    {
+      fault: "consume_throw" as const,
+      code: "audit_unavailable",
+      issued: true,
+      consumed: false
+    }
+  ];
+
+  for (const testCase of cases) {
+    await t.test(testCase.fault, async () => {
+      const auditStore = new FaultingAuditStore(testCase.fault);
+      const host = createTestHost(auditStore);
+
+      await assert.rejects(
+        host.execute(
+          {
+            actor,
+            traceId: randomUUID(),
+            startedAtMs: Date.now()
+          },
+          searchCommand()
+        ),
+        (error: unknown) =>
+          error instanceof SafeError &&
+          error.code === testCase.code &&
+          error.status === 503 &&
+          !/database|endpoint|secret/u.test(error.message)
+      );
+      assert.equal(Boolean(auditStore.issued), testCase.issued);
+      assert.equal(Boolean(auditStore.consumed), testCase.consumed);
+    });
+  }
+});
+
+test("successful provider release clears its protected serialized buffer exactly once", async () => {
+  const host = createTestHost(new RecordingAuditStore());
+  const execution = await host.execute(
+    {
+      actor,
+      traceId: randomUUID(),
+      startedAtMs: Date.now()
+    },
+    searchCommand()
+  );
+  const protectedAlias = execution.serializedResponse;
+  assert(protectedAlias.some((byte) => byte !== 0));
+
+  execution.clear();
+  execution.clear();
+
+  assert.equal(protectedAlias.every((byte) => byte === 0), true);
+});
+
+test("response-write interruption clears the protected buffer and failed handoff copy", async () => {
+  const auditStore = new RecordingAuditStore();
+  const host = createTestHost(auditStore);
+  const execution = await host.execute(
+    {
+      actor,
+      traceId: randomUUID(),
+      startedAtMs: Date.now()
+    },
+    searchCommand()
+  );
+  const protectedAlias = execution.serializedResponse;
+  let handoffAlias: Uint8Array | undefined;
+
+  assert.throws(
+    () =>
+      releaseAuditedEvidenceResponse(
+        execution,
+        (serialized) => {
+          handoffAlias = new Uint8Array(serialized);
+          return "response_constructed";
+        },
+        (stage) => {
+          if (stage === "after_response_write") {
+            throw new Error("synthetic response write interruption");
+          }
+        }
+      ),
+    /synthetic response write interruption/u
+  );
+
+  assert(handoffAlias);
+  assert.deepEqual(auditStore.issued, auditStore.consumed);
+  assert.equal(protectedAlias.every((byte) => byte === 0), true);
+  assert.equal(handoffAlias.every((byte) => byte === 0), true);
+});
+
+test("provider receipt mismatch, expiry substitution, foreign process, and replay each lose the single-use race", async () => {
+  const issuingStore = new RecordingAuditStore();
+  const host = createTestHost(issuingStore);
+  const execution = await host.execute(
+    {
+      actor,
+      traceId: randomUUID(),
+      startedAtMs: Date.now()
+    },
+    searchCommand()
+  );
+  execution.clear();
+  assert(issuingStore.issued);
+  assert(issuingStore.originProcessVerifier);
+
+  const receipt = issuingStore.issued;
+  const originVerifier = issuingStore.originProcessVerifier;
+  const consumeStore = new RecordingAuditStore();
+  assert.equal(await consumeStore.issue(receipt, originVerifier), true);
+  assert.equal(
+    await consumeStore.consume(
+      receipt,
+      computeProviderOriginProcessVerifier(randomBytes(32), receipt)
+    ),
+    false
+  );
+  assert.equal(
+    await consumeStore.consume(
+      { ...receipt, resultDigest: "a".repeat(64) },
+      originVerifier
+    ),
+    false
+  );
+  assert.equal(
+    await consumeStore.consume(
+      {
+        ...receipt,
+        expiresAt: new Date(
+          Date.parse(receipt.expiresAt) - 1
+        ).toISOString()
+      },
+      originVerifier
+    ),
+    false
+  );
+  assert.equal(await consumeStore.consume(receipt, originVerifier), true);
+  assert.equal(await consumeStore.consume(receipt, originVerifier), false);
+});
+
+test("provider read receipt and audit arguments contain digests, not protected provider content", async () => {
+  const auditStore = new RecordingAuditStore();
+  const host = createTestHost(auditStore);
+  const execution = await host.execute(
+    {
+      actor,
+      traceId: randomUUID(),
+      startedAtMs: Date.now()
+    },
+    searchCommand()
+  );
+  try {
+    assert(auditStore.issued);
+    const serializedReceipt = JSON.stringify(auditStore.issued);
+    for (const protectedValue of [
+      "deployment review",
+      "Synthetic evidence:",
+      "synthetic://runbook/release-gate",
+      "https://",
+      "token=",
+      "secret",
+      "source_synthetic_runbook",
+      "segment_release_gate",
+      "record_deployment_review"
+    ]) {
+      assert.equal(serializedReceipt.includes(protectedValue), false);
+    }
+    assert.match(auditStore.issued.requestDigest, /^[0-9a-f]{64}$/u);
+    assert.match(auditStore.issued.resultDigest, /^[0-9a-f]{64}$/u);
+    assert.match(auditStore.issued.targetOrderDigest, /^[0-9a-f]{64}$/u);
   } finally {
     execution.clear();
   }

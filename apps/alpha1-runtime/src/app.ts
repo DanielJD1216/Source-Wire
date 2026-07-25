@@ -23,7 +23,9 @@ import { inspectSchemaCompatibility } from "./migration.js";
 import {
   parseSourceEvidenceGet,
   parseSourceEvidenceSearch,
-  type KnowledgeProviderHost
+  releaseAuditedEvidenceResponse,
+  type KnowledgeProviderHost,
+  type ProviderReadStageHook
 } from "./knowledge-provider-host.js";
 import { LocalProtectedRequestGate } from "./rate-gate.js";
 import {
@@ -76,6 +78,7 @@ export type Story1AppOptions = {
   processReleaseSecret: Buffer;
   knowledgeProviderHost?: KnowledgeProviderHost;
   onProtectedReadStage?: ProtectedReadStageHook;
+  onProviderReadStage?: ProviderReadStageHook;
 };
 
 export function createStory1App(options: Story1AppOptions): Hono<{ Variables: AppVariables }> {
@@ -238,15 +241,15 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
           : {})
       }
     );
-    try {
-      const serialized = Uint8Array.from(execution.serializedResponse).buffer;
-      context.set("safeResult", "allowed");
-      return context.body(serialized, 200, {
-        "Content-Type": "application/json; charset=UTF-8"
-      });
-    } finally {
-      execution.clear();
-    }
+    context.set("safeResult", "allowed");
+    return releaseAuditedEvidenceResponse(
+      execution,
+      (serialized) =>
+        context.body(serialized, 200, {
+          "Content-Type": "application/json; charset=UTF-8"
+        }),
+      options.onProviderReadStage
+    );
   });
 
   app.post("/v1alpha1/source-evidence/search", async (context) => {
@@ -274,15 +277,15 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
         ...input
       }
     );
-    try {
-      const serialized = Uint8Array.from(execution.serializedResponse).buffer;
-      context.set("safeResult", "allowed");
-      return context.body(serialized, 200, {
-        "Content-Type": "application/json; charset=UTF-8"
-      });
-    } finally {
-      execution.clear();
-    }
+    context.set("safeResult", "allowed");
+    return releaseAuditedEvidenceResponse(
+      execution,
+      (serialized) =>
+        context.body(serialized, 200, {
+          "Content-Type": "application/json; charset=UTF-8"
+        }),
+      options.onProviderReadStage
+    );
   });
 
   app.post("/v1alpha1/source-evidence/get", async (context) => {

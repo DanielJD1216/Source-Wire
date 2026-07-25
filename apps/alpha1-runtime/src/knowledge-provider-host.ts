@@ -248,6 +248,20 @@ export interface ProviderReadAuditStore {
   ): Promise<boolean>;
 }
 
+export type ProviderReadStage =
+  | "after_provider_return"
+  | "before_response_serialization"
+  | "during_response_serialization"
+  | "after_response_serialization"
+  | "before_audit_commit"
+  | "after_audit_commit"
+  | "before_receipt_consumption"
+  | "after_receipt_consumption"
+  | "before_response_write"
+  | "after_response_write";
+
+export type ProviderReadStageHook = (stage: ProviderReadStage) => void;
+
 export type AuditedEvidenceRelease = {
   serializedResponse: Buffer;
   auditEventId: string;
@@ -283,6 +297,24 @@ export interface KnowledgeProviderHost {
     context: AuthorizedEvidenceReadContext,
     command: EvidenceReadCommand
   ): Promise<AuditedEvidenceRelease>;
+}
+
+export function releaseAuditedEvidenceResponse<T>(
+  execution: AuditedEvidenceRelease,
+  writeResponse: (serializedResponse: ArrayBuffer) => T,
+  onStage?: ProviderReadStageHook
+): T {
+  const responseBytes = Uint8Array.from(execution.serializedResponse);
+  try {
+    const response = writeResponse(responseBytes.buffer);
+    onStage?.("after_response_write");
+    return response;
+  } catch (error) {
+    responseBytes.fill(0);
+    throw error;
+  } finally {
+    execution.clear();
+  }
 }
 
 export function parseSourceEvidenceSearch(
@@ -407,6 +439,7 @@ export function createKnowledgeProviderHost(options: {
   binding?: KnowledgeProviderBinding;
   auditStore: ProviderReadAuditStore;
   processReleaseSecret: Buffer;
+  onStage?: ProviderReadStageHook;
 }): KnowledgeProviderHost {
   if (options.processReleaseSecret.length !== 32) {
     throw new Error("process_release_secret_invalid");
@@ -522,6 +555,7 @@ export function createKnowledgeProviderHost(options: {
                 }
               };
         providerResult = await binding.provider.execute(providerRequest);
+        options.onStage?.("after_provider_return");
       } catch {
         throw new SafeError("operation_unavailable", 503, true);
       }
@@ -530,11 +564,11 @@ export function createKnowledgeProviderHost(options: {
       }
       assertReadStillLive(context);
 
-      let evidence: RuntimeKnowledgeProviderEvidence[];
-      let gaps: RuntimeKnowledgeProviderResult["gaps"];
+      let evidence: RuntimeKnowledgeProviderEvidence[] = [];
+      let gaps: RuntimeKnowledgeProviderResult["gaps"] = [];
       let nextCursor: RuntimeKnowledgeProviderCursor | undefined;
       let providerError: RuntimeKnowledgeProviderSafeError | undefined;
-      let providerStatus: RuntimeKnowledgeProviderResult["status"];
+      let serializedResponse: Buffer | undefined;
       try {
         evidence = validateAndCopyProviderResult(
           providerResult,
@@ -553,82 +587,95 @@ export function createKnowledgeProviderHost(options: {
           providerResult.error,
           context.traceId
         );
-        providerStatus = providerResult.status;
-      } catch (error) {
-        if (error instanceof SafeError) throw error;
-        throw new SafeError("operation_unavailable", 503, true);
-      }
-      const auditEventId = randomUUID();
-      let serializedResponse = serializeEvidenceResponse({
-        traceId: context.traceId,
-        status: providerStatus,
-        evidence,
-        gaps,
-        ...(nextCursor === undefined ? {} : { nextCursor }),
-        ...(providerError === undefined ? {} : { error: providerError }),
-        auditEventId
-      });
-      const resultDigest = createHash("sha256")
-        .update(serializedResponse)
-        .digest("hex");
-      const targetOrderDigest = canonicalRequestDigest({
-        domain: "source-wire.alpha1.story5.provider-result-order.v1",
-        targets: evidence.map((item, index) => ({
-          ordinal: index + 1,
-          providerRecordId: item.providerRecordId,
-          sourceId: item.sourceId,
-          segmentId: item.segmentId,
-          contentDigest: item.contentDigest.value
-        }))
-      });
-      const issuedAt = new Date();
-      const expiryTime = Math.min(
-        context.startedAtMs + STORY1_REQUEST_TIMEOUT_MS,
-        issuedAt.getTime() + PROTECTED_READ_RECEIPT_TTL_MS
-      );
-      if (expiryTime <= issuedAt.getTime()) {
-        serializedResponse.fill(0);
-        evidence.length = 0;
-        gaps.length = 0;
-        throw new SafeError("operation_unavailable", 503, true);
-      }
-      const receipt: ProviderReadReceiptBinding = {
-        receiptId: randomUUID(),
-        formatVersion: RECEIPT_FORMAT_VERSION,
-        traceId: context.traceId,
-        requestId,
-        actorReference: context.actor.actorReference,
-        actorCredentialId: context.actor.credentialId,
-        actorIdentityId: context.actor.actorIdentityId,
-        ownerId: binding.ownerId,
-        namespaceId: binding.namespaceId,
-        providerId: binding.providerId,
-        providerScopeId: binding.providerScopeId,
-        operation: command.operation,
-        policyDecision: "allowed",
-        releaseBinding: randomBytes(32).toString("base64url"),
-        requestDigest,
-        resultDigest,
-        targetOrderDigest,
-        responseByteCount: serializedResponse.byteLength,
-        coveredResultCount: evidence.length,
-        issuedAt: issuedAt.toISOString(),
-        expiresAt: new Date(expiryTime).toISOString(),
-        originProcessId,
-        auditEventId
-      };
-      const originVerifier = computeProviderOriginProcessVerifier(
-        options.processReleaseSecret,
-        receipt
-      );
-      try {
-        if (!(await options.auditStore.issue(receipt, originVerifier))) {
+        const auditEventId = randomUUID();
+        options.onStage?.("before_response_serialization");
+        serializedResponse = serializeEvidenceResponse(
+          {
+            traceId: context.traceId,
+            status: providerResult.status,
+            evidence,
+            gaps,
+            ...(nextCursor === undefined ? {} : { nextCursor }),
+            ...(providerError === undefined ? {} : { error: providerError }),
+            auditEventId
+          },
+          options.onStage
+        );
+        options.onStage?.("after_response_serialization");
+        const resultDigest = createHash("sha256")
+          .update(serializedResponse)
+          .digest("hex");
+        const targetOrderDigest = canonicalRequestDigest({
+          domain: "source-wire.alpha1.story5.provider-result-order.v1",
+          targets: evidence.map((item, index) => ({
+            ordinal: index + 1,
+            providerRecordId: item.providerRecordId,
+            sourceId: item.sourceId,
+            segmentId: item.segmentId,
+            contentDigest: item.contentDigest.value
+          }))
+        });
+        const issuedAt = new Date();
+        const expiryTime = Math.min(
+          context.startedAtMs + STORY1_REQUEST_TIMEOUT_MS,
+          issuedAt.getTime() + PROTECTED_READ_RECEIPT_TTL_MS
+        );
+        if (expiryTime <= issuedAt.getTime()) {
+          throw new SafeError("operation_unavailable", 503, true);
+        }
+        const receipt: ProviderReadReceiptBinding = {
+          receiptId: randomUUID(),
+          formatVersion: RECEIPT_FORMAT_VERSION,
+          traceId: context.traceId,
+          requestId,
+          actorReference: context.actor.actorReference,
+          actorCredentialId: context.actor.credentialId,
+          actorIdentityId: context.actor.actorIdentityId,
+          ownerId: binding.ownerId,
+          namespaceId: binding.namespaceId,
+          providerId: binding.providerId,
+          providerScopeId: binding.providerScopeId,
+          operation: command.operation,
+          policyDecision: "allowed",
+          releaseBinding: randomBytes(32).toString("base64url"),
+          requestDigest,
+          resultDigest,
+          targetOrderDigest,
+          responseByteCount: serializedResponse.byteLength,
+          coveredResultCount: evidence.length,
+          issuedAt: issuedAt.toISOString(),
+          expiresAt: new Date(expiryTime).toISOString(),
+          originProcessId,
+          auditEventId
+        };
+        const originVerifier = computeProviderOriginProcessVerifier(
+          options.processReleaseSecret,
+          receipt
+        );
+        options.onStage?.("before_audit_commit");
+        let issued: boolean;
+        try {
+          issued = await options.auditStore.issue(receipt, originVerifier);
+        } catch {
           throw new SafeError("audit_unavailable", 503, true);
         }
+        if (!issued) throw new SafeError("audit_unavailable", 503, true);
+        options.onStage?.("after_audit_commit");
         assertReadStillLive(context);
-        if (!(await options.auditStore.consume(receipt, originVerifier))) {
+        options.onStage?.("before_receipt_consumption");
+        let consumed: boolean;
+        try {
+          consumed = await options.auditStore.consume(
+            receipt,
+            originVerifier
+          );
+        } catch {
+          throw new SafeError("audit_unavailable", 503, true);
+        }
+        if (!consumed) {
           throw new SafeError("release_binding_invalid", 503, true);
         }
+        options.onStage?.("after_receipt_consumption");
         if (
           serializedResponse.byteLength !== receipt.responseByteCount ||
           createHash("sha256").update(serializedResponse).digest("hex") !==
@@ -636,21 +683,28 @@ export function createKnowledgeProviderHost(options: {
         ) {
           throw new SafeError("release_binding_invalid", 503, true);
         }
+        assertReadStillLive(context);
+        options.onStage?.("before_response_write");
+        const releaseBuffer = serializedResponse;
+        let cleared = false;
         return {
-          serializedResponse,
+          serializedResponse: releaseBuffer,
           auditEventId,
           releaseStatus: "release_attempted",
           clear() {
+            if (cleared) return;
+            cleared = true;
             evidence.length = 0;
             gaps.length = 0;
-            serializedResponse.fill(0);
+            releaseBuffer.fill(0);
           }
         };
       } catch (error) {
         evidence.length = 0;
         gaps.length = 0;
-        serializedResponse.fill(0);
-        throw error;
+        serializedResponse?.fill(0);
+        if (error instanceof SafeError) throw error;
+        throw new SafeError("operation_unavailable", 503, true);
       }
     }
   });
@@ -998,37 +1052,50 @@ function validateProviderNextCursor(
   return parseProviderCursor(cursor);
 }
 
-function serializeEvidenceResponse(input: {
-  traceId: string;
-  status: "allowed" | "partial_success" | "denied" | "unavailable";
-  evidence: RuntimeKnowledgeProviderEvidence[];
-  gaps: RuntimeKnowledgeProviderResult["gaps"];
-  nextCursor?: RuntimeKnowledgeProviderCursor;
-  error?: RuntimeKnowledgeProviderSafeError;
-  auditEventId: string;
-}): Buffer {
+function serializeEvidenceResponse(
+  input: {
+    traceId: string;
+    status: "allowed" | "partial_success" | "denied" | "unavailable";
+    evidence: RuntimeKnowledgeProviderEvidence[];
+    gaps: RuntimeKnowledgeProviderResult["gaps"];
+    nextCursor?: RuntimeKnowledgeProviderCursor;
+    error?: RuntimeKnowledgeProviderSafeError;
+    auditEventId: string;
+  },
+  onStage?: ProviderReadStageHook
+): Buffer {
   const publicEvidence = input.evidence.map(
     ({ ownerId: _ownerId, namespaceId: _namespaceId, aclDecision: _acl, ...item }) =>
       item
   );
+  let serializationStageObserved = false;
   const serialized = Buffer.from(
-    JSON.stringify({
-      schema: STORY1_API_SCHEMA,
-      traceId: input.traceId,
-      data: {
-        status: input.status,
-        evidence: publicEvidence,
-        gaps: input.gaps,
-        ...(input.nextCursor === undefined
-          ? {}
-          : { nextCursor: input.nextCursor }),
-        ...(input.error === undefined ? {} : { error: input.error })
+    JSON.stringify(
+      {
+        schema: STORY1_API_SCHEMA,
+        traceId: input.traceId,
+        data: {
+          status: input.status,
+          evidence: publicEvidence,
+          gaps: input.gaps,
+          ...(input.nextCursor === undefined
+            ? {}
+            : { nextCursor: input.nextCursor }),
+          ...(input.error === undefined ? {} : { error: input.error })
+        },
+        audit: {
+          eventId: input.auditEventId,
+          releaseStatus: "release_attempted"
+        }
       },
-      audit: {
-        eventId: input.auditEventId,
-        releaseStatus: "release_attempted"
+      (key, value) => {
+        if (!serializationStageObserved && key === "evidence") {
+          serializationStageObserved = true;
+          onStage?.("during_response_serialization");
+        }
+        return value;
       }
-    }),
+    ),
     "utf8"
   );
   if (serialized.byteLength > MAX_PROTECTED_READ_RESPONSE_BYTES) {

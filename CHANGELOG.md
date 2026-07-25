@@ -9,6 +9,7 @@ All notable changes to Source-Wire are recorded here.
 Summary:
 
 - Added `npm run release:0.2.0-gate` as the focused no-publish check for release metadata, blocked commands, packed content, installed consumers and examples, documentation integrity, public safety, and claim boundaries.
+- Added `npm run release:0.2.0-execution-preflight` as the authenticated, read-only final gate for exact-commit CI, clean Git state, public package access, current `0.1.0` registry state, and absent `0.2.0` npm, tag, and GitHub release state.
 - Extended the packed-candidate smoke so a clean external consumer implements and executes a complete read-only `SourceWireKnowledgeProviderV1` adapter using only package-root imports.
 - Updated human and agent documentation to distinguish external-adapter compatibility from a live connector, hosted runtime, provider credentials, production readiness, or real-data support.
 - Kept npm publication, Git tags, GitHub releases, deployment, hosted services, live providers, real data, and automatic trusted-memory promotion blocked.
@@ -16,6 +17,7 @@ Summary:
 Validation:
 
 - `npm run release:0.2.0-gate`
+- `npm run release:0.2.0-execution-preflight`
 - `npm run publish:readiness`
 - `git diff --check`
 

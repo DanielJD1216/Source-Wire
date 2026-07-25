@@ -41,6 +41,7 @@ npm install
 npm run readiness:report
 npm test
 npm run release:0.2.0-gate
+npm run release:0.2.0-execution-preflight
 ```
 
 Run the narrowest relevant smoke first:

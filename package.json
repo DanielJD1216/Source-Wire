@@ -75,6 +75,7 @@
     "consumer:smoke": "node scripts/consumer-smoke.mjs",
     "story5:release-candidate-smoke": "node scripts/story5-release-candidate-smoke.mjs",
     "release:0.2.0-gate": "npm run story5:release-candidate-smoke && npm run release:gate && npm run release-command-guard:smoke && npm run package:required-paths && npm run package:dry-run && npm run consumer:smoke && npm run package:content-smoke && npm run examples:installed-smoke && npm run docs:links && npm run docs:anchors && npm run safety:scan && npm run claims:scan",
+    "release:0.2.0-execution-preflight": "node scripts/release-0.2.0-execution-preflight.mjs",
     "examples:installed-smoke": "node scripts/examples-installed-smoke.mjs",
     "minimal-runtime:smoke": "npm run build && node examples/minimal-runtime/minimal-runtime-smoke.mjs",
     "runtime:skeleton-smoke": "npm run build && node examples/runtime-skeleton/runtime-skeleton-smoke.mjs",

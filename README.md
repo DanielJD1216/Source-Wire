@@ -187,6 +187,7 @@ Core invariants:
 | `npm run alpha1:conformance:story5:replaceable` | The same protected path with the separate public-contract-only adapter |
 | `npm run alpha1:conformance` | All five disposable local Alpha story proofs, including both Story 5 adapters |
 | `npm run release:0.2.0-gate` | Focused no-publish gate for the packed contract, clean external adapter, installed consumers, docs, safety, and claims |
+| `npm run release:0.2.0-execution-preflight` | Authenticated, read-only pre-publication gate for exact-commit CI, npm availability, package access, and absent `v0.2.0` release channels |
 | `npm run docs:links && npm run docs:anchors` | Documentation link and anchor integrity |
 | `npm run safety:scan && npm run claims:scan` | Public-safety and claim-boundary checks |
 | `npm run publish:readiness` | Full local package and boundary gate, without publishing |

@@ -135,6 +135,7 @@ const requiredScripts = [
   "release:snapshot-boundary",
   "story5:release-candidate-smoke",
   "release:0.2.0-gate",
+  "release:0.2.0-execution-preflight",
   "release-command-guard:smoke",
   "release:gate",
   "package:dry-run",
@@ -362,6 +363,7 @@ printList([
 printSection("Installed Package Smokes");
 printList([
   "release:0.2.0-gate verifies the packed 0.2.0 candidate, a clean external provider adapter, release metadata, blocked commands, required package content, installed consumers and examples, docs integrity, public safety, and claim boundaries without publishing",
+  "release:0.2.0-execution-preflight is the authenticated read-only pre-publication gate for a clean exact candidate commit, green exact-commit CI, public npm access, current 0.1.0 registry state, and absent 0.2.0 npm, tag, and GitHub release state",
   "reviewer:smoke validates the documented first reviewer path from a temporary clean checkout-style copy",
   "consumer:smoke validates package-root imports and installed CLI fixture validation",
   "package:content-smoke validates installed required paths, README/docs/examples links and anchors, installed runtime readiness summary presence, and installed readiness summary content assertions",
@@ -447,6 +449,7 @@ printList([
   "docs/internal/release-auth-preflight.md records the owner-side npm and GitHub authentication preflight",
   "npm run release:decision-preflight verifies world-share, owner open-issue boundary, release-candidate, artifact, approval-request, and launch-decision evidence",
   "docs/internal/release-execution-preflight.md records the read-only owner-side release execution preflight and live release evidence",
+  "docs/internal/release-0.2.0-execution-preflight.md records the dedicated authenticated pre-publication gate for the 0.2.0 candidate",
   "docs/internal/release-candidate-readiness.md records release-candidate evidence",
   "docs/internal/release-artifact-manifest.md records the package artifact identity, file count, size, shasum, and integrity",
   "docs/status/release-snapshot-boundary.md distinguishes latest main, the immutable npm artifact, and the immutable v0.1.0 release snapshot",

@@ -23,6 +23,17 @@ npm run release:0.2.0-gate
 This focused command does not publish, tag, release, deploy, connect a live
 provider, or use real data.
 
+After owner approval, npm authentication, a clean exact candidate commit, and
+green hosted checks, run the authenticated pre-publication gate:
+
+```bash
+npm run release:0.2.0-execution-preflight
+```
+
+This command requires `0.2.0` to still be absent from npm, local and remote Git
+tags, and GitHub releases. It remains read-only. Publication requires a fresh
+owner go for the exact candidate commit after this gate passes.
+
 Then run:
 
 ```bash

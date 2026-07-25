@@ -45,8 +45,18 @@ assertStory5KnowledgeProviderSecurityPolicy(
   STORY5_KNOWLEDGE_PROVIDER_SECURITY_POLICY
 );
 
-if (alphaPackage.private !== true) {
-  throw new Error("story5_alpha_runtime_must_remain_private");
+if (
+  alphaPackage.private !== false ||
+  alphaPackage.name !== "@source-wire/local-runtime" ||
+  alphaPackage.version !== "0.1.0-alpha.1" ||
+  alphaPackage.publishConfig?.access !== "public" ||
+  alphaPackage.publishConfig?.tag !== "alpha" ||
+  alphaPackage.sourceWireCandidate?.publicationSecurityReview?.reviewedAt !==
+    "2026-07-25" ||
+  alphaPackage.sourceWireCandidate?.publicationSecurityReview?.scope !==
+    "npm-public-alpha-0.1.0-alpha.1"
+) {
+  throw new Error("story5_public_alpha_distribution_boundary_invalid");
 }
 if (rootPackage.publishConfig?.access !== "public") {
   throw new Error("story5_contract_package_boundary_invalid");

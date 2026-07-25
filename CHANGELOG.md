@@ -4,6 +4,30 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Replaceable provider adapter proof
+
+Summary:
+
+- Added a second deterministic synthetic knowledge adapter in a separate module that imports only Node.js crypto and the public `KnowledgeProvider v1` contract.
+- Composed the adapter through the private immutable startup seam without changing MCP, API, policy, audit, receipt, database, authentication, or memory code.
+- Preserved provider profile, scope, provenance, freshness, sensitivity, digest, public-safe locator, and opaque provider keys through search and exact fetch.
+- Added negative import and authority tests proving the adapter receives no credential object, process secret, database pool, audit store, receipt authority, or memory mutation capability.
+- Added fail-closed adapter fault tests for exceptions, malformed provenance, late results, cross-scope cursors, denied ACL, and result-bound violations.
+- Added an exact-Node, disposable-PostgreSQL conformance selector for the replaceable adapter while retaining the original adapter as the default.
+- Verified the replaceable adapter through the official stdio MCP client, loopback API policy, durable PostgreSQL audit, and single-use receipt path using only synthetic data.
+
+Validation:
+
+- `npm run typecheck --workspace @source-wire/alpha1-runtime`
+- `npm run test --workspace @source-wire/alpha1-runtime`
+- `SOURCE_WIRE_STORY5_PROVIDER_ADAPTER=replaceable npm run alpha1:conformance:story5`
+- `npm test`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `git diff --check`
+
 ### 2026-07-24 - Immutable Alpha provider composition
 
 Summary:

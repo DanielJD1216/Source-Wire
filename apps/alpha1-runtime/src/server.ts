@@ -24,6 +24,10 @@ import {
   type SyntheticKnowledgeProviderFault
 } from "./knowledge-provider/synthetic-provider.js";
 import {
+  createReplaceableSyntheticProvider,
+  REPLACEABLE_PROVIDER_SCOPE_ID
+} from "./knowledge-provider/replaceable-synthetic-adapter.js";
+import {
   acquireRuntimeRecoveryGuard,
   inspectRuntimeRecoveryGate
 } from "./portable-recovery.js";
@@ -217,10 +221,16 @@ function createStory5RuntimeComposition(
     throw new Error("story5_provider_binding_refused");
   }
   const fault = parseStory5SyntheticProviderFault(environment);
+  const adapter = parseStory5ProviderAdapter(environment);
   return createAlphaRuntimeComposition({
-    provider: createSyntheticKnowledgeProvider(
-      fault === undefined ? undefined : { fault }
-    ),
+    provider:
+      adapter === "replaceable"
+        ? createReplaceableSyntheticProvider(
+            fault === undefined ? undefined : { fault }
+          )
+        : createSyntheticKnowledgeProvider(
+            fault === undefined ? undefined : { fault }
+          ),
     ownerId: assertSourceWireIdentifier(
       requireEnvironment("SOURCE_WIRE_STORY5_OWNER_ID", environment),
       "ownerId"
@@ -229,9 +239,26 @@ function createStory5RuntimeComposition(
       requireEnvironment("SOURCE_WIRE_STORY5_NAMESPACE_ID", environment),
       "namespaceId"
     ),
-    providerScopeId: "scope_docs_alpha",
+    providerScopeId:
+      adapter === "replaceable"
+        ? REPLACEABLE_PROVIDER_SCOPE_ID
+        : "scope_docs_alpha",
     timeoutMs: 1_000
   });
+}
+
+function parseStory5ProviderAdapter(
+  environment: NodeJS.ProcessEnv
+): "baseline" | "replaceable" {
+  const value =
+    environment.SOURCE_WIRE_STORY5_PROVIDER_ADAPTER ?? "baseline";
+  if (
+    environment.SOURCE_WIRE_CONFORMANCE_MODE !== "story5" ||
+    (value !== "baseline" && value !== "replaceable")
+  ) {
+    throw new Error("story5_provider_adapter_refused");
+  }
+  return value;
 }
 
 function parseStory5SyntheticProviderFault(

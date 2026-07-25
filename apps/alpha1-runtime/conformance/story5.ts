@@ -26,6 +26,13 @@ import pg from "pg";
 import { ALPHA1_SCHEMA_VERSION } from "../src/config.js";
 import type { ProviderReadStage } from "../src/knowledge-provider-host.js";
 import type { SyntheticKnowledgeProviderFault } from "../src/knowledge-provider/synthetic-provider.js";
+import {
+  REPLACEABLE_EXCERPT,
+  REPLACEABLE_LOCATOR,
+  REPLACEABLE_PROVIDER_SCOPE_ID,
+  REPLACEABLE_SEGMENT_ID,
+  REPLACEABLE_SOURCE_ID
+} from "../src/knowledge-provider/replaceable-synthetic-adapter.js";
 
 const { Pool } = pg;
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -40,13 +47,32 @@ const reportPath =
 const OWNER_ID = "owner_story5";
 const NAMESPACE_ID = "ns_story5_alpha";
 const SECOND_NAMESPACE_ID = "ns_story5_beta";
-const PROVIDER_SCOPE_ID = "scope_docs_alpha";
+const PROVIDER_ADAPTER =
+  process.env.SOURCE_WIRE_STORY5_PROVIDER_ADAPTER ?? "baseline";
+assert(
+  PROVIDER_ADAPTER === "baseline" || PROVIDER_ADAPTER === "replaceable"
+);
+const PROVIDER_SCOPE_ID =
+  PROVIDER_ADAPTER === "replaceable"
+    ? REPLACEABLE_PROVIDER_SCOPE_ID
+    : "scope_docs_alpha";
 const PROTECTED_QUERY = "deployment review";
 const PROTECTED_EXCERPT =
-  "Synthetic evidence: deployment requires an owner-reviewed release gate.";
-const PROTECTED_LOCATOR = "synthetic://runbook/release-gate";
-const SOURCE_ID = "source_synthetic_runbook";
-const SEGMENT_ID = "segment_release_gate";
+  PROVIDER_ADAPTER === "replaceable"
+    ? REPLACEABLE_EXCERPT
+    : "Synthetic evidence: deployment requires an owner-reviewed release gate.";
+const PROTECTED_LOCATOR =
+  PROVIDER_ADAPTER === "replaceable"
+    ? REPLACEABLE_LOCATOR
+    : "synthetic://runbook/release-gate";
+const SOURCE_ID =
+  PROVIDER_ADAPTER === "replaceable"
+    ? REPLACEABLE_SOURCE_ID
+    : "source_synthetic_runbook";
+const SEGMENT_ID =
+  PROVIDER_ADAPTER === "replaceable"
+    ? REPLACEABLE_SEGMENT_ID
+    : "segment_release_gate";
 
 const roleNames = {
   schemaOwner: "source_wire_schema_owner",
@@ -432,6 +458,7 @@ async function startApi(options?: {
       SOURCE_WIRE_PORT: String(port),
       SOURCE_WIRE_CONFORMANCE_MODE: "story5",
       SOURCE_WIRE_STORY5_SYNTHETIC_PROVIDER: "enabled",
+      SOURCE_WIRE_STORY5_PROVIDER_ADAPTER: PROVIDER_ADAPTER,
       SOURCE_WIRE_STORY5_OWNER_ID: OWNER_ID,
       SOURCE_WIRE_STORY5_NAMESPACE_ID: NAMESPACE_ID,
       ...(options?.fault

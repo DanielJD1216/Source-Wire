@@ -16,8 +16,6 @@ import { createRuntimeDatabase } from "./database.js";
 import { asSafeError, SafeError } from "./errors.js";
 import { inspectSchemaCompatibility } from "./migration.js";
 import {
-  createKnowledgeProviderHost,
-  type KnowledgeProviderBinding,
   type ProviderReadStage,
   type ProviderReadStageHook
 } from "./knowledge-provider-host.js";
@@ -31,6 +29,11 @@ import {
 } from "./portable-recovery.js";
 import { stdoutSafeLogger } from "./safe-log.js";
 import { PostgresProviderReadAuditStore } from "./provider-read-audit-store.js";
+import {
+  createAlphaRuntimeComposition,
+  createComposedKnowledgeProviderHost,
+  type AlphaRuntimeComposition
+} from "./runtime-composition.js";
 import {
   createProcessReleaseSecret,
   type ProtectedReadStage
@@ -106,9 +109,9 @@ async function main(): Promise<void> {
     ) {
       throw new SafeError("operation_unavailable", 503);
     }
-    const providerBinding = createStory5ProviderBinding(process.env);
-    const knowledgeProviderHost = createKnowledgeProviderHost({
-      ...(providerBinding ? { binding: providerBinding } : {}),
+    const runtimeComposition = createStory5RuntimeComposition(process.env);
+    const knowledgeProviderHost = createComposedKnowledgeProviderHost({
+      composition: runtimeComposition,
       auditStore: new PostgresProviderReadAuditStore(database.pool),
       processReleaseSecret,
       ...(providerStageHook ? { onStage: providerStageHook } : {})
@@ -202,11 +205,11 @@ function parseStory5ProviderCrashPoint(
   return value as ProviderReadStage;
 }
 
-function createStory5ProviderBinding(
+function createStory5RuntimeComposition(
   environment: NodeJS.ProcessEnv
-): KnowledgeProviderBinding | undefined {
+): AlphaRuntimeComposition {
   const enabled = environment.SOURCE_WIRE_STORY5_SYNTHETIC_PROVIDER;
-  if (!enabled) return undefined;
+  if (!enabled) return createAlphaRuntimeComposition();
   if (
     enabled !== "enabled" ||
     environment.SOURCE_WIRE_CONFORMANCE_MODE !== "story5"
@@ -214,7 +217,7 @@ function createStory5ProviderBinding(
     throw new Error("story5_provider_binding_refused");
   }
   const fault = parseStory5SyntheticProviderFault(environment);
-  return Object.freeze({
+  return createAlphaRuntimeComposition({
     provider: createSyntheticKnowledgeProvider(
       fault === undefined ? undefined : { fault }
     ),

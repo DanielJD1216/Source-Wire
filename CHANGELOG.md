@@ -4,6 +4,29 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Immutable Alpha provider composition
+
+Summary:
+
+- Added one private Alpha startup composition seam containing zero or one public-contract knowledge provider plus its owner-controlled binding.
+- Froze the composition and binding at startup, limited the binding to provider, owner, namespace, provider scope, and bounded timeout, and rejected malformed scope before provider invocation.
+- Routed the existing Story 5 synthetic provider through the new composition root without changing the loopback API or stdio MCP surface.
+- Preserved normal memory-only startup when no provider is composed and safe unavailability for source-evidence reads.
+- Kept authenticated actor context, audit storage, receipt issuance and consumption, process release secrets, database access, and memory mutation authority inside the Source-Wire host.
+- Added negative authority tests proving the adapter receives only the public provider request envelope.
+- Added no registry, hot reload, public host export, deployment, live provider, or real-data path.
+
+Validation:
+
+- `npm run typecheck --workspace @source-wire/alpha1-runtime`
+- `npm run test --workspace @source-wire/alpha1-runtime`
+- `npm test`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `git diff --check`
+
 ### 2026-07-24 - Opaque provider-owned identifiers
 
 Summary:

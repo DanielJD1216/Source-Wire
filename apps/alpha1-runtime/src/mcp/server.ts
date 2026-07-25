@@ -82,6 +82,13 @@ const sourceEvidenceSearchInput = z
       .optional()
   })
   .strict();
+const sourceEvidenceGetInput = z
+  .object({
+    namespaceId: identifier,
+    sourceId: identifier,
+    segmentId: identifier
+  })
+  .strict();
 
 async function main(): Promise<void> {
   rejectForbiddenAuthority();
@@ -95,6 +102,52 @@ async function main(): Promise<void> {
     {
       capabilities: {
         tools: {}
+      }
+    }
+  );
+
+  server.registerTool(
+    "get_source_evidence",
+    {
+      title: "Get source evidence",
+      description:
+        "Fetches one exact read-only source-evidence segment in a granted namespace through the loopback API policy boundary. Evidence is not trusted memory.",
+      inputSchema: sourceEvidenceGetInput,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: false
+      }
+    },
+    async (input) => {
+      try {
+        const response = await fetch(`${baseUrl}/v1alpha1/source-evidence/get`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            namespaceId: input.namespaceId,
+            sourceId: input.sourceId,
+            segmentId: input.segmentId
+          }),
+          signal: AbortSignal.timeout(5_000)
+        });
+        const body = await readSafeApiBody(response);
+        if (!response.ok) {
+          return safeToolError(readSafeErrorCode(body));
+        }
+        const safeResult = readSourceEvidenceSearchResult(body);
+        return {
+          content: [{ type: "text" as const, text: JSON.stringify(safeResult) }],
+          structuredContent: safeResult
+        };
+      } catch (error) {
+        const code =
+          error instanceof SafeError ? error.code : "operation_unavailable";
+        return safeToolError(code);
       }
     }
   );

@@ -16,6 +16,8 @@ export const STORY2_MIGRATION_NAME = "0002_story2_candidate_lifecycle.sql";
 export const STORY3_MIGRATION_NAME = "0003_story3_audited_search.sql";
 export const STORY4_MIGRATION_NAME = "0004_story4_lifecycle_portability.sql";
 export const STORY5_MIGRATION_NAME = "0005_story5_knowledge_provider_host.sql";
+export const STORY5_FETCH_MIGRATION_NAME =
+  "0006_story5_exact_evidence_fetch.sql";
 const MIGRATION_ADVISORY_LOCK = 1_913_770_101;
 
 export type MigrationDefinition = {
@@ -50,7 +52,8 @@ export async function readAlpha1Migrations(): Promise<MigrationDefinition[]> {
     { version: 2, name: STORY2_MIGRATION_NAME },
     { version: 3, name: STORY3_MIGRATION_NAME },
     { version: 4, name: STORY4_MIGRATION_NAME },
-    { version: ALPHA1_SCHEMA_VERSION, name: STORY5_MIGRATION_NAME }
+    { version: 5, name: STORY5_MIGRATION_NAME },
+    { version: ALPHA1_SCHEMA_VERSION, name: STORY5_FETCH_MIGRATION_NAME }
   ] as const;
 
   return Promise.all(

@@ -270,16 +270,16 @@ async function migrateAndInitialize(): Promise<void> {
   }>(
     "SELECT version, state FROM source_wire_memory.schema_migrations ORDER BY version"
   );
-  assert.deepEqual(migrationRows.rows, [
-    { version: 1, state: "completed" },
-    { version: 2, state: "completed" },
-    { version: 3, state: "completed" },
-    { version: 4, state: "completed" },
-    { version: 5, state: "completed" }
-  ]);
+  assert.deepEqual(
+    migrationRows.rows,
+    Array.from({ length: ALPHA1_SCHEMA_VERSION }, (_, index) => ({
+      version: index + 1,
+      state: "completed"
+    }))
+  );
   pass(
     "S2-MIG-01",
-    "forward-only migrations 0001 through 0005 applied once and replayed without mutation"
+    `forward-only migrations 0001 through ${String(ALPHA1_SCHEMA_VERSION).padStart(4, "0")} applied once and replayed without mutation`
   );
 
   assert(adminPool);
@@ -702,13 +702,14 @@ async function mcpAndProposalProbes(): Promise<void> {
 
   const tools = await mcpClient.listTools();
   assert.deepEqual(tools.tools.map((tool) => tool.name).sort(), [
+    "get_source_evidence",
     "propose_memory_candidate",
     "search_source_evidence",
     "search_trusted_memory"
   ]);
   pass(
     "S2-MCP-01",
-    "real official SDK client discovered exactly the approved three-tool Alpha surface"
+    "real official SDK client discovered exactly the approved four-tool Alpha surface"
   );
 
   const content =
@@ -2425,7 +2426,8 @@ async function writeReport(): Promise<void> {
       "migrations/0002_story2_candidate_lifecycle.sql",
       "migrations/0003_story3_audited_search.sql",
       "migrations/0004_story4_lifecycle_portability.sql",
-      "migrations/0005_story5_knowledge_provider_host.sql"
+      "migrations/0005_story5_knowledge_provider_host.sql",
+      "migrations/0006_story5_exact_evidence_fetch.sql"
     ].map(async (path) => ({
       path,
       sha256: createHash("sha256")

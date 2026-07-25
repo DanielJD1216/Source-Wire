@@ -6,6 +6,7 @@ import { SafeError } from "../src/errors.js";
 import {
   computeProviderOriginProcessVerifier,
   createKnowledgeProviderHost,
+  parseSourceEvidenceGet,
   parseSourceEvidenceSearch,
   type ProviderReadAuditStore,
   type ProviderReadReceiptBinding
@@ -226,6 +227,135 @@ test("source-evidence search without a provider fails safely without fallback", 
         ...parseSourceEvidenceSearch({
           namespaceId: "ns_project_alpha",
           query: "deployment review"
+        })
+      }
+    ),
+    (error: unknown) =>
+      error instanceof SafeError &&
+      error.code === "operation_unavailable" &&
+      error.status === 503
+  );
+});
+
+test("audited exact-evidence fetch releases at most one receipt-covered segment", async () => {
+  const auditStore = new RecordingAuditStore();
+  const host = createKnowledgeProviderHost({
+    binding: {
+      provider: createSyntheticKnowledgeProvider(),
+      ownerId: "owner_alpha",
+      namespaceId: "ns_project_alpha",
+      providerScopeId: "scope_docs_alpha",
+      timeoutMs: 1_000
+    },
+    auditStore,
+    processReleaseSecret: randomBytes(32)
+  });
+
+  const execution = await host.execute(
+    {
+      actor,
+      traceId: randomUUID(),
+      startedAtMs: Date.now()
+    },
+    {
+      operation: "get_evidence",
+      ...parseSourceEvidenceGet({
+        namespaceId: "ns_project_alpha",
+        sourceId: "source_synthetic_runbook",
+        segmentId: "segment_release_gate"
+      })
+    }
+  );
+  try {
+    const response = JSON.parse(
+      execution.serializedResponse.toString("utf8")
+    ) as {
+      data: { evidence: unknown[]; gaps: unknown[] };
+    };
+    assert.equal(response.data.evidence.length, 1);
+    assert.deepEqual(response.data.gaps, []);
+    assert.equal(auditStore.issued?.operation, "get_evidence");
+    assert.equal(auditStore.issued?.coveredResultCount, 1);
+    assert.deepEqual(auditStore.issued, auditStore.consumed);
+  } finally {
+    execution.clear();
+  }
+
+  const missing = await host.execute(
+    {
+      actor,
+      traceId: randomUUID(),
+      startedAtMs: Date.now()
+    },
+    {
+      operation: "get_evidence",
+      ...parseSourceEvidenceGet({
+        namespaceId: "ns_project_alpha",
+        sourceId: "source_missing",
+        segmentId: "segment_missing"
+      })
+    }
+  );
+  try {
+    const response = JSON.parse(
+      missing.serializedResponse.toString("utf8")
+    ) as {
+      data: {
+        evidence: unknown[];
+        gaps: Array<{ code: string; message: string; retryable: boolean }>;
+      };
+    };
+    assert.deepEqual(response.data.evidence, []);
+    assert.deepEqual(response.data.gaps, [
+      {
+        code: "not_found",
+        message: "Requested evidence is unavailable.",
+        retryable: false
+      }
+    ]);
+    assert.equal(auditStore.issued?.operation, "get_evidence");
+    assert.equal(auditStore.issued?.coveredResultCount, 0);
+  } finally {
+    missing.clear();
+  }
+
+  const synthetic = createSyntheticKnowledgeProvider();
+  const mismatchedHost = createKnowledgeProviderHost({
+    binding: {
+      provider: {
+        profile: synthetic.profile,
+        async execute(request) {
+          const result = await synthetic.execute(request);
+          return {
+            ...result,
+            evidence: result.evidence.map((item) => ({
+              ...item,
+              sourceId: "source_wrong"
+            }))
+          };
+        }
+      },
+      ownerId: "owner_alpha",
+      namespaceId: "ns_project_alpha",
+      providerScopeId: "scope_docs_alpha",
+      timeoutMs: 1_000
+    },
+    auditStore: new RecordingAuditStore(),
+    processReleaseSecret: randomBytes(32)
+  });
+  await assert.rejects(
+    mismatchedHost.execute(
+      {
+        actor,
+        traceId: randomUUID(),
+        startedAtMs: Date.now()
+      },
+      {
+        operation: "get_evidence",
+        ...parseSourceEvidenceGet({
+          namespaceId: "ns_project_alpha",
+          sourceId: "source_synthetic_runbook",
+          segmentId: "segment_release_gate"
         })
       }
     ),

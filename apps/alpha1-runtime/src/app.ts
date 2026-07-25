@@ -21,6 +21,7 @@ import type { Story1Database } from "./database.js";
 import { asSafeError, SafeError } from "./errors.js";
 import { inspectSchemaCompatibility } from "./migration.js";
 import {
+  parseSourceEvidenceGet,
   parseSourceEvidenceSearch,
   type KnowledgeProviderHost
 } from "./knowledge-provider-host.js";
@@ -265,6 +266,41 @@ export function createStory1App(options: Story1AppOptions): Hono<{ Variables: Ap
       },
       {
         operation: "search_evidence",
+        ...input
+      }
+    );
+    try {
+      const serialized = Uint8Array.from(execution.serializedResponse).buffer;
+      context.set("safeResult", "allowed");
+      return context.body(serialized, 200, {
+        "Content-Type": "application/json; charset=UTF-8"
+      });
+    } finally {
+      execution.clear();
+    }
+  });
+
+  app.post("/v1alpha1/source-evidence/get", async (context) => {
+    const body = await readStrictJson(context, [
+      "namespaceId",
+      "sourceId",
+      "segmentId"
+    ]);
+    const actor = await authenticateForContext(context, options);
+    const input = parseSourceEvidenceGet(body);
+    context.set("namespaceId", input.namespaceId);
+    if (!options.knowledgeProviderHost) {
+      throw new SafeError("operation_unavailable", 503, true);
+    }
+    const execution = await options.knowledgeProviderHost.execute(
+      {
+        actor,
+        traceId: context.get("traceId"),
+        startedAtMs: context.get("startedAt"),
+        signal: context.req.raw.signal
+      },
+      {
+        operation: "get_evidence",
         ...input
       }
     );
@@ -685,6 +721,9 @@ function operationFor(method: string, path: string): string {
   }
   if (method === "POST" && path === "/v1alpha1/source-evidence/search") {
     return "search_source_evidence";
+  }
+  if (method === "POST" && path === "/v1alpha1/source-evidence/get") {
+    return "get_source_evidence";
   }
   if (method === "GET" && isCandidateListRoute(method, path)) {
     return "list_memory_candidates";

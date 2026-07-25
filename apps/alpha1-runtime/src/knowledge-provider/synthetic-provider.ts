@@ -22,6 +22,11 @@ const profile: RuntimeKnowledgeProviderProfile = Object.freeze({
       capability: "search_evidence",
       requirement: "required",
       supported: true
+    }),
+    Object.freeze({
+      capability: "get_evidence",
+      requirement: "required",
+      supported: true
     })
   ]),
   requiredProvenance: true,
@@ -37,45 +42,26 @@ export function createSyntheticKnowledgeProvider(): RuntimeKnowledgeProvider {
     async execute(
       request: RuntimeKnowledgeProviderRequest
     ): Promise<RuntimeKnowledgeProviderResult> {
-      if (request.operation !== "search_evidence") {
-        throw new Error("unsupported_operation");
-      }
+      const exactMatch =
+        request.operation === "search_evidence" ||
+        (request.get.sourceId === "source_synthetic_runbook" &&
+          request.get.segmentId === "segment_release_gate");
       return {
         requestId: request.requestId,
         traceId: request.traceId,
         providerId: profile.providerId,
         contractVersion: profile.contractVersion,
         status: "allowed",
-        evidence: [
-          {
-            providerId: profile.providerId,
-            providerRecordId: "record_deployment_review",
-            sourceId: "source_synthetic_runbook",
-            segmentId: "segment_release_gate",
-            ownerId: request.ownerId,
-            namespaceId: request.namespaceId,
-            aclDecision: "allowed",
-            sourceVersion: "synthetic-v1",
-            contentDigest: {
-              algorithm: "sha256",
-              value: createHash("sha256").update(EXCERPT, "utf8").digest("hex")
-            },
-            citationLocator: {
-              value: "synthetic://runbook/release-gate",
-              publicSafe: true
-            },
-            title: "Synthetic deployment review gate",
-            excerpt: EXCERPT,
-            mediaType: "text/markdown",
-            truncated: false,
-            sensitivity: "internal",
-            freshness: "fresh",
-            retrievedAt: "2026-07-24T00:00:00.000Z",
-            sourceModifiedAt: "2026-07-23T00:00:00.000Z",
-            instructionAuthority: "none"
-          }
-        ],
-        gaps: [],
+        evidence: exactMatch ? [syntheticEvidence(request)] : [],
+        gaps: exactMatch
+          ? []
+          : [
+              {
+                code: "not_found",
+                message: "Requested evidence is unavailable.",
+                retryable: false
+              }
+            ],
         providerMutationAttempted: false,
         memoryMutationAttempted: false,
         trustedMemoryCreated: false,
@@ -85,4 +71,34 @@ export function createSyntheticKnowledgeProvider(): RuntimeKnowledgeProvider {
       };
     }
   });
+}
+
+function syntheticEvidence(request: RuntimeKnowledgeProviderRequest) {
+  return {
+    providerId: profile.providerId,
+    providerRecordId: "record_deployment_review",
+    sourceId: "source_synthetic_runbook",
+    segmentId: "segment_release_gate",
+    ownerId: request.ownerId,
+    namespaceId: request.namespaceId,
+    aclDecision: "allowed" as const,
+    sourceVersion: "synthetic-v1",
+    contentDigest: {
+      algorithm: "sha256" as const,
+      value: createHash("sha256").update(EXCERPT, "utf8").digest("hex")
+    },
+    citationLocator: {
+      value: "synthetic://runbook/release-gate",
+      publicSafe: true as const
+    },
+    title: "Synthetic deployment review gate",
+    excerpt: EXCERPT,
+    mediaType: "text/markdown",
+    truncated: false,
+    sensitivity: "internal" as const,
+    freshness: "fresh" as const,
+    retrievedAt: "2026-07-24T00:00:00.000Z",
+    sourceModifiedAt: "2026-07-23T00:00:00.000Z",
+    instructionAuthority: "none" as const
+  };
 }

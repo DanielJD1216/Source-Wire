@@ -484,13 +484,14 @@ async function mcpLifecycleAndSearchProbe(): Promise<void> {
 
   const tools = await mcpClient.listTools();
   assert.deepEqual(tools.tools.map((tool) => tool.name).sort(), [
+    "get_source_evidence",
     "propose_memory_candidate",
     "search_source_evidence",
     "search_trusted_memory"
   ]);
   pass(
     "S3-MCP-01",
-    "official SDK discovery exposed proposal, source-evidence search, and trusted-memory search with no owner operation"
+    "official SDK discovery exposed proposal, source-evidence search, exact source-evidence fetch, and trusted-memory search with no owner operation"
   );
 
   protectedMarker = `story3_protected_${randomBytes(12).toString("hex")}`;
@@ -2125,7 +2126,8 @@ async function writeReport(): Promise<void> {
       "migrations/0002_story2_candidate_lifecycle.sql",
       "migrations/0003_story3_audited_search.sql",
       "migrations/0004_story4_lifecycle_portability.sql",
-      "migrations/0005_story5_knowledge_provider_host.sql"
+      "migrations/0005_story5_knowledge_provider_host.sql",
+      "migrations/0006_story5_exact_evidence_fetch.sql"
     ].map(async (path) => ({
       path,
       sha256: createHash("sha256")

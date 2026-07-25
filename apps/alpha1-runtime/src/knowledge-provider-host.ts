@@ -28,8 +28,11 @@ const ORIGIN_VERIFIER_DOMAIN =
 const CONTRACT_ID = "source-wire.knowledge-provider" as const;
 const CONTRACT_VERSION = "knowledge-provider.v1" as const;
 const SEARCH_OPERATION = "search_evidence" as const;
+const GET_OPERATION = "get_evidence" as const;
 const MCP_OPERATION = "search_source_evidence" as const;
+const MCP_GET_OPERATION = "get_source_evidence" as const;
 const RECEIPT_FORMAT_VERSION = 1 as const;
+type ProviderReadOperation = typeof SEARCH_OPERATION | typeof GET_OPERATION;
 
 export type RuntimeKnowledgeProviderProfile = Readonly<{
   contractId: typeof CONTRACT_ID;
@@ -80,7 +83,7 @@ export type RuntimeKnowledgeProviderEvidence = {
   instructionAuthority: "none";
 };
 
-export type RuntimeKnowledgeProviderRequest = {
+type RuntimeKnowledgeProviderRequestBase = {
   contractId: typeof CONTRACT_ID;
   contractVersion: typeof CONTRACT_VERSION;
   requestId: string;
@@ -89,17 +92,35 @@ export type RuntimeKnowledgeProviderRequest = {
   ownerId: string;
   namespaceId: string;
   providerScopeId: string;
-  operation: typeof SEARCH_OPERATION;
-  requiredCapabilities: Array<{
-    capability: typeof SEARCH_OPERATION;
-    requirement: "required";
-  }>;
   deadlineAt: string;
-  search: {
-    query: string;
-    maximumResults: number;
-  };
 };
+
+export type RuntimeKnowledgeProviderRequest =
+  RuntimeKnowledgeProviderRequestBase &
+    (
+      | {
+          operation: typeof SEARCH_OPERATION;
+          requiredCapabilities: Array<{
+            capability: typeof SEARCH_OPERATION;
+            requirement: "required";
+          }>;
+          search: {
+            query: string;
+            maximumResults: number;
+          };
+        }
+      | {
+          operation: typeof GET_OPERATION;
+          requiredCapabilities: Array<{
+            capability: typeof GET_OPERATION;
+            requirement: "required";
+          }>;
+          get: {
+            sourceId: string;
+            segmentId: string;
+          };
+        }
+    );
 
 export type RuntimeKnowledgeProviderResult = {
   requestId: string;
@@ -149,6 +170,12 @@ export type SourceEvidenceSearchInput = {
   limit: number;
 };
 
+export type SourceEvidenceGetInput = {
+  namespaceId: string;
+  sourceId: string;
+  segmentId: string;
+};
+
 export type ProviderReadReceiptBinding = {
   receiptId: string;
   formatVersion: typeof RECEIPT_FORMAT_VERSION;
@@ -161,7 +188,7 @@ export type ProviderReadReceiptBinding = {
   namespaceId: string;
   providerId: string;
   providerScopeId: string;
-  operation: typeof SEARCH_OPERATION;
+  operation: ProviderReadOperation;
   policyDecision: "allowed";
   releaseBinding: string;
   requestDigest: string;
@@ -200,13 +227,20 @@ export type AuthorizedEvidenceReadContext = {
   signal?: AbortSignal;
 };
 
-export type EvidenceReadCommand = {
-  operation: typeof SEARCH_OPERATION;
-  namespaceId: string;
-  query: string;
-  queryByteCount: number;
-  limit: number;
-};
+export type EvidenceReadCommand =
+  | {
+      operation: typeof SEARCH_OPERATION;
+      namespaceId: string;
+      query: string;
+      queryByteCount: number;
+      limit: number;
+    }
+  | {
+      operation: typeof GET_OPERATION;
+      namespaceId: string;
+      sourceId: string;
+      segmentId: string;
+    };
 
 export interface KnowledgeProviderHost {
   execute(
@@ -269,6 +303,33 @@ export function parseSourceEvidenceSearch(
   };
 }
 
+export function parseSourceEvidenceGet(value: unknown): SourceEvidenceGetInput {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new SafeError("validation_failed", 400);
+  }
+  const record = value as Record<string, unknown>;
+  if (
+    Object.keys(record).some(
+      (key) =>
+        key !== "namespaceId" && key !== "sourceId" && key !== "segmentId"
+    )
+  ) {
+    throw new SafeError("validation_failed", 400);
+  }
+  try {
+    return {
+      namespaceId: assertSourceWireIdentifier(
+        record.namespaceId,
+        "namespaceId"
+      ),
+      sourceId: assertSourceWireIdentifier(record.sourceId, "sourceId"),
+      segmentId: assertSourceWireIdentifier(record.segmentId, "segmentId")
+    };
+  } catch {
+    throw new SafeError("validation_failed", 400);
+  }
+}
+
 export function createKnowledgeProviderHost(options: {
   binding?: KnowledgeProviderBinding;
   auditStore: ProviderReadAuditStore;
@@ -296,16 +357,24 @@ export function createKnowledgeProviderHost(options: {
       const requestDigest = canonicalRequestDigest({
         apiSchema: STORY1_API_SCHEMA,
         method: "POST",
-        mcpOperation: MCP_OPERATION,
-        providerOperation: SEARCH_OPERATION,
+        mcpOperation:
+          command.operation === SEARCH_OPERATION
+            ? MCP_OPERATION
+            : MCP_GET_OPERATION,
+        providerOperation: command.operation,
         actorCredentialId: context.actor.credentialId,
         actorIdentityId: context.actor.actorIdentityId,
         ownerId: context.actor.ownerId,
         namespaceId: command.namespaceId,
         providerId: binding.providerId,
         providerScopeId: binding.providerScopeId,
-        query: command.query,
-        limit: command.limit
+        selector:
+          command.operation === SEARCH_OPERATION
+            ? { query: command.query, limit: command.limit }
+            : {
+                sourceId: command.sourceId,
+                segmentId: command.segmentId
+              }
       });
       const deadlineMs = Math.min(
         context.startedAtMs + STORY1_REQUEST_TIMEOUT_MS,
@@ -317,7 +386,7 @@ export function createKnowledgeProviderHost(options: {
 
       let providerResult: RuntimeKnowledgeProviderResult;
       try {
-        providerResult = await binding.provider.execute({
+        const providerRequestBase: RuntimeKnowledgeProviderRequestBase = {
           contractId: CONTRACT_ID,
           contractVersion: CONTRACT_VERSION,
           requestId,
@@ -326,23 +395,43 @@ export function createKnowledgeProviderHost(options: {
           ownerId: binding.ownerId,
           namespaceId: binding.namespaceId,
           providerScopeId: binding.providerScopeId,
-          operation: SEARCH_OPERATION,
-          requiredCapabilities: [
-            {
-              capability: SEARCH_OPERATION,
-              requirement: "required"
-            }
-          ],
-          deadlineAt: new Date(deadlineMs).toISOString(),
-          search: {
-            query: command.query,
-            maximumResults: Math.min(
-              command.limit,
-              binding.maximumResultCount,
-              MAX_SOURCE_EVIDENCE_SEARCH_RESULTS
-            )
-          }
-        });
+          deadlineAt: new Date(deadlineMs).toISOString()
+        };
+        const providerRequest: RuntimeKnowledgeProviderRequest =
+          command.operation === SEARCH_OPERATION
+            ? {
+                ...providerRequestBase,
+                operation: SEARCH_OPERATION,
+                requiredCapabilities: [
+                  {
+                    capability: SEARCH_OPERATION,
+                    requirement: "required"
+                  }
+                ],
+                search: {
+                  query: command.query,
+                  maximumResults: Math.min(
+                    command.limit,
+                    binding.maximumResultCount,
+                    MAX_SOURCE_EVIDENCE_SEARCH_RESULTS
+                  )
+                }
+              }
+            : {
+                ...providerRequestBase,
+                operation: GET_OPERATION,
+                requiredCapabilities: [
+                  {
+                    capability: GET_OPERATION,
+                    requirement: "required"
+                  }
+                ],
+                get: {
+                  sourceId: command.sourceId,
+                  segmentId: command.segmentId
+                }
+              };
+        providerResult = await binding.provider.execute(providerRequest);
       } catch {
         throw new SafeError("operation_unavailable", 503, true);
       }
@@ -353,7 +442,7 @@ export function createKnowledgeProviderHost(options: {
         binding,
         context,
         requestId,
-        command.limit
+        command
       );
       const gaps = providerResult.gaps.map((gap) => ({ ...gap }));
       const auditEventId = randomUUID();
@@ -400,7 +489,7 @@ export function createKnowledgeProviderHost(options: {
         namespaceId: binding.namespaceId,
         providerId: binding.providerId,
         providerScopeId: binding.providerScopeId,
-        operation: SEARCH_OPERATION,
+        operation: command.operation,
         policyDecision: "allowed",
         releaseBinding: randomBytes(32).toString("base64url"),
         requestDigest,
@@ -482,6 +571,11 @@ function freezeAndValidateBinding(binding: KnowledgeProviderBinding) {
         entry.capability === SEARCH_OPERATION &&
         entry.supported === true
     ) ||
+    !profile.capabilities.some(
+      (entry) =>
+        entry.capability === GET_OPERATION &&
+        entry.supported === true
+    ) ||
     profile.providerScopeId !== binding.providerScopeId ||
     !Number.isInteger(profile.maximumResultCount) ||
     profile.maximumResultCount < 1 ||
@@ -519,8 +613,10 @@ function validateAndCopyProviderResult(
   binding: ReturnType<typeof freezeAndValidateBinding>,
   context: AuthorizedEvidenceReadContext,
   requestId: string,
-  requestedLimit: number
+  command: EvidenceReadCommand
 ): RuntimeKnowledgeProviderEvidence[] {
+  const requestedLimit =
+    command.operation === SEARCH_OPERATION ? command.limit : 1;
   if (
     result.requestId !== requestId ||
     result.traceId !== context.traceId ||
@@ -536,7 +632,7 @@ function validateAndCopyProviderResult(
     !Array.isArray(result.evidence) ||
     result.evidence.length >
       Math.min(
-        requestedLimit,
+        command.operation === GET_OPERATION ? 1 : requestedLimit,
         binding.maximumResultCount,
         MAX_SOURCE_EVIDENCE_SEARCH_RESULTS
       ) ||
@@ -553,6 +649,9 @@ function validateAndCopyProviderResult(
       item.providerId !== binding.providerId ||
       item.ownerId !== binding.ownerId ||
       item.namespaceId !== binding.namespaceId ||
+      (command.operation === GET_OPERATION &&
+        (item.sourceId !== command.sourceId ||
+          item.segmentId !== command.segmentId)) ||
       item.aclDecision !== "allowed" ||
       item.contentDigest.algorithm !== "sha256" ||
       !DIGEST.test(item.contentDigest.value) ||
@@ -651,7 +750,8 @@ function validateReceipt(receipt: ProviderReadReceiptBinding): void {
     receipt.actorReference !== `credential:${receipt.actorCredentialId}` ||
     !UUID.test(receipt.actorCredentialId) ||
     !UUID.test(receipt.actorIdentityId) ||
-    receipt.operation !== SEARCH_OPERATION ||
+    (receipt.operation !== SEARCH_OPERATION &&
+      receipt.operation !== GET_OPERATION) ||
     receipt.policyDecision !== "allowed" ||
     !RELEASE_BINDING.test(receipt.releaseBinding) ||
     !DIGEST.test(receipt.requestDigest) ||

@@ -32,6 +32,7 @@ test("real MCP client discovers exactly the approved Alpha read and proposal too
     assert.deepEqual(
       result.tools.map((tool) => tool.name).sort(),
       [
+        "get_source_evidence",
         "propose_memory_candidate",
         "search_source_evidence",
         "search_trusted_memory"

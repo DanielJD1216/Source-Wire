@@ -2,7 +2,7 @@ const SOURCE_WIRE_IDENTIFIER = /^[A-Za-z][A-Za-z0-9_-]{0,63}$/;
 const BASE64URL = /^[A-Za-z0-9_-]+$/;
 
 export const STORY1_SCHEMA_VERSION = 1;
-export const ALPHA1_SCHEMA_VERSION = 5;
+export const ALPHA1_SCHEMA_VERSION = 6;
 export const STORY1_SCHEMA_NAME = "source_wire_memory";
 export const STORY1_API_SCHEMA = "source-wire.api.v1alpha1";
 export const MAX_AUTHORIZATION_BYTES = 512;

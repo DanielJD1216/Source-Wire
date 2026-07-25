@@ -8,15 +8,17 @@ const secondChecksum = "b".repeat(64);
 const thirdChecksum = "c".repeat(64);
 const fourthChecksum = "d".repeat(64);
 const fifthChecksum = "e".repeat(64);
+const sixthChecksum = "f".repeat(64);
 const expectedMigrations = [
   { version: 1, checksumSha256: expectedChecksum },
   { version: 2, checksumSha256: secondChecksum },
   { version: 3, checksumSha256: thirdChecksum },
   { version: 4, checksumSha256: fourthChecksum },
-  { version: 5, checksumSha256: fifthChecksum }
+  { version: 5, checksumSha256: fifthChecksum },
+  { version: 6, checksumSha256: sixthChecksum }
 ];
 
-test("schema compatibility accepts the completed five-migration chain", () => {
+test("schema compatibility accepts the completed six-migration chain", () => {
   assert.deepEqual(
     classifySchemaCompatibility(
       [
@@ -24,11 +26,12 @@ test("schema compatibility accepts the completed five-migration chain", () => {
         { version: 2, checksumSha256: secondChecksum, state: "completed" },
         { version: 3, checksumSha256: thirdChecksum, state: "completed" },
         { version: 4, checksumSha256: fourthChecksum, state: "completed" },
-        { version: 5, checksumSha256: fifthChecksum, state: "completed" }
+        { version: 5, checksumSha256: fifthChecksum, state: "completed" },
+        { version: 6, checksumSha256: sixthChecksum, state: "completed" }
       ],
       expectedMigrations
     ),
-    { compatible: true, version: 5 }
+    { compatible: true, version: 6 }
   );
 });
 
@@ -44,7 +47,8 @@ test("schema compatibility fails closed for absent, malformed, old, and new stat
         { version: 2, checksumSha256: secondChecksum, state: "completed" },
         { version: 3, checksumSha256: thirdChecksum, state: "completed" },
         { version: 4, checksumSha256: fourthChecksum, state: "completed" },
-        { version: 5, checksumSha256: "f".repeat(64), state: "completed" }
+        { version: 5, checksumSha256: fifthChecksum, state: "completed" },
+        { version: 6, checksumSha256: "0".repeat(64), state: "completed" }
       ],
       expectedMigrations
     ),
@@ -57,7 +61,8 @@ test("schema compatibility fails closed for absent, malformed, old, and new stat
         { version: 2, checksumSha256: secondChecksum, state: "completed" },
         { version: 3, checksumSha256: thirdChecksum, state: "completed" },
         { version: 4, checksumSha256: fourthChecksum, state: "completed" },
-        { version: 5, checksumSha256: fifthChecksum, state: "applying" }
+        { version: 5, checksumSha256: fifthChecksum, state: "completed" },
+        { version: 6, checksumSha256: sixthChecksum, state: "applying" }
       ],
       expectedMigrations
     ),
@@ -78,7 +83,8 @@ test("schema compatibility fails closed for absent, malformed, old, and new stat
         { version: 3, checksumSha256: thirdChecksum, state: "completed" },
         { version: 4, checksumSha256: fourthChecksum, state: "completed" },
         { version: 5, checksumSha256: fifthChecksum, state: "completed" },
-        { version: 6, checksumSha256: "f".repeat(64), state: "completed" }
+        { version: 6, checksumSha256: sixthChecksum, state: "completed" },
+        { version: 7, checksumSha256: "1".repeat(64), state: "completed" }
       ],
       expectedMigrations
     ),

@@ -182,9 +182,10 @@ Core invariants:
 | `npm run readiness:report` | Fast package and boundary summary |
 | `npm test` | Types, fixtures, schema exports, CLI, and examples |
 | `npm run reviewer:smoke` | Clean first-reviewer path in a temporary copy |
-| `npm run alpha1:ci-workflow-smoke` | Hosted Alpha PostgreSQL job keeps exact versions, all five stories, stable markers, and no artifact or production-secret path |
-| `npm run alpha1:conformance:story5` | Disposable PostgreSQL proof for the four-tool MCP and protected source-evidence release path |
-| `npm run alpha1:conformance` | All five disposable local Alpha story proofs |
+| `npm run alpha1:ci-workflow-smoke` | Hosted Alpha PostgreSQL job keeps exact versions, all five stories, both synthetic adapters, stable markers, and no artifact or production-secret path |
+| `npm run alpha1:conformance:story5` | Disposable PostgreSQL proof for the original four-tool MCP and protected source-evidence release path |
+| `npm run alpha1:conformance:story5:replaceable` | The same protected path with the separate public-contract-only adapter |
+| `npm run alpha1:conformance` | All five disposable local Alpha story proofs, including both Story 5 adapters |
 | `npm run docs:links && npm run docs:anchors` | Documentation link and anchor integrity |
 | `npm run safety:scan && npm run claims:scan` | Public-safety and claim-boundary checks |
 | `npm run publish:readiness` | Full local package and boundary gate, without publishing |

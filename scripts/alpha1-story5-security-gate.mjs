@@ -19,6 +19,20 @@ const mcpServerSource = await readFile(
   new URL("../apps/alpha1-runtime/src/mcp/server.ts", import.meta.url),
   "utf8"
 );
+const replaceableAdapterSource = await readFile(
+  new URL(
+    "../apps/alpha1-runtime/src/knowledge-provider/replaceable-synthetic-adapter.ts",
+    import.meta.url
+  ),
+  "utf8"
+);
+const runtimeCompositionSource = await readFile(
+  new URL(
+    "../apps/alpha1-runtime/src/runtime-composition.ts",
+    import.meta.url
+  ),
+  "utf8"
+);
 const disposition = await readFile(
   new URL(
     "../docs/internal/alpha1-story5-mcp-advisory-disposition.md",
@@ -49,6 +63,32 @@ if (
   )
 ) {
   throw new Error("story5_mcp_static_or_http_surface_forbidden");
+}
+
+const adapterImports = [
+  ...replaceableAdapterSource.matchAll(/from\s+["']([^"']+)["']/gu)
+]
+  .map((match) => match[1])
+  .sort();
+if (
+  JSON.stringify(adapterImports) !==
+  JSON.stringify(["@source-wire/contracts", "node:crypto"])
+) {
+  throw new Error("story5_replaceable_adapter_import_boundary_invalid");
+}
+if (
+  /knowledge-provider-host|database|repository|mcp|receipt|audit-store|memory-store/iu.test(
+    replaceableAdapterSource
+  )
+) {
+  throw new Error("story5_replaceable_adapter_runtime_authority_imported");
+}
+if (
+  /registry|hot.?reload|dynamic.?provider|providerEndpoint|providerCredentials/iu.test(
+    runtimeCompositionSource
+  )
+) {
+  throw new Error("story5_runtime_composition_scope_broadened");
 }
 
 const audit = readProductionAudit();
@@ -90,6 +130,8 @@ if (!Number.isFinite(reviewDeadlineEnd) || Date.now() > reviewDeadlineEnd) {
 console.log("ok Story 5 immutable provider binding policy");
 console.log("ok Story 5 caller authority exclusion");
 console.log("ok Story 5 source-evidence tool and capability policy");
+console.log("ok replaceable adapter imports only the public provider contract");
+console.log("ok startup composition excludes registry and runtime authority");
 console.log(`ok MCP SDK ${sdkVersion} avoids known high-severity SDK ranges`);
 console.log("ok MCP stdio path excludes static-file and HTTP transports");
 console.log("ok known moderate advisory set matches owner-accepted disposition");

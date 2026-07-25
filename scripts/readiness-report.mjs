@@ -22,6 +22,7 @@ const requiredScripts = [
   "alpha1:conformance:story3",
   "alpha1:conformance:story4",
   "alpha1:conformance:story5",
+  "alpha1:conformance:story5:replaceable",
   "alpha1:conformance",
   "alpha1:story5:security-gate",
   "alpha1:ci-workflow-smoke",
@@ -350,9 +351,10 @@ printList([
   "alpha1:conformance:story3 uses real API and MCP processes plus generated disposable PostgreSQL 16 state to prove audited active-memory search, exact origin-process receipts, fail-closed crashes and outages, bounds, leak resistance, least privilege, and cleanup",
   "alpha1:conformance:story4 uses real API, owner CLI, operator CLI, and generated disposable PostgreSQL 16 state to prove correction, revocation, protected-read races, deterministic secret-free export, fresh portable initialization, isolated physical recovery, runtime verification gates, least privilege, and cleanup",
   "alpha1:conformance:story5 uses real API and MCP processes plus generated disposable PostgreSQL 16 state to prove immutable synthetic provider binding, source-evidence search and fetch, durable audit, single-use receipts, fault and crash denial, zero memory promotion, least privilege, leak resistance, and cleanup",
+  "alpha1:conformance:story5:replaceable runs the same protected path through the separate public-contract-only synthetic adapter",
   "alpha1:story5:security-gate verifies the temporary local stdio advisory disposition, dependency set, transport exclusions, immutable provider policy, and review deadline",
   "alpha1:ci-workflow-smoke verifies the separate exact-version hosted PostgreSQL conformance job cannot be replaced by unit tests",
-  "alpha1:conformance runs all five local Alpha 1 story conformance paths in order",
+  "alpha1:conformance runs all five local Alpha 1 story conformance paths in order and runs Story 5 through both synthetic adapters",
   "the five Alpha 1 getting-started guides define prerequisites, commands, trust boundaries, retry, receipt, lifecycle, portability, recovery, provider release, cleanup, and blocked scope"
 ]);
 

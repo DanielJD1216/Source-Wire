@@ -319,9 +319,9 @@ async function migrateAndInitialize(): Promise<void> {
     grants.rows.map((row) => row.capability),
     [
       "credential.manage",
+      "memory.export",
       "memory_candidate.decide",
       "memory_candidate.review",
-      "memory.export",
       "runtime.health",
       "trusted_memory.correct",
       "trusted_memory.revoke"

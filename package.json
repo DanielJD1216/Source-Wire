@@ -62,7 +62,7 @@
     "alpha1:conformance:story4": "npm run alpha1:build && npm run conformance:story4 --workspace @source-wire/alpha1-runtime",
     "alpha1:conformance:story5": "npm run alpha1:build && npm run conformance:story5 --workspace @source-wire/alpha1-runtime",
     "alpha1:conformance:story5:replaceable": "npm run alpha1:build && SOURCE_WIRE_STORY5_PROVIDER_ADAPTER=replaceable npm run conformance:story5 --workspace @source-wire/alpha1-runtime",
-    "alpha1:conformance": "npm run alpha1:conformance:story1 && npm run alpha1:conformance:story2 && npm run alpha1:conformance:story3 && npm run alpha1:conformance:story4 && npm run alpha1:conformance:story5",
+    "alpha1:conformance": "npm run alpha1:conformance:story1 && npm run alpha1:conformance:story2 && npm run alpha1:conformance:story3 && npm run alpha1:conformance:story4 && npm run alpha1:conformance:story5 && npm run alpha1:conformance:story5:replaceable",
     "alpha1:story5:security-gate": "npm run alpha1:build && node scripts/alpha1-story5-security-gate.mjs",
     "alpha1:ci-workflow-smoke": "node scripts/alpha1-postgres-workflow-smoke.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",

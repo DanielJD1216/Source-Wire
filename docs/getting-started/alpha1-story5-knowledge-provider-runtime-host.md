@@ -74,6 +74,7 @@ npm install
 npm run alpha1:test
 npm run alpha1:story5:security-gate
 npm run alpha1:conformance:story5
+npm run alpha1:conformance:story5:replaceable
 ```
 
 To run the complete Alpha 1 chain:
@@ -84,7 +85,9 @@ npm run alpha1:conformance
 
 GitHub Actions runs the same chain in a separate
 `Source-Wire Alpha PostgreSQL conformance` job with exact Node.js `22.23.1`
-and an ephemeral PostgreSQL `16` service. Validate the workflow contract
+and an ephemeral PostgreSQL `16` service. The full chain runs Story 5 once
+with the original adapter and once with the separate replaceable adapter.
+Validate the workflow contract
 locally with:
 
 ```bash

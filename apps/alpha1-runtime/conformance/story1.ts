@@ -1473,6 +1473,7 @@ async function dependencyProbe(): Promise<void> {
     await readFile(resolve(appRoot, "package.json"), "utf8")
   ) as { dependencies: Record<string, string> };
   assert.deepEqual(packageJson.dependencies, {
+    "@source-wire/contracts": "file:../..",
     "@hono/node-server": "2.0.11",
     "@modelcontextprotocol/sdk": "1.29.0",
     "drizzle-orm": "0.45.2",

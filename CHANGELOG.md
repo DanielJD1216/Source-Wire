@@ -4,6 +4,33 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Provider composition security closure
+
+Summary:
+
+- Extended the complete Alpha conformance command and hosted PostgreSQL job to run Story 5 through both the original and replaceable synthetic provider adapters.
+- Kept exact Node.js `22.23.1`, PostgreSQL `16`, generated disposable credentials and state, deterministic cleanup, stable begin/success/failure markers, and no artifact upload.
+- Extended the Story 5 security gate to enforce the replaceable adapter's public-contract-only imports and the startup composition's no-registry boundary.
+- Preserved fail-closed coverage for provider absence, malformed startup composition, capability and namespace denial, scope mismatch, opaque identifier bounds, provenance, deadlines, response bounds, audit failure, receipt mismatch and replay, foreign process, database outage, crash checkpoints, response-write interruption, buffer clearing, and least privilege.
+- Kept the dated moderate MCP advisory disposition valid for the unchanged local stdio-only synthetic Alpha scope through 2026-08-24.
+- Updated human and agent documentation so the full command, both-adapter proof, and continuous gate are explicit.
+- Added no runtime-host package, package publication, tag, release, deployment, live provider, real data, or production claim.
+
+Validation:
+
+- `npm run alpha1:story5:security-gate`
+- `npm run alpha1:ci-workflow-smoke`
+- `npm run alpha1:test`
+- `npm run alpha1:conformance`
+- `npm test`
+- `npm run readiness:report`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run docs:command-setup`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `git diff --check`
+
 ### 2026-07-24 - Replaceable provider adapter proof
 
 Summary:

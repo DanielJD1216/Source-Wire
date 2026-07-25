@@ -7,7 +7,8 @@ request:
   and release-boundary gates.
 - `Source-Wire Alpha PostgreSQL conformance` runs the complete local Alpha
   Stories 1 through 5, including both Story 5 synthetic adapters, against an
-  ephemeral PostgreSQL 16 service.
+  ephemeral PostgreSQL 16 service. Its Story 2 path also runs the Story 6.2
+  memory-only local launcher conformance.
 
 The workflow is for release and conformance confidence only. It does not
 publish, deploy, call private services, use real data, or preserve a database
@@ -58,9 +59,9 @@ SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS
 SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED
 ```
 
-A success marker appears only after Stories 1 through 5, both Story 5 adapter
-paths, and their cleanup checks pass in dependency order. Alpha unit tests
-cannot emit that marker.
+A success marker appears only after Stories 1 through 5, the embedded Story 6.2
+memory-only launcher cases, both Story 5 adapter paths, and their cleanup
+checks pass in dependency order. Alpha unit tests cannot emit that marker.
 
 ## Local Mirror
 

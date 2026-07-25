@@ -5,10 +5,17 @@ import {
   type ChildProcessByStdio
 } from "node:child_process";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import {
+  chmod,
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  writeFile
+} from "node:fs/promises";
 import { createServer } from "node:net";
-import { userInfo } from "node:os";
-import { dirname, resolve } from "node:path";
+import { tmpdir, userInfo } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import type { Readable, Writable } from "node:stream";
 import { fileURLToPath } from "node:url";
 
@@ -17,6 +24,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import pg from "pg";
 
 import { ALPHA1_SCHEMA_VERSION } from "../src/config.js";
+import { createLocalConfigTemplate } from "../src/local-cli/config.js";
 
 const { Client, Pool } = pg;
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -25,6 +33,7 @@ const operatorCli = resolve(appRoot, "dist/src/cli/operator.js");
 const ownerCli = resolve(appRoot, "dist/src/cli/owner.js");
 const serverEntry = resolve(appRoot, "dist/src/server.js");
 const mcpServerEntry = resolve(appRoot, "dist/src/mcp/server.js");
+const localCliEntry = resolve(appRoot, "dist/src/cli/local.js");
 const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
   resolve(appRoot, ".artifacts/story2-conformance-report.json");
@@ -166,8 +175,186 @@ async function runConformance(): Promise<void> {
   await rollbackAndRoleProbes();
   await closeMcp();
   await stopApi();
+  await localCliMemoryOnlyRunnerProbe();
   await migrationCompatibilityProbes();
   await dependencyAndSecretProbes();
+}
+
+async function localCliMemoryOnlyRunnerProbe(): Promise<void> {
+  assert(targetAdminPool);
+  const migrationStateBefore = await targetAdminPool.query<{
+    version: number;
+    checksum_sha256: string;
+    state: string;
+  }>(
+    `SELECT version, checksum_sha256, state
+       FROM source_wire_memory.schema_migrations
+      ORDER BY version`
+  );
+  const directory = await mkdtemp(join(tmpdir(), "source-wire-story6-memory-"));
+  const configPath = resolve(directory, "source-wire.local.json");
+  const config = createLocalConfigTemplate({
+    ownerId: "owner_story2",
+    namespaceIds: ["ns_story2_alpha", "ns_story2_beta"]
+  });
+  await writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`, {
+    mode: 0o600
+  });
+  await chmod(configPath, 0o600);
+
+  const client = new McpClient(
+    { name: "source-wire-story6-memory-conformance", version: "0.0.0" },
+    { capabilities: {} }
+  );
+  const diagnostics: string[] = [];
+  const transport = new StdioClientTransport({
+    command: process.execPath,
+    args: [localCliEntry, "mcp", "stdio", "--config", configPath],
+    env: {
+      SOURCE_WIRE_DATABASE_URL: runtimeUrl,
+      SOURCE_WIRE_TOKEN_VERIFIER_KEY: verifierKey,
+      SOURCE_WIRE_TOKEN_VERIFIER_KEY_ID: verifierKeyId,
+      SOURCE_WIRE_OWNER_TOKEN: ownerToken
+    },
+    stderr: "pipe"
+  });
+  transport.stderr?.on("data", (chunk) =>
+    diagnostics.push(
+      Buffer.isBuffer(chunk) ? chunk.toString("utf8") : String(chunk)
+    )
+  );
+
+  let localPid: number | null = null;
+  let issuedCredentialId = "";
+  try {
+    await client.connect(transport);
+    localPid = transport.pid;
+    if (localPid !== null) generatedChildPids.add(localPid);
+
+    const tools = await client.listTools();
+    assert.deepEqual(tools.tools.map((tool) => tool.name).sort(), [
+      "propose_memory_candidate",
+      "search_trusted_memory"
+    ]);
+    pass(
+      "S6-MEMORY-01",
+      "the official MCP client discovered exactly the two memory tools through one source-wire-local stdio command"
+    );
+
+    const proposal = (await client.callTool({
+      name: "propose_memory_candidate",
+      arguments: {
+        namespaceId: "ns_story2_alpha",
+        content: "Synthetic Story 6 memory-only runner proposal.",
+        provenance: {
+          kind: "owner_assertion",
+          assertion: "Synthetic Story 6 owner assertion."
+        },
+        idempotencyKey: `story6_${randomUUID()}`
+      }
+    })) as Record<string, unknown>;
+    assert.notEqual(proposal.isError, true);
+    assert.equal(readMcpText(proposal).state, "pending");
+
+    const search = (await client.callTool({
+      name: "search_trusted_memory",
+      arguments: {
+        namespaceId: "ns_story2_alpha",
+        query: "owner-approved",
+        limit: 5
+      }
+    })) as Record<string, unknown>;
+    assert.notEqual(search.isError, true);
+    const searchBody = readMcpText(search);
+    assert(Array.isArray(searchBody.results));
+    pass(
+      "S6-MEMORY-02",
+      "candidate proposal and authorized trusted-memory search crossed stdio MCP and loopback API policy without direct MCP database authority"
+    );
+
+    const issued = await targetAdminPool.query<{
+      credential_id: string;
+      status: string;
+    }>(
+      `SELECT credential.credential_id, credential.status
+         FROM source_wire_memory.credentials AS credential
+        WHERE credential.credential_class = 'harness'
+          AND credential.created_by = $1
+          AND EXISTS (
+            SELECT 1
+              FROM source_wire_memory.credential_capability_grants AS grant_row
+             WHERE grant_row.credential_id = credential.credential_id
+               AND grant_row.capability = 'memory_candidate.propose'
+          )
+          AND EXISTS (
+            SELECT 1
+              FROM source_wire_memory.credential_capability_grants AS grant_row
+             WHERE grant_row.credential_id = credential.credential_id
+               AND grant_row.capability = 'trusted_memory.search'
+          )
+        ORDER BY credential.issued_at DESC
+        LIMIT 1`,
+      [ownerCredentialId]
+    );
+    assert.equal(issued.rowCount, 1);
+    assert.equal(issued.rows[0]?.status, "active");
+    issuedCredentialId = issued.rows[0]?.credential_id ?? "";
+  } catch (error) {
+    throw new Error(
+      `story6_memory_runner_failed:${diagnostics.join("").trim() || "no_diagnostic"}`,
+      { cause: error }
+    );
+  } finally {
+    await client.close().catch(() => undefined);
+    if (localPid !== null) {
+      await waitFor(async () => !processExists(localPid as number), 5_000);
+    }
+    await rm(directory, { recursive: true, force: true });
+  }
+
+  assert.notEqual(issuedCredentialId, "");
+  await waitFor(async () => {
+    const status = await targetAdminPool?.query<{ status: string }>(
+      `SELECT status
+         FROM source_wire_memory.credentials
+        WHERE credential_id = $1`,
+      [issuedCredentialId]
+    );
+    return status?.rows[0]?.status === "revoked";
+  }, 5_000);
+  await waitFor(async () => {
+    const sessions = await targetAdminPool?.query<{ count: string }>(
+      `SELECT count(*)::text AS count
+         FROM pg_stat_activity
+        WHERE datname = current_database()
+          AND application_name = 'source_wire_alpha1_runtime'`
+    );
+    return Number(sessions?.rows[0]?.count ?? "1") === 0;
+  }, 5_000);
+  const migrationStateAfter = await targetAdminPool.query<{
+    version: number;
+    checksum_sha256: string;
+    state: string;
+  }>(
+    `SELECT version, checksum_sha256, state
+       FROM source_wire_memory.schema_migrations
+      ORDER BY version`
+  );
+  assert.deepEqual(migrationStateAfter.rows, migrationStateBefore.rows);
+  const diagnosticText = diagnostics.join("");
+  for (const sensitive of [
+    runtimeUrl,
+    migratorUrl,
+    verifierKey,
+    ownerToken,
+    configPath
+  ]) {
+    assert.equal(diagnosticText.includes(sensitive), false);
+  }
+  pass(
+    "S6-MEMORY-03",
+    "startup inspected but did not mutate migrations, shutdown revoked the process credential, stopped local processes, and removed its temporary configuration"
+  );
 }
 
 async function provisionDisposableTarget(): Promise<void> {

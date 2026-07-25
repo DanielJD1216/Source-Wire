@@ -1,6 +1,7 @@
 export const SOURCE_WIRE_LOCAL_OPERATIONS = [
   "local.init",
-  "local.doctor"
+  "local.doctor",
+  "local.mcp.stdio"
 ] as const;
 
 export type SourceWireLocalOperation =
@@ -36,7 +37,18 @@ export type SourceWireLocalErrorCode =
   | "config_permissions_unsafe"
   | "config_unreadable"
   | "config_invalid"
-  | "config_incompatible";
+  | "config_incompatible"
+  | "provider_not_supported"
+  | "environment_missing"
+  | "environment_invalid"
+  | "database_unavailable"
+  | "database_incompatible"
+  | "api_unavailable"
+  | "api_start_failed"
+  | "credential_issue_failed"
+  | "credential_revoke_failed"
+  | "mcp_start_failed"
+  | "composition_failed";
 
 const ERROR_MESSAGES: Readonly<Record<SourceWireLocalErrorCode, string>> = {
   invalid_arguments: "The local command arguments are invalid.",
@@ -45,7 +57,22 @@ const ERROR_MESSAGES: Readonly<Record<SourceWireLocalErrorCode, string>> = {
   config_permissions_unsafe: "The local configuration permissions are unsafe.",
   config_unreadable: "The local configuration could not be read.",
   config_invalid: "The local configuration is invalid.",
-  config_incompatible: "The local configuration is incompatible."
+  config_incompatible: "The local configuration is incompatible.",
+  provider_not_supported:
+    "The memory-only local runtime does not accept a knowledge provider.",
+  environment_missing: "A required local environment value is missing.",
+  environment_invalid: "A required local environment value is invalid.",
+  database_unavailable: "The local PostgreSQL memory store is unavailable.",
+  database_incompatible:
+    "The local PostgreSQL memory store migration state is incompatible.",
+  api_unavailable: "The loopback API operation is unavailable.",
+  api_start_failed: "The loopback API did not start safely.",
+  credential_issue_failed:
+    "The process-scoped MCP credential could not be issued.",
+  credential_revoke_failed:
+    "The process-scoped MCP credential could not be revoked.",
+  mcp_start_failed: "The stdio MCP process did not start safely.",
+  composition_failed: "The local runtime composition stopped unexpectedly."
 };
 
 export class SourceWireLocalCliError extends Error {
@@ -105,6 +132,10 @@ export function renderLocalCliResult(
       `schema ${value.schema}`,
       `next ${value.nextCommand}`
     ].join("\n") + "\n";
+  }
+
+  if (result.operation === "local.mcp.stdio") {
+    return `ok ${result.operation}\n`;
   }
 
   const value = result.result as {

@@ -123,6 +123,7 @@ async function main(): Promise<void> {
   rejectForbiddenAuthority();
   const baseUrl = validateBaseUrl(requireEnvironment("SOURCE_WIRE_API_URL"));
   const token = requireEnvironment("SOURCE_WIRE_MCP_TOKEN");
+  const toolProfile = readToolProfile(process.env.SOURCE_WIRE_MCP_TOOL_PROFILE);
   const server = new McpServer(
     {
       name: "source-wire-alpha1-story3",
@@ -135,106 +136,115 @@ async function main(): Promise<void> {
     }
   );
 
-  server.registerTool(
-    "get_source_evidence",
-    {
-      title: "Get source evidence",
-      description:
-        "Fetches one exact read-only source-evidence segment in a granted namespace through the loopback API policy boundary. Evidence is not trusted memory.",
-      inputSchema: sourceEvidenceGetInput,
-      annotations: {
-        readOnlyHint: true,
-        destructiveHint: false,
-        idempotentHint: true,
-        openWorldHint: false
-      }
-    },
-    async (input) => {
-      try {
-        const response = await fetch(`${baseUrl}/v1alpha1/source-evidence/get`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            namespaceId: input.namespaceId,
-            sourceId: input.sourceId,
-            segmentId: input.segmentId
-          }),
-          signal: AbortSignal.timeout(5_000)
-        });
-        const body = await readSafeApiBody(response);
-        if (!response.ok) {
-          return safeToolError(readSafeErrorCode(body));
+  if (toolProfile === "provider") {
+    server.registerTool(
+      "get_source_evidence",
+      {
+        title: "Get source evidence",
+        description:
+          "Fetches one exact read-only source-evidence segment in a granted namespace through the loopback API policy boundary. Evidence is not trusted memory.",
+        inputSchema: sourceEvidenceGetInput,
+        annotations: {
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true,
+          openWorldHint: false
         }
-        const safeResult = readSourceEvidenceSearchResult(body, "get");
-        return {
-          content: [{ type: "text" as const, text: JSON.stringify(safeResult) }],
-          structuredContent: safeResult
-        };
-      } catch (error) {
-        const code =
-          error instanceof SafeError ? error.code : "operation_unavailable";
-        return safeToolError(code);
+      },
+      async (input) => {
+        try {
+          const response = await fetch(`${baseUrl}/v1alpha1/source-evidence/get`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              namespaceId: input.namespaceId,
+              sourceId: input.sourceId,
+              segmentId: input.segmentId
+            }),
+            signal: AbortSignal.timeout(5_000)
+          });
+          const body = await readSafeApiBody(response);
+          if (!response.ok) {
+            return safeToolError(readSafeErrorCode(body));
+          }
+          const safeResult = readSourceEvidenceSearchResult(body, "get");
+          return {
+            content: [
+              { type: "text" as const, text: JSON.stringify(safeResult) }
+            ],
+            structuredContent: safeResult
+          };
+        } catch (error) {
+          const code =
+            error instanceof SafeError ? error.code : "operation_unavailable";
+          return safeToolError(code);
+        }
       }
-    }
-  );
+    );
 
-  server.registerTool(
-    "search_source_evidence",
-    {
-      title: "Search source evidence",
-      description:
-        "Searches read-only source evidence in one granted namespace through the loopback API policy boundary. Evidence is not trusted memory.",
-      inputSchema: sourceEvidenceSearchInput,
-      annotations: {
-        readOnlyHint: true,
-        destructiveHint: false,
-        idempotentHint: true,
-        openWorldHint: false
-      }
-    },
-    async (input) => {
-      try {
-        const response = await fetch(`${baseUrl}/v1alpha1/source-evidence/search`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            namespaceId: input.namespaceId,
-            query: input.query,
-            limit: input.limit ?? MAX_SOURCE_EVIDENCE_SEARCH_RESULTS,
-            ...(input.cursor === undefined
-              ? {}
-              : { cursor: input.cursor }),
-            ...(input.freshness === undefined
-              ? {}
-              : { freshness: input.freshness }),
-            ...(input.sensitivity === undefined
-              ? {}
-              : { sensitivity: input.sensitivity })
-          }),
-          signal: AbortSignal.timeout(5_000)
-        });
-        const body = await readSafeApiBody(response);
-        if (!response.ok) {
-          return safeToolError(readSafeErrorCode(body));
+    server.registerTool(
+      "search_source_evidence",
+      {
+        title: "Search source evidence",
+        description:
+          "Searches read-only source evidence in one granted namespace through the loopback API policy boundary. Evidence is not trusted memory.",
+        inputSchema: sourceEvidenceSearchInput,
+        annotations: {
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true,
+          openWorldHint: false
         }
-        const safeResult = readSourceEvidenceSearchResult(body, "search");
-        return {
-          content: [{ type: "text" as const, text: JSON.stringify(safeResult) }],
-          structuredContent: safeResult
-        };
-      } catch (error) {
-        const code =
-          error instanceof SafeError ? error.code : "operation_unavailable";
-        return safeToolError(code);
+      },
+      async (input) => {
+        try {
+          const response = await fetch(
+            `${baseUrl}/v1alpha1/source-evidence/search`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                namespaceId: input.namespaceId,
+                query: input.query,
+                limit: input.limit ?? MAX_SOURCE_EVIDENCE_SEARCH_RESULTS,
+                ...(input.cursor === undefined
+                  ? {}
+                  : { cursor: input.cursor }),
+                ...(input.freshness === undefined
+                  ? {}
+                  : { freshness: input.freshness }),
+                ...(input.sensitivity === undefined
+                  ? {}
+                  : { sensitivity: input.sensitivity })
+              }),
+              signal: AbortSignal.timeout(5_000)
+            }
+          );
+          const body = await readSafeApiBody(response);
+          if (!response.ok) {
+            return safeToolError(readSafeErrorCode(body));
+          }
+          const safeResult = readSourceEvidenceSearchResult(body, "search");
+          return {
+            content: [
+              { type: "text" as const, text: JSON.stringify(safeResult) }
+            ],
+            structuredContent: safeResult
+          };
+        } catch (error) {
+          const code =
+            error instanceof SafeError ? error.code : "operation_unavailable";
+          return safeToolError(code);
+        }
       }
-    }
-  );
+    );
+  }
 
   server.registerTool(
     "search_trusted_memory",
@@ -388,6 +398,14 @@ function rejectForbiddenAuthority(): void {
       throw new Error("forbidden_mcp_authority");
     }
   }
+}
+
+function readToolProfile(
+  value: string | undefined
+): "memory_only" | "provider" {
+  if (value === undefined || value === "provider") return "provider";
+  if (value === "memory_only") return "memory_only";
+  throw new Error("invalid_mcp_tool_profile");
 }
 
 function validateBaseUrl(value: string): string {

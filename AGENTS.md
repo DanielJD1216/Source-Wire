@@ -1,12 +1,12 @@
 # Source-Wire Agent Guide
 
-This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.2.0` package is the current immutable contracts snapshot and includes `KnowledgeProvider v1`. Latest source also contains loopback-only Alpha 1 Stories 1 through 5 under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state and synthetic read-only providers for local proof. Story 6.1 adds a private non-secret local config initializer and offline doctor in the same workspace. None of these boundaries is a hosted memory service or a production runtime.
+This file is the repository entrypoint for AI coding agents. The published `@source-wire/contracts@0.2.0` package is the current immutable contracts snapshot and includes `KnowledgeProvider v1`. Latest source also contains loopback-only Alpha 1 Stories 1 through 5 under `apps/alpha1-runtime/`, backed only by generated disposable PostgreSQL state and synthetic read-only providers for local proof. Story 6.1 adds private non-secret local configuration, and Story 6.2 composes the memory-only API and two-tool stdio MCP path behind one local command. None of these boundaries is a hosted memory service or a production runtime.
 
 ## Read Order
 
 1. Read [README.md](README.md) for the product, trust model, and current public boundary.
 2. Read [docs/README.md](docs/README.md) to route to the smallest relevant document.
-3. Before touching `apps/alpha1-runtime/`, read [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md), and [Alpha 1 Story 6.1 Local CLI Init And Offline Doctor](docs/getting-started/alpha1-story6-local-cli-init-doctor.md).
+3. Before touching `apps/alpha1-runtime/`, read [Alpha 1 Story 1 Local Runtime](docs/getting-started/alpha1-story1-local-runtime.md), [Alpha 1 Story 2 Candidate Approval](docs/getting-started/alpha1-story2-candidate-approval.md), [Alpha 1 Story 3 Audited Search](docs/getting-started/alpha1-story3-audited-search.md), [Alpha 1 Story 4 Governed Lifecycle And Portability](docs/getting-started/alpha1-story4-governed-lifecycle-portability.md), [Alpha 1 Story 5 Knowledge Provider Runtime Host](docs/getting-started/alpha1-story5-knowledge-provider-runtime-host.md), [Alpha 1 Story 6.1 Local CLI Init And Offline Doctor](docs/getting-started/alpha1-story6-local-cli-init-doctor.md), and [Alpha 1 Story 6.2 Memory-Only Local Runtime](docs/getting-started/alpha1-story6-memory-only-local-runtime.md).
 4. Read the relevant concept and contract before changing behavior.
 5. Treat everything under `examples/` as synthetic, then inspect the matching synthetic fixture and smoke test.
 6. Run `npm run readiness:report` before making repository-status claims.
@@ -31,7 +31,7 @@ runtime, read [Knowledge Provider Host Composition Story](docs/internal/knowledg
 - Memory behavior must remain valid when no knowledge provider is configured.
 - Root examples, fixtures, and contract smokes are synthetic and do not imply a live server, database, connector, or deployment.
 - `apps/alpha1-runtime/` is real local Alpha 1 Stories 1 through 5 proof only. Its MCP surface contains exactly two memory tools and two synthetic source-evidence tools. Approval, correction, revocation, export, recovery, and provider configuration stay outside MCP and under owner or operator control. Protected reads require durable audit plus a single-use origin-process receipt before response release. It remains unpublished, loopback-only, generated-disposable, unhosted, undeployed, not production ready, and unsupported for real data or live providers.
-- Story 6.1 adds config creation and offline validation only. It does not start API, MCP, PostgreSQL, or provider processes, and it does not broaden any Alpha authority.
+- Story 6.1 adds config creation and offline validation. Story 6.2 adds a memory-only launcher that inspects but never applies migrations, starts loopback API plus stdio MCP, gives the MCP child no owner or database authority, advertises exactly two memory tools, and revokes its process credential on shutdown. It remains unpublished and generated-disposable only.
 
 ## Working Commands
 
@@ -68,15 +68,16 @@ npm run alpha1:ci-workflow-smoke
 npm run alpha1:conformance
 ```
 
-For the private Story 6.1 CLI tracer:
+For the private Story 6 CLI:
 
 ```bash
 npm run alpha1:build
 npm run local --workspace @source-wire/alpha1-runtime -- init --config /owner-controlled/source-wire.local.json
 npm run local --workspace @source-wire/alpha1-runtime -- doctor --config /owner-controlled/source-wire.local.json
+npm run local --workspace @source-wire/alpha1-runtime -- mcp stdio --config /owner-controlled/source-wire.local.json
 ```
 
-The conformance commands require Node.js `22.23.1`, local PostgreSQL `16`, disposable database and role authority, and synthetic generated state. Story 1 proves bootstrap, credential, request, migration, and cleanup controls. Story 2 proves the real stdio MCP proposal path, pending-only persistence, owner-controlled decisions, durable lifecycle idempotency, atomic audit, least privilege, and cleanup. Story 3 proves active-only PostgreSQL full-text search, exact audit-before-release receipts, origin-process single-use consumption, fail-closed crashes and outages, protected-content bounds, leak resistance, least privilege, and cleanup. Story 4 proves fix-forward correction, revocation, protected-read lifecycle races, canonical export, fresh portable initialization, isolated physical recovery, runtime verification gates, least privilege, and cleanup. Story 5 proves an exact four-tool stdio MCP surface, immutable synthetic provider composition, policy-controlled source-evidence search and fetch, metadata-only audit, single-use release receipts, fault and crash denial, zero memory promotion, least privilege, leak resistance, and cleanup. The base and replaceable Story 5 commands run the same protected path with two public-contract adapters. `alpha1:conformance` includes both. `alpha1:ci-workflow-smoke` verifies the separate hosted conformance job still uses exact Node.js and PostgreSQL versions, all five stories, both adapters, stable markers, ephemeral credentials, and no artifact upload. These paths must not target real or persistent user data.
+The conformance commands require Node.js `22.23.1`, local PostgreSQL `16`, disposable database and role authority, and synthetic generated state. Story 1 proves bootstrap, credential, request, migration, and cleanup controls. Story 2 proves the real stdio MCP proposal path, pending-only persistence, owner-controlled decisions, durable lifecycle idempotency, atomic audit, least privilege, and cleanup. It also proves Story 6.2 through the one-command memory-only launcher, exact two-tool discovery, unchanged migrations, process-credential revocation, and child cleanup. Story 3 proves active-only PostgreSQL full-text search, exact audit-before-release receipts, origin-process single-use consumption, fail-closed crashes and outages, protected-content bounds, leak resistance, least privilege, and cleanup. Story 4 proves fix-forward correction, revocation, protected-read lifecycle races, canonical export, fresh portable initialization, isolated physical recovery, runtime verification gates, least privilege, and cleanup. Story 5 proves an exact four-tool stdio MCP surface, immutable synthetic provider composition, policy-controlled source-evidence search and fetch, metadata-only audit, single-use release receipts, fault and crash denial, zero memory promotion, least privilege, leak resistance, and cleanup. The base and replaceable Story 5 commands run the same protected path with two public-contract adapters. `alpha1:conformance` includes both. `alpha1:ci-workflow-smoke` verifies the separate hosted conformance job still uses exact Node.js and PostgreSQL versions, all five stories, both adapters, stable markers, ephemeral credentials, and no artifact upload. These paths must not target real or persistent user data.
 
 Before handing off a broad change:
 

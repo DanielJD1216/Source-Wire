@@ -27,13 +27,14 @@ The knowledge base remains optional and replaceable. Source-Wire owns the logica
 | License | Apache-2.0 |
 | Contracts, schemas, synthetic fixtures, validation | Available |
 | Local developer Alpha | Stories 1 through 5 in latest source, unpublished and loopback-only |
+| Private local CLI | Story 6.1 offline configuration plus Story 6.2 memory-only API and two-tool stdio MCP composition |
 | PostgreSQL proof | Generated disposable state only |
 | Hosted or production runtime | Not available |
 | Live knowledge connectors | Not available |
 | Real user data support | Not approved |
 | Automatic trusted-memory promotion | Forbidden |
 
-The local Alpha proves that the core lifecycle can operate across real processes and disposable PostgreSQL. It does not convert the repository into a hosted, deployed, or production-ready product.
+The local Alpha proves that the core lifecycle can operate across real processes and disposable PostgreSQL. Story 6.2 proves the same memory-only path can be composed behind one private local command without giving the MCP child owner or database authority. It does not convert the repository into a hosted, deployed, or production-ready product.
 
 ## Product Principles
 

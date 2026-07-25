@@ -159,6 +159,13 @@ async function main(): Promise<void> {
         connectionsCheckingInterval: STORY1_CONNECTION_CHECK_INTERVAL_MS
       }
     });
+    await waitForListening(server);
+    if (process.send) {
+      process.send({
+        kind: "source_wire.api.ready",
+        port
+      });
+    }
     stdoutSafeLogger({
       traceId,
       operation: "server_start",
@@ -193,6 +200,24 @@ async function main(): Promise<void> {
     });
     process.exitCode = 1;
   }
+}
+
+function waitForListening(
+  server: ReturnType<typeof serve>
+): Promise<void> {
+  if (server.listening) return Promise.resolve();
+  return new Promise<void>((resolve, reject) => {
+    const onListening = () => {
+      server.removeListener("error", onError);
+      resolve();
+    };
+    const onError = (error: Error) => {
+      server.removeListener("listening", onListening);
+      reject(error);
+    };
+    server.once("listening", onListening);
+    server.once("error", onError);
+  });
 }
 
 function parseStory5ProviderCrashPoint(

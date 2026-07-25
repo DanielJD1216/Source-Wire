@@ -4,6 +4,29 @@ All notable changes to Source-Wire are recorded here.
 
 ## Unreleased
 
+### 2026-07-24 - Story 6.2 memory-only local runtime
+
+Summary:
+
+- Added `source-wire-local mcp stdio --config <path>` to the private unpublished Alpha workspace.
+- Added migration compatibility inspection without migration application, literal-loopback API startup, process-scoped harness credential issuance, and coordinated API plus MCP shutdown.
+- Added an explicit memory-only MCP tool profile that advertises exactly `propose_memory_candidate` and `search_trusted_memory` while preserving Story 5's existing four-tool provider conformance.
+- Kept MCP stdout protocol-only and limited its child environment to the loopback API origin, process credential, and fixed memory-only profile.
+- Kept owner, migrator, provider, and direct database authority out of the MCP process.
+- Added generated disposable PostgreSQL conformance for two-tool discovery, proposal and search through API policy, unchanged migrations, process credential revocation, child cleanup, role and database cleanup, and temporary-config cleanup.
+- Kept provider loading, live connectors, non-disposable databases, hosting, deployment, production, real data, and Alpha package publication blocked.
+
+Validation:
+
+- `npm run alpha1:test`
+- `npm run alpha1:conformance:story2`
+- `npm run docs:links`
+- `npm run docs:anchors`
+- `npm run safety:scan`
+- `npm run claims:scan`
+- `npm run ci:check`
+- `git diff --check`
+
 ### 2026-07-24 - Story 6.1 local CLI init and offline doctor
 
 Summary:

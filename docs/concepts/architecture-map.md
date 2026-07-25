@@ -61,6 +61,11 @@ The package does not export a hosted backend, production API server, production 
 - immutable synthetic knowledge-provider composition and protected evidence release,
 - fail-closed denial and cleanup behavior.
 
+Story 6.1 adds private offline configuration. Story 6.2 composes the
+memory-only subset through one private `source-wire-local mcp stdio` command.
+That path advertises exactly the two memory tools, inspects but never applies
+migrations, and revokes its process-scoped harness credential on shutdown.
+
 The Alpha workspace does not prove hosting, deployment, production availability, production backup guarantees, live-provider support, public network exposure, non-disposable database use, or real-data safety.
 
 Follow the [Alpha 1 Story guides](../README.md#run-and-evaluate) in order.

@@ -38,7 +38,7 @@ Package: @source-wire/contracts
 Version: 0.2.0
 License: Apache-2.0
 Published runtime boundary: the installed contracts package contains synthetic policy and architecture proofs only; it contains no backend runtime
-Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; it contains no deployment, hosting, live provider, production support, production backup guarantee, or real data
+Latest-source runtime boundary: an unpublished loopback-only Alpha 1 Stories 1 through 5 workspace proves disposable PostgreSQL 16 migration, bootstrap, credential lifecycle, authenticated health, four stdio MCP tools, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads; private Story 6.1 adds offline local configuration and Story 6.2 composes the memory-only two-tool path behind one local command; it contains no deployment, hosting, live provider, production support, production backup guarantee, or real data
 ok readiness report
 ```
 
@@ -47,7 +47,7 @@ What this proves:
 - The package posture is readable in one place.
 - The current version and license boundary are explicit.
 - The published package still contains contracts and synthetic proofs only.
-- Latest source separately contains the unpublished, loopback-only Stories 1 through 5 developer alpha.
+- Latest source separately contains the unpublished, loopback-only Stories 1 through 5 developer alpha plus private Story 6.1 and 6.2 local CLI slices.
 - The report can summarize package exports, schemas, commands, installed smokes, required readiness docs, and blocked scope without running the full readiness gate.
 
 ## 3. Validate The Synthetic Fixtures

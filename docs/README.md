@@ -47,6 +47,7 @@ Use tutorials and walkthroughs when you need a safe, executable path.
 - [Alpha 1 Story 4: Governed Lifecycle And Portability](getting-started/alpha1-story4-governed-lifecycle-portability.md)
 - [Alpha 1 Story 5: Knowledge Provider Runtime Host](getting-started/alpha1-story5-knowledge-provider-runtime-host.md)
 - [Alpha 1 Story 6.1: Local CLI Init And Offline Doctor](getting-started/alpha1-story6-local-cli-init-doctor.md)
+- [Alpha 1 Story 6.2: Memory-Only Local Runtime](getting-started/alpha1-story6-memory-only-local-runtime.md)
 
 The Alpha stories use generated disposable PostgreSQL state. They do not establish hosting, deployment, production readiness, live-provider support, production backup guarantees, or real-data safety.
 

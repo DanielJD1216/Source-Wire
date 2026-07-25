@@ -239,7 +239,12 @@ More detail:
 - real user data,
 - trusted Memory Record promotion.
 
-Latest source contains an unpublished local Alpha 1 Stories 1 through 5 runtime workspace. It proves one loopback API, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected source-evidence search and fetch through synthetic read-only providers with disposable PostgreSQL state. It does not add that runtime to the published package or authorize hosting, deployment, live-provider use, production use, production backup guarantees, or real data.
+Latest source contains an unpublished local Alpha 1 Stories 1 through 5 runtime workspace. It proves one loopback API, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, fix-forward correction, revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected source-evidence search and fetch through synthetic read-only providers with disposable PostgreSQL state. Story 6.1 adds private offline local configuration, and Story 6.2 adds a private one-command memory-only composition with exactly the two memory tools. It does not add the runtime to the published package or authorize hosting, deployment, live-provider use, production use, production backup guarantees, or real data.
+
+For the Story 6 path, read:
+
+- [Story 6.1 Local CLI Init And Offline Doctor](alpha1-story6-local-cli-init-doctor.md)
+- [Story 6.2 Memory-Only Local Runtime](alpha1-story6-memory-only-local-runtime.md)
 
 Current release posture:
 

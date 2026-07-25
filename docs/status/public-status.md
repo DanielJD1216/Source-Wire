@@ -23,6 +23,7 @@ It is published to npm and released on GitHub, but not deployed and not a hosted
 | Synthetic runtime skeleton | Included on latest `main` only |
 | Local Alpha 1 Stories 1 through 5 developer runtime | Included in latest source as an unpublished npm workspace, not in the published contracts package |
 | Local Story 6.1 CLI tracer | Included in latest source for non-secret config creation and offline validation only; runtime startup, provider loading, PostgreSQL access, publication, and hosting are not included |
+| Local Story 6.2 memory-only runner | Included in latest source as a private loopback API plus exactly two memory tools over stdio; verified only with generated disposable PostgreSQL state |
 | Database or migrations | Six explicit forward-only disposable Alpha 1 migrations are included in latest source; production and non-disposable use remain unapproved |
 | Trusted-memory search | Included only as local active-only PostgreSQL full-text proof with audit-before-release receipts |
 | Trusted-memory correction and revocation | Included only as owner-controlled, fix-forward local Story 4 proof |
@@ -56,6 +57,7 @@ It currently includes:
 - synthetic owner-hosted API policy route and MCP adapter skeleton,
 - unpublished npm `apps/alpha1-runtime` workspace for disposable PostgreSQL bootstrap, credential lifecycle, authenticated health, a four-tool stdio MCP surface, pending candidates, owner-controlled approval or rejection, audited active trusted-memory search, owner correction and revocation, canonical export, fresh portable initialization, isolated physical recovery, and protected synthetic source-evidence reads,
 - private `source-wire-local` Story 6.1 tracer for owner-only non-secret configuration and dependency-free offline diagnostics,
+- private Story 6.2 one-command memory-only composition with migration inspection, loopback API policy, process-scoped credentials, and exactly two stdio MCP tools,
 - issue templates for structured public feedback,
 - GitHub-visible support, security, and contribution-boundary files,
 - Apache-2.0 licensing for source package reuse.
@@ -75,7 +77,7 @@ Source-Wire is not yet:
 
 For the current owner-hosted setup boundary, read [Owner-Hosted Setup Claim Boundary](../internal/owner-hosted-setup-claim-boundary.md).
 
-That historical setup boundary states that Source-Wire is not managed hosting and `Source-Wire-Memory-Engine` remains separate. Alpha 1 Stories 1 through 5 add a disposable developer-runtime migration chain, stdio MCP proposal, memory search, evidence search and fetch, candidate, owner-decision, audited protected reads, owner correction and revocation, canonical export, fresh portable initialization, and isolated physical recovery. Story 6.1 adds only non-secret config initialization and offline diagnostics. Production runtime, live providers, production backup guarantees, and non-disposable database use remain blocked.
+That historical setup boundary states that Source-Wire is not managed hosting and `Source-Wire-Memory-Engine` remains separate. Alpha 1 Stories 1 through 5 add a disposable developer-runtime migration chain, stdio MCP proposal, memory search, evidence search and fetch, candidate, owner-decision, audited protected reads, owner correction and revocation, canonical export, fresh portable initialization, and isolated physical recovery. Story 6.1 adds non-secret config initialization and offline diagnostics. Story 6.2 composes the memory-only loopback API and two-tool stdio MCP path through one private local command. Production runtime, live providers, production backup guarantees, and non-disposable database use remain blocked.
 
 The current setup package closeout is recorded in [Owner-Hosted Setup Final Proof](../internal/owner-hosted-setup-final-proof.md), [Owner-Hosted Setup Docs Audit](../internal/owner-hosted-setup-docs-audit.md), and [Owner-Hosted Setup Go/No-Go Gate](../internal/owner-hosted-setup-go-no-go-gate.md).
 
@@ -94,6 +96,7 @@ You may:
 - run synthetic runtime-skeleton smokes,
 - run the generated disposable Story 1 through Story 5 conformance paths,
 - run the private Story 6.1 local config and offline-doctor tests,
+- run the private Story 6.2 memory-only launcher through the Story 2 disposable conformance path,
 - open structured feedback issues using the provided templates.
 
 The Apache-2.0 license alone does not mean Source-Wire is deployed, hosted, production-ready, or accepting code contributions.

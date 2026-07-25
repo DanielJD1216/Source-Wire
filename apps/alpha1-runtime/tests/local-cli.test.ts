@@ -24,6 +24,10 @@ import {
   renderLocalCliResult,
   SourceWireLocalCliError
 } from "../src/local-cli/result.js";
+import {
+  createMemoryOnlyMcpEnvironment,
+  runLocalMcpStdio
+} from "../src/local-cli/mcp-stdio.js";
 import { runSourceWireLocalCli } from "../src/local-cli/runner.js";
 
 test("init creates one owner-only non-secret config and never overwrites it", async () => {
@@ -345,6 +349,60 @@ test("compiled private binary emits deterministic JSON and leaves the public con
     assert.match(
       publicCli,
       /usage: source-wire validate <schema> <file\.\.\.>/u
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("memory-only MCP authority is an exact API-token allowlist", () => {
+  const environment = createMemoryOnlyMcpEnvironment(
+    "http://127.0.0.1:4318",
+    "generated-process-token"
+  );
+  assert.deepEqual(environment, {
+    SOURCE_WIRE_API_URL: "http://127.0.0.1:4318",
+    SOURCE_WIRE_MCP_TOKEN: "generated-process-token",
+    SOURCE_WIRE_MCP_TOOL_PROFILE: "memory_only"
+  });
+  for (const forbidden of [
+    "SOURCE_WIRE_OWNER_TOKEN",
+    "SOURCE_WIRE_DATABASE_URL",
+    "SOURCE_WIRE_MIGRATOR_DATABASE_URL",
+    "SOURCE_WIRE_STORY5_PROVIDER_MODULE",
+    "DATABASE_URL"
+  ]) {
+    assert.equal(Object.hasOwn(environment, forbidden), false);
+  }
+});
+
+test("memory-only MCP startup fails before dependencies for providers and missing authority", async () => {
+  const directory = await privateTemporaryDirectory();
+  try {
+    const providerPath = join(directory, "provider.json");
+    await writeConfig(providerPath, {
+      ...createLocalConfigTemplate(),
+      knowledgeProvider: {
+        module: "@example/source-wire-provider",
+        exportName: "createProvider",
+        providerScopeId: "scope_docs_alpha",
+        timeoutMs: 1_000
+      }
+    });
+    await assert.rejects(
+      runLocalMcpStdio(["--config", providerPath], {}),
+      (error: unknown) =>
+        error instanceof SourceWireLocalCliError &&
+        error.code === "provider_not_supported"
+    );
+
+    const memoryOnlyPath = join(directory, "memory-only.json");
+    await writeConfig(memoryOnlyPath, createLocalConfigTemplate());
+    await assert.rejects(
+      runLocalMcpStdio(["--config", memoryOnlyPath], {}),
+      (error: unknown) =>
+        error instanceof SourceWireLocalCliError &&
+        error.code === "environment_missing"
     );
   } finally {
     await rm(directory, { recursive: true, force: true });

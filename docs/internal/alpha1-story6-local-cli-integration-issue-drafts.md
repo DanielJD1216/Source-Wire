@@ -175,6 +175,13 @@ redacted result envelope.
 
 **User stories covered:** US6.2, US6.4, US6.8
 
+**Latest-source implementation status:** Complete. Verified by focused Alpha
+tests, exact Node.js `22.23.1` plus PostgreSQL `16` disposable conformance,
+documentation checks, safety and claim scans. The hosted package workflow runs
+the same Story 2 conformance path.
+Publication, deployment, production, provider loading, and real data remain
+out of scope.
+
 ### What to build
 
 Deliver the smallest complete local runner from validated configuration through
@@ -188,16 +195,16 @@ the runner without a knowledge provider.
 
 ### Acceptance criteria
 
-- [ ] One CLI command starts the local API on loopback and the MCP server over stdio.
-- [ ] Startup verifies migration compatibility but never applies migrations.
-- [ ] A no-provider configuration starts successfully in memory-only mode.
-- [ ] The official MCP client discovers exactly the two memory tools when no provider is configured.
-- [ ] Candidate proposal and authorized trusted-memory search pass through API policy rather than direct database access.
-- [ ] The MCP process receives no owner, migrator, provider, or direct database authority.
-- [ ] MCP protocol frames use stdout and redacted diagnostics use stderr.
-- [ ] API or MCP startup failure stops the entire local composition.
-- [ ] Shutdown invalidates process-scoped credentials and removes generated processes, roles, databases, and temporary files.
-- [ ] The path uses generated synthetic state and contacts no Source-Wire-operated service.
+- [x] One CLI command starts the local API on loopback and the MCP server over stdio.
+- [x] Startup verifies migration compatibility but never applies migrations.
+- [x] A no-provider configuration starts successfully in memory-only mode.
+- [x] The official MCP client discovers exactly the two memory tools when no provider is configured.
+- [x] Candidate proposal and authorized trusted-memory search pass through API policy rather than direct database access.
+- [x] The MCP process receives no owner, migrator, provider, or direct database authority.
+- [x] MCP protocol frames use stdout and redacted diagnostics use stderr.
+- [x] API or MCP startup failure stops the entire local composition.
+- [x] Shutdown invalidates process-scoped credentials and removes generated processes, roles, databases, and temporary files.
+- [x] The path uses generated synthetic state and contacts no Source-Wire-operated service.
 
 ## Issue 3: Compose One Synthetic Provider Through The Local CLI
 

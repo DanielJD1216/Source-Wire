@@ -155,10 +155,10 @@ The focused suite proves:
 
 ## Still Outside Story 6.1
 
-- runtime startup,
-- PostgreSQL compatibility inspection or migration,
+- provider-backed runtime startup,
+- database migration,
 - provider loading or connected health checks,
-- MCP process orchestration,
+- provider-backed MCP process orchestration,
 - owner export,
 - a live evidence-first adapter,
 - a published local-runtime package,
@@ -166,5 +166,5 @@ The focused suite proves:
 - non-disposable databases,
 - production, deployment, live providers, and real data.
 
-The next dependency-ordered unit is
-[#279 Story 6.2: Run the memory-only local runtime through stdio](https://github.com/DanielJD1216/Source-Wire/issues/279).
+Story 6.2 now owns the implemented memory-only startup path. Continue with
+[Alpha 1 Story 6.2 Memory-Only Local Runtime](alpha1-story6-memory-only-local-runtime.md).

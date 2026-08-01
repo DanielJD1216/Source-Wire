@@ -8,7 +8,10 @@ This command is read-only. It does not close issues, create issues, publish npm,
 
 Use this check before broad public sharing when you want to prove the visible open issue surface has no unresolved owner-decision gates.
 
-The current expected open issue list is empty.
+The current expected open issue list permits issue `#286`, `Global Owner-Hosted
+Runtime V1 architecture definition`, only while that approved Gate A unit is
+active. The command verifies its exact title and exact owner approval record.
+Closing the issue after the architecture unit completes is also valid.
 
 Issues `#255`, `#256`, `#257`, and `#258` are expected to be closed because the first public release path, minimal branch governance path, hosted runtime PRD path, and contribution terms PRD path are complete. Any open issue is treated as a failure unless it is structured reviewer feedback with the expected reviewer labels in the post-share monitor.
 
@@ -22,6 +25,9 @@ After the owner separately approved hosted-runtime child issue publication, the 
 - `Deployment Boundary And Runtime Stop Conditions`
 
 Those planning issues still do not approve implementation, deployment, production runtime use, real user data, npm publishing, GitHub release creation, tags, or code contribution acceptance.
+
+Issue `#286` also does not approve implementation. It records architecture,
+synthetic checks, and review only. Gates B through F remain separate.
 
 ## Command
 
@@ -46,6 +52,8 @@ ok exact hosted runtime PRD approval retained
 ok completed owner decision #258 closed
 ok exact contribution terms PRD approval retained
 ok no unresolved owner decision issues open
+ok approved active architecture issue #286 bounded
+ok exact Global Owner-Hosted Runtime V1 Gate A approval retained
 ok all completed owner decision approvals retained
 ok hosted runtime child issue publication approval retained
 ok hosted runtime child planning issues published
@@ -72,6 +80,8 @@ Expected smoke markers:
 ```text
 ok owner open issue boundary readable
 ok expected hosted runtime planning issues open
+ok approved active architecture issue #286 bounded
+ok exact Global Owner-Hosted Runtime V1 Gate A approval retained
 blocked hosted runtime implementation
 ```
 
@@ -80,6 +90,7 @@ blocked hosted runtime implementation
 - GitHub issue access is working through `gh`.
 - No owner-decision gates remain open.
 - Approved hosted-runtime child PRD/planning issues, when present with exact expected titles, are planning work rather than unresolved owner-decision gates.
+- Active issue `#286`, when open, retains its exact title and Gate A approval record while all implementation gates remain blocked.
 - Issue `#255` has recorded release implementation approval and is closed as completed release history.
 - Issue `#256` has recorded branch governance implementation approval and is closed as completed branch-governance history.
 - Issue `#257` has recorded hosted runtime PRD approval and is closed as completed PRD history.

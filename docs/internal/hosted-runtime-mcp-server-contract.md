@@ -29,6 +29,74 @@ References:
 - [Hosted Runtime Threat Model And Trust Boundary](hosted-runtime-threat-model-trust-boundary.md)
 - [Hosted Runtime API Server Contract](hosted-runtime-api-server-contract.md)
 
+## Transport-Derived Fields
+
+Issue `#286` separates transport identity from tool input. For a future remote
+runtime, the MCP adapter receives authenticated human principal, client
+application, workspace/channel audience, agent session, credential audience,
+sender-constrained DPoP or mTLS proof binding,
+owner, namespace grants, capability grants, authorization and deletion epochs,
+immutable destination tuple, complete multi-hop audience chain, and destination
+release ceiling from the access plane.
+
+**MCP tool arguments must not supply grants.** Model-generated `caller.id`,
+`ownerId`, `namespaceId`, `requiredCapability`, client identity, workspace,
+channel, or sensitivity ceiling values are not authority. A requested namespace
+is only a selector inside the server-authorized namespace set.
+
+The planned shared transport is **private-network authenticated Streamable HTTP MCP**.
+That is a future security boundary requiring separate implementation
+approval. The existing local `stdio` Alpha remains evaluation-only until
+remote and local behavior have synthetic parity proof.
+
+KnowledgeProvider v1 does not advertise per-filter support. The adapter must not
+advertise cursor, freshness, sensitivity, pagination, or filter inputs until a
+future Gate B implementation negotiates the additive, versioned
+`knowledge-provider.query-features.v1` descriptor. Unsupported or unnegotiated
+options fail with an actionable compatibility result instead of being silently
+ignored.
+
+Search returns a one-use opaque citation handle bound to owner, namespace,
+principal, client, session/replay scope, authorization epoch, immutable
+destination and audience-chain digests, provider, source, segment, source
+version, content digest, sensitivity, expiry, and redemption state. Exact fetch
+atomically redeems, reauthorizes, and revalidates that binding. Evidence-backed
+candidate creation preserves source-evidence provenance, but proposal remains
+disabled until that provenance is implemented. Trusted-memory approval remains outside MCP.
+
+Reference: [ADR 0002: Global Owner-Hosted Runtime V1](../adr/0002-global-owner-hosted-runtime-v1.md).
+
+## Global V1 Activation Overlay
+
+The older proposed tool groups below describe a long-term action taxonomy. They
+are not the initial remote discovery surface.
+
+The four-tool Global V1 product direction is:
+
+1. `search_trusted_memory`
+2. `search_source_evidence`
+3. `get_source_evidence`
+4. `propose_memory_candidate`
+
+Memory-only discovery advertises only `search_trusted_memory`; it does not
+advertise evidence search, exact fetch, or proposal and has no provider/model
+readiness dependency. Evidence-enabled discovery adds
+`search_source_evidence` and `get_source_evidence` only while the complete
+evidence chain is ready. These three tools form the evidence-enabled read-only
+surface. `propose_memory_candidate` remains disabled until evidence-backed candidate
+provenance preserves provider, source, segment, source version, content digest,
+citation, release trace, principal, and client. Trusted-memory approval remains
+outside MCP.
+
+`assemble_context`, `use_2nd_brain`, maintenance, review, approval, handoff
+write, connector administration, export, and database control are not V1 remote
+tools unless a later contract and owner approval explicitly activate them.
+
+Discovery is readiness-sensitive. If evidence readiness becomes false, the
+adapter removes or denies evidence tools without disturbing independently ready
+trusted-memory search. A client caching an older discovery result receives a
+safe retryable compatibility response, never a fallthrough to memory-only data.
+
 ## MCP Responsibility Summary
 
 The future MCP server owns:
@@ -58,13 +126,17 @@ Every MCP tool call must forward enough metadata for the API policy boundary:
 | MCP field | API envelope target | Rule |
 | --- | --- | --- |
 | `toolName` | `action` | Tool name maps to a specific API action. |
-| `caller.id` | `caller.id` | Synthetic examples only in public docs. |
-| `caller.kind` | `caller.kind` | Agent callers use `agent_harness`. |
-| `caller.harnessLabel` | `caller.harnessLabel` | Preserve harness label such as Codex or Claude Code. |
-| `ownerId` | `ownerId` | Required. Missing owner fails closed. |
-| `namespaceId` | `namespaceId` | Required. Missing or denied namespace fails closed. |
-| `requiredCapability` | `requiredCapability` | Tool determines minimum capability. |
+| `caller.id` | `caller.id` | Transport-derived. A payload copy is diagnostic only and must match or fail closed. |
+| `caller.kind` | `caller.kind` | Transport-derived client class. A model cannot select it. |
+| `caller.harnessLabel` | `caller.harnessLabel` | Registered client label such as Codex or Claude Code, not free-form authority. |
+| `ownerId` | `ownerId` | Server-bound owner. A request may not choose another owner. |
+| `namespaceId` | `namespaceId` | Selector inside the server-authorized namespace set. Missing or denied scope fails closed. |
+| `requiredCapability` | `requiredCapability` | Tool determines the minimum; Source Wire policy decides whether it is granted. |
 | `traceId` | `traceId` | Required safe request correlation ID. |
+| `authorizationEpoch` | `authorizationEpoch` | Transport-derived monotonic policy epoch. A model cannot select it. |
+| `deletionEpoch` | `deletionEpoch` | Required for evidence mode and transport-derived. |
+| `destinationDigest` | `destinationDigest` | Digest of the immutable registered route and actual destination. |
+| `audienceChainDigest` | `audienceChainDigest` | Digest of every verified downstream audience hop. |
 | `input` | operation payload | Must not include secrets in public examples. |
 
 MCP must not silently choose a broader namespace or capability than the tool requires.
@@ -120,6 +192,70 @@ Must not:
 - treat source evidence as trusted memory,
 - promote source evidence,
 - expose raw local paths or private locators in public-safe output.
+
+### `get_source_evidence`
+
+Purpose:
+
+- hydrate one exact evidence segment selected from a prior search.
+
+Required API capability:
+
+- `read_source_evidence`.
+
+Input:
+
+- exactly one short-lived opaque hydration handle;
+- no provider, source, segment, owner, namespace, destination, or identity override.
+
+Must preserve:
+
+- exact source version and content digest;
+- stable citation receipt ID and release trace;
+- freshness, sensitivity, truncation, gaps, and safe denial metadata;
+- the original principal, client, session/replay scope, authorization epoch,
+  destination tuple, and audience-chain binding.
+
+Must not:
+
+- accept guessed source or segment IDs;
+- redeem a handle more than once;
+- release after lifecycle, epoch, destination, or audience substitution;
+- reveal existence on denial.
+
+### `propose_memory_candidate`
+
+Purpose:
+
+- create one pending MemoryStore candidate from explicitly selected evidence.
+
+Required API capability:
+
+- `prepare_candidates`.
+
+Input:
+
+- explicit owner intent independent of evidence content;
+- candidate text and canonical argument digest;
+- stable citation receipt IDs, never expiring hydration handles;
+- separate short-lived mutation authorization bound to principal, client,
+  destination, `prepare_candidates`, and the argument digest, issued by the
+  access-plane approval service after signed trusted-UI or verified-channel
+  confirmation.
+
+Must preserve:
+
+- provider, source, segment, source version, content digest, stable citation
+  receipt, release trace, proposing principal, and client;
+- `status: pending` and `noAutoPromotion: true`.
+
+Must not:
+
+- treat retrieved instructions, model output, or a general agent-host assertion
+  as owner intent or mutation authorization;
+- approve, activate, or promote trusted memory;
+- operate before this provenance and mediation contract is implemented and
+  separately approved for Gate B.
 
 ### `assemble_context`
 

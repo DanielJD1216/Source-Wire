@@ -40,6 +40,28 @@ References:
 - [Hosted Runtime Database Posture And Data Lifecycle](hosted-runtime-database-posture-data-lifecycle.md)
 - [Hosted Runtime Public-Safe Fixture And Verification Plan](hosted-runtime-public-safe-fixture-verification-plan.md)
 
+## Global V1 Approval Ladder
+
+Issue `#286` records only the first of six separate decisions:
+
+1. **Gate A: architecture definition**. Approved for documentation, synthetic
+   architecture fixtures, deterministic marker checks, and review.
+2. **Gate B: implementation**. Requires a separate owner approval for runtime,
+   authentication, database, model IPC, and integration code.
+3. **Gate C: synthetic pilot**. Requires complete synthetic end-to-end,
+   capacity, readiness, recovery, and rollback proof.
+4. **Gate D: low-risk data**. Requires explicit source inventory,
+   classification, connector lifecycle, deletion, retention, and privacy review.
+5. **Gate E: private production**. Requires security and operational review,
+   incident response, SLOs, destination policy, and owner approval.
+6. **Gate F: team access**. Requires verified user/workspace/channel identity,
+   offboarding, cross-user isolation, audit, and support policy.
+
+Remote MCP implementation remains blocked. Deployment, private evidence,
+production activation, team access, and managed hosting also remain blocked.
+
+Reference: [ADR 0002: Global Owner-Hosted Runtime V1](../adr/0002-global-owner-hosted-runtime-v1.md).
+
 ## Deployment Vocabulary
 
 | Term | Meaning | Current status |

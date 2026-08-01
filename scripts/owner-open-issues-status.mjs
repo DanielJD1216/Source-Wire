@@ -34,7 +34,15 @@ const completedDecisionIssues = [
   }
 ];
 
-const expectedOpenIssues = [];
+const expectedOpenIssues = [
+  {
+    number: 286,
+    title: "Global Owner-Hosted Runtime V1 architecture definition",
+    approvalName: "Global Owner-Hosted Runtime V1 Gate A",
+    exactApprovalText:
+      "Proceed with Gate A only: define the Global Owner-Hosted Runtime V1 architecture. Keep it single-tenant, private-network-first, synthetic-only, read-only-first, and explicitly exclude deployment, private evidence, production activation, and team access."
+  }
+];
 const expectedHostedRuntimePlanningIssueTitles = [
   "Hosted Runtime Threat Model And Trust Boundary",
   "API Server Runtime Contract",
@@ -51,12 +59,22 @@ const hostedRuntimeChildIssueApprovalText =
   "Approved for a future Source-Wire hosted runtime child issue publication unit: publish the six child issues from docs/internal/hosted-runtime-issue-slices.md in dependency order as PRD/planning issues only. Keep hosted runtime implementation, API server implementation, MCP server runtime implementation, database migrations, deployment, production runtime use, real user data, code contribution acceptance, npm publishing, GitHub release creation, and tags blocked.";
 
 const issues = args.fixture === "hosted-runtime-planning"
-  ? expectedHostedRuntimePlanningIssueTitles.map((title, index) => ({
-      number: 900 + index,
-      title,
-      state: "OPEN",
-      url: `https://example.invalid/source-wire/planning/${index + 1}`
-    }))
+  ? [
+      ...expectedHostedRuntimePlanningIssueTitles.map((title, index) => ({
+        number: 900 + index,
+        title,
+        state: "OPEN",
+        url: `https://example.invalid/source-wire/planning/${index + 1}`
+      })),
+      {
+        number: 286,
+        title: expectedOpenIssues[0].title,
+        state: "OPEN",
+        url: "https://example.invalid/source-wire/architecture/286",
+        body: `## Owner Approval Record\n\n${expectedOpenIssues[0].exactApprovalText}`,
+        comments: []
+      }
+    ]
   : await ghJson([
       "issue",
       "list",
@@ -77,6 +95,7 @@ const unexpectedOpenIssues = issues.filter((issue) => !expectedPlanningTitleSet.
 const failures = [];
 const completedIssueStates = [];
 const hostedRuntimePlanningIssueStates = [];
+const activeApprovedIssueStates = [];
 let hostedRuntimeChildIssueApprovalRecorded = false;
 
 if (args.fixture === "hosted-runtime-planning") {
@@ -164,9 +183,40 @@ if (args.fixture === "hosted-runtime-planning") {
 }
 
 for (const actualIssue of unexpectedOpenIssues) {
-  if (!expectedByNumber.has(actualIssue.number)) {
+  const expectedIssue = expectedByNumber.get(actualIssue.number);
+  if (!expectedIssue) {
     failures.push(`unexpected open issue #${actualIssue.number}: ${actualIssue.title}`);
+    continue;
   }
+
+  const issue = args.fixture === "hosted-runtime-planning"
+    ? actualIssue
+    : await ghJson([
+        "issue",
+        "view",
+        String(actualIssue.number),
+        "--repo",
+        repo,
+        "--json",
+        "body,comments,state,title,url"
+      ]);
+  const comments = Array.isArray(issue.comments) ? issue.comments : [];
+  const approvalRecordPresent = hasApprovalRecordSection(issue.body ?? "", expectedIssue.exactApprovalText);
+  const approvalComments = comments.filter((comment) => comment.body?.includes(expectedIssue.exactApprovalText));
+  const exactApprovalRecorded = approvalRecordPresent || approvalComments.length > 0;
+
+  if (issue.title !== expectedIssue.title) {
+    failures.push(`unexpected title for approved active issue #${expectedIssue.number}: expected "${expectedIssue.title}", received "${issue.title}"`);
+  }
+  if (!exactApprovalRecorded) {
+    failures.push(`approved active issue #${expectedIssue.number} must retain exact ${expectedIssue.approvalName} approval evidence`);
+  }
+
+  activeApprovedIssueStates.push({
+    ...expectedIssue,
+    issue,
+    exactApprovalRecorded
+  });
 }
 
 printSection("Source-Wire Owner Open Issues Status");
@@ -202,6 +252,15 @@ if (openPlanningIssues.length > 0) {
   }
 }
 
+if (activeApprovedIssueStates.length > 0) {
+  printSection("Approved Active Architecture Issues");
+  for (const issue of activeApprovedIssueStates.toSorted((left, right) => left.number - right.number)) {
+    console.log(`#${issue.number} ${issue.title}`);
+    console.log(`State: ${issue.issue.state}`);
+    console.log(`URL: ${issue.issue.url}`);
+  }
+}
+
 if (hostedRuntimePlanningIssueStates.length > 0) {
   printSection("Published Hosted Runtime Planning Issues");
   for (const issue of hostedRuntimePlanningIssueStates.toSorted((left, right) => left.number - right.number)) {
@@ -227,6 +286,11 @@ for (const issue of completedIssueStates) {
 }
 
 console.log("ok no unresolved owner decision issues open");
+
+for (const issue of activeApprovedIssueStates) {
+  console.log(`ok approved active architecture issue #${issue.number} bounded`);
+  console.log(`ok exact ${issue.approvalName} approval retained`);
+}
 
 if (openPlanningIssues.length > 0) {
   console.log("ok expected hosted runtime planning issues open");

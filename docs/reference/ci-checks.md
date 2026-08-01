@@ -116,6 +116,9 @@ The readiness gate runs:
 - `npm run build`
 - `npm test`
 - `npm run alpha1:test`
+- `npm run runtime:gate-b-memory-only`
+- `npm run runtime:gate-b-memory-only:scope`
+- `npm run runtime:gate-b-memory-only:scope:smoke`
 - `npm run alpha1:ci-workflow-smoke`
 - `npm run local-runtime:candidate-smoke`
 - `npm run local-runtime:security-gate`

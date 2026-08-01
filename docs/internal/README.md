@@ -14,6 +14,7 @@ These files remain public for provenance and review, but they are not the first-
 Current proposed design:
 
 - [Global Owner-Hosted Runtime V1 Architecture Acceptance Matrix](global-owner-hosted-runtime-v1-acceptance-matrix.md)
+- [Global Owner-Hosted Runtime V1 Gate B-M Memory-Only Slice](global-owner-hosted-runtime-v1-gate-b-memory-only.md)
 - [Alpha 1 Story 5 Knowledge Provider Runtime Host Design](alpha1-story5-knowledge-provider-runtime-host-design.md)
 - [Alpha 1 Story 5 Published Implementation Issues](alpha1-story5-knowledge-provider-runtime-host-issue-drafts.md)
 - [Alpha 1 Story 5 MCP Dependency Advisory Disposition](alpha1-story5-mcp-advisory-disposition.md)

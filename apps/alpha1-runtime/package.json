@@ -107,6 +107,7 @@
     "pretypecheck": "npm run build:contracts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "npm run build && node --test dist/tests/*.test.js",
+    "test:gate-b-memory-only": "npm run build && node --test dist/tests/global-memory-access-plane.test.js dist/tests/mcp-discovery.test.js dist/tests/mcp-tool-profile.test.js",
     "conformance:story1": "node dist/conformance/story1.js",
     "conformance:story2": "node dist/conformance/story2.js",
     "conformance:story3": "node dist/conformance/story3.js",

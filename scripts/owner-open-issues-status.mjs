@@ -36,11 +36,11 @@ const completedDecisionIssues = [
 
 const expectedOpenIssues = [
   {
-    number: 286,
-    title: "Global Owner-Hosted Runtime V1 architecture definition",
-    approvalName: "Global Owner-Hosted Runtime V1 Gate A",
+    number: 288,
+    title: "Gate B: synthetic memory-only access-plane implementation",
+    approvalName: "Global Owner-Hosted Runtime V1 Gate B-M first slice",
     exactApprovalText:
-      "Proceed with Gate A only: define the Global Owner-Hosted Runtime V1 architecture. Keep it single-tenant, private-network-first, synthetic-only, read-only-first, and explicitly exclude deployment, private evidence, production activation, and team access."
+      "Merge PR #287. Then proceed with Gate B synthetic-only implementation of the memory-only slice. No deployment, private data, evidence mode, live connectors, or production activation."
   }
 ];
 const expectedHostedRuntimePlanningIssueTitles = [
@@ -67,10 +67,10 @@ const issues = args.fixture === "hosted-runtime-planning"
         url: `https://example.invalid/source-wire/planning/${index + 1}`
       })),
       {
-        number: 286,
+        number: 288,
         title: expectedOpenIssues[0].title,
         state: "OPEN",
-        url: "https://example.invalid/source-wire/architecture/286",
+        url: "https://example.invalid/source-wire/gate-b/288",
         body: `## Owner Approval Record\n\n${expectedOpenIssues[0].exactApprovalText}`,
         comments: []
       }
@@ -97,6 +97,12 @@ const completedIssueStates = [];
 const hostedRuntimePlanningIssueStates = [];
 const activeApprovedIssueStates = [];
 let hostedRuntimeChildIssueApprovalRecorded = false;
+
+for (const expectedIssue of expectedOpenIssues) {
+  if (!issues.some((issue) => issue.number === expectedIssue.number)) {
+    failures.push(`expected approved active issue #${expectedIssue.number} is not open`);
+  }
+}
 
 if (args.fixture === "hosted-runtime-planning") {
   for (const completedIssue of completedDecisionIssues) {

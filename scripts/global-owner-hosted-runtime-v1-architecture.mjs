@@ -3,7 +3,6 @@ import { readFileSync } from "node:fs";
 import { readFile, stat } from "node:fs/promises";
 
 const packagePath = "package.json";
-const gateABranchName = "docs/global-owner-hosted-runtime-v1";
 const adrPath = "docs/adr/0002-global-owner-hosted-runtime-v1.md";
 const matrixPath = "docs/internal/global-owner-hosted-runtime-v1-acceptance-matrix.md";
 const apiPath = "docs/internal/hosted-runtime-api-server-contract.md";
@@ -21,6 +20,7 @@ const requiredDocPaths = [
   deploymentPath,
   threatPath
 ];
+const gateATriggerPaths = new Set(requiredDocPaths);
 
 const gateAAllowedPaths = new Set([
   "docs/README.md",
@@ -60,6 +60,17 @@ const docs = await readAvailableDocs(requiredDocPaths);
 
 if (process.argv.includes("--scope")) {
   const changedPaths = collectChangedPaths();
+  if (!changedPaths.some((path) => gateATriggerPaths.has(path))) {
+    printSection("Source-Wire Global Owner-Hosted Runtime V1 Gate A Scope");
+    printRows([
+      ["Applicability", "not_applicable_post_gate_a"],
+      ["Changed paths", String(changedPaths.length)],
+      ["Trigger paths", String(gateATriggerPaths.size)]
+    ]);
+    console.log("");
+    console.log("ok Gate A definition-path trigger remains unchanged");
+    process.exit(0);
+  }
   const failures = validateScope(changedPaths);
   const scopeCounts = countScopeClasses(changedPaths);
   finishOrFail(failures, "Global Owner-Hosted Runtime V1 Gate A scope check");
@@ -444,27 +455,24 @@ function collectChangedPaths() {
       paths.add(path);
     }
   }
-  if (paths.size > 0) {
-    return [...paths].sort();
-  }
 
   const githubDiff = collectGitHubGateADiff();
   if (githubDiff !== null) {
-    return githubDiff;
-  }
-
-  const branch = safeGit(["branch", "--show-current"]);
-  if (branch === gateABranchName) {
+    for (const path of githubDiff) paths.add(path);
+  } else {
     const base = safeGit(["rev-parse", "origin/main"]);
     if (!base) {
-      throw new Error("Gate A clean branch requires origin/main for scope validation");
+      throw new Error("Gate A scope validation requires origin/main");
     }
-    return splitPaths(execFileSync("git", ["diff", "--name-only", `${base}..HEAD`], {
-      encoding: "utf8"
-    }));
+    const committed = execFileSync(
+      "git",
+      ["diff", "--name-only", `${base}..HEAD`],
+      { encoding: "utf8" }
+    );
+    for (const path of splitPaths(committed)) paths.add(path);
   }
 
-  return [];
+  return [...paths].sort();
 }
 
 function collectGitHubGateADiff() {
@@ -479,18 +487,22 @@ function collectGitHubGateADiff() {
   }
 
   const pullRequest = event.pull_request;
-  if (pullRequest?.head?.ref === gateABranchName) {
+  if (pullRequest) {
     const baseSha = pullRequest.base?.sha;
     const headSha = pullRequest.head?.sha;
     validateGitHubCommit("base", baseSha);
     validateGitHubCommit("head", headSha);
+    const checkedOutHead = safeGit(["rev-parse", "HEAD"]);
+    if (checkedOutHead !== headSha) {
+      throw new Error("Gate A GitHub PR head does not match the checked-out commit");
+    }
 
     return splitPaths(execFileSync("git", ["diff", "--name-only", `${baseSha}..${headSha}`], {
       encoding: "utf8"
     }));
   }
 
-  if (event.ref !== `refs/heads/${gateABranchName}`) {
+  if (typeof event.ref !== "string" || !event.ref.startsWith("refs/heads/")) {
     return null;
   }
 

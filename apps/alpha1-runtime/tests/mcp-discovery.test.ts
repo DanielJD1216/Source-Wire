@@ -42,3 +42,31 @@ test("real MCP client discovers exactly the approved Alpha read and proposal too
     await client.close();
   }
 });
+
+test("memory-only profile discovers only trusted-memory search", async () => {
+  const client = new Client(
+    { name: "source-wire-gate-b-memory-only-test", version: "0.0.0" },
+    { capabilities: {} }
+  );
+  const transport = new StdioClientTransport({
+    command: process.execPath,
+    args: [serverEntry],
+    env: {
+      PATH: process.env.PATH ?? "",
+      SOURCE_WIRE_API_URL: "http://127.0.0.1:4318",
+      SOURCE_WIRE_MCP_TOKEN: "synthetic-harness-token",
+      SOURCE_WIRE_MCP_TOOL_PROFILE: "memory_only"
+    },
+    stderr: "pipe"
+  });
+  try {
+    await client.connect(transport);
+    const result = await client.listTools();
+    assert.deepEqual(
+      result.tools.map((tool) => tool.name),
+      ["search_trusted_memory"]
+    );
+  } finally {
+    await client.close();
+  }
+});

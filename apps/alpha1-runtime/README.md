@@ -43,6 +43,37 @@ The supported programmatic entrypoint exports:
 The supported synthetic provider entrypoint is
 `@source-wire/local-runtime/synthetic-provider`. Live providers remain blocked.
 
+## Gate B synthetic memory-only slice
+
+The source tree includes a test-only Gate B implementation for issue `#288`:
+
+- `SyntheticMemoryOnlyAccessPlane`
+- `SyntheticMemoryOnlyRuntime`
+- memory-only MCP discovery with only `search_trusted_memory`
+
+Run its deterministic checks from the repository root:
+
+```sh
+npm run runtime:gate-b-memory-only
+npm run runtime:gate-b-memory-only:scope
+npm run runtime:gate-b-memory-only:scope:smoke
+```
+
+The access plane intersects server-derived synthetic principal, adapter, client,
+session, active credential/session state, credential audience, namespace,
+capability, authorization and deletion epochs, destination tuple, complete
+five-hop audience chain, and DPoP or mTLS binding metadata before invoking the
+existing protected trusted-memory search and receipt path.
+Payload fields cannot grant these authorities.
+A frozen null-prototype runtime facade hides the raw MCP server and exposes only
+guarded `registerTool`, `connect`, and `close` capabilities. Memory-only startup
+rejects every registration name except `search_trusted_memory`.
+
+This is not a network authentication implementation. It does not validate a
+real OAuth token, DPoP signature, certificate handshake, identity-provider
+assertion, or Slack event. It does not start an HTTP MCP listener. All identity,
+route, credential, and memory inputs must remain synthetic.
+
 Provider adapters execute as trusted in-process application code. The runtime
 enforces a hard response deadline and supplies an optional cooperative
 `AbortSignal`; adapters remain responsible for enforcing their own downstream
@@ -70,6 +101,8 @@ Not supported:
 - live knowledge providers
 - non-disposable databases
 - Source-Wire-operated accounts, endpoints, billing, or telemetry
+- real OAuth, DPoP, mTLS, or identity-provider integration
+- evidence-mode tools in the Gate B memory-only profile
 
 Source evidence is not trusted memory. Provider output cannot approve or
 promote memory.

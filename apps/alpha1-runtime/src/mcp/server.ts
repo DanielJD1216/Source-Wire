@@ -1,4 +1,3 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
@@ -24,6 +23,10 @@ import {
   type TrustedMemorySearchResult
 } from "../trusted-memory-search.js";
 import { BoundedStdioInput } from "./bounded-stdio.js";
+import {
+  createProfileRestrictedMcpServer,
+  readToolProfile
+} from "./tool-profile.js";
 
 const identifier = z.string().regex(/^[A-Za-z][A-Za-z0-9_-]{0,63}$/u);
 const uuid =
@@ -124,7 +127,7 @@ async function main(): Promise<void> {
   const baseUrl = validateBaseUrl(requireEnvironment("SOURCE_WIRE_API_URL"));
   const token = requireEnvironment("SOURCE_WIRE_MCP_TOKEN");
   const toolProfile = readToolProfile(process.env.SOURCE_WIRE_MCP_TOOL_PROFILE);
-  const server = new McpServer(
+  const server = createProfileRestrictedMcpServer(
     {
       name: "source-wire-alpha1-story3",
       version: "0.0.0-alpha.3"
@@ -133,7 +136,8 @@ async function main(): Promise<void> {
       capabilities: {
         tools: {}
       }
-    }
+    },
+    toolProfile
   );
 
   if (toolProfile === "provider") {
@@ -292,80 +296,85 @@ async function main(): Promise<void> {
     }
   );
 
-  server.registerTool(
-    "propose_memory_candidate",
-    {
-      title: "Propose a memory candidate",
-      description:
-        "Creates one pending Source-Wire memory candidate through the loopback API. It cannot approve trusted memory.",
-      inputSchema: proposalInput,
-      annotations: {
-        readOnlyHint: false,
-        destructiveHint: false,
-        idempotentHint: true,
-        openWorldHint: false
+  if (toolProfile !== "gate_b_memory_only") {
+    server.registerTool(
+      "propose_memory_candidate",
+      {
+        title: "Propose a memory candidate",
+        description:
+          "Creates one pending Source-Wire memory candidate through the loopback API. It cannot approve trusted memory.",
+        inputSchema: proposalInput,
+        annotations: {
+          readOnlyHint: false,
+          destructiveHint: false,
+          idempotentHint: true,
+          openWorldHint: false
+        }
+      },
+      async (input) => {
+        try {
+          const parsed = parseCandidateProposal(input);
+          const response = await fetch(`${baseUrl}/v1alpha1/memory-candidates`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              namespaceId: parsed.namespaceId,
+              content: parsed.content,
+              provenance: parsed.provenance,
+              idempotencyKey: parsed.idempotencyKey
+            }),
+            signal: AbortSignal.timeout(3_000)
+          });
+          const body = await readSafeApiBody(response);
+          if (!response.ok) {
+            return safeToolError(readSafeErrorCode(body));
+          }
+          const data = body.data;
+          if (!data || typeof data !== "object" || Array.isArray(data)) {
+            return safeToolError("operation_unavailable");
+          }
+          const audit = body.audit;
+          if (!audit || typeof audit !== "object" || Array.isArray(audit)) {
+            return safeToolError("operation_unavailable");
+          }
+          const result = data as Record<string, unknown>;
+          const auditResult = audit as Record<string, unknown>;
+          if (
+            typeof result.candidateId !== "string" ||
+            !uuid.test(result.candidateId) ||
+            result.state !== "pending" ||
+            typeof result.createdAt !== "string" ||
+            typeof body.traceId !== "string" ||
+            !uuid.test(body.traceId) ||
+            typeof auditResult.eventId !== "string" ||
+            !uuid.test(auditResult.eventId)
+          ) {
+            return safeToolError("operation_unavailable");
+          }
+          const safeResult = {
+            candidateId: result.candidateId,
+            state: "pending" as const,
+            createdAt: result.createdAt,
+            traceId: body.traceId,
+            auditEventId: auditResult.eventId
+          };
+          return {
+            content: [
+              { type: "text" as const, text: JSON.stringify(safeResult) }
+            ],
+            structuredContent: safeResult
+          };
+        } catch (error) {
+          const code =
+            error instanceof SafeError ? error.code : "operation_unavailable";
+          return safeToolError(code);
+        }
       }
-    },
-    async (input) => {
-      try {
-        const parsed = parseCandidateProposal(input);
-        const response = await fetch(`${baseUrl}/v1alpha1/memory-candidates`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            namespaceId: parsed.namespaceId,
-            content: parsed.content,
-            provenance: parsed.provenance,
-            idempotencyKey: parsed.idempotencyKey
-          }),
-          signal: AbortSignal.timeout(3_000)
-        });
-        const body = await readSafeApiBody(response);
-        if (!response.ok) {
-          return safeToolError(readSafeErrorCode(body));
-        }
-        const data = body.data;
-        if (!data || typeof data !== "object" || Array.isArray(data)) {
-          return safeToolError("operation_unavailable");
-        }
-        const audit = body.audit;
-        if (!audit || typeof audit !== "object" || Array.isArray(audit)) {
-          return safeToolError("operation_unavailable");
-        }
-        const result = data as Record<string, unknown>;
-        const auditResult = audit as Record<string, unknown>;
-        if (
-          typeof result.candidateId !== "string" ||
-          !uuid.test(result.candidateId) ||
-          result.state !== "pending" ||
-          typeof result.createdAt !== "string" ||
-          typeof body.traceId !== "string" ||
-          !uuid.test(body.traceId) ||
-          typeof auditResult.eventId !== "string" ||
-          !uuid.test(auditResult.eventId)
-        ) {
-          return safeToolError("operation_unavailable");
-        }
-        const safeResult = {
-          candidateId: result.candidateId,
-          state: "pending" as const,
-          createdAt: result.createdAt,
-          traceId: body.traceId,
-          auditEventId: auditResult.eventId
-        };
-        return {
-          content: [{ type: "text" as const, text: JSON.stringify(safeResult) }],
-          structuredContent: safeResult
-        };
-      } catch (error) {
-        const code = error instanceof SafeError ? error.code : "operation_unavailable";
-        return safeToolError(code);
-      }
-    }
-  );
+    );
+  }
 
   const boundedInput = new BoundedStdioInput();
   const transport = new StdioServerTransport(boundedInput, process.stdout);
@@ -398,14 +407,6 @@ function rejectForbiddenAuthority(): void {
       throw new Error("forbidden_mcp_authority");
     }
   }
-}
-
-function readToolProfile(
-  value: string | undefined
-): "memory_only" | "provider" {
-  if (value === undefined || value === "provider") return "provider";
-  if (value === "memory_only") return "memory_only";
-  throw new Error("invalid_mcp_tool_profile");
 }
 
 function validateBaseUrl(value: string): string {

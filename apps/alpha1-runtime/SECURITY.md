@@ -62,6 +62,18 @@ There is no production authentication, hosted secret custody, managed
 database, managed provider credential, telemetry, billing, or
 Source-Wire-operated service in this Alpha.
 
+The Gate B `SyntheticMemoryOnlyAccessPlane` validates deterministic synthetic
+proof metadata and policy intersections for tests. It does not perform
+cryptographic DPoP signature validation, TLS or mTLS handshakes, OAuth/OIDC
+token validation, certificate-chain validation, identity-provider discovery,
+or live replay-store coordination. The synthetic DPoP and mTLS objects are test
+fixtures, not credentials. They must not be accepted from an untrusted network
+or used with real data.
+Gate B memory-only MCP startup constructs the raw MCP server inside a closure
+and returns a frozen null-prototype capability facade. Its guarded registration
+method rejects every name outside the exact selected-profile allowlist without
+changing the existing local `memory_only` runner contract.
+
 Do not use this Alpha with real user data, client data, production
 credentials, production databases, live knowledge providers, Windows, HTTP or
 SSE MCP, or static serving.

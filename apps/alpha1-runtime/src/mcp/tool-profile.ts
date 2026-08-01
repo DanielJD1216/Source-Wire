@@ -1,11 +1,18 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
-export type McpToolProfile = "memory_only" | "provider";
+export type McpToolProfile =
+  | "gate_b_memory_only"
+  | "memory_only"
+  | "provider";
 
 const allowedToolNames: Readonly<
   Record<McpToolProfile, readonly string[]>
 > = Object.freeze({
-  memory_only: Object.freeze(["search_trusted_memory"]),
+  gate_b_memory_only: Object.freeze(["search_trusted_memory"]),
+  memory_only: Object.freeze([
+    "propose_memory_candidate",
+    "search_trusted_memory"
+  ]),
   provider: Object.freeze([
     "get_source_evidence",
     "search_source_evidence",
@@ -22,6 +29,7 @@ export type ProfileRestrictedMcpServer = Readonly<
 export function readToolProfile(value: string | undefined): McpToolProfile {
   if (value === undefined || value === "provider") return "provider";
   if (value === "memory_only") return "memory_only";
+  if (value === "gate_b_memory_only") return "gate_b_memory_only";
   throw new Error("invalid_mcp_tool_profile");
 }
 

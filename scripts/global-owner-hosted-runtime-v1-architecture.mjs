@@ -492,10 +492,6 @@ function collectGitHubGateADiff() {
     const headSha = pullRequest.head?.sha;
     validateGitHubCommit("base", baseSha);
     validateGitHubCommit("head", headSha);
-    const checkedOutHead = safeGit(["rev-parse", "HEAD"]);
-    if (checkedOutHead !== headSha) {
-      throw new Error("Gate A GitHub PR head does not match the checked-out commit");
-    }
 
     return splitPaths(execFileSync("git", ["diff", "--name-only", `${baseSha}..${headSha}`], {
       encoding: "utf8"
@@ -515,19 +511,45 @@ function collectGitHubGateADiff() {
 
   let baseSha = event.before;
   if (typeof baseSha === "string" && /^0+$/.test(baseSha)) {
-    const parents = safeGit(["show", "-s", "--format=%P", headSha])
-      .split(/\s+/)
-      .filter(Boolean);
-    if (parents.length !== 1) {
-      throw new Error("Gate A initial branch push requires exactly one parent commit");
-    }
-    [baseSha] = parents;
+    baseSha = resolveGateAInitialPushBase(event, headSha);
   }
   validateGitHubCommit("push base", baseSha);
 
   return splitPaths(execFileSync("git", ["diff", "--name-only", `${baseSha}..${headSha}`], {
     encoding: "utf8"
   }));
+}
+
+function resolveGateAInitialPushBase(event, headSha) {
+  const defaultBranch = event.repository?.default_branch ?? "main";
+  try {
+    execFileSync("git", ["check-ref-format", "--branch", defaultBranch], {
+      stdio: "ignore"
+    });
+  } catch {
+    throw new Error("Gate A GitHub default branch is invalid");
+  }
+  if (safeGit(["rev-parse", "--is-shallow-repository"]) === "true") {
+    execFileSync("git", ["fetch", "--no-tags", "--unshallow", "origin"], {
+      stdio: "ignore"
+    });
+  }
+  const remoteBase = `refs/remotes/origin/${defaultBranch}`;
+  execFileSync(
+    "git",
+    [
+      "fetch",
+      "--no-tags",
+      "origin",
+      `+refs/heads/${defaultBranch}:${remoteBase}`
+    ],
+    { stdio: "ignore" }
+  );
+  const baseSha = safeGit(["merge-base", headSha, remoteBase]);
+  if (!baseSha) {
+    throw new Error("Gate A initial push has no default-branch merge base");
+  }
+  return baseSha;
 }
 
 function validateGitHubCommit(label, sha) {

@@ -67,7 +67,9 @@ existing protected trusted-memory search and receipt path.
 Payload fields cannot grant these authorities.
 A frozen null-prototype runtime facade hides the raw MCP server and exposes only
 guarded `registerTool`, `connect`, and `close` capabilities. Memory-only startup
-rejects every registration name except `search_trusted_memory`.
+under the internal `gate_b_memory_only` profile rejects every registration name
+except `search_trusted_memory`. The existing local `memory_only` profile retains
+proposal plus trusted-search behavior.
 
 This is not a network authentication implementation. It does not validate a
 real OAuth token, DPoP signature, certificate handshake, identity-provider

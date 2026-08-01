@@ -36,11 +36,13 @@ The local-runtime source tree now includes:
 - rejection of authority-bearing payload fields before retrieval;
 - `SyntheticMemoryOnlyRuntime`, which authorizes before invoking the existing
   protected trusted-memory executor;
-- memory-only MCP discovery that exposes only `search_trusted_memory`;
+- internal `gate_b_memory_only` MCP discovery that exposes only
+  `search_trusted_memory` while preserving the existing local `memory_only`
+  proposal-plus-search contract;
 - a frozen null-prototype runtime capability facade that hides the raw MCP
   server and enforces the exact selected-profile registration allowlist;
-- preservation of the existing provider-profile discovery behavior outside the
-  Gate B memory-only profile.
+- preservation of the existing provider and local memory-only discovery
+  behavior outside the Gate B profile.
 
 The implementation does not compose or invoke a KnowledgeProvider.
 

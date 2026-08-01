@@ -10,7 +10,7 @@ const gateScriptPath =
 const mcpDiscoveryTestPath =
   "apps/alpha1-runtime/tests/mcp-discovery.test.ts";
 const mcpDiscoveryTestSha256 =
-  "bdddf505584882cd90e18f63c83d3de44504a618f2fe0b1f8df7b1f487c41c5d";
+  "07cf0deba2fdbb38e34df5db27595f6addafbafcf0e32bdccace7673cc247882";
 const runtimePaths = [
   "apps/alpha1-runtime/src/global-memory-access-plane.ts",
   "apps/alpha1-runtime/src/global-memory-only-runtime.ts",
@@ -87,6 +87,19 @@ if (process.argv.includes("--self-test")) {
   if (validateRuntimeSources(mcpMutation).length === 0) {
     failures.push("unconditional MCP evidence-tool mutation unexpectedly passed");
   }
+  const proposalNarrowingMutation = new Map(runtimeSources);
+  proposalNarrowingMutation.set(
+    "apps/alpha1-runtime/src/mcp/server.ts",
+    proposalNarrowingMutation
+      .get("apps/alpha1-runtime/src/mcp/server.ts")
+      .replace(
+        'if (toolProfile !== "gate_b_memory_only") {',
+        'if (toolProfile === "provider") {'
+      )
+  );
+  if (validateRuntimeSources(proposalNarrowingMutation).length === 0) {
+    failures.push("provider-only MCP proposal mutation unexpectedly passed");
+  }
   const bracketMutation = new Map(runtimeSources);
   bracketMutation.set(
     "apps/alpha1-runtime/src/mcp/server.ts",
@@ -109,8 +122,8 @@ if (process.argv.includes("--self-test")) {
     profileMutation
       .get("apps/alpha1-runtime/src/mcp/tool-profile.ts")
       .replace(
-        'memory_only: Object.freeze(["search_trusted_memory"])',
-        'memory_only: Object.freeze(["get_source_evidence", "search_trusted_memory"])'
+        'gate_b_memory_only: Object.freeze(["search_trusted_memory"])',
+        'gate_b_memory_only: Object.freeze(["get_source_evidence", "search_trusted_memory"])'
       )
   );
   if (validateRuntimeSources(profileMutation).length === 0) {
@@ -253,9 +266,9 @@ function validateMcpProfileBoundary(source) {
 
   const expectedProviderOnly = new Set([
     "get_source_evidence",
-    "search_source_evidence",
-    "propose_memory_candidate"
+    "search_source_evidence"
   ]);
+  const expectedNonGateB = new Set(["propose_memory_candidate"]);
   const expectedUnconditional = new Set(["search_trusted_memory"]);
   const registrations = [];
   const indirectRegisterToolReferences = [];
@@ -290,13 +303,18 @@ function validateMcpProfileBoundary(source) {
     const name = node.arguments[0];
     registrations.push({
       name: name && ts.isStringLiteralLike(name) ? name.text : undefined,
+      gateBExcluded: isInsideNonGateBGuard(node, sourceFile),
       providerProtected: isInsideProviderGuard(node, sourceFile),
       start: node.getStart(sourceFile)
     });
   });
 
   const names = registrations.map((registration) => registration.name);
-  const expectedNames = [...expectedProviderOnly, ...expectedUnconditional];
+  const expectedNames = [
+    ...expectedProviderOnly,
+    ...expectedNonGateB,
+    ...expectedUnconditional
+  ];
   if (
     guardInstallEnd < 0 ||
     /\bMcpServer\b/u.test(source) ||
@@ -312,6 +330,7 @@ function validateMcpProfileBoundary(source) {
       (registration) =>
         registration.name !== undefined &&
         !expectedProviderOnly.has(registration.name) &&
+        !expectedNonGateB.has(registration.name) &&
         !expectedUnconditional.has(registration.name)
     ) ||
     registrations.some(
@@ -323,12 +342,18 @@ function validateMcpProfileBoundary(source) {
     registrations.some(
       (registration) =>
         registration.name !== undefined &&
+        expectedNonGateB.has(registration.name) &&
+        (!registration.gateBExcluded || registration.providerProtected)
+    ) ||
+    registrations.some(
+      (registration) =>
+        registration.name !== undefined &&
         expectedUnconditional.has(registration.name) &&
-        registration.providerProtected
+        (registration.providerProtected || registration.gateBExcluded)
     )
   ) {
     failures.push(
-      `${path} must register exactly three provider-only tools and one unconditional trusted-memory tool`
+      `${path} must register two provider-only evidence tools, one non-Gate-B proposal tool, and one unconditional trusted-memory tool`
     );
   }
   return failures;
@@ -351,8 +376,9 @@ function isDirectCallExpression(parent, node) {
 function validateMcpToolProfileGuard(source) {
   const path = "apps/alpha1-runtime/src/mcp/tool-profile.ts";
   const requiredFragments = [
-    'memory_only: Object.freeze(["search_trusted_memory"])',
+    'gate_b_memory_only: Object.freeze(["search_trusted_memory"])',
     'if (value === "memory_only") return "memory_only";',
+    'if (value === "gate_b_memory_only") return "gate_b_memory_only";',
     "export function createProfileRestrictedMcpServer(",
     "assertToolAllowed(profile, name);",
     "Object.assign(Object.create(null) as object",
@@ -378,6 +404,34 @@ function isInsideProviderGuard(node, sourceFile) {
     parent = parent.parent;
   }
   return false;
+}
+
+function isInsideNonGateBGuard(node, sourceFile) {
+  const nodeStart = node.getStart(sourceFile);
+  let parent = node.parent;
+  while (parent) {
+    if (
+      ts.isIfStatement(parent) &&
+      isNonGateBCondition(parent.expression) &&
+      nodeStart >= parent.thenStatement.getStart(sourceFile) &&
+      node.end <= parent.thenStatement.end
+    ) {
+      return true;
+    }
+    parent = parent.parent;
+  }
+  return false;
+}
+
+function isNonGateBCondition(expression) {
+  return (
+    ts.isBinaryExpression(expression) &&
+    expression.operatorToken.kind === ts.SyntaxKind.ExclamationEqualsEqualsToken &&
+    ts.isIdentifier(expression.left) &&
+    expression.left.text === "toolProfile" &&
+    ts.isStringLiteralLike(expression.right) &&
+    expression.right.text === "gate_b_memory_only"
+  );
 }
 
 function isProviderCondition(expression) {
@@ -434,7 +488,10 @@ function validateMcpDiscoveryTest(source) {
   let selectsMemoryOnly = false;
   let assertsExactTool = false;
   visitAst(callback, (node) => {
-    if (ts.isStringLiteralLike(node) && node.text === "memory_only") {
+    if (
+      ts.isStringLiteralLike(node) &&
+      node.text === "gate_b_memory_only"
+    ) {
       selectsMemoryOnly = true;
     }
     if (
@@ -499,9 +556,6 @@ function collectGitHubDiff() {
   if (event.pull_request) {
     const base = requireCommit(event.pull_request.base?.sha, "PR base");
     const head = requireCommit(event.pull_request.head?.sha, "PR head");
-    if (safeGit(["rev-parse", "HEAD"]) !== head) {
-      throw new Error("Gate B-M PR head does not match checkout");
-    }
     return splitPaths(runGit(["diff", "--name-only", `${base}..${head}`]));
   }
   if (typeof event.ref !== "string" || !event.ref.startsWith("refs/heads/")) {
@@ -513,16 +567,40 @@ function collectGitHubDiff() {
   }
   let base = event.before;
   if (typeof base === "string" && /^0+$/u.test(base)) {
-    const parents = safeGit(["show", "-s", "--format=%P", head])
-      .split(/\s+/u)
-      .filter(Boolean);
-    if (parents.length !== 1) {
-      throw new Error("Gate B-M initial push requires one parent");
-    }
-    [base] = parents;
+    base = resolveInitialPushBase(event, head);
   }
   base = requireCommit(base, "push base");
   return splitPaths(runGit(["diff", "--name-only", `${base}..${head}`]));
+}
+
+function resolveInitialPushBase(event, head) {
+  const defaultBranch = event.repository?.default_branch ?? "main";
+  try {
+    execFileSync("git", ["check-ref-format", "--branch", defaultBranch], {
+      stdio: "ignore"
+    });
+  } catch {
+    throw new Error("Gate B-M default branch is invalid");
+  }
+  if (safeGit(["rev-parse", "--is-shallow-repository"]) === "true") {
+    execFileSync("git", ["fetch", "--no-tags", "--unshallow", "origin"], {
+      stdio: "ignore"
+    });
+  }
+  const remoteBase = `refs/remotes/origin/${defaultBranch}`;
+  execFileSync(
+    "git",
+    [
+      "fetch",
+      "--no-tags",
+      "origin",
+      `+refs/heads/${defaultBranch}:${remoteBase}`
+    ],
+    { stdio: "ignore" }
+  );
+  const base = safeGit(["merge-base", head, remoteBase]);
+  if (!base) throw new Error("Gate B-M initial push has no default-branch merge base");
+  return base;
 }
 
 function requireCommit(value, label) {

@@ -296,7 +296,7 @@ async function main(): Promise<void> {
     }
   );
 
-  if (toolProfile === "provider") {
+  if (toolProfile !== "gate_b_memory_only") {
     server.registerTool(
       "propose_memory_candidate",
       {

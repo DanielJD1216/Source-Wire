@@ -479,22 +479,50 @@ function collectGitHubGateADiff() {
   }
 
   const pullRequest = event.pull_request;
-  if (!pullRequest || pullRequest.head?.ref !== gateABranchName) {
+  if (pullRequest?.head?.ref === gateABranchName) {
+    const baseSha = pullRequest.base?.sha;
+    const headSha = pullRequest.head?.sha;
+    validateGitHubCommit("base", baseSha);
+    validateGitHubCommit("head", headSha);
+
+    return splitPaths(execFileSync("git", ["diff", "--name-only", `${baseSha}..${headSha}`], {
+      encoding: "utf8"
+    }));
+  }
+
+  if (event.ref !== `refs/heads/${gateABranchName}`) {
     return null;
   }
 
-  const baseSha = pullRequest.base?.sha;
-  const headSha = pullRequest.head?.sha;
-  for (const [label, sha] of [["base", baseSha], ["head", headSha]]) {
-    if (typeof sha !== "string" || !/^[a-f0-9]{40,64}$/i.test(sha)) {
-      throw new Error(`Gate A GitHub ${label} SHA is missing or invalid`);
-    }
-    ensureGitCommit(sha);
+  const headSha = event.after;
+  validateGitHubCommit("push head", headSha);
+  const checkedOutHead = safeGit(["rev-parse", "HEAD"]);
+  if (checkedOutHead !== headSha) {
+    throw new Error("Gate A GitHub push head does not match the checked-out commit");
   }
+
+  let baseSha = event.before;
+  if (typeof baseSha === "string" && /^0+$/.test(baseSha)) {
+    const parents = safeGit(["show", "-s", "--format=%P", headSha])
+      .split(/\s+/)
+      .filter(Boolean);
+    if (parents.length !== 1) {
+      throw new Error("Gate A initial branch push requires exactly one parent commit");
+    }
+    [baseSha] = parents;
+  }
+  validateGitHubCommit("push base", baseSha);
 
   return splitPaths(execFileSync("git", ["diff", "--name-only", `${baseSha}..${headSha}`], {
     encoding: "utf8"
   }));
+}
+
+function validateGitHubCommit(label, sha) {
+  if (typeof sha !== "string" || !/^[a-f0-9]{40,64}$/i.test(sha)) {
+    throw new Error(`Gate A GitHub ${label} SHA is missing or invalid`);
+  }
+  ensureGitCommit(sha);
 }
 
 function ensureGitCommit(sha) {

@@ -24,7 +24,8 @@ The fastest conceptual path is:
 1. [Knowledge Provider And Memory Store Boundary](concepts/knowledge-provider-memory-store-boundary.md)
 2. [Architecture Map](concepts/architecture-map.md)
 3. [ADR 0001: Memory Store And Knowledge Provider Boundary](adr/0001-memory-store-and-knowledge-provider-boundary.md)
-4. [Visual System](assets/README.md)
+4. [ADR 0002: Global Owner-Hosted Runtime V1](adr/0002-global-owner-hosted-runtime-v1.md)
+5. [Visual System](assets/README.md)
 
 ## Learn
 

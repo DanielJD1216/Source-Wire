@@ -29,9 +29,58 @@ References:
 - [Hosted Runtime API Server Contract](hosted-runtime-api-server-contract.md)
 - [Hosted Runtime MCP Server Contract](hosted-runtime-mcp-server-contract.md)
 
+## Global Owner-Hosted Runtime V1 Topology
+
+Issue `#286` chooses one mandatory policy/memory store and one conditional
+evidence store for the first global owner-hosted architecture:
+
+1. **PostgreSQL 16** is mandatory and is the sole grant authority. It stores
+   Source Wire policy, MemoryStore state, candidates, trusted-memory revisions,
+   credential-verification state, authorization and deletion epochs, audit, and
+   receipts.
+2. **PostgreSQL 18** is required only when evidence mode is enabled. It stores
+   the governed external evidence corpus, source revisions, retrieval indexes,
+   exact hydration state, provider-local source ACL metadata, and evidence audit
+   under the KnowledgeProvider boundary. That metadata can remove results but
+   cannot grant Source Wire authority.
+
+The version split records current verified requirements. It does not install,
+connect, migrate, or provision either database. Combining stores or changing
+supported versions requires a separately tested compatibility decision. A
+memory-only deployment remains valid with PostgreSQL 16 and no evidence store or
+model service.
+
+Bounded evidence delegation carries a request ID, principal/client and
+destination binding, and current monotonic authorization and deletion epochs
+from PostgreSQL 16. Exact fetch reauthorizes after retrieval and immediately
+before the durable release receipt. Revocation or deletion advances the
+authoritative epoch, so stale in-flight requests, caches, and restored evidence
+release zero content.
+
+Revocation and deletion acknowledgment also requires a synchronous append to an
+encrypted epoch-and-tombstone journal restored independently from PostgreSQL base
+backups. Journal outage fails the mutation closed. Restore applies the latest
+journal before readiness, so a stale PostgreSQL 16 backup cannot restore access.
+
+Each store needs independent runtime, migration, backup, and restore identities,
+hostname-verifying TLS, least privilege, retention, deletion, and restore proof.
+A **combined restore** must preserve owner and namespace scope, source version,
+content digest, candidate provenance, trusted-memory state, deletion state, and
+audit continuity. A cross-store backup-epoch mismatch fails readiness and must
+not resurrect deleted or unauthorized evidence.
+
+Recovery targets are PostgreSQL 16 RPO at most five minutes and RTO at most one
+hour, PostgreSQL 18 RPO at most fifteen minutes and RTO at most four hours, and
+zero active-policy RPO for revocation and deletion authority through that
+synchronous independent journal. Combined service
+RTO is at most four hours and readiness remains false until store identities,
+authorization epochs, deletion epochs, and tombstones reconcile.
+
+Reference: [ADR 0002: Global Owner-Hosted Runtime V1](../adr/0002-global-owner-hosted-runtime-v1.md).
+
 ## Storage Posture
 
-Recommended first posture:
+General future storage guidance outside the exact Global V1 choice:
 
 - owner-hosted PostgreSQL-compatible database,
 - optional vector capability when semantic retrieval requires it,
@@ -41,7 +90,7 @@ Recommended first posture:
 
 PostgreSQL is a practical default because it can support relational records, audit rows, structured filters, and vector search through extensions such as pgvector. This document does not require pgvector setup and does not add migrations.
 
-Alternative storage may be considered later if it preserves:
+Alternative storage may be considered only in a later architecture if it preserves:
 
 - owner control,
 - namespace isolation,

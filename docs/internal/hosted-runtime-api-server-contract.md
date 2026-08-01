@@ -26,6 +26,72 @@ This contract inherits the Slice 1 trust model:
 
 Reference: [Hosted Runtime Threat Model And Trust Boundary](hosted-runtime-threat-model-trust-boundary.md).
 
+## Authentication-Derived Authorization Context
+
+Issue `#286` clarifies that the future remote API cannot trust identity or
+authority copied from a model-generated request body. The access plane must
+authenticate and bind these fields before the operation payload is evaluated:
+
+- human principal;
+- client application;
+- workspace and channel context when a channel adapter is involved;
+- agent session;
+- credential audience and resource;
+- sender-constrained credential proof: DPoP key thumbprint for interactive and
+  public clients or mTLS certificate thumbprint for confidential and workload
+  clients;
+- owner and tenant;
+- allowed namespaces and capabilities;
+- monotonic authorization and deletion epochs;
+- immutable destination tuple;
+- complete multi-hop audience chain;
+- destination release ceiling.
+
+**Tool payload identity fields are not grants.** Payload values such as
+`caller.id`, `ownerId`, `namespaceId`, `requiredCapability`, client identity,
+or sensitivity ceiling can only act as selectors inside the server-derived
+authorization context. They cannot widen it.
+
+The effective scope is the intersection of authenticated principal, client,
+workspace/channel audience, active session, credential audience,
+server-authorized namespaces, server-authorized capabilities, and destination
+tuple and audience chain, and the release ceiling for every hop. Missing or contradictory context fails closed without
+revealing content, counts, or resource existence.
+
+Bearer-only access tokens fail before policy evaluation. The access plane
+validates the token `cnf` binding plus DPoP method, URI, nonce, issuance time,
+and replay state, or the bound mTLS certificate, before any Source Wire lookup.
+A copied valid token without its bound key or certificate releases zero content.
+
+The destination tuple identifies the actual delivery surface,
+workspace/channel/thread, model provider/account/endpoint, locality, and
+retention class. It comes from registered routes and verified adapters. A tool
+payload cannot claim or substitute it. Search, exact fetch, and release use the
+same immutable destination and audience-chain digests.
+
+Reference: [ADR 0002: Global Owner-Hosted Runtime V1](../adr/0002-global-owner-hosted-runtime-v1.md).
+
+### Evidence-Bound Search And Exact Fetch
+
+Search creates a short-lived, one-use opaque citation handle whose server-side
+record binds owner, namespace, principal, client, session/replay scope,
+credential and authorization epoch, immutable destination and audience-chain
+digests, provider, source, segment, source version, content digest, sensitivity,
+expiry, and redemption state. Exact fetch atomically redeems the handle using
+the same authenticated context and revalidates lifecycle, version, digest,
+deletion epoch, and destination release before content is returned.
+
+A stable citation receipt ID is an audit pointer, not a content capability. Its
+immutable server-side record binds provider, source, segment, source version,
+content digest, sensitivity, original authorization epoch, release trace,
+principal, client, and destination/audience-chain digests. Resolution
+re-authenticates the principal and client and rechecks namespace and capability
+authorization, lifecycle and deletion state, source version and digest, and
+current destination release policy. A copied, replayed,
+destination-substituted, stale, deleted, or digest-mismatched receipt fails
+closed. Guessed source or segment IDs cannot replace the short-lived exact-fetch
+handle, and receipt resolution never recreates an expired or redeemed handle.
+
 ## API Responsibility Summary
 
 The future API server owns:
@@ -41,6 +107,16 @@ The future API server owns:
 - denied-result shape,
 - audit metadata,
 - response citation and gap metadata.
+
+PostgreSQL 16 policy is the sole grant authority. A KnowledgeProvider may apply
+stricter provider-local source ACL metadata, but it cannot add an owner,
+namespace, capability, classification, or destination grant. Evidence retrieval
+uses bounded delegation and final release reauthorizes against the current
+PostgreSQL 16 authorization and deletion epochs.
+
+Revocation and deletion acknowledgment requires a synchronous append to the
+independently restored epoch-and-tombstone journal. Journal outage denies the
+mutation, and restore cannot become ready before the latest journal is applied.
 
 The future API server does not own:
 
@@ -59,18 +135,24 @@ Every future API operation should resolve this policy envelope before doing work
 
 | Field | Required | Purpose |
 | --- | --- | --- |
-| `caller.id` | yes | Stable owner-safe caller identity or synthetic fixture ID. |
-| `caller.kind` | yes | `owner`, `application`, `agent_harness`, `connector`, or `runtime_adapter`. |
-| `caller.harnessLabel` | when agent | Human-readable harness label such as Codex or Claude Code. |
-| `ownerId` | yes | Owner-controlled memory boundary. Public examples use synthetic IDs. |
-| `namespaceId` | yes | Project, client, user, team, or agent workspace boundary. |
+| `caller.id` | yes | Transport-derived human principal or synthetic fixture ID. A payload copy must match. |
+| `caller.kind` | yes | Transport-derived client class: `owner`, `application`, `agent_harness`, `connector`, or `runtime_adapter`. |
+| `caller.harnessLabel` | when agent | Registered client application label such as Codex or Claude Code. |
+| `ownerId` | yes | Server-bound owner boundary. Public examples use synthetic IDs. |
+| `namespaceId` | yes | Selector inside the server-authorized project, user, team, or agent workspace set. |
 | `action` | yes | Operation being requested. |
-| `requiredCapability` | yes | Capability needed for the action. |
+| `requiredCapability` | yes | Minimum capability needed for the action; the server decides whether it is granted. |
 | `traceId` | yes | Safe request correlation ID. |
+| `authorizationEpoch` | yes | Server-derived monotonic policy epoch. Payload copies cannot override it. |
+| `deletionEpoch` | when evidence enabled | Server-derived monotonic lifecycle epoch. |
+| `destinationDigest` | yes | Digest of the transport-derived immutable destination tuple. |
+| `audienceChainDigest` | yes | Digest of every verified downstream audience hop. |
 | `sourcePolicy` | when relevant | Source evidence freshness and sensitivity posture. |
 | `approvalPolicy` | when relevant | Whether trusted-memory approval is owner or application controlled. |
 
 No operation should silently widen the namespace when `namespaceId` is missing or denied.
+Any payload copy of transport-derived identity, destination, audience, or epoch
+must match exactly or the request is denied before policy or retrieval.
 
 ## Capability Model
 
@@ -171,7 +253,14 @@ Required capabilities:
 Required behavior:
 
 - candidates start as pending,
-- candidates preserve source provenance,
+- candidate creation accepts only a stable citation receipt ID plus
+  independently authenticated owner intent and canonical candidate arguments,
+- the server resolves and validates the receipt under current principal,
+  client, namespace, lifecycle, digest, and destination policy,
+- provider, source, segment, source version, content digest, stable receipt,
+  release trace, principal, and client are derived from server-side receipt and
+  request context rather than client-supplied provenance fields,
+- candidates persist those immutable provenance fields,
 - candidates do not become trusted memory without approval,
 - rejected candidates do not create trusted memory.
 

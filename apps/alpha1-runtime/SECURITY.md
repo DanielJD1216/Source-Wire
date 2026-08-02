@@ -63,18 +63,27 @@ database, managed provider credential, telemetry, billing, or
 Source-Wire-operated service in this Alpha.
 
 The Gate B `SyntheticMemoryOnlyAccessPlane` validates deterministic synthetic
-proof metadata and policy intersections for tests. It does not perform
-cryptographic DPoP signature validation, TLS or mTLS handshakes, OAuth/OIDC
-token validation, certificate-chain validation, identity-provider discovery,
-or live TLS identity. The additive Gate B PostgreSQL authority can coordinate
-synthetic session state and sender-key-wide replay digests across runtime pools,
-recheck sender, nonce, route, audience, grant, and epoch state at protected-read
-receipt consumption, and stores only domain-separated digests for the synthetic
-sender thumbprint, nonce, and replay ID. It is not wired to a listener and
-receives pre-normalized synthetic proof metadata. It does not make that metadata
-authentic. The synthetic DPoP and mTLS objects are test fixtures,
-not credentials. They must not be accepted from an untrusted network or used
-with real data.
+proof metadata and policy intersections for tests. The additive, disconnected
+`verifyOfflineMemoryOnlyRequest` verifier now validates compact Ed25519
+access-token and DPoP signatures against an injected bounded issuer key set,
+strict recursive JSON, exact JOSE headers and claims, RFC 7638 sender-key
+thumbprints, bounded token and proof times, and exact issuer, audience,
+principal, client, session, method, URI, and nonce bindings. It emits only the
+existing normalized durable transport context after both signatures and all
+bindings pass, with generic `credential_invalid` denial for external failures.
+It does not perform OAuth/OIDC discovery, remote JWKS retrieval or refresh, TLS
+or mTLS handshakes, certificate-chain validation, identity-provider discovery,
+or live TLS identity. It is not exported, composed into a listener, server,
+MCP runtime, CLI, or application entrypoint, and the static Gate B graph rejects
+such reachability.
+
+The additive Gate B PostgreSQL authority can coordinate synthetic session state
+and sender-key-wide replay digests across runtime pools, recheck sender, nonce,
+route, audience, grant, and epoch state at protected-read receipt consumption,
+and stores only domain-separated digests for the synthetic sender thumbprint,
+nonce, and replay ID. The offline verifier and PostgreSQL authority together are
+still synthetic test infrastructure, not production authentication. They must
+not be connected to an untrusted network or used with real data.
 Gate B memory-only MCP startup constructs the raw MCP server inside a closure
 and returns a frozen null-prototype capability facade. Its guarded registration
 method rejects every name outside the exact selected-profile allowlist without

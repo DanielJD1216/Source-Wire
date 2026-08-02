@@ -6,14 +6,14 @@ import { builtinModules } from "node:module";
 import path from "node:path";
 import ts from "typescript";
 
-const branchName = "feat/gate-b-durable-memory-auth";
+const branchName = "feat/gate-b-offline-jose-dpop";
 const gateScriptPath =
   "scripts/global-owner-hosted-runtime-v1-gate-b-memory-only.mjs";
 const runtimePackagePath = "apps/alpha1-runtime/package.json";
 const approvedRootPackageScriptsSha256 =
   "9d0f65210f71886d183d7694f3bfc682fc307fccd0343b950e1c205ea59ec65a";
 const approvedRuntimePackageScriptsSha256 =
-  "fed44ac977b35fec37cf999ff251884cb9eca59b69e3be894c624ee063412131";
+  "caa37c8a0b7564cc3a84de07ded891c244a4693569123d68b758539e885f7b57";
 const mcpDiscoveryTestPath =
   "apps/alpha1-runtime/tests/mcp-discovery.test.ts";
 const mcpDiscoveryTestSha256 =
@@ -42,6 +42,7 @@ const approvedNodeRuntimeModules = new Set([
 ]);
 const protectedDurableModules = new Set([
   "apps/alpha1-runtime/src/durable-memory-only-runtime.ts",
+  "apps/alpha1-runtime/src/offline-jose-dpop.ts",
   "apps/alpha1-runtime/src/postgres-memory-only-authorization.ts"
 ]);
 const runtimeEntryPaths = new Set([
@@ -63,6 +64,7 @@ const memoryOnlyImplementationPaths = new Set([
   "apps/alpha1-runtime/src/global-memory-access-plane.ts",
   "apps/alpha1-runtime/src/global-memory-only-runtime.ts",
   "apps/alpha1-runtime/src/durable-memory-only-runtime.ts",
+  "apps/alpha1-runtime/src/offline-jose-dpop.ts",
   "apps/alpha1-runtime/src/postgres-memory-only-authorization.ts",
   "apps/alpha1-runtime/src/mcp/server.ts",
   "apps/alpha1-runtime/src/mcp/tool-profile.ts"
@@ -81,12 +83,16 @@ const gateTriggerPaths = new Set([
   "apps/alpha1-runtime/src/mcp/server.ts",
   "apps/alpha1-runtime/src/mcp/tool-profile.ts",
   "apps/alpha1-runtime/src/migration.ts",
+  "apps/alpha1-runtime/src/offline-jose-dpop.ts",
   "apps/alpha1-runtime/src/postgres-memory-only-authorization.ts",
+  "apps/alpha1-runtime/src/strict-json.ts",
   "apps/alpha1-runtime/src/trusted-memory-search.ts",
   "apps/alpha1-runtime/tests/global-memory-access-plane.test.ts",
+  "apps/alpha1-runtime/tests/offline-jose-dpop.test.ts",
   "apps/alpha1-runtime/tests/postgres-memory-only-authorization.test.ts",
   "apps/alpha1-runtime/tests/mcp-tool-profile.test.ts",
   "apps/alpha1-runtime/tests/schema-compatibility.test.ts",
+  "apps/alpha1-runtime/tests/strict-json.test.ts",
   "docs/internal/global-owner-hosted-runtime-v1-gate-b-memory-only.md"
 ]);
 const allowedPaths = new Set([
@@ -102,13 +108,17 @@ const allowedPaths = new Set([
   "apps/alpha1-runtime/src/global-memory-access-plane.ts",
   "apps/alpha1-runtime/src/global-memory-only-runtime.ts",
   "apps/alpha1-runtime/src/migration.ts",
+  "apps/alpha1-runtime/src/offline-jose-dpop.ts",
   "apps/alpha1-runtime/src/postgres-memory-only-authorization.ts",
+  "apps/alpha1-runtime/src/strict-json.ts",
   "apps/alpha1-runtime/src/trusted-memory-search.ts",
   "apps/alpha1-runtime/tests/global-memory-access-plane.test.ts",
   "apps/alpha1-runtime/tests/mcp-discovery.test.ts",
   "apps/alpha1-runtime/tests/mcp-tool-profile.test.ts",
+  "apps/alpha1-runtime/tests/offline-jose-dpop.test.ts",
   "apps/alpha1-runtime/tests/postgres-memory-only-authorization.test.ts",
   "apps/alpha1-runtime/tests/schema-compatibility.test.ts",
+  "apps/alpha1-runtime/tests/strict-json.test.ts",
   "docs/guides/publish-readiness.md",
   "docs/internal/README.md",
   "docs/internal/global-owner-hosted-runtime-v1-gate-b-memory-only.md",
@@ -703,7 +713,7 @@ finishOrFail(failures, "Gate B-M synthetic memory-only scope check");
 console.log("");
 console.log("Source-Wire Gate B-M Synthetic Memory-Only Scope");
 console.log("------------------------------------------------");
-console.log(`Issue        : #290`);
+console.log(`Issue        : #292`);
 console.log(`Branch       : ${branchName}`);
 console.log(`Allowed paths: ${allowedPaths.size}`);
 console.log("Evidence mode: blocked");

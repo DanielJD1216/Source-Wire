@@ -4,7 +4,15 @@ import {
   type ChildProcess,
   type ChildProcessByStdio
 } from "node:child_process";
-import { createHash, randomBytes, randomUUID } from "node:crypto";
+import {
+  createHash,
+  generateKeyPairSync,
+  randomBytes,
+  randomUUID,
+  sign,
+  type JsonWebKey,
+  type KeyObject
+} from "node:crypto";
 import {
   chmod,
   mkdir,
@@ -30,6 +38,7 @@ import {
   type DurableMemoryOnlyTransportContext
 } from "../src/durable-memory-only-runtime.js";
 import { canonicalRequestDigest } from "../src/idempotency.js";
+import { verifyOfflineMemoryOnlyRequest } from "../src/offline-jose-dpop.js";
 import { createLocalConfigTemplate } from "../src/local-cli/config.js";
 import {
   GATE_B_DATABASE_OPERATION_TIMEOUT_MS,
@@ -112,6 +121,31 @@ let ownerCredentialId = "";
 let harnessToken = "";
 let baseUrl = "";
 let acceptedModerateAdvisories = 0;
+
+function signCompactJwt(
+  header: Record<string, unknown>,
+  payload: Record<string, unknown>,
+  privateKey: KeyObject
+): string {
+  const encodedHeader = Buffer.from(JSON.stringify(header), "utf8").toString(
+    "base64url"
+  );
+  const encodedPayload = Buffer.from(JSON.stringify(payload), "utf8").toString(
+    "base64url"
+  );
+  const signingInput = `${encodedHeader}.${encodedPayload}`;
+  return `${signingInput}.${sign(
+    null,
+    Buffer.from(signingInput, "ascii"),
+    privateKey
+  ).toString("base64url")}`;
+}
+
+function ed25519Thumbprint(jwk: JsonWebKey): string {
+  return createHash("sha256")
+    .update(JSON.stringify({ crv: jwk.crv, kty: jwk.kty, x: jwk.x }))
+    .digest("base64url");
+}
 
 try {
   await runConformance();
@@ -599,6 +633,10 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     ["ns_story2_alpha"]
   );
   const now = Date.now();
+  const issuerKeyPair = generateKeyPairSync("ed25519");
+  const senderKeyPair = generateKeyPairSync("ed25519");
+  const senderPublicJwk = senderKeyPair.publicKey.export({ format: "jwk" });
+  const signedSenderThumbprint = ed25519Thumbprint(senderPublicJwk);
   const destination = {
     deliverySurface: "synthetic_harness",
     workspaceId: "workspace_story2_synthetic",
@@ -617,7 +655,7 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     "endpoint_story2_local",
     "channel_story2_private"
   ] as const;
-  const keyThumbprint = "thumbprint_story2_gate_b_synthetic";
+  const keyThumbprint = signedSenderThumbprint;
   const sessionId = "session_story2_gate_b";
   const secondSessionId = "session_story2_gate_b_second";
   const expiringSessionId = "session_story2_gate_b_expiring";
@@ -1298,6 +1336,121 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
        WHERE revision.revision_id = $1
          AND revision.memory_id = $2`,
       [positiveMemory.revisionId, positiveMemory.memoryId]
+    );
+
+    const signedReplayId = "replay_story2_signed_end_to_end_0001";
+    const nowSeconds = Math.floor(now / 1_000);
+    const accessToken = signCompactJwt(
+      { alg: "EdDSA", kid: "story2-issuer-key", typ: "at+jwt" },
+      {
+        iss: "https://issuer.story2.synthetic.invalid",
+        aud: "source_wire_memory",
+        sub: "principal_story2_daniel",
+        client_id: clientId,
+        sid: sessionId,
+        jti: "access_story2_signed_end_to_end_0001",
+        iat: nowSeconds - 10,
+        nbf: nowSeconds - 10,
+        exp: nowSeconds + 300,
+        cnf: { jkt: signedSenderThumbprint }
+      },
+      issuerKeyPair.privateKey
+    );
+    const dpopProof = signCompactJwt(
+      { alg: "EdDSA", jwk: senderPublicJwk, typ: "dpop+jwt" },
+      {
+        htm: "POST",
+        htu: "/v1alpha1/trusted-memories/search",
+        jti: signedReplayId,
+        iat: nowSeconds,
+        nonce
+      },
+      senderKeyPair.privateKey
+    );
+    sensitiveValues.add(accessToken);
+    sensitiveValues.add(dpopProof);
+    const signedTransport = verifyOfflineMemoryOnlyRequest({
+      accessToken,
+      dpopProof,
+      issuer: {
+        expectedIssuer: "https://issuer.story2.synthetic.invalid",
+        expectedAudience: "source_wire_memory",
+        publicKeys: new Map([["story2-issuer-key", issuerKeyPair.publicKey]])
+      },
+      request: {
+        principalId: "principal_story2_daniel",
+        adapterId: "adapter_story2_hermes",
+        clientId,
+        sessionId,
+        authorizationEpoch: "1",
+        deletionEpoch: "0",
+        destination,
+        audienceChain,
+        method: "POST",
+        uri: "/v1alpha1/trusted-memories/search",
+        nonce
+      },
+      now: () => now
+    });
+    const signedRuntime = new DurableMemoryOnlyRuntime({
+      authority: authorityA,
+      pool: runtimePoolA,
+      processReleaseSecret: randomBytes(32)
+    });
+    const signedExecution = await signedRuntime.search({
+      transport: signedTransport,
+      request: {
+        namespaceId: "ns_story2_alpha",
+        query: "Synthetic artificial memory",
+        limit: 1
+      },
+      traceId: randomUUID()
+    });
+    assert.equal(signedExecution.results.length, 1);
+    assert.equal(signedExecution.releaseStatus, "release_attempted");
+    const signedReceipt = await targetAdminPool.query<{
+      consumption_state: string;
+      release_status: string;
+      consumed: boolean;
+    }>(
+      `SELECT consumption_state, release_status,
+              consumed_at IS NOT NULL AS consumed
+         FROM source_wire_memory.protected_read_receipts
+        WHERE receipt_id = $1`,
+      [signedExecution.receipt.receiptId]
+    );
+    assert.deepEqual(signedReceipt.rows[0], {
+      consumption_state: "consumed",
+      release_status: "release_attempted",
+      consumed: true
+    });
+    await runtimePoolB.end();
+    runtimePoolB = new Pool({
+      connectionString: runtimeUrl,
+      max: 1,
+      connectionTimeoutMillis: GATE_B_DATABASE_OPERATION_TIMEOUT_MS,
+      application_name: "source_wire_gate_b_signed_replay_restart"
+    });
+    authorityB = new PostgresMemoryOnlyAuthorizationAuthority({
+      pool: runtimePoolB
+    });
+    await assert.rejects(
+      authorityB.authorizeSearch({
+        transport: signedTransport,
+        request
+      })
+    );
+    const signedSerializedByteCount = signedExecution.serializedResponse.byteLength;
+    signedExecution.clear();
+    assert.equal(signedExecution.results.length, 0);
+    assert.equal(signedSerializedByteCount > 0, true);
+    assert.equal(
+      signedExecution.serializedResponse.every((byte) => byte === 0),
+      true
+    );
+    pass(
+      "GB-AUTH-04-SIGNED",
+      "one offline-verified signed token pair traversed durable authorization, protected retrieval, release recheck, exact receipt consumption, buffer clearing, and restart-persistent replay denial"
     );
 
     const successfulRuntime = new DurableMemoryOnlyRuntime({

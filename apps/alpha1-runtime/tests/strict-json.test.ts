@@ -20,9 +20,11 @@ test("strict JSON accepts unique top-level fields and nested objects", () => {
   );
 });
 
-test("strict JSON rejects repeated top-level fields and malformed UTF-8", () => {
+test("strict JSON rejects repeated fields at every object depth and malformed UTF-8", () => {
   for (const bytes of [
     Buffer.from('{"query":"first","query":"second"}', "utf8"),
+    Buffer.from('{"cnf":{"jkt":"first","jkt":"second"}}', "utf8"),
+    Buffer.from('{"jwk":{"kty":"OKP","x":"first","x":"second"}}', "utf8"),
     Buffer.from([0x7b, 0x22, 0x71, 0x22, 0x3a, 0x22, 0xc3, 0x28, 0x22, 0x7d])
   ]) {
     assert.throws(

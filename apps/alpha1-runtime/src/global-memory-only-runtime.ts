@@ -25,6 +25,7 @@ export type MemoryOnlySearchExecutor = (
     startedAtMs: number;
     signal?: AbortSignal;
     onStage?: ProtectedReadStageHook;
+    beforeProtectedRead?: (client: pg.PoolClient) => Promise<void>;
     consumeReceipt?: (
       receipt: ProtectedReadReceiptBinding
     ) => Promise<boolean>;

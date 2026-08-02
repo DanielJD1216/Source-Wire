@@ -37,6 +37,11 @@ export interface DurableMemoryOnlyAuthorizationAuthority {
     request: unknown;
   }): Promise<DurableMemoryOnlyAuthorization>;
 
+  lockAuthorizedRetrieval(
+    context: DurableMemoryOnlyReleaseContext,
+    client: pg.PoolClient
+  ): Promise<void>;
+
   consumeAuthorizedRelease(
     context: DurableMemoryOnlyReleaseContext,
     receipt: ProtectedReadReceiptBinding,
@@ -83,6 +88,7 @@ export class DurableMemoryOnlyRuntime {
       transport: input.transport,
       request: input.request
     });
+    let fenceCalls = 0;
     let consumeCalls = 0;
     let releaseConsumed = false;
 
@@ -94,6 +100,16 @@ export class DurableMemoryOnlyRuntime {
       {
         processReleaseSecret: this.#processReleaseSecret,
         startedAtMs,
+        beforeProtectedRead: async (client) => {
+          fenceCalls += 1;
+          if (fenceCalls !== 1) {
+            throw new SafeError("release_binding_invalid", 503, true);
+          }
+          await this.#authority.lockAuthorizedRetrieval(
+            authorized.releaseContext,
+            client
+          );
+        },
         consumeReceipt: async (receipt) => {
           consumeCalls += 1;
           if (consumeCalls !== 1) {
@@ -110,7 +126,7 @@ export class DurableMemoryOnlyRuntime {
         ...(input.onStage ? { onStage: input.onStage } : {})
       }
     );
-    if (consumeCalls !== 1 || !releaseConsumed) {
+    if (fenceCalls !== 1 || consumeCalls !== 1 || !releaseConsumed) {
       execution.clear();
       throw new SafeError("release_binding_invalid", 503, true);
     }

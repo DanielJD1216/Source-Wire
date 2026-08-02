@@ -33,6 +33,7 @@ const RECEIPT_FORMAT_VERSION = 1 as const;
 const SEARCH_OPERATION = "search_trusted_memory" as const;
 const RESPONSE_AUDIT_ID_PLACEHOLDER =
   "00000000-0000-4000-8000-000000000000";
+const TRANSACTION_CLEANUP_TIMEOUT_MS = 250;
 
 export type TrustedMemorySearchInput = {
   namespaceId: string;
@@ -85,6 +86,7 @@ export type ProtectedReadReceiptBinding = {
 
 export type ProtectedReadStage =
   | "before_query"
+  | "before_protected_query"
   | "after_query"
   | "before_receipt_and_audit_commit"
   | "after_durable_commit"
@@ -127,6 +129,7 @@ type TrustedMemorySearchExecutionOptions = {
   startedAtMs: number;
   signal?: AbortSignal;
   onStage?: ProtectedReadStageHook;
+  beforeProtectedRead?: (client: pg.PoolClient) => Promise<void>;
   receiptTtlMs?: number;
   consumeReceipt?: (
     receipt: ProtectedReadReceiptBinding
@@ -336,6 +339,7 @@ export async function prepareTrustedMemorySearch(
   const results: TrustedMemorySearchResult[] = [];
   let serializedResponse: Buffer | undefined;
   let committed = false;
+  let clientDiscardError: Error | undefined;
 
   try {
     assertReadStillLive(options);
@@ -343,6 +347,10 @@ export async function prepareTrustedMemorySearch(
     await client.query("BEGIN");
     await client.query("SET LOCAL lock_timeout = '2s'");
     await client.query("SET LOCAL statement_timeout = '2s'");
+    await client.query("SET LOCAL idle_in_transaction_session_timeout = '5s'");
+    await options.beforeProtectedRead?.(client);
+    assertReadStillLive(options);
+    options.onStage?.("before_protected_query");
 
     const queryResult = await client.query<SearchRow>(
       `WITH eligible AS MATERIALIZED (
@@ -549,14 +557,40 @@ export async function prepareTrustedMemorySearch(
     };
   } catch (error) {
     if (!committed) {
-      await client.query("ROLLBACK").catch(() => undefined);
+      clientDiscardError = await rollbackOrDiscardTransaction(client);
     }
     results.length = 0;
     serializedResponse?.fill(0);
     throw error;
   } finally {
-    client.release();
+    client.release(clientDiscardError);
   }
+}
+
+async function rollbackOrDiscardTransaction(
+  client: pg.PoolClient
+): Promise<Error | undefined> {
+  return new Promise<Error | undefined>((resolve) => {
+    let settled = false;
+    const finish = (discardError: Error | undefined) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      resolve(discardError);
+    };
+    const timer = setTimeout(() => {
+      finish(new Error("trusted_memory_transaction_cleanup_timeout"));
+    }, TRANSACTION_CLEANUP_TIMEOUT_MS);
+    client.query("ROLLBACK").then(
+      () => finish(undefined),
+      (error: unknown) =>
+        finish(
+          error instanceof Error
+            ? error
+            : new Error("trusted_memory_transaction_cleanup_failed")
+        )
+    );
+  });
 }
 
 export async function consumeProtectedReadReceipt(

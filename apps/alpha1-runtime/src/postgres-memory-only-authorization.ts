@@ -18,6 +18,15 @@ import {
 const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u;
 const PG_BIGINT_MAX = 9_223_372_036_854_775_807n;
+const TRUSTED_MEMORY_SEARCH_METHOD = "POST";
+const TRUSTED_MEMORY_SEARCH_URI = "/v1alpha1/trusted-memories/search";
+export const GATE_B_DATABASE_OPERATION_TIMEOUT_MS = 2_000;
+
+class DatabaseOperationTimeoutError extends Error {
+  constructor(stage: string) {
+    super(`gate_b_database_${stage}_timeout`);
+  }
+}
 
 export type PostgresMemoryOnlyReleaseContext = Readonly<{
   credentialId: string;
@@ -53,13 +62,106 @@ type AuthorizationRow = {
   deletion_epoch: string | number;
 };
 
+function normalizeDatabaseError(error: unknown): Error {
+  return error instanceof Error
+    ? error
+    : new Error("gate_b_database_operation_failed");
+}
+
+async function acquirePoolClient(
+  pool: pg.Pool,
+  timeoutMs: number
+): Promise<pg.PoolClient> {
+  return new Promise<pg.PoolClient>((resolve, reject) => {
+    let settled = false;
+    const timer = setTimeout(() => {
+      settled = true;
+      reject(new SafeError("operation_unavailable", 503, true));
+    }, timeoutMs);
+
+    pool.connect().then(
+      (client) => {
+        if (settled) {
+          client.release();
+          return;
+        }
+        settled = true;
+        clearTimeout(timer);
+        resolve(client);
+      },
+      () => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        clearTimeout(timer);
+        reject(new SafeError("operation_unavailable", 503, true));
+      }
+    );
+  });
+}
+
+async function boundedQuery<
+  Row extends pg.QueryResultRow = pg.QueryResultRow
+>(
+  client: pg.PoolClient,
+  sql: string,
+  values: readonly unknown[] | undefined,
+  timeoutMs: number
+): Promise<pg.QueryResult<Row>> {
+  return new Promise<pg.QueryResult<Row>>((resolve, reject) => {
+    let settled = false;
+    const timer = setTimeout(() => {
+      settled = true;
+      reject(new DatabaseOperationTimeoutError("query"));
+    }, timeoutMs);
+
+    client.query<Row>(sql, values as unknown[] | undefined).then(
+      (result) => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        clearTimeout(timer);
+        resolve(result);
+      },
+      (error: unknown) => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        clearTimeout(timer);
+        reject(error);
+      }
+    );
+  });
+}
+
 export class PostgresMemoryOnlyAuthorizationAuthority
   implements DurableMemoryOnlyAuthorizationAuthority
 {
   readonly #pool: pg.Pool;
+  readonly #operationTimeoutMs: number;
 
-  constructor(options: { pool: pg.Pool }) {
+  constructor(options: { pool: pg.Pool; operationTimeoutMs?: number }) {
     this.#pool = options.pool;
+    this.#operationTimeoutMs =
+      options.operationTimeoutMs ?? GATE_B_DATABASE_OPERATION_TIMEOUT_MS;
+    if (
+      !Number.isInteger(this.#operationTimeoutMs) ||
+      this.#operationTimeoutMs < 1 ||
+      this.#operationTimeoutMs > GATE_B_DATABASE_OPERATION_TIMEOUT_MS
+    ) {
+      throw new Error("gate_b_database_operation_timeout_invalid");
+    }
+    const poolCheckoutTimeoutMs = options.pool.options?.connectionTimeoutMillis;
+    if (
+      !Number.isInteger(poolCheckoutTimeoutMs) ||
+      (poolCheckoutTimeoutMs ?? 0) < 1 ||
+      (poolCheckoutTimeoutMs ?? 0) > this.#operationTimeoutMs
+    ) {
+      throw new Error("gate_b_pool_checkout_timeout_invalid");
+    }
   }
 
   async authorizeSearch(input: {
@@ -70,8 +172,10 @@ export class PostgresMemoryOnlyAuthorizationAuthority
     const { transport } = input;
     if (
       transport.senderProof.kind !== "dpop" ||
-      transport.senderProof.method !== transport.requestMethod ||
-      transport.senderProof.uri !== transport.requestUri
+      transport.requestMethod !== TRUSTED_MEMORY_SEARCH_METHOD ||
+      transport.requestUri !== TRUSTED_MEMORY_SEARCH_URI ||
+      transport.senderProof.method !== TRUSTED_MEMORY_SEARCH_METHOD ||
+      transport.senderProof.uri !== TRUSTED_MEMORY_SEARCH_URI
     ) {
       throw new SafeError("credential_invalid", 401);
     }
@@ -103,16 +207,35 @@ export class PostgresMemoryOnlyAuthorizationAuthority
       domain: "source-wire.gate-b.dpop-replay-id.v1",
       replayId: transport.senderProof.replayId
     });
-    const client = await this.#pool.connect().catch(() => {
-      throw new SafeError("operation_unavailable", 503, true);
-    });
+    const client = await acquirePoolClient(
+      this.#pool,
+      this.#operationTimeoutMs
+    );
     let result: pg.QueryResult<AuthorizationRow>;
     let committed = false;
+    let discardError: Error | undefined;
     try {
-      await client.query("BEGIN");
-      await client.query("SET LOCAL lock_timeout = '2s'");
-      await client.query("SET LOCAL statement_timeout = '2s'");
-      result = await client.query<AuthorizationRow>(
+      await boundedQuery(client, "BEGIN", undefined, this.#operationTimeoutMs);
+      await boundedQuery(
+        client,
+        "SET LOCAL lock_timeout = '2s'",
+        undefined,
+        this.#operationTimeoutMs
+      );
+      await boundedQuery(
+        client,
+        "SET LOCAL statement_timeout = '2s'",
+        undefined,
+        this.#operationTimeoutMs
+      );
+      await boundedQuery(
+        client,
+        "SET LOCAL idle_in_transaction_session_timeout = '5s'",
+        undefined,
+        this.#operationTimeoutMs
+      );
+      result = await boundedQuery<AuthorizationRow>(
+        client,
         `SELECT *
          FROM source_wire_memory.authorize_gate_b_memory_search(
            $1::varchar,
@@ -149,23 +272,60 @@ export class PostgresMemoryOnlyAuthorizationAuthority
           replayIdDigest,
           transport.senderProof.issuedAtMs,
           request.namespaceId
-        ]
+        ],
+        this.#operationTimeoutMs
       );
-      await client.query("COMMIT");
+      await boundedQuery(
+        client,
+        "COMMIT",
+        undefined,
+        this.#operationTimeoutMs
+      );
       committed = true;
-    } catch {
+    } catch (error) {
+      discardError = normalizeDatabaseError(error);
       if (!committed) {
-        await client.query("ROLLBACK").catch(() => undefined);
+        await boundedQuery(
+          client,
+          "ROLLBACK",
+          undefined,
+          this.#operationTimeoutMs
+        ).catch((rollbackError: unknown) => {
+          discardError = normalizeDatabaseError(rollbackError);
+        });
       }
       throw new SafeError("operation_unavailable", 503, true);
     } finally {
-      client.release();
+      client.release(discardError);
     }
     const row = result.rows[0];
     if (!row || result.rows.length !== 1) {
       throw new SafeError("credential_invalid", 401);
     }
     return authorizationFromRow(row, transport, request);
+  }
+
+  async lockAuthorizedRetrieval(
+    context: DurableMemoryOnlyReleaseContext,
+    client: pg.PoolClient
+  ): Promise<void> {
+    const release = parseReleaseContext(context);
+    try {
+      if (
+        !(await lockDurableMemoryAuthorization(
+          client,
+          release,
+          this.#operationTimeoutMs
+        ))
+      ) {
+        throw new SafeError("credential_invalid", 401);
+      }
+    } catch (error) {
+      if (error instanceof SafeError) {
+        throw error;
+      }
+      throw new SafeError("operation_unavailable", 503, true);
+    }
   }
 
   async consumeAuthorizedRelease(
@@ -185,98 +345,137 @@ export class PostgresMemoryOnlyAuthorizationAuthority
     ) {
       throw new SafeError("release_binding_invalid", 503, true);
     }
-    const client = await this.#pool.connect().catch(() => {
-      throw new SafeError("operation_unavailable", 503, true);
-    });
+    const client = await acquirePoolClient(
+      this.#pool,
+      this.#operationTimeoutMs
+    );
     let committed = false;
+    let discardError: Error | undefined;
     try {
-      await client.query("BEGIN");
-      await client.query("SET LOCAL lock_timeout = '2s'");
-      await client.query("SET LOCAL statement_timeout = '2s'");
-      const prepared = await client.query<{ prepared: boolean }>(
-        `SELECT source_wire_memory.prepare_gate_b_memory_release(
-           $1::uuid,
-           $2::uuid,
-           $3::varchar,
-           $4::varchar,
-           $5::varchar,
-           $6::smallint
-         ) AS prepared`,
-        [
-          receipt.receiptId,
-          receipt.actorCredentialId,
-          receipt.ownerId,
-          receipt.namespaceId,
-          receipt.targetOrderDigest,
-          receipt.coveredResultCount
-        ]
-      );
-      if (prepared.rows[0]?.prepared !== true) {
-        await client.query("ROLLBACK");
-        return false;
-      }
-      const authorization = await client.query<{ authorized: boolean }>(
-        `SELECT source_wire_memory.lock_gate_b_memory_release(
-           $1::uuid,
-           $2::varchar,
-           $3::varchar,
-           $4::varchar,
-           $5::varchar,
-           $6::varchar,
-           $7::varchar,
-           $8::bigint,
-           $9::bigint,
-           $10::varchar,
-           $11::varchar,
-           $12::varchar,
-           $13::varchar,
-           $14::varchar,
-           $15::varchar,
-           $16::varchar
-         ) AS authorized`,
-        [
-          release.credentialId,
-          release.ownerId,
-          release.principalId,
-          release.adapterId,
-          release.clientId,
-          release.sessionId,
-          release.credentialAudience,
-          release.authorizationEpoch,
-          release.deletionEpoch,
-          release.namespaceId,
-          release.destinationDigest,
-          release.audienceChainDigest,
-          release.senderThumbprintDigest,
-          release.nonceDigest,
-          release.requestMethod,
-          release.requestUri
-        ]
-      );
-      if (authorization.rows[0]?.authorized !== true) {
-        await client.query("ROLLBACK");
-        return false;
-      }
-      const consumed = await consumeProtectedReadReceiptWithQueryable(
+      await boundedQuery(client, "BEGIN", undefined, this.#operationTimeoutMs);
+      await boundedQuery(
         client,
+        "SET LOCAL lock_timeout = '2s'",
+        undefined,
+        this.#operationTimeoutMs
+      );
+      await boundedQuery(
+        client,
+        "SET LOCAL statement_timeout = '2s'",
+        undefined,
+        this.#operationTimeoutMs
+      );
+      await boundedQuery(
+        client,
+        "SET LOCAL idle_in_transaction_session_timeout = '5s'",
+        undefined,
+        this.#operationTimeoutMs
+      );
+      if (
+        !(await lockDurableMemoryAuthorization(
+          client,
+          release,
+          this.#operationTimeoutMs
+        ))
+      ) {
+        await boundedQuery(
+          client,
+          "ROLLBACK",
+          undefined,
+          this.#operationTimeoutMs
+        );
+        return false;
+      }
+      const boundedQueryable = {
+        query: ((sql: string, values?: readonly unknown[]) =>
+          boundedQuery(
+            client,
+            sql,
+            values,
+            this.#operationTimeoutMs
+          )) as pg.Pool["query"]
+      };
+      const consumed = await consumeProtectedReadReceiptWithQueryable(
+        boundedQueryable,
         processReleaseSecret,
         receipt
       );
-      await client.query("COMMIT");
+      await boundedQuery(
+        client,
+        "COMMIT",
+        undefined,
+        this.#operationTimeoutMs
+      );
       committed = true;
       return consumed;
     } catch (error) {
+      discardError = normalizeDatabaseError(error);
       if (!committed) {
-        await client.query("ROLLBACK").catch(() => undefined);
+        await boundedQuery(
+          client,
+          "ROLLBACK",
+          undefined,
+          this.#operationTimeoutMs
+        ).catch((rollbackError: unknown) => {
+          discardError = normalizeDatabaseError(rollbackError);
+        });
       }
       if (error instanceof SafeError) {
         throw error;
       }
       throw new SafeError("operation_unavailable", 503, true);
     } finally {
-      client.release();
+      client.release(discardError);
     }
   }
+}
+
+async function lockDurableMemoryAuthorization(
+  client: pg.PoolClient,
+  release: PostgresMemoryOnlyReleaseContext,
+  timeoutMs: number
+): Promise<boolean> {
+  const authorization = await boundedQuery<{ authorized: boolean }>(
+    client,
+    `SELECT source_wire_memory.lock_gate_b_memory_release(
+       $1::uuid,
+       $2::varchar,
+       $3::varchar,
+       $4::varchar,
+       $5::varchar,
+       $6::varchar,
+       $7::varchar,
+       $8::bigint,
+       $9::bigint,
+       $10::varchar,
+       $11::varchar,
+       $12::varchar,
+       $13::varchar,
+       $14::varchar,
+       $15::varchar,
+       $16::varchar
+     ) AS authorized`,
+    [
+      release.credentialId,
+      release.ownerId,
+      release.principalId,
+      release.adapterId,
+      release.clientId,
+      release.sessionId,
+      release.credentialAudience,
+      release.authorizationEpoch,
+      release.deletionEpoch,
+      release.namespaceId,
+      release.destinationDigest,
+      release.audienceChainDigest,
+      release.senderThumbprintDigest,
+      release.nonceDigest,
+      release.requestMethod,
+      release.requestUri
+    ],
+    timeoutMs
+  );
+  return authorization.rows[0]?.authorized === true;
 }
 
 function authorizationFromRow(
@@ -288,8 +487,7 @@ function authorizationFromRow(
     !UUID.test(row.credential_id) ||
     !UUID.test(row.actor_identity_id) ||
     !UUID.test(row.authentication_epoch_id) ||
-    (row.credential_class !== "owner_admin" &&
-      row.credential_class !== "harness") ||
+    row.credential_class !== "harness" ||
     !(row.issued_at instanceof Date) ||
     !Number.isFinite(row.issued_at.getTime()) ||
     !(row.expires_at instanceof Date) ||

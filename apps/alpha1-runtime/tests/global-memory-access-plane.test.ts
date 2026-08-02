@@ -571,11 +571,20 @@ test("durable runtime derives authority and delegates atomic receipt release", a
     authorizationEpoch: String(policy.authorizationEpoch),
     deletionEpoch: String(policy.deletionEpoch)
   });
+  const syntheticTransactionClient = {} as pg.PoolClient;
   const authority: DurableMemoryOnlyAuthorizationAuthority = {
     async authorizeSearch(input) {
       order.push("authorize");
       assert.equal(input.transport, durableTransport);
       return { ...authorized, releaseContext };
+    },
+    async lockAuthorizedRetrieval(
+      context: Readonly<Record<string, unknown>>,
+      client: pg.PoolClient
+    ) {
+      order.push("fence");
+      assert.equal(context, releaseContext);
+      assert.equal(client, syntheticTransactionClient);
     },
     async consumeAuthorizedRelease(context, receipt, processReleaseSecret) {
       order.push("release");
@@ -595,6 +604,8 @@ test("durable runtime derives authority and delegates atomic receipt release", a
     _traceId,
     options
   ) => {
+    assert.equal(typeof options.beforeProtectedRead, "function");
+    await options.beforeProtectedRead?.(syntheticTransactionClient);
     order.push("retrieve");
     assert.equal(actor.ownerId, policy.ownerId);
     assert.equal(input.namespaceId, "ns_synthetic_memory");
@@ -623,7 +634,7 @@ test("durable runtime derives authority and delegates atomic receipt release", a
   });
 
   assert.equal(result, syntheticExecution);
-  assert.deepEqual(order, ["authorize", "retrieve", "release"]);
+  assert.deepEqual(order, ["authorize", "fence", "retrieve", "release"]);
 
   let bypassResultCleared = false;
   const bypassRuntime = new DurableMemoryOnlyRuntime({

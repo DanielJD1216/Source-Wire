@@ -79,7 +79,7 @@ Story 6.3 provider-composition cases through
 both Story 5 adapters, the Story 6.4 failure cases, and their cleanup checks
 pass in dependency order. The same marker also requires the Story 6.5 database
 control plane to pass inside Story 1, the Story 6.6 local export gate to pass
-inside Story 4, and the 29-case Story 6.7 pinned evidence-first path to pass.
+inside Story 4, and the pinned evidence-first path to pass.
 Alpha unit tests cannot emit that marker.
 
 ## Local Mirror

@@ -11,7 +11,11 @@ import {
 } from "../src/migration.js";
 import { canonicalRequestDigest } from "../src/idempotency.js";
 import { PostgresMemoryOnlyAuthorizationAuthority } from "../src/postgres-memory-only-authorization.js";
-import type { ProtectedReadReceiptBinding } from "../src/trusted-memory-search.js";
+import type { AuthenticatedCredential } from "../src/repository.js";
+import {
+  prepareTrustedMemorySearch,
+  type ProtectedReadReceiptBinding
+} from "../src/trusted-memory-search.js";
 
 const NOW_MS = Date.parse("2026-08-01T20:00:00.000Z");
 const transport: DurableMemoryOnlyTransportContext = {
@@ -69,6 +73,49 @@ const nonceDigest = canonicalRequestDigest({
   nonce: "nonce_gate_b_0001"
 });
 
+function syntheticReceipt(): ProtectedReadReceiptBinding {
+  const credentialId = "10000000-0000-4000-8000-000000000002";
+  return {
+    receiptId: randomUUID(),
+    formatVersion: 1,
+    traceId: randomUUID(),
+    requestId: randomUUID(),
+    actorReference: `credential:${credentialId}`,
+    actorCredentialId: credentialId,
+    ownerId: "owner_doo_made",
+    namespaceId: "ns_synthetic_memory",
+    operation: "search_trusted_memory",
+    policyDecision: "allowed",
+    releaseBinding: randomBytes(32).toString("base64url"),
+    requestDigest: "a".repeat(64),
+    resultDigest: "b".repeat(64),
+    targetOrderDigest: "c".repeat(64),
+    responseByteCount: 512,
+    coveredResultCount: 1,
+    issuedAt: "2026-08-01T20:00:00.000Z",
+    expiresAt: "2026-08-01T20:00:05.000Z"
+  };
+}
+
+const releaseContext = {
+  credentialId: "10000000-0000-4000-8000-000000000002",
+  ownerId: "owner_doo_made",
+  principalId: "principal_daniel",
+  adapterId: "adapter_hermes_synthetic",
+  clientId: "client_hermes_synthetic",
+  sessionId: "session_gate_b_synthetic",
+  credentialAudience: "source_wire_memory",
+  namespaceId: "ns_synthetic_memory",
+  authorizationEpoch: "7",
+  deletionEpoch: "3",
+  destinationDigest,
+  audienceChainDigest,
+  senderThumbprintDigest,
+  nonceDigest,
+  requestMethod: "POST",
+  requestUri: "/v1alpha1/trusted-memories/search"
+} as const;
+
 test("schema version 7 registers the durable Gate B authorization migration", async () => {
   const migrations = await readAlpha1Migrations();
   const latest = migrations.at(-1);
@@ -79,7 +126,61 @@ test("schema version 7 registers the durable Gate B authorization migration", as
   assert.match(latest?.sql ?? "", /CREATE TABLE source_wire_memory\.gate_b_memory_sessions/u);
   assert.match(latest?.sql ?? "", /CREATE TABLE source_wire_memory\.gate_b_memory_replay_ids/u);
   assert.match(latest?.sql ?? "", /authorize_gate_b_memory_search/u);
+  assert.match(latest?.sql ?? "", /p_request_method IS DISTINCT FROM 'POST'/u);
+  assert.match(
+    latest?.sql ?? "",
+    /p_request_uri IS DISTINCT FROM '\/v1alpha1\/trusted-memories\/search'/u
+  );
   assert.match(latest?.sql ?? "", /lock_gate_b_memory_release/u);
+});
+
+test("Gate B SQL functions preserve one canonical authorization lock order", async () => {
+  const migration = (await readAlpha1Migrations()).at(-1)?.sql ?? "";
+  const functionBody = (name: string): string => {
+    const start = migration.indexOf(`CREATE FUNCTION source_wire_memory.${name}(`);
+    assert.notEqual(start, -1, `${name} must exist`);
+    const end = migration.indexOf("\n$$;", start);
+    assert.notEqual(end, -1, `${name} must terminate`);
+    return migration.slice(start, end);
+  };
+  const lockMarkers = [
+    "pg_advisory_xact_lock_shared",
+    "PERFORM 1\n    FROM source_wire_memory.credentials AS credential",
+    "PERFORM 1\n    FROM source_wire_memory.credential_namespace_grants AS credential_namespace",
+    "PERFORM 1\n    FROM source_wire_memory.credential_capability_grants AS credential_capability",
+    "PERFORM 1\n    FROM source_wire_memory.gate_b_memory_clients AS client",
+    "PERFORM 1\n    FROM source_wire_memory.gate_b_memory_sessions AS session",
+    "PERFORM 1\n    FROM source_wire_memory.gate_b_memory_grants AS grant_row"
+  ];
+
+  for (const functionName of [
+    "authorize_gate_b_memory_search",
+    "lock_gate_b_memory_release"
+  ]) {
+    const body = functionBody(functionName);
+    let previous = -1;
+    for (const marker of lockMarkers) {
+      const current = body.indexOf(marker, previous + 1);
+      assert.equal(current > previous, true, `${functionName}: ${marker}`);
+      previous = current;
+    }
+  }
+  assert.doesNotMatch(migration, /prepare_gate_b_memory_release/u);
+});
+
+test("PostgreSQL authority rejects pools without a bounded checkout deadline", () => {
+  for (const connectionTimeoutMillis of [undefined, 0, 2_001]) {
+    const pool = {
+      options:
+        connectionTimeoutMillis === undefined
+          ? {}
+          : { connectionTimeoutMillis }
+    } as unknown as pg.Pool;
+    assert.throws(
+      () => new PostgresMemoryOnlyAuthorizationAuthority({ pool }),
+      /gate_b_pool_checkout_timeout_invalid/u
+    );
+  }
 });
 
 test("PostgreSQL authority derives actor, input, and immutable release context", async () => {
@@ -115,6 +216,7 @@ test("PostgreSQL authority derives actor, input, and immutable release context",
     }
   };
   const pool = {
+    options: { connectionTimeoutMillis: 20 },
     async connect() {
       return client;
     }
@@ -136,12 +238,13 @@ test("PostgreSQL authority derives actor, input, and immutable release context",
       "BEGIN",
       "SET LOCAL lock_timeout = '2s'",
       "SET LOCAL statement_timeout = '2s'",
-      calls[3]!.sql,
+      "SET LOCAL idle_in_transaction_session_timeout = '5s'",
+      calls[4]!.sql,
       "COMMIT"
     ]
   );
   assert.equal(released, true);
-  const authorizationCall = calls[3]!;
+  const authorizationCall = calls[4]!;
   assert.match(authorizationCall.sql, /authorize_gate_b_memory_search/u);
   assert.equal(authorizationCall.values?.[5], "7");
   assert.equal(authorizationCall.values?.[6], "3");
@@ -196,6 +299,7 @@ test("PostgreSQL authority fails closed when durable authorization is unavailabl
     }
   };
   const pool = {
+    options: { connectionTimeoutMillis: 20 },
     async connect() {
       return client;
     }
@@ -214,19 +318,103 @@ test("PostgreSQL authority fails closed when durable authorization is unavailabl
     (error: unknown) =>
       error instanceof Error && error.message === "operation_unavailable"
   );
-  assert.deepEqual(statements.slice(0, 3), [
+  assert.deepEqual(statements.slice(0, 4), [
     "BEGIN",
     "SET LOCAL lock_timeout = '2s'",
-    "SET LOCAL statement_timeout = '2s'"
+    "SET LOCAL statement_timeout = '2s'",
+    "SET LOCAL idle_in_transaction_session_timeout = '5s'"
   ]);
-  assert.match(statements[3] ?? "", /authorize_gate_b_memory_search/u);
+  assert.match(statements[4] ?? "", /authorize_gate_b_memory_search/u);
   assert.equal(statements.at(-1), "ROLLBACK");
   assert.equal(released, true);
+});
+
+test("PostgreSQL authority bounds pool acquisition and releases late clients", async () => {
+  let resolveClient!: (client: pg.PoolClient) => void;
+  const connectPromise = new Promise<pg.PoolClient>((resolve) => {
+    resolveClient = resolve;
+  });
+  const pool = {
+    options: { connectionTimeoutMillis: 20 },
+    connect() {
+      return connectPromise;
+    }
+  } as unknown as pg.Pool;
+  const authority = new PostgresMemoryOnlyAuthorizationAuthority({
+    pool,
+    operationTimeoutMs: 20
+  });
+  const request = {
+    namespaceId: "ns_synthetic_memory",
+    query: "approved launch constraints",
+    limit: 3
+  };
+
+  await assert.rejects(
+    authority.authorizeSearch({ transport, request }),
+    (error: unknown) =>
+      error instanceof Error && error.message === "operation_unavailable"
+  );
+  await assert.rejects(
+    authority.consumeAuthorizedRelease(
+      releaseContext,
+      syntheticReceipt(),
+      Buffer.alloc(32, 7)
+    ),
+    (error: unknown) =>
+      error instanceof Error && error.message === "operation_unavailable"
+  );
+
+  let released = false;
+  resolveClient({
+    release() {
+      released = true;
+    }
+  } as unknown as pg.PoolClient);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(released, true);
+});
+
+test("PostgreSQL authority bounds transaction queries and destroys uncertain clients", async () => {
+  let releasedWith: Error | undefined;
+  const client = {
+    query() {
+      return new Promise<never>(() => undefined);
+    },
+    release(error?: Error) {
+      releasedWith = error;
+    }
+  } as unknown as pg.PoolClient;
+  const pool = {
+    options: { connectionTimeoutMillis: 20 },
+    async connect() {
+      return client;
+    }
+  } as unknown as pg.Pool;
+  const authority = new PostgresMemoryOnlyAuthorizationAuthority({
+    pool,
+    operationTimeoutMs: 20
+  });
+
+  await assert.rejects(
+    authority.authorizeSearch({
+      transport,
+      request: {
+        namespaceId: "ns_synthetic_memory",
+        query: "approved launch constraints",
+        limit: 3
+      }
+    }),
+    (error: unknown) =>
+      error instanceof Error && error.message === "operation_unavailable"
+  );
+  assert.match(releasedWith?.message ?? "", /gate_b_database_query_timeout/u);
 });
 
 test("PostgreSQL authority rejects proof-to-transport substitution before database access", async () => {
   let queryCount = 0;
   const pool = {
+    options: { connectionTimeoutMillis: 20 },
     async query() {
       queryCount += 1;
       return { rows: [] };
@@ -252,9 +440,74 @@ test("PostgreSQL authority rejects proof-to-transport substitution before databa
   assert.equal(queryCount, 0);
 });
 
+test("PostgreSQL authority rejects null, undefined, and omitted route bindings before replay access", async () => {
+  let connectCount = 0;
+  const pool = {
+    options: { connectionTimeoutMillis: 20 },
+    async connect() {
+      connectCount += 1;
+      throw new Error("database_must_not_be_reached");
+    }
+  } as unknown as pg.Pool;
+  const authority = new PostgresMemoryOnlyAuthorizationAuthority({ pool });
+  type MutableRouteTransport = {
+    requestMethod?: unknown;
+    requestUri?: unknown;
+    senderProof: { method?: unknown; uri?: unknown };
+  };
+  const malformedRoutes: Array<
+    [string, (candidate: MutableRouteTransport) => void]
+  > = [
+    ["null method", (candidate) => {
+      candidate.requestMethod = null;
+      candidate.senderProof.method = null;
+    }],
+    ["undefined method", (candidate) => {
+      candidate.requestMethod = undefined;
+      candidate.senderProof.method = undefined;
+    }],
+    ["omitted method", (candidate) => {
+      delete candidate.requestMethod;
+      delete candidate.senderProof.method;
+    }],
+    ["null URI", (candidate) => {
+      candidate.requestUri = null;
+      candidate.senderProof.uri = null;
+    }],
+    ["undefined URI", (candidate) => {
+      candidate.requestUri = undefined;
+      candidate.senderProof.uri = undefined;
+    }],
+    ["omitted URI", (candidate) => {
+      delete candidate.requestUri;
+      delete candidate.senderProof.uri;
+    }]
+  ];
+
+  for (const [label, mutate] of malformedRoutes) {
+    const candidate = structuredClone(transport) as unknown as MutableRouteTransport;
+    mutate(candidate);
+    await assert.rejects(
+      authority.authorizeSearch({
+        transport: candidate as unknown as DurableMemoryOnlyTransportContext,
+        request: {
+          namespaceId: "ns_synthetic_memory",
+          query: "approved launch constraints",
+          limit: 3
+        }
+      }),
+      (error: unknown) =>
+        error instanceof Error && error.message === "credential_invalid",
+      label
+    );
+  }
+  assert.equal(connectCount, 0);
+});
+
 test("PostgreSQL authority rejects unsafe bigint inputs before database access", async () => {
   let queryCount = 0;
   const pool = {
+    options: { connectionTimeoutMillis: 20 },
     async query() {
       queryCount += 1;
       return { rows: [] };
@@ -287,14 +540,54 @@ test("PostgreSQL authority rejects unsafe bigint inputs before database access",
   assert.equal(queryCount, 0);
 });
 
+test("PostgreSQL authority fences retrieval on the caller transaction", async () => {
+  const statements: string[] = [];
+  let poolCheckoutCount = 0;
+  const client = {
+    async query(sql: string) {
+      statements.push(sql);
+      return { rows: [{ authorized: true }] };
+    }
+  } as unknown as pg.PoolClient;
+  const pool = {
+    options: { connectionTimeoutMillis: 20 },
+    async connect() {
+      poolCheckoutCount += 1;
+      throw new Error("unexpected_pool_checkout");
+    }
+  } as unknown as pg.Pool;
+  const authority = new PostgresMemoryOnlyAuthorizationAuthority({ pool });
+
+  await authority.lockAuthorizedRetrieval(releaseContext, client);
+
+  assert.equal(poolCheckoutCount, 0);
+  assert.equal(statements.length, 1);
+  assert.match(statements[0]!, /lock_gate_b_memory_release/u);
+});
+
+test("PostgreSQL authority denies retrieval when the transaction fence is stale", async () => {
+  const client = {
+    async query() {
+      return { rows: [{ authorized: false }] };
+    }
+  } as unknown as pg.PoolClient;
+  const pool = {
+    options: { connectionTimeoutMillis: 20 }
+  } as unknown as pg.Pool;
+  const authority = new PostgresMemoryOnlyAuthorizationAuthority({ pool });
+
+  await assert.rejects(
+    authority.lockAuthorizedRetrieval(releaseContext, client),
+    (error: unknown) =>
+      error instanceof Error && error.message === "credential_invalid"
+  );
+});
+
 test("PostgreSQL authority locks authorization and consumes receipt atomically", async () => {
   const statements: string[] = [];
   const client = {
     async query(sql: string) {
       statements.push(sql);
-      if (sql.includes("prepare_gate_b_memory_release")) {
-        return { rows: [{ prepared: true }] };
-      }
       if (sql.includes("lock_gate_b_memory_release")) {
         return { rows: [{ authorized: true }] };
       }
@@ -308,52 +601,17 @@ test("PostgreSQL authority locks authorization and consumes receipt atomically",
     }
   };
   const pool = {
+    options: { connectionTimeoutMillis: 20 },
     async connect() {
       return client;
     }
   } as unknown as pg.Pool;
   const authority = new PostgresMemoryOnlyAuthorizationAuthority({ pool });
   const credentialId = "10000000-0000-4000-8000-000000000002";
-  const receipt: ProtectedReadReceiptBinding = {
-    receiptId: randomUUID(),
-    formatVersion: 1,
-    traceId: randomUUID(),
-    requestId: randomUUID(),
-    actorReference: `credential:${credentialId}`,
-    actorCredentialId: credentialId,
-    ownerId: "owner_doo_made",
-    namespaceId: "ns_synthetic_memory",
-    operation: "search_trusted_memory",
-    policyDecision: "allowed",
-    releaseBinding: randomBytes(32).toString("base64url"),
-    requestDigest: "a".repeat(64),
-    resultDigest: "b".repeat(64),
-    targetOrderDigest: "c".repeat(64),
-    responseByteCount: 512,
-    coveredResultCount: 1,
-    issuedAt: "2026-08-01T20:00:00.000Z",
-    expiresAt: "2026-08-01T20:00:05.000Z"
-  };
+  const receipt = syntheticReceipt();
 
   const consumed = await authority.consumeAuthorizedRelease(
-    {
-      credentialId,
-      ownerId: "owner_doo_made",
-      principalId: "principal_daniel",
-      adapterId: "adapter_hermes_synthetic",
-      clientId: "client_hermes_synthetic",
-      sessionId: "session_gate_b_synthetic",
-      credentialAudience: "source_wire_memory",
-      namespaceId: "ns_synthetic_memory",
-      authorizationEpoch: "7",
-      deletionEpoch: "3",
-      destinationDigest,
-      audienceChainDigest,
-      senderThumbprintDigest,
-      nonceDigest,
-      requestMethod: "POST",
-      requestUri: "/v1alpha1/trusted-memories/search"
-    },
+    releaseContext,
     receipt,
     Buffer.alloc(32, 7)
   );
@@ -365,14 +623,87 @@ test("PostgreSQL authority locks authorization and consumes receipt atomically",
       "BEGIN",
       "SET",
       "SET",
-      "SELECT",
+      "SET",
       "SELECT",
       "SELECT",
       "COMMIT",
       "RELEASE_CLIENT"
     ]
   );
-  assert.match(statements[3]!, /prepare_gate_b_memory_release/u);
   assert.match(statements[4]!, /lock_gate_b_memory_release/u);
   assert.match(statements[5]!, /consume_protected_read_receipt/u);
+});
+
+test("stalled release-fence cleanup is bounded and discards the pool client", async () => {
+  const statements: string[] = [];
+  let released = false;
+  let discardError: Error | undefined;
+  const client = {
+    query(sql: string) {
+      statements.push(sql);
+      if (sql === "ROLLBACK") {
+        return new Promise<never>(() => undefined);
+      }
+      return Promise.resolve({ rows: [] });
+    },
+    release(error?: Error) {
+      released = true;
+      discardError = error;
+    }
+  } as unknown as pg.PoolClient;
+  const pool = {
+    async connect() {
+      return client;
+    }
+  } as unknown as pg.Pool;
+  const credentialId = randomUUID();
+  const actor: AuthenticatedCredential = {
+    credentialId,
+    credentialClass: "harness",
+    status: "active",
+    ownerId: "owner_synthetic",
+    actorIdentityId: "actor_synthetic",
+    authenticationEpochId: randomUUID(),
+    namespaceIds: ["ns_synthetic_memory"],
+    capabilities: ["trusted_memory.search"],
+    issuedAt: new Date(NOW_MS - 1_000),
+    expiresAt: new Date(NOW_MS + 60_000),
+    actorReference: `credential:${credentialId}`
+  };
+  const startedAt = Date.now();
+
+  await assert.rejects(
+    prepareTrustedMemorySearch(
+      pool,
+      actor,
+      {
+        namespaceId: "ns_synthetic_memory",
+        query: "approved launch constraints",
+        queryByteCount: 27,
+        limit: 3
+      },
+      randomUUID(),
+      {
+        processReleaseSecret: randomBytes(32),
+        startedAtMs: startedAt,
+        async beforeProtectedRead() {
+          throw new Error("release_fence_timeout");
+        }
+      }
+    ),
+    (error: unknown) =>
+      error instanceof Error && error.message === "release_fence_timeout"
+  );
+
+  assert.ok(Date.now() - startedAt < 1_000);
+  assert.equal(released, true);
+  assert.ok(discardError instanceof Error);
+  assert.equal(discardError.message, "trusted_memory_transaction_cleanup_timeout");
+  assert.deepEqual(statements, [
+    "BEGIN",
+    "SET LOCAL lock_timeout = '2s'",
+    "SET LOCAL statement_timeout = '2s'",
+    "SET LOCAL idle_in_transaction_session_timeout = '5s'",
+    "ROLLBACK"
+  ]);
 });

@@ -145,20 +145,103 @@ DECLARE
   observed_at timestamptz := pg_catalog.clock_timestamp();
   proof_issued_at timestamptz;
   replay_count bigint;
+  candidate_credential_id uuid;
+  candidate_owner_id varchar;
 BEGIN
   IF p_proof_issued_at_ms < 0 THEN
     RETURN;
   END IF;
   proof_issued_at := pg_catalog.to_timestamp(p_proof_issued_at_ms::numeric / 1000);
   IF
-    p_request_method <> 'POST'
-    OR p_request_uri <> '/v1alpha1/trusted-memories/search'
+    p_request_method IS DISTINCT FROM 'POST'
+    OR p_request_uri IS DISTINCT FROM '/v1alpha1/trusted-memories/search'
     OR proof_issued_at + interval '5 minutes' <= observed_at
     OR proof_issued_at > observed_at + interval '30 seconds'
   THEN
     RETURN;
   END IF;
 
+  PERFORM pg_catalog.pg_advisory_xact_lock_shared(
+    pg_catalog.hashtextextended(
+      'source_wire_story4_authentication_epoch',
+      1913770104
+    )
+  );
+
+  SELECT session.credential_id, client.owner_id
+    INTO candidate_credential_id, candidate_owner_id
+    FROM source_wire_memory.gate_b_memory_clients AS client
+    JOIN source_wire_memory.gate_b_memory_sessions AS session
+      ON session.client_id = client.client_id
+   WHERE client.client_id = p_client_id
+     AND client.principal_id = p_principal_id
+     AND client.adapter_id = p_adapter_id
+     AND session.session_id = p_session_id;
+  IF NOT FOUND THEN
+    RETURN;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.credentials AS credential
+    JOIN source_wire_memory.installation_state AS installation
+      ON installation.singleton = true
+     AND installation.current_authentication_epoch_id =
+         credential.authentication_epoch_id
+   WHERE credential.credential_id = candidate_credential_id
+     AND credential.owner_id = candidate_owner_id
+   FOR UPDATE OF credential, installation;
+  IF NOT FOUND THEN
+    RETURN;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.credential_namespace_grants AS credential_namespace
+   WHERE credential_namespace.credential_id = candidate_credential_id
+     AND credential_namespace.namespace_id = p_namespace_id
+   FOR UPDATE;
+  IF NOT FOUND THEN
+    RETURN;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.credential_capability_grants AS credential_capability
+   WHERE credential_capability.credential_id = candidate_credential_id
+     AND credential_capability.capability = 'trusted_memory.search'
+   FOR UPDATE;
+  IF NOT FOUND THEN
+    RETURN;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.gate_b_memory_clients AS client
+   WHERE client.client_id = p_client_id
+     AND client.owner_id = candidate_owner_id
+     AND client.principal_id = p_principal_id
+     AND client.adapter_id = p_adapter_id
+   FOR UPDATE;
+  IF NOT FOUND THEN
+    RETURN;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.gate_b_memory_sessions AS session
+   WHERE session.session_id = p_session_id
+     AND session.client_id = p_client_id
+     AND session.credential_id = candidate_credential_id
+   FOR UPDATE;
+  IF NOT FOUND THEN
+    RETURN;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.gate_b_memory_grants AS grant_row
+   WHERE grant_row.session_id = p_session_id
+     AND grant_row.namespace_id = p_namespace_id
+     AND grant_row.capability = 'trusted_memory.search'
+   FOR UPDATE;
+  IF NOT FOUND THEN
+    RETURN;
+  END IF;
 
   SELECT
     credential.credential_id,
@@ -193,10 +276,12 @@ BEGIN
     ON credential_capability.credential_id = credential.credential_id
    AND credential_capability.capability = grant_row.capability
   WHERE client.client_id = p_client_id
+    AND client.owner_id = candidate_owner_id
     AND client.principal_id = p_principal_id
     AND client.adapter_id = p_adapter_id
     AND client.state = 'active'
     AND session.session_id = p_session_id
+    AND session.credential_id = candidate_credential_id
     AND session.credential_audience = p_credential_audience
     AND session.authorization_epoch = p_authorization_epoch
     AND session.deletion_epoch = p_deletion_epoch
@@ -213,10 +298,10 @@ BEGIN
     AND grant_row.authorization_epoch = p_authorization_epoch
     AND grant_row.deletion_epoch = p_deletion_epoch
     AND grant_row.state = 'active'
+    AND credential.credential_class = 'harness'
     AND credential.status = 'active'
     AND credential.issued_at <= observed_at
-    AND credential.expires_at > observed_at
-  FOR UPDATE OF client, session, grant_row;
+    AND credential.expires_at > observed_at;
 
   IF NOT FOUND THEN
     RETURN;
@@ -282,112 +367,6 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION source_wire_memory.prepare_gate_b_memory_release(
-  p_receipt_id uuid,
-  p_actor_credential_id uuid,
-  p_owner_id varchar,
-  p_namespace_id varchar,
-  p_target_order_digest varchar,
-  p_covered_result_count smallint
-)
-RETURNS boolean
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = pg_catalog
-AS $$
-DECLARE
-  target_memory_ids uuid[];
-  target_revision_ids uuid[];
-BEGIN
-  PERFORM pg_catalog.pg_advisory_xact_lock_shared(
-    pg_catalog.hashtextextended(
-      'source_wire_story4_authentication_epoch',
-      1913770104
-    )
-  );
-
-  PERFORM 1
-    FROM source_wire_memory.protected_read_receipts AS receipt
-   WHERE receipt.receipt_id = p_receipt_id
-     AND receipt.actor_credential_id = p_actor_credential_id
-     AND receipt.owner_id = p_owner_id
-     AND receipt.namespace_id = p_namespace_id
-     AND receipt.target_order_digest = p_target_order_digest
-     AND receipt.covered_result_count = p_covered_result_count
-     AND receipt.consumption_state = 'issued'
-     AND receipt.release_status = 'release_authorized'
-     AND receipt.consumed_at IS NULL
-   FOR UPDATE;
-  IF NOT FOUND THEN
-    RETURN false;
-  END IF;
-
-  SELECT
-    coalesce(
-      pg_catalog.array_agg(target.memory_id ORDER BY target.target_ordinal),
-      ARRAY[]::uuid[]
-    ),
-    coalesce(
-      pg_catalog.array_agg(target.revision_id ORDER BY target.target_ordinal),
-      ARRAY[]::uuid[]
-    )
-    INTO target_memory_ids, target_revision_ids
-    FROM source_wire_memory.protected_read_receipt_targets AS target
-   WHERE target.receipt_id = p_receipt_id
-     AND target.target_order_digest = p_target_order_digest;
-  IF
-    pg_catalog.cardinality(target_memory_ids) <> p_covered_result_count
-    OR pg_catalog.cardinality(target_revision_ids) <> p_covered_result_count
-  THEN
-    RETURN false;
-  END IF;
-
-  PERFORM 1
-    FROM source_wire_memory.credentials AS credential
-    JOIN source_wire_memory.installation_state AS installation
-      ON installation.singleton = true
-     AND installation.current_authentication_epoch_id =
-         credential.authentication_epoch_id
-   WHERE credential.credential_id = p_actor_credential_id
-     AND credential.owner_id = p_owner_id
-   FOR UPDATE OF credential, installation;
-  IF NOT FOUND THEN
-    RETURN false;
-  END IF;
-
-  PERFORM 1
-    FROM source_wire_memory.credential_namespace_grants
-   WHERE credential_id = p_actor_credential_id
-     AND namespace_id = p_namespace_id
-   FOR UPDATE;
-  IF NOT FOUND THEN
-    RETURN false;
-  END IF;
-
-  PERFORM 1
-    FROM source_wire_memory.credential_capability_grants
-   WHERE credential_id = p_actor_credential_id
-     AND capability = 'trusted_memory.search'
-   FOR UPDATE;
-  IF NOT FOUND THEN
-    RETURN false;
-  END IF;
-
-  PERFORM memory.memory_id
-    FROM source_wire_memory.trusted_memories AS memory
-   WHERE memory.memory_id = ANY(target_memory_ids)
-   ORDER BY memory.memory_id
-   FOR UPDATE;
-  PERFORM revision.revision_id
-    FROM source_wire_memory.trusted_memory_revisions AS revision
-   WHERE revision.revision_id = ANY(target_revision_ids)
-   ORDER BY revision.revision_id
-   FOR UPDATE;
-
-  RETURN true;
-END;
-$$;
-
 CREATE FUNCTION source_wire_memory.lock_gate_b_memory_release(
   p_credential_id uuid,
   p_owner_id varchar,
@@ -415,6 +394,75 @@ DECLARE
   observed_at timestamptz := pg_catalog.clock_timestamp();
   release_record record;
 BEGIN
+  PERFORM pg_catalog.pg_advisory_xact_lock_shared(
+    pg_catalog.hashtextextended(
+      'source_wire_story4_authentication_epoch',
+      1913770104
+    )
+  );
+
+  PERFORM 1
+    FROM source_wire_memory.credentials AS credential
+    JOIN source_wire_memory.installation_state AS installation
+      ON installation.singleton = true
+     AND installation.current_authentication_epoch_id =
+         credential.authentication_epoch_id
+   WHERE credential.credential_id = p_credential_id
+     AND credential.owner_id = p_owner_id
+   FOR UPDATE OF credential, installation;
+  IF NOT FOUND THEN
+    RETURN false;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.credential_namespace_grants AS credential_namespace
+   WHERE credential_namespace.credential_id = p_credential_id
+     AND credential_namespace.namespace_id = p_namespace_id
+   FOR UPDATE;
+  IF NOT FOUND THEN
+    RETURN false;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.credential_capability_grants AS credential_capability
+   WHERE credential_capability.credential_id = p_credential_id
+     AND credential_capability.capability = 'trusted_memory.search'
+   FOR UPDATE;
+  IF NOT FOUND THEN
+    RETURN false;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.gate_b_memory_clients AS client
+   WHERE client.client_id = p_client_id
+     AND client.owner_id = p_owner_id
+     AND client.principal_id = p_principal_id
+     AND client.adapter_id = p_adapter_id
+   FOR UPDATE;
+  IF NOT FOUND THEN
+    RETURN false;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.gate_b_memory_sessions AS session
+   WHERE session.session_id = p_session_id
+     AND session.client_id = p_client_id
+     AND session.credential_id = p_credential_id
+   FOR UPDATE;
+  IF NOT FOUND THEN
+    RETURN false;
+  END IF;
+
+  PERFORM 1
+    FROM source_wire_memory.gate_b_memory_grants AS grant_row
+   WHERE grant_row.session_id = p_session_id
+     AND grant_row.namespace_id = p_namespace_id
+     AND grant_row.capability = 'trusted_memory.search'
+   FOR UPDATE;
+  IF NOT FOUND THEN
+    RETURN false;
+  END IF;
+
   SELECT
     session.issued_at AS session_issued_at,
     session.expires_at AS session_expires_at,
@@ -441,6 +489,7 @@ BEGIN
      AND credential_capability.capability = grant_row.capability
    WHERE credential.credential_id = p_credential_id
      AND credential.owner_id = p_owner_id
+     AND credential.credential_class = 'harness'
      AND credential.status = 'active'
      AND credential.issued_at <= observed_at
      AND credential.expires_at > observed_at
@@ -466,10 +515,7 @@ BEGIN
      AND grant_row.capability = 'trusted_memory.search'
      AND grant_row.state = 'active'
      AND grant_row.authorization_epoch = p_authorization_epoch
-     AND grant_row.deletion_epoch = p_deletion_epoch
-   FOR UPDATE OF credential, installation, credential_namespace,
-     credential_capability
-   FOR SHARE OF client, session, grant_row;
+     AND grant_row.deletion_epoch = p_deletion_epoch;
 
   IF NOT FOUND THEN
     RETURN false;
@@ -496,9 +542,6 @@ REVOKE ALL ON FUNCTION source_wire_memory.authorize_gate_b_memory_search(
   varchar, varchar, varchar, varchar, varchar, bigint, bigint, varchar,
   varchar, varchar, varchar, varchar, varchar, varchar, bigint, varchar
 ) FROM PUBLIC;
-REVOKE ALL ON FUNCTION source_wire_memory.prepare_gate_b_memory_release(
-  uuid, uuid, varchar, varchar, varchar, smallint
-) FROM PUBLIC;
 REVOKE ALL ON FUNCTION source_wire_memory.lock_gate_b_memory_release(
   uuid, varchar, varchar, varchar, varchar, varchar, varchar, bigint, bigint,
   varchar, varchar, varchar, varchar, varchar, varchar, varchar
@@ -506,9 +549,6 @@ REVOKE ALL ON FUNCTION source_wire_memory.lock_gate_b_memory_release(
 GRANT EXECUTE ON FUNCTION source_wire_memory.authorize_gate_b_memory_search(
   varchar, varchar, varchar, varchar, varchar, bigint, bigint, varchar,
   varchar, varchar, varchar, varchar, varchar, varchar, bigint, varchar
-) TO source_wire_runtime;
-GRANT EXECUTE ON FUNCTION source_wire_memory.prepare_gate_b_memory_release(
-  uuid, uuid, varchar, varchar, varchar, smallint
 ) TO source_wire_runtime;
 GRANT EXECUTE ON FUNCTION source_wire_memory.lock_gate_b_memory_release(
   uuid, varchar, varchar, varchar, varchar, varchar, varchar, bigint, bigint,

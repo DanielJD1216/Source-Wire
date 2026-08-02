@@ -21,7 +21,7 @@ import { fileURLToPath } from "node:url";
 
 import { Client as McpClient } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import pg from "pg";
+import pg, { type QueryResult } from "pg";
 
 import { ALPHA1_SCHEMA_VERSION } from "../src/config.js";
 import {
@@ -31,7 +31,10 @@ import {
 } from "../src/durable-memory-only-runtime.js";
 import { canonicalRequestDigest } from "../src/idempotency.js";
 import { createLocalConfigTemplate } from "../src/local-cli/config.js";
-import { PostgresMemoryOnlyAuthorizationAuthority } from "../src/postgres-memory-only-authorization.js";
+import {
+  GATE_B_DATABASE_OPERATION_TIMEOUT_MS,
+  PostgresMemoryOnlyAuthorizationAuthority
+} from "../src/postgres-memory-only-authorization.js";
 
 const { Client, Pool } = pg;
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -781,11 +784,13 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
   const runtimePoolA = new Pool({
     connectionString: runtimeUrl,
     max: 1,
+    connectionTimeoutMillis: GATE_B_DATABASE_OPERATION_TIMEOUT_MS,
     application_name: "source_wire_gate_b_conformance_a"
   });
   let runtimePoolB = new Pool({
     connectionString: runtimeUrl,
     max: 1,
+    connectionTimeoutMillis: GATE_B_DATABASE_OPERATION_TIMEOUT_MS,
     application_name: "source_wire_gate_b_conformance_b"
   });
   try {
@@ -795,6 +800,82 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     let authorityB = new PostgresMemoryOnlyAuthorizationAuthority({
       pool: runtimePoolB
     });
+    for (const routeCase of [
+      {
+        label: "null_method",
+        requestMethod: null,
+        requestUri: "/v1alpha1/trusted-memories/search"
+      },
+      {
+        label: "null_uri",
+        requestMethod: "POST",
+        requestUri: null
+      }
+    ] as const) {
+      const replayId = `replay_story2_${routeCase.label}_0001`;
+      const malformedTransport = makeTransport(replayId);
+      if (malformedTransport.senderProof.kind !== "dpop") {
+        throw new Error("story2_gate_b_dpop_fixture_invalid");
+      }
+      const replayIdDigest = canonicalRequestDigest({
+        domain: "source-wire.gate-b.dpop-replay-id.v1",
+        replayId
+      });
+      const malformedResult: QueryResult<{ credential_id: string }> =
+        await targetAdminPool.query<{ credential_id: string }>(
+        `SELECT *
+           FROM source_wire_memory.authorize_gate_b_memory_search(
+             $1::varchar, $2::varchar, $3::varchar, $4::varchar,
+             $5::varchar, $6::bigint, $7::bigint, $8::varchar(64),
+             $9::varchar(64), $10::varchar(64), $11::varchar,
+             $12::varchar, $13::varchar(64), $14::varchar(64),
+             $15::bigint, $16::varchar
+           )`,
+        [
+          malformedTransport.principalId,
+          malformedTransport.adapterId,
+          malformedTransport.clientId,
+          malformedTransport.sessionId,
+          malformedTransport.credentialAudience,
+          malformedTransport.authorizationEpoch,
+          malformedTransport.deletionEpoch,
+          canonicalRequestDigest({
+            domain: "source-wire.gate-b.destination.v1",
+            destination: malformedTransport.destination
+          }),
+          canonicalRequestDigest({
+            domain: "source-wire.gate-b.audience-chain.v1",
+            audienceChain: malformedTransport.audienceChain
+          }),
+          canonicalRequestDigest({
+            domain: "source-wire.gate-b.sender-thumbprint.v1",
+            thumbprint: malformedTransport.senderProof.keyThumbprint
+          }),
+          routeCase.requestMethod,
+          routeCase.requestUri,
+          canonicalRequestDigest({
+            domain: "source-wire.gate-b.dpop-nonce.v1",
+            nonce: malformedTransport.senderProof.nonce
+          }),
+          replayIdDigest,
+          malformedTransport.senderProof.issuedAtMs,
+          request.namespaceId
+        ]
+      );
+      assert.equal(malformedResult.rows.length, 0);
+      const replayState: QueryResult<{ replay_count: string }> =
+        await targetAdminPool.query<{ replay_count: string }>(
+        `SELECT count(*)::text AS replay_count
+           FROM source_wire_memory.gate_b_memory_replay_ids
+          WHERE replay_id_digest = $1`,
+        [replayIdDigest]
+      );
+      assert.equal(replayState.rows[0]?.replay_count, "0");
+    }
+    pass(
+      "GB-AUTH-00",
+      "NULL method and URI bindings were denied by PostgreSQL before replay insertion"
+    );
     const concurrent = await Promise.allSettled([
       authorityA.authorizeSearch({
         transport: makeTransport("replay_story2_concurrent_0001"),
@@ -829,6 +910,7 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     runtimePoolB = new Pool({
       connectionString: runtimeUrl,
       max: 1,
+      connectionTimeoutMillis: GATE_B_DATABASE_OPERATION_TIMEOUT_MS,
       application_name: "source_wire_gate_b_conformance_b_restarted"
     });
     authorityB = new PostgresMemoryOnlyAuthorizationAuthority({
@@ -879,7 +961,7 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     );
 
     const expectDurableDenial = async (
-      _replayId: string,
+      replayId: string,
       selectedTransport: DurableMemoryOnlyTransportContext,
       selectedRequest: typeof request = request
     ): Promise<void> => {
@@ -890,6 +972,17 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
         }),
         (error: unknown) => error instanceof Error
       );
+      const replayDigest = canonicalRequestDigest({
+        domain: "source-wire.gate-b.dpop-replay-id.v1",
+        replayId
+      });
+      const replayState = await targetAdminPool!.query<{ replay_count: string }>(
+        `SELECT count(*)::text AS replay_count
+           FROM source_wire_memory.gate_b_memory_replay_ids
+          WHERE replay_id_digest = $1`,
+        [replayDigest]
+      );
+      assert.equal(replayState.rows[0]?.replay_count, "0");
     };
     await expectDurableDenial(
       "replay_story2_stale_authorization_epoch",
@@ -930,6 +1023,98 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
         ]
       }
     );
+    const bindingSubstitutions: Array<{
+      replayId: string;
+      transport: DurableMemoryOnlyTransportContext;
+    }> = [];
+    for (const [label, mutate] of [
+      [
+        "principal",
+        (value: DurableMemoryOnlyTransportContext) => ({
+          ...value,
+          principalId: "principal_story2_substituted"
+        })
+      ],
+      [
+        "adapter",
+        (value: DurableMemoryOnlyTransportContext) => ({
+          ...value,
+          adapterId: "adapter_story2_substituted"
+        })
+      ],
+      [
+        "client",
+        (value: DurableMemoryOnlyTransportContext) => ({
+          ...value,
+          clientId: "client_story2_substituted"
+        })
+      ],
+      [
+        "session",
+        (value: DurableMemoryOnlyTransportContext) => ({
+          ...value,
+          sessionId: "session_story2_substituted"
+        })
+      ],
+      [
+        "credential_audience",
+        (value: DurableMemoryOnlyTransportContext) => ({
+          ...value,
+          credentialAudience: "source_wire_memory_substituted"
+        })
+      ],
+      [
+        "sender_thumbprint",
+        (value: DurableMemoryOnlyTransportContext) => ({
+          ...value,
+          senderProof: {
+            ...value.senderProof,
+            keyThumbprint: "thumbprint_story2_substituted"
+          }
+        })
+      ],
+      [
+        "nonce",
+        (value: DurableMemoryOnlyTransportContext) => ({
+          ...value,
+          senderProof: {
+            ...value.senderProof,
+            nonce: "nonce_story2_substituted"
+          }
+        })
+      ],
+      [
+        "method",
+        (value: DurableMemoryOnlyTransportContext) => ({
+          ...value,
+          requestMethod: "GET",
+          senderProof: { ...value.senderProof, method: "GET" }
+        })
+      ],
+      [
+        "uri",
+        (value: DurableMemoryOnlyTransportContext) => ({
+          ...value,
+          requestUri: "/v1alpha1/trusted-memories/substituted",
+          senderProof: {
+            ...value.senderProof,
+            uri: "/v1alpha1/trusted-memories/substituted"
+          }
+        })
+      ]
+    ] as const) {
+      const replayId = `replay_story2_binding_${label}_0001`;
+      bindingSubstitutions.push({
+        replayId,
+        transport: mutate(makeTransport(replayId))
+      });
+    }
+    for (const substitution of bindingSubstitutions) {
+      await expectDurableDenial(
+        substitution.replayId,
+        substitution.transport
+      );
+    }
     await targetAdminPool.query(
       `UPDATE source_wire_memory.gate_b_memory_grants
           SET state = 'revoked', revoked_at = clock_timestamp()
@@ -968,6 +1153,88 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
         [searchHarness.credentialId]
       );
     }
+    await targetAdminPool.query(
+      `UPDATE source_wire_memory.credentials
+          SET credential_class = 'owner_admin', updated_at = clock_timestamp()
+        WHERE credential_id = $1`,
+      [searchHarness.credentialId]
+    );
+    try {
+      await expectDurableDenial(
+        "replay_story2_owner_admin_class",
+        makeTransport("replay_story2_owner_admin_class")
+      );
+    } finally {
+      await targetAdminPool.query(
+        `UPDATE source_wire_memory.credentials
+            SET credential_class = 'harness', updated_at = clock_timestamp()
+          WHERE credential_id = $1`,
+        [searchHarness.credentialId]
+      );
+    }
+    const revocationRaceReplayId =
+      "replay_story2_committed_credential_revocation_race_0001";
+    const revocationRaceReplayDigest = canonicalRequestDigest({
+      domain: "source-wire.gate-b.dpop-replay-id.v1",
+      replayId: revocationRaceReplayId
+    });
+    const revocationClient = await targetAdminPool.connect();
+    let retrievalCalls = 0;
+    try {
+      await revocationClient.query("BEGIN");
+      await revocationClient.query(
+        `UPDATE source_wire_memory.credentials
+            SET status = 'revoked', updated_at = clock_timestamp()
+          WHERE credential_id = $1`,
+        [searchHarness.credentialId]
+      );
+      let authorizationSettled = false;
+      const raceRuntime = new DurableMemoryOnlyRuntime({
+        authority: authorityA,
+        pool: runtimePoolA,
+        processReleaseSecret: randomBytes(32),
+        async executeSearch() {
+          retrievalCalls += 1;
+          throw new Error("retrieval_must_not_run_after_committed_revocation");
+        }
+      });
+      const pendingAuthorization = raceRuntime
+        .search({
+          transport: makeTransport(revocationRaceReplayId),
+          request,
+          traceId: randomUUID()
+        })
+        .finally(() => {
+          authorizationSettled = true;
+        });
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      assert.equal(authorizationSettled, false);
+      await revocationClient.query("COMMIT");
+      await assert.rejects(pendingAuthorization);
+      assert.equal(retrievalCalls, 0);
+      const replayAfterRevocation = await targetAdminPool.query<{
+        replay_count: string;
+      }>(
+        `SELECT count(*)::text AS replay_count
+           FROM source_wire_memory.gate_b_memory_replay_ids
+          WHERE replay_id_digest = $1`,
+        [revocationRaceReplayDigest]
+      );
+      assert.equal(replayAfterRevocation.rows[0]?.replay_count, "0");
+    } finally {
+      await revocationClient.query("ROLLBACK").catch(() => undefined);
+      revocationClient.release();
+      await targetAdminPool.query(
+        `UPDATE source_wire_memory.credentials
+            SET status = 'active', updated_at = clock_timestamp()
+          WHERE credential_id = $1`,
+        [searchHarness.credentialId]
+      );
+    }
+    pass(
+      "GB-AUTH-03B",
+      "initial authorization waited for credential revocation, denied before retrieval after commit, and did not consume replay state"
+    );
     await targetAdminPool.query(
       `INSERT INTO source_wire_memory.gate_b_memory_replay_ids (
          replay_id_digest,
@@ -1077,9 +1344,179 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
       "durable PostgreSQL runtime retrieved one protected result, atomically consumed its exact receipt, and cleared the returned execution buffer"
     );
 
+    const releaseAuthorizationSql =
+      `SELECT source_wire_memory.lock_gate_b_memory_release(
+         $1::uuid, $2::varchar, $3::varchar, $4::varchar,
+         $5::varchar, $6::varchar, $7::varchar, $8::bigint,
+         $9::bigint, $10::varchar, $11::varchar, $12::varchar,
+         $13::varchar, $14::varchar, $15::varchar, $16::varchar
+       ) AS authorized`;
+    const releaseAuthorizationValues: Array<string> = [
+      searchHarness.credentialId,
+      "owner_story2",
+      "principal_story2_daniel",
+      "adapter_story2_hermes",
+      clientId,
+      sessionId,
+      "source_wire_memory",
+      "1",
+      "0",
+      "ns_story2_alpha",
+      destinationDigest,
+      audienceChainDigest,
+      senderThumbprintDigest,
+      nonceDigest,
+      "POST",
+      "/v1alpha1/trusted-memories/search"
+    ];
+    const exactReleaseAuthorization = await runtimePoolA.query<{
+      authorized: boolean;
+    }>(releaseAuthorizationSql, releaseAuthorizationValues);
+    assert.equal(exactReleaseAuthorization.rows[0]?.authorized, true);
+    const exactReleaseContext = {
+      credentialId: searchHarness.credentialId,
+      ownerId: "owner_story2",
+      principalId: "principal_story2_daniel",
+      adapterId: "adapter_story2_hermes",
+      clientId,
+      sessionId,
+      credentialAudience: "source_wire_memory",
+      authorizationEpoch: "1",
+      deletionEpoch: "0",
+      namespaceId: "ns_story2_alpha",
+      destinationDigest,
+      audienceChainDigest,
+      senderThumbprintDigest,
+      nonceDigest,
+      requestMethod: "POST",
+      requestUri: "/v1alpha1/trusted-memories/search"
+    } as const;
+    for (let iteration = 0; iteration < 24; iteration += 1) {
+      const releaseClient = await runtimePoolB.connect();
+      const releaseFence = (async () => {
+        try {
+          await releaseClient.query("BEGIN");
+          await releaseClient.query("SET LOCAL lock_timeout = '2s'");
+          await releaseClient.query("SET LOCAL statement_timeout = '2s'");
+          await releaseClient.query(
+            "SET LOCAL idle_in_transaction_session_timeout = '5s'"
+          );
+          await authorityB.lockAuthorizedRetrieval(
+            exactReleaseContext,
+            releaseClient
+          );
+          await releaseClient.query("COMMIT");
+        } catch (error) {
+          await releaseClient.query("ROLLBACK").catch(() => undefined);
+          throw error;
+        } finally {
+          releaseClient.release();
+        }
+      })();
+      const initialAuthorization = authorityA.authorizeSearch({
+        transport: makeTransport(
+          `replay_story2_lock_order_${String(iteration).padStart(2, "0")}`
+        ),
+        request
+      });
+      await Promise.all([initialAuthorization, releaseFence]);
+    }
+    pass(
+      "GB-AUTH-04D",
+      "24 two-connection initial-authorization and release-fence races completed without deadlock or database timeout"
+    );
+    const releaseSubstitutions: Array<[number, string]> = [
+      [0, "20000000-0000-4000-8000-000000000099"],
+      [1, "owner_story2_substituted"],
+      [2, "principal_story2_substituted"],
+      [3, "adapter_story2_substituted"],
+      [4, "client_story2_substituted"],
+      [5, "session_story2_substituted"],
+      [6, "source_wire_memory_substituted"],
+      [7, "2"],
+      [8, "1"],
+      [9, "ns_story2_substituted"],
+      [10, "a".repeat(64)],
+      [11, "b".repeat(64)],
+      [12, "c".repeat(64)],
+      [13, "d".repeat(64)],
+      [14, "GET"],
+      [15, "/v1alpha1/trusted-memories/substituted"]
+    ];
+    for (const [index, substitutedValue] of releaseSubstitutions) {
+      const values = [...releaseAuthorizationValues];
+      values[index] = substitutedValue;
+      const denied = await runtimePoolA.query<{ authorized: boolean }>(
+        releaseAuthorizationSql,
+        values
+      );
+      assert.equal(
+        denied.rows[0]?.authorized,
+        false,
+        `release substitution at binding index ${index} must deny`
+      );
+    }
+    pass(
+      "GB-AUTH-04B",
+      "release-time durable authorization accepted the exact binding and denied every one-field identity, policy, sender, route, epoch, and destination substitution"
+    );
+
+    let revocationBeforeFenceCommitted = false;
+    let protectedQueryStarted = false;
+    const preQueryRevokingAuthority: DurableMemoryOnlyAuthorizationAuthority = {
+      authorizeSearch: (input) => authorityA.authorizeSearch(input),
+      async lockAuthorizedRetrieval(context, client) {
+        await targetAdminPool!.query(
+          `UPDATE source_wire_memory.gate_b_memory_sessions
+              SET state = 'revoked',
+                  authorization_epoch = authorization_epoch + 1,
+                  revoked_at = clock_timestamp()
+            WHERE session_id = $1`,
+          [secondSessionId]
+        );
+        revocationBeforeFenceCommitted = true;
+        await authorityA.lockAuthorizedRetrieval(context, client);
+      },
+      consumeAuthorizedRelease: (context, receipt, processReleaseSecret) =>
+        authorityA.consumeAuthorizedRelease(
+          context,
+          receipt,
+          processReleaseSecret
+        )
+    };
+    const preQueryRevocationRuntime = new DurableMemoryOnlyRuntime({
+      authority: preQueryRevokingAuthority,
+      pool: runtimePoolA,
+      processReleaseSecret: randomBytes(32)
+    });
+    await assert.rejects(
+      preQueryRevocationRuntime.search({
+        transport: makeTransport(
+          "replay_story2_pre_query_revocation_0001",
+          secondSessionId
+        ),
+        request,
+        traceId: randomUUID(),
+        onStage(stage) {
+          if (stage === "before_protected_query") {
+            protectedQueryStarted = true;
+          }
+        }
+      }),
+      (error: unknown) =>
+        error instanceof Error && error.message === "credential_invalid"
+    );
+    assert.equal(revocationBeforeFenceCommitted, true);
+    assert.equal(protectedQueryStarted, false);
+    pass(
+      "GB-AUTH-04C",
+      "committed session revocation before the transaction fence denied retrieval before the protected query executed"
+    );
+
     const failedReleasePool = new Pool({
       connectionString: runtimeUrl,
       max: 1,
+      connectionTimeoutMillis: GATE_B_DATABASE_OPERATION_TIMEOUT_MS,
       application_name: "source_wire_gate_b_release_outage"
     });
     const failedReleaseAuthority = new PostgresMemoryOnlyAuthorizationAuthority({
@@ -1088,6 +1525,8 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     await failedReleasePool.end();
     const outageAuthority: DurableMemoryOnlyAuthorizationAuthority = {
       authorizeSearch: (input) => authorityA.authorizeSearch(input),
+      lockAuthorizedRetrieval: (context, client) =>
+        authorityA.lockAuthorizedRetrieval(context, client),
       consumeAuthorizedRelease: (context, receipt, processReleaseSecret) =>
         failedReleaseAuthority.consumeAuthorizedRelease(
           context,
@@ -1139,9 +1578,13 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     );
 
     let revocationCommitted = false;
+    let deniedReceiptId: string | undefined;
     const revokingAuthority: DurableMemoryOnlyAuthorizationAuthority = {
       authorizeSearch: (input) => authorityA.authorizeSearch(input),
+      lockAuthorizedRetrieval: (context, client) =>
+        authorityA.lockAuthorizedRetrieval(context, client),
       async consumeAuthorizedRelease(context, receipt, processReleaseSecret) {
+        deniedReceiptId = receipt.receiptId;
         await targetAdminPool!.query(
           `UPDATE source_wire_memory.gate_b_memory_sessions
               SET state = 'revoked',
@@ -1197,15 +1640,23 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     assert.equal(clearSnapshot.resultCount, 0);
     assert.equal(clearSnapshot.serializedResponseByteCount > 0, true);
     assert.equal(clearSnapshot.serializedResponseAllZero, true);
-    const deniedReceipt = await targetAdminPool.query<{ unconsumed: boolean }>(
-      `SELECT consumed_at IS NULL AS unconsumed
+    assert(deniedReceiptId);
+    const deniedReceipt = await targetAdminPool.query<{
+      consumption_state: string;
+      release_status: string;
+      unconsumed: boolean;
+    }>(
+      `SELECT consumption_state, release_status,
+              consumed_at IS NULL AS unconsumed
          FROM source_wire_memory.protected_read_receipts
-        WHERE actor_credential_id = $1
-        ORDER BY issued_at DESC
-        LIMIT 1`,
-      [searchHarness.credentialId]
+        WHERE receipt_id = $1`,
+      [deniedReceiptId]
     );
-    assert.equal(deniedReceipt.rows[0]?.unconsumed, true);
+    assert.deepEqual(deniedReceipt.rows[0], {
+      consumption_state: "issued",
+      release_status: "release_authorized",
+      unconsumed: true
+    });
     pass(
       "GB-AUTH-06",
       "post-retrieval committed revocation denied release, returned no execution, left the receipt unconsumed, cleared results, and zeroed the serialized response buffer"
@@ -1277,12 +1728,11 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
       WHERE namespace.nspname = 'source_wire_memory'
         AND procedure.proname IN (
           'authorize_gate_b_memory_search',
-          'prepare_gate_b_memory_release',
           'lock_gate_b_memory_release'
         )
       ORDER BY procedure.proname`
     );
-    assert.equal(functionPrivileges.rows.length, 3);
+    assert.equal(functionPrivileges.rows.length, 2);
     for (const functionPrivilege of functionPrivileges.rows) {
       assert.equal(functionPrivilege.owner_name, roleNames.schemaOwner);
       assert.equal(functionPrivilege.prosecdef, true);
@@ -1335,7 +1785,7 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     }
     pass(
       "GB-PRIV-01",
-      "all three SECURITY DEFINER functions had schema-owner ownership, fixed pg_catalog search paths, no PUBLIC execute, runtime execute grants, and the runtime had none of seven table privilege types"
+      "both Gate B SECURITY DEFINER functions had schema-owner ownership, fixed pg_catalog search paths, no PUBLIC execute, runtime execute grants, and the runtime had none of seven table privilege types"
     );
   } finally {
     await Promise.all([runtimePoolA.end(), runtimePoolB.end()]);
@@ -3377,7 +3827,8 @@ async function writeReport(): Promise<void> {
       "migrations/0003_story3_audited_search.sql",
       "migrations/0004_story4_lifecycle_portability.sql",
       "migrations/0005_story5_knowledge_provider_host.sql",
-      "migrations/0006_story5_exact_evidence_fetch.sql"
+      "migrations/0006_story5_exact_evidence_fetch.sql",
+      "migrations/0007_gate_b_durable_memory_authorization.sql"
     ].map(async (path) => ({
       path,
       sha256: createHash("sha256")

@@ -50,7 +50,9 @@ The local-runtime source tree now includes:
   authorization locks;
 - `PostgresMemoryOnlyAuthorizationAuthority`, which derives the actor and
   immutable release context from one database decision and stores no raw proof
-  replay ID, sender thumbprint, or DPoP nonce;
+  replay ID, sender thumbprint, or DPoP nonce, bounds pool acquisition and every
+  transaction query to at most two seconds, releases clients acquired after the
+  deadline, and destroys clients whose transaction state becomes uncertain;
 - `DurableMemoryOnlyRuntime`, which keeps authorization before retrieval and
   performs the current session, credential, sender, nonce, method, URI,
   destination, audience, grant, and epoch recheck in the same transaction as
@@ -76,7 +78,10 @@ and deletion epochs, revoked credential/session state, invalid clocks, payload
 authority injection, namespace and capability denial, credential lifetime,
 five-hop audience completeness, sender-proof precedence, durable two-pool
 replay races, cross-session sender replay denial, pool teardown and recreation,
-capacity exhaustion, durable denial permutations, release-path outage,
+capacity exhaustion, saturated-pool and stalled-query deadlines, bounded
+transaction cleanup with uncertain-client destruction, committed
+credential-revocation races before retrieval, complete initial and release
+binding substitutions, durable denial permutations, release-path outage,
 post-retrieval committed revocation, unconsumed denied receipts, result clearing,
 serialized-buffer zeroing, the real default protected-read receipt path,
 authorization-before-retrieval, and memory-only tool discovery.

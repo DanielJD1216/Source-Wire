@@ -36,13 +36,6 @@ const completedDecisionIssues = [
 
 const expectedOpenIssues = [
   {
-    number: 290,
-    title: "Gate B: durable memory-only authorization and release recheck",
-    approvalName: "Global Owner-Hosted Runtime V1 Gate B-M durable authorization slice",
-    exactApprovalText:
-      "proceed and tell me when we are ready to test the system on my setup in production."
-  },
-  {
     number: 292,
     title: "Gate B: offline signed access token and DPoP verification",
     approvalName: "Global Owner-Hosted Runtime V1 Gate B-M offline cryptographic verification slice",
@@ -74,19 +67,11 @@ const issues = args.fixture === "hosted-runtime-planning"
         url: `https://example.invalid/source-wire/planning/${index + 1}`
       })),
       {
-        number: 290,
+        number: 292,
         title: expectedOpenIssues[0].title,
         state: "OPEN",
-        url: "https://example.invalid/source-wire/gate-b/290",
-        body: `## Owner Approval Record\n\n${expectedOpenIssues[0].exactApprovalText}`,
-        comments: []
-      },
-      {
-        number: 292,
-        title: expectedOpenIssues[1].title,
-        state: "OPEN",
         url: "https://example.invalid/source-wire/gate-b/292",
-        body: `## Owner Approval Record\n\n${expectedOpenIssues[1].exactApprovalText}`,
+        body: `## Owner Approval Record\n\n${expectedOpenIssues[0].exactApprovalText}`,
         comments: []
       }
     ]

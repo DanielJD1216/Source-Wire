@@ -11,7 +11,7 @@ export function parseStrictJsonObject(bytes: Buffer): Record<string, unknown> {
   }
 
   try {
-    assertUniqueTopLevelKeys(text);
+    assertUniqueObjectKeys(text);
     const parsed = JSON.parse(text) as unknown;
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
       throw new Error("object_required");
@@ -23,75 +23,102 @@ export function parseStrictJsonObject(bytes: Buffer): Record<string, unknown> {
   }
 }
 
-function assertUniqueTopLevelKeys(text: string): void {
-  const seen = new Set<string>();
-  let depth = 0;
-  let inString = false;
-  let escaped = false;
-  let expectingTopLevelKey = false;
+function assertUniqueObjectKeys(text: string): void {
+  let index = 0;
 
-  for (let index = 0; index < text.length; index += 1) {
-    const character = text[index]!;
-    if (inString) {
-      if (escaped) {
-        escaped = false;
-      } else if (character === "\\") {
-        escaped = true;
-      } else if (character === '"') {
-        inString = false;
-      }
-      continue;
-    }
+  const skipWhitespace = (): void => {
+    while (index < text.length && /\s/u.test(text[index]!)) index += 1;
+  };
 
+  const parseValue = (): void => {
+    skipWhitespace();
+    const character = text[index];
     if (character === "{") {
-      depth += 1;
-      if (depth === 1) expectingTopLevelKey = true;
-      continue;
-    }
-    if (character === "}") {
-      if (depth === 1) expectingTopLevelKey = false;
-      depth -= 1;
-      continue;
+      parseObject();
+      return;
     }
     if (character === "[") {
-      depth += 1;
-      continue;
+      parseArray();
+      return;
     }
-    if (character === "]") {
-      depth -= 1;
-      continue;
+    if (character === '"') {
+      index = findJsonStringEnd(text, index) + 1;
+      return;
     }
+    const start = index;
+    while (
+      index < text.length &&
+      !/[\s,\]}]/u.test(text[index]!)
+    ) {
+      index += 1;
+    }
+    if (index === start) throw new SafeError("validation_failed", 400);
+  };
 
-    if (depth !== 1) {
-      if (character === '"') inString = true;
-      continue;
+  const parseObject = (): void => {
+    index += 1;
+    const seen = new Set<string>();
+    skipWhitespace();
+    if (text[index] === "}") {
+      index += 1;
+      return;
     }
-    if (/\s/u.test(character)) continue;
-    if (!expectingTopLevelKey) {
-      if (character === ",") {
-        expectingTopLevelKey = true;
-      } else if (character === '"') {
-        inString = true;
+    while (index < text.length) {
+      skipWhitespace();
+      if (text[index] !== '"') {
+        throw new SafeError("validation_failed", 400);
       }
-      continue;
+      const end = findJsonStringEnd(text, index);
+      const key = JSON.parse(text.slice(index, end + 1)) as unknown;
+      if (typeof key !== "string" || seen.has(key)) {
+        throw new SafeError("validation_failed", 400);
+      }
+      seen.add(key);
+      index = end + 1;
+      skipWhitespace();
+      if (text[index] !== ":") {
+        throw new SafeError("validation_failed", 400);
+      }
+      index += 1;
+      parseValue();
+      skipWhitespace();
+      if (text[index] === "}") {
+        index += 1;
+        return;
+      }
+      if (text[index] !== ",") {
+        throw new SafeError("validation_failed", 400);
+      }
+      index += 1;
     }
-    if (character === "}") {
-      expectingTopLevelKey = false;
-      continue;
-    }
-    if (character !== '"') {
-      continue;
-    }
+    throw new SafeError("validation_failed", 400);
+  };
 
-    const end = findJsonStringEnd(text, index);
-    const key = JSON.parse(text.slice(index, end + 1)) as unknown;
-    if (typeof key !== "string" || seen.has(key)) {
-      throw new SafeError("validation_failed", 400);
+  const parseArray = (): void => {
+    index += 1;
+    skipWhitespace();
+    if (text[index] === "]") {
+      index += 1;
+      return;
     }
-    seen.add(key);
-    expectingTopLevelKey = false;
-    index = end;
-  }
+    while (index < text.length) {
+      parseValue();
+      skipWhitespace();
+      if (text[index] === "]") {
+        index += 1;
+        return;
+      }
+      if (text[index] !== ",") {
+        throw new SafeError("validation_failed", 400);
+      }
+      index += 1;
+    }
+    throw new SafeError("validation_failed", 400);
+  };
+
+  parseValue();
+  skipWhitespace();
+  if (index !== text.length) throw new SafeError("validation_failed", 400);
 }
 
 function findJsonStringEnd(text: string, start: number): number {

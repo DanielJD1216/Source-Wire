@@ -2,12 +2,12 @@
 
 Use Node.js 22 with npm for local checks.
 
-Status: Synthetic process-local slice merged; durable PostgreSQL authorization
-slice implemented for review
+Status: Synthetic process-local and durable PostgreSQL slices merged; offline
+signed-token and DPoP verification slice implemented for review
 
-Date: 2026-08-01
+Date: 2026-08-02
 
-Issues: `#288`, `#290`
+Issues: `#288`, `#290`, `#292`
 
 Parent architecture: ADR 0002 and issue `#286`
 
@@ -56,7 +56,17 @@ The local-runtime source tree now includes:
 - `DurableMemoryOnlyRuntime`, which keeps authorization before retrieval and
   performs the current session, credential, sender, nonce, method, URI,
   destination, audience, grant, and epoch recheck in the same transaction as
-  protected-read receipt consumption.
+  protected-read receipt consumption;
+- a disconnected `verifyOfflineMemoryOnlyRequest` boundary that verifies
+  compact Ed25519 access tokens and DPoP proofs offline, uses a bounded injected
+  issuer key set with exact `kid` selection, rejects ambiguous JOSE algorithms
+  and private sender JWKs, computes the RFC 7638 sender thumbprint, enforces
+  exact issuer, audience, principal, client, session, method, URI, nonce, and
+  bounded NumericDate claims, and emits only the existing frozen durable
+  transport context;
+- recursive strict-JSON duplicate-name rejection for every nested JOSE object;
+- one generic external `credential_invalid` denial surface without token,
+  signature, key, or claim detail.
 
 The implementation does not compose or invoke a KnowledgeProvider.
 
@@ -72,7 +82,11 @@ npm run alpha1:test
 npm run alpha1:conformance:story2
 ```
 
-The focused suite covers valid DPoP and mTLS synthetic calls, replay,
+The focused suite covers valid signed access-token and DPoP pairs, bad
+signatures, unknown keys, unsupported algorithms, token expiry and lifetime,
+future and stale proofs, private sender JWKs, sender-confirmation mismatch,
+nested duplicate JSON fields, exact request-binding substitutions, generic safe
+denials, valid DPoP and mTLS synthetic calls, replay,
 principal/adapter/client/session/audience/route substitution, stale authorization
 and deletion epochs, revoked credential/session state, invalid clocks, payload
 authority injection, namespace and capability denial, credential lifetime,
@@ -88,13 +102,13 @@ authorization-before-retrieval, and memory-only tool discovery.
 
 ## Synthetic Limitations
 
-This slice validates deterministic synthetic proof metadata. It does not yet
-perform:
+This slice validates deterministic synthetic credentials offline. It does not
+yet perform:
 
-- signed OAuth/OIDC token or JOSE verification;
-- cryptographic DPoP JWT verification;
+- OAuth/OIDC discovery, authorization-code flows, introspection, or remote JWKS
+  retrieval and rotation;
 - TLS or mTLS handshake and certificate-chain validation;
-- cryptographically authenticated transport input feeding the durable adapter;
+- reachable transport composition feeding signed input into the durable adapter;
 - a dedicated expanded protected-read receipt schema containing every Gate B
   authorization field (the current durable runtime uses a frozen release
   context and atomically rechecks it with the existing receipt consumption);
@@ -121,15 +135,12 @@ This change does not add or authorize:
 
 ## Next Gate B-M Slices
 
-1. Cryptographically signed synthetic access and DPoP tokens with exact issuer,
-   resource audience, client, subject, session, time, token ID, and `cnf`
-   validation. This is mandatory before the durable authority can be composed
-   into any reachable transport.
-2. Expanded protected-read receipt columns and response-write integration beyond
+1. Expanded protected-read receipt columns and response-write integration beyond
    the current deterministic pre-consumption revocation proof.
-3. Structured compact memory responses, gaps, truncation, and extraction
+2. Structured compact memory responses, gaps, truncation, and extraction
    budgets.
-4. In-process Streamable HTTP MCP conformance without deployment.
-5. PostgreSQL role, custody, journal, backup, and restore proofs.
+3. In-process Streamable HTTP MCP conformance without deployment, including
+   bounded static issuer-key lifecycle and signed-request composition.
+4. PostgreSQL role, custody, journal, backup, and restore proofs.
 
 Gate C operated testing remains a separate approval after Gate B-M exit.

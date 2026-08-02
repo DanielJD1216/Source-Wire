@@ -9,6 +9,7 @@ import {
 import type { AuthenticatedCredential } from "./repository.js";
 import {
   executeTrustedMemorySearch,
+  type ProtectedReadReceiptBinding,
   type ProtectedReadStageHook,
   type TrustedMemorySearchExecution,
   type TrustedMemorySearchInput
@@ -24,6 +25,10 @@ export type MemoryOnlySearchExecutor = (
     startedAtMs: number;
     signal?: AbortSignal;
     onStage?: ProtectedReadStageHook;
+    beforeProtectedRead?: (client: pg.PoolClient) => Promise<void>;
+    consumeReceipt?: (
+      receipt: ProtectedReadReceiptBinding
+    ) => Promise<boolean>;
   }
 ) => Promise<TrustedMemorySearchExecution>;
 

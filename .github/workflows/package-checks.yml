@@ -29,6 +29,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run Gate B scope enforcement directly
+        run: |
+          node scripts/global-owner-hosted-runtime-v1-gate-b-memory-only.mjs --self-test
+          node scripts/global-owner-hosted-runtime-v1-gate-b-memory-only.mjs
+
       - name: Verify public Alpha local runtime candidate
         run: |
           npm run alpha1:build

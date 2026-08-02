@@ -8,7 +8,8 @@ request:
 - `Source-Wire Alpha PostgreSQL conformance` runs the complete local Alpha
   Stories 1 through 5, including both Story 5 synthetic adapters, against an
   ephemeral PostgreSQL 16 service. Its Story 2 path also runs the Story 6.2
-  memory-only local launcher conformance. Both Story 5 adapter paths also run
+  memory-only local launcher conformance and the Gate B durable authorization
+  replay-race and post-revocation release checks. Both Story 5 adapter paths also run
   the Story 6.3 provider-check and four-tool local launcher conformance plus
   the Story 6.4 fail-closed orchestration and cleanup matrix. Story 1 also
   runs the Story 6.5 read-only status, explicit migration, role-separation,
@@ -73,11 +74,12 @@ SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED
 ```
 
 A success marker appears only after Stories 1 through 5, the embedded Story 6.2
-memory-only launcher cases, the Story 6.3 provider-composition cases through
+memory-only launcher cases, the Gate B two-pool durable authorization cases, the
+Story 6.3 provider-composition cases through
 both Story 5 adapters, the Story 6.4 failure cases, and their cleanup checks
 pass in dependency order. The same marker also requires the Story 6.5 database
 control plane to pass inside Story 1, the Story 6.6 local export gate to pass
-inside Story 4, and the 29-case Story 6.7 pinned evidence-first path to pass.
+inside Story 4, and the pinned evidence-first path to pass.
 Alpha unit tests cannot emit that marker.
 
 ## Local Mirror

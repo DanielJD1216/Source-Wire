@@ -11,6 +11,11 @@ import {
   SyntheticMemoryOnlyRuntime,
   type MemoryOnlySearchExecutor
 } from "../src/global-memory-only-runtime.js";
+import {
+  DurableMemoryOnlyRuntime,
+  type DurableMemoryOnlyAuthorizationAuthority,
+  type DurableMemoryOnlyTransportContext
+} from "../src/durable-memory-only-runtime.js";
 import type { TrustedMemorySearchExecution } from "../src/trusted-memory-search.js";
 
 const NOW_MS = Date.parse("2026-08-01T20:00:00.000Z");
@@ -543,6 +548,110 @@ test("runtime authorizes before invoking the existing trusted-memory executor", 
     limit: 3
   });
   assert.equal(calls[0]?.[3], "10000000-0000-4000-8000-000000000003");
+});
+
+test("durable runtime derives authority and delegates atomic receipt release", async () => {
+  const order: string[] = [];
+  const durableTransport: DurableMemoryOnlyTransportContext = {
+    ...transport,
+    authorizationEpoch: String(transport.authorizationEpoch),
+    deletionEpoch: String(transport.deletionEpoch)
+  };
+  const authorized = createAccessPlane().authorizeSearch({
+    policy,
+    transport,
+    request: {
+      namespaceId: "ns_synthetic_memory",
+      query: "approved launch constraints",
+      limit: 3
+    }
+  });
+  const releaseContext = Object.freeze({
+    sessionId: policy.sessionId,
+    authorizationEpoch: String(policy.authorizationEpoch),
+    deletionEpoch: String(policy.deletionEpoch)
+  });
+  const authority: DurableMemoryOnlyAuthorizationAuthority = {
+    async authorizeSearch(input) {
+      order.push("authorize");
+      assert.equal(input.transport, durableTransport);
+      return { ...authorized, releaseContext };
+    },
+    async consumeAuthorizedRelease(context, receipt, processReleaseSecret) {
+      order.push("release");
+      assert.equal(context, releaseContext);
+      assert.equal(receipt.operation, "search_trusted_memory");
+      assert.deepEqual(processReleaseSecret, Buffer.alloc(32, 7));
+      return true;
+    }
+  };
+  const syntheticExecution = {
+    marker: "durable_memory_only_execution"
+  } as unknown as TrustedMemorySearchExecution;
+  const executeSearch: MemoryOnlySearchExecutor = async (
+    _pool,
+    actor,
+    input,
+    _traceId,
+    options
+  ) => {
+    order.push("retrieve");
+    assert.equal(actor.ownerId, policy.ownerId);
+    assert.equal(input.namespaceId, "ns_synthetic_memory");
+    const consumed = await options.consumeReceipt?.({
+      operation: "search_trusted_memory"
+    } as never);
+    assert.equal(consumed, true);
+    return syntheticExecution;
+  };
+  const runtime = new DurableMemoryOnlyRuntime({
+    authority,
+    pool: {} as never,
+    processReleaseSecret: Buffer.alloc(32, 7),
+    executeSearch,
+    now: () => NOW_MS
+  });
+
+  const result = await runtime.search({
+    transport: durableTransport,
+    request: {
+      namespaceId: "ns_synthetic_memory",
+      query: "caller payload cannot supply policy",
+      limit: 3
+    },
+    traceId: "10000000-0000-4000-8000-000000000003"
+  });
+
+  assert.equal(result, syntheticExecution);
+  assert.deepEqual(order, ["authorize", "retrieve", "release"]);
+
+  let bypassResultCleared = false;
+  const bypassRuntime = new DurableMemoryOnlyRuntime({
+    authority,
+    pool: {} as never,
+    processReleaseSecret: Buffer.alloc(32, 7),
+    executeSearch: async () =>
+      ({
+        clear() {
+          bypassResultCleared = true;
+        }
+      }) as unknown as TrustedMemorySearchExecution,
+    now: () => NOW_MS
+  });
+  await assert.rejects(
+    bypassRuntime.search({
+      transport: durableTransport,
+      request: {
+        namespaceId: "ns_synthetic_memory",
+        query: "executor cannot bypass durable release",
+        limit: 3
+      },
+      traceId: "10000000-0000-4000-8000-000000000004"
+    }),
+    (error: unknown) =>
+      error instanceof Error && error.message === "release_binding_invalid"
+  );
+  assert.equal(bypassResultCleared, true);
 });
 
 test("runtime blocks destination substitution before trusted-memory retrieval", async () => {

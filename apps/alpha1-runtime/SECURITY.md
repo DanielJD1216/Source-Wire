@@ -66,9 +66,15 @@ The Gate B `SyntheticMemoryOnlyAccessPlane` validates deterministic synthetic
 proof metadata and policy intersections for tests. It does not perform
 cryptographic DPoP signature validation, TLS or mTLS handshakes, OAuth/OIDC
 token validation, certificate-chain validation, identity-provider discovery,
-or live replay-store coordination. The synthetic DPoP and mTLS objects are test
-fixtures, not credentials. They must not be accepted from an untrusted network
-or used with real data.
+or live TLS identity. The additive Gate B PostgreSQL authority can coordinate
+synthetic session state and sender-key-wide replay digests across runtime pools,
+recheck sender, nonce, route, audience, grant, and epoch state at protected-read
+receipt consumption, and stores only domain-separated digests for the synthetic
+sender thumbprint, nonce, and replay ID. It is not wired to a listener and
+receives pre-normalized synthetic proof metadata. It does not make that metadata
+authentic. The synthetic DPoP and mTLS objects are test fixtures,
+not credentials. They must not be accepted from an untrusted network or used
+with real data.
 Gate B memory-only MCP startup constructs the raw MCP server inside a closure
 and returns a frozen null-prototype capability facade. Its guarded registration
 method rejects every name outside the exact selected-profile allowlist without

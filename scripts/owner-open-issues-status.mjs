@@ -36,11 +36,11 @@ const completedDecisionIssues = [
 
 const expectedOpenIssues = [
   {
-    number: 288,
-    title: "Gate B: synthetic memory-only access-plane implementation",
-    approvalName: "Global Owner-Hosted Runtime V1 Gate B-M first slice",
+    number: 290,
+    title: "Gate B: durable memory-only authorization and release recheck",
+    approvalName: "Global Owner-Hosted Runtime V1 Gate B-M durable authorization slice",
     exactApprovalText:
-      "Merge PR #287. Then proceed with Gate B synthetic-only implementation of the memory-only slice. No deployment, private data, evidence mode, live connectors, or production activation."
+      "proceed and tell me when we are ready to test the system on my setup in production."
   }
 ];
 const expectedHostedRuntimePlanningIssueTitles = [
@@ -67,10 +67,10 @@ const issues = args.fixture === "hosted-runtime-planning"
         url: `https://example.invalid/source-wire/planning/${index + 1}`
       })),
       {
-        number: 288,
+        number: 290,
         title: expectedOpenIssues[0].title,
         state: "OPEN",
-        url: "https://example.invalid/source-wire/gate-b/288",
+        url: "https://example.invalid/source-wire/gate-b/290",
         body: `## Owner Approval Record\n\n${expectedOpenIssues[0].exactApprovalText}`,
         comments: []
       }

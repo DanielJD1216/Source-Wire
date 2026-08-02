@@ -250,7 +250,7 @@ async function provisionRoles(): Promise<void> {
 
 async function migrationProbes(): Promise<void> {
   const forward = await provisionDatabase("forward");
-  await installFirstThreeMigrations(forward);
+  await installMigrationsThrough(forward, 3);
   const migrate = await runProcess(
     operatorCli,
     ["migrate"],
@@ -277,8 +277,50 @@ async function migrationProbes(): Promise<void> {
     `the delivered Story 3 schema advanced through the current forward-only migration ${String(ALPHA1_SCHEMA_VERSION).padStart(4, "0")}`
   );
 
+  const historyUpgrade = await provisionDatabase("history_upgrade");
+  await installMigrationsThrough(historyUpgrade, 6);
+  const historicalReceiptId = randomUUID();
+  await historyUpgrade.admin.query(
+    `INSERT INTO source_wire_memory.restore_receipts (
+       restore_receipt_id, operation, schema_version,
+       portable_format_version, owner_id, authentication_epoch_id,
+       logical_state_sha256, governed_record_count, result, occurred_at
+     )
+     SELECT
+       $1, 'portable_restore', 6, 1, 'owner_story4_history',
+       current_authentication_epoch_id, $2, 0, 'accepted', clock_timestamp()
+     FROM source_wire_memory.installation_state
+     WHERE singleton = true`,
+    [historicalReceiptId, "a".repeat(64)]
+  );
+  const historyMigrate = await runProcess(
+    operatorCli,
+    ["migrate"],
+    operatorEnvironment(historyUpgrade)
+  );
+  assert.equal(historyMigrate.code, 0, historyMigrate.stderr);
+  const preservedHistory = await historyUpgrade.admin.query<{
+    schema_version: number;
+    maximum_version: number;
+  }>(
+    `SELECT receipt.schema_version,
+            (SELECT max(version)::integer
+               FROM source_wire_memory.schema_migrations) AS maximum_version
+       FROM source_wire_memory.restore_receipts AS receipt
+      WHERE receipt.restore_receipt_id = $1`,
+    [historicalReceiptId]
+  );
+  assert.deepEqual(preservedHistory.rows[0], {
+    schema_version: 6,
+    maximum_version: 7
+  });
+  pass(
+    "S4-MIG-02",
+    "migration 0007 upgraded a real schema-6 database without mutating or rejecting its immutable version-6 restore receipt"
+  );
+
   const rollback = await provisionDatabase("rollback");
-  await installFirstThreeMigrations(rollback);
+  await installMigrationsThrough(rollback, 3);
   const migrations = await readAlpha1Migrations();
   const story4 = migrations[3]!;
   const client = await rollback.admin.connect();
@@ -307,10 +349,11 @@ async function migrationProbes(): Promise<void> {
     epoch_table: null
   });
   pass(
-    "S4-MIG-02",
+    "S4-MIG-03",
     "an injected failure rolled back the full Story 4 migration and left Story 3 intact"
   );
   await closeTarget(forward);
+  await closeTarget(historyUpgrade);
   await closeTarget(rollback);
 }
 
@@ -1671,10 +1714,11 @@ async function insertIssuedReceiptForPhysicalRecovery(): Promise<void> {
   }
 }
 
-async function installFirstThreeMigrations(
-  target: DatabaseTarget
+async function installMigrationsThrough(
+  target: DatabaseTarget,
+  version: number
 ): Promise<void> {
-  const migrations = (await readAlpha1Migrations()).slice(0, 3);
+  const migrations = (await readAlpha1Migrations()).slice(0, version);
   const pool = createOperatorPool(target.migratorUrl, 120_000);
   const client = await pool.connect();
   try {

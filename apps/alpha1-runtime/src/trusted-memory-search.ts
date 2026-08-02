@@ -90,11 +90,21 @@ export type ProtectedReadStage =
   | "after_durable_commit"
   | "before_receipt_consumption"
   | "after_receipt_consumption"
+  | "after_release_denied_clear"
   | "before_response_serialization"
   | "during_response_serialization"
   | "before_response_write";
 
-export type ProtectedReadStageHook = (stage: ProtectedReadStage) => void;
+export type ProtectedReadStageSnapshot = Readonly<{
+  resultCount: number;
+  serializedResponseByteCount: number;
+  serializedResponseAllZero: boolean;
+}>;
+
+export type ProtectedReadStageHook = (
+  stage: ProtectedReadStage,
+  snapshot?: ProtectedReadStageSnapshot
+) => void;
 
 export type TrustedMemorySearchExecution = {
   results: TrustedMemorySearchResult[];
@@ -118,6 +128,9 @@ type TrustedMemorySearchExecutionOptions = {
   signal?: AbortSignal;
   onStage?: ProtectedReadStageHook;
   receiptTtlMs?: number;
+  consumeReceipt?: (
+    receipt: ProtectedReadReceiptBinding
+  ) => Promise<boolean>;
 };
 
 type SearchRow = {
@@ -262,11 +275,13 @@ export async function executeTrustedMemorySearch(
   try {
     assertReadStillLive(options);
     options.onStage?.("before_receipt_consumption");
-    const consumed = await consumeProtectedReadReceipt(
-      pool,
-      options.processReleaseSecret,
-      prepared.receipt
-    );
+    const consumed = options.consumeReceipt
+      ? await options.consumeReceipt(prepared.receipt)
+      : await consumeProtectedReadReceipt(
+          pool,
+          options.processReleaseSecret,
+          prepared.receipt
+        );
     if (!consumed) {
       throw new SafeError("release_binding_invalid", 503, true);
     }
@@ -280,6 +295,13 @@ export async function executeTrustedMemorySearch(
     };
   } catch (error) {
     prepared.clear();
+    options.onStage?.("after_release_denied_clear", {
+      resultCount: prepared.results.length,
+      serializedResponseByteCount: prepared.serializedResponse.byteLength,
+      serializedResponseAllZero: prepared.serializedResponse.every(
+        (byte) => byte === 0
+      )
+    });
     throw error;
   }
 }
@@ -542,11 +564,23 @@ export async function consumeProtectedReadReceipt(
   processReleaseSecret: Buffer,
   binding: ProtectedReadReceiptBinding
 ): Promise<boolean> {
+  return consumeProtectedReadReceiptWithQueryable(
+    pool,
+    processReleaseSecret,
+    binding
+  );
+}
+
+export async function consumeProtectedReadReceiptWithQueryable(
+  queryable: Pick<pg.Pool, "query">,
+  processReleaseSecret: Buffer,
+  binding: ProtectedReadReceiptBinding
+): Promise<boolean> {
   const originProcessVerifier = computeOriginProcessVerifier(
     processReleaseSecret,
     binding
   );
-  const result = await pool.query<{ consumed: boolean }>(
+  const result = await queryable.query<{ consumed: boolean }>(
     `SELECT source_wire_memory.consume_protected_read_receipt(
        $1::uuid,
        $2::smallint,

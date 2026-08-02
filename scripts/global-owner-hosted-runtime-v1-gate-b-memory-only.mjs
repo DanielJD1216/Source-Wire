@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import ts from "typescript";
 
-const branchName = "feat/gate-b-memory-only-access-plane";
+const branchName = "feat/gate-b-durable-memory-auth";
 const gateScriptPath =
   "scripts/global-owner-hosted-runtime-v1-gate-b-memory-only.mjs";
 const mcpDiscoveryTestPath =
@@ -12,32 +12,75 @@ const mcpDiscoveryTestPath =
 const mcpDiscoveryTestSha256 =
   "07cf0deba2fdbb38e34df5db27595f6addafbafcf0e32bdccace7673cc247882";
 const runtimePaths = [
+  "apps/alpha1-runtime/src/app.ts",
   "apps/alpha1-runtime/src/global-memory-access-plane.ts",
   "apps/alpha1-runtime/src/global-memory-only-runtime.ts",
+  "apps/alpha1-runtime/src/durable-memory-only-runtime.ts",
+  "apps/alpha1-runtime/src/index.ts",
+  "apps/alpha1-runtime/src/local-cli/mcp-stdio.ts",
+  "apps/alpha1-runtime/src/postgres-memory-only-authorization.ts",
+  "apps/alpha1-runtime/src/runtime-composition.ts",
+  "apps/alpha1-runtime/src/server.ts",
   "apps/alpha1-runtime/src/mcp/server.ts",
   "apps/alpha1-runtime/src/mcp/tool-profile.ts"
 ];
+const reachableCompositionPaths = new Set([
+  "apps/alpha1-runtime/src/app.ts",
+  "apps/alpha1-runtime/src/global-memory-access-plane.ts",
+  "apps/alpha1-runtime/src/global-memory-only-runtime.ts",
+  "apps/alpha1-runtime/src/index.ts",
+  "apps/alpha1-runtime/src/local-cli/mcp-stdio.ts",
+  "apps/alpha1-runtime/src/runtime-composition.ts",
+  "apps/alpha1-runtime/src/server.ts",
+  "apps/alpha1-runtime/src/mcp/server.ts",
+  "apps/alpha1-runtime/src/mcp/tool-profile.ts"
+]);
+const memoryOnlyImplementationPaths = new Set([
+  "apps/alpha1-runtime/src/global-memory-access-plane.ts",
+  "apps/alpha1-runtime/src/global-memory-only-runtime.ts",
+  "apps/alpha1-runtime/src/durable-memory-only-runtime.ts",
+  "apps/alpha1-runtime/src/postgres-memory-only-authorization.ts",
+  "apps/alpha1-runtime/src/mcp/server.ts",
+  "apps/alpha1-runtime/src/mcp/tool-profile.ts"
+]);
 const gateTriggerPaths = new Set([
   gateScriptPath,
+  "apps/alpha1-runtime/conformance/story2.ts",
+  "apps/alpha1-runtime/conformance/story4.ts",
+  "apps/alpha1-runtime/migrations/0007_gate_b_durable_memory_authorization.sql",
+  "apps/alpha1-runtime/src/durable-memory-only-runtime.ts",
   "apps/alpha1-runtime/src/global-memory-access-plane.ts",
   "apps/alpha1-runtime/src/global-memory-only-runtime.ts",
   "apps/alpha1-runtime/src/mcp/server.ts",
   "apps/alpha1-runtime/src/mcp/tool-profile.ts",
+  "apps/alpha1-runtime/src/migration.ts",
+  "apps/alpha1-runtime/src/postgres-memory-only-authorization.ts",
+  "apps/alpha1-runtime/src/trusted-memory-search.ts",
   "apps/alpha1-runtime/tests/global-memory-access-plane.test.ts",
+  "apps/alpha1-runtime/tests/postgres-memory-only-authorization.test.ts",
   "apps/alpha1-runtime/tests/mcp-tool-profile.test.ts",
+  "apps/alpha1-runtime/tests/schema-compatibility.test.ts",
   "docs/internal/global-owner-hosted-runtime-v1-gate-b-memory-only.md"
 ]);
 const allowedPaths = new Set([
   "apps/alpha1-runtime/README.md",
   "apps/alpha1-runtime/SECURITY.md",
   "apps/alpha1-runtime/package.json",
+  "apps/alpha1-runtime/conformance/story2.ts",
+  "apps/alpha1-runtime/conformance/story4.ts",
+  "apps/alpha1-runtime/migrations/0007_gate_b_durable_memory_authorization.sql",
+  "apps/alpha1-runtime/src/config.ts",
+  "apps/alpha1-runtime/src/durable-memory-only-runtime.ts",
   "apps/alpha1-runtime/src/global-memory-access-plane.ts",
   "apps/alpha1-runtime/src/global-memory-only-runtime.ts",
-  "apps/alpha1-runtime/src/mcp/server.ts",
-  "apps/alpha1-runtime/src/mcp/tool-profile.ts",
+  "apps/alpha1-runtime/src/migration.ts",
+  "apps/alpha1-runtime/src/postgres-memory-only-authorization.ts",
+  "apps/alpha1-runtime/src/trusted-memory-search.ts",
   "apps/alpha1-runtime/tests/global-memory-access-plane.test.ts",
   "apps/alpha1-runtime/tests/mcp-discovery.test.ts",
   "apps/alpha1-runtime/tests/mcp-tool-profile.test.ts",
+  "apps/alpha1-runtime/tests/postgres-memory-only-authorization.test.ts",
+  "apps/alpha1-runtime/tests/schema-compatibility.test.ts",
   "docs/guides/publish-readiness.md",
   "docs/internal/README.md",
   "docs/internal/global-owner-hosted-runtime-v1-gate-b-memory-only.md",
@@ -68,11 +111,32 @@ if (process.argv.includes("--self-test")) {
   }
   const mutated = new Map(runtimeSources);
   mutated.set(
-    runtimePaths[0],
-    `${mutated.get(runtimePaths[0])}\nimport "./knowledge-provider-host.js";\n`
+    "apps/alpha1-runtime/src/global-memory-access-plane.ts",
+    `${mutated.get("apps/alpha1-runtime/src/global-memory-access-plane.ts")}\nimport "./knowledge-provider-host.js";\n`
   );
   if (validateRuntimeSources(mutated).length === 0) {
     failures.push("evidence/provider import mutation unexpectedly passed");
+  }
+  const durableCompositionMutation = new Map(runtimeSources);
+  durableCompositionMutation.set(
+    "apps/alpha1-runtime/src/mcp/server.ts",
+    `${durableCompositionMutation.get("apps/alpha1-runtime/src/mcp/server.ts")}\nimport { DurableMemoryOnlyRuntime } from "../durable-memory-only-runtime.js";\n`
+  );
+  if (validateRuntimeSources(durableCompositionMutation).length === 0) {
+    failures.push("reachable durable-runtime composition mutation unexpectedly passed");
+  }
+  for (const path of [
+    "apps/alpha1-runtime/src/global-memory-access-plane.ts",
+    "apps/alpha1-runtime/src/server.ts"
+  ]) {
+    const mutation = new Map(runtimeSources);
+    mutation.set(
+      path,
+      `${mutation.get(path)}\nexport { DurableMemoryOnlyRuntime } from "./durable-memory-only-runtime.js";\n`
+    );
+    if (validateRuntimeSources(mutation).length === 0) {
+      failures.push(`durable-runtime composition mutation unexpectedly passed for ${path}`);
+    }
   }
   const mcpMutation = new Map(runtimeSources);
   mcpMutation.set(
@@ -160,7 +224,7 @@ finishOrFail(failures, "Gate B-M synthetic memory-only scope check");
 console.log("");
 console.log("Source-Wire Gate B-M Synthetic Memory-Only Scope");
 console.log("------------------------------------------------");
-console.log(`Issue        : #288`);
+console.log(`Issue        : #290`);
 console.log(`Branch       : ${branchName}`);
 console.log(`Allowed paths: ${allowedPaths.size}`);
 console.log("Evidence mode: blocked");
@@ -228,10 +292,22 @@ function validateRuntimeSources(sources) {
     [/\b(?:search_source_evidence|get_source_evidence)\b/u, "evidence tool"]
   ];
   for (const [path, source] of sources) {
-    for (const [pattern, label] of forbiddenEverywhere) {
-      if (pattern.test(source)) {
-        failures.push(`${path} contains forbidden ${label}`);
+    if (memoryOnlyImplementationPaths.has(path)) {
+      for (const [pattern, label] of forbiddenEverywhere) {
+        if (pattern.test(source)) {
+          failures.push(`${path} contains forbidden ${label}`);
+        }
       }
+    }
+    if (
+      reachableCompositionPaths.has(path) &&
+      /(?:DurableMemoryOnlyRuntime|PostgresMemoryOnlyAuthorizationAuthority|durable-memory-only-runtime|postgres-memory-only-authorization)/u.test(
+        source
+      )
+    ) {
+      failures.push(
+        `${path} composes the synthetic-only durable authority into a reachable runtime`
+      );
     }
     if (path === "apps/alpha1-runtime/src/mcp/server.ts") {
       failures.push(...validateMcpProfileBoundary(source));
@@ -241,9 +317,11 @@ function validateRuntimeSources(sources) {
       failures.push(...validateMcpToolProfileGuard(source));
       continue;
     }
-    for (const [pattern, label] of forbiddenMemoryRuntime) {
-      if (pattern.test(source)) {
-        failures.push(`${path} contains forbidden ${label}`);
+    if (memoryOnlyImplementationPaths.has(path)) {
+      for (const [pattern, label] of forbiddenMemoryRuntime) {
+        if (pattern.test(source)) {
+          failures.push(`${path} contains forbidden ${label}`);
+        }
       }
     }
   }

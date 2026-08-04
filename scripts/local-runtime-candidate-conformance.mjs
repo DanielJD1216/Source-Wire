@@ -126,13 +126,13 @@ try {
   };
   await runChecked(
     "npm",
-    ["run", "conformance:story2", "--workspace", "@source-wire/local-runtime"],
+    ["run", "alpha1:conformance:story2"],
     root,
     conformanceEnvironment
   );
   await runChecked(
     "npm",
-    ["run", "conformance:story5", "--workspace", "@source-wire/local-runtime"],
+    ["run", "alpha1:conformance:story5"],
     root,
     {
       ...conformanceEnvironment,

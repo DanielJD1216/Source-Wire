@@ -60,7 +60,9 @@
   "sourceWireCandidate": {
     "supportLevel": "experimental-alpha",
     "dataPolicy": "synthetic-or-disposable-only",
-    "postgresql": "16.x",
+    "postgresql": "18.4",
+    "postgresqlCompatibility": ["16.x"],
+    "postgresqlCompatibilitySelection": "SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR=16",
     "mcpTransport": "stdio",
     "contractsPackage": "@source-wire/contracts@0.2.0",
     "knowledgeProviderContract": "knowledge-provider.v1",
@@ -101,18 +103,6 @@
     ]
   },
   "scripts": {
-    "build:contracts": "npm run build --prefix ../.. --workspaces=false",
-    "prebuild": "npm run build:contracts",
-    "build": "tsc -p tsconfig.json",
-    "pretypecheck": "npm run build:contracts",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test dist/tests/*.test.js",
-    "test:gate-b-memory-only": "npm run build && node --test dist/tests/global-memory-access-plane.test.js dist/tests/postgres-memory-only-authorization.test.js dist/tests/mcp-discovery.test.js dist/tests/mcp-tool-profile.test.js dist/tests/offline-jose-dpop.test.js dist/tests/strict-json.test.js",
-    "conformance:story1": "node dist/conformance/story1.js",
-    "conformance:story2": "node dist/conformance/story2.js",
-    "conformance:story3": "node dist/conformance/story3.js",
-    "conformance:story4": "node dist/conformance/story4.js",
-    "conformance:story5": "node dist/conformance/story5.js",
     "mcp": "node dist/src/mcp/server.js",
     "local": "node dist/src/cli/local.js",
     "operator": "node dist/src/cli/operator.js",
@@ -124,7 +114,7 @@
     "@hono/node-server": "2.0.11",
     "@modelcontextprotocol/sdk": "1.29.0",
     "drizzle-orm": "0.45.2",
-    "hono": "4.12.31",
+    "hono": "4.12.34",
     "pg": "8.22.0",
     "zod": "4.4.3"
   },

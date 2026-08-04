@@ -29,7 +29,8 @@ const RELEASE_BINDING = /^[A-Za-z0-9_-]{43}$/u;
 const CANONICAL_RANK = /^[0-9]+\.[0-9]{6}$/u;
 const ORIGIN_VERIFIER_DOMAIN =
   "source-wire.alpha1.story3.origin-process-verifier.v1";
-const RECEIPT_FORMAT_VERSION = 1 as const;
+const LEGACY_RECEIPT_FORMAT_VERSION = 1 as const;
+const GATE_B_RECEIPT_FORMAT_VERSION = 2 as const;
 const SEARCH_OPERATION = "search_trusted_memory" as const;
 const RESPONSE_AUDIT_ID_PLACEHOLDER =
   "00000000-0000-4000-8000-000000000000";
@@ -63,9 +64,8 @@ export type TrustedMemoryRequestDigestInput = {
   limit: number;
 };
 
-export type ProtectedReadReceiptBinding = {
+type ProtectedReadReceiptBase = {
   receiptId: string;
-  formatVersion: typeof RECEIPT_FORMAT_VERSION;
   traceId: string;
   requestId: string;
   actorReference: string;
@@ -83,6 +83,51 @@ export type ProtectedReadReceiptBinding = {
   issuedAt: string;
   expiresAt: string;
 };
+
+export type GateBProtectedReadReceiptContext = {
+  authorizationId: string;
+  authorizationContextDigest: string;
+  actorIdentityId: string;
+  authenticationEpochId: string;
+  principalId: string;
+  adapterId: string;
+  clientId: string;
+  sessionId: string;
+  credentialAudience: string;
+  capability: "trusted_memory.search";
+  authorizationEpoch: string;
+  deletionEpoch: string;
+  credentialIssuedAt: string;
+  credentialExpiresAt: string;
+  sessionIssuedAt: string;
+  sessionExpiresAt: string;
+  credentialStatus: "active";
+  clientState: "active";
+  sessionState: "active";
+  grantState: "active";
+  destinationDigest: string;
+  audienceChainDigest: string;
+  senderBindingKind: "dpop";
+  senderThumbprintDigest: string;
+  nonceDigest: string;
+  replayIdDigest: string;
+  proofIssuedAt: string;
+  requestMethod: "POST";
+  requestUri: "/v1alpha1/trusted-memories/search";
+};
+
+type GateBProtectedReadReleaseContext = GateBProtectedReadReceiptContext & {
+  credentialId: string;
+  ownerId: string;
+  namespaceId: string;
+};
+
+export type ProtectedReadReceiptBinding = ProtectedReadReceiptBase &
+  (
+    | { formatVersion: typeof LEGACY_RECEIPT_FORMAT_VERSION }
+    | ({ formatVersion: typeof GATE_B_RECEIPT_FORMAT_VERSION } &
+        GateBProtectedReadReceiptContext)
+  );
 
 export type ProtectedReadStage =
   | "before_query"
@@ -127,6 +172,7 @@ export type PreparedTrustedMemorySearch = Omit<
 type TrustedMemorySearchExecutionOptions = {
   processReleaseSecret: Buffer;
   startedAtMs: number;
+  gateBReleaseContext?: Readonly<Record<string, unknown>>;
   signal?: AbortSignal;
   onStage?: ProtectedReadStageHook;
   beforeProtectedRead?: (client: pg.PoolClient) => Promise<void>;
@@ -460,9 +506,19 @@ export async function prepareTrustedMemorySearch(
     if (expiryTime <= issuedAt.getTime()) {
       throw new SafeError("operation_unavailable", 503, true);
     }
-    const binding: ProtectedReadReceiptBinding = {
+    const gateBReleaseContext = options.gateBReleaseContext
+      ? parseGateBProtectedReadReleaseContext(options.gateBReleaseContext)
+      : undefined;
+    if (
+      gateBReleaseContext &&
+      (gateBReleaseContext.credentialId !== actor.credentialId ||
+        gateBReleaseContext.ownerId !== actor.ownerId ||
+        gateBReleaseContext.namespaceId !== input.namespaceId)
+    ) {
+      throw new SafeError("release_binding_invalid", 503, true);
+    }
+    const bindingBase: ProtectedReadReceiptBase = {
       receiptId,
-      formatVersion: RECEIPT_FORMAT_VERSION,
       traceId,
       requestId,
       actorReference: actor.actorReference,
@@ -480,62 +536,42 @@ export async function prepareTrustedMemorySearch(
       issuedAt: issuedAt.toISOString(),
       expiresAt: new Date(expiryTime).toISOString()
     };
+    const binding: ProtectedReadReceiptBinding = gateBReleaseContext
+      ? {
+          ...bindingBase,
+          formatVersion: GATE_B_RECEIPT_FORMAT_VERSION,
+          ...receiptContextFromGateBReleaseContext(gateBReleaseContext)
+        }
+      : {
+          ...bindingBase,
+          formatVersion: LEGACY_RECEIPT_FORMAT_VERSION
+        };
     const originProcessVerifier = computeOriginProcessVerifier(
       options.processReleaseSecret,
       binding
     );
 
     options.onStage?.("before_receipt_and_audit_commit");
-    const issued = await client.query<{ audit_event_id: string }>(
-      `SELECT source_wire_memory.issue_protected_read_receipt(
-         $1::uuid,
-         $2::smallint,
-         $3::uuid,
-         $4::uuid,
-         $5::varchar,
-         $6::uuid,
-         $7::varchar,
-         $8::varchar,
-         $9::varchar,
-         $10::varchar,
-         $11::varchar,
-         $12::varchar,
-         $13::varchar,
-         $14::varchar,
-         $15::integer,
-         $16::smallint,
-         $17::timestamptz,
-         $18::timestamptz,
-         $19::varchar,
-         $20::uuid,
-         $21::uuid[],
-         $22::uuid[]
-       ) AS audit_event_id`,
-      [
-        binding.receiptId,
-        binding.formatVersion,
-        binding.traceId,
-        binding.requestId,
-        binding.actorReference,
-        binding.actorCredentialId,
-        binding.ownerId,
-        binding.namespaceId,
-        binding.operation,
-        binding.policyDecision,
-        binding.releaseBinding,
-        binding.requestDigest,
-        binding.resultDigest,
-        binding.targetOrderDigest,
-        binding.responseByteCount,
-        binding.coveredResultCount,
-        binding.issuedAt,
-        binding.expiresAt,
-        originProcessVerifier,
-        auditEventId,
-        results.map((result) => result.memoryId),
-        results.map((result) => result.revisionId)
-      ]
-    );
+    const targetMemoryIds = results.map((result) => result.memoryId);
+    const targetRevisionIds = results.map((result) => result.revisionId);
+    const issued =
+      binding.formatVersion === GATE_B_RECEIPT_FORMAT_VERSION
+        ? await issueGateBProtectedReadReceipt(
+            client,
+            binding,
+            originProcessVerifier,
+            auditEventId,
+            targetMemoryIds,
+            targetRevisionIds
+          )
+        : await issueLegacyProtectedReadReceipt(
+            client,
+            binding,
+            originProcessVerifier,
+            auditEventId,
+            targetMemoryIds,
+            targetRevisionIds
+          );
     if (issued.rows[0]?.audit_event_id !== auditEventId) {
       throw new SafeError("audit_unavailable", 503, true);
     }
@@ -565,6 +601,110 @@ export async function prepareTrustedMemorySearch(
   } finally {
     client.release(clientDiscardError);
   }
+}
+
+async function issueLegacyProtectedReadReceipt(
+  client: pg.PoolClient,
+  binding: Extract<ProtectedReadReceiptBinding, { formatVersion: 1 }>,
+  originProcessVerifier: string,
+  auditEventId: string,
+  targetMemoryIds: string[],
+  targetRevisionIds: string[]
+): Promise<pg.QueryResult<{ audit_event_id: string }>> {
+  return client.query<{ audit_event_id: string }>(
+    `SELECT source_wire_memory.issue_protected_read_receipt(
+       $1::uuid, $2::smallint, $3::uuid, $4::uuid, $5::varchar,
+       $6::uuid, $7::varchar, $8::varchar, $9::varchar, $10::varchar,
+       $11::varchar, $12::varchar, $13::varchar, $14::varchar,
+       $15::integer, $16::smallint, $17::timestamptz, $18::timestamptz,
+       $19::varchar, $20::uuid, $21::uuid[], $22::uuid[]
+     ) AS audit_event_id`,
+    [
+      binding.receiptId,
+      binding.formatVersion,
+      binding.traceId,
+      binding.requestId,
+      binding.actorReference,
+      binding.actorCredentialId,
+      binding.ownerId,
+      binding.namespaceId,
+      binding.operation,
+      binding.policyDecision,
+      binding.releaseBinding,
+      binding.requestDigest,
+      binding.resultDigest,
+      binding.targetOrderDigest,
+      binding.responseByteCount,
+      binding.coveredResultCount,
+      binding.issuedAt,
+      binding.expiresAt,
+      originProcessVerifier,
+      auditEventId,
+      targetMemoryIds,
+      targetRevisionIds
+    ]
+  );
+}
+
+async function issueGateBProtectedReadReceipt(
+  client: pg.PoolClient,
+  binding: Extract<ProtectedReadReceiptBinding, { formatVersion: 2 }>,
+  originProcessVerifier: string,
+  auditEventId: string,
+  targetMemoryIds: string[],
+  targetRevisionIds: string[]
+): Promise<pg.QueryResult<{ audit_event_id: string }>> {
+  return client.query<{ audit_event_id: string }>(
+    `SELECT source_wire_memory.issue_gate_b_memory_protected_read_receipt(
+       $1::uuid, $2::varchar, $3::varchar, $4::varchar, $5::varchar,
+       $6::varchar, $7::varchar, $8::bigint, $9::bigint, $10::varchar,
+       $11::varchar, $12::varchar, $13::varchar, $14::varchar,
+       $15::varchar, $16::varchar, $17::uuid, $18::varchar, $19::uuid,
+       $20::smallint, $21::uuid, $22::uuid, $23::varchar, $24::varchar,
+       $25::varchar, $26::varchar, $27::varchar, $28::varchar,
+       $29::varchar, $30::integer, $31::smallint, $32::timestamptz,
+       $33::timestamptz, $34::varchar, $35::uuid, $36::uuid[], $37::uuid[]
+     ) AS audit_event_id`,
+    [
+      binding.actorCredentialId,
+      binding.ownerId,
+      binding.principalId,
+      binding.adapterId,
+      binding.clientId,
+      binding.sessionId,
+      binding.credentialAudience,
+      binding.authorizationEpoch,
+      binding.deletionEpoch,
+      binding.namespaceId,
+      binding.destinationDigest,
+      binding.audienceChainDigest,
+      binding.senderThumbprintDigest,
+      binding.nonceDigest,
+      binding.requestMethod,
+      binding.requestUri,
+      binding.authorizationId,
+      binding.authorizationContextDigest,
+      binding.receiptId,
+      binding.formatVersion,
+      binding.traceId,
+      binding.requestId,
+      binding.actorReference,
+      binding.operation,
+      binding.policyDecision,
+      binding.releaseBinding,
+      binding.requestDigest,
+      binding.resultDigest,
+      binding.targetOrderDigest,
+      binding.responseByteCount,
+      binding.coveredResultCount,
+      binding.issuedAt,
+      binding.expiresAt,
+      originProcessVerifier,
+      auditEventId,
+      targetMemoryIds,
+      targetRevisionIds
+    ]
+  );
 }
 
 async function rollbackOrDiscardTransaction(
@@ -781,10 +921,257 @@ function assertReadStillLive(options: {
   }
 }
 
+function parseGateBProtectedReadReleaseContext(
+  value: Readonly<Record<string, unknown>>
+): GateBProtectedReadReleaseContext {
+  const expectedKeys = [
+    "actorIdentityId",
+    "adapterId",
+    "audienceChainDigest",
+    "authenticationEpochId",
+    "authorizationContextDigest",
+    "authorizationEpoch",
+    "authorizationId",
+    "capability",
+    "clientId",
+    "clientState",
+    "credentialAudience",
+    "credentialExpiresAt",
+    "credentialId",
+    "credentialIssuedAt",
+    "credentialStatus",
+    "deletionEpoch",
+    "destinationDigest",
+    "grantState",
+    "namespaceId",
+    "nonceDigest",
+    "ownerId",
+    "principalId",
+    "proofIssuedAt",
+    "replayIdDigest",
+    "requestMethod",
+    "requestUri",
+    "senderBindingKind",
+    "senderThumbprintDigest",
+    "sessionExpiresAt",
+    "sessionId",
+    "sessionIssuedAt",
+    "sessionState"
+  ].sort();
+  const actualKeys = Object.keys(value).sort();
+  if (
+    actualKeys.length !== expectedKeys.length ||
+    !actualKeys.every((key, index) => key === expectedKeys[index])
+  ) {
+    throw new SafeError("release_binding_invalid", 503, true);
+  }
+  const context = value as GateBProtectedReadReleaseContext;
+  const identifiers = [
+    context.ownerId,
+    context.principalId,
+    context.adapterId,
+    context.clientId,
+    context.sessionId,
+    context.credentialAudience,
+    context.namespaceId
+  ];
+  const times = [
+    context.credentialIssuedAt,
+    context.credentialExpiresAt,
+    context.sessionIssuedAt,
+    context.sessionExpiresAt,
+    context.proofIssuedAt
+  ];
+  const parsedTimes = times.map((time) => Date.parse(time));
+  // Proof time is sender-clock data. PostgreSQL proves credential/session
+  // activity at its own observed decision and receipt times; do not invent a
+  // cross-clock lower-bound ordering against server-issued timestamps here.
+  let identifiersValid = true;
+  try {
+    identifiers.forEach((identifier) => assertSourceWireIdentifier(identifier, "gateBContext"));
+  } catch {
+    identifiersValid = false;
+  }
+  if (
+    !identifiersValid ||
+    !UUID.test(context.authorizationId) ||
+    !UUID.test(context.credentialId) ||
+    !UUID.test(context.actorIdentityId) ||
+    !UUID.test(context.authenticationEpochId) ||
+    context.capability !== "trusted_memory.search" ||
+    context.credentialStatus !== "active" ||
+    context.clientState !== "active" ||
+    context.sessionState !== "active" ||
+    context.grantState !== "active" ||
+    context.senderBindingKind !== "dpop" ||
+    ![
+      context.authorizationContextDigest,
+      context.destinationDigest,
+      context.audienceChainDigest,
+      context.senderThumbprintDigest,
+      context.nonceDigest,
+      context.replayIdDigest
+    ].every((digest) => DIGEST.test(digest)) ||
+    ![context.authorizationEpoch, context.deletionEpoch].every(
+      (epoch) => /^(0|[1-9][0-9]{0,18})$/u.test(epoch) && BigInt(epoch) <= 9_223_372_036_854_775_807n
+    ) ||
+    parsedTimes.some(
+      (time, index) =>
+        !Number.isFinite(time) || new Date(time).toISOString() !== times[index]
+    ) ||
+    parsedTimes[1]! <= parsedTimes[0]! ||
+    parsedTimes[3]! <= parsedTimes[2]! ||
+    context.requestMethod !== "POST" ||
+    context.requestUri !== "/v1alpha1/trusted-memories/search"
+  ) {
+    throw new SafeError("release_binding_invalid", 503, true);
+  }
+  return context;
+}
+
+function receiptContextFromGateBReleaseContext(
+  context: GateBProtectedReadReleaseContext
+): GateBProtectedReadReceiptContext {
+  return {
+    authorizationId: context.authorizationId,
+    authorizationContextDigest: context.authorizationContextDigest,
+    actorIdentityId: context.actorIdentityId,
+    authenticationEpochId: context.authenticationEpochId,
+    principalId: context.principalId,
+    adapterId: context.adapterId,
+    clientId: context.clientId,
+    sessionId: context.sessionId,
+    credentialAudience: context.credentialAudience,
+    capability: context.capability,
+    authorizationEpoch: context.authorizationEpoch,
+    deletionEpoch: context.deletionEpoch,
+    credentialIssuedAt: context.credentialIssuedAt,
+    credentialExpiresAt: context.credentialExpiresAt,
+    sessionIssuedAt: context.sessionIssuedAt,
+    sessionExpiresAt: context.sessionExpiresAt,
+    credentialStatus: context.credentialStatus,
+    clientState: context.clientState,
+    sessionState: context.sessionState,
+    grantState: context.grantState,
+    destinationDigest: context.destinationDigest,
+    audienceChainDigest: context.audienceChainDigest,
+    senderBindingKind: context.senderBindingKind,
+    senderThumbprintDigest: context.senderThumbprintDigest,
+    nonceDigest: context.nonceDigest,
+    replayIdDigest: context.replayIdDigest,
+    proofIssuedAt: context.proofIssuedAt,
+    requestMethod: context.requestMethod,
+    requestUri: context.requestUri
+  };
+}
+
+function gateBReleaseContextFromReceipt(
+  binding: Extract<ProtectedReadReceiptBinding, { formatVersion: 2 }>
+): GateBProtectedReadReleaseContext {
+  return {
+    credentialId: binding.actorCredentialId,
+    ownerId: binding.ownerId,
+    namespaceId: binding.namespaceId,
+    authorizationId: binding.authorizationId,
+    authorizationContextDigest: binding.authorizationContextDigest,
+    actorIdentityId: binding.actorIdentityId,
+    authenticationEpochId: binding.authenticationEpochId,
+    principalId: binding.principalId,
+    adapterId: binding.adapterId,
+    clientId: binding.clientId,
+    sessionId: binding.sessionId,
+    credentialAudience: binding.credentialAudience,
+    capability: binding.capability,
+    authorizationEpoch: binding.authorizationEpoch,
+    deletionEpoch: binding.deletionEpoch,
+    credentialIssuedAt: binding.credentialIssuedAt,
+    credentialExpiresAt: binding.credentialExpiresAt,
+    sessionIssuedAt: binding.sessionIssuedAt,
+    sessionExpiresAt: binding.sessionExpiresAt,
+    credentialStatus: binding.credentialStatus,
+    clientState: binding.clientState,
+    sessionState: binding.sessionState,
+    grantState: binding.grantState,
+    destinationDigest: binding.destinationDigest,
+    audienceChainDigest: binding.audienceChainDigest,
+    senderBindingKind: binding.senderBindingKind,
+    senderThumbprintDigest: binding.senderThumbprintDigest,
+    nonceDigest: binding.nonceDigest,
+    replayIdDigest: binding.replayIdDigest,
+    proofIssuedAt: binding.proofIssuedAt,
+    requestMethod: binding.requestMethod,
+    requestUri: binding.requestUri
+  };
+}
+
 function validateReceiptBinding(binding: ProtectedReadReceiptBinding): void {
+  const baseKeys = [
+    "actorCredentialId",
+    "actorReference",
+    "coveredResultCount",
+    "expiresAt",
+    "formatVersion",
+    "issuedAt",
+    "namespaceId",
+    "operation",
+    "ownerId",
+    "policyDecision",
+    "receiptId",
+    "releaseBinding",
+    "requestDigest",
+    "requestId",
+    "responseByteCount",
+    "resultDigest",
+    "targetOrderDigest",
+    "traceId"
+  ];
+  const gateBKeys = [
+    "actorIdentityId",
+    "adapterId",
+    "audienceChainDigest",
+    "authenticationEpochId",
+    "authorizationContextDigest",
+    "authorizationEpoch",
+    "authorizationId",
+    "capability",
+    "clientId",
+    "clientState",
+    "credentialAudience",
+    "credentialExpiresAt",
+    "credentialIssuedAt",
+    "credentialStatus",
+    "deletionEpoch",
+    "destinationDigest",
+    "grantState",
+    "nonceDigest",
+    "principalId",
+    "proofIssuedAt",
+    "replayIdDigest",
+    "requestMethod",
+    "requestUri",
+    "senderBindingKind",
+    "senderThumbprintDigest",
+    "sessionExpiresAt",
+    "sessionId",
+    "sessionIssuedAt",
+    "sessionState"
+  ];
+  const expectedKeys = (
+    binding.formatVersion === GATE_B_RECEIPT_FORMAT_VERSION
+      ? [...baseKeys, ...gateBKeys]
+      : baseKeys
+  ).sort();
+  const actualKeys = Object.keys(binding).sort();
+  if (
+    actualKeys.length !== expectedKeys.length ||
+    !actualKeys.every((key, index) => key === expectedKeys[index])
+  ) {
+    throw new Error("protected_read_receipt_invalid");
+  }
   if (
     !UUID.test(binding.receiptId) ||
-    binding.formatVersion !== RECEIPT_FORMAT_VERSION ||
+    (binding.formatVersion !== LEGACY_RECEIPT_FORMAT_VERSION &&
+      binding.formatVersion !== GATE_B_RECEIPT_FORMAT_VERSION) ||
     !UUID.test(binding.traceId) ||
     !UUID.test(binding.requestId) ||
     binding.actorReference !== `credential:${binding.actorCredentialId}` ||
@@ -809,10 +1196,30 @@ function validateReceiptBinding(binding: ProtectedReadReceiptBinding): void {
   if (
     !Number.isFinite(issuedAt) ||
     !Number.isFinite(expiresAt) ||
+    new Date(issuedAt).toISOString() !== binding.issuedAt ||
+    new Date(expiresAt).toISOString() !== binding.expiresAt ||
     expiresAt <= issuedAt ||
     expiresAt - issuedAt > PROTECTED_READ_RECEIPT_TTL_MS
   ) {
     throw new Error("protected_read_receipt_invalid");
+  }
+  if (binding.formatVersion === GATE_B_RECEIPT_FORMAT_VERSION) {
+    try {
+      const context = parseGateBProtectedReadReleaseContext(
+        gateBReleaseContextFromReceipt(binding)
+      );
+      if (
+        Date.parse(context.proofIssuedAt) > issuedAt ||
+        Date.parse(context.credentialIssuedAt) > issuedAt ||
+        Date.parse(context.credentialExpiresAt) <= issuedAt ||
+        Date.parse(context.sessionIssuedAt) > issuedAt ||
+        Date.parse(context.sessionExpiresAt) <= issuedAt
+      ) {
+        throw new Error("protected_read_receipt_invalid");
+      }
+    } catch {
+      throw new Error("protected_read_receipt_invalid");
+    }
   }
 }
 

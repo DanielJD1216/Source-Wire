@@ -24,9 +24,26 @@ const operatorCli = resolve(appRoot, "dist/src/cli/operator.js");
 const ownerCli = resolve(appRoot, "dist/src/cli/owner.js");
 const localCli = resolve(appRoot, "dist/src/cli/local.js");
 const serverEntry = resolve(appRoot, "dist/src/server.js");
+const reportSuffix = process.env.SOURCE_WIRE_CONFORMANCE_REPORT_SUFFIX?.trim();
+if (reportSuffix && !/^[a-z0-9][a-z0-9.-]{0,31}$/u.test(reportSuffix)) {
+  throw new Error("invalid conformance report suffix");
+}
 const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
-  resolve(appRoot, ".artifacts/story1-conformance-report.json");
+  resolve(
+    appRoot,
+    `.artifacts/story1-conformance-report${reportSuffix ? `-${reportSuffix}` : ""}.json`
+  );
+const expectedPostgresMajor = Number(
+  process.env.SOURCE_WIRE_EXPECTED_POSTGRES_MAJOR ?? "18"
+);
+const expectedPostgresVersionNum = process.env[
+  "SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM"
+]
+  ? Number(process.env["SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM"])
+  : expectedPostgresMajor === 18
+    ? 180_004
+    : undefined;
 
 const roleNames = {
   schemaOwner: "source_wire_schema_owner",
@@ -78,6 +95,7 @@ let localDatabaseConfigPath = "";
 let localInitConfigPath = "";
 let cleanupPassed = false;
 let failure: unknown;
+let postgresqlVersionNum = 0;
 
 try {
   await runConformance();
@@ -125,12 +143,19 @@ async function runConformance(): Promise<void> {
        current_setting('server_version') AS server_version,
        current_setting('server_version_num') AS server_version_num`
   );
+  postgresqlVersionNum = Number(version.rows[0]?.server_version_num ?? "0");
   assert.equal(
-    Math.floor(Number(version.rows[0]?.server_version_num ?? "0") / 10_000),
-    16,
-    "PostgreSQL major 16 is required"
+    Math.floor(postgresqlVersionNum / 10_000),
+    expectedPostgresMajor,
+    `PostgreSQL major ${expectedPostgresMajor} is required`
   );
-  pass("S1-ENV-01", "Node.js 22.23.1 and PostgreSQL 16.12 observed");
+  if (expectedPostgresVersionNum !== undefined) {
+    assert.equal(postgresqlVersionNum, expectedPostgresVersionNum);
+  }
+  pass(
+    "S1-ENV-01",
+    `Node.js 22.23.1 and PostgreSQL ${version.rows[0]?.server_version ?? postgresqlVersionNum} observed`
+  );
 
   await provisionDisposableTarget();
   await driverProbes();
@@ -1914,7 +1939,7 @@ async function dependencyProbe(): Promise<void> {
     "@hono/node-server": "2.0.11",
     "@modelcontextprotocol/sdk": "1.29.0",
     "drizzle-orm": "0.45.2",
-    "hono": "4.12.31",
+    "hono": "4.12.34",
     "pg": "8.22.0",
     "zod": "4.4.3"
   });
@@ -2095,7 +2120,15 @@ async function runProcess(
     isJavaScript ? [executable, ...args] : args,
     {
       cwd,
-      env: environment,
+      env: {
+        ...environment,
+        ...(process.env.SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR === undefined
+          ? {}
+          : {
+              SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR:
+                process.env.SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR
+            })
+      },
       stdio: ["ignore", "pipe", "pipe"]
     }
   );
@@ -2320,7 +2353,8 @@ async function writeReport(): Promise<void> {
     sourceCommit: commit.stdout.trim(),
     environment: {
       node: process.version,
-      postgresql: "16.12",
+      postgresqlMajor: expectedPostgresMajor,
+      postgresqlVersionNum: postgresqlVersionNum || undefined,
       processBoundary: "fresh_child_processes",
       dataClass: "generated_disposable_only",
       listener: "loopback_only"

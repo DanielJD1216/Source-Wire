@@ -16,7 +16,10 @@ import {
   type DurableMemoryOnlyAuthorizationAuthority,
   type DurableMemoryOnlyTransportContext
 } from "../src/durable-memory-only-runtime.js";
-import type { TrustedMemorySearchExecution } from "../src/trusted-memory-search.js";
+import type {
+  ProtectedReadReceiptBinding,
+  TrustedMemorySearchExecution
+} from "../src/trusted-memory-search.js";
 
 const NOW_MS = Date.parse("2026-08-01T20:00:00.000Z");
 
@@ -592,11 +595,37 @@ test("durable runtime derives authority and delegates atomic receipt release", a
       assert.equal(receipt.operation, "search_trusted_memory");
       assert.deepEqual(processReleaseSecret, Buffer.alloc(32, 7));
       return true;
+    },
+    async finalizeResponseHandoff(
+      context,
+      receipt,
+      processReleaseSecret,
+      outcome
+    ) {
+      order.push(`handoff:${outcome}`);
+      assert.equal(context, releaseContext);
+      assert.equal(receipt.operation, "search_trusted_memory");
+      assert.deepEqual(processReleaseSecret, Buffer.alloc(32, 7));
+      return true;
     }
   };
-  const syntheticExecution = {
-    marker: "durable_memory_only_execution"
-  } as unknown as TrustedMemorySearchExecution;
+  const syntheticReceipt = {
+    operation: "search_trusted_memory"
+  } as unknown as ProtectedReadReceiptBinding;
+  const protectedBytes = Buffer.from("synthetic protected response", "utf8");
+  let executionCleared = false;
+  const syntheticExecution: TrustedMemorySearchExecution = {
+    results: [],
+    auditEventId: "10000000-0000-4000-8000-000000000009",
+    releaseStatus: "release_attempted",
+    receipt: syntheticReceipt,
+    serializedResponse: protectedBytes,
+    clear() {
+      executionCleared = true;
+      protectedBytes.fill(0);
+      this.results.length = 0;
+    }
+  };
   const executeSearch: MemoryOnlySearchExecutor = async (
     _pool,
     actor,
@@ -604,6 +633,7 @@ test("durable runtime derives authority and delegates atomic receipt release", a
     _traceId,
     options
   ) => {
+    assert.equal(options.gateBReleaseContext, releaseContext);
     assert.equal(typeof options.beforeProtectedRead, "function");
     await options.beforeProtectedRead?.(syntheticTransactionClient);
     order.push("retrieve");
@@ -615,11 +645,18 @@ test("durable runtime derives authority and delegates atomic receipt release", a
     assert.equal(consumed, true);
     return syntheticExecution;
   };
+  let writerAlias: Uint8Array | undefined;
   const runtime = new DurableMemoryOnlyRuntime({
     authority,
     pool: {} as never,
     processReleaseSecret: Buffer.alloc(32, 7),
     executeSearch,
+    writeResponse(serializedResponse: ArrayBuffer) {
+      order.push("write");
+      writerAlias = new Uint8Array(serializedResponse);
+      assert.equal(Buffer.from(writerAlias).toString("utf8"), "synthetic protected response");
+      return "accepted_in_process";
+    },
     now: () => NOW_MS
   });
 
@@ -633,8 +670,20 @@ test("durable runtime derives authority and delegates atomic receipt release", a
     traceId: "10000000-0000-4000-8000-000000000003"
   });
 
-  assert.equal(result, syntheticExecution);
-  assert.deepEqual(order, ["authorize", "fence", "retrieve", "release"]);
+  assert.equal(result.releaseStatus, "accepted_in_process");
+  assert.equal(result.receipt, syntheticReceipt);
+  assert.equal(executionCleared, true);
+  assert.equal(protectedBytes.every((byte) => byte === 0), true);
+  assert(writerAlias);
+  assert.equal(writerAlias.every((byte) => byte === 0), true);
+  assert.deepEqual(order, [
+    "authorize",
+    "fence",
+    "retrieve",
+    "release",
+    "write",
+    "handoff:accepted_in_process"
+  ]);
 
   let bypassResultCleared = false;
   const bypassRuntime = new DurableMemoryOnlyRuntime({
@@ -647,6 +696,9 @@ test("durable runtime derives authority and delegates atomic receipt release", a
           bypassResultCleared = true;
         }
       }) as unknown as TrustedMemorySearchExecution,
+    writeResponse() {
+      throw new Error("writer_must_not_run");
+    },
     now: () => NOW_MS
   });
   await assert.rejects(
@@ -663,6 +715,96 @@ test("durable runtime derives authority and delegates atomic receipt release", a
       error instanceof Error && error.message === "release_binding_invalid"
   );
   assert.equal(bypassResultCleared, true);
+
+  order.length = 0;
+  protectedBytes.set(Buffer.from("synthetic protected response", "utf8"));
+  executionCleared = false;
+  let failedWriterAlias: Uint8Array | undefined;
+  const failedWriterRuntime = new DurableMemoryOnlyRuntime({
+    authority,
+    pool: {} as never,
+    processReleaseSecret: Buffer.alloc(32, 7),
+    executeSearch,
+    writeResponse(serializedResponse: ArrayBuffer) {
+      order.push("write");
+      failedWriterAlias = new Uint8Array(serializedResponse);
+      throw new Error("synthetic_writer_failure");
+    },
+    now: () => NOW_MS
+  });
+  await assert.rejects(
+    failedWriterRuntime.search({
+      transport: durableTransport,
+      request: {
+        namespaceId: "ns_synthetic_memory",
+        query: "writer failure must be recorded",
+        limit: 3
+      },
+      traceId: "10000000-0000-4000-8000-000000000005"
+    }),
+    /synthetic_writer_failure/u
+  );
+  assert.equal(executionCleared, true);
+  assert(failedWriterAlias);
+  assert.equal(failedWriterAlias.every((byte) => byte === 0), true);
+  assert.deepEqual(order, [
+    "authorize",
+    "fence",
+    "retrieve",
+    "release",
+    "write",
+    "handoff:failed"
+  ]);
+
+  order.length = 0;
+  protectedBytes.set(Buffer.from("synthetic protected response", "utf8"));
+  executionCleared = false;
+  const uncertainAuthority: DurableMemoryOnlyAuthorizationAuthority = {
+    ...authority,
+    async finalizeResponseHandoff(
+      _context: Readonly<Record<string, unknown>>,
+      _receipt: ProtectedReadReceiptBinding,
+      _secret: Buffer,
+      outcome: "accepted_in_process" | "failed"
+    ) {
+      order.push(`handoff-uncertain:${outcome}`);
+      return false;
+    }
+  };
+  const uncertainRuntime = new DurableMemoryOnlyRuntime({
+    authority: uncertainAuthority,
+    pool: {} as never,
+    processReleaseSecret: Buffer.alloc(32, 7),
+    executeSearch,
+    writeResponse() {
+      order.push("write");
+      return "accepted_in_process";
+    },
+    now: () => NOW_MS
+  });
+  await assert.rejects(
+    uncertainRuntime.search({
+      transport: durableTransport,
+      request: {
+        namespaceId: "ns_synthetic_memory",
+        query: "finalization uncertainty must fail closed",
+        limit: 3
+      },
+      traceId: "10000000-0000-4000-8000-000000000006"
+    }),
+    (error: unknown) =>
+      error instanceof Error && error.message === "operation_unavailable"
+  );
+  assert.equal(executionCleared, true);
+  assert.equal(protectedBytes.every((byte) => byte === 0), true);
+  assert.deepEqual(order, [
+    "authorize",
+    "fence",
+    "retrieve",
+    "release",
+    "write",
+    "handoff-uncertain:accepted_in_process"
+  ]);
 });
 
 test("runtime blocks destination substitution before trusted-memory retrieval", async () => {

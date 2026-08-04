@@ -19,6 +19,7 @@ import {
   mkdtemp,
   readFile,
   rm,
+  stat,
   writeFile
 } from "node:fs/promises";
 import { createServer } from "node:net";
@@ -35,15 +36,22 @@ import { ALPHA1_SCHEMA_VERSION } from "../src/config.js";
 import {
   DurableMemoryOnlyRuntime,
   type DurableMemoryOnlyAuthorizationAuthority,
+  type DurableMemoryOnlyHandoffOutcome,
+  type DurableMemoryOnlyReleaseContext,
   type DurableMemoryOnlyTransportContext
 } from "../src/durable-memory-only-runtime.js";
 import { canonicalRequestDigest } from "../src/idempotency.js";
+import {
+  computeOriginProcessVerifier,
+  type ProtectedReadReceiptBinding
+} from "../src/trusted-memory-search.js";
 import { verifyOfflineMemoryOnlyRequest } from "../src/offline-jose-dpop.js";
 import { createLocalConfigTemplate } from "../src/local-cli/config.js";
 import {
   GATE_B_DATABASE_OPERATION_TIMEOUT_MS,
   PostgresMemoryOnlyAuthorizationAuthority
 } from "../src/postgres-memory-only-authorization.js";
+import { invalidateProtectedReadReceiptsForPhysicalRecovery } from "../src/portable-recovery.js";
 
 const { Client, Pool } = pg;
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -55,9 +63,26 @@ const mcpServerEntry = resolve(appRoot, "dist/src/mcp/server.js");
 const localCliEntry =
   process.env.SOURCE_WIRE_PACKED_LOCAL_CLI_ENTRY ??
   resolve(appRoot, "dist/src/cli/local.js");
+const reportSuffix = process.env.SOURCE_WIRE_CONFORMANCE_REPORT_SUFFIX?.trim();
+if (reportSuffix && !/^[a-z0-9][a-z0-9.-]{0,31}$/u.test(reportSuffix)) {
+  throw new Error("invalid conformance report suffix");
+}
 const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
-  resolve(appRoot, ".artifacts/story2-conformance-report.json");
+  resolve(
+    appRoot,
+    `.artifacts/story2-conformance-report${reportSuffix ? `-${reportSuffix}` : ""}.json`
+  );
+const expectedPostgresMajor = Number(
+  process.env.SOURCE_WIRE_EXPECTED_POSTGRES_MAJOR ?? "18"
+);
+const expectedPostgresVersionNum = process.env[
+  "SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM"
+]
+  ? Number(process.env["SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM"])
+  : expectedPostgresMajor === 18
+    ? 180_004
+    : undefined;
 
 const roleNames = {
   schemaOwner: "source_wire_schema_owner",
@@ -103,6 +128,7 @@ const created = {
 };
 
 let failure: unknown;
+let activeStage = "startup";
 let cleanupFailure: unknown;
 let cleanupPassed = false;
 let adminPool: pg.Pool | undefined;
@@ -121,6 +147,8 @@ let ownerCredentialId = "";
 let harnessToken = "";
 let baseUrl = "";
 let acceptedModerateAdvisories = 0;
+let pendingRecoveryReceiptId = "";
+let postgresqlVersionNum = 0;
 
 function signCompactJwt(
   header: Record<string, unknown>,
@@ -202,29 +230,112 @@ async function runConformance(): Promise<void> {
   const version = await adminPool.query<{ server_version_num: string }>(
     "SELECT current_setting('server_version_num') AS server_version_num"
   );
-  assert.equal(
-    Math.floor(Number(version.rows[0]?.server_version_num ?? "0") / 10_000),
-    16
+  postgresqlVersionNum = Number(
+    version.rows[0]?.server_version_num ?? "0"
   );
-  pass("S2-ENV-01", "Node.js 22.23.1 and PostgreSQL 16 observed");
+  assert.equal(Number.isSafeInteger(expectedPostgresMajor), true);
+  assert.equal(expectedPostgresMajor >= 16, true);
+  assert.equal(Math.floor(postgresqlVersionNum / 10_000), expectedPostgresMajor);
+  if (expectedPostgresVersionNum !== undefined) {
+    assert.equal(Number.isSafeInteger(expectedPostgresVersionNum), true);
+    assert.equal(postgresqlVersionNum, expectedPostgresVersionNum);
+  }
+  pass(
+    "S2-ENV-01",
+    `Node.js 22.23.1 and PostgreSQL server_version_num ${postgresqlVersionNum} observed`
+  );
 
+  activeStage = "provision";
   await provisionDisposableTarget();
+  activeStage = "migrate-and-initialize";
   await migrateAndInitialize();
+  activeStage = "runtime-start";
   await startRuntime();
+  activeStage = "harness-issue";
   await issueHarness();
+  activeStage = "gate-b-authorization";
   await gateBDurableAuthorizationProbes();
+  activeStage = "authentication-boundary";
   await authenticationBoundaryProbes();
+  activeStage = "denial-audit";
   await denialAuditAvailabilityProbe();
+  activeStage = "canonicalization-locale";
   await canonicalizationLocaleProbe();
+  activeStage = "mcp-and-proposal";
   await mcpAndProposalProbes();
+  activeStage = "provenance-and-input";
   await provenanceAndInputProbes();
+  activeStage = "owner-review-and-decision";
   await ownerReviewAndDecisionProbes();
+  activeStage = "rollback-and-role";
   await rollbackAndRoleProbes();
+  activeStage = "close-mcp";
   await closeMcp();
+  activeStage = "stop-api";
   await stopApi();
+  activeStage = "local-cli-memory-only";
   await localCliMemoryOnlyRunnerProbe();
+  activeStage = "migration-compatibility";
   await migrationCompatibilityProbes();
+  activeStage = "dependency-and-secret";
   await dependencyAndSecretProbes();
+  activeStage = "pending-handoff-recovery";
+  await pendingHandoffRecoveryProbe();
+  activeStage = "complete";
+}
+
+async function pendingHandoffRecoveryProbe(): Promise<void> {
+  assert(targetAdminPool);
+  assert.notEqual(pendingRecoveryReceiptId, "");
+  await waitFor(async () => {
+    const sessions = await targetAdminPool?.query<{ count: string }>(
+      `SELECT count(*)::text AS count
+         FROM pg_catalog.pg_stat_activity
+        WHERE datname = pg_catalog.current_database()
+          AND (
+            usename = 'source_wire_runtime'
+            OR application_name = 'source_wire_alpha1_runtime'
+          )`
+    );
+    return sessions?.rows[0]?.count === "0";
+  }, 5_000);
+  const recoveryClient = await targetAdminPool.connect();
+  try {
+    await recoveryClient.query("BEGIN");
+    await recoveryClient.query("SET LOCAL ROLE source_wire_schema_owner");
+    await invalidateProtectedReadReceiptsForPhysicalRecovery(
+      recoveryClient,
+      new Date()
+    );
+    await recoveryClient.query("COMMIT");
+  } catch (error) {
+    await recoveryClient.query("ROLLBACK").catch(() => undefined);
+    throw error;
+  } finally {
+    recoveryClient.release();
+  }
+  const recovered = await targetAdminPool.query<{
+    consumption_state: string;
+    release_status: string;
+    response_handoff_state: string;
+    handoff_recorded: boolean;
+  }>(
+    `SELECT consumption_state, release_status, response_handoff_state,
+            response_handoff_recorded_at IS NOT NULL AS handoff_recorded
+       FROM source_wire_memory.protected_read_receipts
+      WHERE receipt_id = $1`,
+    [pendingRecoveryReceiptId]
+  );
+  assert.deepEqual(recovered.rows[0], {
+    consumption_state: "consumed",
+    release_status: "release_attempted",
+    response_handoff_state: "failed",
+    handoff_recorded: true
+  });
+  pass(
+    "GB-AUTH-04G",
+    "the physical-recovery receipt transition converted a consumed pending format-2 handoff to failed without rewriting its committed consumption decision"
+  );
 }
 
 async function localCliMemoryOnlyRunnerProbe(): Promise<void> {
@@ -486,7 +597,11 @@ async function provisionDisposableTarget(): Promise<void> {
 
 async function migrateAndInitialize(): Promise<void> {
   const first = await runProcess(operatorCli, ["migrate"], operatorEnvironment());
-  assert.equal(first.code, 0, first.stderr);
+  assert.equal(
+    first.code,
+    0,
+    `migration subprocess failed: ${first.stderr || first.stdout}`
+  );
   const firstBody = parseJsonLine(first.stdout);
   assert.equal(firstBody.status, "applied");
   assert.equal(firstBody.version, ALPHA1_SCHEMA_VERSION);
@@ -789,6 +904,21 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     [sessionId, secondSessionId, expiringSessionId]
   );
 
+  let acceptedInProcessResponse: Buffer | undefined;
+  const acceptInProcess = (
+    serializedResponse: ArrayBuffer
+  ): "accepted_in_process" => {
+    acceptedInProcessResponse = Buffer.from(
+      new Uint8Array(serializedResponse)
+    );
+    return "accepted_in_process";
+  };
+  const requireAcceptedInProcessResponse = (): Buffer => {
+    if (!acceptedInProcessResponse) {
+      throw new Error("story2_in_process_response_missing");
+    }
+    return acceptedInProcessResponse;
+  };
   const makeTransport = (
     replayId: string,
     selectedSessionId = sessionId
@@ -1231,6 +1361,7 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
         authority: authorityA,
         pool: runtimePoolA,
         processReleaseSecret: randomBytes(32),
+        writeResponse: acceptInProcess,
         async executeSearch() {
           retrievalCalls += 1;
           throw new Error("retrieval_must_not_run_after_committed_revocation");
@@ -1299,8 +1430,15 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
       );
     } finally {
       await targetAdminPool.query(
-        `DELETE FROM source_wire_memory.gate_b_memory_replay_ids
-          WHERE session_id = $1`,
+        `DELETE FROM source_wire_memory.gate_b_memory_replay_ids AS replay
+          WHERE replay.session_id = $1
+            AND NOT EXISTS (
+              SELECT 1
+                FROM source_wire_memory.gate_b_memory_authorization_events AS event
+               WHERE event.sender_thumbprint_digest =
+                     replay.sender_thumbprint_digest
+                 AND event.replay_id_digest = replay.replay_id_digest
+            )`,
         [sessionId]
       );
     }
@@ -1395,7 +1533,8 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     const signedRuntime = new DurableMemoryOnlyRuntime({
       authority: authorityA,
       pool: runtimePoolA,
-      processReleaseSecret: randomBytes(32)
+      processReleaseSecret: randomBytes(32),
+      writeResponse: acceptInProcess
     });
     const signedExecution = await signedRuntime.search({
       transport: signedTransport,
@@ -1406,14 +1545,21 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
       },
       traceId: randomUUID()
     });
-    assert.equal(signedExecution.results.length, 1);
-    assert.equal(signedExecution.releaseStatus, "release_attempted");
+    assert.equal(signedExecution.results.length, 0);
+    assert.equal(signedExecution.releaseStatus, "accepted_in_process");
+    const signedResponse = JSON.parse(
+      requireAcceptedInProcessResponse().toString("utf8")
+    ) as { data?: { results?: unknown[] } };
+    assert.equal(signedResponse.data?.results?.length, 1);
     const signedReceipt = await targetAdminPool.query<{
       consumption_state: string;
       release_status: string;
+      response_handoff_state: string;
+      handoff_recorded: boolean;
       consumed: boolean;
     }>(
-      `SELECT consumption_state, release_status,
+      `SELECT consumption_state, release_status, response_handoff_state,
+              response_handoff_recorded_at IS NOT NULL AS handoff_recorded,
               consumed_at IS NOT NULL AS consumed
          FROM source_wire_memory.protected_read_receipts
         WHERE receipt_id = $1`,
@@ -1422,6 +1568,8 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     assert.deepEqual(signedReceipt.rows[0], {
       consumption_state: "consumed",
       release_status: "release_attempted",
+      response_handoff_state: "accepted_in_process",
+      handoff_recorded: true,
       consumed: true
     });
     await runtimePoolB.end();
@@ -1453,10 +1601,12 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
       "one offline-verified signed token pair traversed durable authorization, protected retrieval, release recheck, exact receipt consumption, buffer clearing, and restart-persistent replay denial"
     );
 
+    acceptedInProcessResponse = undefined;
     const successfulRuntime = new DurableMemoryOnlyRuntime({
       authority: authorityA,
       pool: runtimePoolA,
-      processReleaseSecret: randomBytes(32)
+      processReleaseSecret: randomBytes(32),
+      writeResponse: acceptInProcess
     });
     const successfulExecution = await successfulRuntime.search({
       transport: makeTransport("replay_story2_successful_release_0001"),
@@ -1467,14 +1617,22 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
       },
       traceId: randomUUID()
     });
-    assert.equal(successfulExecution.results.length, 1);
-    assert.equal(successfulExecution.releaseStatus, "release_attempted");
+    assert.equal(successfulExecution.results.length, 0);
+    assert.equal(successfulExecution.releaseStatus, "accepted_in_process");
+    const acceptedResponse = JSON.parse(
+      requireAcceptedInProcessResponse().toString("utf8")
+    ) as { data?: { results?: unknown[] } };
+    assert.equal(acceptedResponse.data?.results?.length, 1);
     const consumedReceipt = await targetAdminPool.query<{
       consumption_state: string;
       release_status: string;
+      response_handoff_state: string;
+      handoff_recorded: boolean;
       consumed: boolean;
     }>(
-      `SELECT consumption_state, release_status, consumed_at IS NOT NULL AS consumed
+      `SELECT consumption_state, release_status, response_handoff_state,
+              response_handoff_recorded_at IS NOT NULL AS handoff_recorded,
+              consumed_at IS NOT NULL AS consumed
          FROM source_wire_memory.protected_read_receipts
         WHERE receipt_id = $1`,
       [successfulExecution.receipt.receiptId]
@@ -1482,6 +1640,8 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     assert.deepEqual(consumedReceipt.rows[0], {
       consumption_state: "consumed",
       release_status: "release_attempted",
+      response_handoff_state: "accepted_in_process",
+      handoff_recorded: true,
       consumed: true
     });
     const serializedByteCount = successfulExecution.serializedResponse.byteLength;
@@ -1494,7 +1654,342 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
     );
     pass(
       "GB-AUTH-04",
-      "durable PostgreSQL runtime retrieved one protected result, atomically consumed its exact receipt, and cleared the returned execution buffer"
+      "durable PostgreSQL runtime retrieved one protected result, atomically consumed its exact receipt, recorded accepted in-process handoff, and cleared the returned execution buffer"
+    );
+
+    const failedFinalizations: Array<{
+      context: DurableMemoryOnlyReleaseContext;
+      receipt: ProtectedReadReceiptBinding;
+      processReleaseSecret: Buffer;
+      outcome: DurableMemoryOnlyHandoffOutcome;
+    }> = [];
+    const failedHandoffAuthority: DurableMemoryOnlyAuthorizationAuthority = {
+      authorizeSearch: (input) => authorityA.authorizeSearch(input),
+      lockAuthorizedRetrieval: (context, client) =>
+        authorityA.lockAuthorizedRetrieval(context, client),
+      consumeAuthorizedRelease: (context, receipt, processReleaseSecret) =>
+        authorityA.consumeAuthorizedRelease(
+          context,
+          receipt,
+          processReleaseSecret
+        ),
+      async finalizeResponseHandoff(
+        context,
+        receipt,
+        processReleaseSecret,
+        outcome
+      ) {
+        assert.equal(receipt.formatVersion, 2);
+        if (receipt.formatVersion !== 2) {
+          throw new Error("story2_gate_b_receipt_format_invalid");
+        }
+        const finalizationSql =
+          `SELECT source_wire_memory.finalize_gate_b_memory_protected_read_handoff(
+             $1::uuid, $2::uuid, $3::varchar, $4::varchar, $5::varchar
+           ) AS finalized`;
+        const wrongVerifier = await runtimePoolA!.query<{ finalized: boolean }>(
+          finalizationSql,
+          [
+            receipt.receiptId,
+            receipt.authorizationId,
+            receipt.authorizationContextDigest,
+            "0".repeat(64),
+            outcome
+          ]
+        );
+        assert.equal(wrongVerifier.rows[0]?.finalized, false);
+        const wrongContext = await runtimePoolA!.query<{ finalized: boolean }>(
+          finalizationSql,
+          [
+            receipt.receiptId,
+            receipt.authorizationId,
+            "0".repeat(64),
+            computeOriginProcessVerifier(processReleaseSecret, receipt),
+            outcome
+          ]
+        );
+        assert.equal(wrongContext.rows[0]?.finalized, false);
+        failedFinalizations.push({
+          context,
+          receipt,
+          processReleaseSecret: Buffer.from(processReleaseSecret),
+          outcome
+        });
+        const concurrentFinalizations = await Promise.all([
+          authorityA.finalizeResponseHandoff(
+            context,
+            receipt,
+            processReleaseSecret,
+            outcome
+          ),
+          authorityA.finalizeResponseHandoff(
+            context,
+            receipt,
+            processReleaseSecret,
+            outcome
+          )
+        ]);
+        assert.deepEqual(concurrentFinalizations.sort(), [false, true]);
+        return true;
+      }
+    };
+    let failedWriterAlias: Uint8Array | undefined;
+    const failedHandoffRuntime = new DurableMemoryOnlyRuntime({
+      authority: failedHandoffAuthority,
+      pool: runtimePoolA,
+      processReleaseSecret: randomBytes(32),
+      writeResponse(serializedResponse) {
+        failedWriterAlias = new Uint8Array(serializedResponse);
+        throw new Error("story2_synthetic_writer_failure");
+      }
+    });
+    await assert.rejects(
+      failedHandoffRuntime.search({
+        transport: makeTransport("replay_story2_failed_handoff_0001"),
+        request: {
+          namespaceId: "ns_story2_alpha",
+          query: "Synthetic artificial memory",
+          limit: 1
+        },
+        traceId: randomUUID()
+      }),
+      /story2_synthetic_writer_failure/u
+    );
+    assert(failedWriterAlias);
+    assert.equal(failedWriterAlias.every((byte) => byte === 0), true);
+    const failedFinalization = failedFinalizations[0];
+    assert(failedFinalization);
+    const failedReceipt = await targetAdminPool.query<{
+      response_handoff_state: string;
+      handoff_recorded: boolean;
+    }>(
+      `SELECT response_handoff_state,
+              response_handoff_recorded_at IS NOT NULL AS handoff_recorded
+         FROM source_wire_memory.protected_read_receipts
+        WHERE receipt_id = $1`,
+      [failedFinalization.receipt.receiptId]
+    );
+    assert.deepEqual(failedReceipt.rows[0], {
+      response_handoff_state: "failed",
+      handoff_recorded: true
+    });
+    assert.equal(
+      await authorityA.finalizeResponseHandoff(
+        failedFinalization.context,
+        failedFinalization.receipt,
+        failedFinalization.processReleaseSecret,
+        failedFinalization.outcome
+      ),
+      false
+    );
+    await assert.rejects(
+      runtimePoolA.query(
+        `UPDATE source_wire_memory.protected_read_receipts
+            SET response_handoff_state = 'pending',
+                response_handoff_recorded_at = NULL
+          WHERE receipt_id = $1`,
+        [failedFinalization.receipt.receiptId]
+      )
+    );
+    await assert.rejects(
+      targetAdminPool.query(
+        `UPDATE source_wire_memory.protected_read_receipts
+            SET response_handoff_state = 'pending',
+                response_handoff_recorded_at = NULL
+          WHERE receipt_id = $1`,
+        [failedFinalization.receipt.receiptId]
+      )
+    );
+    await assert.rejects(
+      targetAdminPool.query(
+        `DELETE FROM source_wire_memory.protected_read_receipts
+          WHERE receipt_id = $1`,
+        [failedFinalization.receipt.receiptId]
+      )
+    );
+    pass(
+      "GB-AUTH-04E",
+      "writer failure durably finalized failed handoff with exactly one concurrent winner; wrong verifier, wrong authorization context, duplicate finalization, runtime-role mutation, direct update, and delete were denied"
+    );
+
+    const recoveryPendingAuthority: DurableMemoryOnlyAuthorizationAuthority = {
+      authorizeSearch: (input) => authorityA.authorizeSearch(input),
+      lockAuthorizedRetrieval: (context, client) =>
+        authorityA.lockAuthorizedRetrieval(context, client),
+      consumeAuthorizedRelease: (context, receipt, processReleaseSecret) =>
+        authorityA.consumeAuthorizedRelease(
+          context,
+          receipt,
+          processReleaseSecret
+        ),
+      async finalizeResponseHandoff(_context, receipt) {
+        pendingRecoveryReceiptId = receipt.receiptId;
+        return false;
+      }
+    };
+    const recoveryPendingRuntime = new DurableMemoryOnlyRuntime({
+      authority: recoveryPendingAuthority,
+      pool: runtimePoolA,
+      processReleaseSecret: randomBytes(32),
+      writeResponse(serializedResponse) {
+        assert.equal(serializedResponse.byteLength > 0, true);
+        return "accepted_in_process";
+      }
+    });
+    await assert.rejects(
+      recoveryPendingRuntime.search({
+        transport: makeTransport("replay_story2_pending_recovery_0001"),
+        request: {
+          namespaceId: "ns_story2_alpha",
+          query: "Synthetic artificial memory",
+          limit: 1
+        },
+        traceId: randomUUID()
+      }),
+      (error: unknown) =>
+        error instanceof Error && error.message === "operation_unavailable"
+    );
+    assert.notEqual(pendingRecoveryReceiptId, "");
+    const pendingRecoveryReceipt = await targetAdminPool.query<{
+      consumption_state: string;
+      release_status: string;
+      response_handoff_state: string;
+      handoff_recorded: boolean;
+    }>(
+      `SELECT consumption_state, release_status, response_handoff_state,
+              response_handoff_recorded_at IS NOT NULL AS handoff_recorded
+         FROM source_wire_memory.protected_read_receipts
+        WHERE receipt_id = $1`,
+      [pendingRecoveryReceiptId]
+    );
+    assert.deepEqual(pendingRecoveryReceipt.rows[0], {
+      consumption_state: "consumed",
+      release_status: "release_attempted",
+      response_handoff_state: "pending",
+      handoff_recorded: false
+    });
+    pass(
+      "GB-AUTH-04F",
+      "an accepted writer with uncertain PostgreSQL finalization returned no execution and left a consumed pending receipt for truthful recovery"
+    );
+
+    const operationalLoadCount = 128;
+    const operationalLoadBefore = await targetAdminPool.query<{
+      authorization_count: string;
+      receipt_count: string;
+      relation_bytes: string;
+    }>(
+      `SELECT
+         (SELECT count(*)::text
+            FROM source_wire_memory.gate_b_memory_authorization_events)
+           AS authorization_count,
+         (SELECT count(*)::text
+            FROM source_wire_memory.protected_read_receipts)
+           AS receipt_count,
+         (
+           pg_catalog.pg_total_relation_size(
+             'source_wire_memory.gate_b_memory_authorization_events'
+           ) +
+           pg_catalog.pg_total_relation_size(
+             'source_wire_memory.protected_read_receipts'
+           )
+         )::text AS relation_bytes`
+    );
+    const loadRuntime = new DurableMemoryOnlyRuntime({
+      authority: authorityA,
+      pool: runtimePoolA,
+      processReleaseSecret: randomBytes(32),
+      writeResponse: acceptInProcess
+    });
+    const operationalLoadStartedAt = Date.now();
+    for (let index = 0; index < operationalLoadCount; index += 1) {
+      const execution = await loadRuntime.search({
+        transport: makeTransport(
+          `replay_story2_operational_load_${index.toString().padStart(4, "0")}`
+        ),
+        request: {
+          namespaceId: "ns_story2_alpha",
+          query: "Synthetic artificial memory",
+          limit: 1
+        },
+        traceId: randomUUID()
+      });
+      assert.equal(execution.releaseStatus, "accepted_in_process");
+    }
+    const operationalLoadElapsedMs = Date.now() - operationalLoadStartedAt;
+    const operationalLoadAfter = await targetAdminPool.query<{
+      authorization_count: string;
+      receipt_count: string;
+      accepted_count: string;
+      relation_bytes: string;
+    }>(
+      `SELECT
+         (SELECT count(*)::text
+            FROM source_wire_memory.gate_b_memory_authorization_events)
+           AS authorization_count,
+         (SELECT count(*)::text
+            FROM source_wire_memory.protected_read_receipts)
+           AS receipt_count,
+         (SELECT count(*)::text
+            FROM source_wire_memory.protected_read_receipts
+           WHERE response_handoff_state = 'accepted_in_process')
+           AS accepted_count,
+         (
+           pg_catalog.pg_total_relation_size(
+             'source_wire_memory.gate_b_memory_authorization_events'
+           ) +
+           pg_catalog.pg_total_relation_size(
+             'source_wire_memory.protected_read_receipts'
+           )
+         )::text AS relation_bytes`
+    );
+    assert.equal(
+      Number(operationalLoadAfter.rows[0]?.authorization_count),
+      Number(operationalLoadBefore.rows[0]?.authorization_count) +
+        operationalLoadCount
+    );
+    assert.equal(
+      Number(operationalLoadAfter.rows[0]?.receipt_count),
+      Number(operationalLoadBefore.rows[0]?.receipt_count) + operationalLoadCount
+    );
+    assert.equal(
+      Number(operationalLoadAfter.rows[0]?.accepted_count) >= operationalLoadCount,
+      true
+    );
+    assert.equal(operationalLoadElapsedMs <= 60_000, true);
+    assert.equal(
+      Number(operationalLoadAfter.rows[0]?.relation_bytes) -
+        Number(operationalLoadBefore.rows[0]?.relation_bytes) <=
+        16 * 1024 * 1024,
+      true
+    );
+    await targetAdminPool.query(
+      `VACUUM (ANALYZE)
+         source_wire_memory.gate_b_memory_authorization_events,
+         source_wire_memory.protected_read_receipts`
+    );
+    const vacuumEvidence = await targetAdminPool.query<{
+      relation_name: string;
+      dead_tuple_count: string;
+      vacuum_recorded: boolean;
+    }>(
+      `SELECT relname AS relation_name,
+              n_dead_tup::text AS dead_tuple_count,
+              last_vacuum IS NOT NULL AS vacuum_recorded
+         FROM pg_catalog.pg_stat_user_tables
+        WHERE schemaname = 'source_wire_memory'
+          AND relname = ANY($1::text[])
+        ORDER BY relname`,
+      [["gate_b_memory_authorization_events", "protected_read_receipts"]]
+    );
+    assert.equal(vacuumEvidence.rows.length, 2);
+    for (const relation of vacuumEvidence.rows) {
+      assert.equal(relation.vacuum_recorded, true);
+      assert.equal(Number(relation.dead_tuple_count) <= 1, true);
+    }
+    pass(
+      "GB-AUTH-04H",
+      `128 complete Gate B operations added exact authorization and receipt rows in ${operationalLoadElapsedMs}ms, stayed within 16 MiB relation growth, and explicit vacuum left no material dead tuples`
     );
 
     const releaseAuthorizationSql =
@@ -1526,23 +2021,44 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
       authorized: boolean;
     }>(releaseAuthorizationSql, releaseAuthorizationValues);
     assert.equal(exactReleaseAuthorization.rows[0]?.authorized, true);
+    assert.equal(successfulExecution.receipt.formatVersion, 2);
+    if (successfulExecution.receipt.formatVersion !== 2) {
+      throw new Error("story2_gate_b_receipt_format_invalid");
+    }
+    const successfulReceipt = successfulExecution.receipt;
     const exactReleaseContext = {
-      credentialId: searchHarness.credentialId,
-      ownerId: "owner_story2",
-      principalId: "principal_story2_daniel",
-      adapterId: "adapter_story2_hermes",
-      clientId,
-      sessionId,
-      credentialAudience: "source_wire_memory",
-      authorizationEpoch: "1",
-      deletionEpoch: "0",
-      namespaceId: "ns_story2_alpha",
-      destinationDigest,
-      audienceChainDigest,
-      senderThumbprintDigest,
-      nonceDigest,
-      requestMethod: "POST",
-      requestUri: "/v1alpha1/trusted-memories/search"
+      authorizationId: successfulReceipt.authorizationId,
+      authorizationContextDigest: successfulReceipt.authorizationContextDigest,
+      credentialId: successfulReceipt.actorCredentialId,
+      ownerId: successfulReceipt.ownerId,
+      actorIdentityId: successfulReceipt.actorIdentityId,
+      authenticationEpochId: successfulReceipt.authenticationEpochId,
+      principalId: successfulReceipt.principalId,
+      adapterId: successfulReceipt.adapterId,
+      clientId: successfulReceipt.clientId,
+      sessionId: successfulReceipt.sessionId,
+      credentialAudience: successfulReceipt.credentialAudience,
+      namespaceId: successfulReceipt.namespaceId,
+      capability: successfulReceipt.capability,
+      authorizationEpoch: successfulReceipt.authorizationEpoch,
+      deletionEpoch: successfulReceipt.deletionEpoch,
+      credentialIssuedAt: successfulReceipt.credentialIssuedAt,
+      credentialExpiresAt: successfulReceipt.credentialExpiresAt,
+      sessionIssuedAt: successfulReceipt.sessionIssuedAt,
+      sessionExpiresAt: successfulReceipt.sessionExpiresAt,
+      credentialStatus: successfulReceipt.credentialStatus,
+      clientState: successfulReceipt.clientState,
+      sessionState: successfulReceipt.sessionState,
+      grantState: successfulReceipt.grantState,
+      destinationDigest: successfulReceipt.destinationDigest,
+      audienceChainDigest: successfulReceipt.audienceChainDigest,
+      senderBindingKind: successfulReceipt.senderBindingKind,
+      senderThumbprintDigest: successfulReceipt.senderThumbprintDigest,
+      nonceDigest: successfulReceipt.nonceDigest,
+      replayIdDigest: successfulReceipt.replayIdDigest,
+      proofIssuedAt: successfulReceipt.proofIssuedAt,
+      requestMethod: successfulReceipt.requestMethod,
+      requestUri: successfulReceipt.requestUri
     } as const;
     for (let iteration = 0; iteration < 24; iteration += 1) {
       const releaseClient = await runtimePoolB.connect();
@@ -1635,12 +2151,25 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
           context,
           receipt,
           processReleaseSecret
+        ),
+      finalizeResponseHandoff: (
+        context,
+        receipt,
+        processReleaseSecret,
+        outcome
+      ) =>
+        authorityA.finalizeResponseHandoff(
+          context,
+          receipt,
+          processReleaseSecret,
+          outcome
         )
     };
     const preQueryRevocationRuntime = new DurableMemoryOnlyRuntime({
       authority: preQueryRevokingAuthority,
       pool: runtimePoolA,
-      processReleaseSecret: randomBytes(32)
+      processReleaseSecret: randomBytes(32),
+      writeResponse: acceptInProcess
     });
     await assert.rejects(
       preQueryRevocationRuntime.search({
@@ -1685,12 +2214,25 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
           context,
           receipt,
           processReleaseSecret
+        ),
+      finalizeResponseHandoff: (
+        context,
+        receipt,
+        processReleaseSecret,
+        outcome
+      ) =>
+        failedReleaseAuthority.finalizeResponseHandoff(
+          context,
+          receipt,
+          processReleaseSecret,
+          outcome
         )
     };
     const outageRuntime = new DurableMemoryOnlyRuntime({
       authority: outageAuthority,
       pool: runtimePoolA,
-      processReleaseSecret: randomBytes(32)
+      processReleaseSecret: randomBytes(32),
+      writeResponse: acceptInProcess
     });
     let outageClearSnapshot:
       | {
@@ -1752,12 +2294,25 @@ async function gateBDurableAuthorizationProbes(): Promise<void> {
           receipt,
           processReleaseSecret
         );
-      }
+      },
+      finalizeResponseHandoff: (
+        context,
+        receipt,
+        processReleaseSecret,
+        outcome
+      ) =>
+        authorityA.finalizeResponseHandoff(
+          context,
+          receipt,
+          processReleaseSecret,
+          outcome
+        )
     };
     const durableRuntime = new DurableMemoryOnlyRuntime({
       authority: revokingAuthority,
       pool: runtimePoolA,
-      processReleaseSecret: randomBytes(32)
+      processReleaseSecret: randomBytes(32),
+      writeResponse: acceptInProcess
     });
     let clearSnapshot:
       | {
@@ -3981,7 +4536,8 @@ async function writeReport(): Promise<void> {
       "migrations/0004_story4_lifecycle_portability.sql",
       "migrations/0005_story5_knowledge_provider_host.sql",
       "migrations/0006_story5_exact_evidence_fetch.sql",
-      "migrations/0007_gate_b_durable_memory_authorization.sql"
+      "migrations/0007_gate_b_durable_memory_authorization.sql",
+      "migrations/0008_gate_b_durable_receipt_handoff.sql"
     ].map(async (path) => ({
       path,
       sha256: createHash("sha256")
@@ -4002,7 +4558,8 @@ async function writeReport(): Promise<void> {
     },
     environment: {
       node: process.version,
-      postgresqlMajor: 16,
+      postgresqlMajor: expectedPostgresMajor,
+      postgresqlVersionNum: postgresqlVersionNum || null,
       dataClass: "generated_disposable_only",
       apiListener: "literal_loopback_only",
       mcpTransport: "stdio_only"
@@ -4019,6 +4576,7 @@ async function writeReport(): Promise<void> {
     },
     failure: failure
       ? {
+          stage: activeStage,
           kind: failure instanceof Error ? failure.name : "UnknownError",
           message: redactFailure(
             failure instanceof Error ? failure.message : "unknown failure"
@@ -4060,11 +4618,14 @@ async function computeSourceTreeDigest(commit: string): Promise<string> {
     .update("\0", "utf8")
     .update(trackedDiff.stdout, "utf8");
   for (const path of paths) {
+    const resolvedPath = resolve(repoRoot, path);
     digest
       .update("\0", "utf8")
       .update(path, "utf8")
       .update("\0", "utf8")
-      .update(await readFile(resolve(repoRoot, path)));
+      .update(String((await stat(resolvedPath)).mode & 0o111), "utf8")
+      .update("\0", "utf8")
+      .update(await readFile(resolvedPath));
   }
   return digest.digest("hex");
 }

@@ -39,7 +39,7 @@ It is not a full memory backend, hosted service, or production runtime.
 `apps/alpha1-runtime/` adds local developer-alpha Stories 1 through 4 that are not part of `@source-wire/contracts@0.1.0`:
 
 - Hono API bound only to literal loopback addresses.
-- Exact forward-only PostgreSQL 16 migration chain.
+- Exact forward-only PostgreSQL 18.4 authoritative migration chain, with PostgreSQL 16 available only through explicit compatibility selection.
 - Separate migration and runtime role posture.
 - Fresh initialization of one explicit owner and two or more explicit namespaces.
 - One-time owner-admin and harness credentials backed by an external-keyed verifier.

@@ -11,7 +11,9 @@ service, production runtime, GitHub release, or stable release.
 ## Compatibility
 
 - Node.js `22.23.1`
-- PostgreSQL `16.x`
+- PostgreSQL `18.4` authoritative target
+- PostgreSQL `16.x` compatibility target, selected explicitly with
+  `SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR=16`
 - stdio MCP only
 - `@source-wire/contracts@0.2.0`
 - `KnowledgeProvider v1`
@@ -87,7 +89,8 @@ Supported for this public Alpha:
 
 - local macOS or Linux evaluation
 - synthetic or disposable data
-- disposable PostgreSQL 16.x
+- disposable PostgreSQL 18.4
+- disposable PostgreSQL 16.x only through the explicit compatibility selection
 - stdio MCP
 - loopback-only API composition started by the local CLI
 - synthetic `KnowledgeProvider v1` conformance

@@ -28,6 +28,7 @@ import {
   migrationPlanResult
 } from "./database.js";
 import { exportLocalPortableState } from "./export.js";
+import { readPostgresCompatibilityMajor } from "../migration.js";
 
 export type SourceWireLocalCliExecution = Readonly<{
   exitCode: 0 | 1;
@@ -185,7 +186,14 @@ export async function runSourceWireLocalCli(
         config.memory.runtimeDatabaseUrlEnv,
         environment
       );
-      const status = await inspectLocalDatabaseStatus(databaseUrl);
+      const compatiblePostgresMajor = parseLocalPostgresCompatibilityMajor(
+        environment
+      );
+      const status = await inspectLocalDatabaseStatus(databaseUrl, {
+        ...(compatiblePostgresMajor === undefined
+          ? {}
+          : { compatiblePostgresMajor })
+      });
       return {
         exitCode: status.state === "compatible" ? 0 : 1,
         format: parsed.values.json ? "json" : "human",
@@ -344,6 +352,16 @@ function requireLocalDatabaseUrl(
     throw new SourceWireLocalCliError("environment_invalid");
   }
   return value;
+}
+
+function parseLocalPostgresCompatibilityMajor(
+  environment: NodeJS.ProcessEnv
+): 16 | undefined {
+  try {
+    return readPostgresCompatibilityMajor(environment);
+  } catch {
+    throw new SourceWireLocalCliError("environment_invalid");
+  }
 }
 
 function parseStory6MigrationFault(

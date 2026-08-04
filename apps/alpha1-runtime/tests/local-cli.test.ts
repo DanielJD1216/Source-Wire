@@ -632,6 +632,82 @@ test("database commands keep status and migration authority explicit before conn
   }
 });
 
+test("database status rejects invalid compatibility selection before connection", async () => {
+  const directory = await privateTemporaryDirectory();
+  try {
+    const configPath = join(directory, "memory-only.json");
+    await writeConfig(configPath, createLocalConfigTemplate());
+    const result = await runSourceWireLocalCli(
+      ["database", "status", "--config", configPath],
+      {
+        SOURCE_WIRE_DATABASE_URL:
+          "postgresql://runtime:unavailable-secret@127.0.0.1:1/disposable",
+        SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR: "18"
+      }
+    );
+    assert.equal(result.exitCode, 1);
+    assert(!result.result.ok);
+    assert.equal(result.result.operation, "local.database.status");
+    assert.equal(result.result.error.code, "environment_invalid");
+    const rendered = renderLocalCliResult(result.result, result.format);
+    assertNonSecretSurface(rendered);
+    assert.doesNotMatch(rendered, /unavailable-secret|127\.0\.0\.1|disposable/u);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("database status renderer exposes only bounded read-only PostgreSQL posture", () => {
+  const result = {
+    ok: true as const,
+    operation: "local.database.status" as const,
+    result: {
+      schema: "source-wire.local-database-status.v1" as const,
+      state: "compatible" as const,
+      schemaState: "compatible" as const,
+      postgresqlVersionNum: 180004,
+      postgresqlSupport: "authoritative_18_4" as const,
+      recoveryState: "primary" as const,
+      inspectionMode: "read_only" as const,
+      currentMigrations: [
+        { version: 8, name: "0008_gate_b_durable_receipt_handoff.sql" }
+      ],
+      targetMigrations: [
+        { version: 8, name: "0008_gate_b_durable_receipt_handoff.sql" }
+      ],
+      pendingMigrations: [],
+      mutationApplied: false as const
+    },
+    warnings: []
+  };
+  const human = renderLocalCliResult(result, "human");
+  assert.equal(
+    human,
+    [
+      "ok local.database.status",
+      "schema source-wire.local-database-status.v1",
+      "state compatible",
+      "schema-state compatible",
+      "postgresql-version-num 180004",
+      "postgresql-support authoritative_18_4",
+      "recovery-state primary",
+      "inspection-mode read_only",
+      "current 8:0008_gate_b_durable_receipt_handoff.sql",
+      "target 8:0008_gate_b_durable_receipt_handoff.sql",
+      "pending none",
+      "mutation-applied false",
+      ""
+    ].join("\n")
+  );
+  const json = renderLocalCliResult(result, "json");
+  assertNonSecretSurface(human);
+  assertNonSecretSurface(json);
+  assert.doesNotMatch(
+    `${human}${json}`,
+    /postgresql:\/\/|password|hostname|databaseName|ready|backup|restore|rpo|rto/iu
+  );
+});
+
 test("database result renderers expose only safe migration identity and mutation state", () => {
   const result = {
     ok: true as const,

@@ -365,7 +365,7 @@ printList([
   "alpha1:conformance:story5:replaceable runs the same 30-case protected local CLI and failure path through the separate public-contract-only synthetic adapter",
   "alpha1:evidence-first-package-smoke verifies the pinned private adapter package identity, exact published contracts dependency, synthetic provider exports, and no-private-runtime boundary",
   "alpha1:conformance:evidence-first runs 32 disposable PostgreSQL cases through the unchanged local provider path and proves ordered search, exact fetch, provider binding, deadline enforcement, zero adapter writes, and zero automatic memory promotion",
-  "alpha1:conformance:story1 runs 42 disposable PostgreSQL cases including Story 6.5 read-only status, explicit migration, role separation, rollback, idempotency, and cleanup",
+  "alpha1:conformance:story1 runs 43 disposable PostgreSQL cases including Story 6.5 bounded read-only PostgreSQL posture, explicit migration, role separation, rollback, idempotency, and cleanup",
   "alpha1:story5:security-gate verifies the temporary local stdio advisory disposition, dependency set, transport exclusions, immutable provider policy, and review deadline",
   "alpha1:ci-workflow-smoke verifies the separate exact-version hosted PostgreSQL conformance job, pinned evidence-first revision, and no-artifact boundary cannot be replaced by unit tests",
   "alpha1:conformance runs all five local Alpha 1 story conformance paths in order and runs Story 5 through both synthetic adapters",

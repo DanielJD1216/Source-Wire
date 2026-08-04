@@ -1,7 +1,8 @@
 # Alpha 1 Story 6.5 Explicit Database Control Plane
 
-Latest source and published local-runtime `0.1.0-alpha.2` add explicit
-database status and migration commands to the `source-wire-local` CLI.
+The `source-wire-local` CLI already includes explicit database status and
+migration commands in its `0.1.0-alpha.2` command surface. Latest source
+extends the bounded status result described below.
 
 This is experimental Alpha proof with generated disposable exact PostgreSQL 18.4 state.
 It does not provision PostgreSQL, support persistent databases, authorize
@@ -36,6 +37,9 @@ Keep the runtime and migrator values separate.
 
 ## Read-Only Status
 
+The command predates this change in the `0.1.0-alpha.2` command surface. The
+bounded PostgreSQL posture fields below are latest-source additions.
+
 Set only the runtime-role database reference:
 
 ```bash
@@ -64,9 +68,22 @@ Status:
 - accepts only the exact `source_wire_runtime` role posture,
 - runs inside a read-only transaction,
 - uses no owner, harness, or provider credential,
-- reports `compatible`, `pending`, or `incompatible`,
+- reports the exact PostgreSQL version number and classifies exact PostgreSQL
+  `18.4` as `authoritative_18_4`,
+- accepts PostgreSQL `16.x` only as `compatibility_16` when
+  `SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR=16` is selected explicitly,
+- reports `primary` or `standby` recovery state and refuses standby as
+  `incompatible`,
+- reports `read_only` inspection mode and refuses a violated read-only
+  invariant as `incompatible`,
+- preserves the separate schema state as `compatible`, `pending`, or
+  `incompatible`,
 - returns `database_unavailable` when PostgreSQL cannot be reached,
 - applies zero migrations.
+
+The JSON result uses the bounded
+`source-wire.local-database-status.v1` schema. It does not claim readiness,
+backup health, restore health, RPO, RTO, or production support.
 
 The output contains safe migration versions and repository migration names. It
 does not contain database URLs, passwords, verifier material, schema
@@ -128,7 +145,8 @@ Generated disposable PostgreSQL proof:
 npm run alpha1:conformance:story1
 ```
 
-Story 1 now passes 42 cases. The Story 6.5 cases are:
+Story 1 now passes 43 cases on both explicit PostgreSQL `16.x` compatibility
+and exact PostgreSQL `18.4` authority. The Story 6.5 cases are:
 
 - `S6-DB-01`, init, doctor, provider check, and MCP startup apply no
   migrations,
@@ -137,7 +155,10 @@ Story 1 now passes 42 cases. The Story 6.5 cases are:
 - `S6-DB-03`, migration requires `--apply` plus exact migrator authority and
   rejects missing, wrong-class, and over-privileged authority,
 - `S6-DB-04`, the safe plan is visible, an injected failure rolls back,
-  first apply succeeds, and replay is idempotent.
+  first apply succeeds, and replay is idempotent,
+- `S6-DB-05`, runtime-role status reports PostgreSQL support classification,
+  primary recovery state, read-only inspection, zero mutation, and no locator
+  disclosure.
 
 The temporary config files, database, roles, sessions, and generated
 credentials are removed by conformance cleanup.
@@ -146,6 +167,8 @@ credentials are removed by conformance cleanup.
 
 - managed PostgreSQL provisioning,
 - non-disposable or production databases,
+- physical backup, point-in-time recovery, and restore-drill policy,
+- production capacity, alert, RPO, and RTO thresholds,
 - production migrations,
 - external or live knowledge providers,
 - hosted API or hosted MCP,

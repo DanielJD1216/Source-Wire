@@ -192,36 +192,61 @@ export function renderLocalCliResult(
     ].join("\n") + "\n";
   }
 
-  if (
-    result.operation === "local.database.status" ||
-    result.operation === "local.database.migrate"
-  ) {
+  if (result.operation === "local.database.status") {
+    const value = result.result as {
+      schema: "source-wire.local-database-status.v1";
+      state: "compatible" | "pending" | "incompatible";
+      schemaState: "compatible" | "pending" | "incompatible";
+      postgresqlVersionNum: number;
+      postgresqlSupport:
+        | "authoritative_18_4"
+        | "compatibility_16"
+        | "unsupported";
+      recoveryState: "primary" | "standby";
+      inspectionMode: "read_only" | "invalid";
+      currentMigrations: ReadonlyArray<{ version: number; name: string }>;
+      targetMigrations: ReadonlyArray<{ version: number; name: string }>;
+      pendingMigrations: ReadonlyArray<{ version: number; name: string }>;
+      mutationApplied: false;
+    };
+    return [
+      `ok ${result.operation}`,
+      `schema ${value.schema}`,
+      `state ${value.state}`,
+      `schema-state ${value.schemaState}`,
+      `postgresql-version-num ${value.postgresqlVersionNum}`,
+      `postgresql-support ${value.postgresqlSupport}`,
+      `recovery-state ${value.recoveryState}`,
+      `inspection-mode ${value.inspectionMode}`,
+      `current ${renderMigrationSet(value.currentMigrations)}`,
+      `target ${renderMigrationSet(value.targetMigrations)}`,
+      `pending ${renderMigrationSet(value.pendingMigrations)}`,
+      `mutation-applied ${value.mutationApplied}`
+    ].join("\n") + "\n";
+  }
+
+  if (result.operation === "local.database.migrate") {
     const value = result.result as {
       state: "compatible" | "pending" | "incompatible";
       currentMigrations: ReadonlyArray<{ version: number; name: string }>;
       targetMigrations: ReadonlyArray<{ version: number; name: string }>;
       pendingMigrations: ReadonlyArray<{ version: number; name: string }>;
       mutationApplied: boolean;
-      applyRequired?: boolean;
-      applyRequested?: boolean;
-      migrationResult?: "not_applied" | "applied" | "already_applied";
+      applyRequired: boolean;
+      applyRequested: boolean;
+      migrationResult: "not_applied" | "applied" | "already_applied";
     };
-    const lines = [
+    return [
       `ok ${result.operation}`,
       `state ${value.state}`,
       `current ${renderMigrationSet(value.currentMigrations)}`,
       `target ${renderMigrationSet(value.targetMigrations)}`,
       `pending ${renderMigrationSet(value.pendingMigrations)}`,
-      `mutation-applied ${value.mutationApplied}`
-    ];
-    if (result.operation === "local.database.migrate") {
-      lines.push(
-        `apply-required ${value.applyRequired}`,
-        `apply-requested ${value.applyRequested}`,
-        `migration-result ${value.migrationResult}`
-      );
-    }
-    return `${lines.join("\n")}\n`;
+      `mutation-applied ${value.mutationApplied}`,
+      `apply-required ${value.applyRequired}`,
+      `apply-requested ${value.applyRequested}`,
+      `migration-result ${value.migrationResult}`
+    ].join("\n") + "\n";
   }
 
   if (result.operation === "local.export") {

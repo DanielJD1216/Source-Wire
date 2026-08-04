@@ -20,7 +20,7 @@ This workspace is not part of `@source-wire/contracts@0.1.0`. It remains unpubli
 
 - Node.js `22.23.1`
 - npm
-- local PostgreSQL `16`
+- local exact PostgreSQL `18.4`
 - a PostgreSQL operator account allowed to create and remove disposable roles and a disposable database
 - synthetic generated data only
 

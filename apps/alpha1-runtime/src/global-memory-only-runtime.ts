@@ -23,6 +23,7 @@ export type MemoryOnlySearchExecutor = (
   options: {
     processReleaseSecret: Buffer;
     startedAtMs: number;
+    gateBReleaseContext?: Readonly<Record<string, unknown>>;
     signal?: AbortSignal;
     onStage?: ProtectedReadStageHook;
     beforeProtectedRead?: (client: pg.PoolClient) => Promise<void>;

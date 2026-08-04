@@ -39,7 +39,10 @@ including PostgreSQL `statement_timeout`.
 
 ## Verification Scope
 
-Use Node.js `22.23.1` and PostgreSQL `16.x`. Follow the
+Use Node.js `22.23.1` and exact PostgreSQL `18.4` as the authoritative target.
+PostgreSQL `16.x` remains an explicit compatibility target only when
+`SOURCE_WIRE_EXPECTED_POSTGRES_MAJOR=16` and
+`SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR=16` are selected. Follow the
 [Quickstart](../getting-started/quickstart.md) for repository setup before
 running these commands.
 
@@ -57,8 +60,9 @@ npm run local-runtime:candidate-conformance
 npm run publish:readiness
 ```
 
-Full conformance requires exact Node.js `22.23.1`, PostgreSQL `16`, generated
-disposable state, and cleanup proof.
+Full conformance requires exact Node.js `22.23.1`, authoritative exact
+PostgreSQL `18.4`, explicit PostgreSQL `16` compatibility, generated disposable
+state, and cleanup proof.
 
 ## Registry Evidence
 

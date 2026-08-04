@@ -264,15 +264,7 @@ export async function recoverPhysicalBackup(
         WHERE status <> 'revoked'`,
       [occurredAt]
     );
-    await client.query(
-      `UPDATE source_wire_memory.protected_read_receipts
-          SET consumption_state = 'invalidated',
-              release_status = 'recovery_invalidated',
-              consumed_at = $1
-        WHERE consumption_state = 'issued'
-          AND release_status = 'release_authorized'`,
-      [occurredAt]
-    );
+    await invalidateProtectedReadReceiptsForPhysicalRecovery(client, occurredAt);
     await client.query(
       `INSERT INTO source_wire_memory.restore_receipts (
          restore_receipt_id,
@@ -379,6 +371,48 @@ export async function recoverPhysicalBackup(
   } finally {
     client.release();
   }
+}
+
+export async function invalidateProtectedReadReceiptsForPhysicalRecovery(
+  client: pg.PoolClient,
+  occurredAt: Date
+): Promise<void> {
+  await client.query(
+    `UPDATE source_wire_memory.protected_read_receipts
+        SET consumption_state = CASE
+              WHEN consumption_state = 'issued' THEN 'invalidated'
+              ELSE consumption_state
+            END,
+            release_status = CASE
+              WHEN release_status = 'release_authorized'
+                THEN 'recovery_invalidated'
+              ELSE release_status
+            END,
+            consumed_at = coalesce(consumed_at, $1),
+            response_handoff_state = CASE
+              WHEN format_version = 2
+               AND response_handoff_state = 'pending'
+                THEN 'failed'
+              ELSE response_handoff_state
+            END,
+            response_handoff_recorded_at = CASE
+              WHEN format_version = 2
+               AND response_handoff_state = 'pending'
+                THEN $1
+              ELSE response_handoff_recorded_at
+            END
+      WHERE (
+        consumption_state = 'issued'
+        AND release_status = 'release_authorized'
+      )
+      OR (
+        format_version = 2
+        AND consumption_state = 'consumed'
+        AND release_status = 'release_attempted'
+        AND response_handoff_state = 'pending'
+      )`,
+    [occurredAt]
+  );
 }
 
 export async function verifyRecoveredInstallation(

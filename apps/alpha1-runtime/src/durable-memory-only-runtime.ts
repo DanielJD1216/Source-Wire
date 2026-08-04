@@ -31,6 +31,17 @@ export type DurableMemoryOnlyAuthorization = Readonly<{
   releaseContext: DurableMemoryOnlyReleaseContext;
 }>;
 
+export type DurableMemoryOnlyHandoffOutcome =
+  | "accepted_in_process"
+  | "failed";
+
+export type DurableMemoryOnlyHandoffExecution = Omit<
+  TrustedMemorySearchExecution,
+  "releaseStatus"
+> & {
+  releaseStatus: "accepted_in_process";
+};
+
 export interface DurableMemoryOnlyAuthorizationAuthority {
   authorizeSearch(input: {
     transport: DurableMemoryOnlyTransportContext;
@@ -47,6 +58,13 @@ export interface DurableMemoryOnlyAuthorizationAuthority {
     receipt: ProtectedReadReceiptBinding,
     processReleaseSecret: Buffer
   ): Promise<boolean>;
+
+  finalizeResponseHandoff(
+    context: DurableMemoryOnlyReleaseContext,
+    receipt: ProtectedReadReceiptBinding,
+    processReleaseSecret: Buffer,
+    outcome: DurableMemoryOnlyHandoffOutcome
+  ): Promise<boolean>;
 }
 
 export class DurableMemoryOnlyRuntime {
@@ -54,6 +72,9 @@ export class DurableMemoryOnlyRuntime {
   readonly #pool: pg.Pool;
   readonly #processReleaseSecret: Buffer;
   readonly #executeSearch: MemoryOnlySearchExecutor;
+  readonly #writeResponse: (
+    serializedResponse: ArrayBuffer
+  ) => "accepted_in_process";
   readonly #now: () => number;
 
   constructor(options: {
@@ -61,6 +82,9 @@ export class DurableMemoryOnlyRuntime {
     pool: pg.Pool;
     processReleaseSecret: Buffer;
     executeSearch?: MemoryOnlySearchExecutor;
+    writeResponse: (
+      serializedResponse: ArrayBuffer
+    ) => "accepted_in_process";
     now?: () => number;
   }) {
     if (options.processReleaseSecret.length !== 32) {
@@ -70,6 +94,7 @@ export class DurableMemoryOnlyRuntime {
     this.#pool = options.pool;
     this.#processReleaseSecret = Buffer.from(options.processReleaseSecret);
     this.#executeSearch = options.executeSearch ?? executeTrustedMemorySearch;
+    this.#writeResponse = options.writeResponse;
     this.#now = options.now ?? Date.now;
   }
 
@@ -79,7 +104,7 @@ export class DurableMemoryOnlyRuntime {
     traceId: string;
     signal?: AbortSignal;
     onStage?: ProtectedReadStageHook;
-  }): Promise<TrustedMemorySearchExecution> {
+  }): Promise<DurableMemoryOnlyHandoffExecution> {
     const startedAtMs = this.#now();
     if (!Number.isSafeInteger(startedAtMs) || startedAtMs < 0) {
       throw new SafeError("operation_unavailable", 503, true);
@@ -100,6 +125,7 @@ export class DurableMemoryOnlyRuntime {
       {
         processReleaseSecret: this.#processReleaseSecret,
         startedAtMs,
+        gateBReleaseContext: authorized.releaseContext,
         beforeProtectedRead: async (client) => {
           fenceCalls += 1;
           if (fenceCalls !== 1) {
@@ -130,6 +156,46 @@ export class DurableMemoryOnlyRuntime {
       execution.clear();
       throw new SafeError("release_binding_invalid", 503, true);
     }
-    return execution;
+
+    const handoffBuffer = new ArrayBuffer(execution.serializedResponse.byteLength);
+    const handoffBytes = new Uint8Array(handoffBuffer);
+    handoffBytes.set(execution.serializedResponse);
+    let writerError: unknown;
+    let outcome: DurableMemoryOnlyHandoffOutcome = "failed";
+    try {
+      const accepted: unknown = this.#writeResponse(handoffBuffer);
+      if (accepted !== "accepted_in_process") {
+        throw new SafeError("operation_unavailable", 503, true);
+      }
+      outcome = "accepted_in_process";
+    } catch (error) {
+      writerError = error;
+    }
+
+    let finalized = false;
+    try {
+      finalized = await this.#authority.finalizeResponseHandoff(
+        authorized.releaseContext,
+        execution.receipt,
+        this.#processReleaseSecret,
+        outcome
+      );
+    } catch {
+      finalized = false;
+    } finally {
+      handoffBytes.fill(0);
+      execution.clear();
+    }
+
+    if (!finalized) {
+      throw new SafeError("operation_unavailable", 503, true);
+    }
+    if (writerError !== undefined) {
+      throw writerError;
+    }
+    return {
+      ...execution,
+      releaseStatus: "accepted_in_process"
+    };
   }
 }

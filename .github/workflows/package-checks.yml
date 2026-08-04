@@ -46,13 +46,27 @@ jobs:
         run: npm run publish:readiness
 
   alpha-postgres-conformance:
-    name: Source-Wire Alpha PostgreSQL conformance
+    name: Source-Wire Alpha PostgreSQL conformance (${{ matrix.label }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: authoritative-18.4
+            image: "18.4"
+            expected_major: "18"
+            expected_version_num: "180004"
+            compatibility_major: ""
+          - label: compatibility-16
+            image: "16"
+            expected_major: "16"
+            expected_version_num: ""
+            compatibility_major: "16"
 
     services:
       postgres:
-        image: postgres:16
+        image: postgres:${{ matrix.image }}
         env:
           POSTGRES_DB: postgres
           POSTGRES_USER: postgres
@@ -105,6 +119,9 @@ jobs:
 
       - name: Run Alpha PostgreSQL conformance
         env:
+          EXPECTED_POSTGRES_MAJOR: ${{ matrix.expected_major }}
+          EXPECTED_POSTGRES_VERSION_NUM: ${{ matrix.expected_version_num }}
+          POSTGRES_COMPATIBILITY_MAJOR: ${{ matrix.compatibility_major }}
           PGDATABASE: postgres
           PGHOST: 127.0.0.1
           PGPASSWORD: source_wire_ci_${{ github.run_id }}_${{ github.run_attempt }}
@@ -114,9 +131,20 @@ jobs:
           set -Eeuo pipefail
           trap 'status=$?; echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_FAILED status=${status}"; exit "${status}"' ERR
           test "$(node --version)" = "v22.23.1"
-          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN node=v22.23.1 postgres=16 stories=1-5 providers=baseline,replaceable,evidence-first candidate=local-runtime-alpha.2 data=generated_disposable"
+          export SOURCE_WIRE_EXPECTED_POSTGRES_MAJOR="$EXPECTED_POSTGRES_MAJOR"
+          if [[ -n "$EXPECTED_POSTGRES_VERSION_NUM" ]]; then
+            export SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM="$EXPECTED_POSTGRES_VERSION_NUM"
+          else
+            unset SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM
+          fi
+          if [[ -n "$POSTGRES_COMPATIBILITY_MAJOR" ]]; then
+            export SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR="$POSTGRES_COMPATIBILITY_MAJOR"
+          else
+            unset SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR
+          fi
+          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_BEGIN node=v22.23.1 postgres=${{ matrix.label }} stories=1-5 providers=baseline,replaceable,evidence-first candidate=local-runtime-alpha.2 data=generated_disposable"
           npm run alpha1:story5:security-gate
           npm run alpha1:conformance
           npm run alpha1:conformance:evidence-first
           npm run local-runtime:candidate-conformance
-          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS node=v22.23.1 postgres=16 stories=1-5 providers=baseline,replaceable,evidence-first candidate=local-runtime-alpha.2 cleanup=verified"
+          echo "SOURCE_WIRE_ALPHA_POSTGRES_GATE_SUCCESS node=v22.23.1 postgres=${{ matrix.label }} stories=1-5 providers=baseline,replaceable,evidence-first candidate=local-runtime-alpha.2 cleanup=verified"

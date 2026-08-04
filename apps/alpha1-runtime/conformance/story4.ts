@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
-import { spawn, type ChildProcessByStdio } from "node:child_process";
+import {
+  execFile as execFileCallback,
+  spawn,
+  type ChildProcessByStdio
+} from "node:child_process";
 import { randomBytes, randomUUID } from "node:crypto";
 import {
   chmod,
@@ -18,6 +22,7 @@ import { dirname, join, resolve } from "node:path";
 import type { Readable } from "node:stream";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 
 import pg from "pg";
 
@@ -40,6 +45,7 @@ import { readAlpha1Migrations } from "../src/migration.js";
 import { writeSensitiveStreamAtomically } from "../src/safe-local-file.js";
 
 const { Pool } = pg;
+const execFile = promisify(execFileCallback);
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const repoRoot = resolve(appRoot, "../..");
 const operatorCli = resolve(appRoot, "dist/src/cli/operator.js");
@@ -50,9 +56,26 @@ const lifecycleMutator = resolve(
   appRoot,
   "dist/conformance/story4-lifecycle-mutate.js"
 );
+const reportSuffix = process.env.SOURCE_WIRE_CONFORMANCE_REPORT_SUFFIX?.trim();
+if (reportSuffix && !/^[a-z0-9][a-z0-9.-]{0,31}$/u.test(reportSuffix)) {
+  throw new Error("invalid conformance report suffix");
+}
 const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
-  resolve(appRoot, ".artifacts/story4-conformance-report.json");
+  resolve(
+    appRoot,
+    `.artifacts/story4-conformance-report${reportSuffix ? `-${reportSuffix}` : ""}.json`
+  );
+const expectedPostgresMajor = Number(
+  process.env.SOURCE_WIRE_EXPECTED_POSTGRES_MAJOR ?? "18"
+);
+const expectedPostgresVersionNum = process.env[
+  "SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM"
+]
+  ? Number(process.env["SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM"])
+  : expectedPostgresMajor === 18
+    ? 180_004
+    : undefined;
 
 const roleNames = {
   schemaOwner: "source_wire_schema_owner",
@@ -116,6 +139,7 @@ let exportDigest = "";
 let exportRecordCount = 0;
 let failure: unknown;
 let cleanupPassed = false;
+let postgresqlVersionNum = 0;
 
 try {
   await runConformance();
@@ -164,17 +188,23 @@ async function runConformance(): Promise<void> {
   const version = await adminPool.query<{ server_version_num: string }>(
     "SELECT current_setting('server_version_num') AS server_version_num"
   );
-  assert.equal(
-    Math.floor(Number(version.rows[0]?.server_version_num ?? "0") / 10_000),
-    16
+  postgresqlVersionNum = Number(
+    version.rows[0]?.server_version_num ?? "0"
   );
+  assert.equal(Number.isSafeInteger(expectedPostgresMajor), true);
+  assert.equal(expectedPostgresMajor >= 16, true);
+  assert.equal(Math.floor(postgresqlVersionNum / 10_000), expectedPostgresMajor);
+  if (expectedPostgresVersionNum !== undefined) {
+    assert.equal(Number.isSafeInteger(expectedPostgresVersionNum), true);
+    assert.equal(postgresqlVersionNum, expectedPostgresVersionNum);
+  }
   tempDirectory = await realpath(
     await mkdtemp(join(tmpdir(), "source-wire-story4-"))
   );
   await chmod(tempDirectory, 0o700);
   pass(
     "S4-ENV-01",
-    "Node.js 22.23.1 and PostgreSQL 16 were observed with a private generated artifact directory"
+    `Node.js 22.23.1 and PostgreSQL server_version_num ${postgresqlVersionNum} were observed with a private generated artifact directory`
   );
 
   await provisionRoles();
@@ -312,11 +342,94 @@ async function migrationProbes(): Promise<void> {
   );
   assert.deepEqual(preservedHistory.rows[0], {
     schema_version: 6,
-    maximum_version: 7
+    maximum_version: ALPHA1_SCHEMA_VERSION
   });
   pass(
     "S4-MIG-02",
-    "migration 0007 upgraded a real schema-6 database without mutating or rejecting its immutable version-6 restore receipt"
+    "the current forward-only migration chain preserved and accepted an immutable version-6 restore receipt"
+  );
+
+  const gateBReceiptUpgrade = await provisionDatabase("gate_b_receipt_upgrade");
+  await installMigrationsThrough(gateBReceiptUpgrade, 7);
+  const schema7State = await gateBReceiptUpgrade.admin.query<{
+    maximum_version: number;
+    handoff_column_count: string;
+  }>(
+    `SELECT
+       (SELECT max(version)::integer
+          FROM source_wire_memory.schema_migrations) AS maximum_version,
+       (SELECT count(*)::text
+          FROM information_schema.columns
+         WHERE table_schema = 'source_wire_memory'
+           AND table_name = 'protected_read_receipts'
+           AND column_name IN (
+             'response_handoff_state',
+             'response_handoff_recorded_at'
+           )) AS handoff_column_count`
+  );
+  assert.deepEqual(schema7State.rows[0], {
+    maximum_version: 7,
+    handoff_column_count: "0"
+  });
+  const gateBReceiptMigrate = await runProcess(
+    operatorCli,
+    ["migrate"],
+    operatorEnvironment(gateBReceiptUpgrade)
+  );
+  assert.equal(
+    gateBReceiptMigrate.code,
+    0,
+    gateBReceiptMigrate.stderr || gateBReceiptMigrate.stdout
+  );
+  const gateBReceiptMigrateBody = JSON.parse(
+    gateBReceiptMigrate.stdout.trim()
+  ) as Record<string, unknown>;
+  assert.equal(gateBReceiptMigrateBody.status, "applied");
+  assert.equal(gateBReceiptMigrateBody.version, ALPHA1_SCHEMA_VERSION);
+  const schema8State = await gateBReceiptUpgrade.admin.query<{
+    maximum_version: number;
+    migration_count: string;
+    handoff_column_count: string;
+    finalizer_present: boolean;
+  }>(
+    `SELECT
+       (SELECT max(version)::integer
+          FROM source_wire_memory.schema_migrations) AS maximum_version,
+       (SELECT count(*)::text
+          FROM source_wire_memory.schema_migrations
+         WHERE state = 'completed') AS migration_count,
+       (SELECT count(*)::text
+          FROM information_schema.columns
+         WHERE table_schema = 'source_wire_memory'
+           AND table_name = 'protected_read_receipts'
+           AND column_name IN (
+             'response_handoff_state',
+             'response_handoff_recorded_at'
+           )) AS handoff_column_count,
+       to_regproc(
+         'source_wire_memory.finalize_gate_b_memory_protected_read_handoff'
+       ) IS NOT NULL AS finalizer_present`
+  );
+  assert.deepEqual(schema8State.rows[0], {
+    maximum_version: ALPHA1_SCHEMA_VERSION,
+    migration_count: String(ALPHA1_SCHEMA_VERSION),
+    handoff_column_count: "2",
+    finalizer_present: true
+  });
+  const gateBReceiptReplay = await runProcess(
+    operatorCli,
+    ["migrate"],
+    operatorEnvironment(gateBReceiptUpgrade)
+  );
+  assert.equal(gateBReceiptReplay.code, 0, gateBReceiptReplay.stderr);
+  assert.equal(
+    (JSON.parse(gateBReceiptReplay.stdout.trim()) as Record<string, unknown>)
+      .status,
+    "already_applied"
+  );
+  pass(
+    "S4-MIG-02B",
+    "the operator upgraded an exact schema-7 database to schema 8, installed the truthful handoff authority, and replayed without mutation"
   );
 
   const rollback = await provisionDatabase("rollback");
@@ -2144,14 +2257,20 @@ function redact(value: string): string {
 }
 
 async function writeReport(): Promise<void> {
+  const commit = await execFile(
+    "git",
+    ["rev-parse", "HEAD"],
+    { cwd: repoRoot, encoding: "utf8" }
+  );
   const report = {
     schema: "source-wire.alpha1.story4-conformance.v1",
     status: failure || !cleanupPassed ? "failed" : "passed",
     revision: 1,
-    sourceCommit: "17cb84ac401db3bb50489ff00697269ad9644b4c",
+    sourceCommit: commit.stdout.trim(),
     environment: {
       node: process.version,
-      postgresqlMajor: 16,
+      postgresqlMajor: expectedPostgresMajor,
+      postgresqlVersionNum: postgresqlVersionNum || null,
       processBoundary: "fresh_child_processes",
       dataClass: "generated_disposable_only",
       listener: "loopback_only"

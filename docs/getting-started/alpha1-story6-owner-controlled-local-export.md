@@ -3,7 +3,7 @@
 Latest source and published local-runtime `0.1.0-alpha.2` expose the existing
 canonical portable memory export through the `source-wire-local` CLI.
 
-This is experimental Alpha proof with generated disposable PostgreSQL 16 state.
+This is experimental Alpha proof with generated disposable exact PostgreSQL 18.4 state.
 It does not upload data, add an MCP administration tool, support production
 backup, authorize real data, or change any hosting and deployment block.
 
@@ -17,7 +17,7 @@ Start with the repository [Quickstart](quickstart.md), then complete:
 4. [Story 6.4 Fail-Closed Orchestration And Cleanup](alpha1-story6-fail-closed-orchestration.md)
 5. [Story 6.5 Explicit Database Control Plane](alpha1-story6-database-control-plane.md)
 
-Use exact Node.js `22.23.1` and PostgreSQL `16` for disposable Alpha
+Use exact Node.js `22.23.1` and exact PostgreSQL `18.4` for disposable Alpha
 conformance.
 
 ## Authority And Environment

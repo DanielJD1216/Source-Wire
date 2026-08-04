@@ -11,6 +11,7 @@ import {
   readFile,
   readdir,
   rm,
+  stat,
   writeFile
 } from "node:fs/promises";
 import { createServer } from "node:net";
@@ -47,9 +48,26 @@ const foreignConsumeEntry = resolve(
   appRoot,
   "dist/conformance/story3-foreign-consume.js"
 );
+const reportSuffix = process.env.SOURCE_WIRE_CONFORMANCE_REPORT_SUFFIX?.trim();
+if (reportSuffix && !/^[a-z0-9][a-z0-9.-]{0,31}$/u.test(reportSuffix)) {
+  throw new Error("invalid conformance report suffix");
+}
 const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
-  resolve(appRoot, ".artifacts/story3-conformance-report.json");
+  resolve(
+    appRoot,
+    `.artifacts/story3-conformance-report${reportSuffix ? `-${reportSuffix}` : ""}.json`
+  );
+const expectedPostgresMajor = Number(
+  process.env.SOURCE_WIRE_EXPECTED_POSTGRES_MAJOR ?? "18"
+);
+const expectedPostgresVersionNum = process.env[
+  "SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM"
+]
+  ? Number(process.env["SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM"])
+  : expectedPostgresMajor === 18
+    ? 180_004
+    : undefined;
 
 const roleNames = {
   schemaOwner: "source_wire_schema_owner",
@@ -151,6 +169,7 @@ let baseUrl = "";
 let tempDirectory = "";
 let protectedMarker = "";
 let acceptedModerateAdvisories = 0;
+let postgresqlVersionNum = 0;
 
 try {
   await runConformance();
@@ -209,11 +228,18 @@ async function runConformance(): Promise<void> {
   const version = await adminPool.query<{ server_version_num: string }>(
     "SELECT current_setting('server_version_num') AS server_version_num"
   );
+  postgresqlVersionNum = Number(version.rows[0]?.server_version_num ?? "0");
   assert.equal(
-    Math.floor(Number(version.rows[0]?.server_version_num ?? "0") / 10_000),
-    16
+    Math.floor(postgresqlVersionNum / 10_000),
+    expectedPostgresMajor
   );
-  pass("S3-ENV-01", "Node.js 22.23.1 and PostgreSQL 16 observed");
+  if (expectedPostgresVersionNum !== undefined) {
+    assert.equal(postgresqlVersionNum, expectedPostgresVersionNum);
+  }
+  pass(
+    "S3-ENV-01",
+    `Node.js 22.23.1 and PostgreSQL ${postgresqlVersionNum} observed`
+  );
 
   tempDirectory = await mkdtemp(
     resolve(tmpdir(), "source-wire-story3-conformance-")
@@ -2148,7 +2174,8 @@ async function writeReport(): Promise<void> {
     },
     environment: {
       node: process.version,
-      postgresqlMajor: 16,
+      postgresqlMajor: expectedPostgresMajor,
+      postgresqlVersionNum: postgresqlVersionNum || undefined,
       dataClass: "generated_disposable_only",
       apiListener: "literal_loopback_only",
       mcpTransport: "stdio_only",
@@ -2219,11 +2246,14 @@ async function computeSourceTreeDigest(commit: string): Promise<string> {
     .update("\0", "utf8")
     .update(trackedDiff.stdout, "utf8");
   for (const path of paths) {
+    const resolvedPath = resolve(repoRoot, path);
     digest
       .update("\0", "utf8")
       .update(path, "utf8")
       .update("\0", "utf8")
-      .update(await readFile(resolve(repoRoot, path)));
+      .update(String((await stat(resolvedPath)).mode & 0o111), "utf8")
+      .update("\0", "utf8")
+      .update(await readFile(resolvedPath));
   }
   return digest.digest("hex");
 }

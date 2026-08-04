@@ -120,7 +120,7 @@ The conformance report passes 29 cases. Story-specific cases are:
   implementation exposed.
 
 Hosted Source-Wire CI repeats the proof with exact Node.js `22.23.1`,
-PostgreSQL `16`, the pinned adapter revision, and generated disposable state.
+exact PostgreSQL `18.4`, the pinned adapter revision, and generated disposable state.
 
 ## Cost And Custody
 

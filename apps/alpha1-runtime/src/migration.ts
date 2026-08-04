@@ -20,7 +20,38 @@ export const STORY5_FETCH_MIGRATION_NAME =
   "0006_story5_exact_evidence_fetch.sql";
 export const GATE_B_DURABLE_AUTH_MIGRATION_NAME =
   "0007_gate_b_durable_memory_authorization.sql";
+export const GATE_B_DURABLE_RECEIPT_MIGRATION_NAME =
+  "0008_gate_b_durable_receipt_handoff.sql";
 const MIGRATION_ADVISORY_LOCK = 1_913_770_101;
+export const POSTGRESQL_18_4_VERSION_NUM = 180_004;
+export const POSTGRESQL_16_COMPATIBILITY_MAJOR = 16;
+export const POSTGRES_COMPATIBILITY_MAJOR_ENV =
+  "SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR";
+
+export function isSupportedPostgresqlVersion(
+  serverVersionNum: number,
+  compatiblePostgresMajor?: number
+): boolean {
+  if (!Number.isSafeInteger(serverVersionNum) || serverVersionNum < 0) {
+    return false;
+  }
+  if (serverVersionNum === POSTGRESQL_18_4_VERSION_NUM) return true;
+  return (
+    compatiblePostgresMajor === POSTGRESQL_16_COMPATIBILITY_MAJOR &&
+    Math.floor(serverVersionNum / 10_000) === POSTGRESQL_16_COMPATIBILITY_MAJOR
+  );
+}
+
+export function readPostgresCompatibilityMajor(
+  environment: NodeJS.ProcessEnv = process.env
+): typeof POSTGRESQL_16_COMPATIBILITY_MAJOR | undefined {
+  const value = environment[POSTGRES_COMPATIBILITY_MAJOR_ENV];
+  if (value === undefined) return undefined;
+  if (value === String(POSTGRESQL_16_COMPATIBILITY_MAJOR)) {
+    return POSTGRESQL_16_COMPATIBILITY_MAJOR;
+  }
+  throw new Error("postgresql_compatibility_selection_invalid");
+}
 
 export type MigrationDefinition = {
   version: number;
@@ -41,6 +72,7 @@ export type MigrationResult = {
 };
 
 export type ApplyAlpha1MigrationOptions = Readonly<{
+  compatiblePostgresMajor?: typeof POSTGRESQL_16_COMPATIBILITY_MAJOR;
   afterMigrationApplied?: (
     migration: Readonly<{
       version: number;
@@ -65,7 +97,11 @@ export async function readAlpha1Migrations(): Promise<MigrationDefinition[]> {
     { version: 4, name: STORY4_MIGRATION_NAME },
     { version: 5, name: STORY5_MIGRATION_NAME },
     { version: 6, name: STORY5_FETCH_MIGRATION_NAME },
-    { version: ALPHA1_SCHEMA_VERSION, name: GATE_B_DURABLE_AUTH_MIGRATION_NAME }
+    { version: 7, name: GATE_B_DURABLE_AUTH_MIGRATION_NAME },
+    {
+      version: ALPHA1_SCHEMA_VERSION,
+      name: GATE_B_DURABLE_RECEIPT_MIGRATION_NAME
+    }
   ] as const;
 
   return Promise.all(
@@ -97,7 +133,10 @@ export async function applyAlpha1Migrations(
     await client.query("SELECT pg_advisory_xact_lock($1)", [MIGRATION_ADVISORY_LOCK]);
     await assertMigratorRolePosture(client);
     await client.query("SET LOCAL ROLE source_wire_schema_owner");
-    await assertPostgresql16(client);
+    await assertSupportedPostgresqlVersion(
+      client,
+      options.compatiblePostgresMajor ?? readPostgresCompatibilityMajor()
+    );
 
     const relation = await client.query<{ migration_table: string | null }>(
       "SELECT to_regclass('source_wire_memory.schema_migrations')::text AS migration_table"
@@ -287,13 +326,18 @@ export async function assertMigratorRolePosture(
   }
 }
 
-async function assertPostgresql16(client: pg.PoolClient): Promise<void> {
+async function assertSupportedPostgresqlVersion(
+  client: pg.PoolClient,
+  compatiblePostgresMajor?: typeof POSTGRESQL_16_COMPATIBILITY_MAJOR
+): Promise<void> {
   const result = await client.query<{ server_version_num: string }>(
     "SELECT current_setting('server_version_num') AS server_version_num"
   );
-  if (Math.floor(Number(result.rows[0]?.server_version_num ?? "0") / 10_000) !== 16) {
-    throw new Error("postgresql_version_unsupported");
-  }
+  const serverVersionNum = Number(
+    result.rows[0]?.server_version_num ?? "0"
+  );
+  if (isSupportedPostgresqlVersion(serverVersionNum, compatiblePostgresMajor)) return;
+  throw new Error("postgresql_version_unsupported");
 }
 
 async function readMigrationRows(

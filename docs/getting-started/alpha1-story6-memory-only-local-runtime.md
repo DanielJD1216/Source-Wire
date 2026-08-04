@@ -42,7 +42,7 @@ configuration, provider credential, or direct database authority.
 ## Prerequisites
 
 Start with the repository [Quickstart](quickstart.md), then use exact Node.js
-`22.23.1` and PostgreSQL `16` for disposable Alpha conformance.
+`22.23.1` and exact PostgreSQL `18.4` for disposable Alpha conformance.
 
 Complete the generated disposable setup from:
 

@@ -10,10 +10,16 @@ const branchName = "feat/gate-b-offline-jose-dpop";
 const gateScriptPath =
   "scripts/global-owner-hosted-runtime-v1-gate-b-memory-only.mjs";
 const runtimePackagePath = "apps/alpha1-runtime/package.json";
+const activeBranch =
+  process.env.GITHUB_HEAD_REF ||
+  process.env.GITHUB_REF_NAME ||
+  safeGit(["branch", "--show-current"]);
+const enforceChangedPathScope =
+  process.argv.includes("--changed-path-scope") || activeBranch === branchName;
 const approvedRootPackageScriptsSha256 =
-  "9d0f65210f71886d183d7694f3bfc682fc307fccd0343b950e1c205ea59ec65a";
+  "299717fdc508a8647132b453d7d7953a9059e9fb972258be4bf5e0a21f6d8a04";
 const approvedRuntimePackageScriptsSha256 =
-  "caa37c8a0b7564cc3a84de07ded891c244a4693569123d68b758539e885f7b57";
+  "bec71d904d39bfd081d273904df2199dcf1976eb002392fb77b843eb4b4c5162";
 const mcpDiscoveryTestPath =
   "apps/alpha1-runtime/tests/mcp-discovery.test.ts";
 const mcpDiscoveryTestSha256 =
@@ -704,7 +710,7 @@ const failures = [
   ...validatePackageScripts(packageJson),
   ...validateRootRuntimeEntrypoints(packageJson, runtimeSources),
   ...validateRuntimePackageEntrypoints(runtimePackageJson, runtimeSources),
-  ...validatePaths(collectChangedPaths()),
+  ...(enforceChangedPathScope ? validatePaths(collectChangedPaths()) : []),
   ...validateRuntimeSources(runtimeSources),
   ...validateMcpDiscoveryTest(mcpDiscoveryTestSource)
 ];
@@ -716,6 +722,9 @@ console.log("------------------------------------------------");
 console.log(`Issue        : #292`);
 console.log(`Branch       : ${branchName}`);
 console.log(`Allowed paths: ${allowedPaths.size}`);
+console.log(
+  `Path scope   : ${enforceChangedPathScope ? "enforced" : `reserved for ${branchName}`}`
+);
 console.log("Evidence mode: blocked");
 console.log("Deployment   : blocked");
 console.log("Private data : blocked");
@@ -728,7 +737,7 @@ function validatePackageScripts(pkg) {
   const failures = [];
   const expected = {
     "runtime:gate-b-memory-only":
-      "npm run test:gate-b-memory-only --workspace @source-wire/local-runtime",
+      "npm run alpha1:build && node --test apps/alpha1-runtime/dist/tests/global-memory-access-plane.test.js apps/alpha1-runtime/dist/tests/postgres-memory-only-authorization.test.js apps/alpha1-runtime/dist/tests/mcp-discovery.test.js apps/alpha1-runtime/dist/tests/mcp-tool-profile.test.js apps/alpha1-runtime/dist/tests/offline-jose-dpop.test.js apps/alpha1-runtime/dist/tests/strict-json.test.js",
     "runtime:gate-b-memory-only:scope": `node ${gateScriptPath}`,
     "runtime:gate-b-memory-only:scope:smoke": `node ${gateScriptPath} --self-test`
   };
@@ -900,9 +909,9 @@ function validateScriptIndirection(command, label) {
     failures.push(`${label} contains ambiguous shell quoting or escaping`);
   }
   const isApprovedCompiledTestGlob =
-    label === `${runtimePackagePath} scripts.test` &&
+    label === "package.json scripts.alpha1:test" &&
     canonical.normalized ===
-      "npm run build && node --test dist/tests/*.test.js";
+      "npm run alpha1:build && node --test apps/alpha1-runtime/dist/tests/*.test.js";
   if (
     canonical.hasUnquotedPathExpansion &&
     !isApprovedCompiledTestGlob

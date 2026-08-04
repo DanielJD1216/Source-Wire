@@ -45,9 +45,26 @@ const mcpServerEntry = resolve(appRoot, "dist/src/mcp/server.js");
 const localCliEntry =
   process.env.SOURCE_WIRE_PACKED_LOCAL_CLI_ENTRY ??
   resolve(appRoot, "dist/src/cli/local.js");
+const reportSuffix = process.env.SOURCE_WIRE_CONFORMANCE_REPORT_SUFFIX?.trim();
+if (reportSuffix && !/^[a-z0-9][a-z0-9.-]{0,31}$/u.test(reportSuffix)) {
+  throw new Error("invalid conformance report suffix");
+}
 const reportPath =
   process.env.SOURCE_WIRE_CONFORMANCE_REPORT ??
-  resolve(appRoot, ".artifacts/story5-conformance-report.json");
+  resolve(
+    appRoot,
+    `.artifacts/story5-conformance-report${reportSuffix ? `-${reportSuffix}` : ""}.json`
+  );
+const expectedPostgresMajor = Number(
+  process.env.SOURCE_WIRE_EXPECTED_POSTGRES_MAJOR ?? "18"
+);
+const expectedPostgresVersionNum = process.env[
+  "SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM"
+]
+  ? Number(process.env["SOURCE_WIRE_EXPECTED_POSTGRES_VERSION_NUM"])
+  : expectedPostgresMajor === 18
+    ? 180_004
+    : undefined;
 
 const OWNER_ID =
   process.env.SOURCE_WIRE_CROSS_PROVIDER_OWNER_ID ?? "owner_story5";
@@ -258,6 +275,7 @@ let ownerToken = "";
 let harness: IssuedHarness | undefined;
 let baseUrl = "";
 let tempDirectory = "";
+let postgresqlVersionNum = 0;
 
 for (const value of [
   PROTECTED_QUERY,
@@ -331,11 +349,18 @@ async function runConformance(): Promise<void> {
   const version = await adminPool.query<{ server_version_num: string }>(
     "SELECT current_setting('server_version_num') AS server_version_num"
   );
+  postgresqlVersionNum = Number(version.rows[0]?.server_version_num ?? "0");
   assert.equal(
-    Math.floor(Number(version.rows[0]?.server_version_num ?? "0") / 10_000),
-    16
+    Math.floor(postgresqlVersionNum / 10_000),
+    expectedPostgresMajor
   );
-  pass("S5-ENV-01", "Node.js 22.23.1 and PostgreSQL 16 observed");
+  if (expectedPostgresVersionNum !== undefined) {
+    assert.equal(postgresqlVersionNum, expectedPostgresVersionNum);
+  }
+  pass(
+    "S5-ENV-01",
+    `Node.js 22.23.1 and PostgreSQL ${postgresqlVersionNum} observed`
+  );
 
   tempDirectory = await mkdtemp(
     resolve(tmpdir(), "source-wire-story5-conformance-")
@@ -2067,7 +2092,8 @@ async function writeReport(): Promise<void> {
     sourceCommit: commit.stdout.trim(),
     environment: {
       node: process.version,
-      postgresqlMajor: 16,
+      postgresqlMajor: expectedPostgresMajor,
+      postgresqlVersionNum: postgresqlVersionNum || undefined,
       dataClass: "generated_disposable_only",
       apiListener: "literal_loopback_only",
       mcpTransport: "stdio_only",

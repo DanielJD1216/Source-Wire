@@ -18,7 +18,7 @@ Source-Wire to a live knowledge base, register arbitrary providers, accept
 provider credentials from callers, or promote evidence into memory.
 
 This remains a loopback-only developer Alpha. It uses generated synthetic data
-and disposable PostgreSQL 16 databases for conformance. It is distributed
+and disposable exact PostgreSQL 18.4 databases for conformance. It is distributed
 separately from the contracts package, is not hosted, and is not approved for
 production or real data.
 
@@ -53,7 +53,7 @@ production or real data.
 
 - Node.js `22.23.1`
 - npm
-- local PostgreSQL `16`
+- local exact PostgreSQL `18.4`
 - a PostgreSQL operator account allowed to create and remove generated
   disposable roles and databases
 - generated synthetic data only
@@ -85,7 +85,7 @@ npm run alpha1:conformance
 
 GitHub Actions runs the same chain in a separate
 `Source-Wire Alpha PostgreSQL conformance` job with exact Node.js `22.23.1`
-and an ephemeral PostgreSQL `16` service. The full chain runs Story 5 once
+and an ephemeral exact PostgreSQL `18.4` service. The full chain runs Story 5 once
 with the original adapter and once with the separate replaceable adapter.
 Validate the workflow contract
 locally with:

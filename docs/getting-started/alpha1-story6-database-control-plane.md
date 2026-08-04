@@ -3,7 +3,7 @@
 Latest source and published local-runtime `0.1.0-alpha.2` add explicit
 database status and migration commands to the `source-wire-local` CLI.
 
-This is experimental Alpha proof with generated disposable PostgreSQL 16 state.
+This is experimental Alpha proof with generated disposable exact PostgreSQL 18.4 state.
 It does not provision PostgreSQL, support persistent databases, authorize
 production migration, or change the hosted and deployment blocks.
 
@@ -16,7 +16,7 @@ Start with the repository [Quickstart](quickstart.md), then complete:
 3. [Story 6.3 Synthetic Provider Local Runtime](alpha1-story6-synthetic-provider-local-runtime.md)
 4. [Story 6.4 Fail-Closed Orchestration And Cleanup](alpha1-story6-fail-closed-orchestration.md)
 
-Use exact Node.js `22.23.1` and PostgreSQL `16` for disposable Alpha
+Use exact Node.js `22.23.1` and exact PostgreSQL `18.4` for disposable Alpha
 conformance.
 
 The local config stores environment variable names, not database URLs:

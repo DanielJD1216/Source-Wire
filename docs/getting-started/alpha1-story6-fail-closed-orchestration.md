@@ -17,7 +17,7 @@ Start with the repository [Quickstart](quickstart.md), then complete:
 2. [Story 6.2 Memory-Only Local Runtime](alpha1-story6-memory-only-local-runtime.md)
 3. [Story 6.3 Synthetic Provider Local Runtime](alpha1-story6-synthetic-provider-local-runtime.md)
 
-Use exact Node.js `22.23.1` and PostgreSQL `16` for disposable Alpha
+Use exact Node.js `22.23.1` and exact PostgreSQL `18.4` for disposable Alpha
 conformance.
 
 ## Failure Boundary

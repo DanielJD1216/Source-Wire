@@ -16,7 +16,8 @@ This release is experimental Alpha software for:
 
 - macOS or Linux,
 - Node.js `22.23.1`,
-- PostgreSQL `16.x`,
+- exact PostgreSQL `18.4` as the authoritative database target,
+- PostgreSQL `16.x` only as explicit compatibility when `SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR=16` is selected,
 - stdio MCP,
 - `@source-wire/contracts@0.2.0`,
 - `KnowledgeProvider v1`,
@@ -168,11 +169,15 @@ npm run local-runtime:security-gate
 npm run alpha1:ci-workflow-smoke
 ```
 
-With exact Node.js `22.23.1` and disposable PostgreSQL `16.x`:
+With exact Node.js `22.23.1` and disposable exact PostgreSQL `18.4`:
 
 ```bash
 npm run local-runtime:candidate-conformance
 ```
+
+For the explicit PostgreSQL `16.x` compatibility target, also set
+`SOURCE_WIRE_EXPECTED_POSTGRES_MAJOR=16` and
+`SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR=16` before running conformance.
 
 The packed-candidate conformance installs the tarball into an empty consumer,
 uses the installed runtime entrypoint, starts stdio MCP through the official
@@ -182,7 +187,7 @@ compositions, and verifies disposable PostgreSQL cleanup.
 ## Package Content Boundary
 
 The packed candidate includes only package documentation, license, compiled
-runtime implementation, declarations, and the six forward-only local
+runtime implementation, declarations, and the eight forward-only local
 migrations required by the disposable proof.
 
 It excludes source tests, conformance sources and reports, generated

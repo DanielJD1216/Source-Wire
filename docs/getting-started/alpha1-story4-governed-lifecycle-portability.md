@@ -13,7 +13,7 @@ pending candidate
   -> independent verification enables runtime startup
 ```
 
-This workspace remains an unpublished, loopback-only developer alpha. It uses synthetic generated data and disposable PostgreSQL 16 databases for conformance. It is not part of `@source-wire/contracts@0.1.0`, is not hosted, and is not approved for production or real data.
+This workspace remains an unpublished, loopback-only developer alpha. It uses synthetic generated data and disposable exact PostgreSQL 18.4 databases for conformance. It is not part of `@source-wire/contracts@0.1.0`, is not hosted, and is not approved for production or real data.
 
 ## What Story 4 Proves
 
@@ -35,7 +35,7 @@ Story 4 does not add an MCP owner tool. The final Alpha 1 MCP surface remains ex
 
 - Node.js `22.23.1`
 - npm
-- local PostgreSQL `16`
+- local exact PostgreSQL `18.4`
 - a PostgreSQL operator account allowed to create and remove generated disposable roles and databases
 - synthetic generated data only
 

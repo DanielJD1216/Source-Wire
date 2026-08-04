@@ -10,7 +10,7 @@ operator migration and fresh initialization
   -> owner-issued harness credential
   -> loopback API policy
   -> content-free authenticated health
-  -> adopter-controlled PostgreSQL 16
+  -> adopter-controlled exact PostgreSQL 18.4
 ```
 
 This is not part of `@source-wire/contracts@0.1.0`. It is not hosted, deployed, production ready, or approved for real data. Story 1 does not implement memory behavior by itself. Latest source extends this foundation with the bounded Story 2 candidate and owner-approval path described in [Alpha 1 Story 2 Candidate Approval](alpha1-story2-candidate-approval.md), the protected Story 3 read described in [Alpha 1 Story 3 Audited Search](alpha1-story3-audited-search.md), and the owner-controlled Story 4 lifecycle and portability path described in [Alpha 1 Story 4 Governed Lifecycle And Portability](alpha1-story4-governed-lifecycle-portability.md). External knowledge providers and a UI remain unimplemented.
@@ -19,13 +19,13 @@ This is not part of `@source-wire/contracts@0.1.0`. It is not hosted, deployed, 
 
 - Node.js `22.23.1`
 - npm
-- local PostgreSQL `16`
+- local exact PostgreSQL `18.4`
 - a PostgreSQL operator account allowed to create and remove a disposable test database and roles
 - synthetic disposable data only
 
 The runtime pins:
 
-- `hono@4.12.31`
+- `hono@4.12.34`
 - `@hono/node-server@2.0.11`
 - `pg@8.22.0`
 - `drizzle-orm@0.45.2`

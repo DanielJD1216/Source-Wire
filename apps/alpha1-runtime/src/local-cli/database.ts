@@ -10,6 +10,7 @@ import {
   assertMigratorRolePosture,
   POSTGRESQL_16_COMPATIBILITY_MAJOR,
   POSTGRESQL_18_4_VERSION_NUM,
+  readPostgresCompatibilityMajor,
   readAlpha1Migrations,
   type ApplyAlpha1MigrationOptions
 } from "../migration.js";
@@ -21,6 +22,16 @@ import { SourceWireLocalCliError } from "./result.js";
 
 const { Pool } = pg;
 const LOCAL_DATABASE_TRANSACTION_CLEANUP_TIMEOUT_MS = 250;
+
+export function parseLocalPostgresCompatibilityMajor(
+  environment: NodeJS.ProcessEnv
+): 16 | undefined {
+  try {
+    return readPostgresCompatibilityMajor(environment);
+  } catch {
+    throw new SourceWireLocalCliError("environment_invalid");
+  }
+}
 
 export type SourceWireLocalMigrationEntryV1 = Readonly<{
   version: number;

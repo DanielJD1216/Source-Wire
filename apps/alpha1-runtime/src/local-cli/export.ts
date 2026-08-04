@@ -17,7 +17,10 @@ import {
 } from "../repository.js";
 import { writeSensitiveStreamAtomically } from "../safe-local-file.js";
 import type { SourceWireLocalConfigV1 } from "./config.js";
-import { inspectLocalDatabaseStatus } from "./database.js";
+import {
+  inspectLocalDatabaseStatus,
+  parseLocalPostgresCompatibilityMajor
+} from "./database.js";
 import { SourceWireLocalCliError } from "./result.js";
 
 const OWNER_TOKEN_ENV = "SOURCE_WIRE_OWNER_TOKEN";
@@ -62,7 +65,14 @@ export async function exportLocalPortableState(input: {
   const verifierKeyId = requireVerifierKeyId(input.environment);
   const ownerToken = requireEnvironment(OWNER_TOKEN_ENV, input.environment);
 
-  const status = await inspectLocalDatabaseStatus(databaseUrl);
+  const compatiblePostgresMajor = parseLocalPostgresCompatibilityMajor(
+    input.environment
+  );
+  const status = await inspectLocalDatabaseStatus(databaseUrl, {
+    ...(compatiblePostgresMajor === undefined
+      ? {}
+      : { compatiblePostgresMajor })
+  });
   if (status.state !== "compatible") {
     throw new SourceWireLocalCliError("database_incompatible");
   }

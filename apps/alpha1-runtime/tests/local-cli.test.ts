@@ -657,6 +657,51 @@ test("database status rejects invalid compatibility selection before connection"
   }
 });
 
+test("local export rejects invalid compatibility selection before connection", async () => {
+  const directory = await privateTemporaryDirectory();
+  try {
+    const configPath = join(directory, "memory-only.json");
+    await writeConfig(configPath, createLocalConfigTemplate());
+    for (const selector of ["18", "16x"]) {
+      const destination = join(directory, `export-${selector}.ndjson`);
+      const result = await runSourceWireLocalCli(
+        [
+          "export",
+          "--config",
+          configPath,
+          "--namespace-id",
+          "namespace_local",
+          "--destination",
+          destination
+        ],
+        {
+          SOURCE_WIRE_DATABASE_URL:
+            "postgresql://runtime:unavailable-secret@127.0.0.1:1/disposable",
+          SOURCE_WIRE_TOKEN_VERIFIER_KEY: Buffer.alloc(32, 1).toString(
+            "base64url"
+          ),
+          SOURCE_WIRE_TOKEN_VERIFIER_KEY_ID: "local_test_verifier",
+          SOURCE_WIRE_OWNER_TOKEN: "unavailable-secret",
+          SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR: selector
+        }
+      );
+      assert.equal(result.exitCode, 1);
+      assert(!result.result.ok);
+      assert.equal(result.result.operation, "local.export");
+      assert.equal(result.result.error.code, "environment_invalid");
+      const rendered = renderLocalCliResult(result.result, result.format);
+      assertNonSecretSurface(rendered);
+      assert.doesNotMatch(
+        rendered,
+        /unavailable-secret|127\.0\.0\.1|disposable/u
+      );
+      await assert.rejects(lstat(destination), { code: "ENOENT" });
+    }
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
 test("database status renderer exposes only bounded read-only PostgreSQL posture", () => {
   const result = {
     ok: true as const,

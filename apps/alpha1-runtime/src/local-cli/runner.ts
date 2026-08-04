@@ -25,10 +25,10 @@ import {
   applyLocalMigrations,
   inspectLocalDatabaseStatus,
   inspectLocalMigrationPlan,
-  migrationPlanResult
+  migrationPlanResult,
+  parseLocalPostgresCompatibilityMajor
 } from "./database.js";
 import { exportLocalPortableState } from "./export.js";
-import { readPostgresCompatibilityMajor } from "../migration.js";
 
 export type SourceWireLocalCliExecution = Readonly<{
   exitCode: 0 | 1;
@@ -352,16 +352,6 @@ function requireLocalDatabaseUrl(
     throw new SourceWireLocalCliError("environment_invalid");
   }
   return value;
-}
-
-function parseLocalPostgresCompatibilityMajor(
-  environment: NodeJS.ProcessEnv
-): 16 | undefined {
-  try {
-    return readPostgresCompatibilityMajor(environment);
-  } catch {
-    throw new SourceWireLocalCliError("environment_invalid");
-  }
 }
 
 function parseStory6MigrationFault(

@@ -25,7 +25,8 @@ import {
   applyLocalMigrations,
   inspectLocalDatabaseStatus,
   inspectLocalMigrationPlan,
-  migrationPlanResult
+  migrationPlanResult,
+  parseLocalPostgresCompatibilityMajor
 } from "./database.js";
 import { exportLocalPortableState } from "./export.js";
 
@@ -185,7 +186,14 @@ export async function runSourceWireLocalCli(
         config.memory.runtimeDatabaseUrlEnv,
         environment
       );
-      const status = await inspectLocalDatabaseStatus(databaseUrl);
+      const compatiblePostgresMajor = parseLocalPostgresCompatibilityMajor(
+        environment
+      );
+      const status = await inspectLocalDatabaseStatus(databaseUrl, {
+        ...(compatiblePostgresMajor === undefined
+          ? {}
+          : { compatiblePostgresMajor })
+      });
       return {
         exitCode: status.state === "compatible" ? 0 : 1,
         format: parsed.values.json ? "json" : "human",

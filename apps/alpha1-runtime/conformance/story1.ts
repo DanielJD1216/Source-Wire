@@ -401,6 +401,17 @@ async function migrationAndInitializationProbes(): Promise<void> {
 async function localDatabaseControlPlaneProbes(): Promise<void> {
   assert(adminPool);
   assert(targetAdminPool);
+  const serverPosture = await targetAdminPool.query<{
+    server_version_num: string;
+  }>("SELECT current_setting('server_version_num') AS server_version_num");
+  const expectedPostgresqlVersionNum = Number(
+    serverPosture.rows[0]?.server_version_num
+  );
+  assert(Number.isSafeInteger(expectedPostgresqlVersionNum));
+  const expectedPostgresqlSupport =
+    process.env.SOURCE_WIRE_POSTGRES_COMPATIBILITY_MAJOR === "16"
+      ? "compatibility_16"
+      : "authoritative_18_4";
   await mkdir(dirname(reportPath), { recursive: true });
   localDatabaseConfigPath = resolve(
     dirname(reportPath),
@@ -498,25 +509,38 @@ async function localDatabaseControlPlaneProbes(): Promise<void> {
   assert.equal(pendingStatus.code, 1, pendingStatus.stderr);
   const pendingStatusBody = parseJsonLine(pendingStatus.stdout);
   assert.equal(pendingStatusBody.ok, true);
+  const pendingStatusResult = pendingStatusBody.result as Record<string, unknown>;
   assert.equal(
-    (pendingStatusBody.result as Record<string, unknown>).state,
+    pendingStatusResult.state,
     "pending"
   );
+  assert.equal(
+    pendingStatusResult.schema,
+    "source-wire.local-database-status.v1"
+  );
+  assert.equal(pendingStatusResult.schemaState, "pending");
+  assert.equal(
+    pendingStatusResult.postgresqlVersionNum,
+    expectedPostgresqlVersionNum
+  );
+  assert.equal(
+    pendingStatusResult.postgresqlSupport,
+    expectedPostgresqlSupport
+  );
+  assert.equal(pendingStatusResult.recoveryState, "primary");
+  assert.equal(pendingStatusResult.inspectionMode, "read_only");
   assert.deepEqual(
-    (pendingStatusBody.result as Record<string, unknown>)
-      .currentMigrations,
+    pendingStatusResult.currentMigrations,
     []
   );
   assert.equal(
     (
-      (pendingStatusBody.result as Record<string, unknown>)
-        .targetMigrations as unknown[]
+      pendingStatusResult.targetMigrations as unknown[]
     ).length,
     ALPHA1_SCHEMA_VERSION
   );
   assert.equal(
-    (pendingStatusBody.result as Record<string, unknown>)
-      .mutationApplied,
+    pendingStatusResult.mutationApplied,
     false
   );
 
@@ -727,13 +751,21 @@ async function localDatabaseControlPlaneProbes(): Promise<void> {
     0,
     `compatible status failed: ${compatibleStatus.stderr || compatibleStatus.stdout}`
   );
+  const compatibleStatusResult = parseJsonLine(compatibleStatus.stdout)
+    .result as Record<string, unknown>;
+  assert.equal(compatibleStatusResult.state, "compatible");
+  assert.equal(compatibleStatusResult.schemaState, "compatible");
   assert.equal(
-    (
-      parseJsonLine(compatibleStatus.stdout)
-        .result as Record<string, unknown>
-    ).state,
-    "compatible"
+    compatibleStatusResult.postgresqlVersionNum,
+    expectedPostgresqlVersionNum
   );
+  assert.equal(
+    compatibleStatusResult.postgresqlSupport,
+    expectedPostgresqlSupport
+  );
+  assert.equal(compatibleStatusResult.recoveryState, "primary");
+  assert.equal(compatibleStatusResult.inspectionMode, "read_only");
+  assert.equal(compatibleStatusResult.mutationApplied, false);
 
   const migrationRows = await targetAdminPool.query<{
     checksum_sha256: string;
@@ -813,6 +845,10 @@ async function localDatabaseControlPlaneProbes(): Promise<void> {
   pass(
     "S6-DB-04",
     "migration displayed safe current and target sets, rolled back an injected transaction failure, applied once, and replayed idempotently"
+  );
+  pass(
+    "S6-DB-05",
+    "database status reported PostgreSQL support classification, primary recovery state, and read-only inspection without mutation or locator disclosure"
   );
 }
 

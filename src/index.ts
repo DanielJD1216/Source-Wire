@@ -92,6 +92,13 @@ export type {
   SourceWireRuntimeSkeletonCallerKind,
   SourceWireRuntimeSkeletonCapability,
   SourceWireRuntimeSkeletonCitation,
+  SourceWireRuntimeSkeletonContextCaptureResult,
+  SourceWireRuntimeSkeletonContextEvidence,
+  SourceWireRuntimeSkeletonContextEnvelope,
+  SourceWireRuntimeSkeletonContextInboxEntry,
+  SourceWireRuntimeSkeletonContextInboxState,
+  SourceWireRuntimeSkeletonContextSearchRequest,
+  SourceWireRuntimeSkeletonContextSearchResult,
   SourceWireRuntimeSkeletonFixtureCase,
   SourceWireRuntimeSkeletonFixtureMatrix,
   SourceWireRuntimeSkeletonMcpRequest,
@@ -102,8 +109,11 @@ export {
   SOURCE_WIRE_RUNTIME_SKELETON_BOUNDARY,
   callRuntimeSkeletonApiPolicy,
   callRuntimeSkeletonMcpAdapter,
+  createRuntimeSkeletonContextInboxState,
   runRuntimeSkeletonFixtureCase,
-  runRuntimeSkeletonFixtureMatrix
+  runRuntimeSkeletonFixtureMatrix,
+  searchRuntimeSkeletonContextInbox,
+  transitionRuntimeSkeletonContextCapture
 } from "./runtime-skeleton/index.js";
 export type {
   SourceWireOwnerHostedApiServerRuntimeRequest,

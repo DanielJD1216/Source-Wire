@@ -88,6 +88,7 @@
     "examples:installed-smoke": "node scripts/examples-installed-smoke.mjs",
     "minimal-runtime:smoke": "npm run build && node examples/minimal-runtime/minimal-runtime-smoke.mjs",
     "runtime:skeleton-smoke": "npm run build && node examples/runtime-skeleton/runtime-skeleton-smoke.mjs",
+    "runtime:context-inbox-smoke": "npm run build && node examples/runtime-skeleton/context-inbox-smoke.mjs",
     "runtime:owner-hosted-smoke": "npm run build && node examples/owner-hosted-runtime/owner-hosted-runtime-smoke.mjs",
     "runtime:threat-boundary-smoke": "npm run build && node examples/runtime-threat-boundary/runtime-threat-boundary-smoke.mjs",
     "runtime:api-policy-smoke": "npm run build && node examples/api-contract/api-policy-contract-smoke.mjs",

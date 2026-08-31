@@ -139,6 +139,57 @@
       }
     },
     {
+      "caseId": "mcp_context_capture_source_only",
+      "via": "mcp",
+      "caller": {
+        "callerId": "caller_demo_mcp_capture",
+        "ownerId": "owner_demo_alpha",
+        "kind": "mcp_tool",
+        "allowedNamespaceIds": ["ns_demo_project_alpha"],
+        "capabilities": ["import_or_maintain_sources"]
+      },
+      "request": {
+        "requestId": "req_demo_context_001",
+        "tool": "capture_context",
+        "namespaceId": "ns_demo_project_alpha",
+        "envelope": {
+          "envelopeId": "env_demo_slack_carrie_001",
+          "sourceKind": "slack",
+          "sourceRecordId": "message_demo_carrie_001",
+          "sourceRevision": "1",
+          "title": "Synthetic delivery request",
+          "sourceLocator": "synthetic://slack/project-alpha/message-demo-carrie-001",
+          "sourceOccurredAt": "2026-08-04T17:00:00.000Z",
+          "capturedAt": "2026-08-04T23:30:00.000Z",
+          "sensitivity": "internal",
+          "content": "Synthetic context: Carrie asked for the revised proposal by tomorrow.",
+          "fixtureSafety": "synthetic",
+          "instructionAuthority": "none"
+        }
+      },
+      "expected": {
+        "status": "allowed",
+        "contextCaptured": true,
+        "captureDisposition": "appended",
+        "contentDigest": "f29700ca545531551717d9c63b1b73f5b1b9c9c25d0185fb19eeb0c2e73539b4",
+        "sourceEvidenceReturned": false,
+        "pendingCandidateCreated": false,
+        "trustedMemoryCreated": false,
+        "citationCount": 1,
+        "citations": [
+          {
+            "evidenceKind": "source_evidence",
+            "sourceId": "message_demo_carrie_001",
+            "segmentId": "env_demo_slack_carrie_001",
+            "address": "synthetic://slack/project-alpha/message-demo-carrie-001"
+          }
+        ],
+        "synchronizedThrough": "2026-08-04T23:30:00.000Z",
+        "requiredCapability": "import_or_maintain_sources",
+        "noAutoPromotion": true
+      }
+    },
+    {
       "caseId": "api_prepare_candidate_without_trusted_memory",
       "via": "api",
       "caller": {

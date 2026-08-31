@@ -195,7 +195,7 @@ Core invariants:
 | `npm run reviewer:smoke` | Clean first-reviewer path in a temporary copy |
 | `npm run alpha1:ci-workflow-smoke` | Hosted Alpha PostgreSQL job keeps exact versions, all five stories, repository adapters, the pinned evidence-first adapter, stable markers, and no artifact or production-secret path |
 | `npm run local-runtime:candidate-smoke` | Packs and installs the public Alpha candidate, checks the supported API and CLI, rejects private imports, and proves a no-`npx` AI-agent configuration |
-| `npm run local-runtime:security-gate` | Re-runs the exact dependency audit and enforces the temporary stdio-only advisory disposition |
+| `npm run local-runtime:security-gate` | Re-runs the exact production dependency audit, requires zero vulnerabilities, preserves the resolved prior-advisory record, and enforces the stdio-only boundary |
 | `npm run local-runtime:candidate-conformance` | With exact Node.js and disposable PostgreSQL, proves the clean installed binary through memory-only and synthetic-provider stdio MCP paths |
 | `npm run alpha1:conformance:story5` | 27-case disposable PostgreSQL proof for the four-tool MCP, protected source-evidence release, Story 6.3 composition, and Story 6.4 fail-closed cleanup |
 | `npm run alpha1:conformance:story5:replaceable` | The same 27-case protected local CLI and failure path with the separate public-contract-only adapter |

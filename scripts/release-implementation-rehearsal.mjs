@@ -47,7 +47,7 @@ for (const [label, text, requiredText] of [
   ],
   ["version recommendation", recommendation, "Implemented first public release path:"],
   ["release candidate notes", candidateNotes, futureVersion],
-  ["release candidate notes", candidateNotes, "Status: release candidate prepared locally, not published."],
+  ["release candidate notes", candidateNotes, "Historical status: release candidate prepared locally, not yet published."],
   ["release implementation rehearsal", rehearsalDoc, "Status: approved release metadata check."],
   ["release implementation rehearsal", rehearsalDoc, "real `publishConfig.access` is `public`"],
   ["release implementation rehearsal", rehearsalDoc, "ok release metadata applied"],

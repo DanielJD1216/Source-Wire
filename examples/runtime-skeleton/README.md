@@ -26,7 +26,7 @@ npm install
 
 ```bash
 npm run runtime:skeleton-smoke
-npm run runtime:context-inbox-smoke
+npm run build && node examples/runtime-skeleton/context-inbox-smoke.mjs
 ```
 
 The Context Inbox smoke uses immutable caller-supplied in-memory state. It creates no pending candidate or trusted memory and does not modify the existing Alpha MCP profiles.

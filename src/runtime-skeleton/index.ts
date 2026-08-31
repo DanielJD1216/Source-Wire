@@ -111,7 +111,7 @@ export type SourceWireRuntimeSkeletonResponse = {
     callerId: string;
     callerKind: SourceWireRuntimeSkeletonCallerKind;
     namespaceId: string;
-    action: SourceWireRuntimeSkeletonApiRequest["action"];
+    action: SourceWireRuntimeSkeletonApiRequest["action"] | "invalid_context_boundary";
     boundaryPath: "owner_hosted_api_policy" | "mcp_adapter_to_owner_hosted_api_policy";
     result: SourceWireRuntimeSkeletonStatus;
     leakedContent: false;
@@ -286,6 +286,38 @@ const contextCitationKeys = Object.freeze([
   "segmentId",
   "sourceId"
 ] as const);
+const contextCallerKeys = Object.freeze([
+  "allowedNamespaceIds",
+  "callerId",
+  "capabilities",
+  "kind"
+] as const);
+const contextCallerKeysWithOwner = Object.freeze([...contextCallerKeys, "ownerId"].sort());
+const contextCaptureRequestKeys = Object.freeze([
+  "envelope",
+  "namespaceId",
+  "requestId",
+  "tool"
+] as const);
+const contextSearchRequestKeys = Object.freeze(["namespaceId", "requestId", "tool"] as const);
+const contextSearchRequestKeysWithQuery = Object.freeze([...contextSearchRequestKeys, "query"].sort());
+const contextCaptureApiRequestKeys = Object.freeze([
+  "action",
+  "envelope",
+  "namespaceId",
+  "requestId",
+  "route"
+] as const);
+const contextSearchApiRequestKeys = Object.freeze([
+  "action",
+  "namespaceId",
+  "requestId",
+  "route"
+] as const);
+const contextSearchApiRequestKeysWithQuery = Object.freeze([
+  ...contextSearchApiRequestKeys,
+  "query"
+].sort());
 
 const contextSourceKinds = new Set([
   "slack",
@@ -302,6 +334,18 @@ const contextSensitivities = new Set([
   "internal",
   "confidential",
   "restricted"
+]);
+const contextCallerKinds = new Set<SourceWireRuntimeSkeletonCallerKind>([
+  "owner_hosted_api_client",
+  "mcp_tool",
+  "owner_controlled_application"
+]);
+const contextCapabilities = new Set<SourceWireRuntimeSkeletonCapability>([
+  "read_trusted_memory",
+  "read_source_evidence",
+  "import_or_maintain_sources",
+  "prepare_candidates",
+  "approve_trusted_memory"
 ]);
 const trustedContextInboxStates = new WeakSet<object>();
 
@@ -457,6 +501,123 @@ function normalizeContextEnvelope(
   return Object.freeze(snapshot) as unknown as SourceWireRuntimeSkeletonContextEnvelope;
 }
 
+function normalizeContextCaller(value: unknown): SourceWireRuntimeSkeletonCaller | undefined {
+  const snapshot = snapshotPlainDataRecord(value);
+  if (snapshot === undefined) return undefined;
+  const expectedKeys = Object.hasOwn(snapshot, "ownerId")
+    ? contextCallerKeysWithOwner
+    : contextCallerKeys;
+  if (!hasExactKeys(snapshot, expectedKeys)) return undefined;
+  const allowedNamespaceIds = snapshotPlainDataArray(snapshot.allowedNamespaceIds);
+  const capabilities = snapshotPlainDataArray(snapshot.capabilities);
+  if (
+    !isBoundedIdentifier(snapshot.callerId) ||
+    typeof snapshot.kind !== "string" ||
+    !contextCallerKinds.has(snapshot.kind as SourceWireRuntimeSkeletonCallerKind) ||
+    allowedNamespaceIds === undefined ||
+    allowedNamespaceIds.length > 64 ||
+    !allowedNamespaceIds.every((namespaceId) => isBoundedIdentifier(namespaceId)) ||
+    capabilities === undefined ||
+    capabilities.length > contextCapabilities.size ||
+    !capabilities.every(
+      (capability) =>
+        typeof capability === "string" &&
+        contextCapabilities.has(capability as SourceWireRuntimeSkeletonCapability)
+    ) ||
+    (snapshot.ownerId !== undefined && !isBoundedIdentifier(snapshot.ownerId))
+  ) {
+    return undefined;
+  }
+  return Object.freeze({
+    callerId: snapshot.callerId,
+    ...(Object.hasOwn(snapshot, "ownerId") ? { ownerId: snapshot.ownerId } : {}),
+    kind: snapshot.kind,
+    allowedNamespaceIds: Object.freeze(allowedNamespaceIds),
+    capabilities: Object.freeze(capabilities)
+  }) as unknown as SourceWireRuntimeSkeletonCaller;
+}
+
+function normalizeContextMcpRequest(
+  value: unknown,
+  tool: "capture_context" | "search_source_evidence"
+): SourceWireRuntimeSkeletonMcpRequest | undefined {
+  const snapshot = snapshotPlainDataRecord(value);
+  if (snapshot === undefined) return undefined;
+  const expectedKeys =
+    tool === "capture_context"
+      ? contextCaptureRequestKeys
+      : Object.hasOwn(snapshot, "query")
+        ? contextSearchRequestKeysWithQuery
+        : contextSearchRequestKeys;
+  if (!hasExactKeys(snapshot, expectedKeys)) return undefined;
+  if (
+    snapshot.tool !== tool ||
+    !isBoundedIdentifier(snapshot.requestId) ||
+    !isBoundedIdentifier(snapshot.namespaceId) ||
+    (Object.hasOwn(snapshot, "query") && !isBoundedText(snapshot.query, 4_096))
+  ) {
+    return undefined;
+  }
+  if (tool === "capture_context") {
+    return Object.freeze({
+      requestId: snapshot.requestId,
+      tool,
+      namespaceId: snapshot.namespaceId,
+      envelope: snapshot.envelope
+    }) as unknown as SourceWireRuntimeSkeletonMcpRequest;
+  }
+  return Object.freeze({
+    requestId: snapshot.requestId,
+    tool,
+    namespaceId: snapshot.namespaceId,
+    ...(Object.hasOwn(snapshot, "query") ? { query: snapshot.query } : {})
+  }) as SourceWireRuntimeSkeletonMcpRequest;
+}
+
+function normalizeContextApiRequest(
+  value: unknown,
+  action: "capture_context" | "search_source_evidence"
+): SourceWireRuntimeSkeletonApiRequest | undefined {
+  const snapshot = snapshotPlainDataRecord(value);
+  if (snapshot === undefined) return undefined;
+  const expectedKeys =
+    action === "capture_context"
+      ? contextCaptureApiRequestKeys
+      : Object.hasOwn(snapshot, "query")
+        ? contextSearchApiRequestKeysWithQuery
+        : contextSearchApiRequestKeys;
+  if (!hasExactKeys(snapshot, expectedKeys)) return undefined;
+  const expectedRoute =
+    action === "capture_context"
+      ? "POST /synthetic/v1/context/capture"
+      : "POST /synthetic/v1/search/source-evidence";
+  if (
+    snapshot.action !== action ||
+    snapshot.route !== expectedRoute ||
+    !isBoundedIdentifier(snapshot.requestId) ||
+    !isBoundedIdentifier(snapshot.namespaceId) ||
+    (Object.hasOwn(snapshot, "query") && !isBoundedText(snapshot.query, 4_096))
+  ) {
+    return undefined;
+  }
+  if (action === "capture_context") {
+    return Object.freeze({
+      requestId: snapshot.requestId,
+      route: expectedRoute,
+      namespaceId: snapshot.namespaceId,
+      action,
+      envelope: snapshot.envelope
+    }) as unknown as SourceWireRuntimeSkeletonApiRequest;
+  }
+  return Object.freeze({
+    requestId: snapshot.requestId,
+    route: expectedRoute,
+    namespaceId: snapshot.namespaceId,
+    action,
+    ...(Object.hasOwn(snapshot, "query") ? { query: snapshot.query } : {})
+  }) as SourceWireRuntimeSkeletonApiRequest;
+}
+
 function isValidContextInboxEntry(
   value: unknown
 ): value is SourceWireRuntimeSkeletonContextInboxEntry {
@@ -488,6 +649,15 @@ function isValidContextInboxEntry(
     return false;
   }
   if (typeof entry.envelopeDigest !== "string" || !/^[a-f0-9]{64}$/.test(entry.envelopeDigest)) {
+    return false;
+  }
+  if (
+    entry.envelopeDigest !==
+    createContextEnvelopeDigest(
+      entry as unknown as SourceWireRuntimeSkeletonContextInboxEntry,
+      entry.contentDigest
+    )
+  ) {
     return false;
   }
   if (
@@ -577,7 +747,7 @@ function normalizeContextInboxState(
     : contextInboxStateKeys;
   if (!hasExactKeys(stateSnapshot, expectedKeys)) return undefined;
   const rawEntries = snapshotPlainDataArray(stateSnapshot.entries);
-  if (rawEntries === undefined) return undefined;
+  if (rawEntries === undefined || rawEntries.length !== 0) return undefined;
 
   const entries: SourceWireRuntimeSkeletonContextInboxEntry[] = [];
   for (const rawEntry of rawEntries) {
@@ -612,23 +782,64 @@ function normalizeContextInboxState(
   return trustContextInboxState(normalizedState);
 }
 
-function createContextEnvelopeDigest(
-  envelope: SourceWireRuntimeSkeletonContextEnvelope,
+function createContextSourceRevisionDigest(
+  source: Pick<
+    SourceWireRuntimeSkeletonContextEnvelope,
+    | "sourceKind"
+    | "sourceRecordId"
+    | "sourceRevision"
+    | "title"
+    | "sourceLocator"
+    | "sourceOccurredAt"
+    | "sensitivity"
+  >,
   contentDigest: string
 ): string {
   const canonicalSourceRevision = JSON.stringify({
+    sourceKind: source.sourceKind,
+    sourceRecordId: source.sourceRecordId,
+    sourceRevision: source.sourceRevision,
+    title: source.title,
+    sourceLocator: source.sourceLocator,
+    sourceOccurredAt: source.sourceOccurredAt,
+    sensitivity: source.sensitivity,
+    contentDigest,
+    fixtureSafety: "synthetic",
+    instructionAuthority: "none"
+  });
+  return createHash("sha256").update(canonicalSourceRevision, "utf8").digest("hex");
+}
+
+function createContextEnvelopeDigest(
+  envelope: Pick<
+    SourceWireRuntimeSkeletonContextEnvelope,
+    | "envelopeId"
+    | "sourceKind"
+    | "sourceRecordId"
+    | "sourceRevision"
+    | "title"
+    | "sourceLocator"
+    | "sourceOccurredAt"
+    | "capturedAt"
+    | "sensitivity"
+  >,
+  contentDigest: string
+): string {
+  const canonicalEnvelope = JSON.stringify({
+    envelopeId: envelope.envelopeId,
     sourceKind: envelope.sourceKind,
     sourceRecordId: envelope.sourceRecordId,
     sourceRevision: envelope.sourceRevision,
     title: envelope.title,
     sourceLocator: envelope.sourceLocator,
     sourceOccurredAt: envelope.sourceOccurredAt,
+    capturedAt: envelope.capturedAt,
     sensitivity: envelope.sensitivity,
     contentDigest,
-    fixtureSafety: envelope.fixtureSafety,
-    instructionAuthority: envelope.instructionAuthority
+    fixtureSafety: "synthetic",
+    instructionAuthority: "none"
   });
-  return createHash("sha256").update(canonicalSourceRevision, "utf8").digest("hex");
+  return createHash("sha256").update(canonicalEnvelope, "utf8").digest("hex");
 }
 
 export function createRuntimeSkeletonContextInboxState(): SourceWireRuntimeSkeletonContextInboxState {
@@ -638,6 +849,61 @@ export function createRuntimeSkeletonContextInboxState(): SourceWireRuntimeSkele
       entries: Object.freeze([] as SourceWireRuntimeSkeletonContextInboxEntry[])
     })
   );
+}
+
+function contextInboxStateForDeniedResult(
+  state: SourceWireRuntimeSkeletonContextInboxState
+): SourceWireRuntimeSkeletonContextInboxState {
+  return typeof state === "object" && state !== null && trustedContextInboxStates.has(state)
+    ? state
+    : createRuntimeSkeletonContextInboxState();
+}
+
+function createContextBoundaryInvalidResponse(
+  action: "capture_context" | "search_source_evidence" | "invalid_context_boundary",
+  boundaryPath:
+    | "owner_hosted_api_policy"
+    | "mcp_adapter_to_owner_hosted_api_policy" = "mcp_adapter_to_owner_hosted_api_policy"
+): SourceWireRuntimeSkeletonResponse {
+  const requiredCapability =
+    action === "capture_context"
+      ? "import_or_maintain_sources"
+      : action === "search_source_evidence"
+        ? "read_source_evidence"
+        : undefined;
+  return Object.freeze({
+    status: "denied",
+    requestId: "invalid_context_request",
+    namespaceId: "invalid_context_namespace",
+    sourceWireHostsUserMemory: false,
+    runtimeMode: "synthetic_owner_hosted_skeleton",
+    trustedMemoryReturned: false,
+    sourceEvidenceReturned: false,
+    contextCaptured: false,
+    pendingCandidateCreated: false,
+    trustedMemoryCreated: false,
+    noAutoPromotion: true,
+    citationCount: 0,
+    citations: Object.freeze([]) as unknown as SourceWireRuntimeSkeletonCitation[],
+    omittedCount: 1,
+    gapKinds: Object.freeze([]) as unknown as string[],
+    denialReason: "context_boundary_invalid",
+    ...(requiredCapability === undefined ? {} : { requiredCapability }),
+    audit: Object.freeze({
+      callerId: "invalid_context_caller",
+      callerKind:
+        boundaryPath === "owner_hosted_api_policy"
+          ? ("owner_hosted_api_client" as const)
+          : ("mcp_tool" as const),
+      namespaceId: "invalid_context_namespace",
+      action,
+      boundaryPath,
+      result: "denied" as const,
+      leakedContent: false as const,
+      rawTokenReturned: false as const,
+      privatePathReturned: false as const
+    })
+  });
 }
 
 function freezeContextInboxResponseMetadata(
@@ -774,7 +1040,7 @@ function createContextCaptureInvalidEnvelopeResult(
       ...response.audit,
       result: "denied" as const
     }),
-    state
+    state: contextInboxStateForDeniedResult(state)
   });
 }
 
@@ -783,6 +1049,23 @@ export function transitionRuntimeSkeletonContextCapture(
   caller: SourceWireRuntimeSkeletonCaller,
   request: SourceWireRuntimeSkeletonMcpRequest
 ): SourceWireRuntimeSkeletonContextCaptureResult {
+  const callerSnapshot = snapshotPlainDataRecord(caller);
+  const requestSnapshot = snapshotPlainDataRecord(request);
+  const normalizedCaller = normalizeContextCaller(caller);
+  const normalizedRequest = normalizeContextMcpRequest(request, "capture_context");
+  if (normalizedCaller === undefined || normalizedRequest === undefined) {
+    const boundaryAction =
+      callerSnapshot === undefined || requestSnapshot === undefined
+        ? "invalid_context_boundary"
+        : "capture_context";
+    return Object.freeze({
+      ...createContextBoundaryInvalidResponse(boundaryAction),
+      state: contextInboxStateForDeniedResult(state)
+    });
+  }
+  caller = normalizedCaller;
+  request = normalizedRequest;
+
   const response = freezeContextInboxResponseMetadata(
     callRuntimeSkeletonMcpAdapter(caller, request)
   );
@@ -796,7 +1079,7 @@ export function transitionRuntimeSkeletonContextCapture(
   ) {
     return Object.freeze({
       ...response,
-      state
+      state: contextInboxStateForDeniedResult(state)
     });
   }
 
@@ -819,6 +1102,7 @@ export function transitionRuntimeSkeletonContextCapture(
   }
 
   const contentDigest = createHash("sha256").update(envelope.content, "utf8").digest("hex");
+  const sourceRevisionDigest = createContextSourceRevisionDigest(envelope, contentDigest);
   const envelopeDigest = createContextEnvelopeDigest(envelope, contentDigest);
   const existingRequest = state.entries.find(
     (entry) =>
@@ -840,14 +1124,29 @@ export function transitionRuntimeSkeletonContextCapture(
       entry.envelopeId === envelope.envelopeId
   );
 
-  if (existingRequest !== undefined && existingRequest.envelopeDigest !== envelopeDigest) {
-    return createContextCaptureConflictResult(response, state, "request_replay_conflict");
+  const envelopeConflict =
+    existingEnvelope !== undefined && existingEnvelope.envelopeDigest !== envelopeDigest;
+  const requestConflict =
+    existingRequest !== undefined && existingRequest.envelopeDigest !== envelopeDigest;
+  const revisionConflict =
+    existingRevision !== undefined &&
+    createContextSourceRevisionDigest(existingRevision, existingRevision.contentDigest) !==
+      sourceRevisionDigest;
+
+  if (
+    envelopeConflict &&
+    (existingRevision === undefined || existingEnvelope !== existingRevision)
+  ) {
+    return createContextCaptureConflictResult(response, state, "envelope_id_conflict");
   }
-  if (existingRevision !== undefined && existingRevision.envelopeDigest !== envelopeDigest) {
+  if (revisionConflict) {
     return createContextCaptureConflictResult(response, state, "source_revision_conflict");
   }
-  if (existingEnvelope !== undefined && existingEnvelope.envelopeDigest !== envelopeDigest) {
+  if (envelopeConflict) {
     return createContextCaptureConflictResult(response, state, "envelope_id_conflict");
+  }
+  if (requestConflict) {
+    return createContextCaptureConflictResult(response, state, "request_replay_conflict");
   }
 
   const idempotentEntry = existingRequest ?? existingRevision ?? existingEnvelope;
@@ -906,6 +1205,23 @@ export function searchRuntimeSkeletonContextInbox(
   caller: SourceWireRuntimeSkeletonCaller,
   request: SourceWireRuntimeSkeletonContextSearchRequest
 ): SourceWireRuntimeSkeletonContextSearchResult {
+  const callerSnapshot = snapshotPlainDataRecord(caller);
+  const requestSnapshot = snapshotPlainDataRecord(request);
+  const normalizedCaller = normalizeContextCaller(caller);
+  const normalizedRequest = normalizeContextMcpRequest(request, "search_source_evidence");
+  if (normalizedCaller === undefined || normalizedRequest === undefined) {
+    const boundaryAction =
+      callerSnapshot === undefined || requestSnapshot === undefined
+        ? "invalid_context_boundary"
+        : "search_source_evidence";
+    return Object.freeze({
+      ...createContextBoundaryInvalidResponse(boundaryAction),
+      contextEvidence: Object.freeze([] as SourceWireRuntimeSkeletonContextEvidence[])
+    });
+  }
+  caller = normalizedCaller;
+  request = normalizedRequest as SourceWireRuntimeSkeletonContextSearchRequest;
+
   const response = freezeContextInboxResponseMetadata(
     callRuntimeSkeletonMcpAdapter(caller, request)
   );
@@ -953,6 +1269,27 @@ export function searchRuntimeSkeletonContextInbox(
     });
   }
   state = normalizedState;
+  if (
+    state.entries.some(
+      (entry) => entry.ownerId !== caller.ownerId || entry.namespaceId !== request.namespaceId
+    )
+  ) {
+    const { synchronizedThrough: _synchronizedThrough, ...boundedResponse } = response;
+    return Object.freeze({
+      ...boundedResponse,
+      status: "denied",
+      sourceEvidenceReturned: false,
+      citationCount: 0,
+      citations: Object.freeze([]) as unknown as SourceWireRuntimeSkeletonCitation[],
+      omittedCount: 1,
+      denialReason: "context_inbox_state_invalid",
+      audit: Object.freeze({
+        ...response.audit,
+        result: "denied" as const
+      }),
+      contextEvidence: Object.freeze([] as SourceWireRuntimeSkeletonContextEvidence[])
+    });
+  }
 
   const contextEvidence = Object.freeze(
     state.entries
@@ -1006,6 +1343,30 @@ export function callRuntimeSkeletonApiPolicy(
   caller: SourceWireRuntimeSkeletonCaller,
   request: SourceWireRuntimeSkeletonApiRequest
 ): SourceWireRuntimeSkeletonResponse {
+  const requestSnapshot = snapshotPlainDataRecord(request);
+  if (requestSnapshot === undefined) {
+    return createContextBoundaryInvalidResponse(
+      "invalid_context_boundary",
+      "owner_hosted_api_policy"
+    );
+  }
+  if (
+    requestSnapshot.action === "capture_context" ||
+    requestSnapshot.action === "search_source_evidence"
+  ) {
+    const contextAction = requestSnapshot.action;
+    const callerSnapshot = snapshotPlainDataRecord(caller);
+    const normalizedCaller = normalizeContextCaller(caller);
+    const normalizedRequest = normalizeContextApiRequest(request, contextAction);
+    if (normalizedCaller === undefined || normalizedRequest === undefined) {
+      const boundaryAction =
+        callerSnapshot === undefined ? "invalid_context_boundary" : contextAction;
+      return createContextBoundaryInvalidResponse(boundaryAction, "owner_hosted_api_policy");
+    }
+    caller = normalizedCaller;
+    request = normalizedRequest;
+  }
+
   const requiredCapability = capabilityForAction(request.action);
 
   if (!caller.allowedNamespaceIds.includes(request.namespaceId)) {
@@ -1155,16 +1516,37 @@ export function callRuntimeSkeletonMcpAdapter(
   caller: SourceWireRuntimeSkeletonCaller,
   request: SourceWireRuntimeSkeletonMcpRequest
 ): SourceWireRuntimeSkeletonResponse {
+  const requestSnapshot = snapshotPlainDataRecord(request);
+  if (requestSnapshot === undefined) {
+    return createContextBoundaryInvalidResponse("invalid_context_boundary");
+  }
+  if (
+    requestSnapshot.tool === "capture_context" ||
+    requestSnapshot.tool === "search_source_evidence"
+  ) {
+    const contextTool = requestSnapshot.tool;
+    const callerSnapshot = snapshotPlainDataRecord(caller);
+    const normalizedCaller = normalizeContextCaller(caller);
+    const normalizedRequest = normalizeContextMcpRequest(request, contextTool);
+    if (normalizedCaller === undefined || normalizedRequest === undefined) {
+      const boundaryAction =
+        callerSnapshot === undefined ? "invalid_context_boundary" : contextTool;
+      return createContextBoundaryInvalidResponse(boundaryAction);
+    }
+    caller = normalizedCaller;
+    request = normalizedRequest;
+  }
+
   const apiRequest = mapMcpToRuntimeSkeletonApiRequest(request);
   const response = callRuntimeSkeletonApiPolicy(caller, apiRequest);
 
-  return {
+  return Object.freeze({
     ...response,
-    audit: {
+    audit: Object.freeze({
       ...response.audit,
       boundaryPath: "mcp_adapter_to_owner_hosted_api_policy"
-    }
-  };
+    })
+  });
 }
 
 export function runRuntimeSkeletonFixtureCase(
@@ -1262,7 +1644,9 @@ function createResponse(
     approvalPath?: "owner_or_application_controlled";
   }
 ): SourceWireRuntimeSkeletonResponse {
-  const citations = options.citations ?? [];
+  const citations = Object.freeze(
+    (options.citations ?? []).map((citation) => Object.freeze({ ...citation }))
+  ) as unknown as SourceWireRuntimeSkeletonCitation[];
 
   const response: SourceWireRuntimeSkeletonResponse = {
     status: options.status,
@@ -1279,8 +1663,8 @@ function createResponse(
     citationCount: citations.length,
     citations,
     omittedCount: options.omittedCount ?? 0,
-    gapKinds: options.gapKinds ?? [],
-    audit: {
+    gapKinds: Object.freeze([...(options.gapKinds ?? [])]) as unknown as string[],
+    audit: Object.freeze({
       callerId: caller.callerId,
       callerKind: caller.kind,
       namespaceId: request.namespaceId,
@@ -1290,7 +1674,7 @@ function createResponse(
       leakedContent: false,
       rawTokenReturned: false,
       privatePathReturned: false
-    }
+    })
   };
 
   if (options.captureDisposition !== undefined) {
@@ -1321,5 +1705,5 @@ function createResponse(
     response.approvalPath = options.approvalPath;
   }
 
-  return response;
+  return Object.freeze(response);
 }

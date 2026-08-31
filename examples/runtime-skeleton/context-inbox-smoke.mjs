@@ -1,4 +1,7 @@
+import { createHash } from "node:crypto";
 import {
+  callRuntimeSkeletonApiPolicy,
+  callRuntimeSkeletonMcpAdapter,
   createRuntimeSkeletonContextInboxState,
   searchRuntimeSkeletonContextInbox,
   transitionRuntimeSkeletonContextCapture
@@ -31,6 +34,79 @@ const request = {
     instructionAuthority: "none"
   }
 };
+
+const recomputeRetainedEnvelopeDigest = (entry) =>
+  createHash("sha256")
+    .update(
+      JSON.stringify({
+        envelopeId: entry.envelopeId,
+        sourceKind: entry.sourceKind,
+        sourceRecordId: entry.sourceRecordId,
+        sourceRevision: entry.sourceRevision,
+        title: entry.title,
+        sourceLocator: entry.sourceLocator,
+        sourceOccurredAt: entry.sourceOccurredAt,
+        capturedAt: entry.capturedAt,
+        sensitivity: entry.sensitivity,
+        contentDigest: entry.contentDigest,
+        fixtureSafety: "synthetic",
+        instructionAuthority: "none"
+      }),
+      "utf8"
+    )
+    .digest("hex");
+
+const directMcpCapture = callRuntimeSkeletonMcpAdapter(caller, request);
+assertEqual(directMcpCapture.status, "allowed", "direct MCP capture policy status");
+assertEqual(Object.isFrozen(directMcpCapture), true, "direct MCP capture receipt is frozen");
+assertEqual(Object.isFrozen(directMcpCapture.citations), true, "direct MCP citations are frozen");
+assertEqual(Object.isFrozen(directMcpCapture.audit), true, "direct MCP audit is frozen");
+
+const proxyDirectMcpCapture = callRuntimeSkeletonMcpAdapter(
+  new Proxy(caller, {}),
+  new Proxy(request, {})
+);
+assertEqual(proxyDirectMcpCapture.status, "denied", "direct MCP proxy inputs fail closed");
+assertEqual(proxyDirectMcpCapture.citations, [], "direct MCP proxy denial has no citations");
+
+const apiCaptureRequest = {
+  requestId: request.requestId,
+  route: "POST /synthetic/v1/context/capture",
+  namespaceId: request.namespaceId,
+  action: "capture_context",
+  envelope: request.envelope
+};
+const proxyDirectApiCapture = callRuntimeSkeletonApiPolicy(
+  new Proxy(caller, {}),
+  new Proxy(apiCaptureRequest, {})
+);
+assertEqual(proxyDirectApiCapture.status, "denied", "direct API proxy inputs fail closed");
+assertEqual(Object.isFrozen(proxyDirectApiCapture), true, "direct API proxy denial is frozen");
+assertEqual(
+  proxyDirectApiCapture.audit.action,
+  "invalid_context_boundary",
+  "unsnapshottable direct API request uses neutral audit action"
+);
+assertEqual(
+  proxyDirectApiCapture.audit.boundaryPath,
+  "owner_hosted_api_policy",
+  "unsnapshottable direct API request preserves API boundary"
+);
+assertEqual(
+  Object.hasOwn(proxyDirectApiCapture, "requiredCapability"),
+  false,
+  "unsnapshottable direct API request does not guess a capability"
+);
+assertEqual(
+  proxyDirectMcpCapture.audit.action,
+  "invalid_context_boundary",
+  "unsnapshottable direct MCP request uses neutral audit action"
+);
+assertEqual(
+  Object.hasOwn(proxyDirectMcpCapture, "requiredCapability"),
+  false,
+  "unsnapshottable direct MCP request does not guess a capability"
+);
 
 const initialState = createRuntimeSkeletonContextInboxState();
 const capture = transitionRuntimeSkeletonContextCapture(initialState, caller, request);
@@ -233,21 +309,17 @@ const mutableStateCapture = transitionRuntimeSkeletonContextCapture(
   caller,
   historicalCaptureRequest
 );
-assertEqual(mutableStateCapture.status, "allowed", "mutable valid state capture status");
+assertEqual(mutableStateCapture.status, "denied", "external non-empty state fails closed");
 assertEqual(
-  mutableStateCapture.state.entries[0] === mutableValidState.entries[0],
+  mutableStateCapture.denialReason,
+  "context_inbox_state_invalid",
+  "external non-empty state denial"
+);
+assertEqual(mutableStateCapture.state.entries, [], "external non-empty state is sanitized");
+assertEqual(
+  JSON.stringify(mutableStateCapture).includes(request.envelope.content),
   false,
-  "accepted mutable entry is cloned"
-);
-assertEqual(
-  Object.isFrozen(mutableStateCapture.state.entries[0]),
-  true,
-  "accepted mutable entry is frozen"
-);
-assertEqual(
-  Object.isFrozen(mutableStateCapture.state.entries[0].citation),
-  true,
-  "accepted mutable citation is frozen"
+  "external non-empty state cannot echo source content"
 );
 
 const searchCaller = {
@@ -261,6 +333,38 @@ const searchRequest = {
   namespaceId: request.namespaceId,
   query: "Find the synthetic delivery request."
 };
+
+const malformedDirectMcpSearch = callRuntimeSkeletonMcpAdapter(searchCaller, {
+  ...searchRequest,
+  requestId: "   "
+});
+assertEqual(malformedDirectMcpSearch.status, "denied", "direct MCP malformed search fails closed");
+
+const malformedDirectApiSearch = callRuntimeSkeletonApiPolicy(
+  { ...searchCaller, kind: "owner_hosted_api_client" },
+  {
+    requestId: "req_demo_direct_api_search_invalid_001",
+    route: "POST /synthetic/v1/search/source-evidence",
+    namespaceId: "   ",
+    action: "search_source_evidence",
+    query: searchRequest.query
+  }
+);
+assertEqual(malformedDirectApiSearch.status, "denied", "direct API malformed search fails closed");
+assertEqual(
+  malformedDirectApiSearch.audit.boundaryPath,
+  "owner_hosted_api_policy",
+  "direct API malformed search audit boundary"
+);
+
+const malformedTransitionSearch = searchRuntimeSkeletonContextInbox(capture.state, searchCaller, {
+  ...searchRequest,
+  requestId: "req_demo_context_search_control_query_001",
+  query: "synthetic\u0000query"
+});
+assertEqual(malformedTransitionSearch.status, "denied", "control-character search query fails closed");
+assertEqual(malformedTransitionSearch.contextEvidence, [], "malformed search returns no evidence");
+
 const search = searchRuntimeSkeletonContextInbox(capture.state, searchCaller, searchRequest);
 assertEqual(search.status, "allowed", "context search status");
 assertEqual(search.sourceEvidenceReturned, true, "context search returns source evidence");
@@ -281,6 +385,26 @@ assertEqual(Object.hasOwn(search.contextEvidence[0], "ownerId"), false, "search 
 assertEqual(Object.hasOwn(search.contextEvidence[0], "captureRequestId"), false, "search excludes capture request identity");
 assertEqual(Object.hasOwn(search.contextEvidence[0], "content"), false, "search excludes source body");
 assertEqual(JSON.stringify(search).includes(request.envelope.content), false, "search response excludes source body");
+
+const mixedScopeState = {
+  contractVersion: "source-wire.context-inbox-state.v1",
+  entries: [...capture.state.entries, ...otherScopeCapture.state.entries],
+  synchronizedThrough:
+    capture.state.synchronizedThrough > otherScopeCapture.state.synchronizedThrough
+      ? capture.state.synchronizedThrough
+      : otherScopeCapture.state.synchronizedThrough
+};
+const mixedScopeSearch = searchRuntimeSkeletonContextInbox(mixedScopeState, searchCaller, {
+  ...searchRequest,
+  requestId: "req_demo_context_search_mixed_scope_001"
+});
+assertEqual(mixedScopeSearch.status, "denied", "mixed-scope search state fails closed");
+assertEqual(
+  mixedScopeSearch.denialReason,
+  "context_inbox_state_invalid",
+  "mixed-scope search state denial"
+);
+assertEqual(mixedScopeSearch.contextEvidence, [], "mixed-scope search returns no evidence");
 
 const forgedState = {
   ...capture.state,
@@ -305,6 +429,208 @@ assertEqual(
   JSON.stringify(forgedStateSearch).includes(forgedState.entries[0].content),
   false,
   "forged state cannot leak an extra source body"
+);
+
+const forgedDigestState = JSON.parse(JSON.stringify(capture.state));
+forgedDigestState.entries[0].envelopeDigest = "0".repeat(64);
+const forgedDigestSearch = searchRuntimeSkeletonContextInbox(
+  forgedDigestState,
+  searchCaller,
+  { ...searchRequest, requestId: "req_demo_context_search_forged_digest_001" }
+);
+assertEqual(forgedDigestSearch.status, "denied", "forged envelope digest state status");
+assertEqual(
+  forgedDigestSearch.denialReason,
+  "context_inbox_state_invalid",
+  "forged envelope digest state denial"
+);
+assertEqual(forgedDigestSearch.contextEvidence, [], "forged digest returns no context entries");
+
+const forgedEnvelopeMetadataStates = [
+  {
+    caseId: "forged retained envelope identity",
+    requestId: "req_demo_context_search_forged_envelope_id_001",
+    state: {
+      ...JSON.parse(JSON.stringify(capture.state)),
+      entries: [
+        {
+          ...JSON.parse(JSON.stringify(capture.state.entries[0])),
+          envelopeId: "env_demo_forged_identity_001",
+          citation: {
+            ...JSON.parse(JSON.stringify(capture.state.entries[0].citation)),
+            segmentId: "env_demo_forged_identity_001"
+          }
+        }
+      ]
+    }
+  },
+  {
+    caseId: "forged retained capture freshness",
+    requestId: "req_demo_context_search_forged_freshness_001",
+    state: {
+      ...JSON.parse(JSON.stringify(capture.state)),
+      entries: [
+        {
+          ...JSON.parse(JSON.stringify(capture.state.entries[0])),
+          capturedAt: "2026-08-05T23:30:00.000Z"
+        }
+      ],
+      synchronizedThrough: "2026-08-05T23:30:00.000Z"
+    }
+  }
+];
+
+for (const forgedMetadata of forgedEnvelopeMetadataStates) {
+  forgedMetadata.state.entries[0].envelopeDigest = recomputeRetainedEnvelopeDigest(
+    forgedMetadata.state.entries[0]
+  );
+  const forgedMetadataSearch = searchRuntimeSkeletonContextInbox(
+    forgedMetadata.state,
+    searchCaller,
+    { ...searchRequest, requestId: forgedMetadata.requestId }
+  );
+  assertEqual(forgedMetadataSearch.status, "denied", `${forgedMetadata.caseId} status`);
+  assertEqual(
+    forgedMetadataSearch.denialReason,
+    "context_inbox_state_invalid",
+    `${forgedMetadata.caseId} denial`
+  );
+  assertEqual(forgedMetadataSearch.contextEvidence, [], `${forgedMetadata.caseId} returns no evidence`);
+}
+
+const accessorOwnerCaller = { ...searchCaller };
+Object.defineProperty(accessorOwnerCaller, "ownerId", {
+  enumerable: true,
+  configurable: true,
+  get() {
+    return searchCaller.ownerId;
+  }
+});
+const accessorOwnerSearch = searchRuntimeSkeletonContextInbox(
+  capture.state,
+  accessorOwnerCaller,
+  { ...searchRequest, requestId: "req_demo_context_search_accessor_owner_001" }
+);
+assertEqual(accessorOwnerSearch.status, "denied", "accessor owner authority fails closed");
+assertEqual(accessorOwnerSearch.contextEvidence, [], "accessor owner returns no context entries");
+assertEqual(
+  accessorOwnerSearch.audit.action,
+  "invalid_context_boundary",
+  "accessor owner search uses neutral audit action"
+);
+assertEqual(
+  Object.hasOwn(accessorOwnerSearch, "requiredCapability"),
+  false,
+  "accessor owner search does not guess a capability"
+);
+
+const proxyCallerSearch = searchRuntimeSkeletonContextInbox(
+  capture.state,
+  new Proxy(searchCaller, {}),
+  { ...searchRequest, requestId: "req_demo_context_search_proxy_caller_001" }
+);
+assertEqual(proxyCallerSearch.status, "denied", "proxy caller authority fails closed");
+assertEqual(proxyCallerSearch.contextEvidence, [], "proxy caller returns no context entries");
+
+const proxyRequestSearch = searchRuntimeSkeletonContextInbox(
+  capture.state,
+  searchCaller,
+  new Proxy(searchRequest, {})
+);
+assertEqual(proxyRequestSearch.status, "denied", "proxy search request fails closed");
+assertEqual(proxyRequestSearch.contextEvidence, [], "proxy search request returns no evidence");
+assertEqual(
+  proxyRequestSearch.audit.action,
+  "invalid_context_boundary",
+  "proxy search transition uses neutral audit action"
+);
+assertEqual(
+  Object.hasOwn(proxyRequestSearch, "requiredCapability"),
+  false,
+  "proxy search transition does not guess a capability"
+);
+
+const accessorIdentityRequest = { ...request };
+Object.defineProperties(accessorIdentityRequest, {
+  namespaceId: {
+    enumerable: true,
+    configurable: true,
+    get() {
+      return request.namespaceId;
+    }
+  },
+  requestId: {
+    enumerable: true,
+    configurable: true,
+    get() {
+      return "req_demo_context_accessor_identity_001";
+    }
+  }
+});
+const accessorIdentityCapture = transitionRuntimeSkeletonContextCapture(
+  createRuntimeSkeletonContextInboxState(),
+  caller,
+  accessorIdentityRequest
+);
+assertEqual(accessorIdentityCapture.status, "denied", "accessor capture identity fails closed");
+assertEqual(accessorIdentityCapture.state.entries, [], "accessor capture identity appends nothing");
+assertEqual(
+  accessorIdentityCapture.audit.action,
+  "invalid_context_boundary",
+  "accessor capture request uses neutral audit action"
+);
+assertEqual(
+  Object.hasOwn(accessorIdentityCapture, "requiredCapability"),
+  false,
+  "accessor capture request does not guess a capability"
+);
+
+const hiddenCaptureRequest = { ...request };
+Object.defineProperty(hiddenCaptureRequest, "hiddenAuthority", {
+  enumerable: false,
+  value: "synthetic-hidden-authority"
+});
+const symbolCaptureRequest = { ...request };
+symbolCaptureRequest[Symbol("synthetic-hidden-authority")] = true;
+
+for (const [caseId, malformedRequest] of [
+  ["hidden capture request", hiddenCaptureRequest],
+  ["symbol capture request", symbolCaptureRequest]
+]) {
+  const malformedCapture = transitionRuntimeSkeletonContextCapture(
+    createRuntimeSkeletonContextInboxState(),
+    caller,
+    malformedRequest
+  );
+  assertEqual(malformedCapture.status, "denied", `${caseId} fails closed`);
+  assertEqual(
+    malformedCapture.audit.action,
+    "invalid_context_boundary",
+    `${caseId} uses neutral audit action`
+  );
+  assertEqual(
+    Object.hasOwn(malformedCapture, "requiredCapability"),
+    false,
+    `${caseId} does not guess a capability`
+  );
+}
+
+const proxyRequestCapture = transitionRuntimeSkeletonContextCapture(
+  createRuntimeSkeletonContextInboxState(),
+  caller,
+  new Proxy(request, {})
+);
+assertEqual(proxyRequestCapture.status, "denied", "proxy capture request fails closed");
+assertEqual(proxyRequestCapture.state.entries, [], "proxy capture request appends nothing");
+assertEqual(
+  proxyRequestCapture.audit.action,
+  "invalid_context_boundary",
+  "proxy capture transition uses neutral audit action"
+);
+assertEqual(
+  Object.hasOwn(proxyRequestCapture, "requiredCapability"),
+  false,
+  "proxy capture transition does not guess a capability"
 );
 
 const ownerlessForgedStateSearch = searchRuntimeSkeletonContextInbox(
@@ -497,7 +823,12 @@ const otherOwnerSearch = searchRuntimeSkeletonContextInbox(
   { ...searchCaller, callerId: "caller_demo_other_owner", ownerId: "owner_demo_beta" },
   { ...searchRequest, requestId: "req_demo_context_search_other_owner_001" }
 );
-assertEqual(otherOwnerSearch.status, "allowed", "other owner search policy status");
+assertEqual(otherOwnerSearch.status, "denied", "other owner state search fails closed");
+assertEqual(
+  otherOwnerSearch.denialReason,
+  "context_inbox_state_invalid",
+  "other owner state search denial"
+);
 assertEqual(otherOwnerSearch.sourceEvidenceReturned, false, "other owner sees no source evidence");
 assertEqual(otherOwnerSearch.contextEvidence.length, 0, "other owner sees no context entries");
 assertEqual(otherOwnerSearch.citations, [], "other owner sees no citations");
@@ -597,10 +928,11 @@ assertEqual(
   "authenticated_owner_required",
   "capture authorization precedes state validation"
 );
+assertEqual(ownerlessForgedStateCapture.state.entries, [], "ownerless forged capture sanitizes state");
 assertEqual(
-  ownerlessForgedStateCapture.state === forgedState,
-  true,
-  "ownerless forged capture does not inspect or sanitize state"
+  JSON.stringify(ownerlessForgedStateCapture).includes(forgedState.entries[0].content),
+  false,
+  "ownerless forged capture cannot echo source body"
 );
 
 const invalidIdentityCases = [
@@ -608,7 +940,7 @@ const invalidIdentityCases = [
     caseId: "whitespace owner",
     caller: { ...caller, callerId: "caller_demo_whitespace_owner", ownerId: " " },
     request: { ...request, requestId: "req_demo_context_whitespace_owner_001" },
-    denialReason: "authenticated_owner_required"
+    denialReason: "context_boundary_invalid"
   },
   {
     caseId: "malformed namespace",
@@ -618,13 +950,13 @@ const invalidIdentityCases = [
       allowedNamespaceIds: [" "]
     },
     request: { ...request, requestId: "req_demo_context_malformed_namespace_001", namespaceId: " " },
-    denialReason: "context_capture_identity_invalid"
+    denialReason: "context_boundary_invalid"
   },
   {
     caseId: "malformed request identity",
     caller,
     request: { ...request, requestId: " " },
-    denialReason: "context_capture_identity_invalid"
+    denialReason: "context_boundary_invalid"
   }
 ];
 

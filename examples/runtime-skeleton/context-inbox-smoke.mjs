@@ -108,6 +108,46 @@ assertEqual(
   "unsnapshottable direct MCP request does not guess a capability"
 );
 
+const poisonedPrototypeValue = {};
+Object.defineProperty(poisonedPrototypeValue, "ownerId", {
+  get() {
+    throw new Error("POISON_GETTER_EXECUTED");
+  }
+});
+const protoInjectionCaller = {
+  callerId: caller.callerId,
+  kind: caller.kind,
+  allowedNamespaceIds: [...caller.allowedNamespaceIds],
+  capabilities: [...caller.capabilities]
+};
+Object.defineProperty(protoInjectionCaller, "__proto__", {
+  enumerable: true,
+  value: poisonedPrototypeValue
+});
+
+let protoDirectMcpCapture;
+let protoDirectApiCapture;
+let protoTransitionCapture;
+try {
+  protoDirectMcpCapture = callRuntimeSkeletonMcpAdapter(protoInjectionCaller, request);
+  protoDirectApiCapture = callRuntimeSkeletonApiPolicy(protoInjectionCaller, apiCaptureRequest);
+  protoTransitionCapture = transitionRuntimeSkeletonContextCapture(
+    createRuntimeSkeletonContextInboxState(),
+    protoInjectionCaller,
+    request
+  );
+} catch (error) {
+  throw new Error(`prototype-injection boundary threw: ${error.message}`);
+}
+for (const [caseId, result] of [
+  ["direct MCP prototype injection", protoDirectMcpCapture],
+  ["direct API prototype injection", protoDirectApiCapture],
+  ["transition prototype injection", protoTransitionCapture]
+]) {
+  assertEqual(result.status, "denied", `${caseId} fails closed`);
+  assertEqual(result.audit.action, "capture_context", `${caseId} preserves known capture audit action`);
+}
+
 const initialState = createRuntimeSkeletonContextInboxState();
 const capture = transitionRuntimeSkeletonContextCapture(initialState, caller, request);
 

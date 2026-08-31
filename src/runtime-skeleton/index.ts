@@ -443,7 +443,7 @@ function snapshotPlainDataRecord(value: unknown): Record<string, unknown> | unde
     const keys = Reflect.ownKeys(descriptors);
     if (keys.some((key) => typeof key !== "string")) return undefined;
 
-    const snapshot: Record<string, unknown> = {};
+    const snapshot: Record<string, unknown> = Object.create(null);
     for (const key of keys as string[]) {
       const descriptor = descriptors[key];
       if (descriptor === undefined || !descriptor.enumerable || !("value" in descriptor)) {

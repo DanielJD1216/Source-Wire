@@ -211,7 +211,10 @@ Origin-process proof protects the supported local API path against replay and a 
 - PostgreSQL superuser compromise,
 - operating-system root compromise.
 
-The MCP SDK currently has two moderate advisories in an unused HTTP-server path. Story 3 uses local stdio only. Remote or hosted transport requires a new dependency and exposure review.
+The current production dependency audit reports zero vulnerabilities. Story 3
+uses local stdio only. The prior moderate MCP advisory remains documented as
+resolved history, and remote or hosted transport still requires a new
+dependency and exposure review.
 
 ## Still Outside Story 3
 

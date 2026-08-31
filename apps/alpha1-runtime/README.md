@@ -114,12 +114,13 @@ promote memory.
 
 ## Security
 
-Read [SECURITY.md](SECURITY.md) before evaluation. Two moderate nested MCP
-dependency advisories are temporarily accepted only for the exact local,
-stdio-only, non-Windows scope above. The npm publication review was completed
-on July 25, 2026. Re-review is required no later than August 24, 2026, and
-immediately after any dependency, transport, platform, runtime, future
-publication, hosting, deployment, or data-scope change.
+Read [SECURITY.md](SECURITY.md) before evaluation. At publication review on
+July 25, 2026, two moderate nested MCP dependency advisories were temporarily
+accepted only for the exact local, stdio-only, non-Windows scope above, with a
+review deadline of August 24, 2026. That is historical release evidence. The
+current repository production dependency audit reports zero vulnerabilities,
+and the prior disposition was recorded as resolved on August 31, 2026. Any
+future finding or scope change requires a new review.
 
 ## Public Alpha boundary
 

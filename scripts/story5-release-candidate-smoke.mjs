@@ -37,15 +37,16 @@ try {
     "deployment remains blocked",
     "real data remains blocked",
     "automatic trusted-memory promotion remains forbidden",
-    "No npm package was published",
-    "No GitHub release or Git tag was created",
+    "At candidate time, no npm package was published",
+    "At candidate time, no GitHub release or Git tag was created",
+    "later `0.2.0` publication and release",
     "clean external consumer",
     "does not prove a live connector"
   ]) {
     assertIncludes(releaseNotes, requiredPhrase, "release-candidate notes");
   }
-  assertIncludes(advisoryDisposition, "Status: Owner accepted", "advisory disposition");
-  assertIncludes(advisoryDisposition, "Review deadline: 2026-08-24", "advisory review deadline");
+  assertIncludes(advisoryDisposition, "Status: Resolved", "advisory disposition");
+  assertIncludes(advisoryDisposition, "Resolved: 2026-08-31", "advisory resolution date");
 
   await runChecked("npm", ["run", "build"], root);
   const packResult = await runChecked(

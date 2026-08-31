@@ -104,39 +104,37 @@ if (
 }
 
 const audit = readProductionAudit();
-const vulnerabilityNames = Object.keys(audit.vulnerabilities ?? {}).sort();
+const expectedAuditCounts = {
+  info: 0,
+  low: 0,
+  moderate: 0,
+  high: 0,
+  critical: 0,
+  total: 0
+};
 if (
-  vulnerabilityNames.length !== 2 ||
-  vulnerabilityNames[0] !== "@hono/node-server" ||
-  vulnerabilityNames[1] !== "@modelcontextprotocol/sdk"
+  JSON.stringify(audit.metadata?.vulnerabilities) !==
+  JSON.stringify(expectedAuditCounts)
 ) {
   throw new Error("story5_dependency_advisory_set_changed");
 }
-const honoAdvisory = audit.vulnerabilities["@hono/node-server"];
-const sdkAdvisory = audit.vulnerabilities["@modelcontextprotocol/sdk"];
+const vulnerabilityMap = audit.vulnerabilities;
 if (
-  honoAdvisory?.severity !== "moderate" ||
-  sdkAdvisory?.severity !== "moderate" ||
-  honoAdvisory.via?.length !== 1 ||
-  honoAdvisory.via[0]?.url !==
-    "https://github.com/advisories/GHSA-frvp-7c67-39w9" ||
-  sdkAdvisory.via?.length !== 1 ||
-  sdkAdvisory.via[0] !== "@hono/node-server"
+  typeof vulnerabilityMap !== "object" ||
+  vulnerabilityMap === null ||
+  Array.isArray(vulnerabilityMap)
 ) {
   throw new Error("story5_dependency_advisory_set_changed");
 }
-if (!disposition.includes("Status: Owner accepted")) {
-  throw new Error("story5_advisory_disposition_owner_acceptance_required");
+const vulnerabilityNames = Object.keys(vulnerabilityMap).sort();
+if (vulnerabilityNames.length !== 0) {
+  throw new Error("story5_dependency_advisory_set_changed");
 }
-const reviewDeadline = disposition.match(
-  /^Review deadline: (\d{4}-\d{2}-\d{2})$/mu
-)?.[1];
-if (!reviewDeadline) {
-  throw new Error("story5_advisory_review_deadline_missing");
-}
-const reviewDeadlineEnd = Date.parse(`${reviewDeadline}T23:59:59.999Z`);
-if (!Number.isFinite(reviewDeadlineEnd) || Date.now() > reviewDeadlineEnd) {
-  throw new Error("story5_advisory_review_deadline_expired");
+if (
+  !disposition.includes("Status: Resolved") ||
+  !disposition.includes("Resolved: 2026-08-31")
+) {
+  throw new Error("story5_advisory_resolution_record_missing");
 }
 
 console.log("ok Story 5 immutable provider binding policy");
@@ -146,8 +144,8 @@ console.log("ok replaceable adapter imports only the public provider contract");
 console.log("ok startup composition excludes registry and runtime authority");
 console.log(`ok MCP SDK ${sdkVersion} avoids known high-severity SDK ranges`);
 console.log("ok MCP stdio path excludes static-file and HTTP transports");
-console.log("ok known moderate advisory set matches owner-accepted disposition");
-console.log(`ok advisory review deadline remains active through ${reviewDeadline}`);
+console.log("ok production dependency audit reports zero vulnerabilities");
+console.log("ok prior moderate advisory disposition is recorded as resolved");
 console.log("ok Story 5 production and deployment blocks");
 
 function readProductionAudit() {
@@ -160,6 +158,9 @@ function readProductionAudit() {
       shell: process.platform === "win32"
     }
   );
+  if (result.error || result.status !== 0) {
+    throw new Error("story5_dependency_audit_unavailable");
+  }
   if (!result.stdout) {
     throw new Error("story5_dependency_audit_unavailable");
   }

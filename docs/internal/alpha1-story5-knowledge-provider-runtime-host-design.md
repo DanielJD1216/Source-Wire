@@ -530,7 +530,12 @@ Package publication, GitHub release creation, and tagging remain separate conseq
 
 ## Dependency Advisory Gate
 
-The current production dependency audit reports two moderate findings caused by the MCP SDK's nested `@hono/node-server` version. The advisory concerns Windows `serve-static` path traversal. The current Source-Wire MCP runtime uses stdio and does not call that static-file surface.
+At Story 5 design time, the production dependency audit reported two moderate
+findings caused by the MCP SDK's nested `@hono/node-server` version. The
+advisory concerned Windows `serve-static` path traversal. The Source-Wire MCP
+runtime used stdio and did not call that static-file surface. The current
+repository production dependency audit reports zero vulnerabilities, and the
+prior disposition was recorded as resolved on 2026-08-31.
 
 Story 5 acceptance requires one of:
 
@@ -607,10 +612,11 @@ Remaining uncertainty:
 - The provider contract has no cancellation signal.
 - The knowledge-base public schemas need a provider-ready mapping shape.
 - The knowledge-base public repository has no runnable retrieval endpoint.
-- The moderate MCP dependency advisory is temporarily dispositioned for the
-  local stdio-only synthetic Alpha runtime through 2026-08-24. It remains a
-  production stop gate and must be reviewed sooner if the dependency,
-  transport, platform, or runtime scope changes.
+- At design time, the moderate MCP dependency advisory was temporarily
+  dispositioned for the local stdio-only synthetic Alpha runtime through
+  2026-08-24. The current repository audit reports zero vulnerabilities, and
+  the disposition was recorded as resolved on 2026-08-31. Production remains
+  blocked.
 - Production authentication, endpoint custody, secret custody, deployment, and real-data operation remain separate future decisions.
 
 ## Recommended Implementation Order

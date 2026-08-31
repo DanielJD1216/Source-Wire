@@ -7,8 +7,9 @@ security-fix release.
 
 The installed binary is `source-wire-local`. The package is configured with
 public npm access, while Git tags, GitHub releases, deployment, and hosted
-services remain separate and blocked. The same exact artifact can also be
-evaluated by packing an explicit local checkout.
+services remain separate and blocked. The npm registry artifact is immutable.
+Packing an explicit local checkout evaluates the latest-source candidate; it
+does not reconstruct or mutate the already-published archive.
 
 ## Support Boundary
 
@@ -39,8 +40,8 @@ It is not supported for:
 
 Do not install deprecated `0.1.0-alpha.1`. Install exact reviewed
 `@source-wire/local-runtime@0.1.0-alpha.2` for local synthetic or disposable
-evaluation. Use a locally packed artifact only when reproducing the
-pre-publication gate.
+evaluation. Use a locally packed artifact only for latest-source candidate gates,
+not as a claim of byte identity with the already-published archive.
 
 ## Prepare The Local Tarball
 
@@ -138,20 +139,15 @@ adapter, provider credentials, and agent harness.
 
 ## Advisory Disposition
 
-A fresh production-dependency audit reports two moderate nested MCP findings
-from `@hono/node-server@1.19.15` through
-`@modelcontextprotocol/sdk@1.29.0`. The underlying advisory is
-`GHSA-frvp-7c67-39w9` for Windows static-file path handling.
+The current production dependency audit reports zero vulnerabilities for the
+exact candidate dependency tree. The prior moderate
+`GHSA-frvp-7c67-39w9` finding for nested `@hono/node-server` through
+`@modelcontextprotocol/sdk@1.29.0` was resolved on August 31, 2026 when npm no
+longer reported it. The exact reviewed dependency pins did not change.
 
-The findings are temporarily accepted only because this candidate blocks
-Windows, HTTP and SSE MCP, static serving, hosting, deployment, production,
-real data, and live providers. The direct `@hono/node-server` dependency is
-pinned to `2.0.11`.
-
-The npm publication review was completed on July 25, 2026 for this exact
-version and support boundary. Re-review is required no later than August 24,
-2026, and immediately after any dependency, transport, platform, runtime,
-future publication, hosting, deployment, or data-scope change.
+Any future finding fails the security gate and requires explicit remediation
+or a new reviewed disposition. Windows, HTTP and SSE MCP, static serving,
+hosting, deployment, production, real data, and live providers remain blocked.
 
 Run:
 

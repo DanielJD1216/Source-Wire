@@ -108,15 +108,15 @@ proof without provider evidence bodies, credentials, or database locators.
 
 ## Security And Advisory Boundary
 
-The known moderate MCP dependency advisory is temporarily accepted only for
-this local, stdio-only synthetic Alpha runtime. Review it again no later than
-2026-08-24, or immediately if the dependency, transport, platform, or runtime
-scope changes.
+The current production dependency audit reports zero vulnerabilities. The
+prior moderate MCP dependency advisory was resolved on 2026-08-31 without
+changing the exact dependency pins. Any future audit finding fails the gate and
+requires explicit remediation or a new reviewed disposition.
 
 Read the
 [MCP Dependency Advisory Disposition](../internal/alpha1-story5-mcp-advisory-disposition.md)
-for the affected surface, rejected remediations, executable gate, and owner
-acceptance.
+for the historical affected surface, rejected remediations, executable gate,
+owner acceptance, and resolution record.
 
 Production, hosting, Windows runtime, HTTP or SSE MCP, static serving,
 deployment, and real-data use remain blocked.

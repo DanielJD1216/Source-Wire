@@ -32,12 +32,12 @@ in-process code.
 
 ## Dependency advisory disposition
 
-A fresh review of the exact Alpha dependency tree reports two moderate
-findings for nested `@hono/node-server@1.19.15` through
-`@modelcontextprotocol/sdk@1.29.0`. The current advisory concerns Windows
-static-file path handling and is tracked as `GHSA-frvp-7c67-39w9`.
+At the July 25, 2026 publication review, the exact Alpha dependency tree
+reported two moderate findings for nested `@hono/node-server@1.19.15` through
+`@modelcontextprotocol/sdk@1.29.0`. The advisory concerned Windows static-file
+path handling and was tracked as `GHSA-frvp-7c67-39w9`.
 
-The findings are temporarily accepted for this Alpha because:
+The findings were temporarily accepted for this Alpha because:
 
 - Windows is unsupported and blocked by package metadata.
 - MCP transport is stdio only.
@@ -49,12 +49,16 @@ The findings are temporarily accepted for this Alpha because:
 - forcing the current audit recommendation would downgrade the MCP SDK and
   change the reviewed dependency scope.
 
-This is a scope-limited disposition, not a claim that the dependency is safe
-for other uses. The dependency disposition was re-reviewed on July 25, 2026
-for the public `0.1.0-alpha.2` Alpha after the runtime changed.
-Re-review is required no later than August 24, 2026, or immediately if any
-dependency, transport, platform, runtime, future publication, hosting,
-deployment, or data boundary changes.
+This was a scope-limited disposition, not a claim that the dependency was safe
+for other uses. Its review deadline was August 24, 2026. The current repository
+production dependency audit reports zero vulnerabilities, and the prior
+disposition was recorded as resolved on August 31, 2026 without changing the
+exact dependency pins. Any future audit finding or dependency, transport,
+platform, runtime, publication, hosting, deployment, or data-boundary change
+requires a new review.
+
+The npm `0.1.0-alpha.2` registry artifact remains an immutable release snapshot.
+This latest-source documentation update does not mutate or republish it.
 
 ## Unsupported security scope
 

@@ -95,10 +95,12 @@ Still blocked:
 
 ## Dependency Advisory
 
-The two moderate nested MCP findings remain temporarily accepted for this
-stdio-only, non-Windows, non-static-serving Alpha. Re-review is due no later
-than August 24, 2026, or immediately if the dependency, transport, platform,
-runtime, publication, hosting, deployment, or data scope changes.
+At `0.1.0-alpha.1` release time, two moderate nested MCP findings were
+temporarily accepted for the stdio-only, non-Windows, non-static-serving Alpha,
+with re-review due by August 24, 2026. The current repository production
+dependency audit reports zero vulnerabilities, and the disposition was recorded
+as resolved on 2026-08-31. This deprecated package remains blocked for its
+separate namespace-binding and provider-deadline defects.
 
 ## Rollback Posture
 

@@ -1307,18 +1307,30 @@ async function databasePrivilegeAndDependencyProbes(): Promise<void> {
     ["audit", "--omit=dev", "--json"],
     process.env
   );
-  assert.equal(audit.code === 0 || audit.code === 1, true);
+  assert.equal(audit.code, 0);
   const auditReport = JSON.parse(audit.stdout) as {
     metadata?: { vulnerabilities?: Record<string, number> };
+    vulnerabilities?: unknown;
   };
-  assert.equal(auditReport.metadata?.vulnerabilities?.high ?? 0, 0);
-  assert.equal(auditReport.metadata?.vulnerabilities?.critical ?? 0, 0);
-  acceptedModerateAdvisories =
-    auditReport.metadata?.vulnerabilities?.moderate ?? 0;
-  assert.equal(acceptedModerateAdvisories, 2);
+  assert.deepEqual(auditReport.metadata?.vulnerabilities, {
+    info: 0,
+    low: 0,
+    moderate: 0,
+    high: 0,
+    critical: 0,
+    total: 0
+  });
+  assert.equal(typeof auditReport.vulnerabilities, "object");
+  assert.notEqual(auditReport.vulnerabilities, null);
+  assert.equal(Array.isArray(auditReport.vulnerabilities), false);
+  assert.deepEqual(
+    Object.keys(auditReport.vulnerabilities as Record<string, unknown>),
+    []
+  );
+  acceptedModerateAdvisories = 0;
   pass(
     "S3-DEP-01",
-    "active-only GIN FTS, no vector or provider dependency, zero high or critical advisories, and two accepted stdio-irrelevant moderate advisories observed"
+    "active-only GIN FTS, no vector or provider dependency, and zero production dependency advisories observed"
   );
 }
 

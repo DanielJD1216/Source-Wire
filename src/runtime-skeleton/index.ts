@@ -851,12 +851,8 @@ export function createRuntimeSkeletonContextInboxState(): SourceWireRuntimeSkele
   );
 }
 
-function contextInboxStateForDeniedResult(
-  state: SourceWireRuntimeSkeletonContextInboxState
-): SourceWireRuntimeSkeletonContextInboxState {
-  return typeof state === "object" && state !== null && trustedContextInboxStates.has(state)
-    ? state
-    : createRuntimeSkeletonContextInboxState();
+function contextInboxStateForDeniedResult(): SourceWireRuntimeSkeletonContextInboxState {
+  return createRuntimeSkeletonContextInboxState();
 }
 
 function createContextBoundaryInvalidResponse(
@@ -1040,7 +1036,7 @@ function createContextCaptureInvalidEnvelopeResult(
       ...response.audit,
       result: "denied" as const
     }),
-    state: contextInboxStateForDeniedResult(state)
+    state: contextInboxStateForDeniedResult()
   });
 }
 
@@ -1060,7 +1056,7 @@ export function transitionRuntimeSkeletonContextCapture(
         : "capture_context";
     return Object.freeze({
       ...createContextBoundaryInvalidResponse(boundaryAction),
-      state: contextInboxStateForDeniedResult(state)
+      state: contextInboxStateForDeniedResult()
     });
   }
   caller = normalizedCaller;
@@ -1079,7 +1075,7 @@ export function transitionRuntimeSkeletonContextCapture(
   ) {
     return Object.freeze({
       ...response,
-      state: contextInboxStateForDeniedResult(state)
+      state: contextInboxStateForDeniedResult()
     });
   }
 

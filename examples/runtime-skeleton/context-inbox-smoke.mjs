@@ -343,6 +343,66 @@ assertEqual(
   "capture state freshness remains scoped"
 );
 
+const foreignTrustedStateDenialCases = [
+  {
+    caseId: "wrong namespace",
+    caller,
+    request: {
+      ...request,
+      requestId: "req_demo_context_foreign_state_wrong_namespace_001",
+      namespaceId: "ns_demo_client_beta"
+    },
+    denialReason: "namespace_not_allowed"
+  },
+  {
+    caseId: "missing capability",
+    caller: { ...caller, callerId: "caller_demo_foreign_state_without_capability", capabilities: [] },
+    request: { ...request, requestId: "req_demo_context_foreign_state_missing_capability_001" },
+    denialReason: "missing_import_or_maintain_sources_capability"
+  },
+  {
+    caseId: "missing owner",
+    caller: { ...caller, callerId: "caller_demo_foreign_state_without_owner", ownerId: undefined },
+    request: { ...request, requestId: "req_demo_context_foreign_state_missing_owner_001" },
+    denialReason: "authenticated_owner_required"
+  },
+  {
+    caseId: "invalid caller boundary",
+    caller: { ...caller, callerId: " " },
+    request: { ...request, requestId: "req_demo_context_foreign_state_invalid_boundary_001" },
+    denialReason: "context_boundary_invalid"
+  },
+  {
+    caseId: "invalid envelope",
+    caller,
+    request: {
+      ...request,
+      requestId: "req_demo_context_foreign_state_invalid_envelope_001",
+      envelope: { ...request.envelope, sourceLocator: "https://invalid.example/context" }
+    },
+    denialReason: "context_envelope_invalid"
+  }
+];
+for (const denialCase of foreignTrustedStateDenialCases) {
+  const deniedCapture = transitionRuntimeSkeletonContextCapture(
+    otherScopeCapture.state,
+    denialCase.caller,
+    denialCase.request
+  );
+  assertEqual(deniedCapture.status, "denied", `${denialCase.caseId} foreign-state status`);
+  assertEqual(
+    deniedCapture.denialReason,
+    denialCase.denialReason,
+    `${denialCase.caseId} foreign-state denial`
+  );
+  assertEqual(deniedCapture.state.entries, [], `${denialCase.caseId} foreign state is sanitized`);
+  assertEqual(
+    JSON.stringify(deniedCapture).includes(otherScopeRequest.envelope.sourceLocator),
+    false,
+    `${denialCase.caseId} foreign metadata is not echoed`
+  );
+}
+
 const mutableValidState = JSON.parse(JSON.stringify(capture.state));
 const mutableStateCapture = transitionRuntimeSkeletonContextCapture(
   mutableValidState,
@@ -925,7 +985,7 @@ const wrongNamespaceCapture = transitionRuntimeSkeletonContextCapture(
 );
 assertEqual(wrongNamespaceCapture.status, "denied", "wrong namespace capture status");
 assertEqual(wrongNamespaceCapture.denialReason, "namespace_not_allowed", "namespace checked before validation");
-assertEqual(wrongNamespaceCapture.state, capture.state, "wrong namespace capture preserves state");
+assertEqual(wrongNamespaceCapture.state.entries, [], "wrong namespace capture sanitizes state");
 
 const missingCapabilityCapture = transitionRuntimeSkeletonContextCapture(
   capture.state,
@@ -942,7 +1002,7 @@ assertEqual(
   "missing_import_or_maintain_sources_capability",
   "capability checked before validation"
 );
-assertEqual(missingCapabilityCapture.state, capture.state, "missing capability capture preserves state");
+assertEqual(missingCapabilityCapture.state.entries, [], "missing capability capture sanitizes state");
 
 const ownerlessCapture = transitionRuntimeSkeletonContextCapture(
   capture.state,
@@ -955,7 +1015,7 @@ const ownerlessCapture = transitionRuntimeSkeletonContextCapture(
 );
 assertEqual(ownerlessCapture.status, "denied", "ownerless capture status");
 assertEqual(ownerlessCapture.denialReason, "authenticated_owner_required", "owner checked before validation");
-assertEqual(ownerlessCapture.state, capture.state, "ownerless capture preserves state");
+assertEqual(ownerlessCapture.state.entries, [], "ownerless capture sanitizes state");
 
 const ownerlessForgedStateCapture = transitionRuntimeSkeletonContextCapture(
   forgedState,
@@ -1012,8 +1072,7 @@ for (const invalidIdentity of invalidIdentityCases) {
     invalidIdentity.denialReason,
     `${invalidIdentity.caseId} denial`
   );
-  assertEqual(invalidIdentityCapture.state, capture.state, `${invalidIdentity.caseId} preserves state`);
-  assertEqual(invalidIdentityCapture.state.entries.length, 1, `${invalidIdentity.caseId} appends nothing`);
+  assertEqual(invalidIdentityCapture.state.entries, [], `${invalidIdentity.caseId} sanitizes state`);
 }
 
 const accessorEnvelope = { ...request.envelope };
@@ -1035,7 +1094,7 @@ assertEqual(
   "context_envelope_invalid",
   "accessor envelope capture denial"
 );
-assertEqual(accessorEnvelopeCapture.state, capture.state, "accessor envelope preserves state");
+assertEqual(accessorEnvelopeCapture.state.entries, [], "accessor envelope sanitizes state");
 
 const revokedEnvelope = Proxy.revocable({}, {});
 revokedEnvelope.revoke();
@@ -1055,7 +1114,7 @@ assertEqual(
   "context_envelope_invalid",
   "revoked envelope denial"
 );
-assertEqual(revokedEnvelopeCapture.state, capture.state, "revoked envelope preserves state");
+assertEqual(revokedEnvelopeCapture.state.entries, [], "revoked envelope sanitizes state");
 
 const transparentProxyEnvelopeCapture = transitionRuntimeSkeletonContextCapture(capture.state, caller, {
   ...request,
@@ -1072,9 +1131,9 @@ assertEqual(
   "transparent proxy envelope denial"
 );
 assertEqual(
-  transparentProxyEnvelopeCapture.state,
-  capture.state,
-  "transparent proxy envelope preserves state"
+  transparentProxyEnvelopeCapture.state.entries,
+  [],
+  "transparent proxy envelope sanitizes state"
 );
 
 const invalidEnvelopeCases = [
@@ -1112,7 +1171,7 @@ for (const [index, invalidCase] of invalidEnvelopeCases.entries()) {
   });
   assertEqual(invalidCapture.status, "denied", `${invalidCase.caseId} status`);
   assertEqual(invalidCapture.denialReason, "context_envelope_invalid", `${invalidCase.caseId} denial`);
-  assertEqual(invalidCapture.state, capture.state, `${invalidCase.caseId} preserves state`);
+  assertEqual(invalidCapture.state.entries, [], `${invalidCase.caseId} sanitizes state`);
   assertEqual(invalidCapture.citations, [], `${invalidCase.caseId} returns no citation`);
   assertEqual(Object.hasOwn(invalidCapture, "contentDigest"), false, `${invalidCase.caseId} returns no digest`);
 }
@@ -1218,8 +1277,7 @@ const authorityInjection = transitionRuntimeSkeletonContextCapture(
 );
 assertEqual(authorityInjection.status, "denied", "authority injection status");
 assertEqual(authorityInjection.denialReason, "context_envelope_invalid", "authority injection denial");
-assertEqual(authorityInjection.state, capture.state, "authority injection preserves state");
-assertEqual(authorityInjection.state.entries.length, 1, "authority injection appends nothing");
+assertEqual(authorityInjection.state.entries, [], "authority injection sanitizes state");
 
 console.log("ok runtime context inbox append-only state transition");
 console.log("ok runtime context inbox smoke");

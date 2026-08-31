@@ -9,6 +9,7 @@ It proves:
 - namespace and capability checks can deny unsafe requests,
 - an authenticated owner may submit one exact-key, bounded synthetic `capture_context` envelope,
 - Context Inbox state retains owner-scoped provenance, digests, citations, and freshness without retaining the submitted source body,
+- capture denials before authorization and owner/namespace state validation return a fresh empty state and never echo supplied or foreign trusted state,
 - exact request and source-revision replays are idempotent while conflicting replays fail closed,
 - a separate `read_source_evidence` check releases only bounded captured metadata, citations, and a scoped freshness cutoff,
 - trusted-memory promotion is not automatic,

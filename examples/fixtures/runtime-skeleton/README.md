@@ -19,7 +19,7 @@ It proves the future owner-hosted runtime skeleton shape without adding:
 - private implementation code,
 - automatic trusted memory promotion.
 
-The `mcp_context_capture_source_only` fixture proves that a valid synthetic capture request routes through MCP to owner-hosted API policy and returns a bounded source citation, server-derived digest, and freshness cutoff. The fixture matrix is stateless. Sequential append, replay, conflict, denial, validation, and owner-scoped source-evidence search behavior is covered by `examples/runtime-skeleton/context-inbox-smoke.mjs`.
+The `mcp_context_capture_source_only` fixture proves that a valid synthetic capture request routes through MCP to owner-hosted API policy and returns a bounded source citation, server-derived digest, and freshness cutoff. The fixture matrix is stateless. Sequential append, replay, conflict, denial, validation, early-denial state sanitization, foreign trusted-state non-echo, and owner-scoped source-evidence search behavior is covered by `examples/runtime-skeleton/context-inbox-smoke.mjs`.
 
 ## Smoke
 

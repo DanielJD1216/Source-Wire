@@ -1,0 +1,222 @@
+{
+  "evalType": "source-wire.context-quality-eval.v0",
+  "corpusVersion": "1.0.0",
+  "fixtureSafety": "synthetic",
+  "networkAccess": "none",
+  "modelJudge": false,
+  "orderingContract": "set_only",
+  "thresholds": {
+    "retrievalExpectedSetAccuracy": 1,
+    "precisionAtK": 1,
+    "recallAtK": 1,
+    "citationProvenanceFidelity": 1,
+    "ownerLeakage": 0,
+    "namespaceLeakage": 0,
+    "sourceBodyLeakage": 0,
+    "unauthorizedCandidateCreation": 0,
+    "unauthorizedTrustedMemoryCreation": 0,
+    "replayViolations": 0,
+    "freshnessViolations": 0,
+    "adversarialEscapes": 0,
+    "unhandledCases": 0
+  },
+  "captureCaller": {
+    "callerId": "caller_eval_capture_alpha",
+    "ownerId": "owner_eval_alpha",
+    "kind": "mcp_tool",
+    "allowedNamespaceIds": ["ns_eval_alpha"],
+    "capabilities": ["import_or_maintain_sources"]
+  },
+  "searchCaller": {
+    "callerId": "caller_eval_search_alpha",
+    "ownerId": "owner_eval_alpha",
+    "kind": "mcp_tool",
+    "allowedNamespaceIds": ["ns_eval_alpha"],
+    "capabilities": ["read_source_evidence"]
+  },
+  "captures": [
+    {
+      "caseId": "capture_delivery_revision_1",
+      "request": {
+        "requestId": "req_eval_delivery_001",
+        "tool": "capture_context",
+        "namespaceId": "ns_eval_alpha",
+        "envelope": {
+          "envelopeId": "env_eval_delivery_001",
+          "sourceKind": "slack",
+          "sourceRecordId": "source_eval_delivery",
+          "sourceRevision": "1",
+          "title": "Synthetic delivery proposal",
+          "sourceLocator": "synthetic://context-eval/delivery",
+          "sourceOccurredAt": "2026-08-10T10:00:00.000Z",
+          "capturedAt": "2026-08-10T10:05:00.000Z",
+          "sensitivity": "internal",
+          "content": "Synthetic body alpha: the first delivery proposal is due Friday.",
+          "fixtureSafety": "synthetic",
+          "instructionAuthority": "none"
+        }
+      }
+    },
+    {
+      "caseId": "capture_budget_revision_1",
+      "request": {
+        "requestId": "req_eval_budget_001",
+        "tool": "capture_context",
+        "namespaceId": "ns_eval_alpha",
+        "envelope": {
+          "envelopeId": "env_eval_budget_001",
+          "sourceKind": "document",
+          "sourceRecordId": "source_eval_budget",
+          "sourceRevision": "1",
+          "title": "Synthetic budget review",
+          "sourceLocator": "synthetic://context-eval/budget-review",
+          "sourceOccurredAt": "2026-08-10T10:06:00.000Z",
+          "capturedAt": "2026-08-10T10:10:00.000Z",
+          "sensitivity": "internal",
+          "content": "Synthetic body beta: the budget review requires owner approval.",
+          "fixtureSafety": "synthetic",
+          "instructionAuthority": "none"
+        }
+      }
+    },
+    {
+      "caseId": "capture_delivery_revision_2",
+      "request": {
+        "requestId": "req_eval_delivery_002",
+        "tool": "capture_context",
+        "namespaceId": "ns_eval_alpha",
+        "envelope": {
+          "envelopeId": "env_eval_delivery_002",
+          "sourceKind": "slack",
+          "sourceRecordId": "source_eval_delivery",
+          "sourceRevision": "2",
+          "title": "Synthetic delivery proposal revised",
+          "sourceLocator": "synthetic://context-eval/delivery",
+          "sourceOccurredAt": "2026-08-10T11:00:00.000Z",
+          "capturedAt": "2026-08-10T11:05:00.000Z",
+          "sensitivity": "internal",
+          "content": "Synthetic body gamma: the revised delivery proposal is due Monday.",
+          "fixtureSafety": "synthetic",
+          "instructionAuthority": "none"
+        }
+      }
+    },
+    {
+      "caseId": "capture_historical_revision_1",
+      "request": {
+        "requestId": "req_eval_historical_001",
+        "tool": "capture_context",
+        "namespaceId": "ns_eval_alpha",
+        "envelope": {
+          "envelopeId": "env_eval_historical_001",
+          "sourceKind": "meeting",
+          "sourceRecordId": "source_eval_historical",
+          "sourceRevision": "1",
+          "title": "Synthetic launch retrospective",
+          "sourceLocator": "synthetic://context-eval/launch-retrospective",
+          "sourceOccurredAt": "2026-08-10T09:00:00.000Z",
+          "capturedAt": "2026-08-10T09:05:00.000Z",
+          "sensitivity": "internal",
+          "content": "Synthetic body delta: the retrospective predates the current delivery revision.",
+          "fixtureSafety": "synthetic",
+          "instructionAuthority": "none"
+        }
+      }
+    }
+  ],
+  "searchCases": [
+    {
+      "caseId": "search_current_delivery_revision",
+      "query": "source_eval_delivery",
+      "k": 1,
+      "expectedEvidence": ["source_eval_delivery@2"]
+    },
+    {
+      "caseId": "search_budget_review",
+      "query": "budget review",
+      "k": 1,
+      "expectedEvidence": ["source_eval_budget@1"]
+    },
+    {
+      "caseId": "search_historical_retrospective",
+      "query": "launch retrospective",
+      "k": 1,
+      "expectedEvidence": ["source_eval_historical@1"]
+    },
+    {
+      "caseId": "search_broad_synthetic_metadata",
+      "query": "synthetic",
+      "k": 3,
+      "expectedEvidence": [
+        "source_eval_delivery@2",
+        "source_eval_budget@1",
+        "source_eval_historical@1"
+      ]
+    },
+    {
+      "caseId": "search_unanswerable_metadata",
+      "query": "nonexistent roadmap",
+      "k": 1,
+      "expectedEvidence": []
+    }
+  ],
+  "replayCases": [
+    {
+      "caseId": "replay_exact_request",
+      "recipe": "exact_replay",
+      "expectedStatus": "allowed",
+      "expectedDisposition": "idempotent"
+    },
+    {
+      "caseId": "replay_legitimate_reobservation",
+      "recipe": "legitimate_reobservation",
+      "expectedStatus": "allowed",
+      "expectedDisposition": "idempotent"
+    },
+    {
+      "caseId": "replay_request_conflict",
+      "recipe": "request_conflict",
+      "expectedStatus": "denied",
+      "expectedDenialReason": "request_replay_conflict"
+    },
+    {
+      "caseId": "replay_envelope_conflict",
+      "recipe": "envelope_conflict",
+      "expectedStatus": "denied",
+      "expectedDenialReason": "envelope_id_conflict"
+    },
+    {
+      "caseId": "replay_source_revision_conflict",
+      "recipe": "source_revision_conflict",
+      "expectedStatus": "denied",
+      "expectedDenialReason": "source_revision_conflict"
+    },
+    {
+      "caseId": "replay_matching_request_cannot_mask_envelope_conflict",
+      "recipe": "cross_bound_conflict",
+      "expectedStatus": "denied",
+      "expectedDenialReason": "envelope_id_conflict"
+    }
+  ],
+  "boundaryCases": [
+    { "caseId": "boundary_wrong_owner", "recipe": "wrong_owner" },
+    { "caseId": "boundary_wrong_namespace", "recipe": "wrong_namespace" },
+    { "caseId": "boundary_missing_capability", "recipe": "missing_capability" },
+    { "caseId": "boundary_foreign_trusted_state", "recipe": "foreign_trusted_state" },
+    { "caseId": "boundary_mixed_scope_state", "recipe": "mixed_scope_state" },
+    { "caseId": "boundary_unknown_key", "recipe": "unknown_key" },
+    { "caseId": "boundary_hidden_key", "recipe": "hidden_key" },
+    { "caseId": "boundary_inherited_key", "recipe": "inherited_key" },
+    { "caseId": "boundary_symbol_key", "recipe": "symbol_key" },
+    { "caseId": "boundary_accessor", "recipe": "accessor" },
+    { "caseId": "boundary_own_proto", "recipe": "own_proto" },
+    { "caseId": "boundary_custom_prototype", "recipe": "custom_prototype" },
+    { "caseId": "boundary_sparse_array", "recipe": "sparse_array" },
+    { "caseId": "boundary_custom_array", "recipe": "custom_array" },
+    { "caseId": "boundary_transparent_proxy", "recipe": "transparent_proxy" },
+    { "caseId": "boundary_revoked_proxy", "recipe": "revoked_proxy" },
+    { "caseId": "boundary_malformed_id", "recipe": "malformed_id" },
+    { "caseId": "boundary_malformed_query", "recipe": "malformed_query" },
+    { "caseId": "boundary_malformed_state", "recipe": "malformed_state" }
+  ]
+}

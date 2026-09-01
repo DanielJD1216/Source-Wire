@@ -156,10 +156,11 @@ export type SourceWireRuntimeSkeletonContextEvidence = Readonly<
 
 export type SourceWireRuntimeSkeletonContextSearchRequest = Omit<
   SourceWireRuntimeSkeletonMcpRequest,
-  "tool" | "envelope"
+  "tool" | "envelope" | "query"
 > &
   Readonly<{
     tool: "search_source_evidence";
+    query: string;
   }>;
 
 export type SourceWireRuntimeSkeletonContextSearchResult =
@@ -405,6 +406,18 @@ function isBoundedText(value: unknown, maxBytes: number): value is string {
   );
 }
 
+const contextInboxSearchStopWords = new Set(["a", "an", "find", "the"]);
+
+function contextInboxSearchTokens(query: string): string[] {
+  return (query.toLowerCase().match(/[a-z0-9]+/g) ?? []).filter(
+    (token) => !contextInboxSearchStopWords.has(token)
+  );
+}
+
+function isBoundedContextSearchQuery(value: unknown): value is string {
+  return isBoundedText(value, 4_096) && contextInboxSearchTokens(value).length > 0;
+}
+
 function isCanonicalTimestamp(value: unknown): value is string {
   if (typeof value !== "string") return false;
   const timestamp = new Date(value);
@@ -546,15 +559,13 @@ function normalizeContextMcpRequest(
   const expectedKeys =
     tool === "capture_context"
       ? contextCaptureRequestKeys
-      : Object.hasOwn(snapshot, "query")
-        ? contextSearchRequestKeysWithQuery
-        : contextSearchRequestKeys;
+      : contextSearchRequestKeysWithQuery;
   if (!hasExactKeys(snapshot, expectedKeys)) return undefined;
   if (
     snapshot.tool !== tool ||
     !isBoundedIdentifier(snapshot.requestId) ||
     !isBoundedIdentifier(snapshot.namespaceId) ||
-    (Object.hasOwn(snapshot, "query") && !isBoundedText(snapshot.query, 4_096))
+    (tool === "search_source_evidence" && !isBoundedContextSearchQuery(snapshot.query))
   ) {
     return undefined;
   }
@@ -583,9 +594,7 @@ function normalizeContextApiRequest(
   const expectedKeys =
     action === "capture_context"
       ? contextCaptureApiRequestKeys
-      : Object.hasOwn(snapshot, "query")
-        ? contextSearchApiRequestKeysWithQuery
-        : contextSearchApiRequestKeys;
+      : contextSearchApiRequestKeysWithQuery;
   if (!hasExactKeys(snapshot, expectedKeys)) return undefined;
   const expectedRoute =
     action === "capture_context"
@@ -596,7 +605,7 @@ function normalizeContextApiRequest(
     snapshot.route !== expectedRoute ||
     !isBoundedIdentifier(snapshot.requestId) ||
     !isBoundedIdentifier(snapshot.namespaceId) ||
-    (Object.hasOwn(snapshot, "query") && !isBoundedText(snapshot.query, 4_096))
+    (action === "search_source_evidence" && !isBoundedContextSearchQuery(snapshot.query))
   ) {
     return undefined;
   }
@@ -961,6 +970,53 @@ function getContextInboxScopedFreshness(
   );
 }
 
+function contextInboxEntryMatchesQuery(
+  entry: SourceWireRuntimeSkeletonContextInboxEntry,
+  query: string
+): boolean {
+  const tokens = contextInboxSearchTokens(query);
+  if (tokens.length === 0) return false;
+  const searchableMetadata = [
+    entry.sourceKind,
+    entry.sourceRecordId,
+    entry.sourceRevision,
+    entry.title,
+    entry.sourceLocator
+  ]
+    .join("\n")
+    .toLowerCase();
+  return tokens.every((token) => searchableMetadata.includes(token));
+}
+
+function compareContextInboxRevisionFreshness(
+  left: SourceWireRuntimeSkeletonContextInboxEntry,
+  right: SourceWireRuntimeSkeletonContextInboxEntry
+): number {
+  for (const [leftValue, rightValue] of [
+    [left.sourceOccurredAt, right.sourceOccurredAt],
+    [left.capturedAt, right.capturedAt],
+    [left.sourceRevision, right.sourceRevision],
+    [left.envelopeId, right.envelopeId]
+  ]) {
+    const comparison = leftValue.localeCompare(rightValue);
+    if (comparison !== 0) return comparison;
+  }
+  return 0;
+}
+
+function selectCurrentContextInboxEntries(
+  entries: readonly SourceWireRuntimeSkeletonContextInboxEntry[]
+): SourceWireRuntimeSkeletonContextInboxEntry[] {
+  const currentBySourceRecord = new Map<string, SourceWireRuntimeSkeletonContextInboxEntry>();
+  for (const entry of entries) {
+    const current = currentBySourceRecord.get(entry.sourceRecordId);
+    if (current === undefined || compareContextInboxRevisionFreshness(entry, current) > 0) {
+      currentBySourceRecord.set(entry.sourceRecordId, entry);
+    }
+  }
+  return [...currentBySourceRecord.values()];
+}
+
 function createContextCaptureIdempotentResult(
   response: SourceWireRuntimeSkeletonResponse,
   state: SourceWireRuntimeSkeletonContextInboxState,
@@ -1288,10 +1344,13 @@ export function searchRuntimeSkeletonContextInbox(
   }
 
   const contextEvidence = Object.freeze(
-    state.entries
+    selectCurrentContextInboxEntries(
+      state.entries.filter(
+        (entry) => entry.ownerId === caller.ownerId && entry.namespaceId === request.namespaceId
+      )
+    )
       .filter(
-        (entry) =>
-          entry.ownerId === caller.ownerId && entry.namespaceId === request.namespaceId
+        (entry) => contextInboxEntryMatchesQuery(entry, request.query ?? "")
       )
       .map((entry) =>
         Object.freeze({
@@ -1313,10 +1372,10 @@ export function searchRuntimeSkeletonContextInbox(
   const citations = Object.freeze(
     contextEvidence.map((entry) => entry.citation)
   ) as unknown as SourceWireRuntimeSkeletonCitation[];
-  const synchronizedThrough = contextEvidence.reduce<string | undefined>(
-    (latest, entry) =>
-      latest === undefined || entry.capturedAt > latest ? entry.capturedAt : latest,
-    undefined
+  const synchronizedThrough = getContextInboxScopedFreshness(
+    state,
+    caller.ownerId,
+    request.namespaceId
   );
 
   const { synchronizedThrough: _synchronizedThrough, ...boundedResponse } = response;

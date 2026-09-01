@@ -2,6 +2,11 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import { runRuntimeSkeletonFixtureMatrix } from "../../dist/index.js";
+import {
+  collectContextQualityObservations,
+  evaluateContextQualityObservations,
+  runContextQualityMutationSelfTest
+} from "./context-quality-eval-v0.mjs";
 
 const fixturePath = join(
   process.cwd(),
@@ -50,6 +55,39 @@ for (const fixtureCase of fixture.cases) {
 
   console.log(`ok runtime skeleton case ${fixtureCase.caseId}`);
 }
+
+const contextQualityCorpus = JSON.parse(
+  await readFile(
+    join(
+      process.cwd(),
+      "examples",
+      "fixtures",
+      "runtime-skeleton",
+      "context-quality-eval-v0.json"
+    ),
+    "utf8"
+  )
+);
+const contextQualityReport = evaluateContextQualityObservations(
+  contextQualityCorpus,
+  collectContextQualityObservations(contextQualityCorpus)
+);
+assertEqual(contextQualityReport.verdict, "PASS", "context_quality_eval_v0", "verdict");
+assertEqual(
+  contextQualityReport.caseTotals.failed,
+  0,
+  "context_quality_eval_v0",
+  "caseTotals.failed"
+);
+const contextQualityMutationSelfTest = runContextQualityMutationSelfTest(contextQualityCorpus);
+assertEqual(
+  contextQualityMutationSelfTest.verdict,
+  "PASS",
+  "context_quality_eval_v0_mutation_self_test",
+  "verdict"
+);
+console.log("ok runtime context quality eval v0");
+console.log("ok runtime context quality eval v0 mutation self-test");
 
 console.log("ok runtime skeleton smoke");
 

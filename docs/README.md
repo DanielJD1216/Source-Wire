@@ -103,6 +103,7 @@ Use guides for tasks and reference pages for exact commands or exports.
 - [Schema Exports](reference/schema-exports.md)
 - [Validation CLI](reference/validation-cli.md)
 - [CI Checks](reference/ci-checks.md)
+- [Context Quality Eval v0](reference/context-quality-eval-v0.md)
 - [KnowledgeProvider Smoke](reference/knowledge-provider-smoke.md)
 - [MemoryStore Smoke](reference/memory-store-smoke.md)
 - [Repository Metadata](reference/repository-metadata.md)

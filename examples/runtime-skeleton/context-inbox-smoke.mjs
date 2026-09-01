@@ -465,6 +465,30 @@ const malformedTransitionSearch = searchRuntimeSkeletonContextInbox(capture.stat
 assertEqual(malformedTransitionSearch.status, "denied", "control-character search query fails closed");
 assertEqual(malformedTransitionSearch.contextEvidence, [], "malformed search returns no evidence");
 
+const emptySearch = searchRuntimeSkeletonContextInbox(capture.state, searchCaller, {
+  ...searchRequest,
+  requestId: "req_demo_context_search_empty_query_001",
+  query: "   "
+});
+assertEqual(emptySearch.status, "denied", "semantically empty search query fails closed");
+assertEqual(emptySearch.contextEvidence, [], "semantically empty search returns no evidence");
+
+const stopWordOnlySearch = searchRuntimeSkeletonContextInbox(capture.state, searchCaller, {
+  ...searchRequest,
+  requestId: "req_demo_context_search_stop_words_only_001",
+  query: "find the"
+});
+assertEqual(stopWordOnlySearch.status, "denied", "stop-word-only search query fails closed");
+assertEqual(stopWordOnlySearch.contextEvidence, [], "stop-word-only search returns no evidence");
+
+const unanswerableSearch = searchRuntimeSkeletonContextInbox(capture.state, searchCaller, {
+  ...searchRequest,
+  requestId: "req_demo_context_search_unanswerable_001",
+  query: "nonexistent synthetic record"
+});
+assertEqual(unanswerableSearch.status, "allowed", "unanswerable bounded search remains allowed");
+assertEqual(unanswerableSearch.contextEvidence, [], "unanswerable bounded search returns no evidence");
+
 const search = searchRuntimeSkeletonContextInbox(capture.state, searchCaller, searchRequest);
 assertEqual(search.status, "allowed", "context search status");
 assertEqual(search.sourceEvidenceReturned, true, "context search returns source evidence");
@@ -485,6 +509,61 @@ assertEqual(Object.hasOwn(search.contextEvidence[0], "ownerId"), false, "search 
 assertEqual(Object.hasOwn(search.contextEvidence[0], "captureRequestId"), false, "search excludes capture request identity");
 assertEqual(Object.hasOwn(search.contextEvidence[0], "content"), false, "search excludes source body");
 assertEqual(JSON.stringify(search).includes(request.envelope.content), false, "search response excludes source body");
+
+const relevanceFilteredSearch = searchRuntimeSkeletonContextInbox(
+  historicalCapture.state,
+  searchCaller,
+  {
+    ...searchRequest,
+    requestId: "req_demo_context_search_historical_relevance_001",
+    query: "historical delivery"
+  }
+);
+assertEqual(relevanceFilteredSearch.status, "allowed", "relevance-filtered search status");
+assertEqual(
+  relevanceFilteredSearch.contextEvidence.map((entry) => entry.sourceRecordId),
+  [historicalCaptureRequest.envelope.sourceRecordId],
+  "relevance-filtered search excludes unrelated evidence"
+);
+assertEqual(
+  relevanceFilteredSearch.synchronizedThrough,
+  capture.state.synchronizedThrough,
+  "filtered search preserves scoped monotonic freshness"
+);
+
+const revisedDeliveryRequest = {
+  ...request,
+  requestId: "req_demo_context_delivery_revision_002",
+  envelope: {
+    ...request.envelope,
+    envelopeId: "env_demo_slack_carrie_002",
+    sourceRevision: "2",
+    title: "Synthetic delivery request revised",
+    sourceOccurredAt: "2026-08-04T18:00:00.000Z",
+    capturedAt: "2026-08-05T01:00:00.000Z",
+    content: "Synthetic context: the revised proposal is due after owner review."
+  }
+};
+const revisedDeliveryCapture = transitionRuntimeSkeletonContextCapture(
+  historicalCapture.state,
+  caller,
+  revisedDeliveryRequest
+);
+assertEqual(revisedDeliveryCapture.status, "allowed", "revised delivery capture status");
+const currentRevisionSearch = searchRuntimeSkeletonContextInbox(
+  revisedDeliveryCapture.state,
+  searchCaller,
+  {
+    ...searchRequest,
+    requestId: "req_demo_context_search_current_revision_001",
+    query: request.envelope.sourceRecordId
+  }
+);
+assertEqual(
+  currentRevisionSearch.contextEvidence.map((entry) => entry.sourceRevision),
+  ["2"],
+  "search returns only the current source revision"
+);
 
 const mixedScopeState = {
   contractVersion: "source-wire.context-inbox-state.v1",
